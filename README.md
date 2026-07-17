@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MedCalcHub
 
-## Getting Started
+A modern platform for medical calculators, clinical decision support, and healthcare education.
 
-First, run the development server:
+## 🚀 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+MedCalcHub is a professional web application designed for healthcare professionals, nurses, physicians, medical students, and other clinicians.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The goal is to provide a fast, accurate, and user-friendly platform containing hundreds of medical calculators, clinical scoring systems, laboratory reference tools, and educational resources.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Planned Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- BMI Calculator
+- BSA Calculator
+- Creatinine Clearance
+- eGFR
+- Pediatric Drug Dose Calculator
+- IV Infusion Calculator
+- Glasgow Coma Scale
+- APGAR Score
+- Wells Score
+- CURB-65
+- CHA₂DS₂-VASc
+- NEWS2
+- Unit Conversions
+- Laboratory Reference Ranges
+- Clinical Guidelines
+- AI-powered Medical Assistant (Future)
 
-## Learn More
+## 🛠 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- OpenCode AI
+- Git & GitHub
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Status
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Currently under active development.
 
-## Deploy on Vercel
+Phase 1: Foundation ✅
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 👨‍💻 Author
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed by **Yalew Gezahegn**
