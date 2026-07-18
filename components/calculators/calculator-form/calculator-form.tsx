@@ -25,7 +25,7 @@ export const CalculatorForm = forwardRef<HTMLFormElement, CalculatorFormProps>(
       buildInitialValues(calculator.inputs.map((input) => input.id)),
     );
     const [result, setResult] = useState<CalculatorResult | null>(null);
-
+const [errors, setErrors] = useState<Record<string, string>>({});
     const handleChange = useCallback(
       (id: string, value: string) => {
         setValues((prev) => ({ ...prev, [id]: value }));
@@ -33,15 +33,31 @@ export const CalculatorForm = forwardRef<HTMLFormElement, CalculatorFormProps>(
       [],
     );
 
-    const handleSubmit = useCallback(
-      (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const calculated = calculator.calculate(values);
-        setResult(calculated);
-      },
-      [calculator, values],
-    );
+    const validate = useCallback(() => {
+  const nextErrors: Record<string, string> = {};
+for (const input of calculator.inputs) {
+  if (input.required && !values[input.id].trim()) {
+  nextErrors[input.id] = `${input.label} is required.`;
+}
+}
+  setErrors(nextErrors);
 
+  return Object.keys(nextErrors).length === 0;
+}, [calculator.inputs, values]);
+  const handleSubmit = useCallback(
+  (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
+
+    const calculated = calculator.calculate(values);
+
+    setResult(calculated);
+  },
+  [calculator, values, validate],
+);
     return (
       <form
         ref={ref}
