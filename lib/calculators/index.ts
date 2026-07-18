@@ -5,3 +5,5 @@ export type {
   CalculatorResult,
   CalculatorDefinition,
 } from "./calculator.types";
+
+export { calculatorRegistry, getCalculatorById } from "./registry";
