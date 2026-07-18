@@ -1,6 +1,6 @@
 import { bmiCalculator } from "@/lib/calculators/bmi";
 import { CalculatorLayout } from "@/components/calculators/layout";
-import { CalculatorForm } from "@/components/calculators/calculator-form";
+import { BMICalculatorClient } from "@/components/calculators/bmi-calculator-client";
 
 export default function BMICalculatorPage() {
   return (
@@ -8,7 +8,7 @@ export default function BMICalculatorPage() {
       title={bmiCalculator.name}
       description={bmiCalculator.description}
     >
-      <CalculatorForm calculator={bmiCalculator} />
+      <BMICalculatorClient />
     </CalculatorLayout>
   );
 }

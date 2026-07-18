@@ -12,6 +12,9 @@ export type CalculatorInput = {
   placeholder?: string;
   unit?: string;
   required?: boolean;
+  min?: number;
+max?: number;
+step?: number;
   options?: CalculatorInputOption[];
 };
 

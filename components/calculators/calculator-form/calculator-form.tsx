@@ -115,6 +115,9 @@ for (const input of calculator.inputs) {
   onChange={(e) => handleChange(input.id, e.target.value)}
   placeholder={input.placeholder}
   required={input.required}
+  min={input.min}
+max={input.max}
+step={input.step}
   error={!!errors[input.id]}
 />
                   )}
