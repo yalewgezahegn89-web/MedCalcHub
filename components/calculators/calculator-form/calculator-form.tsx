@@ -29,6 +29,15 @@ const [errors, setErrors] = useState<Record<string, string>>({});
     const handleChange = useCallback(
       (id: string, value: string) => {
         setValues((prev) => ({ ...prev, [id]: value }));
+        setErrors((prev) => {
+  if (!prev[id]) {
+    return prev;
+  }
+
+  const next = { ...prev };
+  delete next[id];
+  return next;
+});
       },
       [],
     );
@@ -84,13 +93,11 @@ for (const input of calculator.inputs) {
                 <div className="flex items-center gap-2">
                   {input.type === "select" ? (
                     <Select
-                      id={inputId}
-                      value={values[input.id]}
-                      onChange={(e) =>
-                        handleChange(input.id, e.target.value)
-                      }
-                      required={input.required}
-                    >
+  id={inputId}
+  value={values[input.id]}
+  onChange={(e) => handleChange(input.id, e.target.value)}
+  required={input.required}
+  error={!!errors[input.id]}>
                       <option value="">
                         {input.placeholder ?? "Select..."}
                       </option>
@@ -102,15 +109,14 @@ for (const input of calculator.inputs) {
                     </Select>
                   ) : (
                     <Input
-                      id={inputId}
-                      type={input.type}
-                      value={values[input.id]}
-                      onChange={(e) =>
-                        handleChange(input.id, e.target.value)
-                      }
-                      placeholder={input.placeholder}
-                      required={input.required}
-                    />
+  id={inputId}
+  type={input.type}
+  value={values[input.id]}
+  onChange={(e) => handleChange(input.id, e.target.value)}
+  placeholder={input.placeholder}
+  required={input.required}
+  error={!!errors[input.id]}
+/>
                   )}
 
                   {input.unit && (
@@ -119,6 +125,11 @@ for (const input of calculator.inputs) {
                     </span>
                   )}
                 </div>
+                {errors[input.id] && (
+  <p className="text-destructive text-sm">
+    {errors[input.id]}
+  </p>
+)}
               </div>
             );
           })}
