@@ -27,6 +27,8 @@ export type CalculatorDefinition = {
   name: string;
   description: string;
   category: string;
+  slug?: string;
+  warnings?: string[];
 
   inputs: CalculatorInput[];
 

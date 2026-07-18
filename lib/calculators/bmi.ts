@@ -2,6 +2,7 @@ import type { CalculatorDefinition } from "./calculator.types";
 
 export const bmiCalculator: CalculatorDefinition = {
   id: "bmi",
+  slug: "body-mass-index",
   name: "Body Mass Index",
   description: "Calculates Body Mass Index using height and weight.",
   category: "General",
