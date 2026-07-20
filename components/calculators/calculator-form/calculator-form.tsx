@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ResultCard } from "@/components/calculators/result-card";
 import { CalculatorToolbar } from "@/components/calculators/toolbar";
 import { copyToClipboard } from "@/lib/clipboard";
+import { toast } from "sonner";
 import type { CalculatorFormProps } from "./calculator-form.types";
 import type { CalculatorResult } from "@/lib/calculators";
 
@@ -142,16 +143,26 @@ export const CalculatorForm = forwardRef<
 <CalculatorToolbar
   onReset={handleReset}
   onCopy={async () => {
-    if (!result) return;
-  
+  if (!result) return;
+
+  try {
     await copyToClipboard(
       `${calculator.name}
-  
-  Result: ${result.value}${result.unit ? ` ${result.unit}` : ""}
-  
-  Interpretation: ${result.interpretation}`
+
+Result: ${result.value}${result.unit ? ` ${result.unit}` : ""}
+
+Interpretation: ${result.interpretation}`
     );
-  }}
+
+    toast.success("Copied to clipboard!", {
+      description: `${calculator.name} result copied successfully.`,
+    });
+  } catch {
+    toast.error("Copy failed", {
+      description: "Unable to copy the calculator result.",
+    });
+  }
+}}
   onPrint={() => console.log("Print")}
   onShare={() => console.log("Share")}
   onFavorite={() => console.log("Favorite")}
