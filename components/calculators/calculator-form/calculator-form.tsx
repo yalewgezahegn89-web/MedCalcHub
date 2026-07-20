@@ -1,10 +1,11 @@
 "use client";
-
 import { forwardRef, useState, useCallback, type FormEvent } from "react";
 import { cn } from "@/lib/utils/cn";
 import { FormField } from "@/components/calculators/form-field";
 import { Button } from "@/components/ui/button";
 import { ResultCard } from "@/components/calculators/result-card";
+import { CalculatorToolbar } from "@/components/calculators/toolbar";
+import { copyToClipboard } from "@/lib/clipboard";
 import type { CalculatorFormProps } from "./calculator-form.types";
 import type { CalculatorResult } from "@/lib/calculators";
 
@@ -129,26 +130,32 @@ export const CalculatorForm = forwardRef<
         );
       })}
 
-<div className="flex gap-3">
-  <Button
-    type="submit"
-    variant="primary"
-    size="lg"
-    className="flex-1"
-  >
-    Calculate
-  </Button>
+<Button
+  type="submit"
+  variant="primary"
+  size="lg"
+  className="w-full"
+>
+  Calculate
+</Button>
 
-  <Button
-    type="button"
-    variant="outline"
-    size="lg"
-    className="flex-1"
-    onClick={handleReset}
-  >
-    Reset
-  </Button>
-</div>
+<CalculatorToolbar
+  onReset={handleReset}
+  onCopy={async () => {
+    if (!result) return;
+  
+    await copyToClipboard(
+      `${calculator.name}
+  
+  Result: ${result.value}${result.unit ? ` ${result.unit}` : ""}
+  
+  Interpretation: ${result.interpretation}`
+    );
+  }}
+  onPrint={() => console.log("Print")}
+  onShare={() => console.log("Share")}
+  onFavorite={() => console.log("Favorite")}
+/>
 
       {result && (
         <ResultCard
