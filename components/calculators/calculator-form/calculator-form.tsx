@@ -47,15 +47,38 @@ export const CalculatorForm = forwardRef<
 
   const validate = useCallback(() => {
     const nextErrors: Record<string, string> = {};
-
+  
     for (const input of calculator.inputs) {
-      if (input.required && !values[input.id].trim()) {
+      const value = values[input.id].trim();
+  
+      if (input.required && !value) {
         nextErrors[input.id] = `${input.label} is required.`;
+        continue;
+      }
+  
+      if (input.type === "number" && value) {
+        const number = Number(value);
+  
+        if (Number.isNaN(number)) {
+          nextErrors[input.id] = `${input.label} must be a valid number.`;
+          continue;
+        }
+  
+        if (input.min !== undefined && number < input.min) {
+          nextErrors[input.id] =
+            `${input.label} must be at least ${input.min}.`;
+          continue;
+        }
+  
+        if (input.max !== undefined && number > input.max) {
+          nextErrors[input.id] =
+            `${input.label} must be at most ${input.max}.`;
+        }
       }
     }
-
+  
     setErrors(nextErrors);
-
+  
     return Object.keys(nextErrors).length === 0;
   }, [calculator.inputs, values]);
 
@@ -73,6 +96,16 @@ export const CalculatorForm = forwardRef<
     },
     [calculator, values, validate],
   );
+  const handleReset = useCallback(() => {
+    setValues(
+      buildInitialValues(
+        calculator.inputs.map((input) => input.id),
+      ),
+    );
+  
+    setErrors({});
+    setResult(null);
+  }, [calculator.inputs]);
 
   return (
     <form
@@ -96,9 +129,26 @@ export const CalculatorForm = forwardRef<
         );
       })}
 
-      <Button type="submit" variant="primary" size="lg" className="w-full">
-        Calculate
-      </Button>
+<div className="flex gap-3">
+  <Button
+    type="submit"
+    variant="primary"
+    size="lg"
+    className="flex-1"
+  >
+    Calculate
+  </Button>
+
+  <Button
+    type="button"
+    variant="outline"
+    size="lg"
+    className="flex-1"
+    onClick={handleReset}
+  >
+    Reset
+  </Button>
+</div>
 
       {result && (
         <ResultCard
