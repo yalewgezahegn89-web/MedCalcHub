@@ -46,6 +46,14 @@ export type CalculatorDefinition = {
 
   warnings?: string[];
 
+  formula?: string;
+
+  normalRange?: string;
+
+  clinicalNotes?: string;
+
+  references?: string[];
+
   keywords?: string[];
 
   inputs: CalculatorInput[];

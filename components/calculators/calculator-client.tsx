@@ -3,6 +3,7 @@
 import { notFound } from "next/navigation";
 
 import { CalculatorForm } from "@/components/calculators/calculator-form";
+import { ClinicalNotes } from "@/components/calculators/clinical-notes";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 type CalculatorClientProps = {
@@ -20,5 +21,15 @@ export function CalculatorClient({
     notFound();
   }
 
-  return <CalculatorForm calculator={calculator} />;
+  return (
+    <div className="space-y-6">
+      <CalculatorForm calculator={calculator} />
+      <ClinicalNotes
+        formula={calculator.formula}
+        normalRange={calculator.normalRange}
+        clinicalNotes={calculator.clinicalNotes}
+        references={calculator.references}
+      />
+    </div>
+  );
 }

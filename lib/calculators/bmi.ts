@@ -15,6 +15,18 @@ export const bmiCalculator: CalculatorDefinition = {
 
   featured: true,
 
+  formula: "BMI = Weight (kg) / Height² (m²)",
+
+  normalRange: "18.5–24.9 kg/m²",
+
+  clinicalNotes:
+    "Body Mass Index (BMI) is a screening tool used to classify underweight, healthy weight, overweight, and obesity in adults. BMI does not directly measure body fat and should be interpreted alongside clinical assessment, muscle mass, age, ethnicity, and other health indicators.",
+
+  references: [
+    "World Health Organization (WHO)",
+    "Centers for Disease Control and Prevention (CDC)",
+  ],
+
   updatedAt: "2026-07",
 
   version: "1.0",
