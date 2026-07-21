@@ -1,6 +1,6 @@
 import { bmiCalculator } from "@/lib/calculators/bmi";
 import { CalculatorLayout } from "@/components/calculators/layout";
-import { BMICalculatorClient } from "@/components/calculators/bmi-calculator-client";
+import { CalculatorClient } from "@/components/calculators/calculator-client";
 
 export default function BMICalculatorPage() {
   return (
@@ -8,7 +8,7 @@ export default function BMICalculatorPage() {
       title={bmiCalculator.name}
       description={bmiCalculator.description}
     >
-      <BMICalculatorClient />
+      <CalculatorClient slug="body-mass-index" />
     </CalculatorLayout>
   );
 }

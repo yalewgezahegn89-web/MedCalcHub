@@ -1,20 +1,18 @@
-"use client";
+import { CalculatorLayout } from "@/components/calculators/layout";
+import { CalculatorClient } from "@/components/calculators/calculator-client";
+import { calculatorRegistry } from "@/lib/calculators/registry";
 import { notFound } from "next/navigation";
 
-import { CalculatorForm } from "@/components/calculators/calculator-form";
-import { CalculatorHeader } from "@/components/calculators/header";
-import { calculatorRegistry } from "@/lib/calculators/registry";
-
 type CalculatorPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export default function CalculatorPage({
+export default async function CalculatorPage({
   params,
 }: CalculatorPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const calculator = calculatorRegistry.find(
     (calc) => calc.slug === slug,
@@ -25,13 +23,11 @@ export default function CalculatorPage({
   }
 
   return (
-    <main className="mx-auto max-w-3xl space-y-8 p-8">
-      <CalculatorHeader
-        title={calculator.name}
-        description={calculator.description}
-      />
-
-      <CalculatorForm calculator={calculator} />
-    </main>
+    <CalculatorLayout
+      title={calculator.name}
+      description={calculator.description}
+    >
+      <CalculatorClient slug={slug} />
+    </CalculatorLayout>
   );
 }
