@@ -1,4 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { calculateDevineIBW } from "./utils/body-weight";
 
 export const ibwCalculator: CalculatorDefinition = {
   id: "ibw",
@@ -50,25 +51,16 @@ export const ibwCalculator: CalculatorDefinition = {
   ],
 
   calculate(values) {
-    const sex = values.sex;
-    const heightCm = parseFloat(values.height);
-
-    const inches = heightCm / 2.54;
-    let ibw: number;
-
-    if (sex === "male") {
-      ibw = 50 + 2.3 * (inches - 60);
-    } else {
-      ibw = 45.5 + 2.3 * (inches - 60);
-    }
-
-    const rounded = Math.max(0, Math.round(ibw * 10) / 10);
+    const ibw = calculateDevineIBW(
+      values.sex,
+      parseFloat(values.height),
+    );
 
     return {
-      value: rounded,
+      value: ibw,
       unit: "kg",
       interpretation:
-  "Estimated ideal body weight using the Devine formula.",
+        "Estimated ideal body weight using the Devine formula.",
       status: "normal",
     };
   },
