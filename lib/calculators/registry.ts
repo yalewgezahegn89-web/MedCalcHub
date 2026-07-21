@@ -1,7 +1,12 @@
 import type { CalculatorDefinition } from "./calculator.types";
-import { bmiCalculator } from "./bmi";
 
-export const calculatorRegistry: CalculatorDefinition[] = [bmiCalculator];
+import { bmiCalculator } from "./bmi";
+import { bsaCalculator } from "./bsa";
+
+export const calculatorRegistry: CalculatorDefinition[] = [
+  bmiCalculator,
+  bsaCalculator,
+];
 
 export function getCalculatorById(
   id: string,
