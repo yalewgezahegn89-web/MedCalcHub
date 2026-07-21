@@ -13,8 +13,8 @@ export type CalculatorInput = {
   unit?: string;
   required?: boolean;
   min?: number;
-max?: number;
-step?: number;
+  max?: number;
+  step?: number;
   options?: CalculatorInputOption[];
 };
 
@@ -27,11 +27,26 @@ export type CalculatorResult = {
 
 export type CalculatorDefinition = {
   id: string;
-  name: string;
-  description: string;
-  category: string;
+
   slug?: string;
+
+  name: string;
+
+  shortName?: string;
+
+  description: string;
+
+  category: string;
+
+  featured?: boolean;
+
+  updatedAt?: string;
+
+  version?: string;
+
   warnings?: string[];
+
+  keywords?: string[];
 
   inputs: CalculatorInput[];
 

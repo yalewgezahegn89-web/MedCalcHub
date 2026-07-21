@@ -2,32 +2,57 @@ import type { CalculatorDefinition } from "./calculator.types";
 
 export const bmiCalculator: CalculatorDefinition = {
   id: "bmi",
+
   slug: "body-mass-index",
+
   name: "Body Mass Index",
+
+  shortName: "BMI",
+
   description: "Calculates Body Mass Index using height and weight.",
+
   category: "General",
+
+  featured: true,
+
+  updatedAt: "2026-07",
+
+  version: "1.0",
+
+  keywords: [
+    "BMI",
+    "Body Mass Index",
+    "Obesity",
+    "Weight",
+    "Height",
+    "Nutrition",
+  ],
+
+  warnings: [
+    "BMI is a screening tool and should not be used alone to diagnose obesity or health conditions.",
+  ],
 
   inputs: [
     {
-  id: "height",
-  label: "Height",
-  type: "number",
-  unit: "cm",
-  required: true,
-  min: 1,
-  max: 300,
-  step: 0.1,
-},
+      id: "height",
+      label: "Height",
+      type: "number",
+      unit: "cm",
+      required: true,
+      min: 1,
+      max: 300,
+      step: 0.1,
+    },
     {
-  id: "weight",
-  label: "Weight",
-  type: "number",
-  unit: "kg",
-  required: true,
-  min: 1,
-  max: 500,
-  step: 0.1,
-},
+      id: "weight",
+      label: "Weight",
+      type: "number",
+      unit: "kg",
+      required: true,
+      min: 1,
+      max: 500,
+      step: 0.1,
+    },
   ],
 
   calculate(values) {
