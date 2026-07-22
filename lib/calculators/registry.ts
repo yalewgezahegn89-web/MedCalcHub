@@ -13,6 +13,7 @@ import { correctedCalciumCalculator } from "./corrected-calcium";
 import { anionGapCalculator } from "./anion-gap";
 import { correctedAnionGapCalculator } from "./corrected-anion-gap";
 import { serumOsmolalityCalculator } from "./serum-osmolality";
+import { osmolarGapCalculator } from "./osmolar-gap";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -28,10 +29,11 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   anionGapCalculator,
   correctedAnionGapCalculator,
   serumOsmolalityCalculator,
+  osmolarGapCalculator,
 ];
 
 export function getCalculatorById(
   id: string,
 ): CalculatorDefinition | undefined {
-  return calculatorRegistry.find((calc) => calc.id === id);
+  return calculatorRegistry.find((calc) => calc.id === calc.id);
 }

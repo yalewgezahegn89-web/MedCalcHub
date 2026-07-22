@@ -1,16 +1,17 @@
 import type { CalculatorDefinition } from "./calculator.types";
 import { calculateSerumOsmolality } from "./utils/electrolytes";
-export const serumOsmolalityCalculator: CalculatorDefinition = {
-  id: "serum-osmolality",
 
-  slug: "serum-osmolality",
+export const osmolarGapCalculator: CalculatorDefinition = {
+  id: "osmolar-gap",
 
-  name: "Serum Osmolality",
+  slug: "osmolar-gap",
 
-  shortName: "Osmolality",
+  name: "Osmolar Gap",
+
+  shortName: "OG",
 
   description:
-    "Calculates the estimated serum osmolality using sodium, glucose, and blood urea nitrogen (BUN).",
+    "Calculates the osmolar gap using measured and calculated serum osmolality.",
 
   category: "Renal",
 
@@ -21,24 +22,24 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
   version: "1.0",
 
   keywords: [
+    "Osmolar Gap",
     "Serum Osmolality",
-    "Calculated Osmolality",
-    "Electrolytes",
-    "Renal",
-    "Toxicology",
+    "Toxic Alcohol",
+    "Methanol",
+    "Ethylene Glycol",
   ],
 
   warnings: [
-    "Formula assumes glucose is in mg/dL and BUN is in mg/dL.",
+    "Measured osmolality must be obtained from the laboratory.",
   ],
 
   formula:
-    "Calculated Osmolality = 2 × Na + Glucose / 18 + BUN / 2.8",
+    "Osmolar Gap = Measured Osmolality − Calculated Osmolality",
 
-  normalRange: "275–295 mOsm/kg",
+  normalRange: "-10 to +10 mOsm/kg",
 
   clinicalNotes:
-    "Estimated serum osmolality is useful in evaluating electrolyte disorders, dehydration, toxic alcohol ingestion, and osmolar gap.",
+    "An elevated osmolar gap may suggest toxic alcohol ingestion or other osmotically active substances.",
 
   references: [
     "UpToDate",
@@ -46,6 +47,16 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
   ],
 
   inputs: [
+    {
+      id: "measured",
+      label: "Measured Osmolality",
+      type: "number",
+      unit: "mOsm/kg",
+      required: true,
+      min: 150,
+      max: 500,
+      step: 1,
+    },
     {
       id: "sodium",
       label: "Sodium",
@@ -79,27 +90,31 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
   ],
 
   calculate(values) {
+    const measured = parseFloat(values.measured);
     const sodium = parseFloat(values.sodium);
     const glucose = parseFloat(values.glucose);
     const bun = parseFloat(values.bun);
 
-    const rounded = calculateSerumOsmolality(
-  sodium,
-  glucose,
-  bun,
-);
+    const calculated = calculateSerumOsmolality(
+      sodium,
+      glucose,
+      bun,
+    );
+
+    const rounded =
+      Math.round((measured - calculated) * 10) / 10;
 
     let interpretation: string;
     let status: "low" | "normal" | "high";
 
-    if (rounded < 275) {
-      interpretation = "Low serum osmolality";
+    if (rounded < -10) {
+      interpretation = "Low osmolar gap";
       status = "low";
-    } else if (rounded <= 295) {
-      interpretation = "Normal serum osmolality";
+    } else if (rounded <= 10) {
+      interpretation = "Normal osmolar gap";
       status = "normal";
     } else {
-      interpretation = "High serum osmolality";
+      interpretation = "Elevated osmolar gap";
       status = "high";
     }
 

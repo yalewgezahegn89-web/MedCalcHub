@@ -35,3 +35,15 @@ export function calculateCorrectedCalcium(
 
   return Math.round(corrected * 10) / 10;
 }
+export function calculateSerumOsmolality(
+  sodium: number,
+  glucose: number,
+  bun: number,
+): number {
+  const osmolality =
+    2 * sodium +
+    glucose / 18 +
+    bun / 2.8;
+
+  return Math.round(osmolality * 10) / 10;
+}
