@@ -5,6 +5,7 @@ import { bsaCalculator } from "./bsa";
 import { ibwCalculator } from "./ibw";
 import { adjbwCalculator } from "./adjbw";
 import { lbmCalculator } from "./lbm";
+import { cockcroftGaultCalculator } from "./cockcroft-gault";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -12,6 +13,7 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   ibwCalculator,
   adjbwCalculator,
   lbmCalculator,
+  cockcroftGaultCalculator,
 ];
 
 export function getCalculatorById(

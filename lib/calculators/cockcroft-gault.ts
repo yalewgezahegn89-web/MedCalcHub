@@ -9,7 +9,8 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
   shortName: "CrCl",
 
-  description: "Estimates creatinine clearance using the Cockcroft-Gault equation.",
+  description:
+    "Estimates creatinine clearance using the Cockcroft-Gault equation.",
 
   category: "Renal",
 
@@ -28,10 +29,13 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
     "Drug Dosing",
   ],
 
-  warnings: ["For adults only.", "Use stable serum creatinine."],
+  warnings: [
+    "For adults only.",
+    "Use stable serum creatinine.",
+  ],
 
   formula:
-    "CrCl = ((140 − Age) × Weight) / (72 × Serum Creatinine)",
+    "CrCl = ((140 − Age) × Weight) / (72 × Serum Creatinine); multiply by 0.85 for females.",
 
   clinicalNotes:
     "Cockcroft-Gault estimates creatinine clearance and is commonly used for medication dosing in adults.",
@@ -86,22 +90,28 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
   calculate(values) {
     const age = parseFloat(values.age);
-    const sex = values.sex;
     const weight = parseFloat(values.weight);
     const creatinine = parseFloat(values.creatinine);
+    const sex = values.sex;
 
-    let crcl = ((140 - age) * weight) / (72 * creatinine);
+    let crcl =
+      ((140 - age) * weight) /
+      (72 * creatinine);
 
     if (sex === "female") {
       crcl *= 0.85;
     }
 
-    const rounded = Math.max(0, Math.round(crcl * 10) / 10);
+    const rounded = Math.max(
+      0,
+      Math.round(crcl * 10) / 10,
+    );
 
     return {
       value: rounded,
       unit: "mL/min",
-      interpretation: "Estimated creatinine clearance.",
+      interpretation:
+        "Estimated creatinine clearance.",
       status: "normal",
     };
   },
