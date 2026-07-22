@@ -17,7 +17,7 @@ const statusBadgeVariant: Record<
 > = {
   normal: "success",
   low: "warning",
-  high: "warning",
+  high: "destructive",
   critical: "destructive",
 };
 
@@ -27,10 +27,9 @@ const statusAlertVariant: Record<
 > = {
   normal: "success",
   low: "warning",
-  high: "warning",
+  high: "destructive",
   critical: "destructive",
 };
-
 export const ResultCard = forwardRef<HTMLDivElement, ResultCardProps>(
   function ResultCard(
     {
@@ -61,7 +60,7 @@ export const ResultCard = forwardRef<HTMLDivElement, ResultCardProps>(
 
           {status && (
             <Badge variant={statusBadgeVariant[status]} size="sm">
-              {status}
+              {status.charAt(0).toUpperCase() + status.slice(1)}
             </Badge>
           )}
         </div>
