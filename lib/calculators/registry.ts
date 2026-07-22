@@ -8,6 +8,7 @@ import { lbmCalculator } from "./lbm";
 import { cockcroftGaultCalculator } from "./cockcroft-gault";
 import { bunCreatinineRatioCalculator } from "./bun-creatinine-ratio";
 import { ckdEpi2021Calculator } from "./ckd-epi-2021";
+import { mdrdCalculator } from "./mdrd";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -18,6 +19,7 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   cockcroftGaultCalculator,
   bunCreatinineRatioCalculator,
   ckdEpi2021Calculator,
+  mdrdCalculator,
 ];
 
 export function getCalculatorById(
