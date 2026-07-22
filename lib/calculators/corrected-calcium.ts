@@ -10,7 +10,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
   shortName: "Ca Corr",
 
   description:
-    "Corrects total serum calcium based on serum albumin concentration.",
+    "Calculates corrected serum calcium using the Payne formula.",
 
   category: "Renal",
 
@@ -22,22 +22,23 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   keywords: [
     "Corrected Calcium",
-    "Albumin",
     "Calcium",
+    "Albumin",
+    "Payne Formula",
     "Electrolytes",
   ],
 
   warnings: [
-    "This formula is an estimate and may be inaccurate in critically ill patients.",
+    "The corrected calcium formula is an estimate and may be inaccurate in critically ill patients.",
   ],
 
   formula:
-    "Corrected Calcium = Measured Calcium + 0.8 × (4.0 − Albumin)",
+    "Corrected Calcium = Measured Calcium + 0.8 × (4 − Albumin)",
 
   normalRange: "8.5–10.5 mg/dL",
 
   clinicalNotes:
-    "Low serum albumin reduces measured total calcium. Corrected calcium estimates the calcium concentration after accounting for hypoalbuminemia.",
+    "Corrected calcium estimates the serum calcium concentration after adjusting for low albumin levels.",
 
   references: [
     "Payne RB, et al.",
@@ -47,7 +48,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
   inputs: [
     {
       id: "calcium",
-      label: "Total Calcium",
+      label: "Measured Calcium",
       type: "number",
       unit: "mg/dL",
       required: true,
