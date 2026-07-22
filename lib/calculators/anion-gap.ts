@@ -1,4 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { calculateAnionGap } from "./utils/electrolytes";
 
 export const anionGapCalculator: CalculatorDefinition = {
   id: "anion-gap",
@@ -82,9 +83,11 @@ export const anionGapCalculator: CalculatorDefinition = {
     const cl = parseFloat(values.chloride);
     const hco3 = parseFloat(values.bicarbonate);
 
-    const ag = na - (cl + hco3);
-
-    const rounded = Math.round(ag * 10) / 10;
+    const rounded = calculateAnionGap(
+      na,
+      cl,
+      hco3,
+    );
 
     let interpretation: string;
     let status: "low" | "normal" | "high";

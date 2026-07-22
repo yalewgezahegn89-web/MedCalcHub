@@ -1,4 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { calculateCorrectedCalcium } from "./utils/electrolytes";
 
 export const correctedCalciumCalculator: CalculatorDefinition = {
   id: "corrected-calcium",
@@ -72,11 +73,10 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
     const calcium = parseFloat(values.calcium);
     const albumin = parseFloat(values.albumin);
 
-    const corrected =
-      calcium + 0.8 * (4 - albumin);
-
-    const rounded =
-      Math.round(corrected * 10) / 10;
+    const rounded = calculateCorrectedCalcium(
+      calcium,
+      albumin,
+    );
 
     let interpretation: string;
     let status: "low" | "normal" | "high";
