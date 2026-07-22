@@ -1,5 +1,7 @@
 import { CalculatorLayout } from "@/components/calculators/layout";
 import { CalculatorClient } from "@/components/calculators/calculator-client";
+import { ClinicalPearl } from "@/components/calculators/clinical-pearl";
+import { RelatedCalculators } from "@/components/calculators/related-calculators";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 import { notFound } from "next/navigation";
 
@@ -28,6 +30,14 @@ export default async function CalculatorPage({
       description={calculator.description}
     >
       <CalculatorClient slug={slug} />
+
+      <ClinicalPearl
+        slug={calculator.id}
+      />
+
+      <RelatedCalculators
+        slug={calculator.id}
+      />
     </CalculatorLayout>
   );
 }
