@@ -6,6 +6,7 @@ import { ibwCalculator } from "./ibw";
 import { adjbwCalculator } from "./adjbw";
 import { lbmCalculator } from "./lbm";
 import { cockcroftGaultCalculator } from "./cockcroft-gault";
+import { bunCreatinineRatioCalculator } from "./bun-creatinine-ratio";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -14,6 +15,7 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   adjbwCalculator,
   lbmCalculator,
   cockcroftGaultCalculator,
+  bunCreatinineRatioCalculator,
 ];
 
 export function getCalculatorById(
