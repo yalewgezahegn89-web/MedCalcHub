@@ -11,6 +11,7 @@ import { ckdEpi2021Calculator } from "./ckd-epi-2021";
 import { mdrdCalculator } from "./mdrd";
 import { correctedCalciumCalculator } from "./corrected-calcium";
 import { anionGapCalculator } from "./anion-gap";
+import { correctedAnionGapCalculator } from "./corrected-anion-gap";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -24,6 +25,7 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   mdrdCalculator,
   correctedCalciumCalculator,
   anionGapCalculator,
+  correctedAnionGapCalculator,
 ];
 
 export function getCalculatorById(
