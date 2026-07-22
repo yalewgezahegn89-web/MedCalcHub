@@ -12,6 +12,7 @@ import { mdrdCalculator } from "./mdrd";
 import { correctedCalciumCalculator } from "./corrected-calcium";
 import { anionGapCalculator } from "./anion-gap";
 import { correctedAnionGapCalculator } from "./corrected-anion-gap";
+import { serumOsmolalityCalculator } from "./serum-osmolality";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -26,6 +27,7 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   correctedCalciumCalculator,
   anionGapCalculator,
   correctedAnionGapCalculator,
+  serumOsmolalityCalculator,
 ];
 
 export function getCalculatorById(
