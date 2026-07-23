@@ -131,7 +131,48 @@ if (rounded >= 90) {
   "eGFR = 142 × min(Scr/κ,1)^α × max(Scr/κ,1)^−1.200 × 0.9938^Age × 1.012 (if female)",
 
 normalRange: "≥90 mL/min/1.73 m²",
-
+classification: [
+  {
+    label: "G1",
+    range: "≥90",
+    min: 90,
+    color: "green",
+  },
+  {
+    label: "G2",
+    range: "60–89",
+    min: 60,
+    max: 89.9,
+    color: "yellow",
+  },
+  {
+    label: "G3a",
+    range: "45–59",
+    min: 45,
+    max: 59.9,
+    color: "orange",
+  },
+  {
+    label: "G3b",
+    range: "30–44",
+    min: 30,
+    max: 44.9,
+    color: "orange",
+  },
+  {
+    label: "G4",
+    range: "15–29",
+    min: 15,
+    max: 29.9,
+    color: "red",
+  },
+  {
+    label: "G5",
+    range: "<15",
+    max: 14.9,
+    color: "gray",
+  },
+],
 clinicalNotes:
   "The 2021 CKD-EPI creatinine equation estimates kidney function without using race and is recommended by many laboratories.",
       interpretation,

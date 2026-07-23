@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils/cn";
 import { FormField } from "@/components/calculators/form-field";
 import { Button } from "@/components/ui/button";
 import { ResultCard } from "@/components/calculators/result-card";
+import { ClassificationCard } from "@/components/calculators/classification-card";
 import { CalculatorToolbar } from "@/components/calculators/toolbar";
 import { copyToClipboard } from "@/lib/clipboard";
 import { toast } from "sonner";
@@ -169,14 +170,22 @@ Interpretation: ${result.interpretation}`
 />
 
       {result && (
-        <ResultCard
-          label={calculator.name}
-          value={result.value}
-          unit={result.unit}
-          interpretation={result.interpretation}
-          status={result.status}
-        />
-      )}
+  <>
+    <ResultCard
+      label={calculator.name}
+      value={result.value}
+      unit={result.unit}
+      interpretation={result.interpretation}
+      status={result.status}
+    />
+
+    <ClassificationCard
+      title="Clinical Classification"
+      value={Number(result.value)}
+      classification={calculator.classification}
+    />
+  </>
+)}
     </form>
   );
 });

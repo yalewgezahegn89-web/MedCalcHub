@@ -49,10 +49,19 @@ export type CalculatorDefinition = {
   formula?: string;
 
   normalRange?: string;
+
   referenceRanges?: {
-  label: string;
-  range: string;
-}[];
+    label: string;
+    range: string;
+  }[];
+
+  classification?: {
+    label: string;
+    range: string;
+    min?: number;
+    max?: number;
+    color?: "green" | "yellow" | "orange" | "red" | "gray";
+  }[];
 
   clinicalNotes?: string;
 
