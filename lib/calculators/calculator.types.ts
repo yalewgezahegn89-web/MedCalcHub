@@ -49,6 +49,10 @@ export type CalculatorDefinition = {
   formula?: string;
 
   normalRange?: string;
+  referenceRanges?: {
+  label: string;
+  range: string;
+}[];
 
   clinicalNotes?: string;
 
