@@ -35,6 +35,35 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
   formula:
     "eGFR = 142 × min(Scr/κ,1)^α × max(Scr/κ,1)^−1.200 × 0.9938^Age × 1.012 (if female)",
 
+  normalRange: "≥90 mL/min/1.73 m²",
+
+  referenceRanges: [
+    {
+      label: "G1 (Normal or High)",
+      range: "≥90 mL/min/1.73 m²",
+    },
+    {
+      label: "G2 (Mildly Decreased)",
+      range: "60–89 mL/min/1.73 m²",
+    },
+    {
+      label: "G3a (Mild–Moderate)",
+      range: "45–59 mL/min/1.73 m²",
+    },
+    {
+      label: "G3b (Moderate–Severe)",
+      range: "30–44 mL/min/1.73 m²",
+    },
+    {
+      label: "G4 (Severely Decreased)",
+      range: "15–29 mL/min/1.73 m²",
+    },
+    {
+      label: "G5 (Kidney Failure)",
+      range: "<15 mL/min/1.73 m²",
+    },
+  ],
+
   clinicalNotes:
     "The 2021 CKD-EPI creatinine equation estimates kidney function without using race and is recommended by many laboratories.",
 
@@ -102,31 +131,30 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
     const rounded = Math.round(egfr * 10) / 10;
 
     let interpretation: string;
-let status: "normal" | "low" = "normal";
+    let status: "normal" | "low" = "normal";
 
-if (rounded >= 90) {
-  interpretation = "G1: Normal or high kidney function.";
-} else if (rounded >= 60) {
-  interpretation = "G2: Mildly decreased kidney function.";
-} else if (rounded >= 45) {
-  interpretation =
-    "G3a: Mild to moderate decrease in kidney function.";
-  status = "low";
-} else if (rounded >= 30) {
-  interpretation =
-    "G3b: Moderate to severe decrease in kidney function.";
-  status = "low";
-} else if (rounded >= 15) {
-  interpretation = "G4: Severely decreased kidney function.";
-  status = "low";
-} else {
-  interpretation = "G5: Kidney failure.";
-  status = "low";
-}
+    if (rounded >= 90) {
+      interpretation = "G1: Normal or high kidney function.";
+    } else if (rounded >= 60) {
+      interpretation = "G2: Mildly decreased kidney function.";
+    } else if (rounded >= 45) {
+      interpretation = "G3a: Mild to moderate decrease in kidney function.";
+      status = "low";
+    } else if (rounded >= 30) {
+      interpretation = "G3b: Moderate to severe decrease in kidney function.";
+      status = "low";
+    } else if (rounded >= 15) {
+      interpretation = "G4: Severely decreased kidney function.";
+      status = "low";
+    } else {
+      interpretation = "G5: Kidney failure.";
+      status = "low";
+    }
 
     return {
       value: rounded,
       unit: "mL/min/1.73 m²",
+
       formula:
   "eGFR = 142 × min(Scr/κ,1)^α × max(Scr/κ,1)^−1.200 × 0.9938^Age × 1.012 (if female)",
 
@@ -175,6 +203,7 @@ classification: [
 ],
 clinicalNotes:
   "The 2021 CKD-EPI creatinine equation estimates kidney function without using race and is recommended by many laboratories.",
+
       interpretation,
       status,
     };

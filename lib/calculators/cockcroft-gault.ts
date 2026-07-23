@@ -32,13 +32,39 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
   warnings: [
     "For adults only.",
     "Use stable serum creatinine.",
+    "Primarily recommended for medication dosing rather than CKD staging.",
   ],
 
   formula:
     "CrCl = ((140 − Age) × Weight) / (72 × Serum Creatinine); multiply by 0.85 for females.",
 
+  normalRange: "≥90 mL/min",
+
+  referenceRanges: [
+    {
+      label: "Normal Renal Function",
+      range: "≥90 mL/min",
+    },
+    {
+      label: "Mild Impairment",
+      range: "60–89 mL/min",
+    },
+    {
+      label: "Moderate Impairment",
+      range: "30–59 mL/min",
+    },
+    {
+      label: "Severe Impairment",
+      range: "15–29 mL/min",
+    },
+    {
+      label: "Kidney Failure",
+      range: "<15 mL/min",
+    },
+  ],
+
   clinicalNotes:
-    "Cockcroft-Gault estimates creatinine clearance and is commonly used for medication dosing in adults.",
+    "Cockcroft-Gault estimates creatinine clearance and is widely used for medication dose adjustment. CKD-EPI is generally preferred for estimating GFR, while Cockcroft-Gault remains important for drug dosing recommendations.",
 
   references: [
     "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine.",
@@ -102,17 +128,32 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
       crcl *= 0.85;
     }
 
-    const rounded = Math.max(
-      0,
-      Math.round(crcl * 10) / 10,
-    );
+    const rounded =
+      Math.max(0, Math.round(crcl * 10) / 10);
+
+    let interpretation: string;
+    let status: "normal" | "low" = "normal";
+
+    if (rounded >= 90) {
+      interpretation = "Normal renal function.";
+    } else if (rounded >= 60) {
+      interpretation = "Mild renal impairment.";
+    } else if (rounded >= 30) {
+      interpretation = "Moderate renal impairment.";
+      status = "low";
+    } else if (rounded >= 15) {
+      interpretation = "Severe renal impairment.";
+      status = "low";
+    } else {
+      interpretation = "Kidney failure.";
+      status = "low";
+    }
 
     return {
       value: rounded,
       unit: "mL/min",
-      interpretation:
-        "Estimated creatinine clearance.",
-      status: "normal",
+      interpretation,
+      status,
     };
   },
 };

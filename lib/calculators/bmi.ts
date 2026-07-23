@@ -19,6 +19,33 @@ export const bmiCalculator: CalculatorDefinition = {
 
   normalRange: "18.5–24.9 kg/m²",
 
+  referenceRanges: [
+    {
+      label: "Underweight",
+      range: "<18.5 kg/m²",
+    },
+    {
+      label: "Normal",
+      range: "18.5–24.9 kg/m²",
+    },
+    {
+      label: "Overweight",
+      range: "25.0–29.9 kg/m²",
+    },
+    {
+      label: "Obesity Class I",
+      range: "30.0–34.9 kg/m²",
+    },
+    {
+      label: "Obesity Class II",
+      range: "35.0–39.9 kg/m²",
+    },
+    {
+      label: "Obesity Class III",
+      range: "≥40.0 kg/m²",
+    },
+  ],
+
   clinicalNotes:
     "Body Mass Index (BMI) is a screening tool used to classify underweight, healthy weight, overweight, and obesity in adults. BMI does not directly measure body fat and should be interpreted alongside clinical assessment, muscle mass, age, ethnicity, and other health indicators.",
 
@@ -87,8 +114,14 @@ export const bmiCalculator: CalculatorDefinition = {
     } else if (rounded < 30) {
       interpretation = "Overweight";
       status = "high";
+    } else if (rounded < 35) {
+      interpretation = "Obesity Class I";
+      status = "high";
+    } else if (rounded < 40) {
+      interpretation = "Obesity Class II";
+      status = "critical";
     } else {
-      interpretation = "Obesity";
+      interpretation = "Obesity Class III";
       status = "critical";
     }
 

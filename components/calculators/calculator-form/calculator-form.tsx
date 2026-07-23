@@ -182,7 +182,7 @@ Interpretation: ${result.interpretation}`
     <ClassificationCard
       title="Clinical Classification"
       value={Number(result.value)}
-      classification={calculator.classification}
+      
     />
   </>
 )}

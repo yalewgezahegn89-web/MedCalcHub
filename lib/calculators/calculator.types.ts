@@ -18,6 +18,11 @@ export type CalculatorInput = {
   options?: CalculatorInputOption[];
 };
 
+export type ReferenceRange = {
+  label: string;
+  range: string;
+};
+
 export type CalculatorResult = {
   value: string | number;
   unit?: string;
@@ -44,30 +49,19 @@ export type CalculatorDefinition = {
 
   version?: string;
 
+  keywords?: string[];
+
   warnings?: string[];
 
   formula?: string;
 
   normalRange?: string;
 
-  referenceRanges?: {
-    label: string;
-    range: string;
-  }[];
-
-  classification?: {
-    label: string;
-    range: string;
-    min?: number;
-    max?: number;
-    color?: "green" | "yellow" | "orange" | "red" | "gray";
-  }[];
+  referenceRanges?: ReferenceRange[];
 
   clinicalNotes?: string;
 
   references?: string[];
-
-  keywords?: string[];
 
   inputs: CalculatorInput[];
 

@@ -37,6 +37,33 @@ export const mdrdCalculator: CalculatorDefinition = {
 
   normalRange: "≥90 mL/min/1.73 m²",
 
+  referenceRanges: [
+    {
+      label: "G1 (Normal or High)",
+      range: "≥90 mL/min/1.73 m²",
+    },
+    {
+      label: "G2 (Mildly Decreased)",
+      range: "60–89 mL/min/1.73 m²",
+    },
+    {
+      label: "G3a (Mild–Moderate)",
+      range: "45–59 mL/min/1.73 m²",
+    },
+    {
+      label: "G3b (Moderate–Severe)",
+      range: "30–44 mL/min/1.73 m²",
+    },
+    {
+      label: "G4 (Severely Decreased)",
+      range: "15–29 mL/min/1.73 m²",
+    },
+    {
+      label: "G5 (Kidney Failure)",
+      range: "<15 mL/min/1.73 m²",
+    },
+  ],
+
   clinicalNotes:
     "The MDRD equation estimates kidney function and has largely been replaced by the CKD-EPI equation in many laboratories.",
 
