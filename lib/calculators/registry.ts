@@ -28,6 +28,24 @@ import { apacheIiCalculator } from "./apache-ii";
 import { sirsCriteriaCalculator } from "./sirs-criteria";
 import { sepsisScreeningCalculator } from "./sepsis-screening";
 import { mewsCalculator } from "./mews";
+import { ascvdRiskCalculator } from "./ascvd-risk";
+import { cardiacIndexCalculator } from "./cardiac-index";
+import { cardiacOutputCalculator } from "./cardiac-output";
+import { cha2ds2VascCalculator } from "./cha2ds2-vasc";
+import { dukeTreadmillScoreCalculator } from "./duke-treadmill-score";
+import { framinghamRiskCalculator } from "./framingham-risk";
+import { graceScoreCalculator } from "./grace-score";
+import { hasBledCalculator } from "./has-bled";
+import { heartScoreCalculator } from "./heart-score";
+import { killipClassCalculator } from "./killip-class";
+import { meanArterialPressureCalculator } from "./mean-arterial-pressure";
+import { pulsePressureCalculator } from "./pulse-pressure";
+import { qtcBazettCalculator } from "./qtc-bazett";
+import { qtcFridericiaCalculator } from "./qtc-fridericia";
+import { ratePressureProductCalculator } from "./rate-pressure-product";
+import { reynoldsRiskCalculator } from "./reynolds-risk";
+import { shockClassCalculator } from "./shock-class";
+import { timiScoreCalculator } from "./timi-score";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -58,6 +76,24 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   sirsCriteriaCalculator,
   sepsisScreeningCalculator,
   mewsCalculator,
+  ascvdRiskCalculator,
+  cardiacIndexCalculator,
+  cardiacOutputCalculator,
+  cha2ds2VascCalculator,
+  dukeTreadmillScoreCalculator,
+  framinghamRiskCalculator,
+  graceScoreCalculator,
+  hasBledCalculator,
+  heartScoreCalculator,
+  killipClassCalculator,
+  meanArterialPressureCalculator,
+  pulsePressureCalculator,
+  qtcBazettCalculator,
+  qtcFridericiaCalculator,
+  ratePressureProductCalculator,
+  reynoldsRiskCalculator,
+  shockClassCalculator,
+  timiScoreCalculator,
 ];
 
 export function getCalculatorById(
