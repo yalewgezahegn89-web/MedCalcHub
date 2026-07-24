@@ -2,22 +2,14 @@ import type { CalculatorDefinition } from "./calculator.types";
 
 export const bmiCalculator: CalculatorDefinition = {
   id: "bmi",
-
   slug: "body-mass-index",
-
   name: "Body Mass Index",
-
   shortName: "BMI",
-
   description: "Calculates Body Mass Index using height and weight.",
-
   category: "General",
-
   featured: true,
 
   formula: "BMI = Weight (kg) / Height² (m²)",
-
-  normalRange: "18.5–24.9 kg/m²",
 
   referenceRanges: [
     {
@@ -47,11 +39,11 @@ export const bmiCalculator: CalculatorDefinition = {
   ],
 
   clinicalNotes:
-    "Body Mass Index (BMI) is a screening tool used to classify underweight, healthy weight, overweight, and obesity in adults. BMI does not directly measure body fat and should be interpreted alongside clinical assessment, muscle mass, age, ethnicity, and other health indicators.",
+    "Body Mass Index (BMI) is a screening tool and should always be interpreted with clinical judgment.",
 
   references: [
     "World Health Organization (WHO)",
-    "Centers for Disease Control and Prevention (CDC)",
+    "CDC Adult BMI Calculator",
   ],
 
   updatedAt: "2026-07",
@@ -64,11 +56,10 @@ export const bmiCalculator: CalculatorDefinition = {
     "Obesity",
     "Weight",
     "Height",
-    "Nutrition",
   ],
 
   warnings: [
-    "BMI is a screening tool and should not be used alone to diagnose obesity or health conditions.",
+    "BMI is a screening tool and should not be used alone to diagnose obesity.",
   ],
 
   inputs: [

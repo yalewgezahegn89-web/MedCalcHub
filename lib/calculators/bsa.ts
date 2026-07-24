@@ -12,7 +12,7 @@ export const bsaCalculator: CalculatorDefinition = {
   description:
     "Calculates Body Surface Area using the Mosteller formula.",
 
-  category: "General",
+  category: "Internal Medicine",
 
   featured: true,
 

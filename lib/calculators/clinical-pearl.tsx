@@ -4,7 +4,9 @@ type Props = {
   slug: string;
 };
 
-export function ClinicalPearl({ slug }: Props) {
+export function ClinicalPearl({
+  slug,
+}: Props) {
   const pearl = clinicalPearls[slug];
 
   if (!pearl) {
@@ -12,12 +14,12 @@ export function ClinicalPearl({ slug }: Props) {
   }
 
   return (
-    <section className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-6 dark:border-amber-900 dark:bg-amber-950/30">
-      <h2 className="mb-3 text-lg font-semibold">
+    <section className="rounded-xl border p-6">
+      <h2 className="mb-3 text-xl font-semibold">
         💡 Clinical Pearl
       </h2>
 
-      <p className="leading-7 text-sm">
+      <p className="text-sm leading-7">
         {pearl}
       </p>
     </section>

@@ -16,7 +16,7 @@ export const adjbwCalculator: CalculatorDefinition = {
   description:
     "Calculates Adjusted Body Weight using the Devine Ideal Body Weight formula.",
 
-  category: "General",
+  category: "Internal Medicine",
 
   featured: true,
 

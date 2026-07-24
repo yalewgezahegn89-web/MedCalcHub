@@ -13,7 +13,7 @@ export const osmolarGapCalculator: CalculatorDefinition = {
   description:
     "Calculates the osmolar gap using measured and calculated serum osmolality.",
 
-  category: "Renal",
+  category: "Internal Medicine",
 
   featured: true,
 

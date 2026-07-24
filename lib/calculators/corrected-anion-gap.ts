@@ -13,7 +13,7 @@ export const correctedAnionGapCalculator: CalculatorDefinition = {
   description:
     "Calculates the albumin-corrected anion gap.",
 
-  category: "Renal",
+  category: "Internal Medicine",
 
   featured: true,
 

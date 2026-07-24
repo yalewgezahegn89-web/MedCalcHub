@@ -1,17 +1,17 @@
 import type { CalculatorDefinition } from "./calculator.types";
 
 export const lbmCalculator: CalculatorDefinition = {
-  id: "lbm",
+  id: "lean-body-weight",
 
-  slug: "lean-body-mass",
+  slug: "lean-body-weight",
 
-  name: "Lean Body Mass",
+  name: "Lean Body Weight",
 
-  shortName: "LBM",
+  shortName: "LBW",
 
-  description: "Calculates Lean Body Mass using the Boer formula.",
+  description: "Calculates Lean Body Weight using the Boer formula.",
 
-  category: "General",
+  category: "Internal Medicine",
 
   featured: true,
 

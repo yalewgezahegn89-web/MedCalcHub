@@ -12,7 +12,7 @@ export const bunCreatinineRatioCalculator: CalculatorDefinition = {
   description:
     "Calculates the Blood Urea Nitrogen to Creatinine ratio.",
 
-  category: "Renal",
+  category: "Internal Medicine",
 
   featured: true,
 

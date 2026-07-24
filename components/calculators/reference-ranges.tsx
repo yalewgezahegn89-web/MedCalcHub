@@ -30,31 +30,46 @@ export function ReferenceRanges({
           <p className="text-sm text-muted-foreground">
             Normal Range
           </p>
+
           <p className="text-lg font-semibold">
             {normalRange}
           </p>
         </div>
       )}
 
-      {referenceRanges && referenceRanges.length > 0 && (
-        <table className="w-full">
-          <thead>
-            <tr className="border-b">
-              <th className="py-2 text-left">Classification</th>
-              <th className="py-2 text-left">Range</th>
-            </tr>
-          </thead>
+      {referenceRanges &&
+        referenceRanges.length > 0 && (
+          <table className="w-full">
+            <thead>
+              <tr className="border-b">
+                <th className="py-2 text-left">
+                  Classification
+                </th>
 
-          <tbody>
-            {referenceRanges.map((item) => (
-              <tr key={item.label} className="border-b">
-                <td className="py-2">{item.label}</td>
-                <td className="py-2">{item.range}</td>
+                <th className="py-2 text-left">
+                  Range
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+
+            <tbody>
+              {referenceRanges.map((item) => (
+                <tr
+                  key={item.label}
+                  className="border-b"
+                >
+                  <td className="py-2">
+                    {item.label}
+                  </td>
+
+                  <td className="py-2">
+                    {item.range}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
     </Card>
   );
 }

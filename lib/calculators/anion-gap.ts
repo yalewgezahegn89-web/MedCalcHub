@@ -13,7 +13,7 @@ export const anionGapCalculator: CalculatorDefinition = {
   description:
     "Calculates the serum anion gap using sodium, chloride, and bicarbonate.",
 
-  category: "Renal",
+  category: "Internal Medicine",
 
   featured: true,
 

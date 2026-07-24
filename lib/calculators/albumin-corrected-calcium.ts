@@ -1,17 +1,17 @@
 import type { CalculatorDefinition } from "./calculator.types";
 import { calculateCorrectedCalcium } from "./utils/electrolytes";
 
-export const correctedCalciumCalculator: CalculatorDefinition = {
-  id: "corrected-calcium",
+export const albuminCorrectedCalciumCalculator: CalculatorDefinition = {
+  id: "albumin-corrected-calcium",
 
-  slug: "corrected-calcium",
+  slug: "albumin-corrected-calcium",
 
-  name: "Corrected Calcium",
+  name: "Albumin Corrected Calcium",
 
   shortName: "Ca Corr",
 
   description:
-    "Calculates corrected serum calcium using the Payne formula.",
+    "Calculates corrected serum calcium after adjusting for low albumin.",
 
   category: "Internal Medicine",
 
@@ -21,29 +21,27 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  keywords: [
-    "Corrected Calcium",
-    "Calcium",
-    "Albumin",
-    "Payne Formula",
-    "Electrolytes",
-  ],
-
-  warnings: [
-    "The corrected calcium formula is an estimate and may be inaccurate in critically ill patients.",
-  ],
-
-  formula:
-    "Corrected Calcium = Measured Calcium + 0.8 × (4 − Albumin)",
+  formula: "Corrected Calcium = Measured Calcium + 0.8 × (4 − Albumin)",
 
   normalRange: "8.5–10.5 mg/dL",
 
   clinicalNotes:
-    "Corrected calcium estimates the serum calcium concentration after adjusting for low albumin levels.",
+    "Corrected calcium is frequently used when albumin is low and serum calcium may be misinterpreted.",
 
   references: [
     "Payne RB, et al.",
     "UpToDate",
+  ],
+
+  warnings: [
+    "This estimate may not be accurate in critically ill patients or in atypical albumin states.",
+  ],
+
+  keywords: [
+    "Albumin Corrected Calcium",
+    "Calcium",
+    "Albumin",
+    "Electrolytes",
   ],
 
   inputs: [
@@ -73,10 +71,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
     const calcium = parseFloat(values.calcium);
     const albumin = parseFloat(values.albumin);
 
-    const rounded = calculateCorrectedCalcium(
-      calcium,
-      albumin,
-    );
+    const rounded = calculateCorrectedCalcium(calcium, albumin);
 
     let interpretation: string;
     let status: "low" | "normal" | "high";

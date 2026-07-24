@@ -12,7 +12,7 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
   description:
     "Calculates the estimated serum osmolality using sodium, glucose, and blood urea nitrogen (BUN).",
 
-  category: "Renal",
+  category: "Internal Medicine",
 
   featured: true,
 
