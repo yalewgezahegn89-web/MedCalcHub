@@ -18,6 +18,8 @@ export const adjbwCalculator: CalculatorDefinition = {
 
   category: "General",
 
+  specialty: "general",
+
   featured: true,
 
   updatedAt: "2026-07",

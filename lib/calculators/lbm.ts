@@ -12,7 +12,7 @@ export const lbmCalculator: CalculatorDefinition = {
   description: "Calculates Lean Body Mass using the Boer formula.",
 
   category: "General",
-
+  specialty: "general",
   featured: true,
 
   updatedAt: "2026-07",

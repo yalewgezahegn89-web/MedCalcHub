@@ -14,6 +14,8 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
 
   category: "Renal",
 
+  specialty: "nephrology",
+
   featured: true,
 
   updatedAt: "2026-07",

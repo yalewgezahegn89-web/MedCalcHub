@@ -13,7 +13,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
     "Estimates creatinine clearance using the Cockcroft-Gault equation.",
 
   category: "Renal",
-
+  specialty: "nephrology",
   featured: true,
 
   updatedAt: "2026-07",

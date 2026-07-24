@@ -13,7 +13,7 @@ export const ibwCalculator: CalculatorDefinition = {
   description: "Calculates Ideal Body Weight using the Devine formula.",
 
   category: "General",
-
+  specialty: "general",
   featured: true,
 
   updatedAt: "2026-07",

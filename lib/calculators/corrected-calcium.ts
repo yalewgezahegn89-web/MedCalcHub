@@ -15,6 +15,8 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   category: "Renal",
 
+  specialty: "nephrology",
+
   featured: true,
 
   updatedAt: "2026-07",

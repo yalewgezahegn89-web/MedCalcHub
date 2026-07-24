@@ -13,7 +13,7 @@ export const mdrdCalculator: CalculatorDefinition = {
     "Estimates glomerular filtration rate using the 4-variable MDRD equation.",
 
   category: "Renal",
-
+  specialty: "nephrology",
   featured: true,
 
   updatedAt: "2026-07",

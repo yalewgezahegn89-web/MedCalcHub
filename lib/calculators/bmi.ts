@@ -13,6 +13,8 @@ export const bmiCalculator: CalculatorDefinition = {
 
   category: "General",
 
+  specialty: "general",
+
   featured: true,
 
   formula: "BMI = Weight (kg) / Height² (m²)",

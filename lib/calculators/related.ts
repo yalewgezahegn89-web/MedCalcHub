@@ -51,4 +51,8 @@ export const relatedCalculators: Record<string, string[]> = {
   "corrected-calcium": [
     "anion-gap",
   ],
+
+  "glasgow-coma-scale": [
+    "anion-gap",
+  ],
 };

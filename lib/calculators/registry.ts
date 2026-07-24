@@ -14,6 +14,7 @@ import { anionGapCalculator } from "./anion-gap";
 import { correctedAnionGapCalculator } from "./corrected-anion-gap";
 import { serumOsmolalityCalculator } from "./serum-osmolality";
 import { osmolarGapCalculator } from "./osmolar-gap";
+import { glasgowComaScaleCalculator } from "./glasgow-coma-scale";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -30,6 +31,7 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   correctedAnionGapCalculator,
   serumOsmolalityCalculator,
   osmolarGapCalculator,
+  glasgowComaScaleCalculator,
 ];
 
 export function getCalculatorById(

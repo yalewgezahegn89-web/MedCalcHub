@@ -43,6 +43,8 @@ export type CalculatorDefinition = {
 
   category: string;
 
+  specialty: string;
+
   featured?: boolean;
 
   updatedAt?: string;
