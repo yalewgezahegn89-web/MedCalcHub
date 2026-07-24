@@ -14,6 +14,17 @@ import { anionGapCalculator } from "./anion-gap";
 import { correctedAnionGapCalculator } from "./corrected-anion-gap";
 import { serumOsmolalityCalculator } from "./serum-osmolality";
 import { osmolarGapCalculator } from "./osmolar-gap";
+import { calciumPhosphateProductCalculator } from "./calcium-phosphate-product";
+import { correctedSodiumHyperglycemiaCalculator } from "./corrected-sodium-hyperglycemia";
+import { estimatedPlasmaOsmolalityCalculator } from "./estimated-plasma-osmolality";
+import { fractionalExcretionSodiumCalculator } from "./fractional-excretion-sodium";
+import { fractionalExcretionUreaCalculator } from "./fractional-excretion-urea";
+import { freeWaterDeficitCalculator } from "./free-water-deficit";
+import { maintenanceFluidCalculator } from "./maintenance-fluid";
+import { sodiumDeficitCalculator } from "./sodium-deficit";
+import { ttkgCalculator } from "./ttkg";
+import { urineAnionGapCalculator } from "./urine-anion-gap";
+import { waterExcessCalculator } from "./water-excess";
 import { glasgowComaScaleCalculator } from "./glasgow-coma-scale";
 import { qsofaCalculator } from "./qsofa";
 import { sofaScoreCalculator } from "./sofa-score";
@@ -46,6 +57,23 @@ import { ratePressureProductCalculator } from "./rate-pressure-product";
 import { reynoldsRiskCalculator } from "./reynolds-risk";
 import { shockClassCalculator } from "./shock-class";
 import { timiScoreCalculator } from "./timi-score";
+import { apacheIiiCalculator } from "./apache-iii";
+import { apacheIvCalculator } from "./apache-iv";
+import { sapsIiCalculator } from "./saps-ii";
+import { sapsIiiCalculator } from "./saps-iii";
+import { modsScoreCalculator } from "./mods-score";
+import { lordsScoreCalculator } from "./lods-score";
+import { nutricScoreCalculator } from "./nutric-score";
+import { fourScoreCalculator } from "./four-score";
+import { roxIndexCalculator } from "./rox-index";
+import { hacorScoreCalculator } from "./hacor-score";
+import { bisapCalculator } from "./bisap";
+import { ransonCriteriaCalculator } from "./ranson-criteria";
+import { glasgowBlatchfordCalculator } from "./glasgow-blatchford";
+import { rockallScoreCalculator } from "./rockall-score";
+import { meldCalculator } from "./meld";
+import { meldNaCalculator } from "./meld-na";
+import { childPughCalculator } from "./child-pugh";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -62,6 +90,17 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   correctedAnionGapCalculator,
   serumOsmolalityCalculator,
   osmolarGapCalculator,
+  calciumPhosphateProductCalculator,
+  correctedSodiumHyperglycemiaCalculator,
+  estimatedPlasmaOsmolalityCalculator,
+  fractionalExcretionSodiumCalculator,
+  fractionalExcretionUreaCalculator,
+  freeWaterDeficitCalculator,
+  maintenanceFluidCalculator,
+  sodiumDeficitCalculator,
+  ttkgCalculator,
+  urineAnionGapCalculator,
+  waterExcessCalculator,
   glasgowComaScaleCalculator,
   qsofaCalculator,
   sofaScoreCalculator,
@@ -94,10 +133,27 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   reynoldsRiskCalculator,
   shockClassCalculator,
   timiScoreCalculator,
+  apacheIiiCalculator,
+  apacheIvCalculator,
+  sapsIiCalculator,
+  sapsIiiCalculator,
+  modsScoreCalculator,
+  lordsScoreCalculator,
+  nutricScoreCalculator,
+  fourScoreCalculator,
+  roxIndexCalculator,
+  hacorScoreCalculator,
+  bisapCalculator,
+  ransonCriteriaCalculator,
+  glasgowBlatchfordCalculator,
+  rockallScoreCalculator,
+  meldCalculator,
+  meldNaCalculator,
+  childPughCalculator,
 ];
 
 export function getCalculatorById(
   id: string,
 ): CalculatorDefinition | undefined {
-  return calculatorRegistry.find((calc) => calc.id === calc.id);
+  return calculatorRegistry.find((calc) => calc.id === id);
 }
