@@ -15,6 +15,19 @@ import { correctedAnionGapCalculator } from "./corrected-anion-gap";
 import { serumOsmolalityCalculator } from "./serum-osmolality";
 import { osmolarGapCalculator } from "./osmolar-gap";
 import { glasgowComaScaleCalculator } from "./glasgow-coma-scale";
+import { qsofaCalculator } from "./qsofa";
+import { sofaScoreCalculator } from "./sofa-score";
+import { news2Calculator } from "./news2";
+import { curb65Calculator } from "./curb-65";
+import { wellsScorePeCalculator } from "./wells-score-pe";
+import { wellsScoreDvtCalculator } from "./wells-score-dvt";
+import { revisedTraumaScoreCalculator } from "./revised-trauma-score";
+import { shockIndexCalculator } from "./shock-index";
+import { pediatricGlasgowComaScaleCalculator } from "./pediatric-glasgow-coma-scale";
+import { apacheIiCalculator } from "./apache-ii";
+import { sirsCriteriaCalculator } from "./sirs-criteria";
+import { sepsisScreeningCalculator } from "./sepsis-screening";
+import { mewsCalculator } from "./mews";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   bmiCalculator,
@@ -32,6 +45,19 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   serumOsmolalityCalculator,
   osmolarGapCalculator,
   glasgowComaScaleCalculator,
+  qsofaCalculator,
+  sofaScoreCalculator,
+  news2Calculator,
+  curb65Calculator,
+  wellsScorePeCalculator,
+  wellsScoreDvtCalculator,
+  revisedTraumaScoreCalculator,
+  shockIndexCalculator,
+  pediatricGlasgowComaScaleCalculator,
+  apacheIiCalculator,
+  sirsCriteriaCalculator,
+  sepsisScreeningCalculator,
+  mewsCalculator,
 ];
 
 export function getCalculatorById(
