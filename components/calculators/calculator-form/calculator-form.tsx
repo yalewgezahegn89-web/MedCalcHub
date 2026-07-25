@@ -3,7 +3,7 @@ import { forwardRef, useState, useCallback, type FormEvent } from "react";
 import { cn } from "@/lib/utils/cn";
 import { FormField } from "@/components/calculators/form-field";
 import { Button } from "@/components/ui/button";
-import { ResultCard } from "@/components/calculators/result-card";
+import ResultCard from "@/components/calculators/result-card";
 import { ClassificationCard } from "@/components/calculators/classification-card";
 import { CalculatorToolbar } from "@/components/calculators/toolbar";
 import { copyToClipboard } from "@/lib/clipboard";

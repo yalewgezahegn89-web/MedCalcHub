@@ -1,32 +1,48 @@
 "use client";
 
 import { forwardRef } from "react";
+
 import { cn } from "@/lib/utils/cn";
 import { Container } from "@/components/layout/container";
-import { Heading } from "@/components/layout/heading";
+
+import { CalculatorHeader } from "@/components/calculators/header";
+
 import type { CalculatorLayoutProps } from "./calculator-layout.types";
 
-export const CalculatorLayout = forwardRef<HTMLElement, CalculatorLayoutProps>(
-  function CalculatorLayout(
-  { className, title, description, children, ...props },
+export const CalculatorLayout = forwardRef<
+  HTMLElement,
+  CalculatorLayoutProps
+>(function CalculatorLayout(
+  {
+    className,
+    title,
+    description,
+    actions,
+    children,
+    ...props
+  },
   ref,
 ) {
   return (
-    <section ref={ref} className={cn("py-8 sm:py-12 lg:py-16", className)} {...props}>
+    <section
+      ref={ref}
+      className={cn(
+        "py-8 sm:py-12 lg:py-16",
+        className,
+      )}
+      {...props}
+    >
       <Container>
-        <div className="space-y-4 sm:space-y-6">
-          <Heading size="xl">
-            {title}
-          </Heading>
+        <CalculatorHeader
+          title={title}
+          description={description ?? ""}
+          actions={actions}
+          updatedAt={new Date().getFullYear().toString()}
+        />
 
-          {description && (
-            <p className="text-muted-foreground text-base leading-relaxed">
-              {description}
-            </p>
-          )}
+        <div className="mt-8">
+          {children}
         </div>
-
-        <div className="mt-6 sm:mt-8">{children}</div>
       </Container>
     </section>
   );
