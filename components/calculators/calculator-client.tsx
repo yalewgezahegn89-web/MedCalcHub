@@ -1,6 +1,8 @@
 "use client";
 
 import { notFound } from "next/navigation";
+import { useEffect } from "react";
+import { addRecentCalculator } from "@/lib/recent";
 
 import { CalculatorForm } from "@/components/calculators/calculator-form";
 import { ClinicalNotes } from "@/components/calculators/clinical-notes";
@@ -16,10 +18,12 @@ export function CalculatorClient({
   const calculator = calculatorRegistry.find(
     (calc) => calc.slug === slug,
   );
-
-  if (!calculator) {
-    notFound();
-  }
+if (!calculator) {
+  notFound();
+}
+  useEffect(() => {
+  addRecentCalculator(calculator.id);
+}, [calculator.id]);
 
   return (
     <div className="space-y-6">

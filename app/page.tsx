@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import Dashboard from "@/components/home/dashboard";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 export default function Home() {
@@ -12,30 +13,38 @@ export default function Home() {
   ).sort();
 
   return (
-    <main className="mx-auto max-w-6xl space-y-12 p-8">
-      <section className="space-y-4 text-center">
+    <main className="mx-auto max-w-7xl space-y-16 px-6 py-10">
+
+      {/* Dashboard */}
+      <Dashboard />
+
+      {/* Hero */}
+      <section className="text-center">
+
         <h1 className="text-5xl font-bold">
           MedCalcHub
         </h1>
 
-        <p className="mx-auto max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
           Clinical calculators for healthcare professionals.
         </p>
 
-        
       </section>
 
+      {/* Featured */}
       <section>
+
         <h2 className="mb-6 text-2xl font-semibold">
           Featured Calculators
         </h2>
 
         <div className="grid gap-4 md:grid-cols-2">
+
           {featuredCalculators.map((calculator) => (
             <Link
               key={calculator.id}
               href={`/calculators/${calculator.slug}`}
-              className="rounded-lg border p-5 transition hover:bg-gray-50"
+              className="rounded-xl border bg-white p-5 transition hover:-translate-y-1 hover:shadow-lg"
             >
               <h3 className="font-semibold">
                 {calculator.name}
@@ -46,15 +55,21 @@ export default function Home() {
               </p>
             </Link>
           ))}
+
         </div>
+
       </section>
 
+      {/* Categories */}
+
       <section>
+
         <h2 className="mb-6 text-2xl font-semibold">
           Browse Categories
         </h2>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
           {categories.map((category) => {
             const count = calculatorRegistry.filter(
               (calc) => calc.category === category,
@@ -64,9 +79,10 @@ export default function Home() {
               <Link
                 key={category}
                 href={`/categories/${category.toLowerCase()}`}
-                className="rounded-lg border p-5 transition hover:bg-gray-50"
+                className="rounded-xl border bg-white p-5 transition hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="flex items-center justify-between">
+
                   <span className="font-semibold">
                     {category}
                   </span>
@@ -74,12 +90,17 @@ export default function Home() {
                   <span className="text-sm text-gray-500">
                     {count} calculators
                   </span>
+
                 </div>
+
               </Link>
             );
           })}
+
         </div>
+
       </section>
+
     </main>
   );
 }
