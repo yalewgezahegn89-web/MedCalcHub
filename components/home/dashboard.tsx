@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Clock, Heart, ArrowRight } from "lucide-react";
+import {
+  Clock,
+  Heart,
+  ArrowRight,
+  Calculator,
+  FolderOpen,
+  Stethoscope,
+} from "lucide-react";
 
 import {
   calculatorRegistry,
@@ -12,6 +19,8 @@ import {
 
 import { getFavorites } from "@/lib/favorites";
 import { getRecentCalculators } from "@/lib/recent";
+
+import { StatCard } from "./stat-card";
 
 export default function Dashboard() {
   const [favorites, setFavorites] = useState<
@@ -62,49 +71,41 @@ export default function Dashboard() {
         </p>
       </section>
 
-      {/* Statistics */}
+      {/* Premium Statistics */}
 
-      <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
 
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">
-            Calculators
-          </p>
+        <StatCard
+          title="Clinical Calculators"
+          value={calculatorRegistry.length}
+          description="Evidence-based tools"
+          href="/calculators"
+          icon={Calculator}
+        />
 
-          <p className="mt-2 text-4xl font-bold">
-            {calculatorRegistry.length}
-          </p>
-        </div>
+        <StatCard
+          title="Categories"
+          value={categoryCount}
+          description="Browse by category"
+          href="/categories"
+          icon={FolderOpen}
+        />
 
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">
-            Categories
-          </p>
+        <StatCard
+          title="Specialties"
+          value={specialtyCount}
+          description="Organized medical fields"
+          href="/specialties"
+          icon={Stethoscope}
+        />
 
-          <p className="mt-2 text-4xl font-bold">
-            {categoryCount}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">
-            Specialties
-          </p>
-
-          <p className="mt-2 text-4xl font-bold">
-            {specialtyCount}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">
-            Favorites
-          </p>
-
-          <p className="mt-2 text-4xl font-bold">
-            {favorites.length}
-          </p>
-        </div>
+        <StatCard
+          title="Favorites"
+          value={favorites.length}
+          description="Your saved calculators"
+          href="/favorites"
+          icon={Heart}
+        />
 
       </section>
 
