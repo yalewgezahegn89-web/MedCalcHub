@@ -3,13 +3,19 @@ import Link from "next/link";
 import Dashboard from "@/components/home/dashboard";
 import { Hero } from "@/components/home/hero";
 import { FeaturedCalculatorCard } from "@/components/calculators/featured-calculator-card";
+import { SpecialtyGridCard } from "@/components/specialties/specialty-grid-card";
 
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import {
+  calculatorRegistry,
+  getSpecialties,
+} from "@/lib/calculators/registry";
 
 export default function Home() {
   const featuredCalculators = calculatorRegistry.filter(
     (calc) => calc.featured,
   );
+
+  const specialties = getSpecialties();
 
   const categories = Array.from(
     new Set(calculatorRegistry.map((calc) => calc.category)),
@@ -61,6 +67,47 @@ export default function Home() {
               calculator={calculator}
             />
           ))}
+
+        </div>
+
+      </section>
+
+      {/* Browse by Specialty */}
+
+      <section>
+
+        <div className="mb-8">
+
+          <h2 className="text-3xl font-bold">
+            Browse by Specialty
+          </h2>
+
+          <p className="mt-2 text-slate-600">
+            Find calculators organized by medical specialty.
+          </p>
+
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
+          {specialties.map((specialty) => {
+            const slug = specialty
+              .toLowerCase()
+              .replace(/\s+/g, "-");
+
+            const count = calculatorRegistry.filter(
+              (calc) => calc.specialty === specialty,
+            ).length;
+
+            return (
+              <SpecialtyGridCard
+                key={specialty}
+                name={specialty}
+                slug={slug}
+                count={count}
+              />
+            );
+          })}
 
         </div>
 
