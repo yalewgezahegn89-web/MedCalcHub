@@ -72,7 +72,7 @@ export type CalculatorResult = {
 export type CalculatorDefinition = {
   id: string;
 
-  slug?: string;
+  slug: string;
 
   name: string;
 

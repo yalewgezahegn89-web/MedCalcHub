@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { CalculatorLayout } from "@/components/calculators/layout";
+import { CalculatorLayout } from "@/components/calculators/layout/calculator-layout";
 import { CalculatorClient } from "@/components/calculators/calculator-client";
 import { ClinicalPearl } from "@/components/calculators/clinical-pearl";
 import { CalculatorComparison } from "@/components/calculators/calculator-comparison";
@@ -31,11 +31,13 @@ export default async function CalculatorPage({
 
   return (
     <CalculatorLayout
-      title={calculator.name}
-      description={calculator.description}
-      actions={<FavoriteButton slug={slug} />}
-    >
-      <CalculatorClient slug={slug} />
+  title={calculator.name}
+  description={calculator.description}
+  actions={<FavoriteButton slug={calculator.slug} />}
+>
+      
+
+      <CalculatorClient slug={calculator.slug} />
 
       <ReferenceRanges
         normalRange={calculator.normalRange}
