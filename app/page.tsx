@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import Dashboard from "@/components/home/dashboard";
+import { Hero } from "@/components/home/hero";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 export default function Home() {
@@ -13,27 +14,16 @@ export default function Home() {
   ).sort();
 
   return (
-    <main className="mx-auto max-w-7xl space-y-16 px-6 py-10">
+    <main className="mx-auto max-w-7xl space-y-12 px-6 py-8">
+
+      {/* Hero */}
+      <Hero />
 
       {/* Dashboard */}
       <Dashboard />
 
-      {/* Hero */}
-      <section className="text-center">
-
-        <h1 className="text-5xl font-bold">
-          MedCalcHub
-        </h1>
-
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
-          Clinical calculators for healthcare professionals.
-        </p>
-
-      </section>
-
-      {/* Featured */}
+      {/* Featured Calculators */}
       <section>
-
         <h2 className="mb-6 text-2xl font-semibold">
           Featured Calculators
         </h2>
@@ -57,11 +47,9 @@ export default function Home() {
           ))}
 
         </div>
-
       </section>
 
       {/* Categories */}
-
       <section>
 
         <h2 className="mb-6 text-2xl font-semibold">
@@ -92,7 +80,6 @@ export default function Home() {
                   </span>
 
                 </div>
-
               </Link>
             );
           })}

@@ -1,25 +1,50 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Clock, Heart, ArrowRight } from "lucide-react";
 
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import {
+  calculatorRegistry,
+  getCategories,
+  getSpecialties,
+} from "@/lib/calculators/registry";
+
 import { getFavorites } from "@/lib/favorites";
 import { getRecentCalculators } from "@/lib/recent";
 
 export default function Dashboard() {
-  const favoriteIds = getFavorites();
-  const recentIds = getRecentCalculators();
+  const [favorites, setFavorites] = useState<
+    typeof calculatorRegistry
+  >([]);
 
-  const favorites = calculatorRegistry.filter((calc) =>
-    favoriteIds.includes(calc.id),
-  );
+  const [recent, setRecent] = useState<
+    typeof calculatorRegistry
+  >([]);
 
-  const recent = recentIds
-    .map((id) =>
-      calculatorRegistry.find((calc) => calc.id === id),
-    )
-    .filter(Boolean);
+  useEffect(() => {
+    const favoriteIds = getFavorites();
+    const recentIds = getRecentCalculators();
+
+    setFavorites(
+      calculatorRegistry.filter((calc) =>
+        favoriteIds.includes(calc.id),
+      ),
+    );
+
+    setRecent(
+      recentIds
+        .map((id) =>
+          calculatorRegistry.find(
+            (calc) => calc.id === id,
+          ),
+        )
+        .filter(Boolean) as typeof calculatorRegistry,
+    );
+  }, []);
+
+  const categoryCount = getCategories().length;
+  const specialtyCount = getSpecialties().length;
 
   return (
     <div className="space-y-10">
@@ -32,9 +57,55 @@ export default function Dashboard() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-blue-100">
-          Continue where you left off or quickly access your
-          favorite clinical calculators.
+          Continue where you left off or quickly access
+          your favorite clinical calculators.
         </p>
+      </section>
+
+      {/* Statistics */}
+
+      <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <p className="text-sm text-slate-500">
+            Calculators
+          </p>
+
+          <p className="mt-2 text-4xl font-bold">
+            {calculatorRegistry.length}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <p className="text-sm text-slate-500">
+            Categories
+          </p>
+
+          <p className="mt-2 text-4xl font-bold">
+            {categoryCount}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <p className="text-sm text-slate-500">
+            Specialties
+          </p>
+
+          <p className="mt-2 text-4xl font-bold">
+            {specialtyCount}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <p className="text-sm text-slate-500">
+            Favorites
+          </p>
+
+          <p className="mt-2 text-4xl font-bold">
+            {favorites.length}
+          </p>
+        </div>
+
       </section>
 
       {/* Recent */}
@@ -67,20 +138,20 @@ export default function Dashboard() {
           ) : (
             recent.slice(0, 6).map((calc) => (
               <Link
-                key={calc!.id}
-                href={`/calculators/${calc!.slug}`}
+                key={calc.id}
+                href={`/calculators/${calc.slug}`}
                 className="rounded-2xl border bg-white p-5 transition hover:-translate-y-1 hover:shadow-lg"
               >
                 <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                  {calc!.category}
+                  {calc.category}
                 </span>
 
                 <h3 className="mt-3 font-semibold">
-                  {calc!.name}
+                  {calc.name}
                 </h3>
 
                 <p className="mt-2 text-sm text-slate-600">
-                  {calc!.description}
+                  {calc.description}
                 </p>
               </Link>
             ))

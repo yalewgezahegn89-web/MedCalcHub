@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import {
+  getCategories,
+  getCalculatorsByCategory,
+} from "@/lib/calculators/registry";
 
 type CategoryPageProps = {
   params: Promise<{
@@ -9,47 +12,70 @@ type CategoryPageProps = {
   }>;
 };
 
+function slugToCategory(slug: string) {
+  return getCategories().find(
+    (category) =>
+      category
+        .toLowerCase()
+        .replace(/\s+/g, "-") ===
+      slug.toLowerCase(),
+  );
+}
+
 export default async function CategoryPage({
   params,
 }: CategoryPageProps) {
-  const { category } = await params;
+  const { category: slug } = await params;
 
-  const calculators = calculatorRegistry.filter(
-    (calc) => calc.category.toLowerCase() === category.toLowerCase(),
-  );
+  const category = slugToCategory(slug);
 
-  if (calculators.length === 0) {
+  if (!category) {
     notFound();
   }
 
+  const calculators =
+    getCalculatorsByCategory(category);
+
   return (
-    <main className="mx-auto max-w-3xl p-8">
-      <h1 className="mb-2 text-3xl font-bold">
-        {calculators[0].category}
-      </h1>
+    <main className="mx-auto max-w-5xl px-6 py-10">
 
-      <p className="mb-8 text-gray-600">
-        {calculators.length} calculator
-        {calculators.length > 1 ? "s" : ""}
-      </p>
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold">
+          {category}
+        </h1>
 
-      <div className="space-y-4">
+        <p className="mt-3 text-gray-600">
+          {calculators.length} calculator
+          {calculators.length !== 1 ? "s" : ""}
+        </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+
         {calculators.map((calculator) => (
           <Link
             key={calculator.id}
             href={`/calculators/${calculator.slug}`}
-            className="block rounded-lg border p-4 transition hover:bg-gray-50"
+            className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
           >
-            <h2 className="font-semibold">
+            <h2 className="text-lg font-semibold">
               {calculator.name}
             </h2>
 
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-gray-600">
               {calculator.description}
             </p>
+
+            {calculator.specialty && (
+              <p className="mt-4 text-sm text-blue-600">
+                {calculator.specialty}
+              </p>
+            )}
           </Link>
         ))}
+
       </div>
+
     </main>
   );
 }

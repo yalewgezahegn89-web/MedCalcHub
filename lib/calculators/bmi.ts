@@ -7,6 +7,27 @@ export const bmiCalculator: CalculatorDefinition = {
   shortName: "BMI",
   description: "Calculates Body Mass Index using height and weight.",
   category: "General",
+
+specialty: "Internal Medicine",
+
+subcategory: "Body Composition",
+
+difficulty: "Basic",
+
+tags: [
+  "weight",
+  "obesity",
+  "nutrition",
+  "body composition",
+  "screening",
+],
+
+estimatedTime: "10 seconds",
+
+author: "MedCalcHub",
+
+reviewedBy: "MedCalcHub Clinical Team",
+
   featured: true,
 
   formula: "BMI = Weight (kg) / Height² (m²)",

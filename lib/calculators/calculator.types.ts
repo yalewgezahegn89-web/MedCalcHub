@@ -81,6 +81,19 @@ export type CalculatorDefinition = {
   description: string;
 
   category: string;
+  specialty?: string;
+
+subcategory?: string;
+
+difficulty?: "Basic" | "Intermediate" | "Advanced";
+
+tags?: string[];
+
+estimatedTime?: string;
+
+author?: string;
+
+reviewedBy?: string;
 
   featured?: boolean;
 

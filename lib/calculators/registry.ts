@@ -87,4 +87,75 @@ export function getCalculatorById(
   id: string,
 ): CalculatorDefinition | undefined {
   return calculatorRegistry.find((calc) => calc.id === id);
+}export function getFeaturedCalculators() {
+  return calculatorRegistry.filter(
+    (calculator) => calculator.featured,
+  );
+}
+
+export function getCalculatorsByCategory(
+  category: string,
+) {
+  return calculatorRegistry.filter(
+    (calculator) =>
+      calculator.category.toLowerCase() ===
+      category.toLowerCase(),
+  );
+}
+
+export function getCalculatorsBySpecialty(
+  specialty: string,
+) {
+  return calculatorRegistry.filter(
+    (calculator) =>
+      calculator.specialty?.toLowerCase() ===
+      specialty.toLowerCase(),
+  );
+}
+
+export function searchCalculators(
+  query: string,
+) {
+  const search = query.toLowerCase();
+
+  return calculatorRegistry.filter((calculator) => {
+    return (
+      calculator.name.toLowerCase().includes(search) ||
+
+      calculator.description
+        .toLowerCase()
+        .includes(search) ||
+
+      calculator.category
+        .toLowerCase()
+        .includes(search) ||
+
+      calculator.specialty
+        ?.toLowerCase()
+        .includes(search) ||
+
+      calculator.tags?.some((tag) =>
+        tag.toLowerCase().includes(search),
+      ) ||
+
+      calculator.keywords?.some((keyword) =>
+        keyword.toLowerCase().includes(search),
+      )
+    );
+  });
+}export function getSpecialties() {
+  const specialties = calculatorRegistry
+    .map((calculator) => calculator.specialty)
+    .filter(
+      (specialty): specialty is string =>
+        Boolean(specialty),
+    );
+
+  return [...new Set(specialties)].sort();
+}export function getCategories() {
+  const categories = calculatorRegistry.map(
+    (calculator) => calculator.category,
+  );
+
+  return [...new Set(categories)].sort();
 }

@@ -1,38 +1,64 @@
 import Link from "next/link";
 
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import {
+  getCategories,
+  getCalculatorsByCategory,
+} from "@/lib/calculators/registry";
 
 export default function CategoriesPage() {
-  const categories = Array.from(
-    new Set(calculatorRegistry.map((calc) => calc.category)),
-  ).sort();
+  const categories = getCategories();
 
   return (
-    <main className="mx-auto max-w-3xl p-8">
-      <h1 className="mb-6 text-3xl font-bold">
-        Calculator Categories
-      </h1>
+    <main className="mx-auto max-w-5xl px-6 py-10">
 
-      <div className="space-y-4">
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold">
+          Calculator Categories
+        </h1>
+
+        <p className="mt-3 text-gray-600">
+          Browse calculators by clinical category.
+        </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+
         {categories.map((category) => {
-          const count = calculatorRegistry.filter(
-            (calc) => calc.category === category,
-          ).length;
+          const count =
+            getCalculatorsByCategory(category).length;
 
           return (
             <Link
               key={category}
-              href={`/categories/${category.toLowerCase()}`}
-              className="block rounded-lg border p-4 transition hover:bg-gray-50"
+              href={`/categories/${category
+                .toLowerCase()
+                .replace(/\s+/g, "-")}`}
+              className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
             >
               <div className="flex items-center justify-between">
-                <span className="font-semibold">{category}</span>
-                <span>{count} calculators</span>
+
+                <div>
+                  <h2 className="text-lg font-semibold">
+                    {category}
+                  </h2>
+
+                  <p className="mt-2 text-sm text-gray-600">
+                    {count} calculator
+                    {count !== 1 ? "s" : ""}
+                  </p>
+                </div>
+
+                <span className="text-blue-600">
+                  →
+                </span>
+
               </div>
             </Link>
           );
         })}
+
       </div>
+
     </main>
   );
 }
