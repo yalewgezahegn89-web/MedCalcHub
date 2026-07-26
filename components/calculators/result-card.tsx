@@ -7,6 +7,8 @@ import {
   Printer,
 } from "lucide-react";
 
+import { generateCalculatorReport } from "@/lib/pdf/generate-report";
+
 type ResultCardProps = {
   label: string;
   value: string | number;
@@ -26,7 +28,7 @@ export default function ResultCard({
     low: {
       color:
         "bg-blue-100 text-blue-700 border-blue-200",
-      icon: <CheckCircle2 className="h-4 w-4" />,
+      icon: <AlertTriangle className="h-4 w-4" />,
       label: "Low",
     },
     normal: {
@@ -51,16 +53,25 @@ export default function ResultCard({
 
   function copyResult() {
     navigator.clipboard.writeText(
-`${label}
+      `${label}
 
 Result: ${value}${unit ? ` ${unit}` : ""}
 
-${interpretation ?? ""}`
+${interpretation ?? ""}`,
     );
   }
 
+  function exportPdf() {
+    generateCalculatorReport({
+      calculator: label,
+      result: String(value),
+      unit,
+      interpretation,
+    });
+  }
+
   return (
-    <div className="overflow-hidden rounded-3xl border bg-white shadow-xl">
+    <div className="overflow-hidden rounded-2xl border bg-white shadow-lg">
 
       <div className="bg-gradient-to-r from-blue-600 to-cyan-500 px-8 py-6 text-white">
         <h2 className="text-lg font-semibold">
@@ -110,11 +121,11 @@ ${interpretation ?? ""}`
           </button>
 
           <button
-            onClick={() => window.print()}
+            onClick={exportPdf}
             className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-50"
           >
             <Printer className="h-4 w-4" />
-            Print
+            Export PDF
           </button>
 
         </div>
