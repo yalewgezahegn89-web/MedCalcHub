@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import Dashboard from "@/components/home/dashboard";
 import { Hero } from "@/components/home/hero";
+import { FeaturedCalculatorCard } from "@/components/calculators/featured-calculator-card";
+
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 export default function Home() {
@@ -14,47 +16,71 @@ export default function Home() {
   ).sort();
 
   return (
-    <main className="mx-auto max-w-7xl space-y-12 px-6 py-8">
-
-      {/* Hero */}
-      <Hero />
+    <main className="space-y-16">
 
       {/* Dashboard */}
+
       <Dashboard />
 
-      {/* Featured Calculators */}
-      <section>
-        <h2 className="mb-6 text-2xl font-semibold">
-          Featured Calculators
-        </h2>
+      {/* Hero */}
 
-        <div className="grid gap-4 md:grid-cols-2">
+      <Hero />
+
+      {/* Featured Calculators */}
+
+      <section>
+
+        <div className="mb-8 flex items-center justify-between">
+
+          <div>
+
+            <h2 className="text-3xl font-bold">
+              Featured Calculators
+            </h2>
+
+            <p className="mt-2 text-slate-600">
+              Most frequently used clinical calculators.
+            </p>
+
+          </div>
+
+          <Link
+            href="/calculators"
+            className="text-blue-600 hover:underline"
+          >
+            View all →
+          </Link>
+
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
           {featuredCalculators.map((calculator) => (
-            <Link
+            <FeaturedCalculatorCard
               key={calculator.id}
-              href={`/calculators/${calculator.slug}`}
-              className="rounded-xl border bg-white p-5 transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <h3 className="font-semibold">
-                {calculator.name}
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-600">
-                {calculator.description}
-              </p>
-            </Link>
+              calculator={calculator}
+            />
           ))}
 
         </div>
+
       </section>
 
-      {/* Categories */}
+      {/* Browse Categories */}
+
       <section>
 
-        <h2 className="mb-6 text-2xl font-semibold">
-          Browse Categories
-        </h2>
+        <div className="mb-8">
+
+          <h2 className="text-3xl font-bold">
+            Browse Categories
+          </h2>
+
+          <p className="mt-2 text-slate-600">
+            Explore calculators organized by medical category.
+          </p>
+
+        </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 
@@ -67,7 +93,7 @@ export default function Home() {
               <Link
                 key={category}
                 href={`/categories/${category.toLowerCase()}`}
-                className="rounded-xl border bg-white p-5 transition hover:-translate-y-1 hover:shadow-lg"
+                className="rounded-xl border bg-white p-5 transition hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg"
               >
                 <div className="flex items-center justify-between">
 
@@ -75,8 +101,8 @@ export default function Home() {
                     {category}
                   </span>
 
-                  <span className="text-sm text-gray-500">
-                    {count} calculators
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
+                    {count}
                   </span>
 
                 </div>
