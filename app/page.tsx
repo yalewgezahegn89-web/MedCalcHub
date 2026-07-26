@@ -2,8 +2,10 @@ import Link from "next/link";
 
 import Dashboard from "@/components/home/dashboard";
 import { Hero } from "@/components/home/hero";
+
 import { FeaturedCalculatorCard } from "@/components/calculators/featured-calculator-card";
 import { SpecialtyGridCard } from "@/components/specialties/specialty-grid-card";
+import { CategoryGridCard } from "@/components/categories/category-grid-card";
 
 import {
   calculatorRegistry,
@@ -18,7 +20,11 @@ export default function Home() {
   const specialties = getSpecialties();
 
   const categories = Array.from(
-    new Set(calculatorRegistry.map((calc) => calc.category)),
+    new Set(
+      calculatorRegistry.map(
+        (calc) => calc.category,
+      ),
+    ),
   ).sort();
 
   return (
@@ -91,12 +97,14 @@ export default function Home() {
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
           {specialties.map((specialty) => {
+
             const slug = specialty
               .toLowerCase()
               .replace(/\s+/g, "-");
 
             const count = calculatorRegistry.filter(
-              (calc) => calc.specialty === specialty,
+              (calc) =>
+                calc.specialty === specialty,
             ).length;
 
             return (
@@ -107,6 +115,7 @@ export default function Home() {
                 count={count}
               />
             );
+
           })}
 
         </div>
@@ -124,37 +133,33 @@ export default function Home() {
           </h2>
 
           <p className="mt-2 text-slate-600">
-            Explore calculators organized by medical category.
+            Explore calculators by medical category.
           </p>
 
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
           {categories.map((category) => {
+
+            const slug = category
+              .toLowerCase()
+              .replace(/\s+/g, "-");
+
             const count = calculatorRegistry.filter(
-              (calc) => calc.category === category,
+              (calc) =>
+                calc.category === category,
             ).length;
 
             return (
-              <Link
+              <CategoryGridCard
                 key={category}
-                href={`/categories/${category.toLowerCase()}`}
-                className="rounded-xl border bg-white p-5 transition hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg"
-              >
-                <div className="flex items-center justify-between">
-
-                  <span className="font-semibold">
-                    {category}
-                  </span>
-
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
-                    {count}
-                  </span>
-
-                </div>
-              </Link>
+                name={category}
+                slug={slug}
+                count={count}
+              />
             );
+
           })}
 
         </div>
