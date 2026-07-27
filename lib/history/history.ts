@@ -1,0 +1,53 @@
+export type CalculationHistoryItem = {
+  calculatorId: string;
+  calculatorName: string;
+  result: string;
+  timestamp: number;
+};
+
+const STORAGE_KEY = "medcalchub-history";
+
+export function getCalculationHistory(): CalculationHistoryItem[] {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    if (!raw) {
+      return [];
+    }
+
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+export function saveCalculation(
+  item: CalculationHistoryItem,
+) {
+  const history = getCalculationHistory();
+
+  history.unshift(item);
+
+  const unique = history.filter(
+    (entry, index, self) =>
+      index ===
+      self.findIndex(
+        (x) =>
+          x.calculatorId === entry.calculatorId &&
+          x.result === entry.result,
+      ),
+  );
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(unique.slice(0, 50)),
+  );
+}
+
+export function clearHistory() {
+  localStorage.removeItem(STORAGE_KEY);
+}

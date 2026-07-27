@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 import { SectionHeader } from "@/components/ui/section-header";
-import { SpecialtyCard } from "./specialty-card";
+import { SpecialtyCard } from "@/components/home/specialty-card";
 
 const specialties = [
   {
