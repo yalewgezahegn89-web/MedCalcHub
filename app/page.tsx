@@ -1,171 +1,46 @@
-import Link from "next/link";
-
-import Dashboard from "@/components/home/dashboard";
 import { Hero } from "@/components/home/hero";
+import { Stats } from "@/components/home/stats";
+import { BrowseSpecialties } from "@/components/home/browse-specialties";
+import { TrendingCalculators } from "@/components/home/trending-calculators";
+import { RecentCalculators } from "@/components/home/recent-calculators";
 
-import { FeaturedCalculatorCard } from "@/components/calculators/featured-calculator-card";
-import { SpecialtyGridCard } from "@/components/specialties/specialty-grid-card";
-import { CategoryGridCard } from "@/components/categories/category-grid-card";
+import { SectionHeader } from "@/components/ui/section-header";
+import { CalculatorCard } from "@/components/calculators/calculator-card";
 
-import {
-  calculatorRegistry,
-  getSpecialties,
-} from "@/lib/calculators/registry";
+import { calculatorRegistry } from "@/lib/calculators/registry";
 
-export default function Home() {
-  const featuredCalculators = calculatorRegistry.filter(
-    (calc) => calc.featured,
-  );
-
-  const specialties = getSpecialties();
-
-  const categories = Array.from(
-    new Set(
-      calculatorRegistry.map(
-        (calc) => calc.category,
-      ),
-    ),
-  ).sort();
+export default function HomePage() {
+  const featuredCalculators = calculatorRegistry
+    .filter((calculator) => calculator.featured)
+    .slice(0, 8);
 
   return (
-    <main className="space-y-16">
-
-      {/* Dashboard */}
-
-      <Dashboard />
-
-      {/* Hero */}
-
+    <main className="mx-auto flex w-full max-w-7xl flex-col gap-20 px-6 py-10">
       <Hero />
 
-      {/* Featured Calculators */}
+      <Stats />
 
-      <section>
+      <BrowseSpecialties />
 
-        <div className="mb-8 flex items-center justify-between">
+      <section className="space-y-8">
+        <SectionHeader
+          title="Featured Calculators"
+          description="Evidence-based calculators frequently used in clinical practice."
+        />
 
-          <div>
-
-            <h2 className="text-3xl font-bold">
-              Featured Calculators
-            </h2>
-
-            <p className="mt-2 text-slate-600">
-              Most frequently used clinical calculators.
-            </p>
-
-          </div>
-
-          <Link
-            href="/calculators"
-            className="text-blue-600 hover:underline"
-          >
-            View all →
-          </Link>
-
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {featuredCalculators.map((calculator) => (
-            <FeaturedCalculatorCard
+            <CalculatorCard
               key={calculator.id}
               calculator={calculator}
             />
           ))}
-
         </div>
-
       </section>
 
-      {/* Browse by Specialty */}
+      <TrendingCalculators />
 
-      <section>
-
-        <div className="mb-8">
-
-          <h2 className="text-3xl font-bold">
-            Browse by Specialty
-          </h2>
-
-          <p className="mt-2 text-slate-600">
-            Find calculators organized by medical specialty.
-          </p>
-
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-
-          {specialties.map((specialty) => {
-
-            const slug = specialty
-              .toLowerCase()
-              .replace(/\s+/g, "-");
-
-            const count = calculatorRegistry.filter(
-              (calc) =>
-                calc.specialty === specialty,
-            ).length;
-
-            return (
-              <SpecialtyGridCard
-                key={specialty}
-                name={specialty}
-                slug={slug}
-                count={count}
-              />
-            );
-
-          })}
-
-        </div>
-
-      </section>
-
-      {/* Browse Categories */}
-
-      <section>
-
-        <div className="mb-8">
-
-          <h2 className="text-3xl font-bold">
-            Browse Categories
-          </h2>
-
-          <p className="mt-2 text-slate-600">
-            Explore calculators by medical category.
-          </p>
-
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-
-          {categories.map((category) => {
-
-            const slug = category
-              .toLowerCase()
-              .replace(/\s+/g, "-");
-
-            const count = calculatorRegistry.filter(
-              (calc) =>
-                calc.category === category,
-            ).length;
-
-            return (
-              <CategoryGridCard
-                key={category}
-                name={category}
-                slug={slug}
-                count={count}
-              />
-            );
-
-          })}
-
-        </div>
-
-      </section>
-
+      <RecentCalculators />
     </main>
   );
 }

@@ -2,9 +2,14 @@
 
 import { useMemo, useState } from "react";
 
+import SearchCommand from "@/components/search/search-command";
 import { SearchBox } from "@/components/search/search-box";
 import SearchFilters from "@/components/search/search-filters";
+
+import { SectionHeader } from "@/components/ui/section-header";
+
 import { FeaturedCalculatorCard } from "@/components/calculators/featured-calculator-card";
+
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 export default function SearchPage() {
@@ -49,30 +54,22 @@ export default function SearchPage() {
   }, [query, category]);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-12">
+    <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-10">
 
-      <div className="mb-10">
+      <SectionHeader
+        title="Search Medical Calculators"
+        description="Find calculators instantly by name, specialty, category, or keyword."
+      />
 
-        <h1 className="text-4xl font-bold">
-          Search Calculators
-        </h1>
+      {/* Quick Search */}
+      <SearchCommand />
 
-        <p className="mt-3 text-slate-600">
-          Search by calculator name, keyword,
-          category or specialty.
-        </p>
-
-      </div>
-
-      <div className="mb-6">
-
-        <SearchBox
-          value={query}
-          onChange={setQuery}
-          placeholder="Search calculators..."
-        />
-
-      </div>
+      {/* Standard Search */}
+      <SearchBox
+        value={query}
+        onChange={setQuery}
+        placeholder="Filter calculators..."
+      />
 
       <SearchFilters
         categories={categories}
@@ -80,7 +77,7 @@ export default function SearchPage() {
         onChange={setCategory}
       />
 
-      <div className="mb-6 flex items-center justify-between">
+      <div className="flex items-center justify-between">
 
         <h2 className="text-lg font-semibold">
           Results
@@ -94,14 +91,14 @@ export default function SearchPage() {
       </div>
 
       {results.length === 0 ? (
-        <div className="rounded-2xl border border-dashed p-16 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 py-20 text-center">
 
           <h3 className="text-xl font-semibold">
             No calculators found
           </h3>
 
           <p className="mt-3 text-slate-500">
-            Try another keyword or category.
+            Try another keyword, specialty, or category.
           </p>
 
         </div>
