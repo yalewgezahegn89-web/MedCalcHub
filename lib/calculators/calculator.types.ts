@@ -69,6 +69,36 @@ export type CalculatorResult = {
     | "critical";
 };
 
+/* -------------------------------------------------------------------------- */
+/*                              Registry V2 Types                             */
+/* -------------------------------------------------------------------------- */
+
+export type CalculatorEvidence = {
+  source: string;
+
+  reference?: string;
+
+  link?: string;
+
+  reviewedBy?: string;
+
+  version?: string;
+
+  updatedAt?: string;
+};
+
+export type CalculatorClinicalGuidance = {
+  pearl?: string;
+
+  commonMistakes?: string[];
+
+  clinicalUse?: string[];
+
+  contraindications?: string[];
+
+  followUp?: string[];
+};
+
 export type CalculatorDefinition = {
   id: string;
 
@@ -81,19 +111,23 @@ export type CalculatorDefinition = {
   description: string;
 
   category: string;
+
   specialty?: string;
 
-subcategory?: string;
+  subcategory?: string;
 
-difficulty?: "Basic" | "Intermediate" | "Advanced";
+  difficulty?:
+    | "Basic"
+    | "Intermediate"
+    | "Advanced";
 
-tags?: string[];
+  tags?: string[];
 
-estimatedTime?: string;
+  estimatedTime?: string;
 
-author?: string;
+  author?: string;
 
-reviewedBy?: string;
+  reviewedBy?: string;
 
   featured?: boolean;
 
@@ -116,6 +150,16 @@ reviewedBy?: string;
   clinicalNotes?: string;
 
   references?: string[];
+
+  /* ---------------------- NEW REGISTRY V2 ---------------------- */
+
+  clinical?: CalculatorClinicalGuidance;
+
+  evidence?: CalculatorEvidence;
+
+  relatedCalculators?: string[];
+
+  /* ------------------------------------------------------------- */
 
   inputs: CalculatorInput[];
 

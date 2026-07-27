@@ -1,25 +1,19 @@
-import { clinicalPearls } from "@/lib/calculators/clinical-pearls";
+import { ClinicalPearlCard } from "./clinical-pearl-card";
 
 type Props = {
-  slug: string;
+  pearl?: string;
 };
 
-export function ClinicalPearl({ slug }: Props) {
-  const pearl = clinicalPearls[slug];
-
+export function ClinicalPearl({
+  pearl,
+}: Props) {
   if (!pearl) {
     return null;
   }
 
   return (
-    <section className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-6 dark:border-amber-900 dark:bg-amber-950/30">
-      <h2 className="mb-3 text-lg font-semibold">
-        💡 Clinical Pearl
-      </h2>
-
-      <p className="text-sm leading-7">
-        {pearl}
-      </p>
-    </section>
+    <ClinicalPearlCard
+      pearl={pearl}
+    />
   );
 }

@@ -82,7 +82,61 @@ reviewedBy: "MedCalcHub Clinical Team",
   warnings: [
     "BMI is a screening tool and should not be used alone to diagnose obesity.",
   ],
+clinical: {
+  pearl:
+    "BMI is a valuable screening tool for overweight and obesity, but it should always be interpreted alongside waist circumference, body composition, and the patient's overall clinical context.",
 
+  commonMistakes: [
+    "Using BMI alone to diagnose obesity.",
+    "Applying BMI in pregnant women.",
+    "Using BMI to assess highly muscular athletes.",
+    "Ignoring ethnicity-specific BMI recommendations.",
+  ],
+
+  clinicalUse: [
+    "Screening for overweight and obesity.",
+    "Assessing cardiometabolic risk.",
+    "Monitoring weight management interventions.",
+    "Population health surveillance.",
+  ],
+
+  contraindications: [
+    "Pregnancy.",
+    "Professional athletes with high muscle mass.",
+    "Severe edema or ascites.",
+    "Patients with limb amputations.",
+  ],
+
+  followUp: [
+    "Measure waist circumference.",
+    "Assess cardiovascular risk factors.",
+    "Evaluate diet and physical activity.",
+    "Consider referral for weight management if indicated.",
+  ],
+},
+
+evidence: {
+  source: "World Health Organization (WHO)",
+
+  reference:
+    "WHO Expert Consultation on BMI Classification",
+
+  reviewedBy:
+    "MedCalcHub Clinical Team",
+
+  version: "1.0",
+
+  updatedAt: "2026-07",
+
+  link:
+    "https://www.who.int",
+},
+
+relatedCalculators: [
+  "bsa",
+  "ideal-body-weight",
+  "waist-height-ratio",
+],
   inputs: [
     {
       id: "height",

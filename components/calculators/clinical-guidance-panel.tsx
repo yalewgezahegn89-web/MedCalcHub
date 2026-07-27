@@ -1,0 +1,32 @@
+import { ClinicalPearlCard } from "./clinical-pearl-card";
+import { CommonMistakesCard } from "./common-mistakes-card";
+
+type Props = {
+  pearl?: string;
+  mistakes?: string[];
+};
+
+export function ClinicalGuidancePanel({
+  pearl,
+  mistakes = [],
+}: Props) {
+  if (!pearl && mistakes.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="space-y-6">
+
+      {pearl && (
+        <ClinicalPearlCard
+          pearl={pearl}
+        />
+      )}
+
+      <CommonMistakesCard
+        mistakes={mistakes}
+      />
+
+    </section>
+  );
+}

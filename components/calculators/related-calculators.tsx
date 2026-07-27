@@ -1,28 +1,29 @@
 import Link from "next/link";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
-import { relatedCalculators } from "@/lib/calculators/related";
 
 type Props = {
-  slug: string;
+  related?: string[];
 };
 
-export function RelatedCalculators({ slug }: Props) {
-  const related = relatedCalculators[slug];
-
+export function RelatedCalculators({
+  related,
+}: Props) {
   if (!related || related.length === 0) {
     return null;
   }
 
   const calculators = related
     .map((id) =>
-      calculatorRegistry.find((calc) => calc.id === id),
+      calculatorRegistry.find(
+        (calc) => calc.id === id,
+      ),
     )
     .filter(Boolean);
 
   return (
-    <section className="mt-10 rounded-xl border p-6">
-      <h2 className="mb-4 text-lg font-semibold">
+    <section className="rounded-2xl border bg-white p-6 shadow-sm dark:bg-zinc-950">
+      <h2 className="mb-6 text-2xl font-bold">
         Related Calculators
       </h2>
 
@@ -37,7 +38,7 @@ export function RelatedCalculators({ slug }: Props) {
               {calc!.name}
             </div>
 
-            <div className="text-sm text-zinc-500">
+            <div className="text-sm text-muted-foreground">
               {calc!.description}
             </div>
           </Link>
