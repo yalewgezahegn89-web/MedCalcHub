@@ -1,24 +1,34 @@
 import { loadTemplate } from "./template-loader";
 import { replacePlaceholders } from "./replacer";
 import { writeGeneratedFile } from "./file-writer";
-import { GeneratorOptions } from "./types";
+import { updateRegistry } from "./registry-updater";
+import { generatorTemplates } from "./templates";
+import type { GeneratorOptions } from "./types";
 
 export function generateCalculator(
   options: GeneratorOptions,
 ) {
-  const template =
-    loadTemplate(
-      "calculator.template.ts",
-    );
+  for (const item of generatorTemplates) {
+    const template =
+      loadTemplate(item.template);
 
-  const result =
-    replacePlaceholders(
-      template,
-      options,
-    );
+    const content =
+      replacePlaceholders(
+        template,
+        options,
+      );
 
-  writeGeneratedFile(
-    `lib/calculators/${options.slug}.ts`,
-    result,
-  );
+    const output =
+      item.output.replace(
+        "{slug}",
+        options.slug,
+      );
+
+    writeGeneratedFile(
+      output,
+      content,
+    );
+  }
+
+  updateRegistry(options.slug);
 }
