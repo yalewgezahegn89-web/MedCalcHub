@@ -1,13 +1,13 @@
 export const evidenceTemplate = {
-  source: "Clinical Guideline",
+  source: "{{REFERENCE}}",
 
-  reference: "Primary guideline or publication.",
+  reference: "{{REFERENCE}}",
 
   reviewedBy: "MedCalcHub Clinical Team",
 
   version: "1.0",
 
-  updatedAt: "2026-07",
+  updatedAt: "{{DATE}}",
 
   link: "",
 };

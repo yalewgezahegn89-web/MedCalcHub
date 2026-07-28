@@ -1,45 +1,52 @@
 import type { CalculatorDefinition } from "../calculator.types";
 
 export const calculatorTemplate: CalculatorDefinition = {
-  id: "calculator-id",
+  id: "{{SLUG}}",
 
-  slug: "calculator-slug",
+  slug: "{{SLUG}}",
 
-  name: "Calculator Name",
+  name: "{{NAME}}",
 
-  shortName: "Short Name",
+  shortName: "{{NAME}}",
 
   description:
-    "Calculator description.",
+    "{{DESCRIPTION}}",
 
-  category: "General",
+  category: "{{CATEGORY}}",
 
-  specialty: "General",
+  specialty: "{{SPECIALTY}}",
 
   featured: false,
 
   version: "1.0",
 
-  updatedAt: "2026-07",
+  updatedAt: "{{DATE}}",
 
   keywords: [],
 
-  formula: "",
+  formula: "{{FORMULA}}",
 
-  normalRange: "",
+  normalRange: "{{NORMAL_RANGE}}",
 
   referenceRanges: [],
 
-  clinicalNotes: "",
+  clinicalNotes:
+    "{{CLINICAL_NOTES}}",
 
-  references: [],
+  references: [
+    "{{REFERENCE}}",
+  ],
+
+  relatedCalculators: [],
 
   inputs: [],
 
   calculate(values) {
     return {
       value: "",
+
       interpretation: "",
+
       status: "normal",
     };
   },

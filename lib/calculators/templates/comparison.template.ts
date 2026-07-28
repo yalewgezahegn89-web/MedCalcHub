@@ -3,11 +3,11 @@ export const comparisonTemplate = {
 
   calculators: [
     {
-      name: "Calculator Name",
+      name: "{{NAME}}",
 
-      href: "/calculators/calculator-slug",
+      href: "/calculators/{{SLUG}}",
 
-      use: "Primary clinical use.",
+      use: "Primary calculator.",
     },
   ],
 };

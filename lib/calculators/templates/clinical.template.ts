@@ -1,10 +1,26 @@
 export const clinicalTemplate = {
   pearl:
-    "A concise clinical pearl that helps interpret or apply the calculator.",
+    "{{NAME}} should always be interpreted within the patient's overall clinical presentation.",
 
   commonMistakes: [
-    "Common mistake 1.",
-    "Common mistake 2.",
-    "Common mistake 3.",
+    "Using the calculator outside its intended clinical indication.",
+    "Ignoring contraindications or missing clinical data.",
+    "Relying on the score without clinical judgment.",
+  ],
+
+  clinicalUse: [
+    "Clinical decision support.",
+    "Risk assessment.",
+    "Treatment planning.",
+  ],
+
+  contraindications: [
+    "Use only in the appropriate patient population.",
+  ],
+
+  followUp: [
+    "Interpret together with examination findings.",
+    "Review laboratory results if applicable.",
+    "Follow current clinical guidelines.",
   ],
 };

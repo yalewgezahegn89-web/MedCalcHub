@@ -1,22 +1,22 @@
 export const faqTemplate = [
   {
-    question: "What does this calculator measure?",
+    question: "What is {{NAME}}?",
+
     answer:
-      "Provide a concise explanation of what this calculator measures and when it is used clinically.",
+      "{{NAME}} is a clinical calculator used in {{SPECIALTY}} to support medical decision-making.",
   },
+
   {
-    question: "When should this calculator be used?",
+    question: "When should I use {{NAME}}?",
+
     answer:
-      "Describe the appropriate clinical situations where this calculator should be applied.",
+      "Use this calculator when clinically indicated and interpret the result together with the patient's history, examination findings, and laboratory investigations.",
   },
+
   {
-    question: "What is considered a normal result?",
+    question: "What are the limitations of {{NAME}}?",
+
     answer:
-      "Describe the normal reference range and how abnormal values should be interpreted.",
-  },
-  {
-    question: "What are the limitations?",
-    answer:
-      "List important assumptions, exclusions, and situations where the calculator should not be used.",
+      "Like all clinical calculators, {{NAME}} should support—but never replace—clinical judgment.",
   },
 ];
