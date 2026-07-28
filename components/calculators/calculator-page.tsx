@@ -37,16 +37,16 @@ export function CalculatorPage({
         calculator={calculator}
       />
 
-      {(calculator.evidence ||
-        calculator.reference) && (
-        <EvidenceCard
-          source={
-            calculator.evidence ??
-            calculator.reference ??
-            ""
-          }
-        />
-      )}
+      {calculator.evidence && (
+  <EvidenceCard
+    source={calculator.evidence.source}
+    reference={calculator.evidence.reference}
+    reviewedBy={calculator.evidence.reviewedBy}
+    version={calculator.evidence.version}
+    updatedAt={calculator.evidence.updatedAt}
+    link={calculator.evidence.link}
+  />
+)}
 
       <ReferenceRanges
         normalRange={calculator.normalRange}
@@ -56,8 +56,8 @@ export function CalculatorPage({
       />
 
       <RelatedCalculators
-        slug={calculator.slug}
-      />
+  related={calculator.relatedCalculators}
+/>
 
     </div>
   );

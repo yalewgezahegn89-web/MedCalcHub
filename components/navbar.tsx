@@ -64,7 +64,12 @@ export default function Navbar() {
             Favorites
           </Link>
         </nav>
-
+<Link
+  href="/workspace"
+  className="text-sm font-medium hover:text-blue-600"
+>
+  Workspace
+</Link>
         {/* Search */}
         <button
           onClick={openCommandPalette}

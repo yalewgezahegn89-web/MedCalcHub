@@ -2,8 +2,7 @@ import { notFound } from "next/navigation";
 
 import { CalculatorLayout } from "@/components/calculators/layout/calculator-layout";
 import { CalculatorClient } from "@/components/calculators/calculator-client";
-import { ClinicalPearl } from "@/components/calculators/clinical-pearl";
-import { CommonMistakes } from "@/components/calculators/common-mistakes";
+import { ClinicalGuidancePanel } from "@/components/calculators/clinical-guidance-panel";
 import { EvidenceCard } from "@/components/calculators/evidence-card";
 import { CalculatorComparison } from "@/components/calculators/calculator-comparison";
 import { ReferenceRanges } from "@/components/calculators/reference-ranges";
@@ -34,7 +33,6 @@ export default async function CalculatorPage({
     <CalculatorLayout
       title={calculator.name}
       description={calculator.description}
-      actions={null}
     >
       <CalculatorClient slug={calculator.slug} />
 
@@ -43,30 +41,30 @@ export default async function CalculatorPage({
         referenceRanges={calculator.referenceRanges}
       />
 
-      <ClinicalPearl
+      <ClinicalGuidancePanel
         pearl={calculator.clinical?.pearl}
-      />
-
-      <CommonMistakes
         mistakes={calculator.clinical?.commonMistakes}
+        notes={calculator.clinicalNotes}
       />
 
       {calculator.evidence && (
-  <EvidenceCard
-    source={calculator.evidence.source}
-    reference={calculator.evidence.reference}
-    reviewedBy={calculator.evidence.reviewedBy}
-    version={calculator.evidence.version}
-    updatedAt={calculator.evidence.updatedAt}
-    link={calculator.evidence.link}
-  />
-)}
+        <EvidenceCard
+          source={calculator.evidence.source}
+          reference={calculator.evidence.reference}
+          reviewedBy={calculator.evidence.reviewedBy}
+          version={calculator.evidence.version}
+          updatedAt={calculator.evidence.updatedAt}
+          link={calculator.evidence.link}
+        />
+      )}
 
-      <CalculatorComparison slug={calculator.id} />
+      <CalculatorComparison
+        slug={calculator.id}
+      />
 
       <RelatedCalculators
-  related={calculator.relatedCalculators}
-/>
+        related={calculator.relatedCalculators}
+      />
     </CalculatorLayout>
   );
 }
