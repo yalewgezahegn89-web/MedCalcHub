@@ -1,109 +1,59 @@
 import Link from "next/link";
+
 import { Card } from "@/components/ui/card";
+import { comparisonRegistry } from "@/lib/calculators/comparisons";
 
 type Props = {
   slug: string;
 };
 
-const comparisonMap: Record<
-  string,
-  {
-    title: string;
-    calculators: {
-      name: string;
-      href: string;
-      use: string;
-    }[];
-  }
-> = {
-  "ckd-epi-2021": {
-    title: "Which Renal Calculator Should I Use?",
-    calculators: [
-      {
-        name: "CKD-EPI 2021",
-        href: "/calculators/ckd-epi-2021",
-        use: "Recommended for estimating kidney function in most adults.",
-      },
-      {
-        name: "Cockcroft-Gault",
-        href: "/calculators/cockcroft-gault",
-        use: "Preferred for medication dosing.",
-      },
-      {
-        name: "MDRD",
-        href: "/calculators/mdrd-egfr",
-        use: "Older equation mainly used for historical comparison.",
-      },
-    ],
-  },
-
-  mdrd: {
-    title: "Which Renal Calculator Should I Use?",
-    calculators: [
-      {
-        name: "CKD-EPI 2021",
-        href: "/calculators/ckd-epi-2021",
-        use: "Preferred in current clinical practice.",
-      },
-      {
-        name: "Cockcroft-Gault",
-        href: "/calculators/cockcroft-gault",
-        use: "Best for drug dose adjustment.",
-      },
-      {
-        name: "MDRD",
-        href: "/calculators/mdrd-egfr",
-        use: "Older equation.",
-      },
-    ],
-  },
-
-  "cockcroft-gault": {
-    title: "Which Renal Calculator Should I Use?",
-    calculators: [
-      {
-        name: "CKD-EPI 2021",
-        href: "/calculators/ckd-epi-2021",
-        use: "Preferred for estimating GFR.",
-      },
-      {
-        name: "Cockcroft-Gault",
-        href: "/calculators/cockcroft-gault",
-        use: "Preferred for medication dosing.",
-      },
-      {
-        name: "MDRD",
-        href: "/calculators/mdrd-egfr",
-        use: "Older GFR equation.",
-      },
-    ],
-  },
-};
-
 export function CalculatorComparison({ slug }: Props) {
-  const section = comparisonMap[slug];
+  const comparisons = comparisonRegistry[slug];
 
-  if (!section) return null;
+  if (!comparisons || comparisons.length === 0) {
+    return null;
+  }
 
   return (
-    <Card className="mt-8 p-6">
-      <h2 className="mb-4 text-xl font-semibold">
-        {section.title}
+    <Card className="rounded-2xl border p-6 shadow-sm">
+      <h2 className="mb-6 text-2xl font-bold">
+        Compare Renal Calculators
       </h2>
 
       <div className="space-y-4">
-        {section.calculators.map((item) => (
-          <div key={item.name}>
+        {comparisons.map((calculator) => (
+          <div
+            key={calculator.id}
+            className="rounded-xl border p-4 transition hover:bg-muted/30"
+          >
             <Link
-              href={item.href}
-              className="font-semibold text-primary hover:underline"
+              href={calculator.href}
+              className="text-lg font-semibold text-primary hover:underline"
             >
-              {item.name}
+              {calculator.name}
             </Link>
 
-            <p className="text-sm text-muted-foreground">
-              {item.use}
-            </p>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <div>
+                <div className="text-sm font-semibold text-emerald-600">
+                  Best For
+                </div>
+
+                <p className="text-sm text-muted-foreground">
+                  {calculator.bestFor}
+                </p>
+              </div>
+
+              <div>
+                <div className="text-sm font-semibold text-orange-600">
+                  Limitation
+                </div>
+
+                <p className="text-sm text-muted-foreground">
+                  {calculator.limitation}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

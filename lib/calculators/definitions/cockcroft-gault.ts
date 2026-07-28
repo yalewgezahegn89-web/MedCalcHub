@@ -1,5 +1,4 @@
-import type { CalculatorDefinition } from "./calculator.types";
-
+import type { CalculatorDefinition } from "../calculator.types";
 export const cockcroftGaultCalculator: CalculatorDefinition = {
   id: "cockcroft-gault",
 
@@ -118,7 +117,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
     },
   ],
 
-  calculate(values) {
+  calculate(values: Record<string, string>) {
     const age = parseFloat(values.age);
     const weight = parseFloat(values.weight);
     const creatinine = parseFloat(values.creatinine);
