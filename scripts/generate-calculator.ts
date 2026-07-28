@@ -1,8 +1,6 @@
 import { loadTemplate } from "./template-loader";
-import { replacePlaceholders } from "./replacer";
-import { writeGeneratedFile } from "./file-writer";
-import { updateRegistry } from "./registry-updater";
-import { generatorTemplates } from "./templates";
+import { replacePlaceholders } from "./replacer";import { writeGeneratedFile } from "./file-writer";
+import { updateRegistry } from "./registry-updater";import { generatorTemplates } from "./templates";
 import type { GeneratorOptions } from "./types";
 
 export function generateCalculator(

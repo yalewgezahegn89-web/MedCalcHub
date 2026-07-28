@@ -11,47 +11,43 @@ export function replacePlaceholders(
 ) {
   return content
 
-    // Existing placeholders
+    // Legacy placeholders
     .replaceAll("calculator-id", options.slug)
     .replaceAll("calculator-slug", options.slug)
     .replaceAll("Calculator Name", options.name)
-    .replaceAll("Short Name", options.name)
+    .replaceAll("Short Name", options.shortName)
     .replaceAll('"General"', `"${options.category}"`)
     .replaceAll(
       "calculatorTemplate",
       calculatorVariable(options.slug),
     )
 
-    // Smart placeholders (Sprint 32)
+    // Smart placeholders
     .replaceAll("{{NAME}}", options.name)
+    .replaceAll("{{SHORT_NAME}}", options.shortName)
     .replaceAll("{{SLUG}}", options.slug)
     .replaceAll("{{CATEGORY}}", options.category)
     .replaceAll("{{SPECIALTY}}", options.specialty)
     .replaceAll("{{DATE}}", today())
 
-    // Default values
-    .replaceAll(
-      "{{DESCRIPTION}}",
-      `Calculates ${options.name} for clinical decision support.`,
-    )
-
-    .replaceAll(
-      "{{FORMULA}}",
-      "Formula to be completed.",
-    )
-
-    .replaceAll(
-      "{{NORMAL_RANGE}}",
-      "Refer to clinical guideline.",
-    )
-
+    // Metadata
+    .replaceAll("{{DESCRIPTION}}", options.description)
+    .replaceAll("{{FORMULA}}", options.formula)
+    .replaceAll("{{NORMAL_RANGE}}", options.normalRange)
     .replaceAll(
       "{{CLINICAL_NOTES}}",
       "Interpret results together with the patient's clinical presentation.",
     )
-
+    .replaceAll("{{REFERENCE}}", options.reference)
+    .replaceAll("{{REVIEWED_BY}}", options.reviewedBy)
     .replaceAll(
-      "{{REFERENCE}}",
-      "Primary clinical guideline.",
+      "{{FEATURED}}",
+      String(options.featured),
+    )
+    .replaceAll(
+      "{{KEYWORDS}}",
+      options.keywords
+        .map((k) => `"${k}"`)
+        .join(", "),
     );
 }

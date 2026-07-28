@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate": "tsx scripts/generator/index.ts"
+    "generate": "tsx scripts/generator/cli/index.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

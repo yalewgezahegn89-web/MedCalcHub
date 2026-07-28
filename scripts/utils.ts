@@ -1,5 +1,4 @@
-import { GeneratorOptions } from "./types";
-
+import type { GeneratorOptions } from "./types";
 export function toPascalCase(text: string) {
   return text
     .split("-")
