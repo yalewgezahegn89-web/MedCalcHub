@@ -18,7 +18,7 @@ type CalculatorPageProps = {
 };
 
 export default async function CalculatorPage({
-  params,y
+  params,
 }: CalculatorPageProps) {
   const { slug } = await params;
 
