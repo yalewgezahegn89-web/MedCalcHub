@@ -1,6 +1,6 @@
 import readline from "node:readline";
 
-import { generateCalculator } from "../../generate-calculator";
+import { generateCalculator } from "../core/generate-calculator";
 import { validateSlug } from "../../validator";
 
 const rl = readline.createInterface({
