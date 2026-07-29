@@ -1,6 +1,7 @@
 import type { GeneratorOptions } from "./types";
 import { calculatorVariable } from "./utils";
-
+import { buildInputs } from "./generator/core/input-builder";
+import { buildCalculate } from "./generator/core/calculate-builder";
 function today() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -50,14 +51,17 @@ export function replacePlaceholders(
         .map((k) => `"${k}"`)
         .join(", "),
     )
-
+.replaceAll(
+  "{{CALCULATE}}",
+  buildCalculate(
+    options.inputs ?? [],
+  ),
+)
     // Calculator Inputs
     .replaceAll(
-      "{{INPUTS}}",
-      JSON.stringify(
-        options.inputs ?? [],
-        null,
-        2,
-      ),
-    );
+  "{{INPUTS}}",
+  buildInputs(
+    options.inputs ?? [],
+  ),
+)
 }

@@ -39,15 +39,6 @@ export const calculatorTemplate: CalculatorDefinition = {
 
   relatedCalculators: [],
 
-  inputs: [],
+  inputs: {{INPUTS}},
 
-  calculate(values) {
-    return {
-      value: "",
-
-      interpretation: "",
-
-      status: "normal",
-    };
-  },
-};
+  {{CALCULATE}}
