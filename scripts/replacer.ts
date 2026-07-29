@@ -54,6 +54,7 @@ export function replacePlaceholders(
 .replaceAll(
   "{{CALCULATE}}",
   buildCalculate(
+    options.name,
     options.inputs ?? [],
   ),
 )

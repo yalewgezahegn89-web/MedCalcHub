@@ -1,5 +1,7 @@
 import readline from "node:readline";
 
+import { suggestCalculator } from "../core/calculator-intelligence";
+import { suggestInputs } from "../core/input-intelligence";
 import { generateCalculator } from "../core/generate-calculator";
 import { validateSlug } from "../../validator";
 
@@ -36,46 +38,74 @@ async function main() {
       "Calculator Name: ",
     );
 
+    const suggestion =
+      suggestCalculator(name);
+
     const shortName =
       await askRequired(
         "Short Name: ",
       );
 
-    const slug = await askRequired(
-      "Slug: ",
-    );
+    const slug =
+      await askRequired(
+        "Slug: ",
+      );
 
     validateSlug(slug);
 
     const category =
-      await askRequired(
-        "Category: ",
-      );
+      (
+        await ask(
+          `Category [${suggestion.category ?? "General"}]: `,
+        )
+      ) ||
+      suggestion.category ||
+      "General";
 
     const specialty =
-      await askRequired(
-        "Specialty: ",
-      );
+      (
+        await ask(
+          `Specialty [${suggestion.specialty ?? "General"}]: `,
+        )
+      ) ||
+      suggestion.specialty ||
+      "General";
 
     const description =
-      await askRequired(
-        "Description: ",
-      );
+      (
+        await ask(
+          `Description [${suggestion.description ?? ""}]: `,
+        )
+      ) ||
+      suggestion.description ||
+      "";
 
     const formula =
-      await askRequired(
-        "Formula: ",
-      );
+      (
+        await ask(
+          `Formula [${suggestion.formula ?? ""}]: `,
+        )
+      ) ||
+      suggestion.formula ||
+      "";
 
     const normalRange =
-      await askRequired(
-        "Normal Range: ",
-      );
+      (
+        await ask(
+          `Normal Range [${suggestion.normalRange ?? ""}]: `,
+        )
+      ) ||
+      suggestion.normalRange ||
+      "";
 
     const keywordsInput =
-      await askRequired(
-        "Keywords (comma separated): ",
-      );
+      (
+        await ask(
+          `Keywords [${suggestion.keywords?.join(", ") ?? ""}]: `,
+        )
+      ) ||
+      suggestion.keywords?.join(", ") ||
+      "";
 
     const reference =
       await askRequired(
@@ -93,65 +123,87 @@ async function main() {
       );
 
     const featured =
-      featuredInput.toLowerCase() ===
-      "y";
+      featuredInput.toLowerCase() === "y";
 
-    const inputCount = Number(
-      await askRequired(
-        "Number of calculator inputs: ",
-      ),
-    );
+    let inputs =
+      suggestInputs(name);
 
-    const inputs = [];
-
-    for (
-      let i = 0;
-      i < inputCount;
-      i++
-    ) {
+    if (inputs.length > 0) {
       console.log(
-        `\n--- Input ${i + 1} ---`,
+        `\n✓ Found ${inputs.length} recommended inputs.`,
       );
 
-      const label =
-        await askRequired(
-          "Label: ",
-        );
-
-      const id =
-        await askRequired(
-          "ID: ",
-        );
-
-      const type =
-        (await askRequired(
-          "Type (number/text/select): ",
-        )) as
-          | "number"
-          | "text"
-          | "select";
-
-      const unit = await ask(
-        "Unit (optional): ",
-      );
-
-      const required =
+      const useSuggested =
         (
           await ask(
-            "Required? (y/n): ",
+            "Use recommended inputs? (Y/n): ",
           )
-        ).toLowerCase() === "y";
+        ).toLowerCase();
 
-      inputs.push({
-        id,
-        label,
-        type,
-        unit:
-          unit.length > 0
-            ? unit
-            : undefined,
-        required,
-      });
+      if (useSuggested === "n") {
+        inputs = [];
+      }
+    }
+
+    if (inputs.length === 0) {
+      const inputCount = Number(
+        await askRequired(
+          "Number of calculator inputs: ",
+        ),
+      );
+
+      for (
+        let i = 0;
+        i < inputCount;
+        i++
+      ) {
+        console.log(
+          `\n--- Input ${i + 1} ---`,
+        );
+
+        const label =
+          await askRequired(
+            "Label: ",
+          );
+
+        const id =
+          await askRequired(
+            "ID: ",
+          );
+
+        const type =
+          (
+            await askRequired(
+              "Type (number/text/select): ",
+            )
+          ) as
+            | "number"
+            | "text"
+            | "select";
+
+        const unit =
+          await ask(
+            "Unit (optional): ",
+          );
+
+        const required =
+          (
+            await ask(
+              "Required? (y/n): ",
+            )
+          ).toLowerCase() === "y";
+
+        inputs.push({
+          id,
+          label,
+          type,
+          unit:
+            unit.length > 0
+              ? unit
+              : undefined,
+          required,
+        });
+      }
     }
 
     generateCalculator({
