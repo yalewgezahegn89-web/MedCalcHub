@@ -49,5 +49,15 @@ export function replacePlaceholders(
       options.keywords
         .map((k) => `"${k}"`)
         .join(", "),
+    )
+
+    // Calculator Inputs
+    .replaceAll(
+      "{{INPUTS}}",
+      JSON.stringify(
+        options.inputs ?? [],
+        null,
+        2,
+      ),
     );
 }

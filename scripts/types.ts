@@ -21,5 +21,21 @@ export interface GeneratorOptions {
 
   reviewedBy: string;
 
-  featured: boolean;
+  featured?: boolean;
+
+  inputs?: CalculatorInputDefinition[];
+}
+
+export interface CalculatorInputDefinition {
+  id: string;
+
+  label: string;
+
+  type: "number" | "text" | "select";
+
+  unit?: string;
+
+  placeholder?: string;
+
+  required?: boolean;
 }

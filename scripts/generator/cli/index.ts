@@ -10,7 +10,9 @@ const rl = readline.createInterface({
 
 function ask(question: string): Promise<string> {
   return new Promise((resolve) =>
-    rl.question(question, (answer) => resolve(answer.trim())),
+    rl.question(question, (answer) =>
+      resolve(answer.trim()),
+    ),
   );
 }
 
@@ -34,9 +36,10 @@ async function main() {
       "Calculator Name: ",
     );
 
-    const shortName = await askRequired(
-      "Short Name: ",
-    );
+    const shortName =
+      await askRequired(
+        "Short Name: ",
+      );
 
     const slug = await askRequired(
       "Slug: ",
@@ -44,44 +47,112 @@ async function main() {
 
     validateSlug(slug);
 
-    const category = await askRequired(
-      "Category: ",
-    );
+    const category =
+      await askRequired(
+        "Category: ",
+      );
 
-    const specialty = await askRequired(
-      "Specialty: ",
-    );
+    const specialty =
+      await askRequired(
+        "Specialty: ",
+      );
 
-    const description = await askRequired(
-      "Description: ",
-    );
+    const description =
+      await askRequired(
+        "Description: ",
+      );
 
-    const formula = await askRequired(
-      "Formula: ",
-    );
+    const formula =
+      await askRequired(
+        "Formula: ",
+      );
 
-    const normalRange = await askRequired(
-      "Normal Range: ",
-    );
+    const normalRange =
+      await askRequired(
+        "Normal Range: ",
+      );
 
-    const keywordsInput = await askRequired(
-      "Keywords (comma separated): ",
-    );
+    const keywordsInput =
+      await askRequired(
+        "Keywords (comma separated): ",
+      );
 
-    const reference = await askRequired(
-      "Primary Reference: ",
-    );
+    const reference =
+      await askRequired(
+        "Primary Reference: ",
+      );
 
-    const reviewedBy = await askRequired(
-      "Reviewed By: ",
-    );
+    const reviewedBy =
+      await askRequired(
+        "Reviewed By: ",
+      );
 
-    const featuredInput = await ask(
-      "Featured? (y/n): ",
-    );
+    const featuredInput =
+      await ask(
+        "Featured? (y/n): ",
+      );
 
     const featured =
-      featuredInput.toLowerCase() === "y";
+      featuredInput.toLowerCase() ===
+      "y";
+
+    const inputCount = Number(
+      await askRequired(
+        "Number of calculator inputs: ",
+      ),
+    );
+
+    const inputs = [];
+
+    for (
+      let i = 0;
+      i < inputCount;
+      i++
+    ) {
+      console.log(
+        `\n--- Input ${i + 1} ---`,
+      );
+
+      const label =
+        await askRequired(
+          "Label: ",
+        );
+
+      const id =
+        await askRequired(
+          "ID: ",
+        );
+
+      const type =
+        (await askRequired(
+          "Type (number/text/select): ",
+        )) as
+          | "number"
+          | "text"
+          | "select";
+
+      const unit = await ask(
+        "Unit (optional): ",
+      );
+
+      const required =
+        (
+          await ask(
+            "Required? (y/n): ",
+          )
+        ).toLowerCase() === "y";
+
+      inputs.push({
+        id,
+        label,
+        type,
+        unit:
+          unit.length > 0
+            ? unit
+            : undefined,
+        required,
+      });
+    }
 
     generateCalculator({
       name,
@@ -99,6 +170,7 @@ async function main() {
       reference,
       reviewedBy,
       featured,
+      inputs,
     });
 
     console.log(
@@ -106,7 +178,9 @@ async function main() {
     );
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`\n❌ ${error.message}`);
+      console.error(
+        `\n❌ ${error.message}`,
+      );
     } else {
       console.error(
         "\n❌ Unknown error occurred.",
