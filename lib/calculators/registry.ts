@@ -1,7 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
-import { bsaTest-4Calculator } from "./bsa-test-4";
-
-import { childPughCalculator } from "./child-pugh";
+import { bsaTest4Calculator } from "./bsa_test_4";import { childPughCalculator } from "./child-pugh";
 import { bmiCalculator } from "./bmi";
 import { bsaCalculator } from "./bsa";
 import { ibwCalculator } from "./ibw";
@@ -54,8 +52,7 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
-  bsaTest-4Calculator,
-  bmiCalculator,
+bsaTest4Calculator,  bmiCalculator,
   bsaCalculator,
   ibwCalculator,
   adjbwCalculator,
