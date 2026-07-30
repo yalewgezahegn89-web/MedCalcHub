@@ -1,26 +1,31 @@
-export const generatorTemplates = [
+export type GeneratorTemplate = {
+  template: string;
+  output: string;
+};
+
+export const generatorTemplates: GeneratorTemplate[] = [
   {
-    template: "calculator.template.ts",
+    template: "calculator.template.txt",
     output: "lib/calculators/{slug}.ts",
   },
   {
-    template: "faq.template.ts",
-    output: "lib/calculators/faqs/{slug}.faq.ts",
+    template: "faq.template.txt",
+    output: "lib/calculators/faqs/{slug}.ts",
   },
   {
-    template: "clinical.template.ts",
-    output: "lib/calculators/clinical/{slug}.clinical.ts",
+    template: "clinical.template.txt",
+    output: "lib/calculators/clinical/{slug}.ts",
   },
   {
-    template: "evidence.template.ts",
-    output: "lib/calculators/evidence/{slug}.evidence.ts",
+    template: "evidence.template.txt",
+    output: "lib/calculators/evidence/{slug}.ts",
   },
   {
-    template: "comparison.template.ts",
-    output: "lib/calculators/comparisons/{slug}.comparison.ts",
+    template: "comparison.template.txt",
+    output: "lib/calculators/comparisons/{slug}.ts",
   },
   {
-    template: "related.template.ts",
-    output: "lib/calculators/related/{slug}.related.ts",
+    template: "related.template.txt",
+    output: "lib/calculators/related/{slug}.ts",
   },
 ];

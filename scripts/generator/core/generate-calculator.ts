@@ -1,35 +1,40 @@
-import { replacePlaceholders } from "../../replacer";
 import { loadTemplate } from "../../template-loader";
+import { replacePlaceholders } from "../../replacer";
 import { writeGeneratedFile } from "../../file-writer";
 import { updateRegistry } from "../../registry-updater";
+
+import { generatorTemplates } from "./generator-templates";
+
 import type { GeneratorOptions } from "../../types";
-import { suggestCalculationCode } from "./formula-intelligence";
+
 export function generateCalculator(
   options: GeneratorOptions,
 ) {
-  const template = loadTemplate(
-    "calculator.template.ts",
-  );
+  for (const item of generatorTemplates) {
+    const template =
+      loadTemplate(item.template);
 
-  let content =
-  replacePlaceholders(
-    template,
-    options,
-  );
+    const content =
+      replacePlaceholders(
+        template,
+        options,
+      );
 
-content = content.replace(
-  "{{CALCULATION_CODE}}",
-  suggestCalculationCode(
-    options.name,
-  ),
-);
+    const output =
+      item.output.replace(
+        "{slug}",
+        options.slug,
+      );
 
-  const output = `lib/calculators/${options.slug}.ts`;
-
-  writeGeneratedFile(
-    output,
-    content,
-  );
+    writeGeneratedFile(
+      output,
+      content,
+    );
+  }
 
   updateRegistry(options.slug);
+
+  console.log(
+    `✓ Calculator "${options.slug}" generated successfully.`,
+  );
 }
