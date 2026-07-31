@@ -1,4 +1,6 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { ckdEpiCalculator } from "./ckd-epi";
+import { mapCalculator } from "./map";
 import { bsaTest4Calculator } from "./bsa_test_4";import { childPughCalculator } from "./child-pugh";
 import { bmiCalculator } from "./bmi";
 import { bsaCalculator } from "./bsa";
@@ -52,6 +54,8 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
+  ckdEpiCalculator,
+  mapCalculator,
 bsaTest4Calculator,  bmiCalculator,
   bsaCalculator,
   ibwCalculator,

@@ -1,4 +1,6 @@
-import { calculatorKnowledge } from "../knowledge";
+import {
+  calculatorKnowledge,
+} from "../knowledge";
 
 export interface CalculatorSuggestion {
   category?: string;
@@ -6,7 +8,8 @@ export interface CalculatorSuggestion {
   description?: string;
   formula?: string;
   normalRange?: string;
-keywords?: readonly string[];  inputs?: readonly unknown[];
+  keywords?: readonly string[];
+  inputs?: readonly unknown[];
 }
 
 function normalizeKey(
@@ -24,8 +27,26 @@ export function suggestCalculator(
 ): Partial<CalculatorSuggestion> {
   const key = normalizeKey(calculatorName);
 
-  return (
-    calculatorKnowledge[key as keyof typeof calculatorKnowledge] ??
-    {}
-  );
+  const knowledge =
+    calculatorKnowledge as Record<
+      string,
+      CalculatorSuggestion
+    >;
+
+  if (knowledge[key]) {
+    return knowledge[key];
+  }
+
+  for (const candidate of Object.keys(
+    knowledge,
+  )) {
+    if (
+      key.includes(candidate) ||
+      candidate.includes(key)
+    ) {
+      return knowledge[candidate];
+    }
+  }
+
+  return {};
 }

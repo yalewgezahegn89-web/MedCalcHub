@@ -1,19 +1,24 @@
-export const nephrologyKnowledge = {
-  "ckd-epi-egfr": {
+import type { CalculatorSuggestion } from "../core/calculator-intelligence";
+
+export const nephrologyKnowledge: Record<
+  string,
+  CalculatorSuggestion
+> = {
+  "ckd-epi": {
     category: "Nephrology",
-    specialty: "Renal Medicine",
+    specialty: "Internal Medicine",
     description:
-      "Estimates glomerular filtration rate using the CKD-EPI 2021 creatinine equation.",
+      "Estimates glomerular filtration rate (eGFR) using the CKD-EPI equation.",
     formula:
-      "eGFR = 142 × min(Scr/k,1)^α × max(Scr/k,1)^-1.200 × 0.9938^Age × 1.012 [if female]",
+      "CKD-EPI 2021 Creatinine Equation",
     normalRange:
-      "≥90 mL/min/1.73m²",
+      ">90 mL/min/1.73m²",
     keywords: [
       "ckd",
       "egfr",
-      "kidney function",
       "creatinine",
       "renal",
+      "kidney",
     ],
     inputs: [
       {
@@ -38,4 +43,4 @@ export const nephrologyKnowledge = {
       },
     ],
   },
-} as const;
+};
