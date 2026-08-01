@@ -1,5 +1,44 @@
-import type { CalculatorInputDefinition } from "../../types";
-import { parseFormula } from "./formula-parser";
+import type {
+  CalculatorInputDefinition,
+} from "../../types";
+
+import {
+  parseFormula,
+} from "./formula-parser";
+
+
+function buildDeclaration(
+  input: CalculatorInputDefinition,
+): string {
+
+  const variable =
+    input.id.replaceAll("-", "_");
+
+  let conversion = "";
+
+  if (input.conversion) {
+
+    if (
+      input.conversion.type === "divide"
+    ) {
+      conversion =
+        ` / ${input.conversion.factor}`;
+    }
+
+    if (
+      input.conversion.type === "multiply"
+    ) {
+      conversion =
+        ` * ${input.conversion.factor}`;
+    }
+  }
+
+  return `
+const ${variable} =
+    Number(values.${variable})${conversion};`;
+}
+
+
 
 export function buildCalculate(
   formula: string,
@@ -9,39 +48,46 @@ export function buildCalculate(
   const parsed =
     parseFormula(formula);
 
+
   const declarations =
     inputs
       .map(
-        (input) => `const ${input.id.replaceAll("-", "_")} =
-    Number(values.${input.id.replaceAll("-", "_")});`,
+        (input) =>
+          buildDeclaration(input),
       )
-      .join("\n\n");
+      .join("\n");
+
 
   let expression =
     parsed.expression;
 
+
   for (const input of inputs) {
-    const id =
+
+    const variable =
       input.id.replaceAll("-", "_");
 
-    const regex =
-      new RegExp(
-        input.label,
-        "gi",
-      );
 
     expression =
       expression.replace(
-        regex,
-        id,
+        new RegExp(
+          input.label,
+          "gi",
+        ),
+        variable,
       );
+
 
     expression =
       expression.replace(
-        new RegExp(id.toUpperCase(), "g"),
-        id,
+        new RegExp(
+          variable.toUpperCase(),
+          "g",
+        ),
+        variable,
       );
   }
+
 
   return `
 calculate(
@@ -56,9 +102,12 @@ ${declarations}
   return {
     value:
       Number(result.toFixed(2)),
+
     interpretation:
       "Clinical interpretation pending.",
-    status: "normal",
+
+    status:
+      "normal",
   };
 },
 `;

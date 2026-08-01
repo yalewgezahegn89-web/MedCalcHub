@@ -12,15 +12,41 @@ export type CalculatorInput = {
   id: string;
   label: string;
   type: InputFieldType;
+
   placeholder?: string;
+
   unit?: string;
+
   required?: boolean;
+
   min?: number;
+
   max?: number;
+
   step?: number;
+
   options?: CalculatorInputOption[];
+
   defaultValue?: string;
+
   helpText?: string;
+
+
+  /**
+   * Unit conversion before calculation
+   *
+   * Example:
+   * Height cm → meter
+   *
+   * Number(values.height) / 100
+   */
+  conversion?: {
+    type:
+      | "divide"
+      | "multiply";
+
+    factor: number;
+  };
 };
 
 export type ReferenceRange = {

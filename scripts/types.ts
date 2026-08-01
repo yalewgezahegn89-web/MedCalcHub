@@ -39,6 +39,7 @@ export interface GeneratorOptions {
 }
 
 
+
 export interface CalculatorInputDefinition {
 
   id: string;
@@ -55,4 +56,25 @@ export interface CalculatorInputDefinition {
   placeholder?: string;
 
   required?: boolean;
+
+
+  /**
+   * Automatic unit conversion
+   *
+   * Example:
+   *
+   * Height cm → meter
+   *
+   * conversion:{
+   *   type:"divide",
+   *   factor:100
+   * }
+   */
+  conversion?: {
+    type:
+      | "divide"
+      | "multiply";
+
+    factor: number;
+  };
 }
