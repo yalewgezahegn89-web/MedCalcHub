@@ -1,4 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { heartRateCalculator } from "./heart-rate";
 import { testHeartRateCalculator } from "./test-heart-rate";
 
 import { bsaTest4Calculator } from "./bsa_test_4";import { childPughCalculator } from "./child-pugh";
@@ -54,6 +55,12 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
+  heartRateCalculator,
+  heartRateCalculator,
+  heartRateCalculator,
+  heartRateCalculator,
+  heartRateCalculator,
+  heartRateCalculator,
   testHeartRateCalculator,
 
 bsaTest4Calculator,  bmiCalculator,

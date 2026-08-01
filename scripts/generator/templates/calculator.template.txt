@@ -1,4 +1,4 @@
-import type { CalculatorDefinition } from "../calculator.types";
+import type { CalculatorDefinition } from "./calculator.types";
 
 export const calculatorTemplate: CalculatorDefinition = {
   id: "{{SLUG}}",
@@ -42,3 +42,4 @@ export const calculatorTemplate: CalculatorDefinition = {
   inputs: {{INPUTS}},
 
   {{CALCULATE}}
+};

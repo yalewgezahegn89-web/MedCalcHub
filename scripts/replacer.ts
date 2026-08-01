@@ -2,8 +2,11 @@ import type { GeneratorOptions } from "./types";
 import { calculatorVariable } from "./utils";
 import { buildInputs } from "./generator/core/input-builder";
 import { buildCalculate } from "./generator/core/calculate-builder";
+
 function today() {
-  return new Date().toISOString().slice(0, 10);
+  return new Date()
+    .toISOString()
+    .slice(0, 10);
 }
 
 export function replacePlaceholders(
@@ -13,34 +16,82 @@ export function replacePlaceholders(
   return content
 
     // Legacy placeholders
-    .replaceAll("calculator-id", options.slug)
-    .replaceAll("calculator-slug", options.slug)
-    .replaceAll("Calculator Name", options.name)
-    .replaceAll("Short Name", options.shortName)
-    .replaceAll('"General"', `"${options.category}"`)
+    .replaceAll(
+      "calculator-id",
+      options.slug,
+    )
+    .replaceAll(
+      "calculator-slug",
+      options.slug,
+    )
+    .replaceAll(
+      "Calculator Name",
+      options.name,
+    )
+    .replaceAll(
+      "Short Name",
+      options.shortName,
+    )
+    .replaceAll(
+      '"General"',
+      `"${options.category}"`,
+    )
     .replaceAll(
       "calculatorTemplate",
       calculatorVariable(options.slug),
     )
 
     // Smart placeholders
-    .replaceAll("{{NAME}}", options.name)
-    .replaceAll("{{SHORT_NAME}}", options.shortName)
-    .replaceAll("{{SLUG}}", options.slug)
-    .replaceAll("{{CATEGORY}}", options.category)
-    .replaceAll("{{SPECIALTY}}", options.specialty)
-    .replaceAll("{{DATE}}", today())
+    .replaceAll(
+      "{{NAME}}",
+      options.name,
+    )
+    .replaceAll(
+      "{{SHORT_NAME}}",
+      options.shortName,
+    )
+    .replaceAll(
+      "{{SLUG}}",
+      options.slug,
+    )
+    .replaceAll(
+      "{{CATEGORY}}",
+      options.category,
+    )
+    .replaceAll(
+      "{{SPECIALTY}}",
+      options.specialty,
+    )
+    .replaceAll(
+      "{{DATE}}",
+      today(),
+    )
 
     // Metadata
-    .replaceAll("{{DESCRIPTION}}", options.description)
-    .replaceAll("{{FORMULA}}", options.formula)
-    .replaceAll("{{NORMAL_RANGE}}", options.normalRange)
+    .replaceAll(
+      "{{DESCRIPTION}}",
+      options.description,
+    )
+    .replaceAll(
+      "{{FORMULA}}",
+      options.formula,
+    )
+    .replaceAll(
+      "{{NORMAL_RANGE}}",
+      options.normalRange,
+    )
     .replaceAll(
       "{{CLINICAL_NOTES}}",
       "Interpret results together with the patient's clinical presentation.",
     )
-    .replaceAll("{{REFERENCE}}", options.reference)
-    .replaceAll("{{REVIEWED_BY}}", options.reviewedBy)
+    .replaceAll(
+      "{{REFERENCE}}",
+      options.reference,
+    )
+    .replaceAll(
+      "{{REVIEWED_BY}}",
+      options.reviewedBy,
+    )
     .replaceAll(
       "{{FEATURED}}",
       String(options.featured),
@@ -51,18 +102,18 @@ export function replacePlaceholders(
         .map((k) => `"${k}"`)
         .join(", "),
     )
-.replaceAll(
-  "{{CALCULATE}}",
-  buildCalculate(
-    options.name,
-    options.inputs ?? [],
-  ),
-)
+
+    // Calculator logic
+    .replaceAll(
+      "{{CALCULATE}}",
+      buildCalculate(),
+    )
+
     // Calculator Inputs
     .replaceAll(
-  "{{INPUTS}}",
-  buildInputs(
-    options.inputs ?? [],
-  ),
-)
+      "{{INPUTS}}",
+      buildInputs(
+        options.inputs ?? [],
+      ),
+    );
 }

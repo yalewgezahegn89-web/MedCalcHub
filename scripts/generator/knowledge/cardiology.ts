@@ -12,7 +12,7 @@ export const cardiologyKnowledge: Record<
     formula:
       "MAP = (SBP + 2 × DBP) / 3",
     normalRange:
-      "70–100 mmHg",
+      "70-100 mmHg",
     keywords: [
       "map",
       "mean arterial pressure",
@@ -34,6 +34,40 @@ export const cardiologyKnowledge: Record<
         label: "Diastolic Blood Pressure",
         type: "number",
         unit: "mmHg",
+        required: true,
+      },
+    ],
+  },
+
+  "heart-rate": {
+    category: "Cardiology",
+    specialty: "Emergency Medicine",
+    description:
+      "Calculates heart rate from the number of beats counted over a measured time interval.",
+    formula:
+      "HR = beats / minutes",
+    normalRange:
+      "60-100 bpm",
+    keywords: [
+      "heart rate",
+      "pulse",
+      "bpm",
+      "cardiology",
+      "vital signs",
+    ],
+    inputs: [
+      {
+        id: "beats",
+        label: "Number of Beats",
+        type: "number",
+        unit: "beats",
+        required: true,
+      },
+      {
+        id: "time",
+        label: "Time",
+        type: "number",
+        unit: "minutes",
         required: true,
       },
     ],
