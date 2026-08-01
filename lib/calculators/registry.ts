@@ -57,14 +57,6 @@ import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   mapCalculator,
-  mapCalculator,
-  mapCalculator,
-  mapCalculator,
-  heartRateCalculator,
-  heartRateCalculator,
-  heartRateCalculator,
-  heartRateCalculator,
-  heartRateCalculator,
   heartRateCalculator,
   testHeartRateCalculator,
 
