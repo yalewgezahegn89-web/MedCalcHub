@@ -1,6 +1,7 @@
 import readline from "node:readline";
 
 import { suggestInputs } from "../core/input-intelligence";
+import { suggestCalculator } from "../core/calculator-intelligence";
 import { generateCalculator } from "../core/generate-calculator";
 import { validateSlug } from "../../validator";
 import { buildMetadata } from "../core/build-metadata";
@@ -28,7 +29,9 @@ function ask(
 async function askRequired(
   question: string,
 ): Promise<string> {
+
   while (true) {
+
     const value =
       await ask(question);
 
@@ -39,16 +42,16 @@ async function askRequired(
     console.log(
       "❌ This field is required.\n",
     );
+
   }
 }
 
 
+
 async function main() {
+
   try {
 
-    // -----------------------------
-    // Terminal arguments
-    // -----------------------------
 
     const args =
       process.argv.slice(2);
@@ -65,10 +68,13 @@ async function main() {
 
 
     if (!name) {
+
       throw new Error(
         "Missing calculator name.\nExample: npm run generate -- heart-rate",
       );
+
     }
+
 
 
     // -----------------------------
@@ -77,6 +83,11 @@ async function main() {
 
     const metadata =
       buildMetadata(name);
+
+
+    const suggestion =
+      suggestCalculator(name);
+
 
 
     const shortName =
@@ -88,9 +99,10 @@ async function main() {
 
 
     validateSlug(
-  slug,
-  force,
-);
+      slug,
+      force,
+    );
+
 
 
     const category =
@@ -130,6 +142,15 @@ async function main() {
 
 
 
+    // NEW:
+    // Clinical interpretation rules
+
+    const classification =
+      suggestion.classification ?? [];
+
+
+
+
     // -----------------------------
     // Input generation
     // -----------------------------
@@ -138,7 +159,9 @@ async function main() {
       suggestInputs(name);
 
 
+
     if (inputs.length === 0) {
+
 
       console.log(
         "\nNo recommended inputs found.",
@@ -153,11 +176,13 @@ async function main() {
         );
 
 
+
       for (
         let i = 0;
         i < inputCount;
         i++
       ) {
+
 
         console.log(
           `\n--- Input ${i + 1} ---`,
@@ -187,10 +212,12 @@ async function main() {
             | "select";
 
 
+
         const unit =
           await ask(
             "Unit (optional): ",
           );
+
 
 
         const required =
@@ -202,25 +229,38 @@ async function main() {
             .toLowerCase() === "y";
 
 
+
         inputs.push({
+
           id,
+
           label,
+
           type,
+
           unit:
             unit.length > 0
               ? unit
               : undefined,
+
           required,
+
         });
+
+
       }
 
+
     } else {
+
 
       console.log(
         `\n✓ Found ${inputs.length} recommended inputs.`,
       );
 
+
     }
+
 
 
 
@@ -228,9 +268,12 @@ async function main() {
     // Generate calculator
     // -----------------------------
 
+
     generateCalculator({
 
       force,
+
+      classification,
 
       name,
 
@@ -261,12 +304,15 @@ async function main() {
     });
 
 
+
     console.log(
       "\n✅ Calculator generated successfully.",
     );
 
 
+
   } catch (error) {
+
 
     if (error instanceof Error) {
 
@@ -282,11 +328,13 @@ async function main() {
 
     }
 
+
   } finally {
 
     rl.close();
 
   }
+
 }
 
 

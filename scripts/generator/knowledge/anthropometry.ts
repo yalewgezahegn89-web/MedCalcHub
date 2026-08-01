@@ -12,7 +12,33 @@ export const anthropometryKnowledge = {
 
     normalRange:
       "18.5–24.9 kg/m²",
+classification: [
+  {
+    max: 18.4,
+    label: "Underweight",
+    status: "low",
+  },
 
+  {
+    min: 18.5,
+    max: 24.9,
+    label: "Normal weight",
+    status: "normal",
+  },
+
+  {
+    min: 25,
+    max: 29.9,
+    label: "Overweight",
+    status: "high",
+  },
+
+  {
+    min: 30,
+    label: "Obesity",
+    status: "critical",
+  },
+],
     keywords: [
       "bmi",
       "body mass index",

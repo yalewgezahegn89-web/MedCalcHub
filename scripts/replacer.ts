@@ -115,8 +115,12 @@ export function replacePlaceholders(
     .replaceAll(
       "{{CALCULATE}}",
       buildCalculate(
-        options.formula,
-        options.inputs ?? [],
-      ),
+  options.formula,
+  options.inputs ?? [],
+  {
+    name: options.name,
+    category: options.category,
+  },
+),
     );
 }

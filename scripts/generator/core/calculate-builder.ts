@@ -1,10 +1,15 @@
 import type {
   CalculatorInputDefinition,
+  ClassificationRule,
 } from "../../types";
 
 import {
   parseFormula,
 } from "./formula-parser";
+
+import {
+  buildInterpretation,
+} from "./interpreter/build-interpretation";
 
 
 function buildDeclaration(
@@ -14,7 +19,9 @@ function buildDeclaration(
   const variable =
     input.id.replaceAll("-", "_");
 
+
   let conversion = "";
+
 
   if (input.conversion) {
 
@@ -25,13 +32,16 @@ function buildDeclaration(
         ` / ${input.conversion.factor}`;
     }
 
+
     if (
       input.conversion.type === "multiply"
     ) {
       conversion =
         ` * ${input.conversion.factor}`;
     }
+
   }
+
 
   return `
 const ${variable} =
@@ -40,13 +50,21 @@ const ${variable} =
 
 
 
+
 export function buildCalculate(
   formula: string,
   inputs: CalculatorInputDefinition[],
+  options?: {
+    name?: string;
+    category?: string;
+    classification?: readonly ClassificationRule[];
+  },
 ): string {
+
 
   const parsed =
     parseFormula(formula);
+
 
 
   const declarations =
@@ -58,8 +76,10 @@ export function buildCalculate(
       .join("\n");
 
 
+
   let expression =
     parsed.expression;
+
 
 
   for (const input of inputs) {
@@ -86,7 +106,10 @@ export function buildCalculate(
         ),
         variable,
       );
+
   }
+
+
 
 
   return `
@@ -96,19 +119,33 @@ calculate(
 
 ${declarations}
 
+
   const result =
     ${expression};
 
-  return {
-    value:
-      Number(result.toFixed(2)),
 
-    interpretation:
-      "Clinical interpretation pending.",
+  ${buildInterpretation({
+    name:
+      options?.name ?? "",
 
-    status:
-      "normal",
-  };
+    category:
+      options?.category ?? "",
+
+    classification:
+      options?.classification ?? [],
+  })}
+
+
+
+return {
+  value:
+    Number(result.toFixed(2)),
+
+  interpretation,
+
+  status,
+};
 },
 `;
+
 }

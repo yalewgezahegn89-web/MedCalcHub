@@ -26,6 +26,24 @@ export interface GeneratorOptions {
 
   inputs?: CalculatorInputDefinition[];
 
+
+  /**
+   * Automatic clinical classification rules
+   *
+   * Example:
+   *
+   * classification:[
+   *   {
+   *     min:18.5,
+   *     max:24.9,
+   *     label:"Normal weight",
+   *     status:"normal"
+   *   }
+   * ]
+   */
+  classification?: readonly ClassificationRule[];
+
+
   /**
    * Allow updating existing calculators.
    *
@@ -36,6 +54,25 @@ export interface GeneratorOptions {
    * overwrite/update existing calculator
    */
   force?: boolean;
+
+}
+
+
+
+export interface ClassificationRule {
+
+  min?: number;
+
+  max?: number;
+
+  label: string;
+
+  status:
+    | "normal"
+    | "low"
+    | "high"
+    | "critical";
+
 }
 
 
@@ -71,10 +108,13 @@ export interface CalculatorInputDefinition {
    * }
    */
   conversion?: {
+
     type:
       | "divide"
       | "multiply";
 
     factor: number;
+
   };
+
 }
