@@ -72,19 +72,29 @@ const weight =
 const height =
     Number(values.height) / 100;
 
+
   const result =
     weight / (height * height);
 
-  return {
-    value:
-      Number(result.toFixed(2)),
 
-    interpretation:
-      "Clinical interpretation pending.",
+  
+let interpretation =
+  "Clinical interpretation pending.";
 
-    status:
-      "normal",
-  };
+let status =
+  "normal";
+
+
+
+
+return {
+  value:
+    Number(result.toFixed(2)),
+
+  interpretation,
+
+  status,
+};
 },
 
 };
