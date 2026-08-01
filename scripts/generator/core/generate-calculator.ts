@@ -3,9 +3,12 @@ import { replacePlaceholders } from "../../replacer";
 import { writeGeneratedFile } from "../../file-writer";
 import { updateRegistry } from "../../registry-updater";
 
+import { updateFormulaRegistry } from "./formula-updater";
+
 import { generatorTemplates } from "./generator-templates";
 
 import type { GeneratorOptions } from "../../types";
+
 
 export function generateCalculator(
   options: GeneratorOptions,
@@ -32,7 +35,11 @@ export function generateCalculator(
     );
   }
 
+
   updateRegistry(options.slug);
+
+  updateFormulaRegistry(options);
+
 
   console.log(
     `✓ Calculator "${options.slug}" generated successfully.`,

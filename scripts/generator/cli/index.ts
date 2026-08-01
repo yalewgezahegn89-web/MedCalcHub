@@ -1,5 +1,4 @@
 import readline from "node:readline";
-
 import { suggestCalculator } from "../core/calculator-intelligence";
 import { suggestInputs } from "../core/input-intelligence";
 import { generateCalculator } from "../core/generate-calculator";
@@ -125,8 +124,8 @@ async function main() {
     const featured =
       featuredInput.toLowerCase() === "y";
 
-    let inputs =
-      suggestInputs(name);
+    // ---------- INPUTS ----------
+    let inputs = suggestInputs(name);
 
     if (inputs.length > 0) {
       console.log(
@@ -138,7 +137,9 @@ async function main() {
           await ask(
             "Use recommended inputs? (Y/n): ",
           )
-        ).toLowerCase();
+        )
+          .trim()
+          .toLowerCase();
 
       if (useSuggested === "n") {
         inputs = [];
@@ -191,7 +192,9 @@ async function main() {
             await ask(
               "Required? (y/n): ",
             )
-          ).toLowerCase() === "y";
+          )
+            .trim()
+            .toLowerCase() === "y";
 
         inputs.push({
           id,
