@@ -1,13 +1,13 @@
 export const evidenceTemplate = {
-  source: "American Heart Association",
+  source: "MedCalcHub Clinical References",
 
-  reference: "American Heart Association",
+  reference: "MedCalcHub Clinical References",
 
   reviewedBy: "MedCalcHub Clinical Team",
 
   version: "1.0",
 
-  updatedAt: "2026-07-31",
+  updatedAt: "2026-08-01",
 
   link: "",
 };

@@ -103,16 +103,19 @@ export function replacePlaceholders(
         .join(", "),
     )
 
-    // Calculator logic
-    .replaceAll(
-      "{{CALCULATE}}",
-      buildCalculate(),
-    )
-
-    // Calculator Inputs
+    // Inputs
     .replaceAll(
       "{{INPUTS}}",
       buildInputs(
+        options.inputs ?? [],
+      ),
+    )
+
+    // Calculator logic
+    .replaceAll(
+      "{{CALCULATE}}",
+      buildCalculate(
+        options.formula,
         options.inputs ?? [],
       ),
     );

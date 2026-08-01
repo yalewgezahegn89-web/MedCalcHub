@@ -3,7 +3,7 @@ export const comparisonTemplate = {
 
   calculators: [
     {
-      name: "MAP Calculator",
+      name: "map",
 
       href: "/calculators/map",
 
