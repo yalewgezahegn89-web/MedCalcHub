@@ -143,10 +143,14 @@ async function main() {
 
 
     // NEW:
-    // Clinical interpretation rules
+// Clinical interpretation rules
 
-    const classification =
-  metadata.classification ?? [];
+const classification =
+  suggestion.classification ?? [];
+
+
+const clinicalGuidance =
+  suggestion.clinicalGuidance ?? {};
 
 
 
@@ -271,11 +275,13 @@ async function main() {
 
     generateCalculator({
 
-      force,
+  force,
 
-      classification,
+  classification,
 
-      name,
+  clinicalGuidance,
+
+  name,
 
       shortName,
 

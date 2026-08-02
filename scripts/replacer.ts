@@ -87,6 +87,24 @@ export function replacePlaceholders(
   ),
 )
     .replaceAll(
+      "{{ADVICE}}",
+      JSON.stringify(
+        options.clinicalGuidance?.advice ?? [],
+      ),
+    )
+    .replaceAll(
+      "{{WARNINGS}}",
+      JSON.stringify(
+        options.clinicalGuidance?.warnings ?? [],
+      ),
+    )
+    .replaceAll(
+      "{{FOLLOW_UP}}",
+      JSON.stringify(
+        options.clinicalGuidance?.followUp ?? [],
+      ),
+    )
+    .replaceAll(
       "{{CLINICAL_NOTES}}",
       "Interpret results together with the patient's clinical presentation.",
     )

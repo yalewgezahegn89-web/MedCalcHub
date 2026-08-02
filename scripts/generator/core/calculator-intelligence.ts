@@ -18,6 +18,14 @@ export interface ClassificationRule {
     | "critical";
 }
 
+export interface ClinicalGuidance {
+
+  advice?: readonly string[];
+
+  warnings?: readonly string[];
+
+  followUp?: readonly string[];
+}
 
 export interface CalculatorSuggestion {
 
@@ -36,6 +44,8 @@ export interface CalculatorSuggestion {
   inputs?: readonly unknown[];
 
   classification?: readonly ClassificationRule[];
+
+  clinicalGuidance?: ClinicalGuidance;
 
 }
 

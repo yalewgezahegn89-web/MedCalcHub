@@ -30,6 +30,12 @@ export const calculatorTemplate: CalculatorDefinition = {
 
   referenceRanges: {{REFERENCE_RANGES}},
 
+  clinicalGuidance: {
+    advice: {{ADVICE}},
+    warnings: {{WARNINGS}},
+    followUp: {{FOLLOW_UP}},
+  },
+
   clinicalNotes:
     "{{CLINICAL_NOTES}}",
 

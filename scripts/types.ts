@@ -1,3 +1,13 @@
+export interface ClinicalGuidance {
+
+  advice?: readonly string[];
+
+  warnings?: readonly string[];
+
+  followUp?: readonly string[];
+
+}
+
 export interface GeneratorOptions {
 
   name: string;
@@ -26,6 +36,7 @@ export interface GeneratorOptions {
 
   inputs?: CalculatorInputDefinition[];
 
+  clinicalGuidance?: ClinicalGuidance;
 
   /**
    * Automatic clinical classification rules
