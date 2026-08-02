@@ -10,7 +10,9 @@ import {
 import {
   buildInterpretation,
 } from "./interpreter/build-interpretation";
-
+import {
+  buildInputValidation,
+} from "./input-validation";
 import {
   buildCalculationSafety,
 } from "./calculation-safety";
@@ -119,14 +121,14 @@ calculate(
   values: Record<string, string>,
 ) {
 
+${buildInputValidation()}
+
+
 ${declarations}
 
 
   const result =
     ${expression};
-
-
-${buildCalculationSafety()}
 
 
   ${buildInterpretation({
