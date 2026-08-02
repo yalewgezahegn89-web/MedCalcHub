@@ -20,7 +20,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-01",
+  updatedAt: "2026-08-02",
 
   keywords: [],
 
@@ -81,8 +81,55 @@ const height =
 let interpretation =
   "Clinical interpretation pending.";
 
-let status =
+let status:
+  "normal" |
+  "low" |
+  "high" |
+  "critical" =
   "normal";
+
+if (false) {}
+
+
+else if (result <= 18.4) {
+
+  interpretation =
+    "Underweight";
+
+  status =
+    "low";
+}
+
+
+else if (result >= 18.5 && result <= 24.9) {
+
+  interpretation =
+    "Normal weight";
+
+  status =
+    "normal";
+}
+
+
+else if (result >= 25 && result <= 29.9) {
+
+  interpretation =
+    "Overweight";
+
+  status =
+    "high";
+}
+
+
+else if (result >= 30) {
+
+  interpretation =
+    "Obesity";
+
+  status =
+    "critical";
+}
+
 
 
 

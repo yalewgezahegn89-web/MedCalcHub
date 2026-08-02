@@ -113,14 +113,16 @@ export function replacePlaceholders(
 
     // Calculator logic
     .replaceAll(
-      "{{CALCULATE}}",
-      buildCalculate(
-  options.formula,
-  options.inputs ?? [],
-  {
-    name: options.name,
-    category: options.category,
-  },
-),
-    );
+  "{{CALCULATE}}",
+  buildCalculate(
+    options.formula,
+    options.inputs ?? [],
+    {
+      name: options.name,
+      category: options.category,
+      classification:
+        options.classification ?? [],
+    },
+  ),
+);
 }

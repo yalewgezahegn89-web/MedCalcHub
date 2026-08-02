@@ -1,16 +1,33 @@
 import { suggestCalculator } from "./calculator-intelligence";
 
-export function buildMetadata(calculatorName: string) {
-  const suggestion = suggestCalculator(calculatorName);
+export function buildMetadata(
+  calculatorName: string,
+) {
 
-  const slug = calculatorName
-    .toLowerCase()
-    .replace(" calculator", "")
-    .replace(/\s+/g, "-")
-    .trim();
+  const suggestion =
+    suggestCalculator(
+      calculatorName,
+    );
+
+
+  const slug =
+    calculatorName
+      .toLowerCase()
+      .replace(
+        " calculator",
+        "",
+      )
+      .replace(
+        /\s+/g,
+        "-",
+      )
+      .trim();
+
 
   return {
-    name: calculatorName,
+
+    name:
+      calculatorName,
 
     shortName:
       calculatorName.replace(
@@ -45,12 +62,25 @@ export function buildMetadata(calculatorName: string) {
         ? [...suggestion.keywords]
         : [],
 
+    inputs:
+      suggestion.inputs
+        ? [...suggestion.inputs]
+        : [],
+
+    classification:
+      suggestion.classification
+        ? [...suggestion.classification]
+        : [],
+
     reference:
       "MedCalcHub Clinical References",
 
     reviewedBy:
       "MedCalcHub Clinical Team",
 
-    featured: false,
+    featured:
+      false,
+
   };
+
 }

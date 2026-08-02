@@ -2,11 +2,9 @@ import type {
   ClassificationRule,
 } from "../../../types";
 
-
 export function buildClassification(
   classification: readonly ClassificationRule[],
 ): string {
-
 
   if (
     !classification ||
@@ -17,19 +15,20 @@ export function buildClassification(
 let interpretation =
   "Clinical interpretation pending.";
 
-let status =
+let status:
+  "normal" |
+  "low" |
+  "high" |
+  "critical" =
   "normal";
 `;
   }
-
-
 
   const blocks =
     classification
       .map((rule) => {
 
         let condition = "";
-
 
         if (
           rule.min !== undefined &&
@@ -59,8 +58,6 @@ let status =
 
         }
 
-
-
         return `
 else if (${condition}) {
 
@@ -75,15 +72,16 @@ else if (${condition}) {
       })
       .join("\n");
 
-
-
   return `
 let interpretation =
   "Clinical interpretation pending.";
 
-let status =
+let status:
+  "normal" |
+  "low" |
+  "high" |
+  "critical" =
   "normal";
-
 
 if (false) {}
 
