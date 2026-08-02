@@ -69,14 +69,24 @@ export type Classification = {
 
 export type CalculatorResult = {
   value: string | number;
+
   unit?: string;
+
   score?: number;
+
   interpretation?: string;
+
   status?:
     | "normal"
     | "low"
     | "high"
     | "critical";
+
+  referenceRange?: string;
+
+  advice?: string[];
+
+  warnings?: string[];
 };
 
 /* -------------------------------------------------------------------------- */
