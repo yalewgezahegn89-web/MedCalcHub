@@ -1,6 +1,6 @@
 type Props = {
   title?: string;
-  source: string;
+source?: string;
   reference?: string;
   link?: string;
 

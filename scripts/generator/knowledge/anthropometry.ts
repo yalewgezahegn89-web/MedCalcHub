@@ -13,6 +13,22 @@ export const anthropometryKnowledge = {
     normalRange:
       "18.5–24.9 kg/m²",
 
+    clinicalGuidance: {
+      advice: [
+        "Maintain a balanced diet and regular physical activity.",
+        "Assess cardiovascular and metabolic risk factors when clinically indicated.",
+      ],
+
+      warnings: [
+        "BMI may not accurately reflect body composition in athletes, elderly patients, or individuals with significant muscle mass.",
+      ],
+
+      followUp: [
+        "Interpret BMI together with clinical history and physical examination.",
+        "Consider additional risk assessment based on the patient's overall health profile.",
+      ],
+    },
+
     classification: [
       {
         max: 18.4,

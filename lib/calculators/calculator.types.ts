@@ -3,14 +3,19 @@ export type InputFieldType =
   | "text"
   | "select";
 
+
 export type CalculatorInputOption = {
   label: string;
   value: string;
 };
 
+
 export type CalculatorInput = {
+
   id: string;
+
   label: string;
+
   type: InputFieldType;
 
   placeholder?: string;
@@ -32,49 +37,106 @@ export type CalculatorInput = {
   helpText?: string;
 
 
-  /**
-   * Unit conversion before calculation
-   *
-   * Example:
-   * Height cm → meter
-   *
-   * Number(values.height) / 100
-   */
   conversion?: {
+
     type:
       | "divide"
       | "multiply";
 
     factor: number;
+
   };
+
 };
+
+
+export type CalculatorInputDefinition =
+  CalculatorInput;
+
+
 
 export type ReferenceRange = {
+
   label: string;
+
   range: string;
+
 };
 
+
+
 export type Classification = {
+
   label: string;
+
   range: string;
+
   min?: number;
+
   max?: number;
+
   color?:
     | "green"
     | "yellow"
     | "orange"
     | "red"
     | "gray";
+
 };
 
+
+
+export type CalculatorClinicalGuidance = {
+
+  advice?: string[];
+
+  warnings?: string[];
+
+  followUp?: string[];
+
+  pearl?: string;
+
+  commonMistakes?: string[];
+
+};
+
+
+
+export type CalculatorEvidence = {
+
+  source?: string;
+
+  reference?: string;
+
+  reviewedBy?: string;
+
+  version?: string;
+
+  updatedAt?: string;
+
+  link?: string;
+
+  references?: string[];
+
+};
+
+
+
 export type CalculatorResult = {
-  value: string | number;
+
+  value:
+    | string
+    | number;
+
 
   unit?: string;
 
+
   score?: number;
 
+
   interpretation?: string;
+
 
   status?:
     | "normal"
@@ -82,113 +144,134 @@ export type CalculatorResult = {
     | "high"
     | "critical";
 
-  referenceRange?: string;
 
   advice?: string[];
 
   warnings?: string[];
 
   followUp?: string[];
+
 };
 
-/* -------------------------------------------------------------------------- */
-/*                              Registry V2 Types                             */
-/* -------------------------------------------------------------------------- */
 
-export type CalculatorEvidence = {
-  source: string;
-  reference?: string;
-  link?: string;
-  reviewedBy?: string;
-  version?: string;
-  updatedAt?: string;
-};
 
-export type CalculatorClinicalGuidance = {
-  pearl?: string;
-  commonMistakes?: string[];
-  clinicalUse?: string[];
-  contraindications?: string[];
-  followUp?: string[];
-};
+export interface CalculatorDefinition {
 
-export type CalculatorFaqItem = {
-  question: string;
-  answer: string;
-};
 
-export type CalculatorComparison = {
-  title: string;
-  calculators: {
-    name: string;
-    href: string;
-    use: string;
-  }[];
-};
-
-export type CalculatorDefinition = {
   id: string;
+
+
   slug: string;
+
+
   name: string;
-  shortName?: string;
+
+
+  shortName: string;
+
+
+
   description: string;
 
+
+
   category: string;
+
+
+
   specialty?: string;
-  subcategory?: string;
 
-  difficulty?:
-    | "Basic"
-    | "Intermediate"
-    | "Advanced";
 
-  tags?: string[];
-
-  estimatedTime?: string;
-
-  author?: string;
-
-  reviewedBy?: string;
 
   featured?: boolean;
 
-  updatedAt?: string;
+
 
   version?: string;
 
+
+
+  updatedAt?: string;
+
+
+
   keywords?: string[];
+
+
+
+  tags?: string[];
+
+
+
+  difficulty?: string;
+
+
+
+  estimatedTime?: string;
+
+
 
   warnings?: string[];
 
+
+
+  advice?: string[];
+
+
+
+  followUp?: string[];
+
+
+
   formula?: string;
+
+
 
   normalRange?: string;
 
+
+
   referenceRanges?: ReferenceRange[];
+
+
 
   classification?: Classification[];
 
+
+
   clinicalNotes?: string;
 
-  references?: string[];
 
-  /* ---------------------- Registry V2 ---------------------- */
+
+  clinicalGuidance?: CalculatorClinicalGuidance;
+
+
 
   clinical?: CalculatorClinicalGuidance;
 
+
+
   evidence?: CalculatorEvidence;
+
+  faq?: unknown;
+comparison?: unknown;
+  references?: string[];
+
+
 
   relatedCalculators?: string[];
 
-  faq?: CalculatorFaqItem[];
 
-  comparison?: CalculatorComparison;
-
-  /* --------------------------------------------------------- */
 
   inputs: CalculatorInput[];
 
+
+
   calculate(
-    values: Record<string, string>,
+
+    values: Record<string,string>,
+
   ): CalculatorResult;
-};
+
+
+}
