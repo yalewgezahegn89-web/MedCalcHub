@@ -2,7 +2,7 @@ import type { GeneratorOptions } from "./types";
 import { calculatorVariable } from "./utils";
 import { buildInputs } from "./generator/core/input-builder";
 import { buildCalculate } from "./generator/core/calculate-builder";
-
+import { buildReferenceRanges } from "./generator/core/reference-range-builder";
 function today() {
   return new Date()
     .toISOString()
@@ -80,6 +80,12 @@ export function replacePlaceholders(
       "{{NORMAL_RANGE}}",
       options.normalRange,
     )
+    .replaceAll(
+  "{{REFERENCE_RANGES}}",
+  buildReferenceRanges(
+    options.classification ?? [],
+  ),
+)
     .replaceAll(
       "{{CLINICAL_NOTES}}",
       "Interpret results together with the patient's clinical presentation.",

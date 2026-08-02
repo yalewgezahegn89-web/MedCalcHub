@@ -9,7 +9,6 @@ import { generatorTemplates } from "./generator-templates";
 
 import type { GeneratorOptions } from "../../types";
 
-
 export function generateCalculator(
   options: GeneratorOptions,
 ) {
@@ -23,6 +22,13 @@ export function generateCalculator(
         options,
       );
 
+    // ============================
+    // TEMP DEBUG
+    // ============================
+    console.log("================================");
+    console.log(content);
+    console.log("================================");
+
     const output =
       item.output.replace(
         "{slug}",
@@ -35,11 +41,9 @@ export function generateCalculator(
     );
   }
 
-
   updateRegistry(options.slug);
 
   updateFormulaRegistry(options);
-
 
   console.log(
     `✓ Calculator "${options.slug}" generated successfully.`,

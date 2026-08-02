@@ -28,7 +28,24 @@ export const bmiCalculator: CalculatorDefinition = {
 
   normalRange: "18.5–24.9 kg/m²",
 
-  referenceRanges: [],
+  referenceRanges: [
+  {
+    label: "Underweight",
+    range: "<18.5",
+  },
+  {
+    label: "Normal weight",
+    range: "18.5–24.9",
+  },
+  {
+    label: "Overweight",
+    range: "25–29.9",
+  },
+  {
+    label: "Obesity",
+    range: "≥30",
+  }
+],
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
@@ -75,6 +92,27 @@ const height =
 
   const result =
     weight / (height * height);
+
+
+
+
+if (
+  !Number.isFinite(result)
+) {
+
+  return {
+    value: 0,
+
+    interpretation:
+      "Invalid calculation result.",
+
+    status:
+      "critical",
+  };
+
+}
+
+
 
 
   

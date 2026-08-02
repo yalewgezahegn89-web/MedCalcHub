@@ -146,7 +146,7 @@ async function main() {
     // Clinical interpretation rules
 
     const classification =
-      suggestion.classification ?? [];
+  metadata.classification ?? [];
 
 
 

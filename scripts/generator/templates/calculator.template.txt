@@ -28,7 +28,7 @@ export const calculatorTemplate: CalculatorDefinition = {
 
   normalRange: "{{NORMAL_RANGE}}",
 
-  referenceRanges: [],
+  referenceRanges: {{REFERENCE_RANGES}},
 
   clinicalNotes:
     "{{CLINICAL_NOTES}}",

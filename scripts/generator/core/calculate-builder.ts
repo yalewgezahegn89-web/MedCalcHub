@@ -11,7 +11,9 @@ import {
   buildInterpretation,
 } from "./interpreter/build-interpretation";
 
-
+import {
+  buildCalculationSafety,
+} from "./calculation-safety";
 function buildDeclaration(
   input: CalculatorInputDefinition,
 ): string {
@@ -122,6 +124,9 @@ ${declarations}
 
   const result =
     ${expression};
+
+
+${buildCalculationSafety()}
 
 
   ${buildInterpretation({
