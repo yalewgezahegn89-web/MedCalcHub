@@ -177,6 +177,9 @@ let status:
   "critical" =
   "normal";
 
+let referenceRange =
+  "";
+
 if (false) {}
 
 
@@ -187,6 +190,9 @@ else if (result <= 18.4) {
 
   status =
     "low";
+
+  referenceRange =
+  "<18.5";
 }
 
 
@@ -197,6 +203,9 @@ else if (result >= 18.5 && result <= 24.9) {
 
   status =
     "normal";
+
+  referenceRange =
+  "18.5–24.9";
 }
 
 
@@ -207,6 +216,9 @@ else if (result >= 25 && result <= 29.9) {
 
   status =
     "high";
+
+  referenceRange =
+  "25–29.9";
 }
 
 
@@ -217,6 +229,9 @@ else if (result >= 30) {
 
   status =
     "critical";
+
+  referenceRange =
+  "≥30";
 }
 
 
@@ -230,6 +245,8 @@ return {
   interpretation,
 
   status,
+
+  referenceRange,
 };
 },
 

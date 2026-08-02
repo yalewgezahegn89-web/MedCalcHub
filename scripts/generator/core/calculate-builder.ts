@@ -151,6 +151,8 @@ return {
   interpretation,
 
   status,
+
+  referenceRange,
 };
 },
 `;

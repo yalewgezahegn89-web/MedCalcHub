@@ -21,8 +21,12 @@ let status:
   "high" |
   "critical" =
   "normal";
+
+let referenceRange =
+  "";
 `;
   }
+
 
   const blocks =
     classification
@@ -58,6 +62,7 @@ let status:
 
         }
 
+
         return `
 else if (${condition}) {
 
@@ -66,11 +71,21 @@ else if (${condition}) {
 
   status =
     "${rule.status}";
+
+  referenceRange =
+  "${rule.min !== undefined && rule.max !== undefined
+    ? `${rule.min}–${rule.max}`
+    : rule.min !== undefined
+      ? `≥${rule.min}`
+      : rule.max !== undefined
+        ? `<${rule.max + 0.1}`
+        : ""}";
 }
 `;
 
       })
       .join("\n");
+
 
   return `
 let interpretation =
@@ -83,9 +98,11 @@ let status:
   "critical" =
   "normal";
 
+let referenceRange =
+  "";
+
 if (false) {}
 
 ${blocks}
 `;
-
 }
