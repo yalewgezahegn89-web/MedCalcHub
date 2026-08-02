@@ -87,6 +87,8 @@ export type CalculatorResult = {
   advice?: string[];
 
   warnings?: string[];
+
+  followUp?: string[];
 };
 
 /* -------------------------------------------------------------------------- */

@@ -47,6 +47,12 @@ export const bmiCalculator: CalculatorDefinition = {
   }
 ],
 
+  clinicalGuidance: {
+    advice: [],
+    warnings: [],
+    followUp: [],
+  },
+
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
