@@ -1,12 +1,12 @@
-export interface ClinicalGuidance {
+import type {
+  CalculatorClinicalGuidance,
+  CalculatorEvidence,
+  FAQItem,
+  ComparisonItem,
+  CalculatorInputDefinition,
+} from "../lib/calculators/calculator.types";
 
-  advice?: readonly string[];
-
-  warnings?: readonly string[];
-
-  followUp?: readonly string[];
-
-}
+export type { CalculatorInputDefinition } from "../lib/calculators/calculator.types";
 
 export interface GeneratorOptions {
 
@@ -36,7 +36,17 @@ export interface GeneratorOptions {
 
   inputs?: CalculatorInputDefinition[];
 
-  clinicalGuidance?: ClinicalGuidance;
+  clinicalGuidance?: CalculatorClinicalGuidance;
+
+  faq?: readonly FAQItem[];
+
+  comparison?: ComparisonItem;
+
+  clinical?: CalculatorClinicalGuidance;
+
+  evidence?: CalculatorEvidence;
+
+  relatedCalculators?: readonly string[];
 
   /**
    * Automatic clinical classification rules
@@ -88,44 +98,3 @@ export interface ClassificationRule {
 
 
 
-export interface CalculatorInputDefinition {
-
-  id: string;
-
-  label: string;
-
-  type:
-    | "number"
-    | "text"
-    | "select";
-
-  unit?: string;
-
-  placeholder?: string;
-
-  required?: boolean;
-
-
-  /**
-   * Automatic unit conversion
-   *
-   * Example:
-   *
-   * Height cm → meter
-   *
-   * conversion:{
-   *   type:"divide",
-   *   factor:100
-   * }
-   */
-  conversion?: {
-
-    type:
-      | "divide"
-      | "multiply";
-
-    factor: number;
-
-  };
-
-}

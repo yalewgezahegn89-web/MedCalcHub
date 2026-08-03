@@ -1,5 +1,5 @@
 type Props = {
-  mistakes: string[];
+  mistakes: readonly string[];
 };
 
 export function CommonMistakesCard({

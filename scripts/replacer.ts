@@ -1,5 +1,8 @@
 import type { GeneratorOptions } from "./types";
-import { calculatorVariable } from "./utils";
+import {
+  calculatorVariable,
+  serializeTypeScriptValue,
+} from "./utils";
 import { buildInputs } from "./generator/core/input-builder";
 import { buildCalculate } from "./generator/core/calculate-builder";
 import { buildReferenceRanges } from "./generator/core/reference-range-builder";
@@ -88,20 +91,26 @@ export function replacePlaceholders(
 )
     .replaceAll(
       "{{ADVICE}}",
-      JSON.stringify(
+      serializeTypeScriptValue(
         options.clinicalGuidance?.advice ?? [],
+        "[]",
+        4,
       ),
     )
     .replaceAll(
       "{{WARNINGS}}",
-      JSON.stringify(
+      serializeTypeScriptValue(
         options.clinicalGuidance?.warnings ?? [],
+        "[]",
+        4,
       ),
     )
     .replaceAll(
       "{{FOLLOW_UP}}",
-      JSON.stringify(
+      serializeTypeScriptValue(
         options.clinicalGuidance?.followUp ?? [],
+        "[]",
+        4,
       ),
     )
     .replaceAll(
@@ -125,6 +134,47 @@ export function replacePlaceholders(
       options.keywords
         .map((k) => `"${k}"`)
         .join(", "),
+    )
+
+    .replaceAll(
+      "{{FAQ}}",
+      serializeTypeScriptValue(
+        options.faq ?? [],
+        "[]",
+        2,
+      ),
+    )
+    .replaceAll(
+      "{{COMPARISON}}",
+      serializeTypeScriptValue(
+        options.comparison,
+        "undefined",
+        2,
+      ),
+    )
+    .replaceAll(
+      "{{CLINICAL}}",
+      serializeTypeScriptValue(
+        options.clinical ?? {},
+        "{}",
+        2,
+      ),
+    )
+    .replaceAll(
+      "{{EVIDENCE}}",
+      serializeTypeScriptValue(
+        options.evidence ?? {},
+        "{}",
+        2,
+      ),
+    )
+    .replaceAll(
+      "{{RELATED_CALCULATORS}}",
+      serializeTypeScriptValue(
+        options.relatedCalculators ?? [],
+        "[]",
+        2,
+      ),
     )
 
     // Inputs

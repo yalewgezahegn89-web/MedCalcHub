@@ -72,6 +72,35 @@ export function buildMetadata(
         ? [...suggestion.classification]
         : [],
 
+    clinicalGuidance:
+      suggestion.clinicalGuidance ??
+      suggestion.clinical ??
+      {},
+
+    clinical:
+      suggestion.clinical ??
+      suggestion.clinicalGuidance ??
+      {},
+
+    faq:
+      suggestion.faq
+        ? [...suggestion.faq]
+        : [],
+
+    comparison:
+      suggestion.comparison ?? {
+        title: "",
+        calculators: [],
+      },
+
+    evidence:
+      suggestion.evidence ?? {},
+
+    relatedCalculators:
+      suggestion.relatedCalculators
+        ? [...suggestion.relatedCalculators]
+        : [],
+
     reference:
       "MedCalcHub Clinical References",
 

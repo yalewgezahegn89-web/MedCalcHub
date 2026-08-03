@@ -27,6 +27,13 @@ export interface ClinicalGuidance {
   followUp?: readonly string[];
 }
 
+import type {
+  CalculatorEvidence,
+  FAQItem,
+  ComparisonItem,
+  CalculatorInputDefinition,
+} from "../../../lib/calculators/calculator.types";
+
 export interface CalculatorSuggestion {
 
   category?: string;
@@ -41,11 +48,21 @@ export interface CalculatorSuggestion {
 
   keywords?: readonly string[];
 
-  inputs?: readonly unknown[];
+  inputs?: readonly CalculatorInputDefinition[];
 
   classification?: readonly ClassificationRule[];
 
   clinicalGuidance?: ClinicalGuidance;
+
+  clinical?: ClinicalGuidance;
+
+  faq?: readonly FAQItem[];
+
+  comparison?: ComparisonItem;
+
+  evidence?: CalculatorEvidence;
+
+  relatedCalculators?: readonly string[];
 
 }
 

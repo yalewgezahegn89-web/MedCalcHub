@@ -3,7 +3,7 @@ import { CommonMistakesCard } from "./common-mistakes-card";
 
 type Props = {
   pearl?: string;
-  mistakes?: string[];
+  mistakes?: readonly string[];
   notes?: string;
 };
 

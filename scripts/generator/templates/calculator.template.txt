@@ -43,7 +43,15 @@ export const calculatorTemplate: CalculatorDefinition = {
     "{{REFERENCE}}",
   ],
 
-  relatedCalculators: [],
+  faq: {{FAQ}},
+
+  comparison: {{COMPARISON}},
+
+  clinical: {{CLINICAL}},
+
+  evidence: {{EVIDENCE}},
+
+  relatedCalculators: {{RELATED_CALCULATORS}},
 
   inputs: {{INPUTS}},
 

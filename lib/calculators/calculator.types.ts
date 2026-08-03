@@ -88,15 +88,15 @@ export type Classification = {
 
 export type CalculatorClinicalGuidance = {
 
-  advice?: string[];
+  advice?: readonly string[];
 
-  warnings?: string[];
+  warnings?: readonly string[];
 
-  followUp?: string[];
+  followUp?: readonly string[];
 
   pearl?: string;
 
-  commonMistakes?: string[];
+  commonMistakes?: readonly string[];
 
 };
 
