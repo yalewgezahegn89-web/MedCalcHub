@@ -122,6 +122,35 @@ export type CalculatorEvidence = {
 
 
 
+export interface FAQItem {
+
+  question: string;
+
+  answer: string;
+
+}
+
+
+export interface ComparisonCalculator {
+
+  name: string;
+
+  href: string;
+
+  use: string;
+
+}
+
+
+export interface ComparisonItem {
+
+  title: string;
+
+  calculators: ComparisonCalculator[];
+
+}
+
+
 export type CalculatorResult = {
 
   value:
@@ -253,8 +282,10 @@ export interface CalculatorDefinition {
 
   evidence?: CalculatorEvidence;
 
-  faq?: unknown;
-comparison?: unknown;
+  faq?: FAQItem[];
+
+  comparison?: ComparisonItem;
+
   references?: string[];
 
 
