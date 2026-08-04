@@ -3,7 +3,7 @@ export const comparisonTemplate = {
 
   calculators: [
     {
-      name: "heart-rate",
+      name: "Heart Rate Calculator",
 
       href: "/calculators/heart-rate",
 

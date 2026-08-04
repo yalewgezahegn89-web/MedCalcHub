@@ -90,6 +90,33 @@ export function buildMetadata(
           }
         : undefined,
 
+    evidence:
+      suggestion.evidence
+        ? {
+            source:
+              suggestion.evidence.source,
+            reference:
+              suggestion.evidence.reference,
+            reviewedBy:
+              suggestion.evidence.reviewedBy,
+            version:
+              suggestion.evidence.version,
+            updatedAt:
+              suggestion.evidence.updatedAt,
+            link:
+              suggestion.evidence.link,
+            references:
+              suggestion.evidence.references
+                ? [...suggestion.evidence.references]
+                : undefined,
+          }
+        : undefined,
+
+    faq:
+      suggestion.faq
+        ? suggestion.faq.map((item) => ({ ...item }))
+        : undefined,
+
     reference:
       "MedCalcHub Clinical References",
 

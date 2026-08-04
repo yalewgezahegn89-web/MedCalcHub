@@ -3,7 +3,7 @@ export const comparisonTemplate = {
 
   calculators: [
     {
-      name: "BSA Calculator",
+      name: "bsa",
 
       href: "/calculators/bsa",
 

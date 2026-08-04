@@ -1,3 +1,4 @@
+import type { FAQItem } from "../../../lib/calculators/calculator.types";
 import {
   calculatorKnowledge,
 } from "../knowledge";
@@ -27,6 +28,24 @@ export interface ClinicalGuidance {
   followUp?: readonly string[];
 }
 
+export interface CalcEvidence {
+
+  source?: string;
+
+  reference?: string;
+
+  reviewedBy?: string;
+
+  version?: string;
+
+  updatedAt?: string;
+
+  link?: string;
+
+  references?: readonly string[];
+
+}
+
 export interface CalculatorSuggestion {
 
   category?: string;
@@ -46,6 +65,10 @@ export interface CalculatorSuggestion {
   classification?: readonly ClassificationRule[];
 
   clinicalGuidance?: ClinicalGuidance;
+
+  evidence?: CalcEvidence;
+
+  faq?: readonly FAQItem[];
 
 }
 

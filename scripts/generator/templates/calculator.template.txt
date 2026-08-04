@@ -39,6 +39,10 @@ export const calculatorTemplate: CalculatorDefinition = {
   clinicalNotes:
     "{{CLINICAL_NOTES}}",
 
+  evidence: {{EVIDENCE}},
+
+  faq: {{FAQ}},
+
   references: [
     "{{REFERENCE}}",
   ],

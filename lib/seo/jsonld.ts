@@ -4,7 +4,7 @@ import { calculatorFaqs } from "@/lib/calculators/faqs";
 export function buildCalculatorJsonLd(
   calculator: CalculatorDefinition,
 ) {
-  const faq = calculatorFaqs[calculator.slug] ?? [];
+  const faq = calculator.faq ?? calculatorFaqs[calculator.slug] ?? [];
 
   return {
     "@context": "https://schema.org",

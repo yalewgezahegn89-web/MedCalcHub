@@ -3,7 +3,7 @@ export const comparisonTemplate = {
 
   calculators: [
     {
-      name: "BMI Calculator",
+      name: "bmi",
 
       href: "/calculators/bmi",
 

@@ -8,8 +8,10 @@ export type CalculatorInputOption = {
   label: string;
   value: string;
 };
-
-
+export type FAQItem = {
+  question: string;
+  answer: string;
+};
 export type CalculatorInput = {
 
   id: string;
@@ -253,7 +255,7 @@ export interface CalculatorDefinition {
 
   evidence?: CalculatorEvidence;
 
-  faq?: unknown;
+  faq?: FAQItem[];
 comparison?: unknown;
   references?: string[];
 

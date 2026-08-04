@@ -109,6 +109,18 @@ export function replacePlaceholders(
       "Interpret results together with the patient's clinical presentation.",
     )
     .replaceAll(
+      "{{EVIDENCE}}",
+      options.evidence
+        ? JSON.stringify(options.evidence, null, 0)
+        : "undefined",
+    )
+    .replaceAll(
+      "{{FAQ}}",
+      options.faq
+        ? JSON.stringify(options.faq, null, 0)
+        : "undefined",
+    )
+    .replaceAll(
       "{{REFERENCE}}",
       options.reference,
     )

@@ -5,9 +5,9 @@ export const bsaCalculator: CalculatorDefinition = {
 
   slug: "bsa",
 
-  name: "BSA Calculator",
+  name: "bsa",
 
-  shortName: "BSA Calculator",
+  shortName: "bsa",
 
   description:
     "Calculates Body Surface Area (Mosteller formula).",
@@ -38,6 +38,8 @@ export const bsaCalculator: CalculatorDefinition = {
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
+
+  evidence: undefined,
 
   references: [
     "MedCalcHub Clinical References",

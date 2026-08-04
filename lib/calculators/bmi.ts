@@ -5,9 +5,9 @@ export const bmiCalculator: CalculatorDefinition = {
 
   slug: "bmi",
 
-  name: "BMI Calculator",
+  name: "bmi",
 
-  shortName: "BMI Calculator",
+  shortName: "bmi",
 
   description:
     "Calculates Body Mass Index.",
@@ -55,6 +55,10 @@ export const bmiCalculator: CalculatorDefinition = {
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
+
+  evidence: undefined,
+
+  faq: undefined,
 
   references: [
     "MedCalcHub Clinical References",

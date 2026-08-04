@@ -1,7 +1,6 @@
-export type FAQ = {
-  question: string;
-  answer: string;
-};
+import type { FAQItem } from "./calculator.types";
+
+export type FAQ = FAQItem;
 
 export const calculatorFaqs: Record<
   string,

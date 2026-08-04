@@ -1,3 +1,5 @@
+import type { FAQItem } from "../lib/calculators/calculator.types";
+
 export interface ClinicalGuidance {
 
   advice?: readonly string[];
@@ -5,6 +7,24 @@ export interface ClinicalGuidance {
   warnings?: readonly string[];
 
   followUp?: readonly string[];
+
+}
+
+export interface Evidence {
+
+  source?: string;
+
+  reference?: string;
+
+  reviewedBy?: string;
+
+  version?: string;
+
+  updatedAt?: string;
+
+  link?: string;
+
+  references?: string[];
 
 }
 
@@ -37,6 +57,10 @@ export interface GeneratorOptions {
   inputs?: CalculatorInputDefinition[];
 
   clinicalGuidance?: ClinicalGuidance;
+
+  evidence?: Evidence;
+
+  faq?: FAQItem[];
 
   /**
    * Automatic clinical classification rules
