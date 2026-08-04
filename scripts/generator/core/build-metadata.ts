@@ -72,6 +72,24 @@ export function buildMetadata(
         ? [...suggestion.classification]
         : [],
 
+    clinicalGuidance:
+      suggestion.clinicalGuidance
+        ? {
+            advice:
+              suggestion.clinicalGuidance.advice
+                ? [...suggestion.clinicalGuidance.advice]
+                : undefined,
+            warnings:
+              suggestion.clinicalGuidance.warnings
+                ? [...suggestion.clinicalGuidance.warnings]
+                : undefined,
+            followUp:
+              suggestion.clinicalGuidance.followUp
+                ? [...suggestion.clinicalGuidance.followUp]
+                : undefined,
+          }
+        : undefined,
+
     reference:
       "MedCalcHub Clinical References",
 

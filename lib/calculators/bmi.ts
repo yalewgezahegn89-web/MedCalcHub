@@ -5,9 +5,9 @@ export const bmiCalculator: CalculatorDefinition = {
 
   slug: "bmi",
 
-  name: "bmi",
+  name: "BMI Calculator",
 
-  shortName: "bmi",
+  shortName: "BMI Calculator",
 
   description:
     "Calculates Body Mass Index.",
@@ -20,7 +20,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-02",
+  updatedAt: "2026-08-04",
 
   keywords: [],
 
@@ -48,9 +48,9 @@ export const bmiCalculator: CalculatorDefinition = {
 ],
 
   clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
+    advice: ["Maintain a balanced diet and regular physical activity.","Assess cardiovascular and metabolic risk factors when clinically indicated."],
+    warnings: ["BMI may not accurately reflect body composition in athletes, elderly patients, or individuals with significant muscle mass."],
+    followUp: ["Interpret BMI together with clinical history and physical examination.","Consider additional risk assessment based on the patient's overall health profile."],
   },
 
   clinicalNotes:

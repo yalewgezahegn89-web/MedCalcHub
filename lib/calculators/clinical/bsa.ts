@@ -1,6 +1,6 @@
 export const clinicalTemplate = {
   pearl:
-    "bsa should always be interpreted within the patient's overall clinical presentation.",
+    "BSA Calculator should always be interpreted within the patient's overall clinical presentation.",
 
   commonMistakes: [
     "Using the calculator outside its intended clinical indication.",

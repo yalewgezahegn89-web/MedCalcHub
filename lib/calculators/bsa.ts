@@ -5,9 +5,9 @@ export const bsaCalculator: CalculatorDefinition = {
 
   slug: "bsa",
 
-  name: "bsa",
+  name: "BSA Calculator",
 
-  shortName: "bsa",
+  shortName: "BSA Calculator",
 
   description:
     "Calculates Body Surface Area (Mosteller formula).",
@@ -20,7 +20,7 @@ export const bsaCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-02",
+  updatedAt: "2026-08-04",
 
   keywords: [],
 
@@ -29,6 +29,12 @@ export const bsaCalculator: CalculatorDefinition = {
   normalRange: "Typical adult: 1.4–2.2 m²",
 
   referenceRanges: [],
+
+  clinicalGuidance: {
+    advice: [],
+    warnings: [],
+    followUp: [],
+  },
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
@@ -62,6 +68,78 @@ calculate(
 ) {
 
 
+
+for (
+  const key of Object.keys(values)
+) {
+
+  const inputValue =
+    Number(values[key]);
+
+
+  if (
+    values[key] === "" ||
+    values[key] === undefined
+  ) {
+
+    return {
+
+      value: 0,
+
+      interpretation:
+        "Required input missing.",
+
+      status:
+        "critical",
+
+    };
+
+  }
+
+
+  if (
+    Number.isNaN(inputValue)
+  ) {
+
+    return {
+
+      value: 0,
+
+      interpretation:
+        "Invalid numeric input.",
+
+      status:
+        "critical",
+
+    };
+
+  }
+
+
+  if (
+    inputValue < 0
+  ) {
+
+    return {
+
+      value: 0,
+
+      interpretation:
+        "Negative values are not allowed.",
+
+      status:
+        "critical",
+
+    };
+
+  }
+
+}
+
+
+
+
+
 const weight =
     Number(values.weight);
 
@@ -84,6 +162,9 @@ let status:
   "critical" =
   "normal";
 
+let referenceRange =
+  "";
+
 
 
 
@@ -94,6 +175,8 @@ return {
   interpretation,
 
   status,
+
+  referenceRange,
 };
 },
 
