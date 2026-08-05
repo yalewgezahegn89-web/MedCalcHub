@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate": "tsx scripts/generator/cli/index.ts"
+    "generate": "tsx scripts/generator/cli/index.ts",
+    "generate:v2": "tsx scripts/generator/batch/index.ts --mode=v2",
+    "generate:specialty": "tsx scripts/generator/batch/index.ts --mode=specialty"
   },
   "dependencies": {
     "clsx": "^2.1.1",

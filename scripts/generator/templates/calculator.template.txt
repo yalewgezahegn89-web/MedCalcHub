@@ -28,6 +28,8 @@ export const calculatorTemplate: CalculatorDefinition = {
 
   normalRange: "{{NORMAL_RANGE}}",
 
+  classification: {{CLASSIFICATION}},
+
   referenceRanges: {{REFERENCE_RANGES}},
 
   clinicalGuidance: {

@@ -84,6 +84,14 @@ export function replacePlaceholders(
       options.normalRange,
     )
     .replaceAll(
+      "{{CLASSIFICATION}}",
+      serializeTypeScriptValue(
+        options.classification ?? [],
+        "[]",
+        2,
+      ),
+    )
+    .replaceAll(
   "{{REFERENCE_RANGES}}",
   buildReferenceRanges(
     options.classification ?? [],

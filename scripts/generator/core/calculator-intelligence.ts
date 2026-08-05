@@ -2,21 +2,9 @@ import {
   calculatorKnowledge,
 } from "../knowledge";
 
-
-export interface ClassificationRule {
-
-  min?: number;
-
-  max?: number;
-
-  label: string;
-
-  status:
-    | "normal"
-    | "low"
-    | "high"
-    | "critical";
-}
+import type {
+  ClassificationRule,
+} from "../../types";
 
 export interface ClinicalGuidance {
 
