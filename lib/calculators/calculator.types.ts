@@ -122,6 +122,20 @@ export type CalculatorEvidence = {
 
 };
 
+export type ComparisonItem = {
+  id?: string;
+  name: string;
+  href: string;
+  use?: string;
+  bestFor?: string;
+  limitation?: string;
+};
+
+export type ComparisonMetadata = {
+  title?: string;
+  calculators?: ComparisonItem[];
+};
+
 
 
 export type CalculatorResult = {
@@ -256,7 +270,9 @@ export interface CalculatorDefinition {
   evidence?: CalculatorEvidence;
 
   faq?: FAQItem[];
-comparison?: unknown;
+
+  comparison?: ComparisonMetadata | ComparisonItem[];
+
   references?: string[];
 
 

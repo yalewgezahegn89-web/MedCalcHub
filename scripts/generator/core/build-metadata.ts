@@ -117,6 +117,18 @@ export function buildMetadata(
         ? suggestion.faq.map((item) => ({ ...item }))
         : undefined,
 
+    comparison:
+      suggestion.comparison
+        ? {
+            title:
+              suggestion.comparison.title,
+            calculators:
+              suggestion.comparison.calculators.map(
+                (c) => ({ ...c }),
+              ),
+          }
+        : undefined,
+
     reference:
       "MedCalcHub Clinical References",
 

@@ -43,6 +43,8 @@ export const calculatorTemplate: CalculatorDefinition = {
 
   faq: {{FAQ}},
 
+  comparison: {{COMPARISON}},
+
   references: [
     "{{REFERENCE}}",
   ],

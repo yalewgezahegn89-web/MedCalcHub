@@ -121,6 +121,12 @@ export function replacePlaceholders(
         : "undefined",
     )
     .replaceAll(
+      "{{COMPARISON}}",
+      options.comparison
+        ? JSON.stringify(options.comparison, null, 0)
+        : "undefined",
+    )
+    .replaceAll(
       "{{REFERENCE}}",
       options.reference,
     )

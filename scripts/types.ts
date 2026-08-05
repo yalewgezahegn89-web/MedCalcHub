@@ -1,4 +1,10 @@
-import type { FAQItem } from "../lib/calculators/calculator.types";
+import type { FAQItem, ComparisonItem } from "../lib/calculators/calculator.types";
+
+
+export interface KnowledgeComparisonMetadata {
+  title?: string;
+  calculators: ComparisonItem[];
+}
 
 export interface ClinicalGuidance {
 
@@ -61,6 +67,8 @@ export interface GeneratorOptions {
   evidence?: Evidence;
 
   faq?: FAQItem[];
+
+  comparison?: KnowledgeComparisonMetadata;
 
   /**
    * Automatic clinical classification rules

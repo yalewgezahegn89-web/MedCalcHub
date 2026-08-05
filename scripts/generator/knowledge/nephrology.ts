@@ -42,5 +42,28 @@ export const nephrologyKnowledge: Record<
         required: true,
       },
     ],
+    comparison: {
+      title: "Which Kidney Calculator Should I Use?",
+      calculators: [
+        {
+          name: "CKD-EPI 2021",
+          href: "/calculators/ckd-epi",
+          bestFor: "Routine estimation of kidney function.",
+          limitation: "Not intended for medication dosing.",
+        },
+        {
+          name: "Cockcroft-Gault",
+          href: "/calculators/cockcroft-gault",
+          bestFor: "Drug dosing adjustment.",
+          limitation: "Less accurate for estimating true GFR.",
+        },
+        {
+          name: "MDRD",
+          href: "/calculators/mdrd",
+          bestFor: "Historical comparison.",
+          limitation: "Reduced accuracy at higher GFR.",
+        },
+      ],
+    },
   },
 };

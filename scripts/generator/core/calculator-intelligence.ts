@@ -1,7 +1,13 @@
-import type { FAQItem } from "../../../lib/calculators/calculator.types";
+import type { FAQItem, ComparisonItem } from "../../../lib/calculators/calculator.types";
 import {
   calculatorKnowledge,
 } from "../knowledge";
+
+
+export interface KnowledgeComparisonMetadata {
+  title?: string;
+  calculators: readonly ComparisonItem[];
+}
 
 
 export interface ClassificationRule {
@@ -69,6 +75,8 @@ export interface CalculatorSuggestion {
   evidence?: CalcEvidence;
 
   faq?: readonly FAQItem[];
+
+  comparison?: KnowledgeComparisonMetadata;
 
 }
 

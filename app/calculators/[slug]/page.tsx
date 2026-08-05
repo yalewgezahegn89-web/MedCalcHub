@@ -96,7 +96,8 @@ export default async function CalculatorPage({
         />
 
         <CalculatorComparison
-          slug={calculator.id}
+          slug={calculator.slug}
+          comparison={calculator.comparison}
         />
 
         <CalculatorFAQ
