@@ -1,4 +1,5 @@
 import type { FAQItem, ComparisonItem } from "../../../lib/calculators/calculator.types";
+import type { FormulaDefinition } from "../../types";
 import {
   calculatorKnowledge,
 } from "../knowledge";
@@ -60,7 +61,7 @@ export interface CalculatorSuggestion {
 
   description?: string;
 
-  formula?: string;
+  formula?: FormulaDefinition;
 
   normalRange?: string;
 

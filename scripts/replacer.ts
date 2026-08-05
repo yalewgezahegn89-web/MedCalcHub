@@ -3,6 +3,10 @@ import { calculatorVariable } from "./utils";
 import { buildInputs } from "./generator/core/input-builder";
 import { buildCalculate } from "./generator/core/calculate-builder";
 import { buildReferenceRanges } from "./generator/core/reference-range-builder";
+
+function formulaToDisplayString(formula: GeneratorOptions["formula"]): string {
+  return typeof formula === "string" ? formula : (formula.expression ?? "");
+}
 function today() {
   return new Date()
     .toISOString()
@@ -74,7 +78,7 @@ export function replacePlaceholders(
     )
     .replaceAll(
       "{{FORMULA}}",
-      options.formula,
+      formulaToDisplayString(options.formula),
     )
     .replaceAll(
       "{{NORMAL_RANGE}}",

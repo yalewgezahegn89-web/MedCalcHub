@@ -34,6 +34,23 @@ export interface Evidence {
 
 }
 
+export type FormulaDefinition =
+  | string
+  | {
+      type:
+        | "algebraic"
+        | "conditional"
+        | "lookup"
+        | "composite"
+        | "descriptive";
+
+      expression?: string;
+
+      description?: string;
+
+      config?: Record<string, unknown>;
+    };
+
 export interface GeneratorOptions {
 
   name: string;
@@ -48,7 +65,7 @@ export interface GeneratorOptions {
 
   description: string;
 
-  formula: string;
+  formula: FormulaDefinition;
 
   normalRange: string;
 
@@ -122,6 +139,19 @@ export interface ClassificationRule {
 
 
 
+export interface InputValidationRule {
+
+  allowNegative?: boolean;
+
+  allowZero?: boolean;
+
+  minimum?: number;
+
+  maximum?: number;
+
+}
+
+
 export interface CalculatorInputDefinition {
 
   id: string;
@@ -161,5 +191,15 @@ export interface CalculatorInputDefinition {
     factor: number;
 
   };
+
+
+  /**
+   * Configurable input validation rules.
+   *
+   * If omitted, defaults apply:
+   * allowNegative = false
+   * allowZero = false
+   */
+  validation?: InputValidationRule;
 
 }

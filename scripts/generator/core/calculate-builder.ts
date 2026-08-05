@@ -1,62 +1,16 @@
 import type {
   CalculatorInputDefinition,
   ClassificationRule,
+  FormulaDefinition,
 } from "../../types";
 
 import {
-  parseFormula,
-} from "./formula-parser";
-
-import {
-  buildInterpretation,
-} from "./interpreter/build-interpretation";
-import {
-  buildInputValidation,
-} from "./input-validation";
-import {
-  buildCalculationSafety,
-} from "./calculation-safety";
-function buildDeclaration(
-  input: CalculatorInputDefinition,
-): string {
-
-  const variable =
-    input.id.replaceAll("-", "_");
-
-
-  let conversion = "";
-
-
-  if (input.conversion) {
-
-    if (
-      input.conversion.type === "divide"
-    ) {
-      conversion =
-        ` / ${input.conversion.factor}`;
-    }
-
-
-    if (
-      input.conversion.type === "multiply"
-    ) {
-      conversion =
-        ` * ${input.conversion.factor}`;
-    }
-
-  }
-
-
-  return `
-const ${variable} =
-    Number(values.${variable})${conversion};`;
-}
-
-
+  buildFormula,
+} from "./formula/dispatcher";
 
 
 export function buildCalculate(
-  formula: string,
+  formula: FormulaDefinition,
   inputs: CalculatorInputDefinition[],
   options?: {
     name?: string;
@@ -65,96 +19,11 @@ export function buildCalculate(
   },
 ): string {
 
-
-  const parsed =
-    parseFormula(formula);
-
-
-
-  const declarations =
-    inputs
-      .map(
-        (input) =>
-          buildDeclaration(input),
-      )
-      .join("\n");
-
-
-
-  let expression =
-    parsed.expression;
-
-
-
-  for (const input of inputs) {
-
-    const variable =
-      input.id.replaceAll("-", "_");
-
-
-    expression =
-      expression.replace(
-        new RegExp(
-          input.label,
-          "gi",
-        ),
-        variable,
-      );
-
-
-    expression =
-      expression.replace(
-        new RegExp(
-          variable.toUpperCase(),
-          "g",
-        ),
-        variable,
-      );
-
-  }
-
-
-
-
-  return `
-calculate(
-  values: Record<string, string>,
-) {
-
-${buildInputValidation()}
-
-
-${declarations}
-
-
-  const result =
-    ${expression};
-
-
-  ${buildInterpretation({
-    name:
-      options?.name ?? "",
-
-    category:
-      options?.category ?? "",
-
-    classification:
-      options?.classification ?? [],
-  })}
-
-
-
-return {
-  value:
-    Number(result.toFixed(2)),
-
-  interpretation,
-
-  status,
-
-  referenceRange,
-};
-},
-`;
+  return buildFormula(formula, {
+    inputs,
+    name: options?.name,
+    category: options?.category,
+    classification: options?.classification,
+  });
 
 }

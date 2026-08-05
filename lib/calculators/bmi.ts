@@ -20,7 +20,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-04",
+  updatedAt: "2026-08-05",
 
   keywords: [],
 
@@ -58,7 +58,9 @@ export const bmiCalculator: CalculatorDefinition = {
 
   evidence: undefined,
 
-  faq: undefined,
+  faq: [{"question":"What is BMI?","answer":"BMI is a screening tool that estimates body fat using height and weight."},{"question":"Can BMI diagnose obesity?","answer":"No. BMI is only a screening tool and should always be interpreted together with clinical findings."}],
+
+  comparison: undefined,
 
   references: [
     "MedCalcHub Clinical References",
@@ -164,12 +166,8 @@ for (
 
 
 
-
-const weight =
-    Number(values.weight);
-
-const height =
-    Number(values.height) / 100;
+const weight = Number(values.weight);
+const height = Number(values.height) / 100;
 
 
   const result =
