@@ -5,155 +5,293 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
   slug: "cockcroft-gault",
 
-  name: "Cockcroft-Gault Creatinine Clearance",
+  name: "cockcroft-gault",
 
-  shortName: "CrCl",
+  shortName: "cockcroft-gault",
 
   description:
-    "Estimates creatinine clearance using the Cockcroft-Gault equation.",
+    "Estimates creatinine clearance (CrCl) for medication dosing using the Cockcroft-Gault equation.",
 
-  category: "Renal",
+  category: "Nephrology",
 
-  featured: true,
+  specialty: "Internal Medicine",
 
-  updatedAt: "2026-07",
+  featured: false,
 
   version: "1.0",
 
-  keywords: [
-    "Cockcroft-Gault",
-    "Creatinine Clearance",
-    "CrCl",
-    "Renal",
-    "Kidney",
-    "Drug Dosing",
-  ],
+  updatedAt: "2026-08-05",
 
-  warnings: [
-    "For adults only.",
-    "Use stable serum creatinine.",
-    "Primarily recommended for medication dosing rather than CKD staging.",
-  ],
+  keywords: [],
 
-  formula:
-    "CrCl = ((140 − Age) × Weight) / (72 × Serum Creatinine); multiply by 0.85 for females.",
+  formula: "CrCl = ((140 - age) * weight) / (72 * creatinine) * 0.85",
 
-  normalRange: "≥90 mL/min",
+  normalRange: "90–120 mL/min",
 
   referenceRanges: [
-    {
-      label: "Normal Renal Function",
-      range: "≥90 mL/min",
-    },
-    {
-      label: "Mild Impairment",
-      range: "60–89 mL/min",
-    },
-    {
-      label: "Moderate Impairment",
-      range: "30–59 mL/min",
-    },
-    {
-      label: "Severe Impairment",
-      range: "15–29 mL/min",
-    },
-    {
-      label: "Kidney Failure",
-      range: "<15 mL/min",
-    },
-  ],
+  {
+    label: "Normal renal function",
+    range: "≥90",
+  },
+  {
+    label: "Mild renal impairment",
+    range: "60–89",
+  },
+  {
+    label: "Moderate renal impairment",
+    range: "30–59",
+  },
+  {
+    label: "Severe renal impairment",
+    range: "15–29",
+  },
+  {
+    label: "Kidney failure",
+    range: "<14.1",
+  }
+],
+
+  clinicalGuidance: {
+    advice: ["Use actual body weight unless adjusted body weight is clinically indicated (e.g. obesity).","Cockcroft-Gault remains the preferred equation for many drug dosing recommendations.","Use stable serum creatinine; avoid using values during acute kidney injury for chronic dosing."],
+    warnings: ["Not recommended for unstable kidney function or acute kidney injury.","Overestimates creatinine clearance in elderly patients with low muscle mass.","Does not provide direct GFR estimation; use CKD-EPI for CKD staging."],
+    followUp: ["Verify drug-specific dosing guidelines for renal adjustment thresholds.","Monitor renal function periodically in patients with CrCl < 50 mL/min."],
+  },
 
   clinicalNotes:
-    "Cockcroft-Gault estimates creatinine clearance and is widely used for medication dose adjustment. CKD-EPI is generally preferred for estimating GFR, while Cockcroft-Gault remains important for drug dosing recommendations.",
+    "Interpret results together with the patient's clinical presentation.",
+
+  evidence: undefined,
+
+  faq: undefined,
+
+  comparison: undefined,
 
   references: [
-    "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine.",
-    "KDIGO Clinical Practice Guideline",
+    "MedCalcHub Clinical References",
   ],
+
+  relatedCalculators: [],
 
   inputs: [
-    {
-      id: "age",
-      label: "Age",
-      type: "number",
-      unit: "years",
-      required: true,
-      min: 18,
-      max: 120,
-      step: 1,
-    },
-    {
-      id: "sex",
-      label: "Sex",
-      type: "select",
-      required: true,
-      options: [
-        { label: "Male", value: "male" },
-        { label: "Female", value: "female" },
-      ],
-    },
-    {
-      id: "weight",
-      label: "Weight",
-      type: "number",
-      unit: "kg",
-      required: true,
-      min: 20,
-      max: 300,
-      step: 0.1,
-    },
-    {
-      id: "creatinine",
-      label: "Serum Creatinine",
-      type: "number",
-      unit: "mg/dL",
-      required: true,
-      min: 0.1,
-      max: 20,
-      step: 0.01,
-    },
-  ],
+  {
+    id: "age",
+    label: "Age",
+    type: "number",
+    unit: "years",
+    required: true,
+  },
+  {
+    id: "weight",
+    label: "Weight",
+    type: "number",
+    unit: "kg",
+    required: true,
+  },
+  {
+    id: "sex",
+    label: "Sex",
+    type: "select",
+    required: true,
+  },
+  {
+    id: "creatinine",
+    label: "Serum Creatinine",
+    type: "number",
+    unit: "mg/dL",
+    required: true,
+  }
+],
 
-  calculate(values) {
-    const age = parseFloat(values.age);
-    const weight = parseFloat(values.weight);
-    const creatinine = parseFloat(values.creatinine);
-    const sex = values.sex;
+  
+calculate(
+  values: Record<string, string>,
+) {
 
-    let crcl =
-      ((140 - age) * weight) /
-      (72 * creatinine);
 
-    if (sex === "female") {
-      crcl *= 0.85;
-    }
 
-    const rounded =
-      Math.max(0, Math.round(crcl * 10) / 10);
+for (
+  const key of Object.keys(values)
+) {
 
-    let interpretation: string;
-    let status: "normal" | "low" = "normal";
+  const inputValue =
+    Number(values[key]);
 
-    if (rounded >= 90) {
-      interpretation = "Normal renal function.";
-    } else if (rounded >= 60) {
-      interpretation = "Mild renal impairment.";
-    } else if (rounded >= 30) {
-      interpretation = "Moderate renal impairment.";
-      status = "low";
-    } else if (rounded >= 15) {
-      interpretation = "Severe renal impairment.";
-      status = "low";
-    } else {
-      interpretation = "Kidney failure.";
-      status = "low";
-    }
+
+  if (
+    values[key] === "" ||
+    values[key] === undefined
+  ) {
 
     return {
-      value: rounded,
-      unit: "mL/min",
-      interpretation,
-      status,
+
+      value: 0,
+
+      interpretation:
+        "Required input missing.",
+
+      status:
+        "critical",
+
     };
-  },
+
+  }
+
+
+  if (
+    Number.isNaN(inputValue)
+  ) {
+
+    return {
+
+      value: 0,
+
+      interpretation:
+        "Invalid numeric input.",
+
+      status:
+        "critical",
+
+    };
+
+  }
+
+
+  if (
+    inputValue < 0
+  ) {
+
+    return {
+
+      value: 0,
+
+      interpretation:
+        "Negative values are not allowed.",
+
+      status:
+        "critical",
+
+    };
+
+  }
+
+}
+
+
+
+
+
+const age =
+    Number(values.age);
+
+const weight =
+    Number(values.weight);
+
+const sex =
+    Number(values.sex);
+
+const creatinine =
+    Number(values.creatinine);
+
+
+  const result =
+    ((140 - age) * weight) / (72 * creatinine) * 0.85;
+
+
+  
+let interpretation =
+  "Clinical interpretation pending.";
+
+let status:
+  "normal" |
+  "low" |
+  "high" |
+  "critical" =
+  "normal";
+
+let referenceRange =
+  "";
+
+if (false) {}
+
+
+else if (result >= 90) {
+
+  interpretation =
+    "Normal renal function";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "≥90";
+}
+
+
+else if (result >= 60 && result <= 89) {
+
+  interpretation =
+    "Mild renal impairment";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "60–89";
+}
+
+
+else if (result >= 30 && result <= 59) {
+
+  interpretation =
+    "Moderate renal impairment";
+
+  status =
+    "low";
+
+  referenceRange =
+  "30–59";
+}
+
+
+else if (result >= 15 && result <= 29) {
+
+  interpretation =
+    "Severe renal impairment";
+
+  status =
+    "low";
+
+  referenceRange =
+  "15–29";
+}
+
+
+else if (result <= 14) {
+
+  interpretation =
+    "Kidney failure";
+
+  status =
+    "critical";
+
+  referenceRange =
+  "<14.1";
+}
+
+
+
+
+
+return {
+  value:
+    Number(result.toFixed(2)),
+
+  interpretation,
+
+  status,
+
+  referenceRange,
+};
+},
+
 };

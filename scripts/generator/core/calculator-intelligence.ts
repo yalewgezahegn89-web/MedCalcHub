@@ -78,6 +78,8 @@ export interface CalculatorSuggestion {
 
   comparison?: KnowledgeComparisonMetadata;
 
+  relatedCalculators?: readonly string[];
+
 }
 
 

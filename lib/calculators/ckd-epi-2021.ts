@@ -5,205 +5,300 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
 
   slug: "ckd-epi-2021",
 
-  name: "CKD-EPI 2021 eGFR",
+  name: "ckd-epi-2021",
 
-  shortName: "CKD-EPI",
+  shortName: "ckd-epi-2021",
 
   description:
     "Estimates glomerular filtration rate (eGFR) using the 2021 CKD-EPI creatinine equation.",
 
-  category: "Renal",
+  category: "Nephrology",
 
-  specialty: "Nephrology",
+  specialty: "Internal Medicine",
 
-  featured: true,
-
-  updatedAt: "2026-07",
+  featured: false,
 
   version: "1.0",
 
-  keywords: [
-    "CKD-EPI",
-    "eGFR",
-    "Kidney",
-    "Renal",
-    "Creatinine",
-  ],
+  updatedAt: "2026-08-05",
 
-  warnings: [
-    "The CKD-EPI equation is an estimate and should be interpreted in the clinical context.",
-  ],
+  keywords: [],
 
-  formula:
-    "eGFR = 142 × min(Scr/κ,1)^α × max(Scr/κ,1)^−1.200 × 0.9938^Age × 1.012 (if female)",
+  formula: "eGFR = 142 * pow(min(creatinine / 0.9, 1), -0.302) * pow(max(creatinine / 0.9, 1), -1.2) * pow(0.9938, age) * 1.012",
 
   normalRange: "≥90 mL/min/1.73 m²",
 
   referenceRanges: [
-    {
-      label: "G1 (Normal or High)",
-      range: "≥90 mL/min/1.73 m²",
-    },
-    {
-      label: "G2 (Mildly Decreased)",
-      range: "60–89 mL/min/1.73 m²",
-    },
-    {
-      label: "G3a (Mild–Moderate)",
-      range: "45–59 mL/min/1.73 m²",
-    },
-    {
-      label: "G3b (Moderate–Severe)",
-      range: "30–44 mL/min/1.73 m²",
-    },
-    {
-      label: "G4 (Severely Decreased)",
-      range: "15–29 mL/min/1.73 m²",
-    },
-    {
-      label: "G5 (Kidney Failure)",
-      range: "<15 mL/min/1.73 m²",
-    },
-  ],
+  {
+    label: "G1: Normal or high",
+    range: "≥90",
+  },
+  {
+    label: "G2: Mildly decreased",
+    range: "60–89",
+  },
+  {
+    label: "G3a: Mild to moderate",
+    range: "45–59",
+  },
+  {
+    label: "G3b: Moderate to severe",
+    range: "30–44",
+  },
+  {
+    label: "G4: Severely decreased",
+    range: "15–29",
+  },
+  {
+    label: "G5: Kidney failure",
+    range: "<14.1",
+  }
+],
 
-  classification: [
-    {
-      label: "G1",
-      range: "≥90",
-      min: 90,
-      color: "green",
-    },
-    {
-      label: "G2",
-      range: "60–89",
-      min: 60,
-      max: 89.9,
-      color: "yellow",
-    },
-    {
-      label: "G3a",
-      range: "45–59",
-      min: 45,
-      max: 59.9,
-      color: "orange",
-    },
-    {
-      label: "G3b",
-      range: "30–44",
-      min: 30,
-      max: 44.9,
-      color: "orange",
-    },
-    {
-      label: "G4",
-      range: "15–29",
-      min: 15,
-      max: 29.9,
-      color: "red",
-    },
-    {
-      label: "G5",
-      range: "<15",
-      max: 14.9,
-      color: "gray",
-    },
-  ],
+  clinicalGuidance: {
+    advice: ["Use CKD-EPI 2021 (race-free) as the preferred equation for estimating GFR in clinical practice.","Interpret eGFR alongside albuminuria (ACR) for CKD staging per KDIGO guidelines.","Repeat testing after 3 months to confirm chronicity before diagnosing CKD."],
+    warnings: ["CKD-EPI is an estimate and may be inaccurate in extremes of muscle mass, amputees, or pregnancy.","Do not use CKD-EPI for medication dosing without checking drug-specific guidance; Cockcroft-Gault may be required."],
+    followUp: ["If eGFR < 60 mL/min/1.73 m², repeat within 3 months to assess for chronicity.","Evaluate for albuminuria with urine ACR in all patients with reduced eGFR.","Refer to nephrology if eGFR < 30 or rapidly declining."],
+  },
 
   clinicalNotes:
-    "The 2021 CKD-EPI creatinine equation estimates kidney function without using race and is recommended by many international laboratories.",
+    "Interpret results together with the patient's clinical presentation.",
+
+  evidence: undefined,
+
+  faq: undefined,
+
+  comparison: undefined,
 
   references: [
-    "Inker LA, et al. NEJM. 2021.",
-    "National Kidney Foundation.",
+    "MedCalcHub Clinical References",
   ],
+
+  relatedCalculators: [],
 
   inputs: [
-    {
-      id: "sex",
-      label: "Sex",
-      type: "select",
-      required: true,
-      options: [
-        { label: "Male", value: "male" },
-        { label: "Female", value: "female" },
-      ],
-    },
-    {
-      id: "age",
-      label: "Age",
-      type: "number",
-      unit: "years",
-      required: true,
-      min: 18,
-      max: 120,
-      step: 1,
-    },
-    {
-      id: "creatinine",
-      label: "Serum Creatinine",
-      type: "number",
-      unit: "mg/dL",
-      required: true,
-      min: 0.1,
-      max: 20,
-      step: 0.01,
-    },
-  ],
+  {
+    id: "age",
+    label: "Age",
+    type: "number",
+    unit: "years",
+    required: true,
+  },
+  {
+    id: "sex",
+    label: "Sex",
+    type: "select",
+    required: true,
+  },
+  {
+    id: "creatinine",
+    label: "Serum Creatinine",
+    type: "number",
+    unit: "mg/dL",
+    required: true,
+  }
+],
 
-  calculate(values) {
-    const sex = values.sex;
-    const age = parseFloat(values.age);
-    const scr = parseFloat(values.creatinine);
+  
+calculate(
+  values: Record<string, string>,
+) {
 
-    const female = sex === "female";
 
-    const k = female ? 0.7 : 0.9;
-    const alpha = female ? -0.241 : -0.302;
 
-    const min = Math.min(scr / k, 1);
-    const max = Math.max(scr / k, 1);
+for (
+  const key of Object.keys(values)
+) {
 
-    let egfr =
-      142 *
-      Math.pow(min, alpha) *
-      Math.pow(max, -1.2) *
-      Math.pow(0.9938, age);
+  const inputValue =
+    Number(values[key]);
 
-    if (female) {
-      egfr *= 1.012;
-    }
 
-    const rounded = Math.round(egfr * 10) / 10;
-
-    let interpretation: string;
-    let status: "normal" | "low" = "normal";
-
-    if (rounded >= 90) {
-      interpretation = "G1: Normal or high kidney function.";
-    } else if (rounded >= 60) {
-      interpretation = "G2: Mildly decreased kidney function.";
-    } else if (rounded >= 45) {
-      interpretation =
-        "G3a: Mild to moderate decrease in kidney function.";
-      status = "low";
-    } else if (rounded >= 30) {
-      interpretation =
-        "G3b: Moderate to severe decrease in kidney function.";
-      status = "low";
-    } else if (rounded >= 15) {
-      interpretation =
-        "G4: Severely decreased kidney function.";
-      status = "low";
-    } else {
-      interpretation = "G5: Kidney failure.";
-      status = "low";
-    }
+  if (
+    values[key] === "" ||
+    values[key] === undefined
+  ) {
 
     return {
-      value: rounded,
-      unit: "mL/min/1.73 m²",
-      interpretation,
-      status,
+
+      value: 0,
+
+      interpretation:
+        "Required input missing.",
+
+      status:
+        "critical",
+
     };
-  },
+
+  }
+
+
+  if (
+    Number.isNaN(inputValue)
+  ) {
+
+    return {
+
+      value: 0,
+
+      interpretation:
+        "Invalid numeric input.",
+
+      status:
+        "critical",
+
+    };
+
+  }
+
+
+  if (
+    inputValue < 0
+  ) {
+
+    return {
+
+      value: 0,
+
+      interpretation:
+        "Negative values are not allowed.",
+
+      status:
+        "critical",
+
+    };
+
+  }
+
+}
+
+
+
+
+
+const age =
+    Number(values.age);
+
+const sex =
+    Number(values.sex);
+
+const creatinine =
+    Number(values.creatinine);
+
+
+  const result =
+    142 * Math.pow(Math.min(creatinine / 0.9, 1), -0.302) * Math.pow(Math.max(creatinine / 0.9, 1), -1.2) * Math.pow(0.9938, age) * 1.012;
+
+
+  
+let interpretation =
+  "Clinical interpretation pending.";
+
+let status:
+  "normal" |
+  "low" |
+  "high" |
+  "critical" =
+  "normal";
+
+let referenceRange =
+  "";
+
+if (false) {}
+
+
+else if (result >= 90) {
+
+  interpretation =
+    "G1: Normal or high";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "≥90";
+}
+
+
+else if (result >= 60 && result <= 89) {
+
+  interpretation =
+    "G2: Mildly decreased";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "60–89";
+}
+
+
+else if (result >= 45 && result <= 59) {
+
+  interpretation =
+    "G3a: Mild to moderate";
+
+  status =
+    "low";
+
+  referenceRange =
+  "45–59";
+}
+
+
+else if (result >= 30 && result <= 44) {
+
+  interpretation =
+    "G3b: Moderate to severe";
+
+  status =
+    "low";
+
+  referenceRange =
+  "30–44";
+}
+
+
+else if (result >= 15 && result <= 29) {
+
+  interpretation =
+    "G4: Severely decreased";
+
+  status =
+    "low";
+
+  referenceRange =
+  "15–29";
+}
+
+
+else if (result <= 14) {
+
+  interpretation =
+    "G5: Kidney failure";
+
+  status =
+    "critical";
+
+  referenceRange =
+  "<14.1";
+}
+
+
+
+
+
+return {
+  value:
+    Number(result.toFixed(2)),
+
+  interpretation,
+
+  status,
+
+  referenceRange,
+};
+},
+
 };

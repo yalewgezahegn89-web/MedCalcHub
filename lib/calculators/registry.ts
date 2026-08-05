@@ -1,4 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { albuminCreatinineRatioCalculator } from "./albumin-creatinine-ratio";
 import { mapCalculator } from "./map";
 import { heartRateCalculator } from "./heart-rate";
 import { testHeartRateCalculator } from "./test-heart-rate";
@@ -36,7 +37,7 @@ import { correctedSodiumCalculator } from "./corrected-sodium";
 import { albuminCorrectedCalciumCalculator } from "./albumin-corrected-calcium";
 
 import { fenaCalculator } from "./fena";
-import { feUreaCalculator } from "./feurea";
+import { feureaCalculator } from "./feurea";
 import { ttkgCalculator } from "./ttkg";
 import { calciumPhosphateProductCalculator } from "./calcium-phosphate-product";
 import { fractionalExcretionCalculator } from "./fractional-excretion-calculator";
@@ -56,6 +57,8 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
+  feureaCalculator,
+  albuminCreatinineRatioCalculator,
   mapCalculator,
   heartRateCalculator,
   testHeartRateCalculator,
@@ -95,7 +98,7 @@ bsaTest4Calculator,  bmiCalculator,
   albuminCorrectedCalciumCalculator,
 
   fenaCalculator,
-  feUreaCalculator,
+  feureaCalculator,
   ttkgCalculator,
   calciumPhosphateProductCalculator,
   fractionalExcretionCalculator,

@@ -1,20 +1,20 @@
 import type { CalculatorDefinition } from "./calculator.types";
 
-export const calciumPhosphateProductCalculator: CalculatorDefinition = {
-  id: "calcium-phosphate-product",
+export const albuminCreatinineRatioCalculator: CalculatorDefinition = {
+  id: "albumin-creatinine-ratio",
 
-  slug: "calcium-phosphate-product",
+  slug: "albumin-creatinine-ratio",
 
-  name: "calcium-phosphate-product",
+  name: "albumin-creatinine-ratio",
 
-  shortName: "calcium-phosphate-product",
+  shortName: "albumin-creatinine-ratio",
 
   description:
-    "Calculates the calcium-phosphate product used in renal risk assessment for vascular calcification.",
+    "Calculates urine albumin-to-creatinine ratio (ACR) for CKD screening and staging.",
 
   category: "Nephrology",
 
-  specialty: "Internal Medicine",
+  specialty: "Nephrology",
 
   featured: false,
 
@@ -24,29 +24,29 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "CaP = calcium * phosphate",
+  formula: "ACR = albumin / creatinine",
 
-  normalRange: "< 55 mg²/dL²",
+  normalRange: "<30 mg/g",
 
   referenceRanges: [
   {
-    label: "Acceptable",
-    range: "<55.1",
+    label: "A1: Normal to mildly increased",
+    range: "<29.1",
   },
   {
-    label: "Elevated — increased calcification risk",
-    range: "55–70",
+    label: "A2: Moderately increased",
+    range: "30–300",
   },
   {
-    label: "Critically elevated — high calcification risk",
-    range: "≥70",
+    label: "A3: Severely increased",
+    range: "≥301",
   }
 ],
 
   clinicalGuidance: {
-    advice: ["An elevated calcium-phosphate product (> 55 mg²/dL²) is associated with an increased risk of vascular calcification and cardiovascular morbidity.","This product is particularly important to monitor in patients with chronic kidney disease and those on dialysis."],
-    warnings: ["This should be interpreted with the patient's renal and mineral metabolism status.","Treat phosphate elevation rather than calcium alone to reduce the calcium-phosphate product."],
-    followUp: ["If elevated, assess dietary phosphorus intake and consider phosphate binders.","Monitor parathyroid hormone (PTH) and vitamin D levels in CKD patients."],
+    advice: ["Persistent albuminuria is one of the earliest indicators of chronic kidney disease and should always be interpreted together with eGFR.","ACR is recommended for CKD screening in patients with diabetes, hypertension, or family history of kidney disease."],
+    warnings: ["Diagnosing CKD from a single abnormal ACR result.","Ignoring transient albuminuria caused by fever, exercise, or urinary tract infection.","Using ACR alone without assessing kidney function (eGFR)."],
+    followUp: ["Persistent albuminuria should be confirmed with at least two abnormal measurements over a period of three months.","If ACR > 30 mg/g, repeat testing and evaluate eGFR for CKD staging."],
   },
 
   clinicalNotes:
@@ -66,17 +66,17 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
 
   inputs: [
   {
-    id: "calcium",
-    label: "Calcium",
+    id: "albumin",
+    label: "Urine Albumin",
     type: "number",
-    unit: "mg/dL",
+    unit: "mg/L",
     required: true,
   },
   {
-    id: "phosphate",
-    label: "Phosphate",
+    id: "creatinine",
+    label: "Urine Creatinine",
     type: "number",
-    unit: "mg/dL",
+    unit: "g/L",
     required: true,
   }
 ],
@@ -159,15 +159,15 @@ for (
 
 
 
-const calcium =
-    Number(values.calcium);
+const albumin =
+    Number(values.albumin);
 
-const phosphate =
-    Number(values.phosphate);
+const creatinine =
+    Number(values.creatinine);
 
 
   const result =
-    calcium * phosphate;
+    albumin / creatinine;
 
 
   
@@ -187,42 +187,42 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 55) {
+else if (result <= 29) {
 
   interpretation =
-    "Acceptable";
+    "A1: Normal to mildly increased";
 
   status =
     "normal";
 
   referenceRange =
-  "<55.1";
+  "<29.1";
 }
 
 
-else if (result >= 55 && result <= 70) {
+else if (result >= 30 && result <= 300) {
 
   interpretation =
-    "Elevated — increased calcification risk";
+    "A2: Moderately increased";
 
   status =
     "high";
 
   referenceRange =
-  "55–70";
+  "30–300";
 }
 
 
-else if (result >= 70) {
+else if (result >= 301) {
 
   interpretation =
-    "Critically elevated — high calcification risk";
+    "A3: Severely increased";
 
   status =
     "critical";
 
   referenceRange =
-  "≥70";
+  "≥301";
 }
 
 
