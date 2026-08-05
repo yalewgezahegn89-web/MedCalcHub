@@ -21,6 +21,9 @@ export const cardiologyKnowledge: Record<
       "dbp",
       "hemodynamics",
     ],
+    relatedCalculators: [
+      "heart-rate",
+    ],
     inputs: [
       {
         id: "sbp",
@@ -54,6 +57,9 @@ export const cardiologyKnowledge: Record<
       "bpm",
       "cardiology",
       "vital signs",
+    ],
+    relatedCalculators: [
+      "map",
     ],
     inputs: [
       {

@@ -10,7 +10,7 @@ export const bmiCalculator: CalculatorDefinition = {
   shortName: "bmi",
 
   description:
-    "Calculates Body Mass Index.",
+    "Calculates Body Mass Index from weight and height.",
 
   category: "Anthropometry",
 
@@ -20,7 +20,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-02",
+  updatedAt: "2026-08-05",
 
   keywords: [],
 
@@ -48,9 +48,20 @@ export const bmiCalculator: CalculatorDefinition = {
 ],
 
   clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
+    advice: [
+      "Maintain a balanced diet and regular physical activity.",
+      "Assess cardiovascular and metabolic risk factors when clinically indicated.",
+      "Use BMI as a screening tool, not a definitive diagnostic measure."
+    ],
+    warnings: [
+      "BMI may not accurately reflect body composition in athletes, elderly patients, or individuals with significant muscle mass.",
+      "BMI does not differentiate between fat mass and lean mass."
+    ],
+    followUp: [
+      "Interpret BMI together with clinical history and physical examination.",
+      "Consider waist circumference and additional metabolic risk assessment.",
+      "Refer for body composition analysis if clinical picture is unclear."
+    ],
   },
 
   clinicalNotes:
@@ -60,7 +71,69 @@ export const bmiCalculator: CalculatorDefinition = {
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: [],
+  faq: [
+    {
+      "question": "What is BMI?",
+      "answer": "Body Mass Index (BMI) is a measure of body fat based on height and weight. It is calculated by dividing weight in kilograms by the square of height in meters."
+    },
+    {
+      "question": "Is BMI accurate for athletes?",
+      "answer": "BMI may overestimate body fat in athletes and muscular individuals because it does not distinguish between muscle and fat mass."
+    },
+    {
+      "question": "What BMI indicates obesity?",
+      "answer": "A BMI of 30 or higher is classified as obesity according to WHO guidelines."
+    }
+  ],
+
+  comparison: {
+    "title": "BMI vs Other Body Composition Measures",
+    "calculators": [
+      {
+        "name": "Body Surface Area",
+        "href": "/calculators/bsa",
+        "use": "Drug dosing and physiologic scaling"
+      },
+      {
+        "name": "Waist-to-Hip Ratio",
+        "href": "/calculators/waist-to-hip-ratio",
+        "use": "Central adiposity assessment"
+      }
+    ]
+  },
+
+  clinical: {
+    "advice": [
+      "Maintain a balanced diet and regular physical activity.",
+      "Assess cardiovascular and metabolic risk factors when clinically indicated.",
+      "Use BMI as a screening tool, not a definitive diagnostic measure."
+    ],
+    "warnings": [
+      "BMI may not accurately reflect body composition in athletes, elderly patients, or individuals with significant muscle mass.",
+      "BMI does not differentiate between fat mass and lean mass."
+    ],
+    "followUp": [
+      "Interpret BMI together with clinical history and physical examination.",
+      "Consider waist circumference and additional metabolic risk assessment.",
+      "Refer for body composition analysis if clinical picture is unclear."
+    ]
+  },
+
+  evidence: {
+    "source": "World Health Organization",
+    "reference": "WHO Obesity: Preventing and managing the global epidemic. WHO Technical Report Series 894.",
+    "references": [
+      "WHO. Obesity: Preventing and managing the global epidemic. WHO Technical Report Series 894, 2000.",
+      "Nuttall FQ. Body Mass Index: Obesity, BMI, and Health. Nutrition. 2015."
+    ]
+  },
+
+  relatedCalculators: [
+    "bsa",
+    "ibw",
+    "adjbw",
+    "lbm"
+  ],
 
   inputs: [
   {

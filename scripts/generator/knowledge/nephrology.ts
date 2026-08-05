@@ -20,6 +20,11 @@ export const nephrologyKnowledge: Record<
       "renal",
       "kidney",
     ],
+    relatedCalculators: [
+      "cockcroft-gault",
+      "mdrd",
+      "bun-creatinine-ratio",
+    ],
     inputs: [
       {
         id: "age",
