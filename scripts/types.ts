@@ -70,6 +70,8 @@ export interface GeneratorOptions {
 
   comparison?: KnowledgeComparisonMetadata;
 
+  relatedCalculators?: string[];
+
   /**
    * Automatic clinical classification rules
    *

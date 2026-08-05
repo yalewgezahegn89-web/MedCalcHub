@@ -9,7 +9,6 @@ export function buildMetadata(
       calculatorName,
     );
 
-
   const slug =
     calculatorName
       .toLowerCase()
@@ -89,6 +88,11 @@ export function buildMetadata(
                 : undefined,
           }
         : undefined,
+
+    relatedCalculators:
+      suggestion.relatedCalculators
+        ? [...suggestion.relatedCalculators]
+        : [],
 
     evidence:
       suggestion.evidence

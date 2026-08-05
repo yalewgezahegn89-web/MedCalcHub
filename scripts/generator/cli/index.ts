@@ -275,35 +275,13 @@ const clinicalGuidance =
 
     generateCalculator({
 
+  ...metadata,
+
   force,
 
   classification,
 
   clinicalGuidance,
-
-  name,
-
-      shortName,
-
-      slug,
-
-      category,
-
-      specialty,
-
-      description,
-
-      formula,
-
-      normalRange,
-
-      keywords,
-
-      reference,
-
-      reviewedBy,
-
-      featured,
 
       inputs,
 

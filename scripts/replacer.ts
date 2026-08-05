@@ -127,6 +127,12 @@ export function replacePlaceholders(
         : "undefined",
     )
     .replaceAll(
+      "{{RELATED_CALCULATORS}}",
+      JSON.stringify(
+        options.relatedCalculators ?? [],
+      ),
+    )
+    .replaceAll(
       "{{REFERENCE}}",
       options.reference,
     )

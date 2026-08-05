@@ -49,7 +49,7 @@ export const calculatorTemplate: CalculatorDefinition = {
     "{{REFERENCE}}",
   ],
 
-  relatedCalculators: [],
+  relatedCalculators: {{RELATED_CALCULATORS}},
 
   inputs: {{INPUTS}},
 
