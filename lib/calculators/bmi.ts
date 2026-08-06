@@ -24,7 +24,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "BMI = weight / height²",
+  formula: "weight / (height * height)",
 
   normalRange: "18.5–24.9 kg/m²",
 
@@ -185,7 +185,7 @@ const ht = height;
 
 
   const result =
-    weight / height2;
+    weight / (height * height);
 
 
   

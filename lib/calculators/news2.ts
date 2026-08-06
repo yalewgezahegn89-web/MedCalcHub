@@ -24,7 +24,7 @@ export const news2Calculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "Sum of physiological parameter scores.",
+  formula: "",
 
   normalRange: "0–20",
 
@@ -310,8 +310,15 @@ const systolicBloodPressure = sbp;
 const pulse = Number(values.pulse);
 
 
-  const result =
-    Sum of physiological parameter scores.;
+  let score = 0;
+  score += respiratory_rate;
+  score += spo2;
+  score += temperature;
+  score += sbp;
+  score += pulse;
+
+
+  const result = score;
 
 
   

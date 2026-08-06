@@ -24,7 +24,7 @@ export const osmolarGapCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "Osmolar Gap = Measured Osmolality − Calculated Osmolality",
+  formula: "measured - (2 * sodium + glucose / 18 + bun / 2.8)",
 
   normalRange: "-10 to +10 mOsm/kg",
 
@@ -278,7 +278,7 @@ const bun = Number(values.bun);
 
 
   const result =
-    measured - Calculated Osmolality;
+    measured - (2 * sodium + glucose / 18 + bun / 2.8);
 
 
   

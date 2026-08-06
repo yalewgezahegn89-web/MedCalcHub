@@ -10,7 +10,7 @@ export const cardiologyKnowledge: Record<
     description:
       "Calculates Mean Arterial Pressure from systolic and diastolic blood pressure.",
     formula:
-      "MAP = (SBP + 2 × DBP) / 3",
+      "(sbp + 2 * dbp) / 3",
     normalRange:
       "70-100 mmHg",
     keywords: [
@@ -24,14 +24,14 @@ export const cardiologyKnowledge: Record<
     inputs: [
       {
         id: "sbp",
-        label: "Systolic Blood Pressure",
+        label: "SBP",
         type: "number",
         unit: "mmHg",
         required: true,
       },
       {
         id: "dbp",
-        label: "Diastolic Blood Pressure",
+        label: "DBP",
         type: "number",
         unit: "mmHg",
         required: true,
@@ -45,7 +45,7 @@ export const cardiologyKnowledge: Record<
     description:
       "Calculates heart rate from the number of beats counted over a measured time interval.",
     formula:
-      "HR = beats / minutes",
+      "beats / time",
     normalRange:
       "60-100 bpm",
     keywords: [

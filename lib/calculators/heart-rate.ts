@@ -24,7 +24,7 @@ export const heartRateCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "HR = beats / minutes",
+  formula: "beats / time",
 
   normalRange: "60-100 bpm",
 
@@ -162,7 +162,7 @@ const time = Number(values.time);
 
 
   const result =
-    beats / minutes;
+    beats / time;
 
 
   

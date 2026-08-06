@@ -24,7 +24,7 @@ export const mapCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "MAP = (SBP + 2 × DBP) / 3",
+  formula: "(sbp + 2 * dbp) / 3",
 
   normalRange: "70-100 mmHg",
 
@@ -54,14 +54,14 @@ export const mapCalculator: CalculatorDefinition = {
   inputs: [
   {
     id: "sbp",
-    label: "Systolic Blood Pressure",
+    label: "SBP",
     type: "number",
     unit: "mmHg",
     required: true,
   },
   {
     id: "dbp",
-    label: "Diastolic Blood Pressure",
+    label: "DBP",
     type: "number",
     unit: "mmHg",
     required: true,
@@ -80,7 +80,7 @@ if (
 ) {
   return {
     value: 0,
-    interpretation: "Systolic Blood Pressure is required.",
+    interpretation: "SBP is required.",
     status: "critical",
   };
 }
@@ -91,7 +91,7 @@ if (
 ) {
   return {
     value: 0,
-    interpretation: "Invalid Systolic Blood Pressure.",
+    interpretation: "Invalid SBP.",
     status: "critical",
   };
 }
@@ -100,7 +100,7 @@ if (
 if (Number(values.sbp) < 0) {
   return {
     value: 0,
-    interpretation: "Systolic Blood Pressure cannot be negative.",
+    interpretation: "SBP cannot be negative.",
     status: "critical",
   };
 }
@@ -109,7 +109,7 @@ if (Number(values.sbp) < 0) {
 if (Number(values.sbp) === 0) {
   return {
     value: 0,
-    interpretation: "Systolic Blood Pressure cannot be zero.",
+    interpretation: "SBP cannot be zero.",
     status: "critical",
   };
 }
@@ -121,7 +121,7 @@ if (
 ) {
   return {
     value: 0,
-    interpretation: "Diastolic Blood Pressure is required.",
+    interpretation: "DBP is required.",
     status: "critical",
   };
 }
@@ -132,7 +132,7 @@ if (
 ) {
   return {
     value: 0,
-    interpretation: "Invalid Diastolic Blood Pressure.",
+    interpretation: "Invalid DBP.",
     status: "critical",
   };
 }
@@ -141,7 +141,7 @@ if (
 if (Number(values.dbp) < 0) {
   return {
     value: 0,
-    interpretation: "Diastolic Blood Pressure cannot be negative.",
+    interpretation: "DBP cannot be negative.",
     status: "critical",
   };
 }
@@ -150,7 +150,7 @@ if (Number(values.dbp) < 0) {
 if (Number(values.dbp) === 0) {
   return {
     value: 0,
-    interpretation: "Diastolic Blood Pressure cannot be zero.",
+    interpretation: "DBP cannot be zero.",
     status: "critical",
   };
 }
@@ -164,7 +164,7 @@ const diastolicBloodPressure = dbp;
 
 
   const result =
-    (dbp + 2 * DBP) / 3;
+    (sbp + 2 * dbp) / 3;
 
 
   

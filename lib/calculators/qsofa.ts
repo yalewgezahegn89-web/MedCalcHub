@@ -24,7 +24,7 @@ export const qsofaCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "Score = Altered Mental Status + SBP ≤100 + RR ≥22",
+  formula: "",
 
   normalRange: "0–3 points",
 
@@ -210,8 +210,12 @@ const respiratory_rate = Number(values.respiratory_rate);
 const mental_status = Number(values.mental_status);
 
 
-  const result =
-    mental_status + sbp <;
+  let score = 0;
+  score += sbp;
+  score += respiratory_rate;
+
+
+  const result = score;
 
 
   

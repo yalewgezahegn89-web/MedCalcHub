@@ -8,7 +8,7 @@ export const anthropometryKnowledge = {
       "Calculates Body Mass Index.",
 
     formula:
-      "BMI = weight / height²",
+      "weight / (height * height)",
 
     normalRange:
       "18.5–24.9 kg/m²",

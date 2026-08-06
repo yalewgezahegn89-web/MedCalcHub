@@ -607,7 +607,7 @@ export const laboratoryKnowledge: Record<
     description:
       "Calculates the osmolar gap as the difference between measured and calculated serum osmolality. An elevated osmolar gap may suggest toxic alcohol ingestion (methanol, ethylene glycol) or other osmotically active substances.",
     formula:
-      "Osmolar Gap = Measured Osmolality − Calculated Osmolality",
+      "measured - (2 * sodium + glucose / 18 + bun / 2.8)",
     normalRange: "-10 to +10 mOsm/kg",
     keywords: [
       "osmolar gap",
