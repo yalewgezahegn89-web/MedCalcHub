@@ -20,7 +20,7 @@ export const homaIrCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -87,83 +87,91 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.glucose === "" ||
+  values.glucose === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Fasting Glucose is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.glucose))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Fasting Glucose.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.glucose) < 0) {
+  return {
+    value: 0,
+    interpretation: "Fasting Glucose cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.glucose) === 0) {
+  return {
+    value: 0,
+    interpretation: "Fasting Glucose cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.insulin === "" ||
+  values.insulin === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Fasting Insulin is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.insulin))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Fasting Insulin.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.insulin) < 0) {
+  return {
+    value: 0,
+    interpretation: "Fasting Insulin cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.insulin) === 0) {
+  return {
+    value: 0,
+    interpretation: "Fasting Insulin cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const glucose =
-    Number(values.glucose);
-
-const insulin =
-    Number(values.insulin);
+const glucose = Number(values.glucose);
+const insulin = Number(values.insulin);
 
 
   const result =

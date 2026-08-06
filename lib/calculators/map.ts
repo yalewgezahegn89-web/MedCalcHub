@@ -20,7 +20,7 @@ export const mapCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-01",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -30,8 +30,20 @@ export const mapCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
+  clinicalGuidance: {
+    advice: [],
+    warnings: [],
+    followUp: [],
+  },
+
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
+
+  evidence: undefined,
+
+  faq: undefined,
+
+  comparison: undefined,
 
   references: [
     "MedCalcHub Clinical References",
@@ -61,22 +73,125 @@ calculate(
   values: Record<string, string>,
 ) {
 
-const sbp =
-    Number(values.sbp);
 
-const dbp =
-    Number(values.dbp);
+if (
+  values.sbp === "" ||
+  values.sbp === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Systolic Blood Pressure is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.sbp))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Systolic Blood Pressure.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.sbp) < 0) {
+  return {
+    value: 0,
+    interpretation: "Systolic Blood Pressure cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.sbp) === 0) {
+  return {
+    value: 0,
+    interpretation: "Systolic Blood Pressure cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.dbp === "" ||
+  values.dbp === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Diastolic Blood Pressure is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.dbp))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Diastolic Blood Pressure.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.dbp) < 0) {
+  return {
+    value: 0,
+    interpretation: "Diastolic Blood Pressure cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.dbp) === 0) {
+  return {
+    value: 0,
+    interpretation: "Diastolic Blood Pressure cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+
+const sbp = Number(values.sbp);
+const dbp = Number(values.dbp);
+
 
   const result =
     (sbp + 2 * dbp) / 3;
 
-  return {
-    value:
-      Number(result.toFixed(2)),
-    interpretation:
-      "Clinical interpretation pending.",
-    status: "normal",
-  };
+
+  
+let interpretation =
+  "Clinical interpretation pending.";
+
+let status:
+  "normal" |
+  "low" |
+  "high" |
+  "critical" =
+  "normal";
+
+let referenceRange =
+  "";
+
+
+
+
+return {
+  value:
+    Number(result.toFixed(2)),
+
+  interpretation,
+
+  status,
+
+  referenceRange,
+};
 },
 
 };

@@ -1,4 +1,6 @@
 import type { GeneratorOptions } from "./types";
+import { sanitizeIdentifier } from "./generator/core/sanitize-identifier";
+
 export function toPascalCase(text: string) {
   return text
     .split("-")
@@ -13,12 +15,7 @@ export function toPascalCase(text: string) {
 export function calculatorVariable(
   slug: string,
 ) {
-  return (
-    slug
-      .replace(/-([a-z])/g, (_, c) =>
-        c.toUpperCase(),
-      ) + "Calculator"
-  );
+  return sanitizeIdentifier(slug) + "Calculator";
 }
 
 export function normalizeOptions(

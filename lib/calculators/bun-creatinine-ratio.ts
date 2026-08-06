@@ -20,7 +20,7 @@ export const bunCreatinineRatioCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -52,17 +52,17 @@ export const bunCreatinineRatioCalculator: CalculatorDefinition = {
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: undefined,
+  evidence: {"source":"NKF / KDIGO","reference":"KDIGO Clinical Practice Guideline for the Evaluation and Management of CKD.","reviewedBy":"MedCalcHub Clinical Team","version":"2024","updatedAt":"2026-07","references":["KDIGO Clinical Practice Guideline.","National Kidney Foundation."]},
 
-  faq: undefined,
+  faq: [{"question":"What does a high BUN/Creatinine ratio mean?","answer":"A ratio >20:1 may suggest prerenal azotemia (e.g. dehydration, heart failure), GI bleeding, or high protein intake."},{"question":"What does a low BUN/Creatinine ratio mean?","answer":"A ratio <10:1 may indicate intrinsic renal disease, liver disease, malnutrition, or a low-protein diet."}],
 
-  comparison: undefined,
+  comparison: {"title":"Which Kidney Calculator Should I Use?","calculators":[{"name":"BUN/Creatinine Ratio","href":"/calculators/bun-creatinine-ratio","bestFor":"Differentiating prerenal from intrinsic renal causes.","limitation":"Not a direct measure of kidney function."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Estimating GFR for CKD staging.","limitation":"Does not differentiate etiology."},{"name":"FENa","href":"/calculators/fena","bestFor":"Confirming prerenal vs. intrinsic AKI.","limitation":"Affected by diuretic use."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: [],
+  relatedCalculators: ["ckd-epi-2021","cockcroft-gault","fena","feurea"],
 
   inputs: [
   {
@@ -87,83 +87,91 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.bun === "" ||
+  values.bun === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Blood Urea Nitrogen is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.bun))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Blood Urea Nitrogen.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.bun) < 0) {
+  return {
+    value: 0,
+    interpretation: "Blood Urea Nitrogen cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.bun) === 0) {
+  return {
+    value: 0,
+    interpretation: "Blood Urea Nitrogen cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.creatinine === "" ||
+  values.creatinine === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Serum Creatinine is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.creatinine))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Serum Creatinine.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.creatinine) < 0) {
+  return {
+    value: 0,
+    interpretation: "Serum Creatinine cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.creatinine) === 0) {
+  return {
+    value: 0,
+    interpretation: "Serum Creatinine cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const bun =
-    Number(values.bun);
-
-const creatinine =
-    Number(values.creatinine);
+const bun = Number(values.bun);
+const creatinine = Number(values.creatinine);
 
 
   const result =

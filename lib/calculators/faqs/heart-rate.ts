@@ -1,22 +1,22 @@
 export const faqTemplate = [
   {
-    question: "What is Heart Rate Calculator?",
+    question: "What is heart-rate?",
 
     answer:
-      "Heart Rate Calculator is a clinical calculator used in Emergency Medicine to support medical decision-making.",
+      "heart-rate is a clinical calculator used in Emergency Medicine to support medical decision-making.",
   },
 
   {
-    question: "When should I use Heart Rate Calculator?",
+    question: "When should I use heart-rate?",
 
     answer:
       "Use this calculator when clinically indicated and interpret the result together with the patient's history, examination findings, and laboratory investigations.",
   },
 
   {
-    question: "What are the limitations of Heart Rate Calculator?",
+    question: "What are the limitations of heart-rate?",
 
     answer:
-      "Like all clinical calculators, Heart Rate Calculator should support—but never replace—clinical judgment.",
+      "Like all clinical calculators, heart-rate should support—but never replace—clinical judgment.",
   },
 ];

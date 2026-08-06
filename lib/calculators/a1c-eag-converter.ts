@@ -20,7 +20,7 @@ export const a1cEagConverterCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -80,80 +80,49 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.a1c === "" ||
+  values.a1c === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "HbA1c is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.a1c))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid HbA1c.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.a1c) < 0) {
+  return {
+    value: 0,
+    interpretation: "HbA1c cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
-
-      interpretation:
-        "Negative values are not allowed.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
+if (Number(values.a1c) === 0) {
+  return {
+    value: 0,
+    interpretation: "HbA1c cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const a1c =
-    Number(values.a1c);
+const a1c = Number(values.a1c);
 
 
   const result =

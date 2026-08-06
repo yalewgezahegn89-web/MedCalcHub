@@ -20,7 +20,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -95,74 +95,86 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.weight === "" ||
+  values.weight === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-
-  if (
-    inputValue < 0
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Negative values are not allowed.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
+  return {
+    value: 0,
+    interpretation: "Weight is required.",
+    status: "critical",
+  };
 }
 
+
+if (
+  Number.isNaN(Number(values.weight))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Weight.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.weight) < 0) {
+  return {
+    value: 0,
+    interpretation: "Weight cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.weight) === 0) {
+  return {
+    value: 0,
+    interpretation: "Weight cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.height === "" ||
+  values.height === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Height is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.height))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Height.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.height) < 0) {
+  return {
+    value: 0,
+    interpretation: "Height cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.height) === 0) {
+  return {
+    value: 0,
+    interpretation: "Height cannot be zero.",
+    status: "critical",
+  };
+}
 
 
 
@@ -171,7 +183,7 @@ const height = Number(values.height) / 100;
 
 
   const result =
-    weight / (height * height);
+    weight / height2;
 
 
   

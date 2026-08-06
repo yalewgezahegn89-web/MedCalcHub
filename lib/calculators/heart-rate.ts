@@ -5,9 +5,9 @@ export const heartRateCalculator: CalculatorDefinition = {
 
   slug: "heart-rate",
 
-  name: "Heart Rate Calculator",
+  name: "heart-rate",
 
-  shortName: "Heart Rate Calculator",
+  shortName: "heart-rate",
 
   description:
     "Calculates heart rate from the number of beats counted over a measured time interval.",
@@ -20,7 +20,7 @@ export const heartRateCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-04",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -40,6 +40,10 @@ export const heartRateCalculator: CalculatorDefinition = {
     "Interpret results together with the patient's clinical presentation.",
 
   evidence: undefined,
+
+  faq: undefined,
+
+  comparison: undefined,
 
   references: [
     "MedCalcHub Clinical References",
@@ -70,87 +74,95 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.beats === "" ||
+  values.beats === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Number of Beats is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.beats))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Number of Beats.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.beats) < 0) {
+  return {
+    value: 0,
+    interpretation: "Number of Beats cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.beats) === 0) {
+  return {
+    value: 0,
+    interpretation: "Number of Beats cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.time === "" ||
+  values.time === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Time is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.time))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Time.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.time) < 0) {
+  return {
+    value: 0,
+    interpretation: "Time cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.time) === 0) {
+  return {
+    value: 0,
+    interpretation: "Time cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const beats =
-    Number(values.beats);
-
-const time =
-    Number(values.time);
+const beats = Number(values.beats);
+const time = Number(values.time);
 
 
   const result =
-    beats / time;
+    beats / minutes;
 
 
   

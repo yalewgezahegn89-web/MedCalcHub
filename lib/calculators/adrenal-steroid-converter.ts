@@ -20,7 +20,7 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -86,83 +86,91 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.dose === "" ||
+  values.dose === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Dose is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.dose))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Dose.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.dose) < 0) {
+  return {
+    value: 0,
+    interpretation: "Dose cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.dose) === 0) {
+  return {
+    value: 0,
+    interpretation: "Dose cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.steroid === "" ||
+  values.steroid === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Source Steroid is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.steroid))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Source Steroid.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.steroid) < 0) {
+  return {
+    value: 0,
+    interpretation: "Source Steroid cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.steroid) === 0) {
+  return {
+    value: 0,
+    interpretation: "Source Steroid cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const dose =
-    Number(values.dose);
-
-const steroid =
-    Number(values.steroid);
+const dose = Number(values.dose);
+const steroid = Number(values.steroid);
 
 
   const result =

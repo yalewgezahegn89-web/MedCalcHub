@@ -1,4 +1,10 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { ckdEpi2021Calculator } from "./ckd-epi-2021";
+import { curb65Calculator } from "./curb-65";
+import { gcsCalculator } from "./gcs";
+import { shockIndexCalculator } from "./shock-index";
+import { news2Calculator } from "./news2";
+import { qsofaCalculator } from "./qsofa";
 import { albuminCreatinineRatioCalculator } from "./albumin-creatinine-ratio";
 import { mapCalculator } from "./map";
 import { heartRateCalculator } from "./heart-rate";
@@ -13,7 +19,6 @@ import { lbmCalculator } from "./lbm";
 
 import { cockcroftGaultCalculator } from "./cockcroft-gault";
 import { bunCreatinineRatioCalculator } from "./bun-creatinine-ratio";
-import { ckdEpi2021Calculator } from "./ckd-epi-2021";
 import { mdrdCalculator } from "./mdrd";
 import { acrCalculator } from "./acr";
 
@@ -57,6 +62,12 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
+  ckdEpi2021Calculator,
+  curb65Calculator,
+  gcsCalculator,
+  shockIndexCalculator,
+  news2Calculator,
+  qsofaCalculator,
   feureaCalculator,
   albuminCreatinineRatioCalculator,
   mapCalculator,
@@ -74,7 +85,6 @@ bsaTest4Calculator,  bmiCalculator,
   childPughCalculator,
 
   bunCreatinineRatioCalculator,
-  ckdEpi2021Calculator,
   mdrdCalculator,
   acrCalculator,
 

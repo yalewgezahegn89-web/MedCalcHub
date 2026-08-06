@@ -20,7 +20,7 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -52,17 +52,17 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: undefined,
+  evidence: {"source":"Nephrology Literature","reference":"KDIGO CKD-MBD Guideline. Improving global outcomes (KDIGO) CKD-MBD update. Kidney Int Suppl. 2017;7:1-59.","reviewedBy":"MedCalcHub Clinical Team","version":"2017","updatedAt":"2026-07","references":["Nephrology references","Clinical practice guidelines"]},
 
-  faq: undefined,
+  faq: [{"question":"What does an elevated calcium-phosphate product mean?","answer":"A product > 55 mg²/dL² indicates an increased risk of metastatic calcification and vascular calcification, especially in CKD patients."},{"question":"How do you lower the calcium-phosphate product?","answer":"Reduce dietary phosphorus, use phosphate binders, and optimize dialysis adequacy. Avoid excessive calcium-based binders."}],
 
-  comparison: undefined,
+  comparison: {"title":"Which Mineral Metabolism Calculator Should I Use?","calculators":[{"name":"Calcium-Phosphate Product","href":"/calculators/calcium-phosphate-product","bestFor":"Assessing vascular calcification risk in CKD.","limitation":"Does not directly measure PTH or vitamin D status."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Estimating kidney function.","limitation":"Does not assess mineral metabolism."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: [],
+  relatedCalculators: ["ckd-epi-2021","cockcroft-gault","albumin-creatinine-ratio"],
 
   inputs: [
   {
@@ -87,83 +87,91 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.calcium === "" ||
+  values.calcium === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Calcium is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.calcium))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Calcium.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.calcium) < 0) {
+  return {
+    value: 0,
+    interpretation: "Calcium cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.calcium) === 0) {
+  return {
+    value: 0,
+    interpretation: "Calcium cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.phosphate === "" ||
+  values.phosphate === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Phosphate is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.phosphate))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Phosphate.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.phosphate) < 0) {
+  return {
+    value: 0,
+    interpretation: "Phosphate cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.phosphate) === 0) {
+  return {
+    value: 0,
+    interpretation: "Phosphate cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const calcium =
-    Number(values.calcium);
-
-const phosphate =
-    Number(values.phosphate);
+const calcium = Number(values.calcium);
+const phosphate = Number(values.phosphate);
 
 
   const result =

@@ -6,6 +6,10 @@ import type {
   FormulaContext,
 } from "./build-algebraic";
 
+import type {
+  NormalizedFormula,
+} from "../normalize-formula";
+
 import {
   normalizeFormula,
 } from "../normalize-formula";
@@ -14,12 +18,33 @@ import {
   buildAlgebraicFormula,
 } from "./build-algebraic";
 
+/**
+ * Formula type display names for error messages.
+ */
+const FORMULA_TYPE_LABELS: Record<string, string> = {
+  algebraic: "Algebraic",
+  score: "Score",
+  descriptive: "Descriptive",
+  lookup: "Lookup",
+  conditional: "Conditional",
+  converter: "Converter",
+  composite: "Composite",
+};
+
+/**
+ * Dispatch a FormulaDefinition to the appropriate
+ * formula builder based on its type.
+ *
+ * Currently only "algebraic" is implemented. All other
+ * types throw a descriptive error indicating they are
+ * not yet implemented.
+ */
 export function buildFormula(
   formula: FormulaDefinition,
   context: FormulaContext,
 ): string {
 
-  const normalized =
+  const normalized: NormalizedFormula =
     normalizeFormula(formula);
 
   switch (normalized.type) {
@@ -30,29 +55,21 @@ export function buildFormula(
         context,
       );
 
-    case "conditional":
-      throw new Error(
-        "Conditional formulas not implemented yet.",
-      );
-
+    case "score":
+    case "descriptive":
     case "lookup":
-      throw new Error(
-        "Lookup formulas not implemented yet.",
-      );
-
+    case "conditional":
+    case "converter":
     case "composite":
       throw new Error(
-        "Composite formulas not implemented yet.",
+        `Formula type "${FORMULA_TYPE_LABELS[normalized.type] ?? normalized.type}" is not implemented yet.`,
       );
 
-    case "descriptive":
+    default: {
+      const _exhaustive: never = normalized.type;
       throw new Error(
-        "Descriptive formulas not implemented yet.",
+        `Unknown formula type "${String(_exhaustive)}".`,
       );
-
-    default:
-      throw new Error(
-        "Unknown formula type.",
-      );
+    }
   }
 }

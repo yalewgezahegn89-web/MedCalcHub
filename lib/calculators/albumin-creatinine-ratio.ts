@@ -20,7 +20,7 @@ export const albuminCreatinineRatioCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -52,17 +52,17 @@ export const albuminCreatinineRatioCalculator: CalculatorDefinition = {
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: undefined,
+  evidence: {"source":"KDIGO","reference":"KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.","reviewedBy":"MedCalcHub Clinical Team","version":"2024","updatedAt":"2026-07","link":"https://kdigo.org/guidelines/ckd-evaluation-and-management/"},
 
-  faq: undefined,
+  faq: [{"question":"What is the Albumin-to-Creatinine Ratio (ACR)?","answer":"The Albumin-to-Creatinine Ratio estimates the amount of albumin excreted in urine while correcting for urine concentration using creatinine."},{"question":"Why is ACR important?","answer":"ACR is one of the earliest markers of kidney damage and is recommended for screening chronic kidney disease, especially in patients with diabetes or hypertension."},{"question":"What is considered a normal ACR?","answer":"An ACR below 30 mg/g is considered normal or mildly increased (A1)."},{"question":"When should ACR be repeated?","answer":"Persistent albuminuria should be confirmed with at least two abnormal measurements over a period of three months."}],
 
-  comparison: undefined,
+  comparison: {"title":"Which Kidney Calculator Should I Use?","calculators":[{"name":"Albumin-to-Creatinine Ratio (ACR)","href":"/calculators/albumin-creatinine-ratio","use":"Detects and stages albuminuria."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","use":"Estimates glomerular filtration rate."},{"name":"Cockcroft-Gault","href":"/calculators/cockcroft-gault","use":"Medication dose adjustment."},{"name":"MDRD","href":"/calculators/mdrd","use":"Legacy GFR equation."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: [],
+  relatedCalculators: ["ckd-epi-2021","cockcroft-gault","mdrd","fena","feurea","ttkg"],
 
   inputs: [
   {
@@ -87,83 +87,91 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.albumin === "" ||
+  values.albumin === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Urine Albumin is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.albumin))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Urine Albumin.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.albumin) < 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Albumin cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.albumin) === 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Albumin cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.creatinine === "" ||
+  values.creatinine === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Urine Creatinine is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.creatinine))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Urine Creatinine.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.creatinine) < 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Creatinine cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.creatinine) === 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Creatinine cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const albumin =
-    Number(values.albumin);
-
-const creatinine =
-    Number(values.creatinine);
+const albumin = Number(values.albumin);
+const creatinine = Number(values.creatinine);
 
 
   const result =

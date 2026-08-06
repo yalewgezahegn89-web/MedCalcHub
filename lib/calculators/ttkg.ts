@@ -20,7 +20,7 @@ export const ttkgCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -52,42 +52,42 @@ export const ttkgCalculator: CalculatorDefinition = {
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: undefined,
+  evidence: {"source":"Nephrology Literature","reference":"Kamel KS, et al. Transtubular potassium gradient in the assessment of hyperkalemia. J Am Soc Nephrol. 2001;12:1839-1844.","reviewedBy":"MedCalcHub Clinical Team","version":"2001","updatedAt":"2026-07","references":["Clinical electrolyte guidelines","Nephrology references"]},
 
-  faq: undefined,
+  faq: [{"question":"What does a low TTKG mean in hyperkalemia?","answer":"A low TTKG (< 8) in the setting of hyperkalemia suggests impaired aldosterone-mediated potassium secretion, possibly due to hypoaldosteronism or distal tubular dysfunction."},{"question":"Is TTKG still used clinically?","answer":"TTKG remains a useful bedside tool but some experts have questioned its physiological basis. It should be used alongside other clinical data."}],
 
-  comparison: undefined,
+  comparison: {"title":"Which Potassium Assessment Should I Use?","calculators":[{"name":"TTKG","href":"/calculators/ttkg","bestFor":"Assessing renal potassium secretion in hyperkalemia.","limitation":"Physiological validity has been questioned."},{"name":"FENa","href":"/calculators/fena","bestFor":"Assessing sodium handling in AKI.","limitation":"Does not assess potassium."},{"name":"FEUrea","href":"/calculators/feurea","bestFor":"Prerenal vs. intrinsic AKI when on diuretics.","limitation":"Does not assess potassium."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: [],
+  relatedCalculators: ["fena","feurea","bun-creatinine-ratio"],
 
   inputs: [
   {
-    id: "urinek",
+    id: "urineK",
     label: "Urine Potassium",
     type: "number",
     unit: "mmol/L",
     required: true,
   },
   {
-    id: "plasmak",
+    id: "plasmaK",
     label: "Plasma Potassium",
     type: "number",
     unit: "mmol/L",
     required: true,
   },
   {
-    id: "urineosmolality",
+    id: "urineOsmolality",
     label: "Urine Osmolality",
     type: "number",
     unit: "mOsm/kg",
     required: true,
   },
   {
-    id: "plasmaosmolality",
+    id: "plasmaOsmolality",
     label: "Plasma Osmolality",
     type: "number",
     unit: "mOsm/kg",
@@ -101,93 +101,179 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.urineK === "" ||
+  values.urineK === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Urine Potassium is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.urineK))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Urine Potassium.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.urineK) < 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Potassium cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.urineK) === 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Potassium cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.plasmaK === "" ||
+  values.plasmaK === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Plasma Potassium is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.plasmaK))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Plasma Potassium.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.plasmaK) < 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Potassium cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.plasmaK) === 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Potassium cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.urineOsmolality === "" ||
+  values.urineOsmolality === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Urine Osmolality is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.urineOsmolality))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Urine Osmolality.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.urineOsmolality) < 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Osmolality cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.urineOsmolality) === 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Osmolality cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.plasmaOsmolality === "" ||
+  values.plasmaOsmolality === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Plasma Osmolality is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.plasmaOsmolality))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Plasma Osmolality.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.plasmaOsmolality) < 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Osmolality cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.plasmaOsmolality) === 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Osmolality cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const urinek =
-    Number(values.urinek);
-
-const plasmak =
-    Number(values.plasmak);
-
-const urineosmolality =
-    Number(values.urineosmolality);
-
-const plasmaosmolality =
-    Number(values.plasmaosmolality);
+const urineK = Number(values.urineK);
+const plasmaK = Number(values.plasmaK);
+const urineOsmolality = Number(values.urineOsmolality);
+const plasmaOsmolality = Number(values.plasmaOsmolality);
 
 
   const result =
-    (urinek * plasmaosmolality) / (plasmak * urineosmolality);
+    (urineK * urineK) / (urineK * urineK);
 
 
   

@@ -20,7 +20,7 @@ export const mdrdCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -64,17 +64,17 @@ export const mdrdCalculator: CalculatorDefinition = {
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: undefined,
+  evidence: {"source":"NKF / Levey et al.","reference":"Levey AS, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine: a new prediction equation. Ann Intern Med. 1999;130:461-470.","reviewedBy":"MedCalcHub Clinical Team","version":"1999","updatedAt":"2026-07","references":["Levey AS, et al. Ann Intern Med. 1999;130:461-470.","KDIGO 2024 Clinical Practice Guideline for CKD."]},
 
-  faq: undefined,
+  faq: [{"question":"Is MDRD still used clinically?","answer":"Most laboratories have transitioned to CKD-EPI, but MDRD may still appear on older reports. CKD-EPI is now preferred."},{"question":"Why is MDRD less accurate at higher GFR?","answer":"The MDRD equation was developed in patients with known CKD and was not validated in healthy individuals, leading to underestimation at higher GFR values."}],
 
-  comparison: undefined,
+  comparison: {"title":"Which Kidney Calculator Should I Use?","calculators":[{"name":"MDRD","href":"/calculators/mdrd","bestFor":"Historical comparison with older lab results.","limitation":"Largely replaced by CKD-EPI for clinical use."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Current clinical practice and CKD staging.","limitation":"Not intended for medication dosing."},{"name":"Cockcroft-Gault","href":"/calculators/cockcroft-gault","bestFor":"Medication dosing.","limitation":"Less accurate for true GFR."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: [],
+  relatedCalculators: ["ckd-epi-2021","cockcroft-gault","bun-creatinine-ratio"],
 
   inputs: [
   {
@@ -105,86 +105,133 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.age === "" ||
+  values.age === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Age is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.age))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Age.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.age) < 0) {
+  return {
+    value: 0,
+    interpretation: "Age cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.age) === 0) {
+  return {
+    value: 0,
+    interpretation: "Age cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.sex === "" ||
+  values.sex === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Sex is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.sex))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Sex.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.sex) < 0) {
+  return {
+    value: 0,
+    interpretation: "Sex cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.sex) === 0) {
+  return {
+    value: 0,
+    interpretation: "Sex cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.creatinine === "" ||
+  values.creatinine === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Serum Creatinine is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.creatinine))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Serum Creatinine.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.creatinine) < 0) {
+  return {
+    value: 0,
+    interpretation: "Serum Creatinine cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.creatinine) === 0) {
+  return {
+    value: 0,
+    interpretation: "Serum Creatinine cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const age =
-    Number(values.age);
-
-const sex =
-    Number(values.sex);
-
-const creatinine =
-    Number(values.creatinine);
+const age = Number(values.age);
+const sex = Number(values.sex);
+const creatinine = Number(values.creatinine);
 
 
   const result =

@@ -20,7 +20,7 @@ export const bsaCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-04",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -40,6 +40,10 @@ export const bsaCalculator: CalculatorDefinition = {
     "Interpret results together with the patient's clinical presentation.",
 
   evidence: undefined,
+
+  faq: undefined,
+
+  comparison: undefined,
 
   references: [
     "MedCalcHub Clinical References",
@@ -70,83 +74,91 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.weight === "" ||
+  values.weight === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Weight is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.weight))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Weight.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.weight) < 0) {
+  return {
+    value: 0,
+    interpretation: "Weight cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.weight) === 0) {
+  return {
+    value: 0,
+    interpretation: "Weight cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.height === "" ||
+  values.height === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Height is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.height))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Height.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.height) < 0) {
+  return {
+    value: 0,
+    interpretation: "Height cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.height) === 0) {
+  return {
+    value: 0,
+    interpretation: "Height cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const weight =
-    Number(values.weight);
-
-const height =
-    Number(values.height);
+const weight = Number(values.weight);
+const height = Number(values.height);
 
 
   const result =

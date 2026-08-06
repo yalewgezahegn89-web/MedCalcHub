@@ -20,7 +20,7 @@ export const feureaCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -52,42 +52,42 @@ export const feureaCalculator: CalculatorDefinition = {
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: undefined,
+  evidence: {"source":"Nephrology Literature","reference":"Pépin MN, et al. Reassessment of the fractional excretion of urea for the differential diagnosis of acute renal failure. Clin Invest Med. 2007;30:E163-167.","reviewedBy":"MedCalcHub Clinical Team","version":"2007","updatedAt":"2026-07","references":["Renal physiology references","Clinical nephrology references"]},
 
-  faq: undefined,
+  faq: [{"question":"When should I use FEUrea instead of FENa?","answer":"Use FEUrea when the patient has received diuretics, which can increase urinary sodium and make FENa unreliable."},{"question":"What does FEUrea > 50% mean?","answer":"A FEUrea > 50% suggests intrinsic renal injury such as acute tubular necrosis."}],
 
-  comparison: undefined,
+  comparison: {"title":"Which Renal Assessment Should I Use?","calculators":[{"name":"FEUrea","href":"/calculators/feurea","bestFor":"Renal assessment when diuretics are present.","limitation":"Less widely validated than FENa."},{"name":"FENa","href":"/calculators/fena","bestFor":"Distinguishing prerenal azotemia from ATN.","limitation":"Unreliable with diuretic use."},{"name":"BUN/Creatinine Ratio","href":"/calculators/bun-creatinine-ratio","bestFor":"Rapid bedside assessment.","limitation":"Not a direct tubular function test."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: [],
+  relatedCalculators: ["fena","bun-creatinine-ratio","fractional-excretion-calculator","ttkg"],
 
   inputs: [
   {
-    id: "urineurea",
+    id: "urineUrea",
     label: "Urine Urea",
     type: "number",
     unit: "mg/dL",
     required: true,
   },
   {
-    id: "plasmaurea",
+    id: "plasmaUrea",
     label: "Plasma Urea",
     type: "number",
     unit: "mg/dL",
     required: true,
   },
   {
-    id: "urinecr",
+    id: "urineCr",
     label: "Urine Creatinine",
     type: "number",
     unit: "mg/dL",
     required: true,
   },
   {
-    id: "plasmacr",
+    id: "plasmaCr",
     label: "Plasma Creatinine",
     type: "number",
     unit: "mg/dL",
@@ -101,93 +101,179 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.urineUrea === "" ||
+  values.urineUrea === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Urine Urea is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.urineUrea))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Urine Urea.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.urineUrea) < 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Urea cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.urineUrea) === 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Urea cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.plasmaUrea === "" ||
+  values.plasmaUrea === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Plasma Urea is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.plasmaUrea))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Plasma Urea.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.plasmaUrea) < 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Urea cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.plasmaUrea) === 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Urea cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.urineCr === "" ||
+  values.urineCr === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Urine Creatinine is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.urineCr))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Urine Creatinine.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.urineCr) < 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Creatinine cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.urineCr) === 0) {
+  return {
+    value: 0,
+    interpretation: "Urine Creatinine cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.plasmaCr === "" ||
+  values.plasmaCr === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Plasma Creatinine is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.plasmaCr))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Plasma Creatinine.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.plasmaCr) < 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Creatinine cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.plasmaCr) === 0) {
+  return {
+    value: 0,
+    interpretation: "Plasma Creatinine cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const urineurea =
-    Number(values.urineurea);
-
-const plasmaurea =
-    Number(values.plasmaurea);
-
-const urinecr =
-    Number(values.urinecr);
-
-const plasmacr =
-    Number(values.plasmacr);
+const urineUrea = Number(values.urineUrea);
+const plasmaUrea = Number(values.plasmaUrea);
+const urineCr = Number(values.urineCr);
+const plasmaCr = Number(values.plasmaCr);
 
 
   const result =
-    (urineurea / plasmaurea) / (urinecr / plasmacr) * 100;
+    (urineUrea / urineUrea) / (urineUrea / urineUrea) * 100;
 
 
   

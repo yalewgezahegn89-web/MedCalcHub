@@ -34,15 +34,25 @@ export interface Evidence {
 
 }
 
+/**
+ * Supported formula types for the Generator formula engine.
+ *
+ * Each type will have its own builder in future commits.
+ * Currently only "algebraic" is implemented.
+ */
+export type FormulaType =
+  | "algebraic"
+  | "score"
+  | "descriptive"
+  | "lookup"
+  | "conditional"
+  | "converter"
+  | "composite";
+
 export type FormulaDefinition =
   | string
   | {
-      type:
-        | "algebraic"
-        | "conditional"
-        | "lookup"
-        | "composite"
-        | "descriptive";
+      type: FormulaType;
 
       expression?: string;
 

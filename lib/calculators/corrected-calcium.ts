@@ -20,7 +20,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -91,83 +91,91 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.calcium === "" ||
+  values.calcium === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "Measured Calcium is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.calcium))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Measured Calcium.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.calcium) < 0) {
+  return {
+    value: 0,
+    interpretation: "Measured Calcium cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
+if (Number(values.calcium) === 0) {
+  return {
+    value: 0,
+    interpretation: "Measured Calcium cannot be zero.",
+    status: "critical",
+  };
+}
 
-      interpretation:
-        "Negative values are not allowed.",
 
-      status:
-        "critical",
+if (
+  values.albumin === "" ||
+  values.albumin === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Albumin is required.",
+    status: "critical",
+  };
+}
 
-    };
 
-  }
+if (
+  Number.isNaN(Number(values.albumin))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Albumin.",
+    status: "critical",
+  };
+}
 
+
+if (Number(values.albumin) < 0) {
+  return {
+    value: 0,
+    interpretation: "Albumin cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.albumin) === 0) {
+  return {
+    value: 0,
+    interpretation: "Albumin cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const calcium =
-    Number(values.calcium);
-
-const albumin =
-    Number(values.albumin);
+const calcium = Number(values.calcium);
+const albumin = Number(values.albumin);
 
 
   const result =

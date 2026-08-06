@@ -20,7 +20,7 @@ export const insulinSensitivityCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-  updatedAt: "2026-08-05",
+  updatedAt: "2026-08-06",
 
   keywords: [],
 
@@ -66,7 +66,7 @@ export const insulinSensitivityCalculator: CalculatorDefinition = {
 
   inputs: [
   {
-    id: "homair",
+    id: "homaIr",
     label: "HOMA-IR",
     type: "number",
     required: true,
@@ -79,84 +79,53 @@ calculate(
 ) {
 
 
-
-for (
-  const key of Object.keys(values)
+if (
+  values.homaIr === "" ||
+  values.homaIr === undefined
 ) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+  return {
+    value: 0,
+    interpretation: "HOMA-IR is required.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
+if (
+  Number.isNaN(Number(values.homaIr))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid HOMA-IR.",
+    status: "critical",
+  };
+}
 
 
-  if (
-    inputValue < 0
-  ) {
+if (Number(values.homaIr) < 0) {
+  return {
+    value: 0,
+    interpretation: "HOMA-IR cannot be negative.",
+    status: "critical",
+  };
+}
 
-    return {
 
-      value: 0,
-
-      interpretation:
-        "Negative values are not allowed.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
+if (Number(values.homaIr) === 0) {
+  return {
+    value: 0,
+    interpretation: "HOMA-IR cannot be zero.",
+    status: "critical",
+  };
 }
 
 
 
-
-
-const homair =
-    Number(values.homair);
+const homaIr = Number(values.homaIr);
 
 
   const result =
-    1 / homair;
+    1 / homaIr;
 
 
   
