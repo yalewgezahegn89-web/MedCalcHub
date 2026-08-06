@@ -123,6 +123,7 @@ if (Number(values.weight) === 0) {
 
 
 const weight = Number(values.weight);
+const wt = weight;
 
 
   const result =

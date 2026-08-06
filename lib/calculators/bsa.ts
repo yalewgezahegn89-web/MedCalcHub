@@ -158,7 +158,9 @@ if (Number(values.height) === 0) {
 
 
 const weight = Number(values.weight);
+const wt = weight;
 const height = Number(values.height);
+const ht = height;
 
 
   const result =

@@ -17,6 +17,15 @@ import {
 import {
   buildAlgebraicFormula,
 } from "./build-algebraic";
+import {
+  buildScoreFormula,
+} from "./build-score";
+import {
+  buildDescriptiveFormula,
+} from "./build-descriptive";
+import {
+  buildCompositeFormula,
+} from "./build-composite";
 
 /**
  * Formula type display names for error messages.
@@ -56,11 +65,16 @@ export function buildFormula(
       );
 
     case "score":
+      return buildScoreFormula(context);
+
     case "descriptive":
+      return buildDescriptiveFormula(context);
+    case "composite":
+      return buildCompositeFormula(context);
+
     case "lookup":
     case "conditional":
     case "converter":
-    case "composite":
       throw new Error(
         `Formula type "${FORMULA_TYPE_LABELS[normalized.type] ?? normalized.type}" is not implemented yet.`,
       );

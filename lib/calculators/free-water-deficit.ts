@@ -24,7 +24,7 @@ export const freeWaterDeficitCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "Free Water Deficit = TBW × (Current Na / Target Na − 1)",
+  formula: "Free Water Deficit = 0.6 * weight * (currentNa / desiredNa - 1)",
 
   normalRange: "0 L",
 
@@ -223,12 +223,17 @@ if (Number(values.desiredNa) === 0) {
 
 
 const weight = Number(values.weight);
+const wt = weight;
 const currentNa = Number(values.currentNa);
+const currentSodium = currentNa;
 const desiredNa = Number(values.desiredNa);
+const targetNa = desiredNa;
+const targetSodium = desiredNa;
+const desiredSodium = desiredNa;
 
 
   const result =
-    tbw * (desiredNa sodium / Target sodium - 1);
+    0.6 * weight * (desiredNa / desiredNa - 1);
 
 
   

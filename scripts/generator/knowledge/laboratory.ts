@@ -900,7 +900,7 @@ export const laboratoryKnowledge: Record<
     description:
       "Estimates sodium deficit for hyponatremia correction planning. Helps determine the total amount of sodium needed to raise serum sodium to a target level.",
     formula:
-      "Sodium Deficit = TBW × (Target Na − Current Na)",
+      "Sodium Deficit = 0.6 * weight * (desiredNa - currentNa)",
     normalRange: "0 mmol",
     keywords: [
       "sodium deficit",
@@ -1045,7 +1045,7 @@ export const laboratoryKnowledge: Record<
     description:
       "Estimates free water deficit in hypernatremia. Helps quantify the amount of free water needed to restore normal sodium levels.",
     formula:
-      "Free Water Deficit = TBW × (Current Na / Target Na − 1)",
+      "Free Water Deficit = 0.6 * weight * (currentNa / desiredNa - 1)",
     normalRange: "0 L",
     keywords: [
       "free water deficit",

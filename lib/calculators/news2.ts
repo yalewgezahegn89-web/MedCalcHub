@@ -303,8 +303,10 @@ if (Number(values.pulse) === 0) {
 
 const respiratory_rate = Number(values.respiratory_rate);
 const spo2 = Number(values.spo2);
+const oxygenSaturation = spo2;
 const temperature = Number(values.temperature);
 const sbp = Number(values.sbp);
+const systolicBloodPressure = sbp;
 const pulse = Number(values.pulse);
 
 

@@ -171,6 +171,7 @@ if (Number(values.phosphate) === 0) {
 
 
 const calcium = Number(values.calcium);
+const ca = calcium;
 const phosphate = Number(values.phosphate);
 
 

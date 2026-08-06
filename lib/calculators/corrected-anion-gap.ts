@@ -271,13 +271,17 @@ if (Number(values.albumin) === 0) {
 
 
 const sodium = Number(values.sodium);
+const na = sodium;
 const chloride = Number(values.chloride);
+const cl = chloride;
 const bicarbonate = Number(values.bicarbonate);
+const hco3 = bicarbonate;
+const hco = bicarbonate;
 const albumin = Number(values.albumin);
 
 
   const result =
-    (sodium - (chloride + bicarbonate)) + 2.5 * (4 - albumin);
+    (sodium - (chloride + sodium)) + 2.5 * (4 - albumin);
 
 
   

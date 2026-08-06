@@ -158,11 +158,13 @@ if (Number(values.dbp) === 0) {
 
 
 const sbp = Number(values.sbp);
+const systolicBloodPressure = sbp;
 const dbp = Number(values.dbp);
+const diastolicBloodPressure = dbp;
 
 
   const result =
-    (sbp + 2 * dbp) / 3;
+    (dbp + 2 * DBP) / 3;
 
 
   

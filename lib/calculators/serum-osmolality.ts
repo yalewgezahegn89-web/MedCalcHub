@@ -223,6 +223,7 @@ if (Number(values.bun) === 0) {
 
 
 const sodium = Number(values.sodium);
+const na = sodium;
 const glucose = Number(values.glucose);
 const bun = Number(values.bun);
 

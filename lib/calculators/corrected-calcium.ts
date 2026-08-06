@@ -175,6 +175,7 @@ if (Number(values.albumin) === 0) {
 
 
 const calcium = Number(values.calcium);
+const ca = calcium;
 const albumin = Number(values.albumin);
 
 

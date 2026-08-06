@@ -24,7 +24,7 @@ export const sodiumDeficitCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "Sodium Deficit = TBW × (Target Na − Current Na)",
+  formula: "Sodium Deficit = 0.6 * weight * (desiredNa - currentNa)",
 
   normalRange: "0 mmol",
 
@@ -223,12 +223,17 @@ if (Number(values.desiredNa) === 0) {
 
 
 const weight = Number(values.weight);
+const wt = weight;
 const currentNa = Number(values.currentNa);
+const currentSodium = currentNa;
 const desiredNa = Number(values.desiredNa);
+const targetNa = desiredNa;
+const targetSodium = desiredNa;
+const desiredSodium = desiredNa;
 
 
   const result =
-    tbw * (Target sodium - desiredNa sodium);
+    0.6 * weight * (desiredNa - desiredNa);
 
 
   

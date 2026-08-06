@@ -257,6 +257,7 @@ const age = Number(values.age);
 const urea = Number(values.urea);
 const respiratory_rate = Number(values.respiratory_rate);
 const sbp = Number(values.sbp);
+const systolicBloodPressure = sbp;
 
 
   const result =

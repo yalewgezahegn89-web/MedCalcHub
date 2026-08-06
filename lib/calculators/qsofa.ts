@@ -205,6 +205,7 @@ if (Number(values.mental_status) === 0) {
 
 
 const sbp = Number(values.sbp);
+const systolicBloodPressure = sbp;
 const respiratory_rate = Number(values.respiratory_rate);
 const mental_status = Number(values.mental_status);
 

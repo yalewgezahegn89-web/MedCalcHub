@@ -21,6 +21,11 @@ import {
   buildVariableMap,
 } from "../build-variable-map";
 
+import {
+  medicalAliases,
+  resolveAlias,
+} from "../medical-aliases";
+
 export interface AlgebraicFormula {
   type: "algebraic";
   expression?: string;
@@ -32,48 +37,6 @@ export interface FormulaContext {
   category?: string;
   classification?: readonly ClassificationRule[];
 }
-
-/**
- * Common medical abbreviations → input ID patterns.
- *
- * Used as a fallback when label/ID matching fails.
- */
-const MEDICAL_ABBREVIATIONS: Record<string, string> = {
-  "Na": "sodium",
-  "K": "potassium",
-  "Cl": "chloride",
-  "HCO3": "bicarbonate",
-  "Ca": "calcium",
-  "Mg": "magnesium",
-  "Cr": "creatinine",
-  "BUN": "bun",
-  "HR": "heart_rate",
-  "SBP": "sbp",
-  "DBP": "dbp",
-  "RR": "respiratory_rate",
-  "SpO2": "spo2",
-  "GCS": "gcs",
-  "Albumin": "albumin",
-  "TBW": "tbw",
-  "SCr": "serum_creatinine",
-  "Wt": "weight",
-  "Ht": "height",
-  "BSA": "bsa",
-  "BMI": "bmi",
-  "IBW": "ibw",
-  "EBW": "ebw",
-  "ABW": "adjbw",
-  "INR": "inr",
-  "LDL": "ldl",
-  "HDL": "hdl",
-  "TSH": "tsh",
-  "eGFR": "egfr",
-  "FE": "fe",
-  "FeNa": "fena",
-  "KtV": "ktv",
-  "UOsm": "urine_osmolality",
-  "SOsm": "serum_osmolality",
-};
 
 /**
  * Strip non-alphanumeric chars from a string for fuzzy matching.
@@ -103,8 +66,9 @@ function buildExpressionToInputMap(
       (a.label ?? a.id).length,
   );
 
-  // Build a word-level synonym map for medical terms
-  // so "Na" matches "Sodium" and vice versa
+  // Build a word-level synonym map from the centralized
+  // medical alias dictionary, enabling term-by-term
+  // matching when full label matching fails
   const TERM_SYNONYMS: Record<string, string[]> = {
     "na": ["sodium"],
     "sodium": ["na"],
@@ -129,7 +93,7 @@ function buildExpressionToInputMap(
 
   /**
    * Normalize a term for comparison: lowercase, strip
-   * non-alphanumeric, apply synonyms.
+   * non-alphanumeric.
    */
   function normalizeTerm(term: string): string {
     const clean = stripNonAlpha(term);
@@ -212,8 +176,7 @@ function buildExpressionToInputMap(
       for (const ew of exprWords) {
         if (
           ew.length >= 2 &&
-          termMatches(ew, labelWord) &&
-          !MEDICAL_ABBREVIATIONS[ew]
+          termMatches(ew, labelWord)
         ) {
           // Replace the matched expression word
           const ewEscaped = ew.replace(
@@ -233,16 +196,82 @@ function buildExpressionToInputMap(
     }
   }
 
-  // Fallback: try medical abbreviations for any remaining
-  // unmatched variables
-  const words = mapped.split(/(\b)/);
-  for (let i = 0; i < words.length; i++) {
-    const word = words[i];
-    if (MEDICAL_ABBREVIATIONS[word]) {
-      words[i] = MEDICAL_ABBREVIATIONS[word];
+  // Fallback: try the centralized medical alias
+  // dictionary for any remaining unmatched multi-word
+  // or single-word variables. Try longest aliases first
+  // to avoid partial matches.
+  const aliasEntries = Object.entries(medicalAliases)
+    .sort((a, b) => b[0].length - a[0].length);
+
+  for (const [alias, targetId] of aliasEntries) {
+    // Convert alias name to camelCase for matching
+    // (same transform as build-variable-map.ts uses
+    // for variable declarations)
+    const aliasCamel = alias
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .split(/\s+/)
+      .filter((w) => w.length > 0)
+      .map((w, i) =>
+        i === 0
+          ? w.toLowerCase()
+          : w.charAt(0).toUpperCase() +
+            w.slice(1).toLowerCase(),
+      )
+      .join("");
+
+    // Skip if the camelCase alias equals the target
+    // (the input ID is already handled)
+    if (aliasCamel === targetId) continue;
+
+    // Replace the alias in the expression with the
+    // target input ID
+    const escaped = alias.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&",
+    );
+
+    // Build a flexible regex that allows whitespace
+    // variations between alias words
+    const aliasWords = alias.split(/\s+/);
+    if (aliasWords.length >= 2) {
+      const pattern = aliasWords
+        .map((w) => w.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          "\\$&",
+        ))
+        .join("\\s+");
+      const regex = new RegExp(pattern, "gi");
+      if (regex.test(mapped)) {
+        regex.lastIndex = 0;
+        mapped = mapped.replace(regex, targetId);
+      }
+    } else {
+      // Single-word alias: use word boundary
+      const regex = new RegExp(
+        "\\b" + escaped + "\\b",
+        "g",
+      );
+      if (regex.test(mapped)) {
+        regex.lastIndex = 0;
+        mapped = mapped.replace(regex, targetId);
+      }
+    }
+
+    // Also try the camelCase form as a variable name
+    // in the expression
+    const camelEscaped = aliasCamel.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&",
+    );
+    const camelRegex = new RegExp(
+      "\\b" + camelEscaped + "\\b",
+      "g",
+    );
+    if (camelRegex.test(mapped)) {
+      camelRegex.lastIndex = 0;
+      mapped = mapped.replace(camelRegex, targetId);
     }
   }
-  mapped = words.join("");
 
   return mapped;
 }

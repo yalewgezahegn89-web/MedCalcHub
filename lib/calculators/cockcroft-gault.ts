@@ -275,6 +275,7 @@ if (Number(values.creatinine) === 0) {
 
 const age = Number(values.age);
 const weight = Number(values.weight);
+const wt = weight;
 const sex = Number(values.sex);
 const creatinine = Number(values.creatinine);
 

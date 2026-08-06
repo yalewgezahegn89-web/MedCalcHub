@@ -269,6 +269,7 @@ if (Number(values.plasmaOsmolality) === 0) {
 const urineK = Number(values.urineK);
 const plasmaK = Number(values.plasmaK);
 const urineOsmolality = Number(values.urineOsmolality);
+const uosm = urineOsmolality;
 const plasmaOsmolality = Number(values.plasmaOsmolality);
 
 

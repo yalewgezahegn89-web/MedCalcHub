@@ -175,6 +175,7 @@ if (Number(values.glucose) === 0) {
 
 
 const sodium = Number(values.sodium);
+const na = sodium;
 const glucose = Number(values.glucose);
 
 

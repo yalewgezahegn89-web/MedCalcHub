@@ -159,6 +159,7 @@ if (Number(values.sbp) === 0) {
 
 const heart_rate = Number(values.heart_rate);
 const sbp = Number(values.sbp);
+const systolicBloodPressure = sbp;
 
 
   const result =

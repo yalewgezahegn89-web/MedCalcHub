@@ -223,12 +223,16 @@ if (Number(values.bicarbonate) === 0) {
 
 
 const sodium = Number(values.sodium);
+const na = sodium;
 const chloride = Number(values.chloride);
+const cl = chloride;
 const bicarbonate = Number(values.bicarbonate);
+const hco3 = bicarbonate;
+const hco = bicarbonate;
 
 
   const result =
-    sodium - (chloride + bicarbonate);
+    sodium - (chloride + sodium);
 
 
   
