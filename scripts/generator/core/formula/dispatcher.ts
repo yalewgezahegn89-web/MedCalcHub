@@ -26,6 +26,15 @@ import {
 import {
   buildCompositeFormula,
 } from "./build-composite";
+import {
+  buildLookupFormula,
+} from "./build-lookup";
+import {
+  buildConditionalFormula,
+} from "./build-conditional";
+import {
+  buildConverterFormula,
+} from "./build-converter";
 
 /**
  * Formula type display names for error messages.
@@ -73,10 +82,21 @@ export function buildFormula(
       return buildCompositeFormula(context);
 
     case "lookup":
+      return buildLookupFormula(
+        normalized,
+        context,
+      );
+
     case "conditional":
+      return buildConditionalFormula(
+        normalized,
+        context,
+      );
+
     case "converter":
-      throw new Error(
-        `Formula type "${FORMULA_TYPE_LABELS[normalized.type] ?? normalized.type}" is not implemented yet.`,
+      return buildConverterFormula(
+        normalized,
+        context,
       );
 
     default: {

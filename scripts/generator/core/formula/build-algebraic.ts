@@ -12,6 +12,10 @@ import {
 } from "./sanitize-expression";
 
 import {
+  optimizeFormula,
+} from "./optimize-formula";
+
+import {
   buildInterpretation,
 } from "../interpreter/build-interpretation";
 import {
@@ -285,7 +289,9 @@ export function buildAlgebraicFormula(
 
   const sanitized = sanitizeExpression(sourceExpression);
 
-  const parsed = parseFormula(sanitized);
+  const optimized = optimizeFormula(sanitized);
+
+  const parsed = parseFormula(optimized);
 
   const declarations = buildVariableMap(context.inputs);
 
