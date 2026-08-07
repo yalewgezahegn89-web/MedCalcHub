@@ -1,8 +1,4 @@
 import type { CalculatorDefinition } from "./calculator.types";
-<<<<<<< HEAD
-import { waistToHipRatioCalculator } from "./waist-to-hip-ratio";
-import { leanBodyWeightCalculator } from "./lean-body-weight";
-=======
 import { ckdEpi2021Calculator } from "./ckd-epi-2021";
 import { curb65Calculator } from "./curb-65";
 import { gcsCalculator } from "./gcs";
@@ -10,7 +6,6 @@ import { shockIndexCalculator } from "./shock-index";
 import { news2Calculator } from "./news2";
 import { qsofaCalculator } from "./qsofa";
 import { albuminCreatinineRatioCalculator } from "./albumin-creatinine-ratio";
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 import { mapCalculator } from "./map";
 import { heartRateCalculator } from "./heart-rate";
 import { testHeartRateCalculator } from "./test-heart-rate";
@@ -20,6 +15,7 @@ import { bmiCalculator } from "./bmi";
 import { bsaCalculator } from "./bsa";
 import { ibwCalculator } from "./ibw";
 import { adjbwCalculator } from "./adjbw";
+import { lbmCalculator } from "./lbm";
 
 import { cockcroftGaultCalculator } from "./cockcroft-gault";
 import { bunCreatinineRatioCalculator } from "./bun-creatinine-ratio";
@@ -66,10 +62,6 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
-<<<<<<< HEAD
-  waistToHipRatioCalculator,
-  leanBodyWeightCalculator,
-=======
   ckdEpi2021Calculator,
   curb65Calculator,
   gcsCalculator,
@@ -78,7 +70,6 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   qsofaCalculator,
   feureaCalculator,
   albuminCreatinineRatioCalculator,
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
   mapCalculator,
   heartRateCalculator,
   testHeartRateCalculator,
@@ -87,6 +78,7 @@ bsaTest4Calculator,  bmiCalculator,
   bsaCalculator,
   ibwCalculator,
   adjbwCalculator,
+  lbmCalculator,
 
   cockcroftGaultCalculator,
 

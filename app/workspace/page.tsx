@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import { getFavorites } from "@/lib/favorites";
@@ -13,29 +13,18 @@ import { getRecentCalculators } from "@/lib/recent";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 export default function WorkspacePage() {
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const [favorites] = useState<string[]>(() => getFavorites());
 
-  const [calculationHistory, setCalculationHistory] = useState<
+  const [calculationHistory] = useState<
     CalculationHistoryItem[]
-  >([]);
+  >(() => getCalculationHistory());
 
-  const [recentCalculators, setRecentCalculators] = useState(
-    calculatorRegistry.filter(() => false),
-  );
-
-  useEffect(() => {
-    setFavorites(getFavorites());
-
-    setCalculationHistory(getCalculationHistory());
-
+  const [recentCalculators] = useState(() => {
     const recentIds = getRecentCalculators();
-
-    setRecentCalculators(
-      calculatorRegistry.filter((calc) =>
-        recentIds.includes(calc.id),
-      ),
+    return calculatorRegistry.filter((calc) =>
+      recentIds.includes(calc.id),
     );
-  }, []);
+  });
 
   const favoriteCalculators = calculatorRegistry.filter((calc) =>
     favorites.includes(calc.id),

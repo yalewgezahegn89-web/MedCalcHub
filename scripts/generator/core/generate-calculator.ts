@@ -9,18 +9,9 @@ import { generatorTemplates } from "./generator-templates";
 
 import type { GeneratorOptions } from "../../types";
 
-import { validateKnowledge } from "./validate-knowledge";
-
 export function generateCalculator(
-  options: GeneratorOptions & {
-    dryRun?: boolean;
-  },
+  options: GeneratorOptions,
 ) {
-
-  validateKnowledge(options);
-
-  const dryRun = options.dryRun ?? false;
-
   for (const item of generatorTemplates) {
     const template =
       loadTemplate(item.template);
@@ -31,26 +22,30 @@ export function generateCalculator(
         options,
       );
 
+    // ============================
+    // TEMP DEBUG
+    // ============================
+    console.log("================================");
+    console.log(content);
+    console.log("================================");
+
     const output =
       item.output.replace(
         "{slug}",
         options.slug,
       );
 
-    if (!dryRun) {
-      writeGeneratedFile(
-        output,
-        content,
-      );
-    }
+    writeGeneratedFile(
+      output,
+      content,
+    );
   }
 
-  if (!dryRun) {
-    updateRegistry(options.slug);
-    updateFormulaRegistry(options);
-  }
+  updateRegistry(options.slug);
+
+  updateFormulaRegistry(options);
 
   console.log(
-    `✓ Calculator "${options.slug}" generated successfully${dryRun ? " (dry-run)" : ""}.`,
+    `✓ Calculator "${options.slug}" generated successfully.`,
   );
 }

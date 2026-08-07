@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Clock,
   Heart,
@@ -23,34 +23,27 @@ import { getRecentCalculators } from "@/lib/recent";
 import { StatCard } from "./stat-card";
 
 export default function Dashboard() {
-  const [favorites, setFavorites] = useState<
+  const [favorites] = useState<
     typeof calculatorRegistry
-  >([]);
-
-  const [recent, setRecent] = useState<
-    typeof calculatorRegistry
-  >([]);
-
-  useEffect(() => {
+  >(() => {
     const favoriteIds = getFavorites();
+    return calculatorRegistry.filter((calc) =>
+      favoriteIds.includes(calc.id),
+    );
+  });
+
+  const [recent] = useState<
+    typeof calculatorRegistry
+  >(() => {
     const recentIds = getRecentCalculators();
-
-    setFavorites(
-      calculatorRegistry.filter((calc) =>
-        favoriteIds.includes(calc.id),
-      ),
-    );
-
-    setRecent(
-      recentIds
-        .map((id) =>
-          calculatorRegistry.find(
-            (calc) => calc.id === id,
-          ),
-        )
-        .filter(Boolean) as typeof calculatorRegistry,
-    );
-  }, []);
+    return recentIds
+      .map((id) =>
+        calculatorRegistry.find(
+          (calc) => calc.id === id,
+        ),
+      )
+      .filter(Boolean) as typeof calculatorRegistry;
+  });
 
   const categoryCount = getCategories().length;
   const specialtyCount = getSpecialties().length;

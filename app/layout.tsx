@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "@/components/navbar";
-import CommandPalette from "@/components/search/command-palette";
+import { SearchProvider } from "@/components/search/search-provider";
 import { NotificationProvider } from "@/components/ui/notification/notification-provider";
 
 const geistSans = Geist({
@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 text-slate-900">
         <Navbar />
 
-        <CommandPalette />
+        <SearchProvider />
 
         <main>{children}</main>
 

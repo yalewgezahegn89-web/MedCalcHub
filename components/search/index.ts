@@ -1,2 +1,12 @@
 export { SearchBox } from "./search-box";
 export type { SearchBoxProps } from "./search-box.types";
+export { SearchDialog } from "./search-dialog";
+export type { SearchDialogProps } from "./search-dialog";
+export { SearchInput } from "./search-input";
+export type { SearchInputProps } from "./search-input";
+export { SearchResultCard } from "./search-result-card";
+export type { SearchResultCardProps } from "./search-result-card";
+export { SearchResults } from "./search-results";
+export type { SearchResultsProps } from "./search-results";
+export { useSearch } from "./use-search";
+export type { UseSearchReturn } from "./use-search";

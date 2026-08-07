@@ -261,11 +261,15 @@ async function main() {
 
 
 
-    const classification =
-      metadata.classification ?? [];
+    // NEW:
+// Clinical interpretation rules
 
-    const clinicalGuidance =
-      metadata.clinicalGuidance ?? {};
+const classification =
+  suggestion.classification ?? [];
+
+
+const clinicalGuidance =
+  suggestion.clinicalGuidance ?? {};
 
 
 
@@ -274,7 +278,7 @@ async function main() {
     // Input generation
     // -----------------------------
 
-    let inputs =
+    const inputs =
       suggestInputs(name);
 
 
@@ -426,49 +430,12 @@ async function main() {
 
   ...metadata,
 
-      force,
+  force,
 
-      classification,
+  classification,
 
-      clinicalGuidance,
+  clinicalGuidance,
 
-<<<<<<< HEAD
-      clinical: metadata.clinical,
-
-      faq: metadata.faq,
-
-      comparison: metadata.comparison,
-
-      evidence: metadata.evidence,
-
-      relatedCalculators: metadata.relatedCalculators,
-
-      name,
-
-      shortName,
-
-      slug,
-
-      category,
-
-      specialty,
-
-      description,
-
-      formula,
-
-      normalRange,
-
-      keywords,
-
-      reference,
-
-      reviewedBy,
-
-      featured,
-
-=======
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
       inputs,
 
     };

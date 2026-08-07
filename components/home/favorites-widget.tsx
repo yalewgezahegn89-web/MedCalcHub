@@ -1,19 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import { getFavorites } from "@/lib/favorites";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 export function FavoritesWidget() {
-  const [favorites, setFavorites] = useState(
-    getFavorites(),
+  const [favorites] = useState(
+    () => getFavorites(),
   );
-
-  useEffect(() => {
-    setFavorites(getFavorites());
-  }, []);
 
   const calculators = calculatorRegistry.filter(
     (calculator) =>
@@ -29,7 +25,7 @@ export function FavoritesWidget() {
 
       {calculators.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          You haven't added any favorite calculators yet.
+          You haven{"'"}t added any favorite calculators yet.
         </p>
       ) : (
         <div className="space-y-3">

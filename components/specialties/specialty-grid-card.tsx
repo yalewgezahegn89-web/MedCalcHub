@@ -11,9 +11,10 @@ import {
   Bone,
   ShieldPlus,
   Microscope,
+  type LucideIcon,
 } from "lucide-react";
 
-const specialtyIcons: Record<string, any> = {
+const specialtyIcons: Record<string, LucideIcon> = {
   "Cardiology": HeartPulse,
   "Neurology": Brain,
   "Internal Medicine": Stethoscope,

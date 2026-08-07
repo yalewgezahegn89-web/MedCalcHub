@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
@@ -13,13 +13,6 @@ export function ComparisonSelector({
   onChange,
 }: ComparisonSelectorProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
-  const calculators = useMemo(() => {
-    return calculatorRegistry.filter((calculator) =>
-      selectedIds.includes(calculator.id),
-    );
-  }, [selectedIds]);
-
   function toggleCalculator(id: string) {
     let updated: string[];
 

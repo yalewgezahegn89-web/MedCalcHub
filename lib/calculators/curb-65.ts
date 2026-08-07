@@ -265,17 +265,17 @@ const systolicBloodPressure = sbp;
 
 
   
-let interpretation =
+const interpretation =
   "Clinical interpretation pending.";
 
-let status:
+const status:
   "normal" |
   "low" |
   "high" |
   "critical" =
   "normal";
 
-let referenceRange =
+const referenceRange =
   "";
 
 

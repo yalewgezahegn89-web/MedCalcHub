@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Heart } from "lucide-react";
 
 import { isFavorite, toggleFavorite } from "@/lib/favorites";
@@ -13,11 +13,9 @@ type FavoriteButtonProps = {
 export default function FavoriteButton({
   calculatorId,
 }: FavoriteButtonProps) {
-  const [favorite, setFavorite] = useState(false);
-
-  useEffect(() => {
-    setFavorite(isFavorite(calculatorId));
-  }, [calculatorId]);
+  const [favorite, setFavorite] = useState(() =>
+    isFavorite(calculatorId),
+  );
 
   function handleClick(
     event: React.MouseEvent<HTMLButtonElement>,

@@ -10,7 +10,7 @@ export const bsaCalculator: CalculatorDefinition = {
   shortName: "bsa",
 
   description:
-    "Calculates Body Surface Area using the Mosteller formula.",
+    "Calculates Body Surface Area (Mosteller formula).",
 
   category: "Anthropometry",
 
@@ -20,11 +20,7 @@ export const bsaCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-<<<<<<< HEAD
-  updatedAt: "2026-08-05",
-=======
   updatedAt: "2026-08-06",
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   keywords: [],
 
@@ -32,35 +28,7 @@ export const bsaCalculator: CalculatorDefinition = {
 
   normalRange: "Typical adult: 1.4–2.2 m²",
 
-  referenceRanges: [
-  {
-    label: "Small adult",
-    range: "<1.4000000000000001",
-  },
-  {
-    label: "Typical adult",
-    range: "1.4–2.2",
-  },
-  {
-    label: "Large adult",
-    range: "≥2.3",
-  }
-],
-
-  clinicalGuidance: {
-    advice: [
-      "BSA is commonly used for drug dosing, particularly in oncology and cardiology.",
-      "Mosteller formula is widely accepted for clinical use."
-    ],
-    warnings: [
-      "BSA estimates may be less accurate at extremes of body size.",
-      "Different BSA formulas may yield slightly different results."
-    ],
-    followUp: [
-      "Use BSA-based dosing with clinical judgment.",
-      "Consider ideal body weight for drug dosing in obese patients."
-    ],
-  },
+  referenceRanges: [],
 
   clinicalGuidance: {
     advice: [],
@@ -81,62 +49,7 @@ export const bsaCalculator: CalculatorDefinition = {
     "MedCalcHub Clinical References",
   ],
 
-  faq: [
-    {
-      "question": "What is BSA used for?",
-      "answer": "Body Surface Area is used for drug dosing (especially chemotherapy), cardiac index calculation, and metabolic rate estimation."
-    },
-    {
-      "question": "Which BSA formula is most common?",
-      "answer": "The Mosteller formula BSA = √((height × weight) / 3600) is the most widely used in clinical practice."
-    }
-  ],
-
-  comparison: {
-    "title": "Body Composition Calculators",
-    "calculators": [
-      {
-        "name": "BMI",
-        "href": "/calculators/bmi",
-        "use": "General body fat screening"
-      },
-      {
-        "name": "Ideal Body Weight",
-        "href": "/calculators/ibw",
-        "use": "Drug dosing reference weight"
-      }
-    ]
-  },
-
-  clinical: {
-    "advice": [
-      "BSA is commonly used for drug dosing, particularly in oncology and cardiology.",
-      "Mosteller formula is widely accepted for clinical use."
-    ],
-    "warnings": [
-      "BSA estimates may be less accurate at extremes of body size.",
-      "Different BSA formulas may yield slightly different results."
-    ],
-    "followUp": [
-      "Use BSA-based dosing with clinical judgment.",
-      "Consider ideal body weight for drug dosing in obese patients."
-    ]
-  },
-
-  evidence: {
-    "source": "Mosteller RD",
-    "reference": "Simplified calculation of body-surface area. N Engl J Med. 1987.",
-    "references": [
-      "Mosteller RD. Simplified calculation of body-surface area. N Engl J Med. 1987;317(17):1098."
-    ]
-  },
-
-  relatedCalculators: [
-    "bmi",
-    "ibw",
-    "adjbw",
-    "lbm"
-  ],
+  relatedCalculators: [],
 
   inputs: [
   {
@@ -161,82 +74,6 @@ calculate(
 ) {
 
 
-<<<<<<< HEAD
-
-for (
-  const key of Object.keys(values)
-) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-
-  if (
-    inputValue < 0
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Negative values are not allowed.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-}
-
-
-
-
-
-const weight =
-    Number(values.weight);
-=======
 if (
   values.weight === "" ||
   values.weight === undefined
@@ -247,7 +84,6 @@ if (
     status: "critical",
   };
 }
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 
 if (
@@ -332,64 +168,19 @@ const ht = height;
 
 
   
-let interpretation =
+const interpretation =
   "Clinical interpretation pending.";
 
-let status:
+const status:
   "normal" |
   "low" |
   "high" |
   "critical" =
   "normal";
 
-let referenceRange =
+const referenceRange =
   "";
 
-<<<<<<< HEAD
-if (false) {}
-
-
-else if (result <= 1.3) {
-
-  interpretation =
-    "Small adult";
-
-  status =
-    "low";
-
-  referenceRange =
-  "<1.4000000000000001";
-}
-
-
-else if (result >= 1.4 && result <= 2.2) {
-
-  interpretation =
-    "Typical adult";
-
-  status =
-    "normal";
-
-  referenceRange =
-  "1.4–2.2";
-}
-
-
-else if (result >= 2.3) {
-
-  interpretation =
-    "Large adult";
-
-  status =
-    "high";
-
-  referenceRange =
-  "≥2.3";
-}
-
-
-=======
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 
 

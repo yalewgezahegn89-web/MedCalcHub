@@ -4,11 +4,6 @@ import {
   calculatorKnowledge,
 } from "../knowledge";
 
-<<<<<<< HEAD
-import type {
-  ClassificationRule,
-} from "../../types";
-=======
 
 export interface KnowledgeComparisonMetadata {
   title?: string;
@@ -30,7 +25,6 @@ export interface ClassificationRule {
     | "high"
     | "critical";
 }
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 export interface ClinicalGuidance {
 
@@ -41,14 +35,6 @@ export interface ClinicalGuidance {
   followUp?: readonly string[];
 }
 
-<<<<<<< HEAD
-import type {
-  CalculatorEvidence,
-  FAQItem,
-  ComparisonItem,
-  CalculatorInputDefinition,
-} from "../../../lib/calculators/calculator.types";
-=======
 export interface CalcEvidence {
 
   source?: string;
@@ -66,7 +52,6 @@ export interface CalcEvidence {
   references?: readonly string[];
 
 }
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 export interface CalculatorSuggestion {
 
@@ -82,27 +67,17 @@ export interface CalculatorSuggestion {
 
   keywords?: readonly string[];
 
-  inputs?: readonly CalculatorInputDefinition[];
+  inputs?: readonly unknown[];
 
   classification?: readonly ClassificationRule[];
 
   clinicalGuidance?: ClinicalGuidance;
 
-<<<<<<< HEAD
-  clinical?: ClinicalGuidance;
-
-  faq?: readonly FAQItem[];
-
-  comparison?: ComparisonItem;
-
-  evidence?: CalculatorEvidence;
-=======
   evidence?: CalcEvidence;
 
   faq?: readonly FAQItem[];
 
   comparison?: KnowledgeComparisonMetadata;
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   relatedCalculators?: readonly string[];
 

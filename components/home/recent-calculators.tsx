@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
 import { getRecentCalculators } from "@/lib/recent";
@@ -9,32 +9,26 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { CalculatorCard } from "@/components/calculators/calculator-card";
 
 export function RecentCalculators() {
-  const [recent, setRecent] = useState(
-    calculatorRegistry.slice(0, 4),
-  );
-
-  useEffect(() => {
+  const [recent] = useState(() => {
     const ids = getRecentCalculators();
 
-    if (ids.length === 0) return;
+    if (ids.length === 0) return calculatorRegistry.slice(0, 4);
 
     const calculators = ids
-  .map((id) =>
-    calculatorRegistry.find(
-      (calculator) => calculator.id === id,
-    ),
-  )
-  .filter(
-    (
-      calculator,
-    ): calculator is (typeof calculatorRegistry)[number] =>
-      calculator !== undefined,
-  );
+      .map((id) =>
+        calculatorRegistry.find(
+          (calculator) => calculator.id === id,
+        ),
+      )
+      .filter(
+        (
+          calculator,
+        ): calculator is (typeof calculatorRegistry)[number] =>
+          calculator !== undefined,
+      );
 
-if (calculators.length > 0) {
-  setRecent(calculators);
-}
-  }, []);
+    return calculators.length > 0 ? calculators : calculatorRegistry.slice(0, 4);
+  });
 
   return (
     <section className="space-y-8">

@@ -222,17 +222,17 @@ if (sex === "male") {
   result = 0.252 * weight + 0.473 * height - 48.3;
 }
 
-let interpretation =
+const interpretation =
   "Estimated lean body mass.";
 
-let status:
+const status:
   "normal" |
   "low" |
   "high" |
   "critical" =
   "normal";
 
-let referenceRange =
+const referenceRange =
   "Varies by height and weight";
 
 return {

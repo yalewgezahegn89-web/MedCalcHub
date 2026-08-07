@@ -93,11 +93,11 @@ function checkClassificationOverlap(
 function checkComparisonHref(
   slug: string,
   comparison: {
-    title: string;
+    title?: string;
     calculators: {
       name: string;
       href: string;
-      use: string;
+      use?: string;
     }[];
   },
 ): void {

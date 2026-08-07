@@ -72,30 +72,6 @@ export function buildMetadata(
         : [],
 
     clinicalGuidance:
-<<<<<<< HEAD
-      suggestion.clinicalGuidance ??
-      suggestion.clinical ??
-      {},
-
-    clinical:
-      suggestion.clinical ??
-      suggestion.clinicalGuidance ??
-      {},
-
-    faq:
-      suggestion.faq
-        ? [...suggestion.faq]
-        : [],
-
-    comparison:
-      suggestion.comparison ?? {
-        title: "",
-        calculators: [],
-      },
-
-    evidence:
-      suggestion.evidence ?? {},
-=======
       suggestion.clinicalGuidance
         ? {
             advice:
@@ -112,15 +88,12 @@ export function buildMetadata(
                 : undefined,
           }
         : undefined,
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
     relatedCalculators:
       suggestion.relatedCalculators
         ? [...suggestion.relatedCalculators]
         : [],
 
-<<<<<<< HEAD
-=======
     evidence:
       suggestion.evidence
         ? {
@@ -160,7 +133,6 @@ export function buildMetadata(
           }
         : undefined,
 
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
     reference:
       "MedCalcHub Clinical References",
 

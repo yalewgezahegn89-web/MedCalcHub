@@ -219,17 +219,17 @@ const mental_status = Number(values.mental_status);
 
 
   
-let interpretation =
+const interpretation =
   "Clinical interpretation pending.";
 
-let status:
+const status:
   "normal" |
   "low" |
   "high" |
   "critical" =
   "normal";
 
-let referenceRange =
+const referenceRange =
   "";
 
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Heart } from "lucide-react";
 
 import {
@@ -15,11 +15,9 @@ type FavoriteButtonProps = {
 export default function FavoriteButton({
   slug,
 }: FavoriteButtonProps) {
-  const [favorite, setFavorite] = useState(false);
-
-  useEffect(() => {
-    setFavorite(isFavorite(slug));
-  }, [slug]);
+  const [favorite, setFavorite] = useState(() =>
+    isFavorite(slug),
+  );
 
   function handleClick() {
     const state = toggleFavorite(slug);

@@ -7,9 +7,10 @@ import {
   Pill,
   Stethoscope,
   Calculator,
+  type LucideIcon,
 } from "lucide-react";
 
-const categoryIcons: Record<string, any> = {
+const categoryIcons: Record<string, LucideIcon> = {
   General: Calculator,
   Renal: Droplets,
   Endocrinology: Pill,

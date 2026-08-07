@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   getCalculationHistory,
@@ -11,11 +11,7 @@ import {
 export default function HistoryPage() {
   const [history, setHistory] = useState<
     CalculationHistoryItem[]
-  >([]);
-
-  useEffect(() => {
-    setHistory(getCalculationHistory());
-  }, []);
+  >(() => getCalculationHistory());
 
   function handleClear() {
     clearHistory();

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Clock, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
 import {
@@ -15,13 +15,15 @@ export default function RecentPage() {
 
   const recentIds = getRecentCalculators();
 
-  const calculators = useMemo(() => {
-    return recentIds
-      .map((id) =>
-        calculatorRegistry.find((calc) => calc.id === id),
-      )
-      .filter(Boolean);
-  }, [recentIds, refresh]);
+  const calculators = recentIds
+    .map((id) =>
+      calculatorRegistry.find((calc) => calc.id === id),
+    )
+    .filter(Boolean);
+
+  // refresh is read implicitly: setRefresh triggers a re-render
+  // which re-computes calculators from localStorage
+  void refresh;
 
   function clearHistory() {
     clearRecentCalculators();

@@ -322,17 +322,17 @@ const pulse = Number(values.pulse);
 
 
   
-let interpretation =
+const interpretation =
   "Clinical interpretation pending.";
 
-let status:
+const status:
   "normal" |
   "low" |
   "high" |
   "critical" =
   "normal";
 
-let referenceRange =
+const referenceRange =
   "";
 
 

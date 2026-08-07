@@ -90,15 +90,15 @@ export type Classification = {
 
 export type CalculatorClinicalGuidance = {
 
-  advice?: readonly string[];
+  advice?: string[];
 
-  warnings?: readonly string[];
+  warnings?: string[];
 
-  followUp?: readonly string[];
+  followUp?: string[];
 
   pearl?: string;
 
-  commonMistakes?: readonly string[];
+  commonMistakes?: string[];
 
 };
 
@@ -136,35 +136,6 @@ export type ComparisonMetadata = {
   calculators?: ComparisonItem[];
 };
 
-
-
-export interface FAQItem {
-
-  question: string;
-
-  answer: string;
-
-}
-
-
-export interface ComparisonCalculator {
-
-  name: string;
-
-  href: string;
-
-  use: string;
-
-}
-
-
-export interface ComparisonItem {
-
-  title: string;
-
-  calculators: ComparisonCalculator[];
-
-}
 
 
 export type CalculatorResult = {
@@ -300,11 +271,7 @@ export interface CalculatorDefinition {
 
   faq?: FAQItem[];
 
-<<<<<<< HEAD
-  comparison?: ComparisonItem;
-=======
   comparison?: ComparisonMetadata | ComparisonItem[];
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   references?: string[];
 

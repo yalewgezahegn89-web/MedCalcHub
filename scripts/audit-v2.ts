@@ -1,5 +1,11 @@
+import * as fs from "fs";
+
 import { calculatorKnowledge } from "./generator/knowledge";
 import { calculatorRegistry } from "../lib/calculators/registry";
+
+import type { GeneratorOptions } from "./types";
+
+type KnowledgeEntry = Partial<GeneratorOptions>;
 
 interface AuditResult {
   slug: string;
@@ -29,29 +35,27 @@ const results: AuditResult[] = [];
 
 for (const calc of calculatorRegistry) {
   const key = normalizeKey(calc.slug || calc.id);
-  const knowledge = calculatorKnowledge[key as keyof typeof calculatorKnowledge];
+  const knowledge: KnowledgeEntry | undefined = (calculatorKnowledge as unknown as Record<string, KnowledgeEntry>)[key];
 
   const hasKnowledge = Boolean(knowledge);
   const hasClinicalGuidance = hasKnowledge && Boolean(
-    (knowledge as any).clinicalGuidance ||
-    (knowledge as any).clinical
+    knowledge.clinicalGuidance
   );
-  const hasFAQ = hasKnowledge && Boolean((knowledge as any).faq);
-  const hasEvidence = hasKnowledge && Boolean((knowledge as any).evidence);
-  const hasComparison = hasKnowledge && Boolean((knowledge as any).comparison);
-  const hasRelatedCalculators = hasKnowledge && Boolean((knowledge as any).relatedCalculators);
-  const hasReferenceRanges = hasKnowledge && Boolean((knowledge as any).referenceRanges || (knowledge as any).classification);
-  const hasClassification = hasKnowledge && Boolean((knowledge as any).classification);
+  const hasFAQ = hasKnowledge && Boolean(knowledge.faq);
+  const hasEvidence = hasKnowledge && Boolean(knowledge.evidence);
+  const hasComparison = hasKnowledge && Boolean(knowledge.comparison);
+  const hasRelatedCalculators = hasKnowledge && Boolean(knowledge.relatedCalculators);
+  const hasReferenceRanges = hasKnowledge && Boolean(knowledge.classification);
+  const hasClassification = hasKnowledge && Boolean(knowledge.classification);
 
   // SEO metadata: keywords from knowledge
-  const hasSEOMetadata = hasKnowledge && Boolean((knowledge as any).keywords?.length > 0);
+  const hasSEOMetadata = hasKnowledge && Boolean(knowledge.keywords && knowledge.keywords.length > 0);
 
   // Manually maintained: has calculate function with imports from utils
-  const fs = require("fs");
-  const path = `lib/calculators/${calc.slug || calc.id}.ts`;
+  const filePath = `lib/calculators/${calc.slug || calc.id}.ts`;
   let manuallyMaintained = false;
   try {
-    const content = fs.readFileSync(path, "utf-8");
+    const content = fs.readFileSync(filePath, "utf-8");
     manuallyMaintained = content.includes('from "./utils/') || content.includes("from './utils/");
   } catch {
     manuallyMaintained = false;

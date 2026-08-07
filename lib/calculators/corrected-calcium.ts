@@ -10,11 +10,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
   shortName: "corrected-calcium",
 
   description:
-<<<<<<< HEAD
-    "Calculates corrected serum calcium based on albumin concentration.",
-=======
     "Calculates corrected total serum calcium adjusted for hypoalbuminemia. In hypoalbuminemia, measured total calcium is falsely low because less calcium is protein-bound; this correction estimates the physiologically active total calcium.",
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   category: "Laboratory",
 
@@ -24,145 +20,41 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
-<<<<<<< HEAD
-  updatedAt: "2026-08-05",
-
-  keywords: [],
-
-  formula: "Corrected Calcium = Measured Calcium + 0.8 × (4 − Albumin)",
-=======
   updatedAt: "2026-08-06",
 
   keywords: [],
 
   formula: "Corrected Calcium = calcium + 0.8 * (4 - albumin)",
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   normalRange: "8.5–10.5 mg/dL",
 
   referenceRanges: [
   {
-<<<<<<< HEAD
-    label: "Severe hypocalcemia",
-    range: "<7",
-  },
-  {
-    label: "Hypocalcemia",
-    range: "7–8.4",
-  },
-  {
-    label: "Normal",
-=======
     label: "Hypocalcemia",
     range: "<8.5",
   },
   {
     label: "Normal corrected calcium",
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
     range: "8.5–10.5",
   },
   {
     label: "Hypercalcemia",
-<<<<<<< HEAD
-    range: "10.6–12",
-  },
-  {
-    label: "Severe hypercalcemia",
-    range: "≥12.1",
-=======
     range: "≥10.6",
   },
   {
     label: "Severe hypercalcemia",
     range: "≥12.5",
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
   }
 ],
 
   clinicalGuidance: {
-<<<<<<< HEAD
-    advice: [
-      "Corrected calcium adjusts for the effect of albumin on total calcium measurement.",
-      "This correction is essential when albumin is low, as total calcium may appear falsely normal."
-    ],
-    warnings: [
-      "This correction assumes albumin of 4.0 g/dL as normal. It may not be accurate in hypoalbuminemia due to other causes.",
-      "Ionized calcium measurement is preferred when available and is not affected by albumin."
-    ],
-    followUp: [
-      "If corrected calcium is abnormal, check ionized calcium and PTH levels.",
-      "Consider vitamin D deficiency, malignancy, or primary hyperparathyroidism as causes."
-    ],
-=======
     advice: ["Use this correction when serum albumin is low (e.g. nephrotic syndrome, liver disease, malnutrition) and the measured total calcium appears falsely normal or low.","The corrected calcium is an estimate; ionized (free) calcium measurement is the gold standard when available.","This formula assumes albumin is 4.0 g/dL as normal; results become less reliable when albumin is < 2.0 g/dL."],
     warnings: ["This correction is not validated for hypercalcemia—ionized calcium is preferred in that setting.","Does not account for changes in serum pH, which also affect calcium binding to albumin.","The factor 0.8 may not apply across all patient populations; some institutions use 0.7 or 0.73."],
     followUp: ["If corrected calcium is abnormal, confirm with ionized calcium measurement.","Evaluate for underlying causes: hypoalbuminemia, hyperparathyroidism, vitamin D deficiency, malignancy.","In critically ill patients, measure ionized calcium directly rather than relying on correction."],
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
   },
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
-<<<<<<< HEAD
-
-  references: [
-    "MedCalcHub Clinical References",
-  ],
-
-  faq: [
-    {
-      "question": "Why correct calcium for albumin?",
-      "answer": "About 40% of serum calcium is bound to albumin. When albumin is low (e.g., in liver disease, nephrotic syndrome, malnutrition), total calcium appears falsely low. Corrected calcium estimates what the total calcium would be with a normal albumin."
-    },
-    {
-      "question": "What is the corrected calcium formula?",
-      "answer": "Corrected Calcium = Measured Calcium + 0.8 × (4.0 − Measured Albumin). This assumes 4.0 g/dL is normal albumin."
-    }
-  ],
-
-  comparison: {
-    "title": "Calcium and Electrolyte Calculators",
-    "calculators": [
-      {
-        "name": "Anion Gap",
-        "href": "/calculators/anion-gap",
-        "use": "Metabolic acidosis evaluation"
-      },
-      {
-        "name": "Calcium-Phosphate Product",
-        "href": "/calculators/calcium-phosphate-product",
-        "use": "Calcification risk"
-      }
-    ]
-  },
-
-  clinical: {
-    "advice": [
-      "Corrected calcium adjusts for the effect of albumin on total calcium measurement.",
-      "This correction is essential when albumin is low, as total calcium may appear falsely normal."
-    ],
-    "warnings": [
-      "This correction assumes albumin of 4.0 g/dL as normal. It may not be accurate in hypoalbuminemia due to other causes.",
-      "Ionized calcium measurement is preferred when available and is not affected by albumin."
-    ],
-    "followUp": [
-      "If corrected calcium is abnormal, check ionized calcium and PTH levels.",
-      "Consider vitamin D deficiency, malignancy, or primary hyperparathyroidism as causes."
-    ]
-  },
-
-  evidence: {
-    "source": "Clinical Guidelines",
-    "reference": "Payne RB, et al. Corrected calcium and corrected albumin. Ann Clin Biochem. 1990.",
-    "references": [
-      "Payne RB, et al. Corrected calcium and corrected albumin. Ann Clin Biochem. 1990;27:497-503.",
-      "Labriola L, et al. New formula for correcting total calcium for albumin. Nephrol Dial Transplant. 2007."
-    ]
-  },
-
-  relatedCalculators: [
-    "anion-gap",
-    "calcium-phosphate-product"
-=======
 
   evidence: {"source":"NACB / Lab Medicine","reference":"Pay DA, et al. Corrected calcium in hypercalcaemia and hypocalcaemia. Ann Clin Biochem. 2004;41:486–488.","reviewedBy":"MedCalcHub Clinical Team","version":"1.0","updatedAt":"2026-08","references":["Pay DA, et al. Ann Clin Biochem. 2004;41:486–488.","NACB Guidelines on Calcium and Phosphate Measurement.","KDIGO CKD-MBD Guideline. Kidney Int Suppl. 2017."]},
 
@@ -172,7 +64,6 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   references: [
     "MedCalcHub Clinical References",
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
   ],
 
   relatedCalculators: ["calcium-phosphate-product","albumin-creatinine-ratio","ckd-epi-2021","anion-gap"],
@@ -200,74 +91,6 @@ calculate(
 ) {
 
 
-<<<<<<< HEAD
-
-for (
-  const key of Object.keys(values)
-) {
-
-  const inputValue =
-    Number(values[key]);
-
-
-  if (
-    values[key] === "" ||
-    values[key] === undefined
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Required input missing.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-
-  if (
-    Number.isNaN(inputValue)
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Invalid numeric input.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-
-  if (
-    inputValue < 0
-  ) {
-
-    return {
-
-      value: 0,
-
-      interpretation:
-        "Negative values are not allowed.",
-
-      status:
-        "critical",
-
-    };
-
-  }
-
-=======
 if (
   values.calcium === "" ||
   values.calcium === undefined
@@ -347,24 +170,13 @@ if (Number(values.albumin) === 0) {
     interpretation: "Albumin cannot be zero.",
     status: "critical",
   };
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 }
 
 
 
-<<<<<<< HEAD
-
-
-const calcium =
-    Number(values.calcium);
-
-const albumin =
-    Number(values.albumin);
-=======
 const calcium = Number(values.calcium);
 const ca = calcium;
 const albumin = Number(values.albumin);
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 
   const result =
@@ -388,24 +200,7 @@ let referenceRange =
 if (false) {}
 
 
-<<<<<<< HEAD
-else if (result <= 6.9) {
-
-  interpretation =
-    "Severe hypocalcemia";
-
-  status =
-    "critical";
-
-  referenceRange =
-  "<7";
-}
-
-
-else if (result >= 7 && result <= 8.4) {
-=======
 else if (result <= 8.4) {
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   interpretation =
     "Hypocalcemia";
@@ -414,22 +209,14 @@ else if (result <= 8.4) {
     "low";
 
   referenceRange =
-<<<<<<< HEAD
-  "7–8.4";
-=======
   "<8.5";
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 }
 
 
 else if (result >= 8.5 && result <= 10.5) {
 
   interpretation =
-<<<<<<< HEAD
-    "Normal";
-=======
     "Normal corrected calcium";
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   status =
     "normal";
@@ -439,11 +226,7 @@ else if (result >= 8.5 && result <= 10.5) {
 }
 
 
-<<<<<<< HEAD
-else if (result >= 10.6 && result <= 12) {
-=======
 else if (result >= 10.6) {
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   interpretation =
     "Hypercalcemia";
@@ -452,19 +235,11 @@ else if (result >= 10.6) {
     "high";
 
   referenceRange =
-<<<<<<< HEAD
-  "10.6–12";
-}
-
-
-else if (result >= 12.1) {
-=======
   "≥10.6";
 }
 
 
 else if (result >= 12.5) {
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   interpretation =
     "Severe hypercalcemia";
@@ -473,11 +248,7 @@ else if (result >= 12.5) {
     "critical";
 
   referenceRange =
-<<<<<<< HEAD
-  "≥12.1";
-=======
   "≥12.5";
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 }
 
 

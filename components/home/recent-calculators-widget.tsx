@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import { getRecentCalculators } from "@/lib/recent";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 export function RecentCalculatorsWidget() {
-  const [recentIds, setRecentIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    setRecentIds(getRecentCalculators());
-  }, []);
+  const [recentIds] = useState<string[]>(() =>
+    getRecentCalculators(),
+  );
 
   const calculators = recentIds
     .map((id) =>

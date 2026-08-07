@@ -1,4 +1,4 @@
-import type { FormulaType } from "../../types";
+import type { FormulaType, GeneratorOptions } from "../../types";
 
 import {
   calculatorKnowledge,
@@ -167,8 +167,8 @@ function analyze(): CoverageReport {
   for (const [, entry] of entries) {
     const result = validateCalculator({
       name: entry.description ?? "",
-      inputs: entry.inputs as any,
-      formula: entry.formula as any,
+      inputs: entry.inputs as unknown as GeneratorOptions["inputs"],
+      formula: entry.formula as unknown as GeneratorOptions["formula"],
     });
 
     totalErrors += result.errors.length;

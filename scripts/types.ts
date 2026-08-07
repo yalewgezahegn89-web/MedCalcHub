@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import type {
-  CalculatorClinicalGuidance,
-  CalculatorEvidence,
-  FAQItem,
-  ComparisonItem,
-  CalculatorInputDefinition,
-} from "../lib/calculators/calculator.types";
-=======
 import type { FAQItem, ComparisonItem } from "../lib/calculators/calculator.types";
 
 
@@ -16,9 +7,14 @@ export interface KnowledgeComparisonMetadata {
 }
 
 export interface ClinicalGuidance {
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
-export type { CalculatorInputDefinition } from "../lib/calculators/calculator.types";
+  advice?: readonly string[];
+
+  warnings?: readonly string[];
+
+  followUp?: readonly string[];
+
+}
 
 export interface Evidence {
 
@@ -93,17 +89,7 @@ export interface GeneratorOptions {
 
   inputs?: CalculatorInputDefinition[];
 
-  clinicalGuidance?: CalculatorClinicalGuidance;
-
-  faq?: readonly FAQItem[];
-
-  comparison?: ComparisonItem;
-
-  clinical?: CalculatorClinicalGuidance;
-
-  evidence?: CalculatorEvidence;
-
-  relatedCalculators?: readonly string[];
+  clinicalGuidance?: ClinicalGuidance;
 
   evidence?: Evidence;
 
@@ -163,8 +149,6 @@ export interface ClassificationRule {
 
 
 
-<<<<<<< HEAD
-=======
 export interface InputValidationRule {
 
   allowNegative?: boolean;
@@ -229,4 +213,3 @@ export interface CalculatorInputDefinition {
   validation?: InputValidationRule;
 
 }
->>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
