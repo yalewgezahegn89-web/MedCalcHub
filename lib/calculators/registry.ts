@@ -5,7 +5,6 @@ import { gcsCalculator } from "./gcs";
 import { shockIndexCalculator } from "./shock-index";
 import { news2Calculator } from "./news2";
 import { qsofaCalculator } from "./qsofa";
-import { albuminCreatinineRatioCalculator } from "./albumin-creatinine-ratio";
 import { mapCalculator } from "./map";
 import { heartRateCalculator } from "./heart-rate";
 import { testHeartRateCalculator } from "./test-heart-rate";
@@ -68,8 +67,6 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   shockIndexCalculator,
   news2Calculator,
   qsofaCalculator,
-  feureaCalculator,
-  albuminCreatinineRatioCalculator,
   mapCalculator,
   heartRateCalculator,
   testHeartRateCalculator,
@@ -108,7 +105,6 @@ bsaTest4Calculator,  bmiCalculator,
   albuminCorrectedCalciumCalculator,
 
   fenaCalculator,
-  feureaCalculator,
   ttkgCalculator,
   calciumPhosphateProductCalculator,
   fractionalExcretionCalculator,

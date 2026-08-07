@@ -1,5 +1,7 @@
 const STORAGE_KEY = "medcalchub-favorites";
 
+const CHANGE_EVENT = "medcalchub-favorites-changed";
+
 export function getFavorites(): string[] {
   if (typeof window === "undefined") {
     return [];
@@ -28,6 +30,8 @@ export function addFavorite(id: string) {
       STORAGE_KEY,
       JSON.stringify(favorites),
     );
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   }
 }
 
@@ -40,6 +44,8 @@ export function removeFavorite(id: string) {
     STORAGE_KEY,
     JSON.stringify(favorites),
   );
+
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function toggleFavorite(id: string) {

@@ -2,6 +2,8 @@ const STORAGE_KEY = "medcalchub-recent";
 
 const MAX_RECENT = 10;
 
+const CHANGE_EVENT = "medcalchub-recent-changed";
+
 export function getRecentCalculators(): string[] {
   if (typeof window === "undefined") {
     return [];
@@ -27,6 +29,8 @@ export function addRecentCalculator(id: string) {
     STORAGE_KEY,
     JSON.stringify(recent.slice(0, MAX_RECENT)),
   );
+
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function removeRecentCalculator(id: string) {

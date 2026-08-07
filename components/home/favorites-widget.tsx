@@ -1,15 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 
 import { getFavorites } from "@/lib/favorites";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
-export function FavoritesWidget() {
-  const [favorites] = useState(
-    () => getFavorites(),
+function subscribe(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-favorites-changed",
+    handler,
   );
+
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-favorites-changed",
+      handler,
+    );
+  };
+}
+
+function getSnapshot() {
+  return JSON.stringify(getFavorites());
+}
+
+function getServerSnapshot() {
+  return "[]";
+}
+
+export function FavoritesWidget() {
+  const favoritesStr = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
+  const favorites: string[] = JSON.parse(favoritesStr);
 
   const calculators = calculatorRegistry.filter(
     (calculator) =>

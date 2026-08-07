@@ -1,15 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 
 import { getRecentCalculators } from "@/lib/recent";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
-export function RecentCalculatorsWidget() {
-  const [recentIds] = useState<string[]>(() =>
-    getRecentCalculators(),
+function subscribe(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-recent-changed",
+    handler,
   );
+
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-recent-changed",
+      handler,
+    );
+  };
+}
+
+function getSnapshot() {
+  return JSON.stringify(getRecentCalculators());
+}
+
+function getServerSnapshot() {
+  return "[]";
+}
+
+export function RecentCalculatorsWidget() {
+  const recentIdsStr = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
+  const recentIds: string[] = JSON.parse(recentIdsStr);
 
   const calculators = recentIds
     .map((id) =>
