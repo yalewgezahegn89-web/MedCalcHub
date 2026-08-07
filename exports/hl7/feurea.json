@@ -1,0 +1,27 @@
+{
+  "calculator": "Feurea",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "urineUrea",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "plasmaUrea",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "urineCr",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "plasmaCr",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}

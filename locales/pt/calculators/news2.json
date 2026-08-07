@@ -1,0 +1,31 @@
+{
+  "title": "News2",
+  "description": "National Early Warning Score 2 (NEWS2).",
+  "inputs": {
+    "respiratory-rate": "Respiratory Rate",
+    "spo2": "SpO₂",
+    "temperature": "Temperature",
+    "sbp": "Systolic Blood Pressure",
+    "pulse": "Pulse"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is News2?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

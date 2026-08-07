@@ -1,0 +1,114 @@
+{
+  "slug": "serum-osmolality",
+  "title": "Serum Osmolality",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the estimated serum osmolality using sodium, glucose, and blood urea nitrogen (BUN). Useful in evaluating electrolyte disorders, dehydration, toxic alcohol ingestion, and calculating the osmolar gap.",
+  "purpose": "Used to calculates the estimated serum osmolality using sodium, glucose, and blood urea nitrogen (bun). useful in evaluating electrolyte disorders, dehydration, toxic alcohol ingestion, and calculating the osmolar gap.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "sodium",
+      "label": "Sodium",
+      "unit": "mmol/L",
+      "required": true
+    },
+    {
+      "id": "glucose",
+      "label": "Glucose",
+      "unit": "mg/dL",
+      "required": true
+    },
+    {
+      "id": "bun",
+      "label": "BUN",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Low osmolality",
+      "status": "low",
+      "min": 0,
+      "max": 274
+    },
+    {
+      "label": "Normal osmolality",
+      "status": "normal",
+      "min": 275,
+      "max": 295
+    },
+    {
+      "label": "High osmolality",
+      "status": "high",
+      "min": 296,
+      "max": 0
+    },
+    {
+      "label": "Critically elevated osmolality",
+      "status": "critical",
+      "min": 320,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Serum osmolality is most useful when measured and calculated values are compared to identify unmeasured osmoles (osmolar gap).",
+      "Use this calculator alongside the Osmolar Gap calculator when toxic alcohol ingestion is suspected.",
+      "In hypernatremia, serum osmolality helps guide the rate of correction."
+    ],
+    "warnings": [
+      "This formula uses glucose and BUN in mg/dL; results will be incorrect if different units are entered.",
+      "The formula does not account for ethanol, which contributes to effective osmolality. Add ethanol correction if needed: Ethanol / 4.6.",
+      "Measured osmolality must be obtained from the laboratory to calculate the osmolar gap."
+    ],
+    "followUp": [
+      "If osmolality is elevated, check serum sodium, glucose, and BUN for the primary cause.",
+      "If the osmolar gap is elevated (measured > calculated), consider toxic alcohol ingestion and obtain specific assays.",
+      "In hyperosmolality, assess volume status and guide fluid correction."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is normal serum osmolality?",
+      "answer": "Normal serum osmolality is approximately 275–295 mOsm/kg. Values below this suggest dilutional hyponatremia; values above suggest dehydration, hyperglycemia, or ingestion of osmotically active substances."
+    },
+    {
+      "question": "When should I order a measured osmolality?",
+      "answer": "Order a measured osmolality when toxic alcohol ingestion is suspected, when the calculated osmolality does not explain the clinical picture, or when you need to calculate the osmolar gap."
+    },
+    {
+      "question": "What does a high calculated osmolality mean?",
+      "answer": "A high calculated osmolality suggests hypernatremia, hyperglycemia, elevated BUN (uremia), or ingestion of osmotically active substances. The differential depends on the clinical context."
+    }
+  ],
+  "evidence": [
+    "Emergency Medicine / Nephrology",
+    "Dorwart WV, Chalmers T. Comparison of methods for calculating serum osmolality from chemical concentrations, and the prognostic value of such calculations. Clin Chem. 1975;21:190–194.",
+    "Dorwart WV, Chalmers T. Clin Chem. 1975;21:190–194.",
+    "Tintinalli's Emergency Medicine, 9th Ed.",
+    "UpToDate: Serum osmolality."
+  ],
+  "relatedCalculators": [
+    "osmolar-gap",
+    "corrected-sodium",
+    "anion-gap",
+    "sodium-deficit"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "osmolar-gap",
+    "next": "sodium-deficit",
+    "seeAlso": [
+      "bun-creatinine-ratio",
+      "calcium-phosphate-product",
+      "ckd-epi-2021",
+      "cockcroft-gault",
+      "corrected-calcium"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "title": "Feurea",
+  "description": "Calculates the fractional excretion of urea for renal evaluation, particularly useful when diuretics are present.",
+  "inputs": {
+    "urineUrea": "Urine Urea",
+    "plasmaUrea": "Plasma Urea",
+    "urineCr": "Urine Creatinine",
+    "plasmaCr": "Plasma Creatinine"
+  },
+  "classification": {
+    "prerenal-azotemia": "Prerenal azotemia",
+    "indeterminate": "Indeterminate",
+    "intrinsic-renal-injury-atn": "Intrinsic renal injury (ATN)"
+  },
+  "faq": [
+    {
+      "question": "When should I use FEUrea instead of FENa?",
+      "answer": "Use FEUrea when the patient has received diuretics, which can increase urinary sodium and make FENa unreliable."
+    },
+    {
+      "question": "What does FEUrea > 50% mean?",
+      "answer": "A FEUrea > 50% suggests intrinsic renal injury such as acute tubular necrosis."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "FEUrea can be useful when diuretics are present and FENa is less reliable.",
+      "FEUrea < 35% suggests prerenal azotemia; > 50% suggests intrinsic renal injury."
+    ],
+    "warnings": [
+      "FEUrea is less widely validated than FENa and should be used as a complementary test.",
+      "Protein intake and corticosteroids can affect urea handling and may alter the ratio."
+    ],
+    "followUp": [
+      "If FEUrea is equivocal, combine with clinical assessment and other urine biomarkers.",
+      "Consider renal ultrasound if intrinsic renal injury is suspected."
+    ]
+  }
+}

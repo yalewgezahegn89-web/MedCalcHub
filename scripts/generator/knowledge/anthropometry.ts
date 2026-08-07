@@ -8,7 +8,7 @@ export const anthropometryKnowledge = {
       "Calculates Body Mass Index from weight and height.",
 
     formula:
-      "BMI = weight / height²",
+      "weight / (height * height)",
 
     normalRange:
       "18.5–24.9 kg/m²",
@@ -115,6 +115,17 @@ export const anthropometryKnowledge = {
       "obesity",
       "overweight",
       "body composition",
+    ],
+
+    faq: [
+      {
+        question: "What is BMI?",
+        answer: "BMI is a screening tool that estimates body fat using height and weight.",
+      },
+      {
+        question: "Can BMI diagnose obesity?",
+        answer: "No. BMI is only a screening tool and should always be interpreted together with clinical findings.",
+      },
     ],
 
     inputs: [

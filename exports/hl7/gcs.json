@@ -1,0 +1,22 @@
+{
+  "calculator": "Gcs",
+  "version": "1.0",
+  "category": "Emergency",
+  "inputs": [
+    {
+      "id": "eye",
+      "type": "select",
+      "unit": ""
+    },
+    {
+      "id": "verbal",
+      "type": "select",
+      "unit": ""
+    },
+    {
+      "id": "motor",
+      "type": "select",
+      "unit": ""
+    }
+  ]
+}

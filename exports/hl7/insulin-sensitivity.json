@@ -1,0 +1,12 @@
+{
+  "calculator": "Insulin Sensitivity",
+  "version": "1.0",
+  "category": "Endocrinology",
+  "inputs": [
+    {
+      "id": "homaIr",
+      "type": "number",
+      "unit": ""
+    }
+  ]
+}

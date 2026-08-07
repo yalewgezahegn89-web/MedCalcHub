@@ -1,0 +1,40 @@
+{
+  "title": "Mdrd",
+  "description": "Estimates glomerular filtration rate using the 4-variable MDRD equation.",
+  "inputs": {
+    "age": "Age",
+    "sex": "Sex",
+    "creatinine": "Serum Creatinine"
+  },
+  "classification": {
+    "g1-normal-or-high": "G1: Normal or high",
+    "g2-mildly-decreased": "G2: Mildly decreased",
+    "g3a-mild-to-moderate": "G3a: Mild to moderate",
+    "g3b-moderate-to-severe": "G3b: Moderate to severe",
+    "g4-severely-decreased": "G4: Severely decreased",
+    "g5-kidney-failure": "G5: Kidney failure"
+  },
+  "faq": [
+    {
+      "question": "Is MDRD still used clinically?",
+      "answer": "Most laboratories have transitioned to CKD-EPI, but MDRD may still appear on older reports. CKD-EPI is now preferred."
+    },
+    {
+      "question": "Why is MDRD less accurate at higher GFR?",
+      "answer": "The MDRD equation was developed in patients with known CKD and was not validated in healthy individuals, leading to underestimation at higher GFR values."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "MDRD has largely been replaced by CKD-EPI for routine GFR estimation.",
+      "May still be encountered in older laboratory reports and historical records."
+    ],
+    "warnings": [
+      "The MDRD equation tends to underestimate GFR at higher kidney function (>60 mL/min).",
+      "Less accurate than CKD-EPI and should not be used for new clinical decisions when CKD-EPI is available."
+    ],
+    "followUp": [
+      "If transitioning from MDRD to CKD-EPI, note that eGFR values may differ and trend direction should be considered."
+    ]
+  }
+}

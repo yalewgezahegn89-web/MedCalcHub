@@ -1,10 +1,4 @@
-export type ComparisonItem = {
-  id: string;
-  name: string;
-  href: string;
-  bestFor: string;
-  limitation: string;
-};
+import type { ComparisonItem } from "./calculator.types";
 
 export const comparisonRegistry: Record<string, ComparisonItem[]> = {
   "ckd-epi-2021": [

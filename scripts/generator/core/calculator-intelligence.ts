@@ -1,10 +1,36 @@
+import type { FAQItem, ComparisonItem } from "../../../lib/calculators/calculator.types";
+import type { FormulaDefinition } from "../../types";
 import {
   calculatorKnowledge,
 } from "../knowledge";
 
+<<<<<<< HEAD
 import type {
   ClassificationRule,
 } from "../../types";
+=======
+
+export interface KnowledgeComparisonMetadata {
+  title?: string;
+  calculators: readonly ComparisonItem[];
+}
+
+
+export interface ClassificationRule {
+
+  min?: number;
+
+  max?: number;
+
+  label: string;
+
+  status:
+    | "normal"
+    | "low"
+    | "high"
+    | "critical";
+}
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 export interface ClinicalGuidance {
 
@@ -15,12 +41,32 @@ export interface ClinicalGuidance {
   followUp?: readonly string[];
 }
 
+<<<<<<< HEAD
 import type {
   CalculatorEvidence,
   FAQItem,
   ComparisonItem,
   CalculatorInputDefinition,
 } from "../../../lib/calculators/calculator.types";
+=======
+export interface CalcEvidence {
+
+  source?: string;
+
+  reference?: string;
+
+  reviewedBy?: string;
+
+  version?: string;
+
+  updatedAt?: string;
+
+  link?: string;
+
+  references?: readonly string[];
+
+}
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 export interface CalculatorSuggestion {
 
@@ -30,7 +76,7 @@ export interface CalculatorSuggestion {
 
   description?: string;
 
-  formula?: string;
+  formula?: FormulaDefinition;
 
   normalRange?: string;
 
@@ -42,6 +88,7 @@ export interface CalculatorSuggestion {
 
   clinicalGuidance?: ClinicalGuidance;
 
+<<<<<<< HEAD
   clinical?: ClinicalGuidance;
 
   faq?: readonly FAQItem[];
@@ -49,6 +96,13 @@ export interface CalculatorSuggestion {
   comparison?: ComparisonItem;
 
   evidence?: CalculatorEvidence;
+=======
+  evidence?: CalcEvidence;
+
+  faq?: readonly FAQItem[];
+
+  comparison?: KnowledgeComparisonMetadata;
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   relatedCalculators?: readonly string[];
 

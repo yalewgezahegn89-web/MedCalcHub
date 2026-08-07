@@ -1,0 +1,17 @@
+{
+  "calculator": "Bmi",
+  "version": "1.0",
+  "category": "Anthropometry",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "number",
+      "unit": "kg"
+    },
+    {
+      "id": "height",
+      "type": "number",
+      "unit": "cm"
+    }
+  ]
+}

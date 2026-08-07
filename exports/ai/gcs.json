@@ -1,0 +1,78 @@
+{
+  "slug": "gcs",
+  "title": "Gcs",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "Glasgow Coma Scale.",
+  "purpose": "Used to glasgow coma scale.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "eye",
+      "label": "Eye Opening",
+      "unit": "",
+      "required": true
+    },
+    {
+      "id": "verbal",
+      "label": "Verbal Response",
+      "unit": "",
+      "required": true
+    },
+    {
+      "id": "motor",
+      "label": "Motor Response",
+      "unit": "",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Normal",
+      "status": "normal",
+      "min": 0,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is Gcs?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "evidence": [
+    "TODO",
+    "TODO"
+  ],
+  "relatedCalculators": [
+    "map",
+    "heart-rate",
+    "qsofa",
+    "news2",
+    "shock-index"
+  ],
+  "comparisonCalculators": [
+    "gcs"
+  ],
+  "navigation": {
+    "previous": "curb-65",
+    "next": "news2",
+    "seeAlso": [
+      "curb-65"
+    ]
+  }
+}

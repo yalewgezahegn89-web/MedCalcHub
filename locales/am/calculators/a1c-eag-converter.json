@@ -1,0 +1,43 @@
+{
+  "title": "A1c Eag Converter",
+  "description": "Converts bidirectionally between hemoglobin A1c and estimated average glucose (eAG) using the ADA-validated ADAG formula.",
+  "inputs": {
+    "a1c": "HbA1c"
+  },
+  "classification": {
+    "normal-a1c": "Normal A1c",
+    "pre-diabetes-range": "Pre-diabetes range",
+    "diabetes-range": "Diabetes range"
+  },
+  "faq": [
+    {
+      "question": "What does an A1c of 7% equal in mg/dL?",
+      "answer": "An A1c of 7% corresponds to an estimated average glucose of approximately 154 mg/dL."
+    },
+    {
+      "question": "Why convert A1c to eAG?",
+      "answer": "Most patients are familiar with glucose numbers from home monitoring but find A1c percentages abstract. eAG translates A1c into a familiar unit."
+    },
+    {
+      "question": "How accurate is the conversion?",
+      "answer": "The formula has an R² of 0.84 in the ADAG study. Individual results may vary by ±15% due to biological and assay variability."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "The ADA target for most adults with diabetes is HbA1c < 7%, corresponding to eAG < 154 mg/dL.",
+      "Use this converter to help patients relate their A1c result to familiar glucose numbers.",
+      "Individualized targets may be higher or lower depending on age, comorbidities, and hypoglycemia risk."
+    ],
+    "warnings": [
+      "A1c may be unreliable in haemoglobinopathies, iron deficiency, pregnancy, and conditions with altered red blood cell turnover.",
+      "This formula applies to the NGSP-standardized A1c assay.",
+      "eAG represents an average and does not capture glucose variability or hypoglycemic episodes."
+    ],
+    "followUp": [
+      "If A1c is above target, review medication adherence and consider therapy intensification.",
+      "Use CGM or self-monitoring of blood glucose for detailed glycemic patterns.",
+      "Recheck A1c in 3 months after changes to diabetes management."
+    ]
+  }
+}

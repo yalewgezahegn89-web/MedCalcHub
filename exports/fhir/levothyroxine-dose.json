@@ -1,0 +1,20 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "levothyroxine-dose",
+  "name": "Levothyroxine Dose",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Estimates levothyroxine dose for thyroid hormone replacement, accounting for patient age and cardiac risk factors.",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "decimal",
+      "unit": "kg"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

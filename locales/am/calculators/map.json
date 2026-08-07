@@ -1,0 +1,28 @@
+{
+  "title": "Map",
+  "description": "Calculates Mean Arterial Pressure from systolic and diastolic blood pressure.",
+  "inputs": {
+    "sbp": "SBP",
+    "dbp": "DBP"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is Map?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

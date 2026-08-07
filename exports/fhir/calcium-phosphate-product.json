@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "calcium-phosphate-product",
+  "name": "Calcium Phosphate Product",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the calcium-phosphate product used in renal risk assessment for vascular calcification.",
+  "inputs": [
+    {
+      "id": "calcium",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "phosphate",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

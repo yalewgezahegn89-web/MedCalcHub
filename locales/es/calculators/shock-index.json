@@ -1,0 +1,28 @@
+{
+  "title": "Shock Index",
+  "description": "Calculates Shock Index from heart rate and systolic blood pressure.",
+  "inputs": {
+    "heart-rate": "Heart Rate",
+    "sbp": "Systolic Blood Pressure"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is Shock Index?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

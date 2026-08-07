@@ -20,11 +20,15 @@ export const heartRateCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
+<<<<<<< HEAD
   updatedAt: "2026-08-05",
+=======
+  updatedAt: "2026-08-06",
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   keywords: [],
 
-  formula: "HR = beats / minutes",
+  formula: "beats / time",
 
   normalRange: "60-100 bpm",
 
@@ -62,8 +66,20 @@ export const heartRateCalculator: CalculatorDefinition = {
     ],
   },
 
+  clinicalGuidance: {
+    advice: [],
+    warnings: [],
+    followUp: [],
+  },
+
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
+
+  evidence: undefined,
+
+  faq: undefined,
+
+  comparison: undefined,
 
   references: [
     "MedCalcHub Clinical References",
@@ -141,6 +157,7 @@ calculate(
 ) {
 
 
+<<<<<<< HEAD
 
 for (
   const key of Object.keys(values)
@@ -207,10 +224,92 @@ for (
 
   }
 
+=======
+if (
+  values.beats === "" ||
+  values.beats === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Number of Beats is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.beats))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Number of Beats.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.beats) < 0) {
+  return {
+    value: 0,
+    interpretation: "Number of Beats cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.beats) === 0) {
+  return {
+    value: 0,
+    interpretation: "Number of Beats cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.time === "" ||
+  values.time === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "Time is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.time))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid Time.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.time) < 0) {
+  return {
+    value: 0,
+    interpretation: "Time cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.time) === 0) {
+  return {
+    value: 0,
+    interpretation: "Time cannot be zero.",
+    status: "critical",
+  };
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 }
 
 
 
+<<<<<<< HEAD
 
 
 const beats =
@@ -218,6 +317,10 @@ const beats =
 
 const time =
     Number(values.time);
+=======
+const beats = Number(values.beats);
+const time = Number(values.time);
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 
   const result =
@@ -238,6 +341,7 @@ let status:
 let referenceRange =
   "";
 
+<<<<<<< HEAD
 if (false) {}
 
 
@@ -293,6 +397,8 @@ else if (result >= 150) {
 }
 
 
+=======
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 
 

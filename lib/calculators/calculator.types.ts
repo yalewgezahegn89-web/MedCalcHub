@@ -8,8 +8,10 @@ export type CalculatorInputOption = {
   label: string;
   value: string;
 };
-
-
+export type FAQItem = {
+  question: string;
+  answer: string;
+};
 export type CalculatorInput = {
 
   id: string;
@@ -118,6 +120,20 @@ export type CalculatorEvidence = {
 
   references?: string[];
 
+};
+
+export type ComparisonItem = {
+  id?: string;
+  name: string;
+  href: string;
+  use?: string;
+  bestFor?: string;
+  limitation?: string;
+};
+
+export type ComparisonMetadata = {
+  title?: string;
+  calculators?: ComparisonItem[];
 };
 
 
@@ -284,7 +300,11 @@ export interface CalculatorDefinition {
 
   faq?: FAQItem[];
 
+<<<<<<< HEAD
   comparison?: ComparisonItem;
+=======
+  comparison?: ComparisonMetadata | ComparisonItem[];
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   references?: string[];
 

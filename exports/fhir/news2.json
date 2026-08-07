@@ -1,0 +1,40 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "news2",
+  "name": "News2",
+  "status": "active",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "National Early Warning Score 2 (NEWS2).",
+  "inputs": [
+    {
+      "id": "respiratory-rate",
+      "type": "decimal",
+      "unit": "/min"
+    },
+    {
+      "id": "spo2",
+      "type": "decimal",
+      "unit": "%"
+    },
+    {
+      "id": "temperature",
+      "type": "decimal",
+      "unit": "°C"
+    },
+    {
+      "id": "sbp",
+      "type": "decimal",
+      "unit": "mmHg"
+    },
+    {
+      "id": "pulse",
+      "type": "decimal",
+      "unit": "bpm"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

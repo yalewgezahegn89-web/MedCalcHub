@@ -1,0 +1,17 @@
+{
+  "calculator": "Albumin Creatinine Ratio",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "albumin",
+      "type": "number",
+      "unit": "mg/L"
+    },
+    {
+      "id": "creatinine",
+      "type": "number",
+      "unit": "g/L"
+    }
+  ]
+}

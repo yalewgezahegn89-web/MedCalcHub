@@ -6,6 +6,10 @@ import {
 import { buildInputs } from "./generator/core/input-builder";
 import { buildCalculate } from "./generator/core/calculate-builder";
 import { buildReferenceRanges } from "./generator/core/reference-range-builder";
+
+function formulaToDisplayString(formula: GeneratorOptions["formula"]): string {
+  return typeof formula === "string" ? formula : (formula.expression ?? "");
+}
 function today() {
   return new Date()
     .toISOString()
@@ -77,7 +81,7 @@ export function replacePlaceholders(
     )
     .replaceAll(
       "{{FORMULA}}",
-      options.formula,
+      formulaToDisplayString(options.formula),
     )
     .replaceAll(
       "{{NORMAL_RANGE}}",
@@ -124,6 +128,30 @@ export function replacePlaceholders(
     .replaceAll(
       "{{CLINICAL_NOTES}}",
       "Interpret results together with the patient's clinical presentation.",
+    )
+    .replaceAll(
+      "{{EVIDENCE}}",
+      options.evidence
+        ? JSON.stringify(options.evidence, null, 0)
+        : "undefined",
+    )
+    .replaceAll(
+      "{{FAQ}}",
+      options.faq
+        ? JSON.stringify(options.faq, null, 0)
+        : "undefined",
+    )
+    .replaceAll(
+      "{{COMPARISON}}",
+      options.comparison
+        ? JSON.stringify(options.comparison, null, 0)
+        : "undefined",
+    )
+    .replaceAll(
+      "{{RELATED_CALCULATORS}}",
+      JSON.stringify(
+        options.relatedCalculators ?? [],
+      ),
     )
     .replaceAll(
       "{{REFERENCE}}",

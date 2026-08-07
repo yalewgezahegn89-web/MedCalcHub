@@ -1,6 +1,16 @@
 import type { CalculatorDefinition } from "./calculator.types";
+<<<<<<< HEAD
 import { waistToHipRatioCalculator } from "./waist-to-hip-ratio";
 import { leanBodyWeightCalculator } from "./lean-body-weight";
+=======
+import { ckdEpi2021Calculator } from "./ckd-epi-2021";
+import { curb65Calculator } from "./curb-65";
+import { gcsCalculator } from "./gcs";
+import { shockIndexCalculator } from "./shock-index";
+import { news2Calculator } from "./news2";
+import { qsofaCalculator } from "./qsofa";
+import { albuminCreatinineRatioCalculator } from "./albumin-creatinine-ratio";
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 import { mapCalculator } from "./map";
 import { heartRateCalculator } from "./heart-rate";
 import { testHeartRateCalculator } from "./test-heart-rate";
@@ -13,7 +23,6 @@ import { adjbwCalculator } from "./adjbw";
 
 import { cockcroftGaultCalculator } from "./cockcroft-gault";
 import { bunCreatinineRatioCalculator } from "./bun-creatinine-ratio";
-import { ckdEpi2021Calculator } from "./ckd-epi-2021";
 import { mdrdCalculator } from "./mdrd";
 import { acrCalculator } from "./acr";
 
@@ -37,7 +46,7 @@ import { correctedSodiumCalculator } from "./corrected-sodium";
 import { albuminCorrectedCalciumCalculator } from "./albumin-corrected-calcium";
 
 import { fenaCalculator } from "./fena";
-import { feUreaCalculator } from "./feurea";
+import { feureaCalculator } from "./feurea";
 import { ttkgCalculator } from "./ttkg";
 import { calciumPhosphateProductCalculator } from "./calcium-phosphate-product";
 import { fractionalExcretionCalculator } from "./fractional-excretion-calculator";
@@ -57,8 +66,19 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
+<<<<<<< HEAD
   waistToHipRatioCalculator,
   leanBodyWeightCalculator,
+=======
+  ckdEpi2021Calculator,
+  curb65Calculator,
+  gcsCalculator,
+  shockIndexCalculator,
+  news2Calculator,
+  qsofaCalculator,
+  feureaCalculator,
+  albuminCreatinineRatioCalculator,
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
   mapCalculator,
   heartRateCalculator,
   testHeartRateCalculator,
@@ -73,7 +93,6 @@ bsaTest4Calculator,  bmiCalculator,
   childPughCalculator,
 
   bunCreatinineRatioCalculator,
-  ckdEpi2021Calculator,
   mdrdCalculator,
   acrCalculator,
 
@@ -97,7 +116,7 @@ bsaTest4Calculator,  bmiCalculator,
   albuminCorrectedCalciumCalculator,
 
   fenaCalculator,
-  feUreaCalculator,
+  feureaCalculator,
   ttkgCalculator,
   calciumPhosphateProductCalculator,
   fractionalExcretionCalculator,

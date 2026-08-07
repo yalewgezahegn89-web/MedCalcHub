@@ -1,0 +1,37 @@
+{
+  "title": "Calcium Phosphate Product",
+  "description": "Calculates the calcium-phosphate product used in renal risk assessment for vascular calcification.",
+  "inputs": {
+    "calcium": "Calcium",
+    "phosphate": "Phosphate"
+  },
+  "classification": {
+    "acceptable": "Acceptable",
+    "elevated-increased-calcification-risk": "Elevated — increased calcification risk",
+    "critically-elevated-high-calcification-risk": "Critically elevated — high calcification risk"
+  },
+  "faq": [
+    {
+      "question": "What does an elevated calcium-phosphate product mean?",
+      "answer": "A product > 55 mg²/dL² indicates an increased risk of metastatic calcification and vascular calcification, especially in CKD patients."
+    },
+    {
+      "question": "How do you lower the calcium-phosphate product?",
+      "answer": "Reduce dietary phosphorus, use phosphate binders, and optimize dialysis adequacy. Avoid excessive calcium-based binders."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "An elevated calcium-phosphate product (> 55 mg²/dL²) is associated with an increased risk of vascular calcification and cardiovascular morbidity.",
+      "This product is particularly important to monitor in patients with chronic kidney disease and those on dialysis."
+    ],
+    "warnings": [
+      "This should be interpreted with the patient's renal and mineral metabolism status.",
+      "Treat phosphate elevation rather than calcium alone to reduce the calcium-phosphate product."
+    ],
+    "followUp": [
+      "If elevated, assess dietary phosphorus intake and consider phosphate binders.",
+      "Monitor parathyroid hormone (PTH) and vitamin D levels in CKD patients."
+    ]
+  }
+}

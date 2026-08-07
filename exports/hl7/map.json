@@ -1,0 +1,17 @@
+{
+  "calculator": "Map",
+  "version": "1.0",
+  "category": "Cardiology",
+  "inputs": [
+    {
+      "id": "sbp",
+      "type": "number",
+      "unit": "mmHg"
+    },
+    {
+      "id": "dbp",
+      "type": "number",
+      "unit": "mmHg"
+    }
+  ]
+}

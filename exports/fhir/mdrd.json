@@ -1,0 +1,30 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "mdrd",
+  "name": "Mdrd",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Estimates glomerular filtration rate using the 4-variable MDRD equation.",
+  "inputs": [
+    {
+      "id": "age",
+      "type": "decimal",
+      "unit": "years"
+    },
+    {
+      "id": "sex",
+      "type": "CodeableConcept",
+      "unit": ""
+    },
+    {
+      "id": "creatinine",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

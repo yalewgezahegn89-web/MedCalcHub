@@ -1,0 +1,30 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "gcs",
+  "name": "Gcs",
+  "status": "active",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "Glasgow Coma Scale.",
+  "inputs": [
+    {
+      "id": "eye",
+      "type": "CodeableConcept",
+      "unit": ""
+    },
+    {
+      "id": "verbal",
+      "type": "CodeableConcept",
+      "unit": ""
+    },
+    {
+      "id": "motor",
+      "type": "CodeableConcept",
+      "unit": ""
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "slug": "fena",
+  "title": "Fena",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the fractional excretion of sodium to distinguish prerenal azotemia from acute tubular necrosis.",
+  "purpose": "Used to calculates the fractional excretion of sodium to distinguish prerenal azotemia from acute tubular necrosis.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "urineNa",
+      "label": "Urine Sodium",
+      "unit": "mmol/L",
+      "required": true
+    },
+    {
+      "id": "plasmaNa",
+      "label": "Plasma Sodium",
+      "unit": "mmol/L",
+      "required": true
+    },
+    {
+      "id": "urineCr",
+      "label": "Urine Creatinine",
+      "unit": "mg/dL",
+      "required": true
+    },
+    {
+      "id": "plasmaCr",
+      "label": "Plasma Creatinine",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Prerenal azotemia",
+      "status": "low",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "label": "Indeterminate",
+      "status": "normal",
+      "min": 1,
+      "max": 2
+    },
+    {
+      "label": "Intrinsic renal injury (ATN)",
+      "status": "high",
+      "min": 2,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "FENa < 1% suggests prerenal azotemia; FENa > 2% suggests intrinsic renal injury (e.g. acute tubular necrosis).",
+      "Use urine studies and clinical context to guide interpretation."
+    ],
+    "warnings": [
+      "FENa may be unreliable in patients receiving diuretics, which increase urinary sodium excretion.",
+      "In the elderly and in chronic kidney disease, FENa may not accurately distinguish prerenal from intrinsic causes."
+    ],
+    "followUp": [
+      "If FENa is equivocal (1–2%), consider FEUrea as a complementary test.",
+      "Repeat urine electrolytes if the clinical picture does not match the initial result."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What does FENa < 1% mean?",
+      "answer": "A FENa < 1% suggests prerenal azotemia, meaning the kidneys are appropriately retaining sodium in response to decreased perfusion."
+    },
+    {
+      "question": "When is FENa unreliable?",
+      "answer": "FENa is unreliable in patients on diuretics, in chronic kidney disease, and in the elderly. Consider FEUrea in these situations."
+    }
+  ],
+  "evidence": [
+    "Nephrology Literature",
+    "Carvounis CP, et al. Significance of fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62:1184-1191.",
+    "Renal physiology references",
+    "Clinical nephrology references"
+  ],
+  "relatedCalculators": [
+    "feurea",
+    "bun-creatinine-ratio",
+    "fractional-excretion-calculator",
+    "ttkg"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "cockcroft-gault",
+    "next": "feurea",
+    "seeAlso": [
+      "anion-gap",
+      "ckd-epi-2021",
+      "cockcroft-gault",
+      "corrected-anion-gap",
+      "corrected-calcium"
+    ]
+  }
+}

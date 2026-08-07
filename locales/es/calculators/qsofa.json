@@ -1,0 +1,29 @@
+{
+  "title": "Qsofa",
+  "description": "Quick Sequential Organ Failure Assessment (qSOFA) for identifying patients at high risk of poor outcomes from suspected infection.",
+  "inputs": {
+    "sbp": "Systolic Blood Pressure",
+    "respiratory-rate": "Respiratory Rate",
+    "mental-status": "Altered Mental Status"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is Qsofa?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

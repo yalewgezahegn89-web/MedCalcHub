@@ -1,0 +1,30 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "serum-osmolality",
+  "name": "Serum Osmolality",
+  "status": "active",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the estimated serum osmolality using sodium, glucose, and blood urea nitrogen (BUN). Useful in evaluating electrolyte disorders, dehydration, toxic alcohol ingestion, and calculating the osmolar gap.",
+  "inputs": [
+    {
+      "id": "sodium",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "glucose",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "bun",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

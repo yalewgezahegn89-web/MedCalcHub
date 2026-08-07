@@ -9,7 +9,12 @@
     "lint": "eslint",
     "generate": "tsx scripts/generator/cli/index.ts",
     "generate:v2": "tsx scripts/generator/batch/index.ts --mode=v2",
+<<<<<<< HEAD
     "generate:specialty": "tsx scripts/generator/batch/index.ts --mode=specialty"
+=======
+    "generate:specialty": "tsx scripts/generator/batch/index.ts --mode=specialty",
+    "template": "tsx scripts/generator/cli/index.ts template"
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
   },
   "dependencies": {
     "clsx": "^2.1.1",

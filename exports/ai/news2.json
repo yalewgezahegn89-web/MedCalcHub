@@ -1,0 +1,92 @@
+{
+  "slug": "news2",
+  "title": "News2",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "National Early Warning Score 2 (NEWS2).",
+  "purpose": "Used to national early warning score 2 (news2).",
+  "formula": {
+    "type": "score",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "respiratory-rate",
+      "label": "Respiratory Rate",
+      "unit": "/min",
+      "required": true
+    },
+    {
+      "id": "spo2",
+      "label": "SpO₂",
+      "unit": "%",
+      "required": true
+    },
+    {
+      "id": "temperature",
+      "label": "Temperature",
+      "unit": "°C",
+      "required": true
+    },
+    {
+      "id": "sbp",
+      "label": "Systolic Blood Pressure",
+      "unit": "mmHg",
+      "required": true
+    },
+    {
+      "id": "pulse",
+      "label": "Pulse",
+      "unit": "bpm",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Normal",
+      "status": "normal",
+      "min": 0,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is News2?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "evidence": [
+    "TODO",
+    "TODO"
+  ],
+  "relatedCalculators": [
+    "map",
+    "heart-rate",
+    "qsofa",
+    "news2",
+    "shock-index"
+  ],
+  "comparisonCalculators": [
+    "map",
+    "qsofa",
+    "news2",
+    "shock-index",
+    "curb-65"
+  ],
+  "navigation": {
+    "previous": "gcs",
+    "next": "qsofa",
+    "seeAlso": []
+  }
+}

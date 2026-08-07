@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "albumin-creatinine-ratio",
+  "name": "Albumin Creatinine Ratio",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Nephrology",
+  "description": "Calculates urine albumin-to-creatinine ratio (ACR) for CKD screening and staging.",
+  "inputs": [
+    {
+      "id": "albumin",
+      "type": "decimal",
+      "unit": "mg/L"
+    },
+    {
+      "id": "creatinine",
+      "type": "decimal",
+      "unit": "g/L"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

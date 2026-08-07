@@ -1,0 +1,74 @@
+{
+  "slug": "shock-index",
+  "title": "Shock Index",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "Calculates Shock Index from heart rate and systolic blood pressure.",
+  "purpose": "Used to calculates shock index from heart rate and systolic blood pressure.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "heart-rate",
+      "label": "Heart Rate",
+      "unit": "bpm",
+      "required": true
+    },
+    {
+      "id": "sbp",
+      "label": "Systolic Blood Pressure",
+      "unit": "mmHg",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Normal",
+      "status": "normal",
+      "min": 0,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is Shock Index?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "evidence": [
+    "TODO",
+    "TODO"
+  ],
+  "relatedCalculators": [
+    "map",
+    "heart-rate",
+    "qsofa",
+    "news2",
+    "shock-index"
+  ],
+  "comparisonCalculators": [
+    "map",
+    "qsofa",
+    "news2",
+    "shock-index",
+    "curb-65"
+  ],
+  "navigation": {
+    "previous": "qsofa",
+    "next": "",
+    "seeAlso": []
+  }
+}

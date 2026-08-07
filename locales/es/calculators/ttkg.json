@@ -1,0 +1,40 @@
+{
+  "title": "Ttkg",
+  "description": "Calculates the transtubular potassium gradient to assess renal potassium handling.",
+  "inputs": {
+    "urineK": "Urine Potassium",
+    "plasmaK": "Plasma Potassium",
+    "urineOsmolality": "Urine Osmolality",
+    "plasmaOsmolality": "Plasma Osmolality"
+  },
+  "classification": {
+    "impaired-k-secretion": "Impaired K⁺ secretion",
+    "normal-renal-k-response": "Normal renal K⁺ response",
+    "enhanced-k-secretion": "Enhanced K⁺ secretion"
+  },
+  "faq": [
+    {
+      "question": "What does a low TTKG mean in hyperkalemia?",
+      "answer": "A low TTKG (< 8) in the setting of hyperkalemia suggests impaired aldosterone-mediated potassium secretion, possibly due to hypoaldosteronism or distal tubular dysfunction."
+    },
+    {
+      "question": "Is TTKG still used clinically?",
+      "answer": "TTKG remains a useful bedside tool but some experts have questioned its physiological basis. It should be used alongside other clinical data."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TTKG is used to assess the renal response to potassium handling, particularly in the evaluation of hyperkalemia.",
+      "A TTKG > 10 in the setting of hyperkalemia suggests intact aldosterone-mediated potassium secretion.",
+      "A TTKG < 8 in hyperkalemia suggests impaired distal potassium secretion (e.g. hypoaldosteronism, AKI)."
+    ],
+    "warnings": [
+      "Interpretation may be affected by diuretics and other renal conditions.",
+      "Some experts have questioned the physiological validity of TTKG; use in conjunction with clinical assessment."
+    ],
+    "followUp": [
+      "If TTKG suggests impaired potassium secretion, evaluate aldosterone and renin levels.",
+      "Consider renal biopsy if intrinsic tubular disease is suspected."
+    ]
+  }
+}

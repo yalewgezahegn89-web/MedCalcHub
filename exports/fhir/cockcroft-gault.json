@@ -1,0 +1,35 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "cockcroft-gault",
+  "name": "Cockcroft Gault",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Estimates creatinine clearance (CrCl) for medication dosing using the Cockcroft-Gault equation.",
+  "inputs": [
+    {
+      "id": "age",
+      "type": "decimal",
+      "unit": "years"
+    },
+    {
+      "id": "weight",
+      "type": "decimal",
+      "unit": "kg"
+    },
+    {
+      "id": "sex",
+      "type": "CodeableConcept",
+      "unit": ""
+    },
+    {
+      "id": "creatinine",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

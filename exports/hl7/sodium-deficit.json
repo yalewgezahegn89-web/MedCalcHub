@@ -1,0 +1,22 @@
+{
+  "calculator": "Sodium Deficit",
+  "version": "1.0",
+  "category": "Internal Medicine",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "number",
+      "unit": "kg"
+    },
+    {
+      "id": "currentNa",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "desiredNa",
+      "type": "number",
+      "unit": "mmol/L"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "corrected-anion-gap",
+  "name": "Corrected Anion Gap",
+  "status": "active",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the albumin-corrected anion gap. In hypoalbuminemia, the measured anion gap is falsely low, potentially masking a high anion gap metabolic acidosis. This correction adjusts for the albumin contribution.",
+  "inputs": [
+    {
+      "id": "sodium",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "chloride",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "bicarbonate",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "albumin",
+      "type": "decimal",
+      "unit": "g/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

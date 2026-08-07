@@ -9,8 +9,9 @@ export const emergencyKnowledge: Record<
     specialty: "Emergency Medicine",
     description:
       "Quick Sequential Organ Failure Assessment (qSOFA) for identifying patients at high risk of poor outcomes from suspected infection.",
-    formula:
-      "Score = Altered Mental Status + SBP ≤100 + RR ≥22",
+    formula: {
+      type: "score",
+    },
     normalRange:
       "0–3 points",
     keywords: [
@@ -49,8 +50,9 @@ export const emergencyKnowledge: Record<
     specialty: "Emergency Medicine",
     description:
       "National Early Warning Score 2 (NEWS2).",
-    formula:
-      "Sum of physiological parameter scores.",
+    formula: {
+      type: "score",
+    },
     normalRange:
       "0–20",
     keywords: [

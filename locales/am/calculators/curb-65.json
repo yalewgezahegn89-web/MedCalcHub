@@ -1,0 +1,30 @@
+{
+  "title": "Curb 65",
+  "description": "CURB-65 severity score for community-acquired pneumonia.",
+  "inputs": {
+    "age": "Age",
+    "urea": "Urea",
+    "respiratory-rate": "Respiratory Rate",
+    "sbp": "Systolic Blood Pressure"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is Curb 65?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

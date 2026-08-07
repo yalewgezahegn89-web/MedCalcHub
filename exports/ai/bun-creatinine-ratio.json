@@ -1,0 +1,94 @@
+{
+  "slug": "bun-creatinine-ratio",
+  "title": "Bun Creatinine Ratio",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the Blood Urea Nitrogen to Creatinine ratio to help differentiate causes of kidney dysfunction.",
+  "purpose": "Used to calculates the blood urea nitrogen to creatinine ratio to help differentiate causes of kidney dysfunction.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "bun",
+      "label": "Blood Urea Nitrogen",
+      "unit": "mg/dL",
+      "required": true
+    },
+    {
+      "id": "creatinine",
+      "label": "Serum Creatinine",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Low ratio",
+      "status": "low",
+      "min": 0,
+      "max": 9
+    },
+    {
+      "label": "Normal ratio",
+      "status": "normal",
+      "min": 10,
+      "max": 20
+    },
+    {
+      "label": "Elevated ratio",
+      "status": "high",
+      "min": 21,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "An elevated BUN/Creatinine ratio may suggest prerenal azotemia, gastrointestinal bleeding, or dehydration, but should always be interpreted in clinical context.",
+      "Use alongside urinalysis and urine electrolytes for a more complete picture of renal function."
+    ],
+    "warnings": [
+      "Interpret the ratio together with the clinical presentation; it is not diagnostic in isolation.",
+      "High-protein diets, corticosteroids, and GI bleeding can elevate BUN independently of kidney function."
+    ],
+    "followUp": [
+      "If the ratio is elevated, assess volume status and consider urine sodium and fractional excretion of sodium.",
+      "If prerenal causes are excluded, evaluate for intrinsic renal or postrenal etiologies."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What does a high BUN/Creatinine ratio mean?",
+      "answer": "A ratio >20:1 may suggest prerenal azotemia (e.g. dehydration, heart failure), GI bleeding, or high protein intake."
+    },
+    {
+      "question": "What does a low BUN/Creatinine ratio mean?",
+      "answer": "A ratio <10:1 may indicate intrinsic renal disease, liver disease, malnutrition, or a low-protein diet."
+    }
+  ],
+  "evidence": [
+    "NKF / KDIGO",
+    "KDIGO Clinical Practice Guideline for the Evaluation and Management of CKD.",
+    "KDIGO Clinical Practice Guideline.",
+    "National Kidney Foundation."
+  ],
+  "relatedCalculators": [
+    "ckd-epi-2021",
+    "cockcroft-gault",
+    "fena",
+    "feurea"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "albumin-creatinine-ratio",
+    "next": "calcium-phosphate-product",
+    "seeAlso": [
+      "calcium-phosphate-product",
+      "corrected-calcium",
+      "corrected-sodium",
+      "free-water-deficit",
+      "serum-osmolality"
+    ]
+  }
+}

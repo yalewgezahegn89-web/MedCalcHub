@@ -1,0 +1,20 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "estimated-average-glucose",
+  "name": "Estimated Average Glucose",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Estimates mean plasma glucose from HbA1c using the ADAG formula validated by the American Diabetes Association.",
+  "inputs": [
+    {
+      "id": "a1c",
+      "type": "decimal",
+      "unit": "%"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

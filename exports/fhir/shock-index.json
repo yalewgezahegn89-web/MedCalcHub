@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "shock-index",
+  "name": "Shock Index",
+  "status": "active",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "Calculates Shock Index from heart rate and systolic blood pressure.",
+  "inputs": [
+    {
+      "id": "heart-rate",
+      "type": "decimal",
+      "unit": "bpm"
+    },
+    {
+      "id": "sbp",
+      "type": "decimal",
+      "unit": "mmHg"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

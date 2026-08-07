@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "homa-b",
+  "name": "Homa B",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Estimates pancreatic beta-cell function from fasting plasma glucose and fasting serum insulin using the HOMA equation.",
+  "inputs": [
+    {
+      "id": "glucose",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "insulin",
+      "type": "decimal",
+      "unit": "µU/mL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

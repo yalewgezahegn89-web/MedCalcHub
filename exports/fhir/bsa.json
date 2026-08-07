@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "bsa",
+  "name": "Bsa",
+  "status": "active",
+  "category": "Anthropometry",
+  "specialty": "General Medicine",
+  "description": "Calculates Body Surface Area (Mosteller formula).",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "decimal",
+      "unit": "kg"
+    },
+    {
+      "id": "height",
+      "type": "decimal",
+      "unit": "cm"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

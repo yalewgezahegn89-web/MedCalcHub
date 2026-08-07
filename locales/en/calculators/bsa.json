@@ -1,0 +1,28 @@
+{
+  "title": "Bsa",
+  "description": "Calculates Body Surface Area (Mosteller formula).",
+  "inputs": {
+    "weight": "Weight",
+    "height": "Height"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is Bsa?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

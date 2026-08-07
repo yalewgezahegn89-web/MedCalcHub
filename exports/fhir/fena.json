@@ -1,0 +1,35 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "fena",
+  "name": "Fena",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the fractional excretion of sodium to distinguish prerenal azotemia from acute tubular necrosis.",
+  "inputs": [
+    {
+      "id": "urineNa",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "plasmaNa",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "urineCr",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "plasmaCr",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

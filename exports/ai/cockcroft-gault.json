@@ -1,0 +1,119 @@
+{
+  "slug": "cockcroft-gault",
+  "title": "Cockcroft Gault",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Estimates creatinine clearance (CrCl) for medication dosing using the Cockcroft-Gault equation.",
+  "purpose": "Used to estimates creatinine clearance (crcl) for medication dosing using the cockcroft-gault equation.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "age",
+      "label": "Age",
+      "unit": "years",
+      "required": true
+    },
+    {
+      "id": "weight",
+      "label": "Weight",
+      "unit": "kg",
+      "required": true
+    },
+    {
+      "id": "sex",
+      "label": "Sex",
+      "unit": "",
+      "required": true
+    },
+    {
+      "id": "creatinine",
+      "label": "Serum Creatinine",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Normal renal function",
+      "status": "normal",
+      "min": 90,
+      "max": 0
+    },
+    {
+      "label": "Mild renal impairment",
+      "status": "normal",
+      "min": 60,
+      "max": 89
+    },
+    {
+      "label": "Moderate renal impairment",
+      "status": "low",
+      "min": 30,
+      "max": 59
+    },
+    {
+      "label": "Severe renal impairment",
+      "status": "low",
+      "min": 15,
+      "max": 29
+    },
+    {
+      "label": "Kidney failure",
+      "status": "critical",
+      "min": 0,
+      "max": 14
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Use actual body weight unless adjusted body weight is clinically indicated (e.g. obesity).",
+      "Cockcroft-Gault remains the preferred equation for many drug dosing recommendations.",
+      "Use stable serum creatinine; avoid using values during acute kidney injury for chronic dosing."
+    ],
+    "warnings": [
+      "Not recommended for unstable kidney function or acute kidney injury.",
+      "Overestimates creatinine clearance in elderly patients with low muscle mass.",
+      "Does not provide direct GFR estimation; use CKD-EPI for CKD staging."
+    ],
+    "followUp": [
+      "Verify drug-specific dosing guidelines for renal adjustment thresholds.",
+      "Monitor renal function periodically in patients with CrCl < 50 mL/min."
+    ]
+  },
+  "faq": [
+    {
+      "question": "When should I use Cockcroft-Gault instead of CKD-EPI?",
+      "answer": "Use Cockcroft-Gault when adjusting medication doses, as many drug labels still reference CrCl from this equation."
+    },
+    {
+      "question": "What weight should I use in the Cockcroft-Gault equation?",
+      "answer": "Use actual body weight by default. Adjusted body weight may be used in obese patients per institutional guidelines."
+    }
+  ],
+  "evidence": [
+    "Original Publication",
+    "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16:31-41.",
+    "Cockcroft DW, Gault MH. Nephron. 1976;16:31-41.",
+    "KDIGO Clinical Practice Guideline."
+  ],
+  "relatedCalculators": [
+    "ckd-epi-2021",
+    "mdrd",
+    "bun-creatinine-ratio"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "ckd-epi-2021",
+    "next": "fena",
+    "seeAlso": [
+      "anion-gap",
+      "corrected-anion-gap",
+      "corrected-calcium",
+      "corrected-sodium",
+      "fena"
+    ]
+  }
+}

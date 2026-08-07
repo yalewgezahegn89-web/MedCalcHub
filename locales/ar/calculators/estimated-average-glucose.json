@@ -1,0 +1,43 @@
+{
+  "title": "Estimated Average Glucose",
+  "description": "Estimates mean plasma glucose from HbA1c using the ADAG formula validated by the American Diabetes Association.",
+  "inputs": {
+    "a1c": "HbA1c"
+  },
+  "classification": {
+    "normal-average-glucose": "Normal average glucose",
+    "pre-diabetic-range": "Pre-diabetic range",
+    "diabetic-range": "Diabetic range"
+  },
+  "faq": [
+    {
+      "question": "What is estimated average glucose?",
+      "answer": "eAG converts your HbA1c into an average blood glucose value in mg/dL over the past 2–3 months, making it easier to compare with home glucose readings."
+    },
+    {
+      "question": "What HbA1c equals an eAG of 126 mg/dL?",
+      "answer": "An eAG of 126 mg/dL corresponds to an HbA1c of approximately 6.0%."
+    },
+    {
+      "question": "Is eAG the same as average blood glucose?",
+      "answer": "eAG is a statistical estimate of average glucose validated by CGM studies. It may not exactly match simple averages of finger-stick measurements."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Use eAG to translate HbA1c into a unit (mg/dL) that patients already understand from home glucose monitoring.",
+      "eAG represents the average glucose over the preceding 2–3 months.",
+      "The ADA recommends an HbA1c target of < 7% (eAG ≈ 154 mg/dL) for most non-pregnant adults with diabetes."
+    ],
+    "warnings": [
+      "eAG may be inaccurate in conditions affecting red blood cell lifespan (e.g. iron deficiency anaemia, sickle cell trait, pregnancy).",
+      "This formula is derived from continuous glucose monitoring studies and may differ from self-monitored blood glucose averages.",
+      "Use as a guide only; individual glucose targets should be personalized."
+    ],
+    "followUp": [
+      "If eAG is above target, review current diabetes management including diet, exercise, and medications.",
+      "Consider continuous glucose monitoring for more detailed glycemic assessment.",
+      "Recheck HbA1c in 3 months after therapy changes."
+    ]
+  }
+}

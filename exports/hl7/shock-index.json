@@ -1,0 +1,17 @@
+{
+  "calculator": "Shock Index",
+  "version": "1.0",
+  "category": "Emergency",
+  "inputs": [
+    {
+      "id": "heart-rate",
+      "type": "number",
+      "unit": "bpm"
+    },
+    {
+      "id": "sbp",
+      "type": "number",
+      "unit": "mmHg"
+    }
+  ]
+}

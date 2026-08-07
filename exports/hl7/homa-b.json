@@ -1,0 +1,17 @@
+{
+  "calculator": "Homa B",
+  "version": "1.0",
+  "category": "Endocrinology",
+  "inputs": [
+    {
+      "id": "glucose",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "insulin",
+      "type": "number",
+      "unit": "µU/mL"
+    }
+  ]
+}

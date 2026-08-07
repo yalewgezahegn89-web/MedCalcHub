@@ -20,11 +20,15 @@ export const mapCalculator: CalculatorDefinition = {
 
   version: "1.0",
 
+<<<<<<< HEAD
   updatedAt: "2026-08-05",
+=======
+  updatedAt: "2026-08-06",
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
   keywords: [],
 
-  formula: "MAP = (SBP + 2 × DBP) / 3",
+  formula: "(sbp + 2 * dbp) / 3",
 
   normalRange: "70-100 mmHg",
 
@@ -66,8 +70,20 @@ export const mapCalculator: CalculatorDefinition = {
     ],
   },
 
+  clinicalGuidance: {
+    advice: [],
+    warnings: [],
+    followUp: [],
+  },
+
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
+
+  evidence: undefined,
+
+  faq: undefined,
+
+  comparison: undefined,
 
   references: [
     "MedCalcHub Clinical References",
@@ -129,14 +145,14 @@ export const mapCalculator: CalculatorDefinition = {
   inputs: [
   {
     id: "sbp",
-    label: "Systolic Blood Pressure",
+    label: "SBP",
     type: "number",
     unit: "mmHg",
     required: true,
   },
   {
     id: "dbp",
-    label: "Diastolic Blood Pressure",
+    label: "DBP",
     type: "number",
     unit: "mmHg",
     required: true,
@@ -148,6 +164,7 @@ calculate(
   values: Record<string, string>,
 ) {
 
+<<<<<<< HEAD
 
 
 for (
@@ -223,9 +240,97 @@ for (
 
 const sbp =
     Number(values.sbp);
+=======
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
-const dbp =
-    Number(values.dbp);
+if (
+  values.sbp === "" ||
+  values.sbp === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "SBP is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.sbp))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid SBP.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.sbp) < 0) {
+  return {
+    value: 0,
+    interpretation: "SBP cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.sbp) === 0) {
+  return {
+    value: 0,
+    interpretation: "SBP cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+if (
+  values.dbp === "" ||
+  values.dbp === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "DBP is required.",
+    status: "critical",
+  };
+}
+
+
+if (
+  Number.isNaN(Number(values.dbp))
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid DBP.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.dbp) < 0) {
+  return {
+    value: 0,
+    interpretation: "DBP cannot be negative.",
+    status: "critical",
+  };
+}
+
+
+if (Number(values.dbp) === 0) {
+  return {
+    value: 0,
+    interpretation: "DBP cannot be zero.",
+    status: "critical",
+  };
+}
+
+
+
+const sbp = Number(values.sbp);
+const systolicBloodPressure = sbp;
+const dbp = Number(values.dbp);
+const diastolicBloodPressure = dbp;
+
 
 
   const result =
@@ -246,6 +351,7 @@ let status:
 let referenceRange =
   "";
 
+<<<<<<< HEAD
 if (false) {}
 
 
@@ -314,6 +420,8 @@ else if (result >= 120) {
 }
 
 
+=======
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 
 

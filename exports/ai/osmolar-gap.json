@@ -1,0 +1,120 @@
+{
+  "slug": "osmolar-gap",
+  "title": "Osmolar Gap",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the osmolar gap as the difference between measured and calculated serum osmolality. An elevated osmolar gap may suggest toxic alcohol ingestion (methanol, ethylene glycol) or other osmotically active substances.",
+  "purpose": "Used to calculates the osmolar gap as the difference between measured and calculated serum osmolality. an elevated osmolar gap may suggest toxic alcohol ingestion (methanol, ethylene glycol) or other osmotically active substances.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "measured",
+      "label": "Measured Osmolality",
+      "unit": "mOsm/kg",
+      "required": true
+    },
+    {
+      "id": "sodium",
+      "label": "Sodium",
+      "unit": "mmol/L",
+      "required": true
+    },
+    {
+      "id": "glucose",
+      "label": "Glucose",
+      "unit": "mg/dL",
+      "required": true
+    },
+    {
+      "id": "bun",
+      "label": "BUN",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Negatively elevated gap (lab error or dilutional)",
+      "status": "low",
+      "min": 0,
+      "max": -10
+    },
+    {
+      "label": "Normal osmolar gap",
+      "status": "normal",
+      "min": -10,
+      "max": 10
+    },
+    {
+      "label": "Elevated osmolar gap",
+      "status": "high",
+      "min": 11,
+      "max": 0
+    },
+    {
+      "label": "Markedly elevated osmolar gap — toxic ingestion likely",
+      "status": "critical",
+      "min": 50,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "An osmolar gap > 10 mOsm/kg in the context of a suspected toxic ingestion should raise concern for toxic alcohols (methanol, ethylene glycol, isopropanol) or other ingestions (propylene glycol, ethanol).",
+      "Always interpret the osmolar gap alongside the anion gap—both may be elevated in toxic alcohol ingestions.",
+      "A normal osmolar gap does not completely exclude toxic ingestion, particularly in delayed presentations where metabolism has occurred."
+    ],
+    "warnings": [
+      "The measured osmolality must be obtained from the laboratory; do not use the calculated value.",
+      "Ethanol elevates osmolality. If ethanol is present, subtract its contribution (Ethanol / 4.6) before interpreting the gap.",
+      "DKA, starvation, renal failure, and recent alcohol intoxication can all affect the osmolar gap."
+    ],
+    "followUp": [
+      "If the osmolar gap is elevated and toxic ingestion is suspected, obtain serum toxic alcohol levels (methanol, ethylene glycol, isopropanol).",
+      "Consider fomepizole or ethanol therapy if a toxic alcohol ingestion is confirmed or strongly suspected.",
+      "Repeat the osmolar gap after treatment to confirm resolution."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What does an elevated osmolar gap mean?",
+      "answer": "An elevated osmolar gap (> 10 mOsm/kg) indicates the presence of unmeasured osmotically active substances. In the emergency setting, this may suggest toxic alcohol ingestion (methanol, ethylene glycol), ethanol, or propylene glycol. Other causes include DKA, uremia, and alcohol intoxication."
+    },
+    {
+      "question": "Can the osmolar gap be normal in toxic ingestion?",
+      "answer": "Yes. In delayed presentations of toxic alcohol ingestion, the parent alcohol may have been metabolized to its toxic metabolites, normalizing the osmolar gap while toxicity persists. The anion gap may be elevated in these cases."
+    },
+    {
+      "question": "What is the normal osmolar gap?",
+      "answer": "A normal osmolar gap is generally considered to be between -10 and +10 mOsm/kg. Values above this range are considered elevated."
+    }
+  ],
+  "evidence": [
+    "Emergency Medicine / Toxicology",
+    "Brent J, et al. Fomepizole for the treatment of methanol poisoning. N Engl J Med. 2001;344:424–429.",
+    "Brent J, et al. N Engl J Med. 2001;344:424–429.",
+    "Tintinalli's Emergency Medicine, 9th Ed.",
+    "UpToDate: Osmolar gap."
+  ],
+  "relatedCalculators": [
+    "serum-osmolality",
+    "anion-gap",
+    "corrected-anion-gap",
+    "bun-creatinine-ratio"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "free-water-deficit",
+    "next": "serum-osmolality",
+    "seeAlso": [
+      "calcium-phosphate-product",
+      "ckd-epi-2021",
+      "cockcroft-gault",
+      "corrected-calcium",
+      "fena"
+    ]
+  }
+}

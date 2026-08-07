@@ -1,0 +1,93 @@
+{
+  "slug": "calcium-phosphate-product",
+  "title": "Calcium Phosphate Product",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the calcium-phosphate product used in renal risk assessment for vascular calcification.",
+  "purpose": "Used to calculates the calcium-phosphate product used in renal risk assessment for vascular calcification.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "calcium",
+      "label": "Calcium",
+      "unit": "mg/dL",
+      "required": true
+    },
+    {
+      "id": "phosphate",
+      "label": "Phosphate",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Acceptable",
+      "status": "normal",
+      "min": 0,
+      "max": 55
+    },
+    {
+      "label": "Elevated — increased calcification risk",
+      "status": "high",
+      "min": 55,
+      "max": 70
+    },
+    {
+      "label": "Critically elevated — high calcification risk",
+      "status": "critical",
+      "min": 70,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "An elevated calcium-phosphate product (> 55 mg²/dL²) is associated with an increased risk of vascular calcification and cardiovascular morbidity.",
+      "This product is particularly important to monitor in patients with chronic kidney disease and those on dialysis."
+    ],
+    "warnings": [
+      "This should be interpreted with the patient's renal and mineral metabolism status.",
+      "Treat phosphate elevation rather than calcium alone to reduce the calcium-phosphate product."
+    ],
+    "followUp": [
+      "If elevated, assess dietary phosphorus intake and consider phosphate binders.",
+      "Monitor parathyroid hormone (PTH) and vitamin D levels in CKD patients."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What does an elevated calcium-phosphate product mean?",
+      "answer": "A product > 55 mg²/dL² indicates an increased risk of metastatic calcification and vascular calcification, especially in CKD patients."
+    },
+    {
+      "question": "How do you lower the calcium-phosphate product?",
+      "answer": "Reduce dietary phosphorus, use phosphate binders, and optimize dialysis adequacy. Avoid excessive calcium-based binders."
+    }
+  ],
+  "evidence": [
+    "Nephrology Literature",
+    "KDIGO CKD-MBD Guideline. Improving global outcomes (KDIGO) CKD-MBD update. Kidney Int Suppl. 2017;7:1-59.",
+    "Nephrology references",
+    "Clinical practice guidelines"
+  ],
+  "relatedCalculators": [
+    "ckd-epi-2021",
+    "cockcroft-gault",
+    "albumin-creatinine-ratio"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "bun-creatinine-ratio",
+    "next": "ckd-epi-2021",
+    "seeAlso": [
+      "anion-gap",
+      "corrected-anion-gap",
+      "corrected-sodium",
+      "fena",
+      "feurea"
+    ]
+  }
+}

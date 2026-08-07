@@ -1,0 +1,17 @@
+{
+  "calculator": "Bun Creatinine Ratio",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "bun",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "creatinine",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}

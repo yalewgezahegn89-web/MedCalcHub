@@ -1,0 +1,99 @@
+{
+  "slug": "albumin-creatinine-ratio",
+  "title": "Albumin Creatinine Ratio",
+  "category": "Nephrology",
+  "specialty": "Nephrology",
+  "description": "Calculates urine albumin-to-creatinine ratio (ACR) for CKD screening and staging.",
+  "purpose": "Used to calculates urine albumin-to-creatinine ratio (acr) for ckd screening and staging.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "albumin",
+      "label": "Urine Albumin",
+      "unit": "mg/L",
+      "required": true
+    },
+    {
+      "id": "creatinine",
+      "label": "Urine Creatinine",
+      "unit": "g/L",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "A1: Normal to mildly increased",
+      "status": "normal",
+      "min": 0,
+      "max": 29
+    },
+    {
+      "label": "A2: Moderately increased",
+      "status": "high",
+      "min": 30,
+      "max": 300
+    },
+    {
+      "label": "A3: Severely increased",
+      "status": "critical",
+      "min": 301,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Persistent albuminuria is one of the earliest indicators of chronic kidney disease and should always be interpreted together with eGFR.",
+      "ACR is recommended for CKD screening in patients with diabetes, hypertension, or family history of kidney disease."
+    ],
+    "warnings": [
+      "Diagnosing CKD from a single abnormal ACR result.",
+      "Ignoring transient albuminuria caused by fever, exercise, or urinary tract infection.",
+      "Using ACR alone without assessing kidney function (eGFR)."
+    ],
+    "followUp": [
+      "Persistent albuminuria should be confirmed with at least two abnormal measurements over a period of three months.",
+      "If ACR > 30 mg/g, repeat testing and evaluate eGFR for CKD staging."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is the Albumin-to-Creatinine Ratio (ACR)?",
+      "answer": "The Albumin-to-Creatinine Ratio estimates the amount of albumin excreted in urine while correcting for urine concentration using creatinine."
+    },
+    {
+      "question": "Why is ACR important?",
+      "answer": "ACR is one of the earliest markers of kidney damage and is recommended for screening chronic kidney disease, especially in patients with diabetes or hypertension."
+    },
+    {
+      "question": "What is considered a normal ACR?",
+      "answer": "An ACR below 30 mg/g is considered normal or mildly increased (A1)."
+    },
+    {
+      "question": "When should ACR be repeated?",
+      "answer": "Persistent albuminuria should be confirmed with at least two abnormal measurements over a period of three months."
+    }
+  ],
+  "evidence": [
+    "KDIGO",
+    "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease."
+  ],
+  "relatedCalculators": [
+    "ckd-epi-2021",
+    "cockcroft-gault",
+    "mdrd",
+    "fena",
+    "feurea",
+    "ttkg"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "",
+    "next": "bun-creatinine-ratio",
+    "seeAlso": [
+      "bun-creatinine-ratio"
+    ]
+  }
+}

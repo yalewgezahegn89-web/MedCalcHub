@@ -1,0 +1,124 @@
+{
+  "slug": "ckd-epi-2021",
+  "title": "Ckd Epi 2021",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Estimates glomerular filtration rate (eGFR) using the 2021 CKD-EPI creatinine equation.",
+  "purpose": "Used to estimates glomerular filtration rate (egfr) using the 2021 ckd-epi creatinine equation.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "age",
+      "label": "Age",
+      "unit": "years",
+      "required": true
+    },
+    {
+      "id": "sex",
+      "label": "Sex",
+      "unit": "",
+      "required": true
+    },
+    {
+      "id": "creatinine",
+      "label": "Serum Creatinine",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "G1: Normal or high",
+      "status": "normal",
+      "min": 90,
+      "max": 0
+    },
+    {
+      "label": "G2: Mildly decreased",
+      "status": "normal",
+      "min": 60,
+      "max": 89
+    },
+    {
+      "label": "G3a: Mild to moderate",
+      "status": "low",
+      "min": 45,
+      "max": 59
+    },
+    {
+      "label": "G3b: Moderate to severe",
+      "status": "low",
+      "min": 30,
+      "max": 44
+    },
+    {
+      "label": "G4: Severely decreased",
+      "status": "low",
+      "min": 15,
+      "max": 29
+    },
+    {
+      "label": "G5: Kidney failure",
+      "status": "critical",
+      "min": 0,
+      "max": 14
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Use CKD-EPI 2021 (race-free) as the preferred equation for estimating GFR in clinical practice.",
+      "Interpret eGFR alongside albuminuria (ACR) for CKD staging per KDIGO guidelines.",
+      "Repeat testing after 3 months to confirm chronicity before diagnosing CKD."
+    ],
+    "warnings": [
+      "CKD-EPI is an estimate and may be inaccurate in extremes of muscle mass, amputees, or pregnancy.",
+      "Do not use CKD-EPI for medication dosing without checking drug-specific guidance; Cockcroft-Gault may be required."
+    ],
+    "followUp": [
+      "If eGFR < 60 mL/min/1.73 m², repeat within 3 months to assess for chronicity.",
+      "Evaluate for albuminuria with urine ACR in all patients with reduced eGFR.",
+      "Refer to nephrology if eGFR < 30 or rapidly declining."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What does eGFR measure?",
+      "answer": "eGFR estimates how well the kidneys are filtering waste from the blood, expressed in mL/min/1.73 m²."
+    },
+    {
+      "question": "Why was the race variable removed from CKD-EPI?",
+      "answer": "The 2021 equation removed race because including it was not scientifically justified and contributed to health disparities in CKD detection."
+    },
+    {
+      "question": "Is CKD-EPI better than MDRD?",
+      "answer": "Yes. CKD-EPI is more accurate at higher GFR values and is now the preferred equation in most guidelines."
+    }
+  ],
+  "evidence": [
+    "NKF / KDIGO",
+    "Inker LA, et al. New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race. NEJM. 2021;385:1737-1749.",
+    "Inker LA, et al. NEJM. 2021.",
+    "KDIGO 2024 Clinical Practice Guideline for CKD."
+  ],
+  "relatedCalculators": [
+    "cockcroft-gault",
+    "mdrd",
+    "albumin-creatinine-ratio",
+    "bun-creatinine-ratio"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "calcium-phosphate-product",
+    "next": "cockcroft-gault",
+    "seeAlso": [
+      "anion-gap",
+      "corrected-anion-gap",
+      "corrected-sodium",
+      "fena",
+      "feurea"
+    ]
+  }
+}

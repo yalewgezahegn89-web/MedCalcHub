@@ -1,0 +1,12 @@
+{
+  "calculator": "Estimated Average Glucose",
+  "version": "1.0",
+  "category": "Endocrinology",
+  "inputs": [
+    {
+      "id": "a1c",
+      "type": "number",
+      "unit": "%"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "calculator": "Ttkg",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "urineK",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "plasmaK",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "urineOsmolality",
+      "type": "number",
+      "unit": "mOsm/kg"
+    },
+    {
+      "id": "plasmaOsmolality",
+      "type": "number",
+      "unit": "mOsm/kg"
+    }
+  ]
+}

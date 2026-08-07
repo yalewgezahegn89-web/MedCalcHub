@@ -1,0 +1,17 @@
+{
+  "calculator": "Heart Rate",
+  "version": "1.0",
+  "category": "Cardiology",
+  "inputs": [
+    {
+      "id": "beats",
+      "type": "number",
+      "unit": "beats"
+    },
+    {
+      "id": "time",
+      "type": "number",
+      "unit": "minutes"
+    }
+  ]
+}

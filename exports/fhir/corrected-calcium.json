@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "corrected-calcium",
+  "name": "Corrected Calcium",
+  "status": "active",
+  "category": "Laboratory",
+  "specialty": "Internal Medicine",
+  "description": "Calculates corrected total serum calcium adjusted for hypoalbuminemia. In hypoalbuminemia, measured total calcium is falsely low because less calcium is protein-bound; this correction estimates the physiologically active total calcium.",
+  "inputs": [
+    {
+      "id": "calcium",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "albumin",
+      "type": "decimal",
+      "unit": "g/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

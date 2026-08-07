@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "map",
+  "name": "Map",
+  "status": "active",
+  "category": "Cardiology",
+  "specialty": "Emergency Medicine",
+  "description": "Calculates Mean Arterial Pressure from systolic and diastolic blood pressure.",
+  "inputs": [
+    {
+      "id": "sbp",
+      "type": "decimal",
+      "unit": "mmHg"
+    },
+    {
+      "id": "dbp",
+      "type": "decimal",
+      "unit": "mmHg"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

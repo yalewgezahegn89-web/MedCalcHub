@@ -41,10 +41,17 @@ export const calculatorTemplate: CalculatorDefinition = {
   clinicalNotes:
     "{{CLINICAL_NOTES}}",
 
+  evidence: {{EVIDENCE}},
+
+  faq: {{FAQ}},
+
+  comparison: {{COMPARISON}},
+
   references: [
     "{{REFERENCE}}",
   ],
 
+<<<<<<< HEAD
   faq: {{FAQ}},
 
   comparison: {{COMPARISON}},
@@ -53,6 +60,8 @@ export const calculatorTemplate: CalculatorDefinition = {
 
   evidence: {{EVIDENCE}},
 
+=======
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
   relatedCalculators: {{RELATED_CALCULATORS}},
 
   inputs: {{INPUTS}},

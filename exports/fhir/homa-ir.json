@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "homa-ir",
+  "name": "Homa Ir",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Estimates insulin resistance from fasting plasma glucose and fasting serum insulin using the Homeostasis Model Assessment (HOMA) equation.",
+  "inputs": [
+    {
+      "id": "glucose",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "insulin",
+      "type": "decimal",
+      "unit": "µU/mL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

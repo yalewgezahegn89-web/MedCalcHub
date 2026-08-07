@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type {
   CalculatorClinicalGuidance,
   CalculatorEvidence,
@@ -5,8 +6,64 @@ import type {
   ComparisonItem,
   CalculatorInputDefinition,
 } from "../lib/calculators/calculator.types";
+=======
+import type { FAQItem, ComparisonItem } from "../lib/calculators/calculator.types";
+
+
+export interface KnowledgeComparisonMetadata {
+  title?: string;
+  calculators: ComparisonItem[];
+}
+
+export interface ClinicalGuidance {
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1
 
 export type { CalculatorInputDefinition } from "../lib/calculators/calculator.types";
+
+export interface Evidence {
+
+  source?: string;
+
+  reference?: string;
+
+  reviewedBy?: string;
+
+  version?: string;
+
+  updatedAt?: string;
+
+  link?: string;
+
+  references?: string[];
+
+}
+
+/**
+ * Supported formula types for the Generator formula engine.
+ *
+ * Each type will have its own builder in future commits.
+ * Currently only "algebraic" is implemented.
+ */
+export type FormulaType =
+  | "algebraic"
+  | "score"
+  | "descriptive"
+  | "lookup"
+  | "conditional"
+  | "converter"
+  | "composite";
+
+export type FormulaDefinition =
+  | string
+  | {
+      type: FormulaType;
+
+      expression?: string;
+
+      description?: string;
+
+      config?: Record<string, unknown>;
+    };
 
 export interface GeneratorOptions {
 
@@ -22,7 +79,7 @@ export interface GeneratorOptions {
 
   description: string;
 
-  formula: string;
+  formula: FormulaDefinition;
 
   normalRange: string;
 
@@ -47,6 +104,14 @@ export interface GeneratorOptions {
   evidence?: CalculatorEvidence;
 
   relatedCalculators?: readonly string[];
+
+  evidence?: Evidence;
+
+  faq?: FAQItem[];
+
+  comparison?: KnowledgeComparisonMetadata;
+
+  relatedCalculators?: string[];
 
   /**
    * Automatic clinical classification rules
@@ -98,3 +163,70 @@ export interface ClassificationRule {
 
 
 
+<<<<<<< HEAD
+=======
+export interface InputValidationRule {
+
+  allowNegative?: boolean;
+
+  allowZero?: boolean;
+
+  minimum?: number;
+
+  maximum?: number;
+
+}
+
+
+export interface CalculatorInputDefinition {
+
+  id: string;
+
+  label: string;
+
+  type:
+    | "number"
+    | "text"
+    | "select";
+
+  unit?: string;
+
+  placeholder?: string;
+
+  required?: boolean;
+
+
+  /**
+   * Automatic unit conversion
+   *
+   * Example:
+   *
+   * Height cm → meter
+   *
+   * conversion:{
+   *   type:"divide",
+   *   factor:100
+   * }
+   */
+  conversion?: {
+
+    type:
+      | "divide"
+      | "multiply";
+
+    factor: number;
+
+  };
+
+
+  /**
+   * Configurable input validation rules.
+   *
+   * If omitted, defaults apply:
+   * allowNegative = false
+   * allowZero = false
+   */
+  validation?: InputValidationRule;
+
+}
+>>>>>>> 8e2d77b7cde955a3de55276349fde49d9b1cd2c1

@@ -1,0 +1,27 @@
+{
+  "calculator": "Osmolar Gap",
+  "version": "1.0",
+  "category": "Internal Medicine",
+  "inputs": [
+    {
+      "id": "measured",
+      "type": "number",
+      "unit": "mOsm/kg"
+    },
+    {
+      "id": "sodium",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "glucose",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "bun",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}
