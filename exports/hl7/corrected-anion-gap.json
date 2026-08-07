@@ -1,0 +1,27 @@
+{
+  "calculator": "Corrected Anion Gap",
+  "version": "1.0",
+  "category": "Internal Medicine",
+  "inputs": [
+    {
+      "id": "sodium",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "chloride",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "bicarbonate",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "albumin",
+      "type": "number",
+      "unit": "g/dL"
+    }
+  ]
+}

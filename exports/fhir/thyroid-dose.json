@@ -1,0 +1,20 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "thyroid-dose",
+  "name": "Thyroid Dose",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Estimates the starting levothyroxine replacement dose for hypothyroidism based on lean body weight.",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "decimal",
+      "unit": "kg"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

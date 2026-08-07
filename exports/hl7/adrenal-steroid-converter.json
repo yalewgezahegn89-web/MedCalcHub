@@ -1,0 +1,17 @@
+{
+  "calculator": "Adrenal Steroid Converter",
+  "version": "1.0",
+  "category": "Endocrinology",
+  "inputs": [
+    {
+      "id": "dose",
+      "type": "number",
+      "unit": "mg"
+    },
+    {
+      "id": "steroid",
+      "type": "select",
+      "unit": ""
+    }
+  ]
+}

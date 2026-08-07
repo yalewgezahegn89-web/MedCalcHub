@@ -1,0 +1,48 @@
+{
+  "title": "Homa Ir",
+  "description": "Estimates insulin resistance from fasting plasma glucose and fasting serum insulin using the Homeostasis Model Assessment (HOMA) equation.",
+  "inputs": {
+    "glucose": "Fasting Glucose",
+    "insulin": "Fasting Insulin"
+  },
+  "classification": {
+    "normal-insulin-sensitivity": "Normal insulin sensitivity",
+    "mild-insulin-resistance": "Mild insulin resistance",
+    "severe-insulin-resistance": "Severe insulin resistance"
+  },
+  "faq": [
+    {
+      "question": "What does a high HOMA-IR mean?",
+      "answer": "A HOMA-IR > 2.5 suggests insulin resistance, meaning the body's cells are not responding efficiently to insulin. This is a risk factor for type 2 diabetes, metabolic syndrome, and cardiovascular disease."
+    },
+    {
+      "question": "What are the units of HOMA-IR?",
+      "answer": "HOMA-IR is unitless. It is calculated using fasting glucose in mg/dL and fasting insulin in µU/mL: (glucose × insulin) / 405."
+    },
+    {
+      "question": "How does HOMA-IR differ from HOMA-B?",
+      "answer": "HOMA-IR estimates insulin resistance, while HOMA-B estimates pancreatic beta-cell function. Both use the same fasting glucose and insulin values but different formulas."
+    },
+    {
+      "question": "When should HOMA-IR be measured?",
+      "answer": "HOMA-IR requires fasting for at least 8 hours. It is best measured in the morning before any food intake."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "HOMA-IR > 2.5 is commonly used as the threshold for identifying insulin resistance in clinical research and practice.",
+      "Pair HOMA-IR with waist circumference, lipid profile, and blood pressure for a full metabolic syndrome assessment.",
+      "Best interpreted alongside HOMA-B to differentiate insulin resistance from beta-cell dysfunction."
+    ],
+    "warnings": [
+      "HOMA-IR is validated for fasting conditions only; non-fasting values are unreliable.",
+      "Less accurate in patients with advanced beta-cell failure (e.g. type 1 diabetes or late-stage type 2 diabetes).",
+      "Insulin assay variability between laboratories may affect absolute HOMA-IR values."
+    ],
+    "followUp": [
+      "If HOMA-IR is elevated, evaluate for metabolic syndrome and consider an oral glucose tolerance test.",
+      "Monitor lipid panel and liver function for non-alcoholic fatty liver disease.",
+      "Consider lifestyle intervention and repeat HOMA-IR in 3–6 months."
+    ]
+  }
+}

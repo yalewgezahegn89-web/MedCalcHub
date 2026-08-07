@@ -1,0 +1,35 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "osmolar-gap",
+  "name": "Osmolar Gap",
+  "status": "active",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the osmolar gap as the difference between measured and calculated serum osmolality. An elevated osmolar gap may suggest toxic alcohol ingestion (methanol, ethylene glycol) or other osmotically active substances.",
+  "inputs": [
+    {
+      "id": "measured",
+      "type": "decimal",
+      "unit": "mOsm/kg"
+    },
+    {
+      "id": "sodium",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "glucose",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "bun",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Gcs",
+  "description": "Glasgow Coma Scale.",
+  "inputs": {
+    "eye": "Eye Opening",
+    "verbal": "Verbal Response",
+    "motor": "Motor Response"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is Gcs?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

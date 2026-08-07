@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "heart-rate",
+  "name": "Heart Rate",
+  "status": "active",
+  "category": "Cardiology",
+  "specialty": "Emergency Medicine",
+  "description": "Calculates heart rate from the number of beats counted over a measured time interval.",
+  "inputs": [
+    {
+      "id": "beats",
+      "type": "decimal",
+      "unit": "beats"
+    },
+    {
+      "id": "time",
+      "type": "decimal",
+      "unit": "minutes"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

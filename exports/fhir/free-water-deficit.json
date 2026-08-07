@@ -1,0 +1,30 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "free-water-deficit",
+  "name": "Free Water Deficit",
+  "status": "active",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Estimates free water deficit in hypernatremia. Helps quantify the amount of free water needed to restore normal sodium levels.",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "decimal",
+      "unit": "kg"
+    },
+    {
+      "id": "currentNa",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "desiredNa",
+      "type": "decimal",
+      "unit": "mmol/L"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

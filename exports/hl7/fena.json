@@ -1,0 +1,27 @@
+{
+  "calculator": "Fena",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "urineNa",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "plasmaNa",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "urineCr",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "plasmaCr",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}

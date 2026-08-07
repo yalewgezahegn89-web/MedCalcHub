@@ -1,0 +1,45 @@
+{
+  "title": "Homa B",
+  "description": "Estimates pancreatic beta-cell function from fasting plasma glucose and fasting serum insulin using the HOMA equation.",
+  "inputs": {
+    "glucose": "Fasting Glucose",
+    "insulin": "Fasting Insulin"
+  },
+  "classification": {
+    "severe-beta-cell-dysfunction": "Severe beta-cell dysfunction",
+    "reduced-beta-cell-function": "Reduced beta-cell function",
+    "normal-beta-cell-function": "Normal beta-cell function",
+    "hyperinsulinemia": "Hyperinsulinemia"
+  },
+  "faq": [
+    {
+      "question": "What does a low HOMA-B mean?",
+      "answer": "A HOMA-B below 100% suggests reduced beta-cell function, meaning the pancreas is producing less insulin than expected for the glucose level. This is common in progressive type 2 diabetes."
+    },
+    {
+      "question": "How is HOMA-B different from HOMA-IR?",
+      "answer": "HOMA-B estimates how well the pancreas produces insulin (beta-cell function), while HOMA-IR estimates how well the body responds to it (insulin resistance)."
+    },
+    {
+      "question": "What is normal HOMA-B?",
+      "answer": "A normal HOMA-B is approximately 100–200%. Values below 50% indicate significant beta-cell dysfunction."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "HOMA-B < 50% suggests significant beta-cell dysfunction and may indicate progression toward insulin-dependent diabetes.",
+      "Pair with HOMA-IR to distinguish beta-cell failure from insulin resistance.",
+      "Useful in tracking beta-cell decline in type 2 diabetes over time."
+    ],
+    "warnings": [
+      "HOMA-B values are not directly comparable across studies using different insulin assays.",
+      "In newly diagnosed type 2 diabetes, HOMA-B may be transiently elevated due to glucotoxicity-driven hyperinsulinemia.",
+      "Not validated for use in type 1 diabetes or patients on exogenous insulin."
+    ],
+    "followUp": [
+      "If HOMA-B is low, consider progression of diabetes and possible need for insulin therapy.",
+      "Pair with C-peptide measurement for a more direct assessment of beta-cell function.",
+      "Monitor HbA1c and fasting glucose longitudinally."
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "slug": "map",
+  "title": "Map",
+  "category": "Cardiology",
+  "specialty": "Emergency Medicine",
+  "description": "Calculates Mean Arterial Pressure from systolic and diastolic blood pressure.",
+  "purpose": "Used to calculates mean arterial pressure from systolic and diastolic blood pressure.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "sbp",
+      "label": "SBP",
+      "unit": "mmHg",
+      "required": true
+    },
+    {
+      "id": "dbp",
+      "label": "DBP",
+      "unit": "mmHg",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Normal",
+      "status": "normal",
+      "min": 0,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is Map?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "evidence": [
+    "TODO",
+    "TODO"
+  ],
+  "relatedCalculators": [
+    "map",
+    "heart-rate",
+    "qsofa",
+    "news2",
+    "shock-index"
+  ],
+  "comparisonCalculators": [
+    "map",
+    "qsofa",
+    "news2",
+    "shock-index",
+    "curb-65"
+  ],
+  "navigation": {
+    "previous": "heart-rate",
+    "next": "",
+    "seeAlso": []
+  }
+}

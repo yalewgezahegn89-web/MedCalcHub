@@ -1,0 +1,28 @@
+{
+  "title": "Heart Rate",
+  "description": "Calculates heart rate from the number of beats counted over a measured time interval.",
+  "inputs": {
+    "beats": "Number of Beats",
+    "time": "Time"
+  },
+  "classification": {
+    "normal": "Normal"
+  },
+  "faq": [
+    {
+      "question": "What is Heart Rate?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  }
+}

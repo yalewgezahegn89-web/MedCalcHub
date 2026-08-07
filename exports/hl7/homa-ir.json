@@ -1,0 +1,17 @@
+{
+  "calculator": "Homa Ir",
+  "version": "1.0",
+  "category": "Endocrinology",
+  "inputs": [
+    {
+      "id": "glucose",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "insulin",
+      "type": "number",
+      "unit": "µU/mL"
+    }
+  ]
+}

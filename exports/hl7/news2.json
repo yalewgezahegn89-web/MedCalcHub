@@ -1,0 +1,32 @@
+{
+  "calculator": "News2",
+  "version": "1.0",
+  "category": "Emergency",
+  "inputs": [
+    {
+      "id": "respiratory-rate",
+      "type": "number",
+      "unit": "/min"
+    },
+    {
+      "id": "spo2",
+      "type": "number",
+      "unit": "%"
+    },
+    {
+      "id": "temperature",
+      "type": "number",
+      "unit": "°C"
+    },
+    {
+      "id": "sbp",
+      "type": "number",
+      "unit": "mmHg"
+    },
+    {
+      "id": "pulse",
+      "type": "number",
+      "unit": "bpm"
+    }
+  ]
+}

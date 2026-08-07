@@ -1,0 +1,93 @@
+{
+  "slug": "thyroid-dose",
+  "title": "Thyroid Dose",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Estimates the starting levothyroxine replacement dose for hypothyroidism based on lean body weight.",
+  "purpose": "Used to estimates the starting levothyroxine replacement dose for hypothyroidism based on lean body weight.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "weight",
+      "label": "Body Weight",
+      "unit": "kg",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Conservative dose",
+      "status": "low",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "label": "Moderate dose",
+      "status": "normal",
+      "min": 1,
+      "max": 1.6
+    },
+    {
+      "label": "Full replacement dose",
+      "status": "high",
+      "min": 1.6,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "The standard full replacement dose is approximately 1.6 µg/kg/day of levothyroxine.",
+      "Elderly patients and those with cardiac disease should start at 25–50 µg/day and titrate slowly.",
+      "Adjust dose based on TSH levels checked 6–8 weeks after initiation or dose change."
+    ],
+    "warnings": [
+      "This is an estimate only; individual needs vary significantly based on aetiology, thyroid reserve, and comorbidities.",
+      "Overtreatment in elderly patients increases risk of atrial fibrillation and osteoporosis.",
+      "Levothyroxine absorption is affected by food, iron, calcium, and proton pump inhibitors."
+    ],
+    "followUp": [
+      "Check TSH and free T4 in 6–8 weeks after starting therapy.",
+      "Titrate dose in 12.5–25 µg increments until TSH is within target.",
+      "Monitor TSH every 6–12 months once stable."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is the standard dose of levothyroxine?",
+      "answer": "The full replacement dose is approximately 1.6 µg/kg/day, but many patients require less, especially the elderly or those with residual thyroid function."
+    },
+    {
+      "question": "When should levothyroxine be taken?",
+      "answer": "Take on an empty stomach, 30–60 minutes before breakfast, with water only. Separate from calcium, iron, and PPIs by at least 4 hours."
+    },
+    {
+      "question": "How often should TSH be checked?",
+      "answer": "TSH should be checked 6–8 weeks after any dose change and every 6–12 months once stable."
+    }
+  ],
+  "evidence": [
+    "ATA / ETA",
+    "Jonklaas J, Bianco AC, Bauer AJ, et al. Guidelines for the treatment of hypothyroidism. Thyroid. 2014;24:1670–1751.",
+    "Jonklaas J, et al. Thyroid. 2014;24:1670–1751.",
+    "ATA Guidelines for Hypothyroidism. 2014.",
+    "ETA Clinical Practice Guidelines."
+  ],
+  "relatedCalculators": [
+    "levothyroxine-dose",
+    "bmi"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "levothyroxine-dose",
+    "next": "",
+    "seeAlso": [
+      "estimated-average-glucose",
+      "homa-b",
+      "homa-ir",
+      "insulin-sensitivity"
+    ]
+  }
+}

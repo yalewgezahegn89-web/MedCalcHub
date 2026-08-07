@@ -1,0 +1,35 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "feurea",
+  "name": "Feurea",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the fractional excretion of urea for renal evaluation, particularly useful when diuretics are present.",
+  "inputs": [
+    {
+      "id": "urineUrea",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "plasmaUrea",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "urineCr",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "plasmaCr",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

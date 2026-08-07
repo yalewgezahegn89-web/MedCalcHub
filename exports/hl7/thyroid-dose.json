@@ -1,0 +1,12 @@
+{
+  "calculator": "Thyroid Dose",
+  "version": "1.0",
+  "category": "Endocrinology",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "number",
+      "unit": "kg"
+    }
+  ]
+}

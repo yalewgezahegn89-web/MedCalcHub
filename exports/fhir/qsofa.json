@@ -1,0 +1,30 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "qsofa",
+  "name": "Qsofa",
+  "status": "active",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "Quick Sequential Organ Failure Assessment (qSOFA) for identifying patients at high risk of poor outcomes from suspected infection.",
+  "inputs": [
+    {
+      "id": "sbp",
+      "type": "decimal",
+      "unit": "mmHg"
+    },
+    {
+      "id": "respiratory-rate",
+      "type": "decimal",
+      "unit": "/min"
+    },
+    {
+      "id": "mental-status",
+      "type": "CodeableConcept",
+      "unit": ""
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

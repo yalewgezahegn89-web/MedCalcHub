@@ -6,25 +6,17 @@ import { generateCalculator } from "../core/generate-calculator";
 import { validateSlug } from "../../validator";
 import { buildMetadata } from "../core/build-metadata";
 import { validateCalculator } from "../core/validator";
-import { printCoverageReport } from "../core/dashboard";
-import {
-  validateKnowledge,
-} from "../core/knowledge-validator";
-import {
-  printAutoFixReport,
-} from "../core/auto-fix";
-import {
-  printQualityReport,
-} from "../core/quality-score";
-import {
-  printDependencyGraphReport,
-} from "../core/dependency-graph";
+import { loadPlugins } from "../plugins";
+import type { PluginContext } from "../plugins/types";
 import {
   generateKnowledgeTemplate,
   printTemplateSummary,
   slugExists,
 } from "../core/template-engine";
 import { generateCalculatorTests } from "../core/test-generator";
+import {
+  loadGeneratorConfig,
+} from "../core/config";
 
 
 const rl = readline.createInterface({
@@ -76,7 +68,63 @@ async function main() {
     const args =
       process.argv.slice(2);
 
+    // ── Version command ──
+    if (args[0] === "version") {
+      console.log("");
+      console.log("═══════════════════════════════════════");
+      console.log("");
+      console.log("  MedCalcHub Generator");
+      console.log("");
+      console.log(`  Version:   1.0.0`);
+      console.log(`  Status:    Stable`);
+      console.log(`  Build:     Generator V7`);
+      console.log("");
+      console.log("═══════════════════════════════════════");
+      console.log("");
+      return;
+    }
+
     // ── Template command ──
+    // ── Config command ──
+    if (args[0] === "config") {
+      const config = loadGeneratorConfig();
+      console.log("\n⚙️  Generator Configuration");
+      console.log("═══════════════════════════════════════");
+      console.log(`  Version:           ${config.version}`);
+      console.log(`  Generator:         ${config.generator.name}`);
+      console.log("");
+      console.log("  📁 Directories");
+      console.log(`    Output:          ${config.generator.outputDirectory}`);
+      console.log(`    Docs:            ${config.generator.docsDirectory}`);
+      console.log(`    Exports:         ${config.generator.exportsDirectory}`);
+      console.log(`    Locales:         ${config.generator.localesDirectory}`);
+      console.log(`    Tests:           ${config.generator.testsDirectory}`);
+      console.log("");
+      console.log("  🔌 Plugins");
+      const plugins = config.plugins as Record<string, boolean>;
+      for (const [name, enabled] of Object.entries(plugins)) {
+        const icon = enabled ? "✅" : "❌";
+        const key = name.replace(/([A-Z])/g, " $1").trim();
+        console.log(`    ${icon} ${key}`);
+      }
+      console.log("");
+      console.log("  🌐 Localization");
+      console.log(`    Default:         ${config.localization.defaultLanguage}`);
+      console.log(`    Languages:       ${config.localization.supportedLanguages.join(", ")}`);
+      console.log("");
+      console.log("  🎨 Formatting");
+      console.log(`    JSON Indent:     ${config.formatting.jsonIndent}`);
+      console.log(`    Sort:            ${config.formatting.sortAlphabetically ? "Yes" : "No"}`);
+      console.log(`    Deterministic:   ${config.formatting.deterministicOutput ? "Yes" : "No"}`);
+      console.log("");
+      console.log("  ✅ Validation");
+      console.log(`    Stop on Error:   ${config.validation.stopOnError ? "Yes" : "No"}`);
+      console.log(`    Show Warnings:   ${config.validation.showWarnings ? "Yes" : "No"}`);
+      console.log(`    Auto Fix:        ${config.validation.autoFixBeforeValidation ? "Yes" : "No"}`);
+      console.log("═══════════════════════════════════════\n");
+      return;
+    }
+
     if (args[0] === "template") {
       const slug = args[1];
       if (!slug) {
@@ -112,49 +160,24 @@ async function main() {
     const name =
       args[0];
 
-    // Print coverage report before generation
-    printCoverageReport();
+    // Run all analysis plugins
+    const pluginContext: PluginContext = {
+      calculatorKnowledge: {} as typeof import("../knowledge").calculatorKnowledge,
+      logger: {
+        info: (msg: string) => console.log(msg),
+        warn: (msg: string) => console.warn(msg),
+        error: (msg: string) => console.error(msg),
+      },
+    };
 
-    // Run knowledge consistency validator
-    const knowledgeResult =
-      validateKnowledge();
-
-    if (knowledgeResult.errors.length > 0) {
-      console.log(
-        "\n❌ Knowledge validation errors:",
-      );
-      for (const e of knowledgeResult.errors) {
-        console.log(
-          `  [${e.code}] ${e.message}`,
-        );
-      }
+    const plugins = loadPlugins();
+    for (const plugin of plugins) {
+      const line = "─".repeat(50);
+      console.log(`\n${line}`);
+      console.log(`  Running Plugin: ${plugin.name}`);
+      console.log(`${line}\n`);
+      plugin.execute(pluginContext);
     }
-
-    if (knowledgeResult.warnings.length > 0) {
-      console.log(
-        "\n⚠️  Knowledge validation warnings:",
-      );
-      for (const w of knowledgeResult.warnings) {
-        console.log(
-          `  [${w.code}] ${w.message}`,
-        );
-      }
-    }
-
-    if (knowledgeResult.valid) {
-      console.log(
-        "\n✅ Knowledge validation passed",
-      );
-    }
-
-    // Run auto-fix engine
-    printAutoFixReport();
-
-    // Print quality report (after auto-fix)
-    printQualityReport();
-
-    // Print dependency graph report
-    printDependencyGraphReport();
 
 
     const force =

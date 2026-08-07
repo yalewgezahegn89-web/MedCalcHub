@@ -1,0 +1,27 @@
+{
+  "calculator": "Curb 65",
+  "version": "1.0",
+  "category": "Emergency",
+  "inputs": [
+    {
+      "id": "age",
+      "type": "number",
+      "unit": "years"
+    },
+    {
+      "id": "urea",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "respiratory-rate",
+      "type": "number",
+      "unit": "/min"
+    },
+    {
+      "id": "sbp",
+      "type": "number",
+      "unit": "mmHg"
+    }
+  ]
+}

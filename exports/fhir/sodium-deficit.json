@@ -1,0 +1,30 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "sodium-deficit",
+  "name": "Sodium Deficit",
+  "status": "active",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Estimates sodium deficit for hyponatremia correction planning. Helps determine the total amount of sodium needed to raise serum sodium to a target level.",
+  "inputs": [
+    {
+      "id": "weight",
+      "type": "decimal",
+      "unit": "kg"
+    },
+    {
+      "id": "currentNa",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "desiredNa",
+      "type": "decimal",
+      "unit": "mmol/L"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

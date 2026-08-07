@@ -1,0 +1,107 @@
+{
+  "slug": "corrected-sodium",
+  "title": "Corrected Sodium",
+  "category": "Internal Medicine",
+  "specialty": "Internal Medicine",
+  "description": "Corrects serum sodium for hyperglycemia using the conventional correction factor. Hyperglycemia draws water into the extracellular space, diluting sodium; this correction estimates what sodium would be at a normal glucose level.",
+  "purpose": "Used to corrects serum sodium for hyperglycemia using the conventional correction factor. hyperglycemia draws water into the extracellular space, diluting sodium; this correction estimates what sodium would be at a normal glucose level.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "sodium",
+      "label": "Measured Sodium",
+      "unit": "mmol/L",
+      "required": true
+    },
+    {
+      "id": "glucose",
+      "label": "Glucose",
+      "unit": "mg/dL",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Hyponatremia (corrected)",
+      "status": "low",
+      "min": 0,
+      "max": 134
+    },
+    {
+      "label": "Normal corrected sodium",
+      "status": "normal",
+      "min": 135,
+      "max": 145
+    },
+    {
+      "label": "Hypernatremia (corrected)",
+      "status": "high",
+      "min": 146,
+      "max": 0
+    },
+    {
+      "label": "Severe hypernatremia",
+      "status": "critical",
+      "min": 160,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Use corrected sodium in patients with significant hyperglycemia (e.g. diabetic ketoacidosis, hyperosmolar hyperglycemic state) to assess the true sodium status.",
+      "A normal corrected sodium with a low measured sodium indicates true dilutional hyponatremia; a low corrected sodium indicates true coexisting hyponatremia.",
+      "For every 100 mg/dL increase in glucose above 100, sodium decreases by approximately 1.6 mmol/L."
+    ],
+    "warnings": [
+      "This correction factor (1.6) is the conventional value; some references use 2.0–2.4 for extreme hyperglycemia.",
+      "The formula assumes glucose is in mg/dL; results will be incorrect if mmol/L is used.",
+      "This correction is less accurate in patients with concurrent disorders affecting water and sodium handling (e.g. renal failure, SIADH)."
+    ],
+    "followUp": [
+      "If corrected sodium is high, the patient has true hypernatremia; assess free water deficit.",
+      "If corrected sodium is low, treat the underlying hyponatremia alongside hyperglycemia management.",
+      "Recheck sodium as glucose normalizes during treatment, especially in DKA."
+    ]
+  },
+  "faq": [
+    {
+      "question": "Why does hyperglycemia lower sodium?",
+      "answer": "High glucose increases serum osmolality, drawing water from the intracellular to the extracellular space. This dilutes the serum sodium, causing a falsely low measured value. The corrected sodium estimates what the sodium would be at a normal glucose."
+    },
+    {
+      "question": "What correction factor should I use?",
+      "answer": "The conventional correction factor is 1.6 mmol/L for every 100 mg/dL increase in glucose above 100 mg/dL. For very high glucose (> 400 mg/dL), some experts use a factor of 2.0–2.4."
+    },
+    {
+      "question": "When should I correct sodium for glucose?",
+      "answer": "Correct sodium whenever glucose is significantly elevated (> 200 mg/dL), especially in diabetic ketoacidosis (DKA) and hyperosmolar hyperglycemic state (HHS), to accurately assess the patient's true sodium status."
+    }
+  ],
+  "evidence": [
+    "Internal Medicine / Endocrinology",
+    "Hillier TA, et al. Hyponatremia: evaluating the correction factor for hyperglycemia. Am J Med. 1999;106:399–403.",
+    "Hillier TA, et al. Am J Med. 1999;106:399–403.",
+    "Adrogue HJ, Madias NE. Hyponatremia. N Engl J Med. 2000;342:1581–1589."
+  ],
+  "relatedCalculators": [
+    "sodium-deficit",
+    "free-water-deficit",
+    "serum-osmolality",
+    "anion-gap"
+  ],
+  "comparisonCalculators": [],
+  "navigation": {
+    "previous": "corrected-anion-gap",
+    "next": "free-water-deficit",
+    "seeAlso": [
+      "bun-creatinine-ratio",
+      "calcium-phosphate-product",
+      "ckd-epi-2021",
+      "cockcroft-gault",
+      "corrected-calcium"
+    ]
+  }
+}

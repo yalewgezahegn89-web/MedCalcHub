@@ -1,0 +1,43 @@
+{
+  "title": "Insulin Sensitivity",
+  "description": "Provides a simple estimate of insulin sensitivity as the reciprocal of HOMA-IR.",
+  "inputs": {
+    "homaIr": "HOMA-IR"
+  },
+  "classification": {
+    "severe-insulin-resistance": "Severe insulin resistance",
+    "reduced-insulin-sensitivity": "Reduced insulin sensitivity",
+    "normal-insulin-sensitivity": "Normal insulin sensitivity"
+  },
+  "faq": [
+    {
+      "question": "What is insulin sensitivity?",
+      "answer": "Insulin sensitivity measures how effectively the body's cells respond to insulin. A higher value means cells are more responsive, requiring less insulin to manage blood glucose."
+    },
+    {
+      "question": "How is this different from HOMA-IR?",
+      "answer": "This is simply 1 / HOMA-IR. It presents the same information in a more intuitive direction: higher values mean better sensitivity."
+    },
+    {
+      "question": "What is a good insulin sensitivity score?",
+      "answer": "A score > 0.4 is generally considered good insulin sensitivity. Below 0.2 suggests significant insulin resistance."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Values > 0.4 indicate better insulin sensitivity; values < 0.2 suggest significant insulin resistance.",
+      "Use alongside HOMA-IR for a more intuitive representation of metabolic health.",
+      "Higher values (closer to 1.0) reflect better metabolic flexibility."
+    ],
+    "warnings": [
+      "This is a derived metric from HOMA-IR and inherits all HOMA-IR limitations.",
+      "Not validated for use in type 1 diabetes.",
+      "Single fasting measurement; does not capture dynamic insulin response to meals."
+    ],
+    "followUp": [
+      "If insulin sensitivity is low, assess for metabolic syndrome components.",
+      "Dietary modification and exercise are first-line interventions to improve insulin sensitivity.",
+      "Repeat testing after lifestyle changes to track improvement."
+    ]
+  }
+}

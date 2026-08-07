@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "bun-creatinine-ratio",
+  "name": "Bun Creatinine Ratio",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the Blood Urea Nitrogen to Creatinine ratio to help differentiate causes of kidney dysfunction.",
+  "inputs": [
+    {
+      "id": "bun",
+      "type": "decimal",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "creatinine",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

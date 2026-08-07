@@ -1,0 +1,22 @@
+{
+  "calculator": "Qsofa",
+  "version": "1.0",
+  "category": "Emergency",
+  "inputs": [
+    {
+      "id": "sbp",
+      "type": "number",
+      "unit": "mmHg"
+    },
+    {
+      "id": "respiratory-rate",
+      "type": "number",
+      "unit": "/min"
+    },
+    {
+      "id": "mental-status",
+      "type": "select",
+      "unit": ""
+    }
+  ]
+}

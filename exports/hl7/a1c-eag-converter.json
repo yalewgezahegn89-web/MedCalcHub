@@ -1,0 +1,12 @@
+{
+  "calculator": "A1c Eag Converter",
+  "version": "1.0",
+  "category": "Endocrinology",
+  "inputs": [
+    {
+      "id": "a1c",
+      "type": "number",
+      "unit": "%"
+    }
+  ]
+}

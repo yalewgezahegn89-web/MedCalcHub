@@ -1,0 +1,47 @@
+{
+  "title": "Ckd Epi 2021",
+  "description": "Estimates glomerular filtration rate (eGFR) using the 2021 CKD-EPI creatinine equation.",
+  "inputs": {
+    "age": "Age",
+    "sex": "Sex",
+    "creatinine": "Serum Creatinine"
+  },
+  "classification": {
+    "g1-normal-or-high": "G1: Normal or high",
+    "g2-mildly-decreased": "G2: Mildly decreased",
+    "g3a-mild-to-moderate": "G3a: Mild to moderate",
+    "g3b-moderate-to-severe": "G3b: Moderate to severe",
+    "g4-severely-decreased": "G4: Severely decreased",
+    "g5-kidney-failure": "G5: Kidney failure"
+  },
+  "faq": [
+    {
+      "question": "What does eGFR measure?",
+      "answer": "eGFR estimates how well the kidneys are filtering waste from the blood, expressed in mL/min/1.73 m²."
+    },
+    {
+      "question": "Why was the race variable removed from CKD-EPI?",
+      "answer": "The 2021 equation removed race because including it was not scientifically justified and contributed to health disparities in CKD detection."
+    },
+    {
+      "question": "Is CKD-EPI better than MDRD?",
+      "answer": "Yes. CKD-EPI is more accurate at higher GFR values and is now the preferred equation in most guidelines."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Use CKD-EPI 2021 (race-free) as the preferred equation for estimating GFR in clinical practice.",
+      "Interpret eGFR alongside albuminuria (ACR) for CKD staging per KDIGO guidelines.",
+      "Repeat testing after 3 months to confirm chronicity before diagnosing CKD."
+    ],
+    "warnings": [
+      "CKD-EPI is an estimate and may be inaccurate in extremes of muscle mass, amputees, or pregnancy.",
+      "Do not use CKD-EPI for medication dosing without checking drug-specific guidance; Cockcroft-Gault may be required."
+    ],
+    "followUp": [
+      "If eGFR < 60 mL/min/1.73 m², repeat within 3 months to assess for chronicity.",
+      "Evaluate for albuminuria with urine ACR in all patients with reduced eGFR.",
+      "Refer to nephrology if eGFR < 30 or rapidly declining."
+    ]
+  }
+}

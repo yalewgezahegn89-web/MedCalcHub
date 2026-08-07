@@ -1,0 +1,20 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "a1c-eag-converter",
+  "name": "A1c Eag Converter",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Converts bidirectionally between hemoglobin A1c and estimated average glucose (eAG) using the ADA-validated ADAG formula.",
+  "inputs": [
+    {
+      "id": "a1c",
+      "type": "decimal",
+      "unit": "%"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

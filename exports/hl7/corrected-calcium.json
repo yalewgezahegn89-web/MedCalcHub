@@ -1,0 +1,17 @@
+{
+  "calculator": "Corrected Calcium",
+  "version": "1.0",
+  "category": "Laboratory",
+  "inputs": [
+    {
+      "id": "calcium",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "albumin",
+      "type": "number",
+      "unit": "g/dL"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "calculator": "Calcium Phosphate Product",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "calcium",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "phosphate",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}

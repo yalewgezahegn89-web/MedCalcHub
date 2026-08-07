@@ -1,0 +1,35 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "ttkg",
+  "name": "Ttkg",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Calculates the transtubular potassium gradient to assess renal potassium handling.",
+  "inputs": [
+    {
+      "id": "urineK",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "plasmaK",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "urineOsmolality",
+      "type": "decimal",
+      "unit": "mOsm/kg"
+    },
+    {
+      "id": "plasmaOsmolality",
+      "type": "decimal",
+      "unit": "mOsm/kg"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

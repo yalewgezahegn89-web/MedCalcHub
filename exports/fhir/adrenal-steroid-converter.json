@@ -1,0 +1,25 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "adrenal-steroid-converter",
+  "name": "Adrenal Steroid Converter",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Converts between equivalent glucocorticoid and mineralocorticoid doses of commonly used adrenal steroids.",
+  "inputs": [
+    {
+      "id": "dose",
+      "type": "decimal",
+      "unit": "mg"
+    },
+    {
+      "id": "steroid",
+      "type": "CodeableConcept",
+      "unit": ""
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "calculator": "Ckd Epi 2021",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "age",
+      "type": "number",
+      "unit": "years"
+    },
+    {
+      "id": "sex",
+      "type": "select",
+      "unit": ""
+    },
+    {
+      "id": "creatinine",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}

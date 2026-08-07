@@ -1,0 +1,35 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "curb-65",
+  "name": "Curb 65",
+  "status": "active",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "CURB-65 severity score for community-acquired pneumonia.",
+  "inputs": [
+    {
+      "id": "age",
+      "type": "decimal",
+      "unit": "years"
+    },
+    {
+      "id": "urea",
+      "type": "decimal",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "respiratory-rate",
+      "type": "decimal",
+      "unit": "/min"
+    },
+    {
+      "id": "sbp",
+      "type": "decimal",
+      "unit": "mmHg"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

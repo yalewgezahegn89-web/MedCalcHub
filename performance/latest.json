@@ -1,0 +1,67 @@
+{
+  "generated": "2026-08-07T13:34:45.870Z",
+  "totalRuntime": 529,
+  "plugins": [
+    {
+      "name": "Coverage",
+      "duration": 7
+    },
+    {
+      "name": "Knowledge Validator",
+      "duration": 2
+    },
+    {
+      "name": "Auto Fix",
+      "duration": 4
+    },
+    {
+      "name": "Quality",
+      "duration": 14
+    },
+    {
+      "name": "Dependency Graph",
+      "duration": 7
+    },
+    {
+      "name": "Navigation",
+      "duration": 2
+    },
+    {
+      "name": "SEO",
+      "duration": 7
+    },
+    {
+      "name": "Recommendation",
+      "duration": 6
+    },
+    {
+      "name": "Impact Analysis",
+      "duration": 7
+    },
+    {
+      "name": "Documentation",
+      "duration": 66
+    },
+    {
+      "name": "Internationalization",
+      "duration": 229
+    },
+    {
+      "name": "FHIR Export",
+      "duration": 119
+    },
+    {
+      "name": "AI Context Export",
+      "duration": 53
+    },
+    {
+      "name": "Incremental Generation",
+      "duration": 6
+    }
+  ],
+  "generatedCalculators": 2,
+  "skippedCalculators": 32,
+  "deletedCalculators": 0,
+  "generatedTests": 0,
+  "cacheHitRate": 94
+}

@@ -1,0 +1,27 @@
+{
+  "calculator": "Cockcroft Gault",
+  "version": "1.0",
+  "category": "Nephrology",
+  "inputs": [
+    {
+      "id": "age",
+      "type": "number",
+      "unit": "years"
+    },
+    {
+      "id": "weight",
+      "type": "number",
+      "unit": "kg"
+    },
+    {
+      "id": "sex",
+      "type": "select",
+      "unit": ""
+    },
+    {
+      "id": "creatinine",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Corrected Anion Gap",
+  "description": "Calculates the albumin-corrected anion gap. In hypoalbuminemia, the measured anion gap is falsely low, potentially masking a high anion gap metabolic acidosis. This correction adjusts for the albumin contribution.",
+  "inputs": {
+    "sodium": "Sodium",
+    "chloride": "Chloride",
+    "bicarbonate": "Bicarbonate (HCO₃)",
+    "albumin": "Albumin"
+  },
+  "classification": {
+    "low-corrected-anion-gap": "Low corrected anion gap",
+    "normal-corrected-anion-gap": "Normal corrected anion gap",
+    "high-corrected-anion-gap": "High corrected anion gap",
+    "markedly-elevated-corrected-anion-gap": "Markedly elevated corrected anion gap"
+  },
+  "faq": [
+    {
+      "question": "Why does hypoalbuminemia lower the anion gap?",
+      "answer": "Albumin is a negatively charged protein that contributes significantly to the normal anion gap (~75% of the gap in health). When albumin is low, fewer unmeasured negative charges are present, so the calculated anion gap decreases even if the underlying acid-base status is unchanged."
+    },
+    {
+      "question": "What correction factor is used?",
+      "answer": "The standard correction adds 2.5 mmol/L to the measured anion gap for every 1 g/dL that serum albumin falls below 4.0 g/dL. Some studies suggest using 2.4 or 2.8 depending on the population."
+    },
+    {
+      "question": "When should I suspect a missed HAGMA?",
+      "answer": "Consider a missed HAGMA when a patient is critically ill with acidosis, has a normal-appearing uncorrected anion gap, and has a low serum albumin. Apply the correction and reassess."
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "Use the corrected anion gap whenever serum albumin is low (e.g. critical illness, nephrotic syndrome, liver disease, malnutrition) to unmask a hidden high anion gap metabolic acidosis.",
+      "For every 1 g/dL decrease in albumin below 4.0, the expected anion gap decreases by ~2.5 mmol/L.",
+      "This is especially important in ICU patients where hypoalbuminemia is common and a HAGMA may be missed on uncorrected values."
+    ],
+    "warnings": [
+      "This correction factor (2.5) is derived from the assumption that each g/dL of albumin contributes ~2.5 mmol/L to the anion gap; exact values may vary.",
+      "The correction does not account for other proteins or anions that contribute to the gap.",
+      "Very low albumin (< 2.0 g/dL) may reduce the reliability of the correction."
+    ],
+    "followUp": [
+      "If the corrected anion gap is elevated, pursue the same differential diagnosis as for a standard high anion gap acidosis.",
+      "Check lactate, ketones, and renal function; consider a toxic alcohol screen if clinically indicated.",
+      "Reassess after treatment to confirm normalization."
+    ]
+  }
+}

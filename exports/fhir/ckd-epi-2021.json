@@ -1,0 +1,30 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "ckd-epi-2021",
+  "name": "Ckd Epi 2021",
+  "status": "active",
+  "category": "Nephrology",
+  "specialty": "Internal Medicine",
+  "description": "Estimates glomerular filtration rate (eGFR) using the 2021 CKD-EPI creatinine equation.",
+  "inputs": [
+    {
+      "id": "age",
+      "type": "decimal",
+      "unit": "years"
+    },
+    {
+      "id": "sex",
+      "type": "CodeableConcept",
+      "unit": ""
+    },
+    {
+      "id": "creatinine",
+      "type": "decimal",
+      "unit": "mg/dL"
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

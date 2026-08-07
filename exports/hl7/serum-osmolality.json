@@ -1,0 +1,22 @@
+{
+  "calculator": "Serum Osmolality",
+  "version": "1.0",
+  "category": "Internal Medicine",
+  "inputs": [
+    {
+      "id": "sodium",
+      "type": "number",
+      "unit": "mmol/L"
+    },
+    {
+      "id": "glucose",
+      "type": "number",
+      "unit": "mg/dL"
+    },
+    {
+      "id": "bun",
+      "type": "number",
+      "unit": "mg/dL"
+    }
+  ]
+}

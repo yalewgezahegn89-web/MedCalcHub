@@ -1,0 +1,20 @@
+{
+  "resourceType": "ObservationDefinition",
+  "id": "insulin-sensitivity",
+  "name": "Insulin Sensitivity",
+  "status": "active",
+  "category": "Endocrinology",
+  "specialty": "Endocrinology",
+  "description": "Provides a simple estimate of insulin sensitivity as the reciprocal of HOMA-IR.",
+  "inputs": [
+    {
+      "id": "homaIr",
+      "type": "decimal",
+      "unit": ""
+    }
+  ],
+  "output": {
+    "type": "decimal",
+    "unit": ""
+  }
+}

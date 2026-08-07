@@ -1,0 +1,91 @@
+{
+  "slug": "curb-65",
+  "title": "Curb 65",
+  "category": "Emergency",
+  "specialty": "Emergency Medicine",
+  "description": "CURB-65 severity score for community-acquired pneumonia.",
+  "purpose": "Used to curb-65 severity score for community-acquired pneumonia.",
+  "formula": {
+    "type": "none",
+    "expression": ""
+  },
+  "inputs": [
+    {
+      "id": "age",
+      "label": "Age",
+      "unit": "years",
+      "required": true
+    },
+    {
+      "id": "urea",
+      "label": "Urea",
+      "unit": "mmol/L",
+      "required": true
+    },
+    {
+      "id": "respiratory-rate",
+      "label": "Respiratory Rate",
+      "unit": "/min",
+      "required": true
+    },
+    {
+      "id": "sbp",
+      "label": "Systolic Blood Pressure",
+      "unit": "mmHg",
+      "required": true
+    }
+  ],
+  "classification": [
+    {
+      "label": "Normal",
+      "status": "normal",
+      "min": 0,
+      "max": 0
+    }
+  ],
+  "clinicalGuidance": {
+    "advice": [
+      "TODO: Add clinical advice."
+    ],
+    "warnings": [
+      "TODO: Add clinical warnings."
+    ],
+    "followUp": [
+      "TODO: Add follow-up guidance."
+    ]
+  },
+  "faq": [
+    {
+      "question": "What is Curb 65?",
+      "answer": "TODO: Add FAQ answer."
+    }
+  ],
+  "evidence": [
+    "TODO",
+    "TODO"
+  ],
+  "relatedCalculators": [
+    "map",
+    "heart-rate",
+    "qsofa",
+    "news2",
+    "shock-index"
+  ],
+  "comparisonCalculators": [
+    "map",
+    "qsofa",
+    "news2",
+    "shock-index",
+    "curb-65",
+    "ckd-epi-2021",
+    "cockcroft-gault",
+    "mdrd"
+  ],
+  "navigation": {
+    "previous": "",
+    "next": "gcs",
+    "seeAlso": [
+      "gcs"
+    ]
+  }
+}
