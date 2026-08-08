@@ -70,13 +70,22 @@ export default function Navbar() {
             <Heart className="h-4 w-4" />
             Favorites
           </Link>
+
+          <Link
+            href="/history"
+            className="text-sm font-medium transition hover:text-blue-600"
+          >
+            History
+          </Link>
+
+          <Link
+            href="/workspace"
+            className="text-sm font-medium transition hover:text-blue-600"
+          >
+            Workspace
+          </Link>
         </nav>
-<Link
-  href="/workspace"
-  className="text-sm font-medium hover:text-blue-600"
->
-  Workspace
-</Link>
+
         {/* Search */}
         <button
           onClick={openCommandPalette}
