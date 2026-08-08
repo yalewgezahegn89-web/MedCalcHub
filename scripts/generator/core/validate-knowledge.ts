@@ -2,7 +2,10 @@ import { calculatorKnowledge } from "../knowledge";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import type { GeneratorOptions } from "../../types";
+import type {
+  GeneratorOptions,
+  KnowledgeComparisonMetadata,
+} from "../../types";
 
 export class ValidationError extends Error {
   calculator: string;
@@ -92,22 +95,13 @@ function checkClassificationOverlap(
 
 function checkComparisonHref(
   slug: string,
-  comparison: {
-    title?: string;
-    calculators: {
-      name: string;
-      href: string;
-      use?: string;
-    }[];
-  },
+  comparison: KnowledgeComparisonMetadata,
 ): void {
   for (const calc of comparison.calculators) {
-    if (
-      !calc.href.startsWith("/calculators/")
-    ) {
+    if (!calc.id || !calc.id.trim()) {
       throw new ValidationError(
         slug,
-        `Invalid comparison href format for "${calc.name}": "${calc.href}". Expected format: /calculators/<slug>`,
+        `Comparison item missing required "id" field`,
       );
     }
   }
