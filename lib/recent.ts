@@ -42,8 +42,12 @@ export function removeRecentCalculator(id: string) {
     STORAGE_KEY,
     JSON.stringify(recent),
   );
+
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function clearRecentCalculators() {
   localStorage.removeItem(STORAGE_KEY);
+
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }

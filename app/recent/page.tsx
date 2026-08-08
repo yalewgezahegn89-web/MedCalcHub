@@ -1,33 +1,64 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Clock, Trash2 } from "lucide-react";
-import { useState } from "react";
 
+import { getRecentCalculators, clearRecentCalculators } from "@/lib/recent";
 import { calculatorRegistry } from "@/lib/calculators/registry";
-import {
-  clearRecentCalculators,
-  getRecentCalculators,
-} from "@/lib/recent";
+
+import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
+
+function subscribe(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handler = () => callback();
+
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-recent-changed",
+    handler,
+  );
+
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-recent-changed",
+      handler,
+    );
+  };
+}
+
+function getSnapshot() {
+  return JSON.stringify(getRecentCalculators());
+}
+
+function getServerSnapshot() {
+  return "[]";
+}
 
 export default function RecentPage() {
-  const [refresh, setRefresh] = useState(0);
+  const recentIdsStr = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
-  const recentIds = getRecentCalculators();
+  const recentIds: string[] = JSON.parse(recentIdsStr);
 
-  const calculators = recentIds
+  const calculators: CalculatorDefinition[] = recentIds
     .map((id) =>
       calculatorRegistry.find((calc) => calc.id === id),
     )
-    .filter(Boolean);
-
-  // refresh is read implicitly: setRefresh triggers a re-render
-  // which re-computes calculators from localStorage
-  void refresh;
+    .filter(
+      (calc): calc is CalculatorDefinition =>
+        calc !== undefined,
+    );
 
   function clearHistory() {
     clearRecentCalculators();
-    setRefresh((x) => x + 1);
   }
 
   return (
@@ -77,20 +108,20 @@ export default function RecentPage() {
 
           {calculators.map((calc) => (
             <Link
-              key={calc!.id}
-              href={`/calculators/${calc!.slug}`}
+              key={calc.id}
+              href={`/calculators/${calc.slug}`}
               className="rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
             >
               <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                {calc!.category}
+                {calc.category}
               </span>
 
               <h3 className="mt-4 text-lg font-semibold">
-                {calc!.name}
+                {calc.name}
               </h3>
 
               <p className="mt-2 text-sm text-slate-600">
-                {calc!.description}
+                {calc.description}
               </p>
 
             </Link>
