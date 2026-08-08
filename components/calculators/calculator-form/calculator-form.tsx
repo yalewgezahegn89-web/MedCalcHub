@@ -4,6 +4,7 @@ import {
   forwardRef,
   useState,
   useCallback,
+  useSyncExternalStore,
   type FormEvent,
 } from "react";
 
@@ -16,6 +17,10 @@ import { CalculatorToolbar } from "@/components/calculators/toolbar";
 
 import { copyToClipboard } from "@/lib/clipboard";
 import { saveCalculation } from "@/lib/history/history";
+import {
+  isFavorite,
+  toggleFavorite,
+} from "@/lib/favorites";
 
 import { toast } from "sonner";
 
@@ -55,6 +60,15 @@ export const CalculatorForm = forwardRef<
   const [errors, setErrors] = useState<
     Record<string, string>
   >({});
+
+  const [favKey, setFavKey] = useState(0);
+
+  const isFav = useSyncExternalStore(
+    () => () => {},
+    () =>
+      isFavorite(calculator.slug) + ":" + favKey,
+    () => "false",
+  );
 
   const handleChange = useCallback(
     (id: string, value: string) => {
@@ -130,21 +144,44 @@ export const CalculatorForm = forwardRef<
         return;
       }
 
-      const calculated =
-        calculator.calculate(values);
+      let calculated;
+
+      try {
+        calculated =
+          calculator.calculate(values);
+      } catch (err) {
+        console.error(
+          `Calculator ${calculator.id} failed:`,
+          err,
+        );
+
+        toast.error("Calculation failed", {
+          description:
+            "An unexpected error occurred while calculating. Please check your inputs and try again.",
+        });
+
+        return;
+      }
 
       setResult(calculated);
 
-      saveCalculation({
-        calculatorId: calculator.id,
-        calculatorName: calculator.name,
-        result: `${calculated.value}${
-          calculated.unit
-            ? ` ${calculated.unit}`
-            : ""
-        }`,
-        timestamp: Date.now(),
-      });
+      try {
+        saveCalculation({
+          calculatorId: calculator.id,
+          calculatorName: calculator.name,
+          result: `${calculated.value}${
+            calculated.unit
+              ? ` ${calculated.unit}`
+              : ""
+          }`,
+          timestamp: Date.now(),
+        });
+      } catch {
+        // History save failure is non-critical — log silently
+        console.warn(
+          "Failed to save calculation history",
+        );
+      }
     },
     [calculator, values, validate],
   );
@@ -199,6 +236,7 @@ export const CalculatorForm = forwardRef<
       </Button>
 
       <CalculatorToolbar
+        isFavorite={isFav.startsWith("true")}
         onReset={handleReset}
         onCopy={async () => {
           if (!result) return;
@@ -231,11 +269,62 @@ Interpretation: ${
             });
           }
         }}
-        onPrint={() => console.log("Print")}
-        onShare={() => console.log("Share")}
-        onFavorite={() =>
-          console.log("Favorite")
-        }
+        onPrint={() => {
+          window.print();
+        }}
+        onShare={async () => {
+          const url = window.location.href;
+
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: calculator.name,
+                text: calculator.description,
+                url,
+              });
+              return;
+            } catch (err: unknown) {
+              if (
+                err instanceof DOMException &&
+                err.name === "AbortError"
+              ) {
+                return;
+              }
+            }
+          }
+
+          try {
+            const ok =
+              await copyToClipboard(url);
+
+            if (ok) {
+              toast.success("Link copied!", {
+                description:
+                  "Calculator URL copied to clipboard.",
+              });
+            } else {
+              toast.error(
+                "Could not copy link",
+              );
+            }
+          } catch {
+            toast.error(
+              "Could not copy link",
+            );
+          }
+        }}
+        onFavorite={() => {
+          const added = toggleFavorite(
+            calculator.slug,
+          );
+          setFavKey((k) => k + 1);
+          toast.info(
+            added
+              ? "Added to favorites"
+              : "Removed from favorites",
+            { description: calculator.name },
+          );
+        }}
       />
 
       {result && (

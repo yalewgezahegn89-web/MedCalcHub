@@ -9,20 +9,21 @@ export const CalculatorToolbar = forwardRef<
   HTMLDivElement,
   CalculatorToolbarProps
 >(function CalculatorToolbar(
-  {
-    className,
-    onReset,
-    onCopy,
-    onPrint,
-    onShare,
-    onFavorite,
-    showReset = true,
-    showCopy = true,
-    showPrint = true,
-    showShare = true,
-    showFavorite = true,
-    ...props
-  },
+    {
+      className,
+      onReset,
+      onCopy,
+      onPrint,
+      onShare,
+      onFavorite,
+      showReset = true,
+      showCopy = true,
+      showPrint = true,
+      showShare = true,
+      showFavorite = true,
+      isFavorite = false,
+      ...props
+    },
   ref,
 ) {
   return (
@@ -82,7 +83,8 @@ export const CalculatorToolbar = forwardRef<
           size="sm"
           onClick={onFavorite}
         >
-          ❤️ Favorite
+          {isFavorite ? "❤️" : "🤍"}{" "}
+          {isFavorite ? "Favorited" : "Favorite"}
         </Button>
       )}
     </div>

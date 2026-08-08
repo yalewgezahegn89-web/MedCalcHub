@@ -13,4 +13,5 @@ export interface CalculatorToolbarProps
   showPrint?: boolean;
   showShare?: boolean;
   showFavorite?: boolean;
+  isFavorite?: boolean;
 }
