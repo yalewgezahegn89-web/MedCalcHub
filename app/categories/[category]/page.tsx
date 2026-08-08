@@ -40,7 +40,14 @@ export default async function CategoryPage({
     <main className="mx-auto max-w-5xl px-6 py-10">
 
       <div className="mb-10">
-        <h1 className="text-4xl font-bold">
+        <Link
+          href="/categories"
+          className="text-blue-600 hover:underline"
+        >
+          ← Back to Categories
+        </Link>
+
+        <h1 className="mt-4 text-4xl font-bold">
           {category}
         </h1>
 

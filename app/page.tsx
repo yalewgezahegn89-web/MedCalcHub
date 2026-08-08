@@ -3,6 +3,7 @@ import { FeaturedCalculators } from "@/components/home/featured-calculators";
 import { FavoritesWidget } from "@/components/home/favorites-widget";
 import { RecentCalculatorsWidget } from "@/components/home/recent-calculators-widget";
 import { BrowseSpecialties } from "@/components/home/browse-specialties";
+import { BrowseCategories } from "@/components/home/browse-categories";
 
 export default function HomePage() {
   return (
@@ -27,6 +28,8 @@ export default function HomePage() {
         <FavoritesWidget />
         <RecentCalculatorsWidget />
       </div>
+
+      <BrowseCategories />
 
       <BrowseSpecialties />
 

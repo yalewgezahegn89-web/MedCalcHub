@@ -42,6 +42,13 @@ export default function Navbar() {
           </Link>
 
           <Link
+            href="/categories"
+            className="text-sm font-medium transition hover:text-blue-600"
+          >
+            Categories
+          </Link>
+
+          <Link
             href="/specialties"
             className="text-sm font-medium transition hover:text-blue-600"
           >

@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import {
   Heart,
   Brain,
@@ -6,79 +7,70 @@ import {
   Activity,
   Bone,
   Droplets,
+  Pill,
+  ShieldPlus,
+  Microscope,
 } from "lucide-react";
 
 import { SectionHeader } from "@/components/ui/section-header";
 import { SpecialtyCard } from "@/components/home/specialty-card";
 
-const specialties = [
-  {
-    title: "Cardiology",
-    description: "Heart disease risk scores and cardiovascular calculators.",
-    href: "/specialties/cardiology",
+import {
+  getSpecialties,
+  getCalculatorsBySpecialty,
+} from "@/lib/calculators/registry";
+
+const specialtyVisuals: Record<string, { icon: ReactNode; color: string }> = {
+  Cardiology: {
     icon: <Heart className="h-7 w-7 text-white" />,
     color: "bg-red-500",
-    calculatorCount: 8,
   },
-  {
-    title: "Pulmonology",
-    description: "Respiratory medicine and pulmonary function tools.",
-    href: "/specialties/pulmonology",
-    icon: <Activity className="h-7 w-7 text-white" />,
-    color: "bg-cyan-500",
-    calculatorCount: 6,
-  },
-  {
-    title: "Neurology",
-    description: "Neurological assessment and stroke calculators.",
-    href: "/specialties/neurology",
+  Neurology: {
     icon: <Brain className="h-7 w-7 text-white" />,
     color: "bg-purple-500",
-    calculatorCount: 5,
   },
-  {
-    title: "Pediatrics",
-    description: "Growth charts, pediatric dosing, and child health.",
-    href: "/specialties/pediatrics",
+  "Internal Medicine": {
+    icon: <Stethoscope className="h-7 w-7 text-white" />,
+    color: "bg-blue-500",
+  },
+  Pediatrics: {
     icon: <Baby className="h-7 w-7 text-white" />,
     color: "bg-green-500",
-    calculatorCount: 9,
   },
-  {
-    title: "Emergency",
-    description: "Rapid clinical scores for emergency medicine.",
-    href: "/specialties/emergency",
-    icon: <Stethoscope className="h-7 w-7 text-white" />,
+  "Emergency Medicine": {
+    icon: <Activity className="h-7 w-7 text-white" />,
     color: "bg-orange-500",
-    calculatorCount: 10,
   },
-  {
-    title: "Obstetrics",
-    description: "Pregnancy, maternal care, and obstetric calculators.",
-    href: "/specialties/obstetrics",
-    icon: <Heart className="h-7 w-7 text-white" />,
-    color: "bg-pink-500",
-    calculatorCount: 7,
-  },
-  {
-    title: "Nephrology",
-    description: "Kidney function and renal disease calculators.",
-    href: "/specialties/nephrology",
+  Nephrology: {
     icon: <Droplets className="h-7 w-7 text-white" />,
     color: "bg-emerald-500",
-    calculatorCount: 6,
   },
-  {
-    title: "Orthopedics",
-    description: "Musculoskeletal assessment and fracture tools.",
-    href: "/specialties/orthopedics",
+  Endocrinology: {
+    icon: <Pill className="h-7 w-7 text-white" />,
+    color: "bg-amber-500",
+  },
+  Orthopedics: {
     icon: <Bone className="h-7 w-7 text-white" />,
     color: "bg-slate-600",
-    calculatorCount: 4,
   },
-];
+  "Critical Care": {
+    icon: <ShieldPlus className="h-7 w-7 text-white" />,
+    color: "bg-rose-600",
+  },
+};
+
+const defaultVisual = {
+  icon: <Microscope className="h-7 w-7 text-white" />,
+  color: "bg-slate-500",
+};
+
+function specialtyToSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, "-");
+}
 
 export function BrowseSpecialties() {
+  const specialties = getSpecialties();
+
   return (
     <section className="space-y-8">
       <SectionHeader
@@ -87,17 +79,23 @@ export function BrowseSpecialties() {
       />
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {specialties.map((specialty) => (
-          <SpecialtyCard
-            key={specialty.title}
-            title={specialty.title}
-            description={specialty.description}
-            href={specialty.href}
-            icon={specialty.icon}
-            color={specialty.color}
-            calculatorCount={specialty.calculatorCount}
-          />
-        ))}
+        {specialties.map((name) => {
+          const count = getCalculatorsBySpecialty(name).length;
+          const { icon, color } =
+            specialtyVisuals[name] ?? defaultVisual;
+
+          return (
+            <SpecialtyCard
+              key={name}
+              title={name}
+              description={`Browse all ${name} calculators.`}
+              href={`/specialties/${specialtyToSlug(name)}`}
+              icon={icon}
+              color={color}
+              calculatorCount={count}
+            />
+          );
+        })}
       </div>
     </section>
   );
