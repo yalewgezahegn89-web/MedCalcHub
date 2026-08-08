@@ -7,9 +7,8 @@ import { news2Calculator } from "./news2";
 import { qsofaCalculator } from "./qsofa";
 import { mapCalculator } from "./map";
 import { heartRateCalculator } from "./heart-rate";
-import { testHeartRateCalculator } from "./test-heart-rate";
 
-import { bsaTest4Calculator } from "./bsa_test_4";import { childPughCalculator } from "./child-pugh";
+import { childPughCalculator } from "./child-pugh";
 import { bmiCalculator } from "./bmi";
 import { bsaCalculator } from "./bsa";
 import { ibwCalculator } from "./ibw";
@@ -69,9 +68,8 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   qsofaCalculator,
   mapCalculator,
   heartRateCalculator,
-  testHeartRateCalculator,
 
-bsaTest4Calculator,  bmiCalculator,
+  bmiCalculator,
   bsaCalculator,
   ibwCalculator,
   adjbwCalculator,
@@ -105,6 +103,7 @@ bsaTest4Calculator,  bmiCalculator,
   albuminCorrectedCalciumCalculator,
 
   fenaCalculator,
+  feureaCalculator,
   ttkgCalculator,
   calciumPhosphateProductCalculator,
   fractionalExcretionCalculator,

@@ -1,9 +1,11 @@
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 
+const BASE_URL = "https://medcalchub.com";
+
 export function buildCalculatorSEO(
   calculator: CalculatorDefinition,
 ) {
-  const title = `${calculator.name} Calculator | MedCalcHub`;
+  const displayName = `${calculator.name} Calculator`;
 
   const description =
     calculator.description.length > 160
@@ -19,21 +21,30 @@ export function buildCalculatorSEO(
     .filter(Boolean)
     .join(", ");
 
+  const canonicalUrl = `${BASE_URL}/calculators/${calculator.slug}`;
+
   return {
-    title,
+    title: {
+      absolute: `${displayName} | MedCalcHub`,
+    },
     description,
     keywords,
 
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
     openGraph: {
-      title,
+      title: `${displayName} | MedCalcHub`,
       description,
+      url: canonicalUrl,
       type: "website",
       siteName: "MedCalcHub",
     },
 
     twitter: {
       card: "summary_large_image",
-      title,
+      title: `${displayName} | MedCalcHub`,
       description,
     },
   };

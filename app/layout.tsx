@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://medcalchub.com"),
   title: {
     default: "MedCalcHub",
     template: "%s | MedCalcHub",
