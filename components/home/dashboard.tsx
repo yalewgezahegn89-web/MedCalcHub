@@ -1,7 +1,7 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import { useState } from "react";
 import {
   Clock,
   Heart,
@@ -22,28 +22,88 @@ import { getRecentCalculators } from "@/lib/recent";
 
 import { StatCard } from "./stat-card";
 
-export default function Dashboard() {
-  const [favorites] = useState<
-    typeof calculatorRegistry
-  >(() => {
-    const favoriteIds = getFavorites();
-    return calculatorRegistry.filter((calc) =>
-      favoriteIds.includes(calc.id),
-    );
-  });
+/* ── subscribe helpers ── */
 
-  const [recent] = useState<
-    typeof calculatorRegistry
-  >(() => {
-    const recentIds = getRecentCalculators();
-    return recentIds
-      .map((id) =>
-        calculatorRegistry.find(
-          (calc) => calc.id === id,
-        ),
-      )
-      .filter(Boolean) as typeof calculatorRegistry;
-  });
+function subscribeFavorites(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-favorites-changed",
+    handler,
+  );
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-favorites-changed",
+      handler,
+    );
+  };
+}
+
+function subscribeRecent(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-recent-changed",
+    handler,
+  );
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-recent-changed",
+      handler,
+    );
+  };
+}
+
+/* ── snapshots ── */
+
+function favSnapshot() {
+  return JSON.stringify(getFavorites());
+}
+function favServer() {
+  return "[]";
+}
+
+function recentSnapshot() {
+  return JSON.stringify(getRecentCalculators());
+}
+function recentServer() {
+  return "[]";
+}
+
+/* ── component ── */
+
+export default function Dashboard() {
+  const favStr = useSyncExternalStore(
+    subscribeFavorites,
+    favSnapshot,
+    favServer,
+  );
+  const favoriteIds: string[] = JSON.parse(favStr);
+  const favorites = calculatorRegistry.filter((calc) =>
+    favoriteIds.includes(calc.id),
+  );
+
+  const recentStr = useSyncExternalStore(
+    subscribeRecent,
+    recentSnapshot,
+    recentServer,
+  );
+  const recentIds: string[] = JSON.parse(recentStr);
+  const recent = recentIds
+    .map((id) =>
+      calculatorRegistry.find(
+        (calc) => calc.id === id,
+      ),
+    )
+    .filter(Boolean) as typeof calculatorRegistry;
 
   const categoryCount = getCategories().length;
   const specialtyCount = getSpecialties().length;

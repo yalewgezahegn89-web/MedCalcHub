@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import {
   getCalculationHistory,
@@ -8,14 +8,47 @@ import {
   type CalculationHistoryItem,
 } from "@/lib/history/history";
 
+function subscribe(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-history-changed",
+    handler,
+  );
+
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-history-changed",
+      handler,
+    );
+  };
+}
+
+function getSnapshot() {
+  return JSON.stringify(getCalculationHistory());
+}
+
+function getServerSnapshot() {
+  return "[]";
+}
+
 export default function HistoryPage() {
-  const [history, setHistory] = useState<
-    CalculationHistoryItem[]
-  >(() => getCalculationHistory());
+  const historyStr = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
+
+  const history: CalculationHistoryItem[] =
+    JSON.parse(historyStr);
 
   function handleClear() {
     clearHistory();
-    setHistory([]);
   }
 
   return (

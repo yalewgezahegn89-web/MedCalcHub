@@ -7,6 +7,8 @@ export type CalculationHistoryItem = {
 
 const STORAGE_KEY = "medcalchub-history";
 
+const CHANGE_EVENT = "medcalchub-history-changed";
+
 export function getCalculationHistory(): CalculationHistoryItem[] {
   if (typeof window === "undefined") {
     return [];
@@ -46,8 +48,12 @@ export function saveCalculation(
     STORAGE_KEY,
     JSON.stringify(unique.slice(0, 50)),
   );
+
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function clearHistory() {
   localStorage.removeItem(STORAGE_KEY);
+
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }

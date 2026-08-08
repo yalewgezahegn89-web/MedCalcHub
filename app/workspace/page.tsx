@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 
 import { getFavorites } from "@/lib/favorites";
@@ -12,22 +12,119 @@ import { getRecentCalculators } from "@/lib/recent";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
-export default function WorkspacePage() {
-  const [favorites] = useState<string[]>(() => getFavorites());
+/* ── subscribe helpers ── */
 
-  const [calculationHistory] = useState<
-    CalculationHistoryItem[]
-  >(() => getCalculationHistory());
-
-  const [recentCalculators] = useState(() => {
-    const recentIds = getRecentCalculators();
-    return calculatorRegistry.filter((calc) =>
-      recentIds.includes(calc.id),
+function subscribeFavorites(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-favorites-changed",
+    handler,
+  );
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-favorites-changed",
+      handler,
     );
-  });
+  };
+}
 
-  const favoriteCalculators = calculatorRegistry.filter((calc) =>
-    favorites.includes(calc.id),
+function subscribeRecent(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-recent-changed",
+    handler,
+  );
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-recent-changed",
+      handler,
+    );
+  };
+}
+
+function subscribeHistory(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-history-changed",
+    handler,
+  );
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-history-changed",
+      handler,
+    );
+  };
+}
+
+/* ── snapshots ── */
+
+function favSnapshot() {
+  return JSON.stringify(getFavorites());
+}
+function favServer() {
+  return "[]";
+}
+
+function recentSnapshot() {
+  return JSON.stringify(getRecentCalculators());
+}
+function recentServer() {
+  return "[]";
+}
+
+function historySnapshot() {
+  return JSON.stringify(getCalculationHistory());
+}
+function historyServer() {
+  return "[]";
+}
+
+/* ── page ── */
+
+export default function WorkspacePage() {
+  const favStr = useSyncExternalStore(
+    subscribeFavorites,
+    favSnapshot,
+    favServer,
+  );
+  const favorites: string[] = JSON.parse(favStr);
+
+  const recentStr = useSyncExternalStore(
+    subscribeRecent,
+    recentSnapshot,
+    recentServer,
+  );
+  const recentIds: string[] = JSON.parse(recentStr);
+
+  const historyStr = useSyncExternalStore(
+    subscribeHistory,
+    historySnapshot,
+    historyServer,
+  );
+  const calculationHistory: CalculationHistoryItem[] =
+    JSON.parse(historyStr);
+
+  const favoriteCalculators = calculatorRegistry.filter(
+    (calc) => favorites.includes(calc.id),
+  );
+
+  const recentCalculators = calculatorRegistry.filter(
+    (calc) => recentIds.includes(calc.id),
   );
 
   return (
