@@ -81,7 +81,6 @@ export default async function CalculatorPage({
         <ClinicalGuidancePanel
           pearl={calculator.clinical?.pearl}
           mistakes={calculator.clinical?.commonMistakes}
-          notes={calculator.clinicalNotes}
         />
 
         <EvidenceCard
