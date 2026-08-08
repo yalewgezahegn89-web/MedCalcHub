@@ -1,5 +1,4 @@
 import { CalculatorSearch } from "@/components/home/calculator-search";
-import { FeaturedCalculators } from "@/components/home/featured-calculators";
 import { FavoritesWidget } from "@/components/home/favorites-widget";
 import { RecentCalculatorsWidget } from "@/components/home/recent-calculators-widget";
 import { BrowseSpecialties } from "@/components/home/browse-specialties";
@@ -21,8 +20,6 @@ export default function HomePage() {
       </section>
 
       <CalculatorSearch />
-
-      <FeaturedCalculators />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <FavoritesWidget />
