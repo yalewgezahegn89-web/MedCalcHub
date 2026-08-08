@@ -1,9 +1,11 @@
 "use client";
 
-import { Calculator, Heart, Share2, ArrowRight } from "lucide-react";
+import { Calculator, Share2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
+
+import FavoriteButton from "./favorite-button";
 
 type Props = {
   calculator: CalculatorDefinition;
@@ -59,9 +61,7 @@ export function CalculatorHeader({ calculator }: Props) {
 
           <div className="flex gap-3">
 
-            <button className="rounded-xl bg-white/15 p-3 transition hover:bg-white/25">
-              <Heart className="h-5 w-5" />
-            </button>
+            <FavoriteButton calculatorId={calculator.id} />
 
             <button className="rounded-xl bg-white/15 p-3 transition hover:bg-white/25">
               <Share2 className="h-5 w-5" />

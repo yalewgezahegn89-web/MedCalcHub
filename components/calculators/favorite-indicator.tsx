@@ -1,9 +1,39 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { Heart } from "lucide-react";
-import { useEffect, useState } from "react";
 
-import { isFavorite } from "@/lib/favorites/storage";
+import { getFavorites } from "@/lib/favorites";
+
+function subscribe(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handler = () => callback();
+
+  window.addEventListener("storage", handler);
+  window.addEventListener(
+    "medcalchub-favorites-changed",
+    handler,
+  );
+
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(
+      "medcalchub-favorites-changed",
+      handler,
+    );
+  };
+}
+
+function getSnapshot() {
+  return JSON.stringify(getFavorites());
+}
+
+function getServerSnapshot() {
+  return "[]";
+}
 
 type FavoriteIndicatorProps = {
   slug: string;
@@ -12,35 +42,21 @@ type FavoriteIndicatorProps = {
 export function FavoriteIndicator({
   slug,
 }: FavoriteIndicatorProps) {
-  const [favorite, setFavorite] = useState(false);
+  const favoritesStr = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
-  useEffect(() => {
-    function refresh() {
-      setFavorite(isFavorite(slug));
-    }
-
-    refresh();
-
-    window.addEventListener(
-      "favorites-changed",
-      refresh,
-    );
-
-    return () => {
-      window.removeEventListener(
-        "favorites-changed",
-        refresh,
-      );
-    };
-  }, [slug]);
+  const favorite = JSON.parse(favoritesStr).includes(
+    slug,
+  );
 
   if (!favorite) {
     return null;
   }
 
   return (
-    <Heart
-      className="h-5 w-5 fill-red-500 text-red-500"
-    />
+    <Heart className="h-5 w-5 fill-red-500 text-red-500" />
   );
 }

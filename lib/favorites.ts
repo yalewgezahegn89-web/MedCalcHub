@@ -48,10 +48,12 @@ export function removeFavorite(id: string) {
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
-export function toggleFavorite(id: string) {
+export function toggleFavorite(id: string): boolean {
   if (isFavorite(id)) {
     removeFavorite(id);
+    return false;
   } else {
     addFavorite(id);
+    return true;
   }
 }
