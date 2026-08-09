@@ -280,8 +280,9 @@ const sex = Number(values.sex);
 const creatinine = Number(values.creatinine);
 
 
+  const isFemale = values.sex === "2" || values.sex?.toLowerCase() === "female";
   const result =
-    ((140 - age) * weight) / (72 * creatinine) * 0.85;
+    ((140 - age) * weight) / (72 * creatinine) * (isFemale ? 0.85 : 1);
 
 
   
@@ -353,7 +354,7 @@ else if (result >= 15 && result <= 29) {
 }
 
 
-else if (result <= 14) {
+else if (result < 15) {
 
   interpretation =
     "Kidney failure";
@@ -362,7 +363,7 @@ else if (result <= 14) {
     "critical";
 
   referenceRange =
-  "<14.1";
+  "<15";
 }
 
 
