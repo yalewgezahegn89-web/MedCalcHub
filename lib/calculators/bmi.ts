@@ -202,10 +202,7 @@ let status:
 let referenceRange =
   "";
 
-if (false) {}
-
-
-else if (result <= 18.4) {
+if (result < 18.5) {
 
   interpretation =
     "Underweight";
@@ -218,7 +215,7 @@ else if (result <= 18.4) {
 }
 
 
-else if (result >= 18.5 && result <= 24.9) {
+else if (result < 25) {
 
   interpretation =
     "Normal weight";
@@ -231,7 +228,7 @@ else if (result >= 18.5 && result <= 24.9) {
 }
 
 
-else if (result >= 25 && result <= 29.9) {
+else if (result < 30) {
 
   interpretation =
     "Overweight";
@@ -244,7 +241,7 @@ else if (result >= 25 && result <= 29.9) {
 }
 
 
-else if (result >= 30) {
+else {
 
   interpretation =
     "Obesity";

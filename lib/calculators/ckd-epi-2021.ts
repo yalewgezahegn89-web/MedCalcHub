@@ -127,7 +127,6 @@ if (
   };
 }
 
-
 if (Number(values.age) < 0) {
   return {
     value: 0,
@@ -218,7 +217,6 @@ if (Number(values.creatinine) < 0) {
   };
 }
 
-
 if (Number(values.creatinine) === 0) {
   return {
     value: 0,
@@ -252,10 +250,7 @@ let status:
 let referenceRange =
   "";
 
-if (false) {}
-
-
-else if (result >= 90) {
+if (result >= 90) {
 
   interpretation =
     "G1: Normal or high";
@@ -267,8 +262,7 @@ else if (result >= 90) {
   "≥90";
 }
 
-
-else if (result >= 60 && result <= 89) {
+else if (result >= 60) {
 
   interpretation =
     "G2: Mildly decreased";
@@ -280,8 +274,7 @@ else if (result >= 60 && result <= 89) {
   "60–89";
 }
 
-
-else if (result >= 45 && result <= 59) {
+else if (result >= 45) {
 
   interpretation =
     "G3a: Mild to moderate";
@@ -294,7 +287,7 @@ else if (result >= 45 && result <= 59) {
 }
 
 
-else if (result >= 30 && result <= 44) {
+else if (result >= 30) {
 
   interpretation =
     "G3b: Moderate to severe";
@@ -306,8 +299,7 @@ else if (result >= 30 && result <= 44) {
   "30–44";
 }
 
-
-else if (result >= 15 && result <= 29) {
+else if (result >= 15) {
 
   interpretation =
     "G4: Severely decreased";
@@ -320,7 +312,7 @@ else if (result >= 15 && result <= 29) {
 }
 
 
-else if (result <= 14) {
+else {
 
   interpretation =
     "G5: Kidney failure";
@@ -331,9 +323,6 @@ else if (result <= 14) {
   referenceRange =
   "<14.1";
 }
-
-
-
 
 
 return {
