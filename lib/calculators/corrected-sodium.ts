@@ -226,19 +226,6 @@ else if (result >= 135 && result <= 145) {
 }
 
 
-else if (result >= 146) {
-
-  interpretation =
-    "Hypernatremia (corrected)";
-
-  status =
-    "high";
-
-  referenceRange =
-  "≥146";
-}
-
-
 else if (result >= 160) {
 
   interpretation =
@@ -249,6 +236,18 @@ else if (result >= 160) {
 
   referenceRange =
   "≥160";
+}
+
+else if (result >= 146) {
+
+  interpretation =
+    "Hypernatremia (corrected)";
+
+  status =
+    "high";
+
+  referenceRange =
+  "≥146";
 }
 
 

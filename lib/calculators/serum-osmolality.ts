@@ -275,19 +275,6 @@ else if (result >= 275 && result <= 295) {
 }
 
 
-else if (result >= 296) {
-
-  interpretation =
-    "High osmolality";
-
-  status =
-    "high";
-
-  referenceRange =
-  "≥296";
-}
-
-
 else if (result >= 320) {
 
   interpretation =
@@ -298,6 +285,19 @@ else if (result >= 320) {
 
   referenceRange =
   "≥320";
+}
+
+
+else if (result >= 296) {
+
+  interpretation =
+    "High osmolality";
+
+  status =
+    "high";
+
+  referenceRange =
+  "≥296";
 }
 
 

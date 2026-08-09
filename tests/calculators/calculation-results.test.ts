@@ -17,6 +17,15 @@ import {
 import { fenaCalculator } from "../../lib/calculators/fena";
 import { feureaCalculator } from "../../lib/calculators/feurea";
 import { ttkgCalculator } from "../../lib/calculators/ttkg";
+import {
+  correctedSodiumCalculator,
+} from "../../lib/calculators/corrected-sodium";
+import {
+  serumOsmolalityCalculator,
+} from "../../lib/calculators/serum-osmolality";
+import {
+  osmolarGapCalculator,
+} from "../../lib/calculators/osmolar-gap";
 import { childPughCalculator } from "../../lib/calculators/child-pugh";
 import { cockcroftGaultCalculator } from "../../lib/calculators/cockcroft-gault";
 import { mdrdCalculator } from "../../lib/calculators/mdrd";
@@ -893,14 +902,16 @@ describe("Anion Gap calculate() regression", () => {
 
   it("high anion gap: Na=140, Cl=110, HCO3=10 → AG = 20", () => {
     // 140 - (110 + 10) = 20
+    // After dead-branch fix, AG>=20 is now checked before AG>=13,
+    // so AG=20 correctly gets "Markedly elevated" (critical)
     const r = calc(anionGapCalculator, {
       sodium: "140",
       chloride: "110",
       bicarbonate: "10",
     });
     expect(r.value).toBe(20);
-    expect(r.interpretation).toBe("High anion gap");
-    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Markedly elevated anion gap");
+    expect(r.status).toBe("critical");
   });
 
   it("low anion gap: Na=130, Cl=105, HCO3=22 → AG = 3", () => {
@@ -1174,5 +1185,217 @@ describe("TTKG calculate() regression", () => {
     });
     expect(r.value).not.toBe(1);
     expect(r.value).toBeCloseTo(3.33, 1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Dead-Branch Classification Fix Regression Tests
+// These test previously unreachable higher-severity branches that were
+// hidden behind broader conditions checked first.
+// ---------------------------------------------------------------------------
+
+// --- Anion Gap: previously AG>=20 unreachable behind AG>=13 ---
+describe("Anion Gap dead-branch fix", () => {
+  it("AG=20 → Markedly elevated anion gap (critical, was unreachable)", () => {
+    // Na=140, Cl=100, HCO3=20 → 140-120 = 20
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "100",
+      bicarbonate: "20",
+    });
+    expect(r.value).toBe(20);
+    expect(r.interpretation).toBe("Markedly elevated anion gap");
+    expect(r.status).toBe("critical");
+  });
+
+  it("AG=25 → Markedly elevated anion gap (critical)", () => {
+    // Na=140, Cl=95, HCO3=20 → 140-115 = 25
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "95",
+      bicarbonate: "20",
+    });
+    expect(r.value).toBe(25);
+    expect(r.interpretation).toBe("Markedly elevated anion gap");
+    expect(r.status).toBe("critical");
+  });
+
+  it("AG=15 → High anion gap (high, not markedly elevated)", () => {
+    // Na=140, Cl=103, HCO3=22 → 140-125 = 15
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "103",
+      bicarbonate: "22",
+    });
+    expect(r.value).toBe(15);
+    expect(r.interpretation).toBe("High anion gap");
+    expect(r.status).toBe("high");
+  });
+});
+
+// --- Corrected Anion Gap: previously >=20 unreachable behind >=13 ---
+describe("Corrected Anion Gap dead-branch fix", () => {
+  it("corrected AG=20 → Markedly elevated (critical, was unreachable)", () => {
+    // base AG = 140-(100+20) = 20, albumin=4.0 → correction=0 → 20
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "100",
+      bicarbonate: "20",
+      albumin: "4.0",
+    });
+    expect(r.value).toBe(20);
+    expect(r.interpretation).toBe("Markedly elevated corrected anion gap");
+    expect(r.status).toBe("critical");
+  });
+
+  it("corrected AG=15 → High (not markedly elevated)", () => {
+    // base AG = 140-(103+22) = 15, albumin=4.0 → correction=0 → 15
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "103",
+      bicarbonate: "22",
+      albumin: "4.0",
+    });
+    expect(r.value).toBe(15);
+    expect(r.interpretation).toBe("High corrected anion gap");
+    expect(r.status).toBe("high");
+  });
+
+  it("low albumin pushes corrected AG above 20 → critical", () => {
+    // base AG = 140-(105+22) = 13, alb=1.0 → correction=2.5*3=7.5 → 20.5
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "105",
+      bicarbonate: "22",
+      albumin: "1.0",
+    });
+    expect(r.value).toBe(20.5);
+    expect(r.interpretation).toBe("Markedly elevated corrected anion gap");
+    expect(r.status).toBe("critical");
+  });
+});
+
+// --- Corrected Sodium: previously >=160 unreachable behind >=146 ---
+describe("Corrected Sodium dead-branch fix", () => {
+  it("corrected Na=160.8 → Severe hypernatremia (critical, was unreachable)", () => {
+    // Na=156, glucose=400 → 156 + 1.6*(400-100)/100 = 156+4.8 = 160.8
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "156",
+      glucose: "400",
+    });
+    expect(r.value).toBe(160.8);
+    expect(r.interpretation).toBe("Severe hypernatremia");
+    expect(r.status).toBe("critical");
+  });
+
+  it("corrected Na=150 → Hypernatremia (high, not severe)", () => {
+    // Na=140, glucose=625 → 140 + 1.6*5.25 = 148.4
+    // Na=145, glucose=400 → 145 + 4.8 = 149.8
+    // Na=146, glucose=400 → 146 + 4.8 = 150.8
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "146",
+      glucose: "400",
+    });
+    expect(r.value).toBe(150.8);
+    expect(r.interpretation).toBe("Hypernatremia (corrected)");
+    expect(r.status).toBe("high");
+  });
+
+  it("corrected Na=170 → Severe hypernatremia (critical)", () => {
+    // Na=160, glucose=600 → 160 + 1.6*5 = 168
+    // Na=165, glucose=400 → 165 + 4.8 = 169.8
+    // Na=170, glucose=200 → 170 + 1.6 = 171.6
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "170",
+      glucose: "200",
+    });
+    expect(r.value).toBe(171.6);
+    expect(r.interpretation).toBe("Severe hypernatremia");
+    expect(r.status).toBe("critical");
+  });
+});
+
+// --- Serum Osmolality: previously >=320 unreachable behind >=296 ---
+describe("Serum Osmolality dead-branch fix", () => {
+  it("osmolality=330 → Critically elevated (critical, was unreachable)", () => {
+    // Na=155, glucose=180, BUN=28 → 310 + 10 + 10 = 330
+    const r = calc(serumOsmolalityCalculator, {
+      sodium: "155",
+      glucose: "180",
+      bun: "28",
+    });
+    expect(r.value).toBe(330);
+    expect(r.interpretation).toBe("Critically elevated osmolality");
+    expect(r.status).toBe("critical");
+  });
+
+  it("osmolality=300 → High (not critical)", () => {
+    // Na=145, glucose=180, BUN=14 → 290 + 10 + 5 = 305
+    // Na=148, glucose=180, BUN=14 → 296 + 10 + 5 = 311
+    const r = calc(serumOsmolalityCalculator, {
+      sodium: "148",
+      glucose: "180",
+      bun: "14",
+    });
+    expect(r.value).toBe(311);
+    expect(r.interpretation).toBe("High osmolality");
+    expect(r.status).toBe("high");
+  });
+
+  it("osmolality=340 → Critically elevated (critical)", () => {
+    // Na=160, glucose=200, BUN=28 → 320 + 11.11 + 10 = 341.11
+    const r = calc(serumOsmolalityCalculator, {
+      sodium: "160",
+      glucose: "200",
+      bun: "28",
+    });
+    expect(r.value).toBeCloseTo(341.11, 0);
+    expect(r.interpretation).toBe("Critically elevated osmolality");
+    expect(r.status).toBe("critical");
+  });
+});
+
+// --- Osmolar Gap: previously >=50 unreachable behind >=11 ---
+describe("Osmolar Gap dead-branch fix", () => {
+  it("osmolar gap=55 → Markedly elevated (critical, was unreachable)", () => {
+    // calculated = 2*140 + 100/18 + 10/2.8 = 280 + 5.56 + 3.57 = 289.13
+    // gap = 345 - 289.13 = 55.87
+    const r = calc(osmolarGapCalculator, {
+      measured: "345",
+      sodium: "140",
+      glucose: "100",
+      bun: "10",
+    });
+    expect(r.value).toBeCloseTo(55.87, 0);
+    expect(r.interpretation).toBe("Markedly elevated osmolar gap — toxic ingestion likely");
+    expect(r.status).toBe("critical");
+  });
+
+  it("osmolar gap=15 → Elevated (high, not markedly)", () => {
+    // calculated = 2*140 + 100/18 + 10/2.8 = 289.13
+    // gap = 305 - 289.13 = 15.87
+    const r = calc(osmolarGapCalculator, {
+      measured: "305",
+      sodium: "140",
+      glucose: "100",
+      bun: "10",
+    });
+    expect(r.value).toBeCloseTo(15.87, 0);
+    expect(r.interpretation).toBe("Elevated osmolar gap");
+    expect(r.status).toBe("high");
+  });
+
+  it("osmolar gap=80 → Markedly elevated (critical)", () => {
+    // calculated = 2*140 + 100/18 + 10/2.8 = 289.13
+    // gap = 370 - 289.13 = 80.87
+    const r = calc(osmolarGapCalculator, {
+      measured: "370",
+      sodium: "140",
+      glucose: "100",
+      bun: "10",
+    });
+    expect(r.value).toBeCloseTo(80.87, 0);
+    expect(r.interpretation).toBe("Markedly elevated osmolar gap — toxic ingestion likely");
+    expect(r.status).toBe("critical");
   });
 });

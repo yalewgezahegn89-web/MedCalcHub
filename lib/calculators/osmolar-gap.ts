@@ -324,19 +324,6 @@ else if (result >= -10 && result <= 10) {
 }
 
 
-else if (result >= 11) {
-
-  interpretation =
-    "Elevated osmolar gap";
-
-  status =
-    "high";
-
-  referenceRange =
-  "≥11";
-}
-
-
 else if (result >= 50) {
 
   interpretation =
@@ -347,6 +334,18 @@ else if (result >= 50) {
 
   referenceRange =
   "≥50";
+}
+
+else if (result >= 11) {
+
+  interpretation =
+    "Elevated osmolar gap";
+
+  status =
+    "high";
+
+  referenceRange =
+  "≥11";
 }
 
 

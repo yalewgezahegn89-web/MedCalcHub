@@ -278,19 +278,6 @@ else if (result >= 8 && result <= 12) {
 }
 
 
-else if (result >= 13) {
-
-  interpretation =
-    "High anion gap";
-
-  status =
-    "high";
-
-  referenceRange =
-  "≥13";
-}
-
-
 else if (result >= 20) {
 
   interpretation =
@@ -301,6 +288,18 @@ else if (result >= 20) {
 
   referenceRange =
   "≥20";
+}
+
+else if (result >= 13) {
+
+  interpretation =
+    "High anion gap";
+
+  status =
+    "high";
+
+  referenceRange =
+  "≥13";
 }
 
 
