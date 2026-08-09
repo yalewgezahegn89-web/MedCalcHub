@@ -177,6 +177,24 @@ describe("history", () => {
       const { clearHistory } = await load();
       expect(() => clearHistory()).not.toThrow();
     });
+
+    it("saveCalculation does not dispatch event when setItem fails", async () => {
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+      const { saveCalculation } = await load();
+      saveCalculation(makeItem());
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+
+    it("clearHistory does not dispatch event when removeItem fails", async () => {
+      ls.mock.removeItem.mockImplementation(() => {
+        throw new DOMException("Storage error", "NotFoundError");
+      });
+      const { clearHistory } = await load();
+      clearHistory();
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
   });
 
   // -------------------------------------------------------
@@ -184,7 +202,7 @@ describe("history", () => {
   // -------------------------------------------------------
 
   describe("events", () => {
-    it("dispatches change event after saveCalculation", async () => {
+    it("dispatches change event after successful saveCalculation", async () => {
       const { saveCalculation } = await load();
       saveCalculation(makeItem());
       expect(dispatchEventSpy).toHaveBeenCalledWith(
@@ -192,7 +210,7 @@ describe("history", () => {
       );
     });
 
-    it("dispatches change event after clearHistory", async () => {
+    it("dispatches change event after successful clearHistory", async () => {
       const { clearHistory } = await load();
       clearHistory();
       expect(dispatchEventSpy).toHaveBeenCalledWith(

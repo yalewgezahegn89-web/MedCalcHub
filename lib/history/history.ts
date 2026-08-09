@@ -49,19 +49,19 @@ export function saveCalculation(
       STORAGE_KEY,
       JSON.stringify(unique.slice(0, 50)),
     );
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   } catch {
     // Storage may be full or unavailable — fail gracefully
   }
-
-  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function clearHistory() {
   try {
     localStorage.removeItem(STORAGE_KEY);
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   } catch {
     // Storage may be unavailable — fail gracefully
   }
-
-  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
