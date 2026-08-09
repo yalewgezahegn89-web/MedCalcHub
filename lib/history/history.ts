@@ -44,16 +44,24 @@ export function saveCalculation(
       ),
   );
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(unique.slice(0, 50)),
-  );
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(unique.slice(0, 50)),
+    );
+  } catch {
+    // Storage may be full or unavailable — fail gracefully
+  }
 
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function clearHistory() {
-  localStorage.removeItem(STORAGE_KEY);
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Storage may be unavailable — fail gracefully
+  }
 
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }

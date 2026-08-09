@@ -26,10 +26,14 @@ export function addFavorite(id: string) {
   if (!favorites.includes(id)) {
     favorites.push(id);
 
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(favorites),
-    );
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(favorites),
+      );
+    } catch {
+      // Storage may be full or unavailable — fail gracefully
+    }
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
   }
@@ -40,10 +44,14 @@ export function removeFavorite(id: string) {
     (item) => item !== id,
   );
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(favorites),
-  );
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(favorites),
+    );
+  } catch {
+    // Storage may be full or unavailable — fail gracefully
+  }
 
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }

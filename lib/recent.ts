@@ -25,10 +25,14 @@ export function addRecentCalculator(id: string) {
 
   recent.unshift(id);
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(recent.slice(0, MAX_RECENT)),
-  );
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(recent.slice(0, MAX_RECENT)),
+    );
+  } catch {
+    // Storage may be full or unavailable — fail gracefully
+  }
 
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
@@ -38,16 +42,24 @@ export function removeRecentCalculator(id: string) {
     (item) => item !== id,
   );
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(recent),
-  );
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(recent),
+    );
+  } catch {
+    // Storage may be full or unavailable — fail gracefully
+  }
 
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function clearRecentCalculators() {
-  localStorage.removeItem(STORAGE_KEY);
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Storage may be unavailable — fail gracefully
+  }
 
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
