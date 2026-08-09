@@ -40,14 +40,18 @@ export function addFavorite(id: string) {
 }
 
 export function removeFavorite(id: string) {
-  const favorites = getFavorites().filter(
-    (item) => item !== id,
-  );
+  const favorites = getFavorites();
+
+  if (!favorites.includes(id)) {
+    return;
+  }
+
+  const next = favorites.filter((item) => item !== id);
 
   try {
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify(favorites),
+      JSON.stringify(next),
     );
   } catch {
     // Storage may be full or unavailable — fail gracefully

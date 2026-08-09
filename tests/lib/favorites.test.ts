@@ -141,6 +141,36 @@ describe("favorites", () => {
       const { removeFavorite } = await load();
       expect(() => removeFavorite("nonexistent")).not.toThrow();
     });
+
+    it("does not modify stored list when removing a nonexistent favorite", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi", "crf"]));
+
+      const { removeFavorite, getFavorites } = await load();
+      removeFavorite("nonexistent");
+
+      expect(getFavorites()).toEqual(["bmi", "crf"]);
+      expect(ls.mock.setItem).not.toHaveBeenCalled();
+    });
+
+    it("does not dispatch event when removing a nonexistent favorite", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi"]));
+
+      const { removeFavorite } = await load();
+      removeFavorite("nonexistent");
+
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+
+    it("dispatches event when removing an existing favorite", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi", "crf"]));
+
+      const { removeFavorite } = await load();
+      removeFavorite("bmi");
+
+      expect(dispatchEventSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ type: CHANGE_EVENT }),
+      );
+    });
   });
 
   // -------------------------------------------------------
