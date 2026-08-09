@@ -135,6 +135,34 @@ describe("recent", () => {
       const { clearRecentCalculators } = await load();
       expect(() => clearRecentCalculators()).not.toThrow();
     });
+
+    it("addRecentCalculator does not dispatch event when setItem fails", async () => {
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+      const { addRecentCalculator } = await load();
+      addRecentCalculator("bmi");
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+
+    it("removeRecentCalculator does not dispatch event when setItem fails", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi"]));
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+      const { removeRecentCalculator } = await load();
+      removeRecentCalculator("bmi");
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+
+    it("clearRecentCalculators does not dispatch event when removeItem fails", async () => {
+      ls.mock.removeItem.mockImplementation(() => {
+        throw new DOMException("Storage error", "NotFoundError");
+      });
+      const { clearRecentCalculators } = await load();
+      clearRecentCalculators();
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe("events", () => {

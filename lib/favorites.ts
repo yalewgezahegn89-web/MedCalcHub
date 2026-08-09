@@ -31,11 +31,11 @@ export function addFavorite(id: string) {
         STORAGE_KEY,
         JSON.stringify(favorites),
       );
+
+      window.dispatchEvent(new Event(CHANGE_EVENT));
     } catch {
       // Storage may be full or unavailable — fail gracefully
     }
-
-    window.dispatchEvent(new Event(CHANGE_EVENT));
   }
 }
 
@@ -53,11 +53,11 @@ export function removeFavorite(id: string) {
       STORAGE_KEY,
       JSON.stringify(next),
     );
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   } catch {
     // Storage may be full or unavailable — fail gracefully
   }
-
-  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function toggleFavorite(id: string): boolean {

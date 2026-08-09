@@ -30,11 +30,11 @@ export function addRecentCalculator(id: string) {
       STORAGE_KEY,
       JSON.stringify(recent.slice(0, MAX_RECENT)),
     );
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   } catch {
     // Storage may be full or unavailable — fail gracefully
   }
-
-  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function removeRecentCalculator(id: string) {
@@ -47,19 +47,19 @@ export function removeRecentCalculator(id: string) {
       STORAGE_KEY,
       JSON.stringify(recent),
     );
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   } catch {
     // Storage may be full or unavailable — fail gracefully
   }
-
-  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function clearRecentCalculators() {
   try {
     localStorage.removeItem(STORAGE_KEY);
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   } catch {
     // Storage may be unavailable — fail gracefully
   }
-
-  window.dispatchEvent(new Event(CHANGE_EVENT));
 }

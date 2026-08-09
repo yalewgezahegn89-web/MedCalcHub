@@ -256,5 +256,26 @@ describe("favorites", () => {
       const { removeFavorite } = await load();
       expect(() => removeFavorite("bmi")).not.toThrow();
     });
+
+    it("addFavorite does not dispatch event when setItem fails", async () => {
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+
+      const { addFavorite } = await load();
+      addFavorite("bmi");
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+
+    it("removeFavorite does not dispatch event when setItem fails", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi"]));
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+
+      const { removeFavorite } = await load();
+      removeFavorite("bmi");
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
   });
 });
