@@ -197,10 +197,7 @@ let status:
 let referenceRange =
   "";
 
-if (false) {}
-
-
-else if (result <= 8.4) {
+if (result < 8.5) {
 
   interpretation =
     "Hypocalcemia";
@@ -213,7 +210,7 @@ else if (result <= 8.4) {
 }
 
 
-else if (result >= 8.5 && result <= 10.5) {
+else if (result <= 10.5) {
 
   interpretation =
     "Normal corrected calcium";
@@ -223,19 +220,6 @@ else if (result >= 8.5 && result <= 10.5) {
 
   referenceRange =
   "8.5–10.5";
-}
-
-
-else if (result >= 10.6) {
-
-  interpretation =
-    "Hypercalcemia";
-
-  status =
-    "high";
-
-  referenceRange =
-  "≥10.6";
 }
 
 
@@ -249,6 +233,19 @@ else if (result >= 12.5) {
 
   referenceRange =
   "≥12.5";
+}
+
+
+else {
+
+  interpretation =
+    "Hypercalcemia";
+
+  status =
+    "high";
+
+  referenceRange =
+  "≥10.6";
 }
 
 

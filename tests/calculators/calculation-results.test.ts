@@ -32,6 +32,9 @@ import { mdrdCalculator } from "../../lib/calculators/mdrd";
 import {
   bmiForPediatricsCalculator,
 } from "../../lib/calculators/bmi-for-pediatrics";
+import {
+  correctedCalciumCalculator,
+} from "../../lib/calculators/corrected-calcium";
 
 import type {
   CalculatorDefinition,
@@ -1742,5 +1745,157 @@ describe("Pediatric BMI-for-Age calculate() output", () => {
     });
     expect(r.status).toBe("critical");
     expect(r.interpretation).toContain("required");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Corrected Calcium — Calcium + 0.8 × (4.0 − Albumin)
+// Classification:
+//   < 8.5  → Hypocalcemia (low)
+//   8.5–10.5 → Normal corrected calcium (normal)
+//   10.6–<12.5 → Hypercalcemia (high)
+//   ≥ 12.5 → Severe hypercalcemia (critical)
+//
+// Previously defective:
+//   - Severe hypercalcemia branch (>=12.5) was unreachable behind >=10.6
+//   - Gap between 8.4 and 8.5 fell through to default "normal"
+// ---------------------------------------------------------------------------
+
+/**
+ * Compute expected corrected calcium: Ca + 0.8 * (4.0 − Albumin)
+ */
+function expectedCorrectedCalcium(
+  calcium: number,
+  albumin: number,
+): number {
+  return Number(
+    (calcium + 0.8 * (4.0 - albumin)).toFixed(2),
+  );
+}
+
+describe("Corrected Calcium calculate() classification fix", () => {
+  it("severe hypercalcemia: Ca=14.0, albumin=2.5 → 15.2, critical", () => {
+    // Corrected Ca = 14.0 + 0.8 * (4.0 - 2.5) = 14.0 + 1.2 = 15.2
+    const expected = expectedCorrectedCalcium(14.0, 2.5);
+    expect(expected).toBe(15.2);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "14.0",
+      albumin: "2.5",
+    });
+    expect(r.value).toBe(15.2);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Severe hypercalcemia");
+  });
+
+  it("severe hypercalcemia boundary: Ca=10.5, albumin=0 → 13.7, critical", () => {
+    // Corrected Ca = 10.5 + 0.8 * 4.0 = 10.5 + 3.2 = 13.7
+    // Albumin=0 is rejected, so use albumin=0.1 → 10.5 + 0.8*3.9 = 13.62
+    const expected = expectedCorrectedCalcium(10.5, 0.1);
+    expect(expected).toBeGreaterThanOrEqual(12.5);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "10.5",
+      albumin: "0.1",
+    });
+    expect(r.value).toBe(13.62);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Severe hypercalcemia");
+  });
+
+  it("severe hypercalcemia at exactly 12.5: Ca=10.1, albumin=0 → 13.3, critical", () => {
+    // albumin=0 is rejected; use albumin=0.5 → 10.1 + 0.8*3.5 = 12.9
+    const expected = expectedCorrectedCalcium(10.1, 0.5);
+    expect(expected).toBeGreaterThanOrEqual(12.5);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "10.1",
+      albumin: "0.5",
+    });
+    expect(r.value).toBe(12.9);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Severe hypercalcemia");
+  });
+
+  it("hypercalcemia: Ca=10.5, albumin=2.0 → 11.7, high", () => {
+    // Corrected Ca = 10.5 + 0.8 * (4.0 - 2.0) = 10.5 + 1.6 = 12.1
+    // Need result in [10.6, 12.5). Use Ca=10.0, albumin=2.0 → 11.6
+    const expected = expectedCorrectedCalcium(10.0, 2.0);
+    expect(expected).toBeGreaterThanOrEqual(10.6);
+    expect(expected).toBeLessThan(12.5);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "10.0",
+      albumin: "2.0",
+    });
+    expect(r.value).toBe(11.6);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Hypercalcemia");
+  });
+
+  it("boundary gap regression: Ca=8.6, albumin=3.0 → 9.4, normal", () => {
+    // Corrected Ca = 8.6 + 0.8 * (4.0 - 3.0) = 8.6 + 0.8 = 9.4
+    const expected = expectedCorrectedCalcium(8.6, 3.0);
+    expect(expected).toBeGreaterThanOrEqual(8.5);
+    expect(expected).toBeLessThanOrEqual(10.5);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "8.6",
+      albumin: "3.0",
+    });
+    expect(r.value).toBe(9.4);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal corrected calcium");
+  });
+
+  it("lower boundary gap regression: corrected Ca ≈ 8.45 → low", () => {
+    // Need Ca + 0.8*(4 - albumin) ≈ 8.45
+    // Ca=8.0, albumin=3.5 → 8.0 + 0.8*0.5 = 8.4
+    // Ca=8.1, albumin=3.5 → 8.1 + 0.4 = 8.5 → normal
+    // Ca=8.0, albumin=3.4 → 8.0 + 0.8*0.6 = 8.48 → should be <8.5 → low
+    const expected = expectedCorrectedCalcium(8.0, 3.4);
+    expect(expected).toBe(8.48);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "8.0",
+      albumin: "3.4",
+    });
+    expect(r.value).toBe(8.48);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe("Hypocalcemia");
+  });
+
+  it("hypocalcemia: Ca=7.0, albumin=3.0 → 7.8, low", () => {
+    // Corrected Ca = 7.0 + 0.8 * (4.0 - 3.0) = 7.0 + 0.8 = 7.8
+    const expected = expectedCorrectedCalcium(7.0, 3.0);
+    expect(expected).toBeLessThan(8.5);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "7.0",
+      albumin: "3.0",
+    });
+    expect(r.value).toBe(7.8);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe("Hypocalcemia");
+  });
+
+  it("normal: Ca=9.5, albumin=4.0 → 9.5, normal", () => {
+    // Corrected Ca = 9.5 + 0.8 * (4.0 - 4.0) = 9.5
+    const expected = expectedCorrectedCalcium(9.5, 4.0);
+    expect(expected).toBeGreaterThanOrEqual(8.5);
+    expect(expected).toBeLessThanOrEqual(10.5);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "9.5",
+      albumin: "4.0",
+    });
+    expect(r.value).toBe(9.5);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal corrected calcium");
+  });
+
+  it("upper normal boundary: Ca=10.5, albumin=4.0 → 10.5, normal", () => {
+    // Corrected Ca = 10.5 + 0 = 10.5
+    const expected = expectedCorrectedCalcium(10.5, 4.0);
+    expect(expected).toBe(10.5);
+    const r = calc(correctedCalciumCalculator, {
+      calcium: "10.5",
+      albumin: "4.0",
+    });
+    expect(r.value).toBe(10.5);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal corrected calcium");
   });
 });
