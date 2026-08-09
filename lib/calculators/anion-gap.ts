@@ -232,7 +232,7 @@ const hco = bicarbonate;
 
 
   const result =
-    sodium - (chloride + sodium);
+    sodium - (chloride + bicarbonate);
 
 
   

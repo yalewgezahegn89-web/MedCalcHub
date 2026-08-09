@@ -273,7 +273,7 @@ const plasmaCr = Number(values.plasmaCr);
 
 
   const result =
-    (urineUrea / urineUrea) / (urineUrea / urineUrea) * 100;
+    (urineUrea / plasmaUrea) / (urineCr / plasmaCr) * 100;
 
 
   

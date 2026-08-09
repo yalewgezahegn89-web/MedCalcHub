@@ -274,7 +274,7 @@ const plasmaOsmolality = Number(values.plasmaOsmolality);
 
 
   const result =
-    (urineK * urineK) / (urineK * urineK);
+    (urineK * plasmaOsmolality) / (plasmaK * urineOsmolality);
 
 
   

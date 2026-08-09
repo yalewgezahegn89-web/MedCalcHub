@@ -281,7 +281,7 @@ const albumin = Number(values.albumin);
 
 
   const result =
-    (sodium - (chloride + sodium)) + 2.5 * (4 - albumin);
+    (sodium - (chloride + bicarbonate)) + 2.5 * (4 - albumin);
 
 
   

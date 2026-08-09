@@ -8,6 +8,15 @@ import { gcsCalculator } from "../../lib/calculators/gcs";
 import { news2Calculator } from "../../lib/calculators/news2";
 import { curb65Calculator } from "../../lib/calculators/curb-65";
 import { qsofaCalculator } from "../../lib/calculators/qsofa";
+import {
+  anionGapCalculator,
+} from "../../lib/calculators/anion-gap";
+import {
+  correctedAnionGapCalculator,
+} from "../../lib/calculators/corrected-anion-gap";
+import { fenaCalculator } from "../../lib/calculators/fena";
+import { feureaCalculator } from "../../lib/calculators/feurea";
+import { ttkgCalculator } from "../../lib/calculators/ttkg";
 import { childPughCalculator } from "../../lib/calculators/child-pugh";
 import { cockcroftGaultCalculator } from "../../lib/calculators/cockcroft-gault";
 import { mdrdCalculator } from "../../lib/calculators/mdrd";
@@ -843,5 +852,327 @@ describe("MDRD calculate() boundary audit", () => {
     });
     expect(r.interpretation).toBe("G5: Kidney failure");
     expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Anion Gap — Na − (Cl + HCO₃)
+// Previously defective: computed Na − (Cl + Na) = −Cl (always negative)
+// Classification:
+//   ≤ 7   → Low anion gap
+//   8–12  → Normal anion gap
+//   ≥ 13  → High anion gap
+//   ≥ 20  → Markedly elevated (unreachable dead branch — not tested here)
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Anion Gap calculate() regression", () => {
+  it("Na=140, Cl=104, HCO3=24 → AG = 12 (normal)", () => {
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "104",
+      bicarbonate: "24",
+    });
+    expect(r.value).toBe(12);
+    expect(r.interpretation).toBe("Normal anion gap");
+    expect(r.status).toBe("normal");
+  });
+
+  it("different inputs produce different results", () => {
+    const r1 = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "104",
+      bicarbonate: "24",
+    });
+    const r2 = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "100",
+      bicarbonate: "20",
+    });
+    expect(r1.value).not.toBe(r2.value);
+  });
+
+  it("high anion gap: Na=140, Cl=110, HCO3=10 → AG = 20", () => {
+    // 140 - (110 + 10) = 20
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "110",
+      bicarbonate: "10",
+    });
+    expect(r.value).toBe(20);
+    expect(r.interpretation).toBe("High anion gap");
+    expect(r.status).toBe("high");
+  });
+
+  it("low anion gap: Na=130, Cl=105, HCO3=22 → AG = 3", () => {
+    // 130 - (105 + 22) = 3
+    const r = calc(anionGapCalculator, {
+      sodium: "130",
+      chloride: "105",
+      bicarbonate: "22",
+    });
+    expect(r.value).toBe(3);
+    expect(r.interpretation).toBe("Low anion gap");
+    expect(r.status).toBe("low");
+  });
+
+  it("regression: result is no longer -104 for standard inputs", () => {
+    // Previously: Na − (Cl + Na) = 140 − (104 + 140) = −104
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "104",
+      bicarbonate: "24",
+    });
+    expect(r.value).not.toBe(-104);
+    expect(r.value).toBe(12);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Corrected Anion Gap — (Na − (Cl + HCO₃)) + 2.5 × (4 − Albumin)
+// Previously defective: same base-AG bug as anion-gap
+// Classification: same as anion gap
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Corrected Anion Gap calculate() regression", () => {
+  it("Na=140, Cl=104, HCO3=24, alb=2.0 → corrected AG = 17", () => {
+    // AG = 140 - (104 + 24) = 12
+    // correction = 2.5 * (4 - 2.0) = 5
+    // corrected = 12 + 5 = 17
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "104",
+      bicarbonate: "24",
+      albumin: "2.0",
+    });
+    expect(r.value).toBe(17);
+    expect(r.interpretation).toBe("High corrected anion gap");
+    expect(r.status).toBe("high");
+  });
+
+  it("normal albumin: correction is zero", () => {
+    // Na=140, Cl=104, HCO3=24, alb=4.0 → AG=12, correction=0 → 12
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "104",
+      bicarbonate: "24",
+      albumin: "4.0",
+    });
+    expect(r.value).toBe(12);
+    expect(r.interpretation).toBe("Normal corrected anion gap");
+    expect(r.status).toBe("normal");
+  });
+
+  it("regression: result is no longer -99 for standard inputs", () => {
+    // Previously: (Na − (Cl + Na)) + correction = (140 − 244) + 5 = -99
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "104",
+      bicarbonate: "24",
+      albumin: "2.0",
+    });
+    expect(r.value).not.toBe(-99);
+    expect(r.value).toBe(17);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FENa — (urineNa / plasmaNa) / (urineCr / plasmaCr) × 100
+// Previously defective: (urineNa/urineNa)/(urineNa/urineNa) × 100 = always 100
+// Classification:
+//   ≤ 1%  → Prerenal azotemia
+//   1–2%  → Indeterminate
+//   ≥ 2%  → Intrinsic renal injury (ATN)
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("FENa calculate() regression", () => {
+  it("prerenal: urineNa=20, plasmaNa=140, urineCr=120, plasmaCr=2.0 → ~0.24%", () => {
+    // (20/140) / (120/2.0) * 100 = 0.14286 / 60 * 100 = 0.2381
+    const r = calc(fenaCalculator, {
+      urineNa: "20",
+      plasmaNa: "140",
+      urineCr: "120",
+      plasmaCr: "2.0",
+    });
+    expect(r.value).toBeCloseTo(0.24, 1);
+    expect(r.interpretation).toBe("Prerenal azotemia");
+    expect(r.status).toBe("low");
+  });
+
+  it("ATN: urineNa=80, plasmaNa=140, urineCr=40, plasmaCr=2.0 → ~2.86%", () => {
+    // (80/140) / (40/2.0) * 100 = 0.5714 / 20 * 100 = 2.8571
+    const r = calc(fenaCalculator, {
+      urineNa: "80",
+      plasmaNa: "140",
+      urineCr: "40",
+      plasmaCr: "2.0",
+    });
+    expect(r.value).toBeCloseTo(2.86, 0);
+    expect(r.interpretation).toBe("Intrinsic renal injury (ATN)");
+    expect(r.status).toBe("high");
+  });
+
+  it("different inputs produce different results", () => {
+    const r1 = calc(fenaCalculator, {
+      urineNa: "20",
+      plasmaNa: "140",
+      urineCr: "120",
+      plasmaCr: "2.0",
+    });
+    const r2 = calc(fenaCalculator, {
+      urineNa: "80",
+      plasmaNa: "140",
+      urineCr: "40",
+      plasmaCr: "2.0",
+    });
+    expect(r1.value).not.toBe(r2.value);
+  });
+
+  it("regression: result is no longer always 100", () => {
+    const r = calc(fenaCalculator, {
+      urineNa: "20",
+      plasmaNa: "140",
+      urineCr: "120",
+      plasmaCr: "2.0",
+    });
+    expect(r.value).not.toBe(100);
+    expect(r.value).toBeCloseTo(0.24, 1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FEUrea — (urineUrea / plasmaUrea) / (urineCr / plasmaCr) × 100
+// Previously defective: (urineUrea/urineUrea)/(urineUrea/urineUrea) × 100 = always 100
+// Classification:
+//   ≤ 35% → Prerenal azotemia
+//   35–50% → Indeterminate
+//   ≥ 50% → Intrinsic renal injury (ATN)
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("FEUrea calculate() regression", () => {
+  it("prerenal: urineUrea=100, plasmaUrea=10, urineCr=50, plasmaCr=1 → 20%", () => {
+    // (100/10) / (50/1) * 100 = 10 / 50 * 100 = 20
+    const r = calc(feureaCalculator, {
+      urineUrea: "100",
+      plasmaUrea: "10",
+      urineCr: "50",
+      plasmaCr: "1",
+    });
+    expect(r.value).toBe(20);
+    expect(r.interpretation).toBe("Prerenal azotemia");
+    expect(r.status).toBe("low");
+  });
+
+  it("ATN: urineUrea=500, plasmaUrea=20, urineCr=120, plasmaCr=2 → ~41.67%", () => {
+    // (500/20) / (120/2) * 100 = 25 / 60 * 100 = 41.6667
+    const r = calc(feureaCalculator, {
+      urineUrea: "500",
+      plasmaUrea: "20",
+      urineCr: "120",
+      plasmaCr: "2",
+    });
+    expect(r.value).toBeCloseTo(41.67, 0);
+    expect(r.interpretation).toBe("Indeterminate");
+    expect(r.status).toBe("normal");
+  });
+
+  it("high FEUrea: urineUrea=800, plasmaUrea=10, urineCr=50, plasmaCr=1 → 160%", () => {
+    // (800/10) / (50/1) * 100 = 80 / 50 * 100 = 160
+    const r = calc(feureaCalculator, {
+      urineUrea: "800",
+      plasmaUrea: "10",
+      urineCr: "50",
+      plasmaCr: "1",
+    });
+    expect(r.value).toBe(160);
+    expect(r.interpretation).toBe("Intrinsic renal injury (ATN)");
+    expect(r.status).toBe("high");
+  });
+
+  it("regression: result is no longer always 100", () => {
+    const r = calc(feureaCalculator, {
+      urineUrea: "100",
+      plasmaUrea: "10",
+      urineCr: "50",
+      plasmaCr: "1",
+    });
+    expect(r.value).not.toBe(100);
+    expect(r.value).toBe(20);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TTKG — (urineK × plasmaOsmolality) / (plasmaK × urineOsmolality)
+// Previously defective: (urineK × urineK) / (urineK × urineK) = always 1
+// Classification:
+//   ≤ 8  → Impaired K⁺ secretion
+//   8–12 → Normal renal K⁺ response
+//   ≥ 12 → Enhanced K⁺ secretion
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("TTKG calculate() regression", () => {
+  it("impaired: urineK=40, plasmaK=6, plasmaOsm=300, urineOsm=600 → ~3.33", () => {
+    // (40 * 300) / (6 * 600) = 12000 / 3600 = 3.3333
+    const r = calc(ttkgCalculator, {
+      urineK: "40",
+      plasmaK: "6",
+      plasmaOsmolality: "300",
+      urineOsmolality: "600",
+    });
+    expect(r.value).toBeCloseTo(3.33, 1);
+    expect(r.interpretation).toBe("Impaired K⁺ secretion");
+    expect(r.status).toBe("low");
+  });
+
+  it("normal: urineK=40, plasmaK=4, plasmaOsm=300, urineOsm=400 → 7.5", () => {
+    // (40 * 300) / (4 * 400) = 12000 / 1600 = 7.5
+    const r = calc(ttkgCalculator, {
+      urineK: "40",
+      plasmaK: "4",
+      plasmaOsmolality: "300",
+      urineOsmolality: "400",
+    });
+    expect(r.value).toBe(7.5);
+    expect(r.interpretation).toBe("Impaired K⁺ secretion");
+    expect(r.status).toBe("low");
+  });
+
+  it("enhanced: urineK=60, plasmaK=4, plasmaOsm=300, urineOsm=300 → 15", () => {
+    // (60 * 300) / (4 * 300) = 18000 / 1200 = 15
+    const r = calc(ttkgCalculator, {
+      urineK: "60",
+      plasmaK: "4",
+      plasmaOsmolality: "300",
+      urineOsmolality: "300",
+    });
+    expect(r.value).toBe(15);
+    expect(r.interpretation).toBe("Enhanced K⁺ secretion");
+    expect(r.status).toBe("high");
+  });
+
+  it("different inputs produce different results", () => {
+    const r1 = calc(ttkgCalculator, {
+      urineK: "40",
+      plasmaK: "6",
+      plasmaOsmolality: "300",
+      urineOsmolality: "600",
+    });
+    const r2 = calc(ttkgCalculator, {
+      urineK: "60",
+      plasmaK: "4",
+      plasmaOsmolality: "300",
+      urineOsmolality: "300",
+    });
+    expect(r1.value).not.toBe(r2.value);
+  });
+
+  it("regression: result is no longer always 1", () => {
+    const r = calc(ttkgCalculator, {
+      urineK: "40",
+      plasmaK: "6",
+      plasmaOsmolality: "300",
+      urineOsmolality: "600",
+    });
+    expect(r.value).not.toBe(1);
+    expect(r.value).toBeCloseTo(3.33, 1);
   });
 });
