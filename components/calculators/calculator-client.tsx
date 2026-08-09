@@ -16,14 +16,18 @@ export function CalculatorClient({
   slug,
 }: CalculatorClientProps) {
   const calculator = calculatorRegistry.find(
-    (calc) => calc.slug === slug,
-  );
+  (calc) => calc.slug === slug,
+);
+
+useEffect(() => {
+  if (calculator) {
+    addRecentCalculator(calculator.id);
+  }
+}, [calculator]);
+
 if (!calculator) {
   notFound();
 }
-  useEffect(() => {
-  addRecentCalculator(calculator.id);
-}, [calculator.id]);
 
   return (
     <div className="space-y-6">
