@@ -1,6 +1,6 @@
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 
-const BASE_URL = "https://medcalchub.com";
+import { SITE_URL } from "@/lib/site-url";
 
 export function buildCalculatorSEO(
   calculator: CalculatorDefinition,
@@ -21,7 +21,7 @@ export function buildCalculatorSEO(
     .filter(Boolean)
     .join(", ");
 
-  const canonicalUrl = `${BASE_URL}/calculators/${calculator.slug}`;
+  const canonicalUrl = `${SITE_URL}/calculators/${calculator.slug}`;
 
   return {
     title: {
