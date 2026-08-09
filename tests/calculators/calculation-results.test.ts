@@ -29,6 +29,9 @@ import {
 import { childPughCalculator } from "../../lib/calculators/child-pugh";
 import { cockcroftGaultCalculator } from "../../lib/calculators/cockcroft-gault";
 import { mdrdCalculator } from "../../lib/calculators/mdrd";
+import {
+  bmiForPediatricsCalculator,
+} from "../../lib/calculators/bmi-for-pediatrics";
 
 import type {
   CalculatorDefinition,
@@ -1397,5 +1400,347 @@ describe("Osmolar Gap dead-branch fix", () => {
     expect(r.value).toBeCloseTo(80.87, 0);
     expect(r.interpretation).toBe("Markedly elevated osmolar gap — toxic ingestion likely");
     expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Pediatric BMI-for-Age — CDC 2000 LMS method
+// Inputs: age (years 2–20), sex ("1"=male, "2"=female), weight (kg), height (cm)
+// Formula: BMI = weight / height²; Percentile via LMS Z-score
+// Classification:
+//   < 5th percentile  → Underweight (low)
+//   5th – <85th        → Healthy weight (normal)
+//   85th – <95th       → Overweight (high)
+//   ≥ 95th             → Obesity (critical)
+//
+// Source: Kuczmarski RJ, et al. 2000 CDC Growth Charts for the United
+// States. Vital Health Stat 11. 2002;(246):1-190.
+// LMS data at 6-month intervals, ages 24–240 months.
+// ---------------------------------------------------------------------------
+
+/**
+ * Compute expected BMI value: weight / (height/100)^2, rounded to 1 decimal.
+ */
+function expectedBmi(weightKg: number, heightCm: number): number {
+  const h = heightCm / 100;
+  return Math.round((weightKg / (h * h)) * 10) / 10;
+}
+
+describe("Pediatric BMI-for-Age calculate() output", () => {
+  // ---- Underweight cases ----
+
+  it("underweight: 8-year-old boy, 22 kg, 130 cm", () => {
+    // BMI = 22 / (1.3^2) = 22 / 1.69 = 13.02
+    // CDC LMS: at 96 months, boys M=15.34 → BMI 13.0 is well below 5th pctl
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "8",
+      sex: "1",
+      weight: "22",
+      height: "130",
+    });
+    expect(r.value).toBe(expectedBmi(22, 130));
+    expect(r.interpretation).toContain("Underweight");
+    expect(r.status).toBe("low");
+  });
+
+  it("underweight: 5-year-old girl, 14 kg, 110 cm", () => {
+    // BMI = 14 / (1.1^2) = 14 / 1.21 = 11.57
+    // CDC LMS girls at 60 months M=14.72 → well below 5th pctl
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "5",
+      sex: "2",
+      weight: "14",
+      height: "110",
+    });
+    expect(r.value).toBe(expectedBmi(14, 110));
+    expect(r.interpretation).toContain("Underweight");
+    expect(r.status).toBe("low");
+  });
+
+  // ---- Healthy weight cases ----
+
+  it("healthy weight: 10-year-old boy, 32 kg, 140 cm", () => {
+    // BMI = 32 / (1.4^2) = 32 / 1.96 = 16.33
+    // CDC LMS boys at 120 months: M=16.26 → very close to median (~50th pctl)
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "32",
+      height: "140",
+    });
+    expect(r.value).toBe(expectedBmi(32, 140));
+    expect(r.interpretation).toContain("Healthy weight");
+    expect(r.status).toBe("normal");
+  });
+
+  it("healthy weight: 15-year-old boy, 68 kg, 175 cm", () => {
+    // BMI = 68 / (1.75^2) = 68 / 3.0625 = 22.20
+    // CDC LMS boys at 180 months: M=21.03 → ~70th percentile
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "15",
+      sex: "1",
+      weight: "68",
+      height: "175",
+    });
+    expect(r.value).toBe(expectedBmi(68, 175));
+    expect(r.interpretation).toContain("Healthy weight");
+    expect(r.status).toBe("normal");
+  });
+
+  it("healthy weight: 3-year-old boy, 14 kg, 95 cm", () => {
+    // BMI = 14 / (0.95^2) = 14 / 0.9025 = 15.51
+    // CDC LMS boys at 36 months: M=15.79 → near 50th percentile
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "3",
+      sex: "1",
+      weight: "14",
+      height: "95",
+    });
+    expect(r.value).toBe(expectedBmi(14, 95));
+    expect(r.interpretation).toContain("Healthy weight");
+    expect(r.status).toBe("normal");
+  });
+
+  // ---- Overweight cases ----
+
+  it("overweight: 10-year-old girl, 32.6 kg, 140 cm", () => {
+    // BMI = 32.6 / (1.4^2) = 32.6 / 1.96 = 16.63
+    // CDC LMS girls at 120 months: L=0.8289, M=15.11, S=0.07553
+    // 85th pctl BMI ≈ 16.30, 95th ≈ 17.01 → 16.63 is between 85th–95th
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "2",
+      weight: "32.6",
+      height: "140",
+    });
+    expect(r.value).toBe(expectedBmi(32.6, 140));
+    expect(r.interpretation).toContain("Overweight");
+    expect(r.status).toBe("high");
+  });
+
+  it("overweight: 7-year-old boy, 24.6 kg, 122 cm", () => {
+    // BMI = 24.6 / (1.22^2) = 24.6 / 1.4884 = 16.53
+    // CDC LMS boys at 84 months: L=1.0088, M=15.12, S=0.07034
+    // 85th pctl BMI ≈ 16.22, 95th ≈ 16.87 → 16.53 is between 85th–95th
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "7",
+      sex: "1",
+      weight: "24.6",
+      height: "122",
+    });
+    expect(r.value).toBe(expectedBmi(24.6, 122));
+    expect(r.interpretation).toContain("Overweight");
+    expect(r.status).toBe("high");
+  });
+
+  // ---- Obesity cases ----
+
+  it("obesity: 12-year-old boy, 60 kg, 150 cm", () => {
+    // BMI = 60 / (1.5^2) = 60 / 2.25 = 26.67
+    // CDC LMS boys at 144 months: M=17.80 → well above 95th pctl
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "12",
+      sex: "1",
+      weight: "60",
+      height: "150",
+    });
+    expect(r.value).toBe(expectedBmi(60, 150));
+    expect(r.interpretation).toContain("Obesity");
+    expect(r.status).toBe("critical");
+  });
+
+  it("obesity: 5-year-old girl, 30 kg, 110 cm", () => {
+    // BMI = 30 / (1.1^2) = 30 / 1.21 = 24.79
+    // CDC LMS girls at 60 months: M=14.72 → well above 95th pctl
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "5",
+      sex: "2",
+      weight: "30",
+      height: "110",
+    });
+    expect(r.value).toBe(expectedBmi(30, 110));
+    expect(r.interpretation).toContain("Obesity");
+    expect(r.status).toBe("critical");
+  });
+
+  // ---- Regression guard: BMI ~16 should NOT be treated as a percentile ----
+  it("regression guard: BMI 16.3 is NOT a percentile value", () => {
+    // Under the old (buggy) implementation, BMI 16.3 was classified as
+    // "Healthy weight" because 16.3 < 85 (treating BMI as percentile).
+    // Now: BMI 16.3 for 10yo boy is classified by actual CDC percentile.
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "32",
+      height: "140",
+    });
+    // BMI = 16.3 → should be classified by CDC percentile, not raw comparison
+    expect(r.interpretation).toContain("percentile");
+    expect(r.unit).toBe("kg/m²");
+  });
+
+  // ---- Age dependency: same BMI at different ages yields different classification ----
+  it("age dependency: same BMI 17.0 at age 3 vs age 18 can differ", () => {
+    // 3-year-old boy: 12.78 kg, 86.6 cm → BMI = 12.78 / 0.866^2 = 17.0
+    const r3 = calc(bmiForPediatricsCalculator, {
+      age: "3",
+      sex: "1",
+      weight: "12.78",
+      height: "86.6",
+    });
+    // 18-year-old boy: 57.47 kg, 183.8 cm → BMI = 57.47 / 1.838^2 = 17.0
+    const r18 = calc(bmiForPediatricsCalculator, {
+      age: "18",
+      sex: "1",
+      weight: "57.47",
+      height: "183.8",
+    });
+    // Both compute the same raw BMI but percentile interpretations differ
+    expect(r3.value).toBe(r18.value);
+    // Both should contain "percentile" in interpretation
+    expect(r3.interpretation).toContain("percentile");
+    expect(r18.interpretation).toContain("percentile");
+    // But the classifications may differ since CDC reference curves differ by age
+    // At minimum, verify they have different interpretations (different percentile values)
+    expect(r3.interpretation).not.toBe(r18.interpretation);
+  });
+
+  // ---- Sex dependency: same BMI for boy and girl can differ ----
+  it("sex dependency: same BMI for boy vs girl at same age yields different percentile", () => {
+    // 10-year-old, 32 kg, 140 cm → BMI = 16.33
+    const rBoy = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "32",
+      height: "140",
+    });
+    const rGirl = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "2",
+      weight: "32",
+      height: "140",
+    });
+    // Same BMI, same age, different sex → different percentile → different interpretation
+    expect(rBoy.value).toBe(rGirl.value);
+    expect(rBoy.interpretation).not.toBe(rGirl.interpretation);
+  });
+
+  // ---- Boundary tests: classification boundaries ----
+
+  it("healthy weight at 5th percentile boundary: boy age 10, just above 5th", () => {
+    // CDC boys at 120 months: L=0.8773, M=16.26, S=0.06873
+    // 5th pctl Z ≈ -1.6449
+    // BMI_5th = M × (1 + L × S × Z)^(1/L) ≈ 14.46
+    // Need weight above BMI_5th × 1.96 = 14.46 × 1.96 ≈ 28.34 kg
+    // Use 29 kg → BMI = 29/1.96 = 14.80 → above 5th, below 85th → Healthy
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "29",
+      height: "140",
+    });
+    expect(r.interpretation).toContain("Healthy weight");
+  });
+
+  it("overweight at 85th percentile boundary: boy age 10", () => {
+    // 85th pctl Z ≈ 1.0364
+    // BMI_85th = 16.26 × (1 + 0.8773 × 0.06873 × 1.0364)^(1/0.8773)
+    // = 16.26 × (1 + 0.06244)^1.1398
+    // = 16.26 × 1.06244^1.1398 ≈ 16.26 × 1.0715 ≈ 17.42
+    // BMI ~17.4 → weight = 17.4 × 1.96 = 34.10 kg
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "34.1",
+      height: "140",
+    });
+    // 85th percentile → Overweight
+    expect(r.interpretation).toContain("Overweight");
+    expect(r.status).toBe("high");
+  });
+
+  it("obesity at 95th percentile boundary: boy age 10", () => {
+    // 95th pctl Z ≈ 1.6449
+    // BMI_95th = 16.26 × (1 + 0.8773 × 0.06873 × 1.6449)^(1/0.8773)
+    // = 16.26 × (1 + 0.09895)^1.1398
+    // = 16.26 × 1.09895^1.1398 ≈ 16.26 × 1.1135 ≈ 18.10
+    // BMI ~18.1 → weight = 18.1 × 1.96 = 35.48 kg
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "35.5",
+      height: "140",
+    });
+    // 95th percentile → Obesity
+    expect(r.interpretation).toContain("Obesity");
+    expect(r.status).toBe("critical");
+  });
+
+  // ---- Validation: age out of range ----
+
+  it("age=1 → critical: below CDC range", () => {
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "1",
+      sex: "1",
+      weight: "10",
+      height: "75",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("2 and 20");
+  });
+
+  it("age=21 → critical: above CDC range", () => {
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "21",
+      sex: "1",
+      weight: "70",
+      height: "175",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("2 and 20");
+  });
+
+  it("missing age → critical", () => {
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "",
+      sex: "1",
+      weight: "30",
+      height: "130",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing sex → critical", () => {
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "",
+      weight: "30",
+      height: "130",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing weight → critical", () => {
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "",
+      height: "130",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing height → critical", () => {
+    const r = calc(bmiForPediatricsCalculator, {
+      age: "10",
+      sex: "1",
+      weight: "30",
+      height: "",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
   });
 });

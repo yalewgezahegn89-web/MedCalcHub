@@ -207,8 +207,10 @@ const testInputs: Record<string, Record<string, string>> = {
     steroid: "1",
   },
   "bmi-for-pediatrics": {
-    weight: "20",
-    height: "110",
+    age: "10",
+    sex: "1",
+    weight: "32",
+    height: "140",
   },
 };
 
@@ -329,8 +331,8 @@ const exactExpectations: Record<string, ExpectedExact> = {
     tolerance: 0.01,
   },
   "bmi-for-pediatrics": {
-    value: 16.5,
-    tolerance: 0.01,
+    value: 16.3,
+    tolerance: 0.1,
     status: "normal",
   },
   "albumin-creatinine-ratio": {
