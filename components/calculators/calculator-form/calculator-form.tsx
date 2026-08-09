@@ -27,6 +27,23 @@ import { toast } from "sonner";
 import type { CalculatorFormProps } from "./calculator-form.types";
 import type { CalculatorResult } from "@/lib/calculators";
 
+const FAVORITES_EVENT = "medcalchub-favorites-changed";
+
+function subscribeFavorites(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handler = () => callback();
+  window.addEventListener("storage", handler);
+  window.addEventListener(FAVORITES_EVENT, handler);
+
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(FAVORITES_EVENT, handler);
+  };
+}
+
 function buildInitialValues(
   ids: string[],
 ): Record<string, string> {
@@ -64,7 +81,7 @@ export const CalculatorForm = forwardRef<
   const [favKey, setFavKey] = useState(0);
 
   const isFav = useSyncExternalStore(
-    () => () => {},
+    subscribeFavorites,
     () =>
       isFavorite(calculator.slug) + ":" + favKey,
     () => "false",
