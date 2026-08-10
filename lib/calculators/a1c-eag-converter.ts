@@ -146,7 +146,7 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 6) {
+else if (a1c < 6) {
 
   interpretation =
     "Normal A1c";
@@ -158,8 +158,7 @@ else if (result <= 6) {
   "<6.1";
 }
 
-
-else if (result >= 6 && result <= 6.5) {
+else if (a1c < 6.5) {
 
   interpretation =
     "Pre-diabetes range";
@@ -172,7 +171,7 @@ else if (result >= 6 && result <= 6.5) {
 }
 
 
-else if (result >= 6.5) {
+else {
 
   interpretation =
     "Diabetes range";

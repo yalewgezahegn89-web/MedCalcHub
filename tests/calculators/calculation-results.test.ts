@@ -41,6 +41,9 @@ import {
 import {
   correctedQtCalculator,
 } from "../../lib/calculators/corrected-qt";
+import {
+  a1cEagConverterCalculator,
+} from "../../lib/calculators/a1c-eag-converter";
 
 import type {
   CalculatorDefinition,
@@ -2418,5 +2421,84 @@ describe("Corrected QT (QTc) calculate() output", () => {
     });
     expect(r.status).toBe("critical");
     expect(r.interpretation).toContain("required");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// A1c ↔ eAG Converter — eAG = 28.7 × A1c − 46.7
+// Previously defective: classification compared eAG result (mg/dL) against
+// A1c thresholds (6, 6.5), so virtually every result fell into "Diabetes".
+// Fix: classification now uses the input a1c value, not the eAG result.
+// ---------------------------------------------------------------------------
+
+describe("A1c ↔ eAG Converter classification fix", () => {
+  it("A1c 5.5 → Normal A1c, eAG ≈ 111.15", () => {
+    // eAG = 28.7 * 5.5 - 46.7 = 157.85 - 46.7 = 111.15
+    const r = calc(a1cEagConverterCalculator, {
+      a1c: "5.5",
+    });
+    expect(r.value).toBeCloseTo(111.15, 2);
+    expect(r.interpretation).toBe("Normal A1c");
+    expect(r.status).toBe("normal");
+  });
+
+  it("A1c 5.0 → Normal A1c, eAG ≈ 96.8", () => {
+    // eAG = 28.7 * 5 - 46.7 = 143.5 - 46.7 = 96.8
+    const r = calc(a1cEagConverterCalculator, {
+      a1c: "5.0",
+    });
+    expect(r.value).toBeCloseTo(96.8, 2);
+    expect(r.interpretation).toBe("Normal A1c");
+    expect(r.status).toBe("normal");
+  });
+
+  it("A1c 6.0 → Pre-diabetes, eAG ≈ 125.5", () => {
+    // eAG = 28.7 * 6 - 46.7 = 172.2 - 46.7 = 125.5
+    const r = calc(a1cEagConverterCalculator, {
+      a1c: "6.0",
+    });
+    expect(r.value).toBeCloseTo(125.5, 2);
+    expect(r.interpretation).toBe("Pre-diabetes range");
+    expect(r.status).toBe("high");
+  });
+
+  it("A1c 6.4 → Pre-diabetes, eAG ≈ 136.98", () => {
+    // eAG = 28.7 * 6.4 - 46.7 = 183.68 - 46.7 = 136.98
+    const r = calc(a1cEagConverterCalculator, {
+      a1c: "6.4",
+    });
+    expect(r.value).toBeCloseTo(136.98, 2);
+    expect(r.interpretation).toBe("Pre-diabetes range");
+    expect(r.status).toBe("high");
+  });
+
+  it("A1c 6.5 → Diabetes range, eAG ≈ 139.85", () => {
+    // eAG = 28.7 * 6.5 - 46.7 = 186.55 - 46.7 = 139.85
+    const r = calc(a1cEagConverterCalculator, {
+      a1c: "6.5",
+    });
+    expect(r.value).toBeCloseTo(139.85, 2);
+    expect(r.interpretation).toBe("Diabetes range");
+    expect(r.status).toBe("critical");
+  });
+
+  it("A1c 7.0 → Diabetes range, eAG ≈ 154.2", () => {
+    // eAG = 28.7 * 7 - 46.7 = 200.9 - 46.7 = 154.2
+    const r = calc(a1cEagConverterCalculator, {
+      a1c: "7.0",
+    });
+    expect(r.value).toBeCloseTo(154.2, 2);
+    expect(r.interpretation).toBe("Diabetes range");
+    expect(r.status).toBe("critical");
+  });
+
+  it("regression: A1c 5.0 was incorrectly classified as Diabetes before fix", () => {
+    // Before fix: eAG=96.8 → 96.8 >= 6.5 → "Diabetes range" (wrong!)
+    // After fix: a1c=5.0 < 6 → "Normal A1c" (correct)
+    const r = calc(a1cEagConverterCalculator, {
+      a1c: "5.0",
+    });
+    expect(r.interpretation).toBe("Normal A1c");
+    expect(r.status).toBe("normal");
   });
 });
