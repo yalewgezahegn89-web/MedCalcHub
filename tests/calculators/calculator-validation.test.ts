@@ -199,6 +199,7 @@ const testInputs: Record<string, Record<string, string>> = {
   "corrected-qt": {
     qt: "400",
     heartRate: "70",
+    sex: "1",
   },
   "thyroid-dose": { weight: "70" },
   "levothyroxine-dose": { weight: "70" },

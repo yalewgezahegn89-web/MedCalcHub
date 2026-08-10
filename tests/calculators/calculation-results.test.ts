@@ -38,6 +38,9 @@ import {
 import {
   bunCreatinineRatioCalculator,
 } from "../../lib/calculators/bun-creatinine-ratio";
+import {
+  correctedQtCalculator,
+} from "../../lib/calculators/corrected-qt";
 
 import type {
   CalculatorDefinition,
@@ -1987,5 +1990,253 @@ describe("BUN/Creatinine Ratio calculate() output", () => {
     expect(r.value).toBeCloseTo(20.71, 2);
     expect(r.interpretation).toBe("Elevated ratio");
     expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Corrected QT (QTc) — Bazett: QTc = QT / sqrt(RR), RR = 60/HR
+// Sex-specific classification:
+//   Male:   <450 ms normal, 450–499 ms prolonged, ≥500 ms markedly prolonged
+//   Female: <460 ms normal, 460–499 ms prolonged, ≥500 ms markedly prolonged
+// Result = Math.round(correctedQt * 10) / 10
+// ---------------------------------------------------------------------------
+describe("Corrected QT (QTc) calculate() output", () => {
+  // --- Male classification bands ---
+
+  it("male normal: QT=400, HR=70 → QTc≈432, normal", () => {
+    // RR = 60/70 = 0.8571…, sqrt = 0.9258…, QTc = 400/0.9258 = 431.97 → 432.0
+    const r = calc(correctedQtCalculator, {
+      qt: "400",
+      heartRate: "70",
+      sex: "1",
+    });
+    expect(r.value).toBeCloseTo(432.0, 1);
+    expect(r.interpretation).toBe("Normal QTc");
+    expect(r.status).toBe("normal");
+  });
+
+  it("male borderline: QT=440, HR=80 → QTc≈471.5, prolonged", () => {
+    // RR = 60/80 = 0.75, sqrt = 0.8660, QTc = 440/0.8660 = 507.98 → 508.0
+    // Actually: let me recalculate. 440 / sqrt(0.75) = 440 / 0.86603 = 507.97
+    // That's >500, so markedly prolonged
+    // Let me pick better inputs: QT=390, HR=70
+    // RR=60/70=0.8571, sqrt=0.9258, QTc=390/0.9258=421.26 → normal
+    // QT=420, HR=72: RR=0.8333, sqrt=0.9129, QTc=420/0.9129=460.1
+    const r = calc(correctedQtCalculator, {
+      qt: "420",
+      heartRate: "72",
+      sex: "1",
+    });
+    // RR = 60/72 = 0.8333, sqrt = 0.91287, QTc = 420/0.91287 = 460.1 → 460.1
+    // 460.1 >= 450 (male) and < 500 → prolonged
+    expect(r.value).toBeCloseTo(460.1, 0);
+    expect(r.interpretation).toBe("Prolonged QTc");
+    expect(r.status).toBe("high");
+  });
+
+  it("male markedly prolonged: QT=480, HR=100 → QTc≈623.5, critical", () => {
+    // RR = 60/100 = 0.6, sqrt = 0.7746, QTc = 480/0.7746 = 619.7
+    const r = calc(correctedQtCalculator, {
+      qt: "480",
+      heartRate: "100",
+      sex: "1",
+    });
+    expect(r.value).toBeGreaterThan(500);
+    expect(r.interpretation).toBe("Markedly prolonged QTc");
+    expect(r.status).toBe("critical");
+  });
+
+  it("male boundary 450: QTc exactly 450 → prolonged", () => {
+    // QTc = QT / sqrt(60/HR)
+    // To get QTc = 450: pick HR=60, QT=450 → RR=1, sqrt=1, QTc=450
+    const r = calc(correctedQtCalculator, {
+      qt: "450",
+      heartRate: "60",
+      sex: "1",
+    });
+    // QTc = 450 / sqrt(1) = 450
+    // 450 >= 450 (male upper normal) → prolonged
+    expect(r.value).toBe(450);
+    expect(r.interpretation).toBe("Prolonged QTc");
+    expect(r.status).toBe("high");
+  });
+
+  it("male boundary 449: QTc=449 → normal", () => {
+    // HR=60, QT=449 → RR=1, QTc=449
+    const r = calc(correctedQtCalculator, {
+      qt: "449",
+      heartRate: "60",
+      sex: "1",
+    });
+    expect(r.value).toBe(449);
+    expect(r.interpretation).toBe("Normal QTc");
+    expect(r.status).toBe("normal");
+  });
+
+  it("male boundary 500: QTc=500 → markedly prolonged", () => {
+    // HR=60, QT=500 → RR=1, QTc=500
+    const r = calc(correctedQtCalculator, {
+      qt: "500",
+      heartRate: "60",
+      sex: "1",
+    });
+    expect(r.value).toBe(500);
+    expect(r.interpretation).toBe("Markedly prolonged QTc");
+    expect(r.status).toBe("critical");
+  });
+
+  it("male boundary 499: QTc=499 → prolonged", () => {
+    // HR=60, QT=499 → QTc=499
+    const r = calc(correctedQtCalculator, {
+      qt: "499",
+      heartRate: "60",
+      sex: "1",
+    });
+    expect(r.value).toBe(499);
+    expect(r.interpretation).toBe("Prolonged QTc");
+    expect(r.status).toBe("high");
+  });
+
+  // --- Female classification bands ---
+
+  it("female normal: QT=400, HR=70 → QTc≈432, normal", () => {
+    const r = calc(correctedQtCalculator, {
+      qt: "400",
+      heartRate: "70",
+      sex: "2",
+    });
+    expect(r.value).toBeCloseTo(432.0, 1);
+    expect(r.interpretation).toBe("Normal QTc");
+    expect(r.status).toBe("normal");
+  });
+
+  it("female boundary 460: QTc=460 → prolonged", () => {
+    // HR=60, QT=460 → QTc=460
+    const r = calc(correctedQtCalculator, {
+      qt: "460",
+      heartRate: "60",
+      sex: "2",
+    });
+    expect(r.value).toBe(460);
+    expect(r.interpretation).toBe("Prolonged QTc");
+    expect(r.status).toBe("high");
+  });
+
+  it("female boundary 459: QTc=459 → normal", () => {
+    // HR=60, QT=459 → QTc=459
+    const r = calc(correctedQtCalculator, {
+      qt: "459",
+      heartRate: "60",
+      sex: "2",
+    });
+    expect(r.value).toBe(459);
+    expect(r.interpretation).toBe("Normal QTc");
+    expect(r.status).toBe("normal");
+  });
+
+  it("female markedly prolonged: QT=500, HR=60 → QTc=500, critical", () => {
+    const r = calc(correctedQtCalculator, {
+      qt: "500",
+      heartRate: "60",
+      sex: "2",
+    });
+    expect(r.value).toBe(500);
+    expect(r.interpretation).toBe("Markedly prolonged QTc");
+    expect(r.status).toBe("critical");
+  });
+
+  it("female prolonged: QT=480, HR=80 → QTc≈554, critical", () => {
+    // RR = 60/80 = 0.75, sqrt = 0.8660, QTc = 480/0.8660 = 554.3
+    const r = calc(correctedQtCalculator, {
+      qt: "480",
+      heartRate: "80",
+      sex: "2",
+    });
+    expect(r.value).toBeCloseTo(554.3, 0);
+    expect(r.interpretation).toBe("Markedly prolonged QTc");
+    expect(r.status).toBe("critical");
+  });
+
+  // --- Sex-specific difference at same QTc ---
+
+  it("sex-specific: same QTc 455 is prolonged for male but normal for female", () => {
+    // HR=60, QT=455 → QTc=455
+    const rMale = calc(correctedQtCalculator, {
+      qt: "455",
+      heartRate: "60",
+      sex: "1",
+    });
+    expect(rMale.value).toBe(455);
+    expect(rMale.interpretation).toBe("Prolonged QTc");
+    expect(rMale.status).toBe("high");
+
+    const rFemale = calc(correctedQtCalculator, {
+      qt: "455",
+      heartRate: "60",
+      sex: "2",
+    });
+    expect(rFemale.value).toBe(455);
+    expect(rFemale.interpretation).toBe("Normal QTc");
+    expect(rFemale.status).toBe("normal");
+  });
+
+  // --- Regression: fast heart rate amplifies QTc ---
+
+  it("regression: high HR amplifies QTc — QT=400, HR=120, male", () => {
+    // RR = 60/120 = 0.5, sqrt = 0.7071, QTc = 400/0.7071 = 565.7
+    const r = calc(correctedQtCalculator, {
+      qt: "400",
+      heartRate: "120",
+      sex: "1",
+    });
+    expect(r.value).toBeCloseTo(565.7, 0);
+    expect(r.interpretation).toBe("Markedly prolonged QTc");
+    expect(r.status).toBe("critical");
+  });
+
+  // --- Regression: low heart rate reduces QTc ---
+
+  it("regression: low HR reduces QTc — QT=450, HR=50, male", () => {
+    // RR = 60/50 = 1.2, sqrt = 1.0954, QTc = 450/1.0954 = 410.8
+    const r = calc(correctedQtCalculator, {
+      qt: "450",
+      heartRate: "50",
+      sex: "1",
+    });
+    expect(r.value).toBeCloseTo(410.8, 0);
+    expect(r.interpretation).toBe("Normal QTc");
+    expect(r.status).toBe("normal");
+  });
+
+  // --- Validation: missing inputs ---
+
+  it("missing QT → critical", () => {
+    const r = calc(correctedQtCalculator, {
+      qt: "",
+      heartRate: "70",
+      sex: "1",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing heart rate → critical", () => {
+    const r = calc(correctedQtCalculator, {
+      qt: "400",
+      heartRate: "",
+      sex: "1",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing sex → critical", () => {
+    const r = calc(correctedQtCalculator, {
+      qt: "400",
+      heartRate: "70",
+      sex: "",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
   });
 });
