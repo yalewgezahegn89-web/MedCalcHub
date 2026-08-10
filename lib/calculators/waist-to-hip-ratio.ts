@@ -250,7 +250,7 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 0.89) {
+else if (result < 0.9) {
 
   interpretation =
     "Low risk (Males)";
@@ -259,7 +259,7 @@ else if (result <= 0.89) {
     "normal";
 
   referenceRange =
-  "<0.99";
+  "<0.9";
 }
 
 

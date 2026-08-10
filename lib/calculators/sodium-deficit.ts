@@ -31,7 +31,7 @@ export const sodiumDeficitCalculator: CalculatorDefinition = {
   referenceRanges: [
   {
     label: "Deficit below normal range",
-    range: "<-99.9",
+    range: "<-100",
   },
   {
     label: "Normal (no deficit)",
@@ -129,7 +129,6 @@ if (Number(values.weight) < 0) {
   };
 }
 
-
 if (Number(values.weight) === 0) {
   return {
     value: 0,
@@ -211,7 +210,6 @@ if (Number(values.desiredNa) < 0) {
   };
 }
 
-
 if (Number(values.desiredNa) === 0) {
   return {
     value: 0,
@@ -233,7 +231,7 @@ const desiredSodium = desiredNa;
 
 
   const result =
-    0.6 * weight * (desiredNa - desiredNa);
+    0.6 * weight * (desiredNa - currentNa);
 
 
   
@@ -252,8 +250,7 @@ let referenceRange =
 
 if (false) {}
 
-
-else if (result <= -100) {
+else if (result < -100) {
 
   interpretation =
     "Deficit below normal range";
@@ -262,11 +259,11 @@ else if (result <= -100) {
     "low";
 
   referenceRange =
-  "<-99.9";
+  "<-100";
 }
 
 
-else if (result >= -100 && result <= 0) {
+else if (result <= 0) {
 
   interpretation =
     "Normal (no deficit)";
@@ -277,20 +274,6 @@ else if (result >= -100 && result <= 0) {
   referenceRange =
   "-100–0";
 }
-
-
-else if (result >= 0) {
-
-  interpretation =
-    "Sodium deficit present";
-
-  status =
-    "high";
-
-  referenceRange =
-  "≥0";
-}
-
 
 else if (result >= 500) {
 
@@ -303,6 +286,20 @@ else if (result >= 500) {
   referenceRange =
   "≥500";
 }
+
+
+else {
+
+  interpretation =
+    "Sodium deficit present";
+
+  status =
+    "high";
+
+  referenceRange =
+  "≥0";
+}
+
 
 
 

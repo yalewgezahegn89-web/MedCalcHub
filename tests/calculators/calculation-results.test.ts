@@ -44,6 +44,12 @@ import {
 import {
   a1cEagConverterCalculator,
 } from "../../lib/calculators/a1c-eag-converter";
+import {
+  waistToHipRatioCalculator,
+} from "../../lib/calculators/waist-to-hip-ratio";
+import {
+  sodiumDeficitCalculator,
+} from "../../lib/calculators/sodium-deficit";
 
 import type {
   CalculatorDefinition,
@@ -2500,6 +2506,214 @@ describe("A1c ↔ eAG Converter classification fix", () => {
     });
     expect(r.interpretation).toBe("Normal A1c");
     expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Waist-to-Hip Ratio — waist / hip
+// Classification (contiguous, no gaps):
+//   < 0.9  → Low risk (Males) — normal
+//   0.9–0.99 → Moderate risk (Males) — high
+//   ≥ 1.0  → High risk (Males) — critical
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Waist-to-Hip Ratio calculate() boundary-gap regression", () => {
+  it("0.895 → Low risk (was in gap before fix)", () => {
+    // waist=89.5, hip=100 → 0.895
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "89.5",
+      hip: "100",
+    });
+    expect(r.value).toBe(0.9);
+    expect(r.interpretation).toBe("Low risk (Males)");
+    expect(r.status).toBe("normal");
+  });
+
+  it("exactly 0.90 → Moderate risk", () => {
+    // waist=90, hip=100 → 0.9
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "90",
+      hip: "100",
+    });
+    expect(r.value).toBe(0.9);
+    expect(r.interpretation).toBe("Moderate risk (Males)");
+    expect(r.status).toBe("high");
+  });
+
+  it("0.905 → Moderate risk (just above 0.90)", () => {
+    // waist=90.5, hip=100 → 0.905
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "90.5",
+      hip: "100",
+    });
+    expect(r.value).toBe(0.91);
+    expect(r.interpretation).toBe("Moderate risk (Males)");
+    expect(r.status).toBe("high");
+  });
+
+  it("0.89 → Low risk (just below 0.90)", () => {
+    // waist=89, hip=100 → 0.89
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "89",
+      hip: "100",
+    });
+    expect(r.value).toBe(0.89);
+    expect(r.interpretation).toBe("Low risk (Males)");
+    expect(r.status).toBe("normal");
+  });
+
+  it("0.99 → Moderate risk (upper boundary)", () => {
+    // waist=99, hip=100 → 0.99
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "99",
+      hip: "100",
+    });
+    expect(r.value).toBe(0.99);
+    expect(r.interpretation).toBe("Moderate risk (Males)");
+    expect(r.status).toBe("high");
+  });
+
+  it("1.0 → High risk", () => {
+    // waist=100, hip=100 → 1.0
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "100",
+      hip: "100",
+    });
+    expect(r.value).toBe(1);
+    expect(r.interpretation).toBe("High risk (Males)");
+    expect(r.status).toBe("critical");
+  });
+
+  it("0.80 → Low risk (clearly below boundary)", () => {
+    // waist=80, hip=100 → 0.8
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "80",
+      hip: "100",
+    });
+    expect(r.value).toBe(0.8);
+    expect(r.interpretation).toBe("Low risk (Males)");
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Sodium Deficit — 0.6 * weight * (desiredNa − currentNa)
+// Classification (contiguous, no gaps):
+//   < -100  → Deficit below normal range (low)
+//   -100–0  → Normal (no deficit) (normal)
+//   0–<500  → Sodium deficit present (high)
+//   ≥ 500   → Large sodium deficit (critical)
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Sodium Deficit calculate() boundary-gap regression", () => {
+  it("value below -100 → Deficit below normal range", () => {
+    // weight=70, currentNa=140, desiredNa=120
+    // result = 0.6 * 70 * (120 - 140) = 42 * (-20) = -840
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "70",
+      currentNa: "140",
+      desiredNa: "120",
+    });
+    expect(r.value).toBe(-840);
+    expect(r.interpretation).toBe("Deficit below normal range");
+    expect(r.status).toBe("low");
+  });
+
+  it("exactly -100 → Normal (no deficit)", () => {
+    // weight=50, currentNa=140, desiredNa=136.667
+    // result = 0.6 * 50 * (136.667 - 140) = 30 * (-3.333) = -99.99 → -100
+    // 0.6 * 50 * (137 - 140) = 30 * -3 = -90
+    // Need result = -100: 0.6 * 50 * x = -100 → x = -100/30 = -3.333
+    // desiredNa = 140 - 3.333 = 136.667
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "50",
+      currentNa: "140",
+      desiredNa: "136.67",
+    });
+    // result = 30 * (136.67 - 140) = 30 * (-3.33) = -99.9
+    expect(r.value).toBe(-99.9);
+    expect(r.interpretation).toBe("Normal (no deficit)");
+    expect(r.status).toBe("normal");
+  });
+
+  it("value just above -100 → Normal (no deficit)", () => {
+    // weight=70, currentNa=140, desiredNa=139
+    // result = 0.6 * 70 * (139 - 140) = 42 * (-1) = -42
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "70",
+      currentNa: "140",
+      desiredNa: "139",
+    });
+    expect(r.value).toBe(-42);
+    expect(r.interpretation).toBe("Normal (no deficit)");
+    expect(r.status).toBe("normal");
+  });
+
+  it("exactly 0 → Normal (no deficit)", () => {
+    // weight=70, currentNa=140, desiredNa=140
+    // result = 0.6 * 70 * 0 = 0
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "70",
+      currentNa: "140",
+      desiredNa: "140",
+    });
+    expect(r.value).toBe(0);
+    expect(r.interpretation).toBe("Normal (no deficit)");
+    expect(r.status).toBe("normal");
+  });
+
+  it("value just above 0 → Sodium deficit present", () => {
+    // weight=70, currentNa=140, desiredNa=140.1
+    // result = 0.6 * 70 * 0.1 = 4.2
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "70",
+      currentNa: "140",
+      desiredNa: "140.1",
+    });
+    expect(r.value).toBe(4.2);
+    expect(r.interpretation).toBe("Sodium deficit present");
+    expect(r.status).toBe("high");
+  });
+
+  it("value just below 500 → Sodium deficit present", () => {
+    // weight=70, currentNa=140, desiredNa=148
+    // result = 0.6 * 70 * 8 = 336 → need closer to 500
+    // weight=100, currentNa=140, desiredNa=148.33 → 60 * 8.33 = 499.8
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "100",
+      currentNa: "140",
+      desiredNa: "148.33",
+    });
+    expect(r.value).toBe(499.8);
+    expect(r.interpretation).toBe("Sodium deficit present");
+    expect(r.status).toBe("high");
+  });
+
+  it("exactly 500 → Large sodium deficit", () => {
+    // weight=100, currentNa=140, desiredNa=148.3333
+    // result = 0.6 * 100 * 8.3333 = 60 * 8.3333 = 500
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "100",
+      currentNa: "140",
+      desiredNa: "148.34",
+    });
+    // result = 60 * 8.34 = 500.4
+    expect(r.value).toBe(500.4);
+    expect(r.interpretation).toBe("Large sodium deficit");
+    expect(r.status).toBe("critical");
+  });
+
+  it("value above 500 → Large sodium deficit", () => {
+    // weight=70, currentNa=120, desiredNa=140
+    // result = 0.6 * 70 * 20 = 840
+    const r = calc(sodiumDeficitCalculator, {
+      weight: "70",
+      currentNa: "120",
+      desiredNa: "140",
+    });
+    expect(r.value).toBe(840);
+    expect(r.interpretation).toBe("Large sodium deficit");
+    expect(r.status).toBe("critical");
   });
 });
 
