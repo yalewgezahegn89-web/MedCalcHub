@@ -120,7 +120,6 @@ if (
   };
 }
 
-
 if (Number(values.sodium) < 0) {
   return {
     value: 0,
@@ -128,7 +127,6 @@ if (Number(values.sodium) < 0) {
     status: "critical",
   };
 }
-
 
 if (Number(values.sodium) === 0) {
   return {
@@ -160,7 +158,6 @@ if (
     status: "critical",
   };
 }
-
 
 if (Number(values.chloride) < 0) {
   return {
@@ -252,7 +249,7 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 7) {
+else if (result < 8) {
 
   interpretation =
     "Low anion gap";
@@ -265,7 +262,7 @@ else if (result <= 7) {
 }
 
 
-else if (result >= 8 && result <= 12) {
+else if (result <= 12) {
 
   interpretation =
     "Normal anion gap";
@@ -290,7 +287,7 @@ else if (result >= 20) {
   "≥20";
 }
 
-else if (result >= 13) {
+else {
 
   interpretation =
     "High anion gap";

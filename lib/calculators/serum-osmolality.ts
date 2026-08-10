@@ -249,7 +249,7 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 274) {
+else if (result < 275) {
 
   interpretation =
     "Low osmolality";
@@ -262,7 +262,7 @@ else if (result <= 274) {
 }
 
 
-else if (result >= 275 && result <= 295) {
+else if (result <= 295) {
 
   interpretation =
     "Normal osmolality";

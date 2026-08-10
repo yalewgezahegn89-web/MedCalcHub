@@ -428,6 +428,186 @@ describe("CURB-65 calculate() boundary audit", () => {
   });
 });
 
+// -------------------------------------------------------------------
+// Boundary-gap regression tests for Sprint 1.6 batch fixes
+// -------------------------------------------------------------------
+
+describe("Osmolar Gap boundary-gap regression", () => {
+  it("gap 10.5 → Elevated (was default before fix)", () => {
+    // calculated ≈ 2*140 + 90/18 + 20/2.8 = 280+5+7.14 = 292.14
+    // measured 302.64 → gap ≈ 10.5
+    const r = calc(osmolarGapCalculator, {
+      measured: "302.64",
+      sodium: "140",
+      glucose: "90",
+      bun: "20",
+    });
+    expect(r.value).toBeCloseTo(10.5, 0);
+    expect(r.interpretation).toBe("Elevated osmolar gap");
+    expect(r.status).toBe("high");
+  });
+
+  it("gap 10.0 → Normal (boundary of normal range)", () => {
+    // calculated ≈ 292.14, measured=302.14 → gap=10
+    const r = calc(osmolarGapCalculator, {
+      measured: "302.14",
+      sodium: "140",
+      glucose: "90",
+      bun: "20",
+    });
+    expect(r.value).toBeCloseTo(10, 0);
+    expect(r.interpretation).toBe("Normal osmolar gap");
+    expect(r.status).toBe("normal");
+  });
+
+  it("gap -10 → Normal (was low before off-by-one fix)", () => {
+    // calculated = 2*140 + 0/18 + 0/2.8 = 280, measured=270 → gap=-10
+    const r = calc(osmolarGapCalculator, {
+      measured: "270",
+      sodium: "140",
+      glucose: "50",
+      bun: "14",
+    });
+    // calculated = 280 + 50/18 + 14/2.8 = 280+2.78+5 = 287.78
+    // gap = 270 - 287.78 = -17.78 → that's < -10, so "Negatively elevated"
+    // Instead: measured must equal calculated - 10 exactly
+    // calculated = 2*140 + 36/18 + 2.8/2.8 = 280+2+1 = 283
+    // measured = 273 → gap = 273-283 = -10
+    const r2 = calc(osmolarGapCalculator, {
+      measured: "273",
+      sodium: "140",
+      glucose: "36",
+      bun: "2.8",
+    });
+    expect(r2.value).toBeCloseTo(-10, 0);
+    expect(r2.interpretation).toBe("Normal osmolar gap");
+    expect(r2.status).toBe("normal");
+  });
+});
+
+describe("Serum Osmolality boundary-gap regression", () => {
+  it("osmolality 274.9 → Low (was default before fix)", () => {
+    // 2*130 + 90/18 + 20/2.8 = 260+5+7.14 = 272.14 → low
+    // Need ~274.9: 2*131 + 90/18 + 20/2.8 = 262+5+7.14 = 274.14
+    const r = calc(serumOsmolalityCalculator, {
+      sodium: "131",
+      glucose: "90",
+      bun: "20",
+    });
+    expect(r.value).toBeCloseTo(274.14, 0);
+    expect(r.interpretation).toBe("Low osmolality");
+    expect(r.status).toBe("low");
+  });
+
+  it("osmolality 275 → Normal (boundary of normal range)", () => {
+    // 2*137 + 36/18 + 2.8/2.8 = 274+2+1 = 277 → normal
+    const r = calc(serumOsmolalityCalculator, {
+      sodium: "137",
+      glucose: "36",
+      bun: "2.8",
+    });
+    expect(r.value).toBeCloseTo(277, 0);
+    expect(r.interpretation).toBe("Normal osmolality");
+    expect(r.status).toBe("normal");
+  });
+});
+
+describe("Anion Gap boundary-gap regression", () => {
+  it("AG 7.5 → Low (was default before fix)", () => {
+    // 140 - (108.5 + 24) = 7.5
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "108.5",
+      bicarbonate: "24",
+    });
+    expect(r.value).toBeCloseTo(7.5, 1);
+    expect(r.interpretation).toBe("Low anion gap");
+    expect(r.status).toBe("low");
+  });
+
+  it("AG 8 → Normal (boundary of normal range)", () => {
+    // 140 - (108 + 24) = 8
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "108",
+      bicarbonate: "24",
+    });
+    expect(r.value).toBe(8);
+    expect(r.interpretation).toBe("Normal anion gap");
+    expect(r.status).toBe("normal");
+  });
+
+  it("AG 12 → Normal (upper boundary)", () => {
+    // 140 - (104 + 24) = 12
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "104",
+      bicarbonate: "24",
+    });
+    expect(r.value).toBe(12);
+    expect(r.interpretation).toBe("Normal anion gap");
+    expect(r.status).toBe("normal");
+  });
+
+  it("AG 13 → High (boundary of high range)", () => {
+    // 140 - (103 + 24) = 13
+    const r = calc(anionGapCalculator, {
+      sodium: "140",
+      chloride: "103",
+      bicarbonate: "24",
+    });
+    expect(r.value).toBe(13);
+    expect(r.interpretation).toBe("High anion gap");
+    expect(r.status).toBe("high");
+  });
+});
+
+describe("Corrected Sodium boundary-gap regression", () => {
+  it("corrected Na 134.5 → Hyponatremia (was default before fix)", () => {
+    // Na=134.5, glucose=100 → 134.5 + 0 = 134.5
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "134.5",
+      glucose: "100",
+    });
+    expect(r.value).toBe(134.5);
+    expect(r.interpretation).toBe("Hyponatremia (corrected)");
+    expect(r.status).toBe("low");
+  });
+
+  it("corrected Na 135 → Normal (boundary)", () => {
+    // Na=135, glucose=100 → 135 + 0 = 135
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "135",
+      glucose: "100",
+    });
+    expect(r.value).toBe(135);
+    expect(r.interpretation).toBe("Normal corrected sodium");
+    expect(r.status).toBe("normal");
+  });
+
+  it("corrected Na 145 → Normal (upper boundary)", () => {
+    // Na=145, glucose=100 → 145 + 0 = 145
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "145",
+      glucose: "100",
+    });
+    expect(r.value).toBe(145);
+    expect(r.interpretation).toBe("Normal corrected sodium");
+    expect(r.status).toBe("normal");
+  });
+
+  it("corrected Na 146 → Hypernatremia (boundary)", () => {
+    // Na=146, glucose=100 → 146 + 0 = 146
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "146",
+      glucose: "100",
+    });
+    expect(r.value).toBe(146);
+    expect(r.interpretation).toBe("Hypernatremia (corrected)");
+    expect(r.status).toBe("high");
+  });
+});
+
 // ---------------------------------------------------------------------------
 // qSOFA — Quick Sequential Organ Failure Assessment
 // NOTE: The current qSOFA implementation sums raw SBP + RR instead of

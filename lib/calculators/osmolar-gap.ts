@@ -298,7 +298,7 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= -10) {
+else if (result < -10) {
 
   interpretation =
     "Negatively elevated gap (lab error or dilutional)";
@@ -311,7 +311,7 @@ else if (result <= -10) {
 }
 
 
-else if (result >= -10 && result <= 10) {
+else if (result <= 10) {
 
   interpretation =
     "Normal osmolar gap";
@@ -336,7 +336,7 @@ else if (result >= 50) {
   "≥50";
 }
 
-else if (result >= 11) {
+else {
 
   interpretation =
     "Elevated osmolar gap";

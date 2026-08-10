@@ -200,7 +200,7 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 134) {
+else if (result < 135) {
 
   interpretation =
     "Hyponatremia (corrected)";
@@ -213,7 +213,7 @@ else if (result <= 134) {
 }
 
 
-else if (result >= 135 && result <= 145) {
+else if (result <= 145) {
 
   interpretation =
     "Normal corrected sodium";
