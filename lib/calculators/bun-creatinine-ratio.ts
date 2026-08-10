@@ -195,7 +195,7 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 9) {
+else if (result < 10) {
 
   interpretation =
     "Low ratio";
@@ -207,8 +207,7 @@ else if (result <= 9) {
   "<9.1";
 }
 
-
-else if (result >= 10 && result <= 20) {
+else if (result <= 20) {
 
   interpretation =
     "Normal ratio";
@@ -221,7 +220,7 @@ else if (result >= 10 && result <= 20) {
 }
 
 
-else if (result >= 21) {
+else {
 
   interpretation =
     "Elevated ratio";

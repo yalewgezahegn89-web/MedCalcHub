@@ -35,6 +35,9 @@ import {
 import {
   correctedCalciumCalculator,
 } from "../../lib/calculators/corrected-calcium";
+import {
+  bunCreatinineRatioCalculator,
+} from "../../lib/calculators/bun-creatinine-ratio";
 
 import type {
   CalculatorDefinition,
@@ -1897,5 +1900,92 @@ describe("Corrected Calcium calculate() classification fix", () => {
     expect(r.value).toBe(10.5);
     expect(r.status).toBe("normal");
     expect(r.interpretation).toBe("Normal corrected calcium");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// BUN/Creatinine Ratio — bun / creatinine
+// Classification (contiguous, no gaps):
+//   < 10   → Low ratio
+//   ≤ 20   → Normal ratio
+//   > 20   → Elevated ratio
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("BUN/Creatinine Ratio calculate() output", () => {
+  it("ratio 9.9 → Low (previously fell through gap)", () => {
+    // 49.5 / 5.0 = 9.9
+    const r = calc(bunCreatinineRatioCalculator, {
+      bun: "49.5",
+      creatinine: "5",
+    });
+    expect(r.value).toBeCloseTo(9.9, 2);
+    expect(r.interpretation).toBe("Low ratio");
+    expect(r.status).toBe("low");
+  });
+
+  it("ratio 10.0 → Normal", () => {
+    // 50 / 5 = 10
+    const r = calc(bunCreatinineRatioCalculator, {
+      bun: "50",
+      creatinine: "5",
+    });
+    expect(r.value).toBeCloseTo(10.0, 2);
+    expect(r.interpretation).toBe("Normal ratio");
+    expect(r.status).toBe("normal");
+  });
+
+  it("ratio 20.0 → Normal", () => {
+    // 60 / 3 = 20
+    const r = calc(bunCreatinineRatioCalculator, {
+      bun: "60",
+      creatinine: "3",
+    });
+    expect(r.value).toBeCloseTo(20.0, 2);
+    expect(r.interpretation).toBe("Normal ratio");
+    expect(r.status).toBe("normal");
+  });
+
+  it("ratio 20.1 → Elevated (previously fell through gap)", () => {
+    // 201 / 10 = 20.1
+    const r = calc(bunCreatinineRatioCalculator, {
+      bun: "201",
+      creatinine: "10",
+    });
+    expect(r.value).toBeCloseTo(20.1, 2);
+    expect(r.interpretation).toBe("Elevated ratio");
+    expect(r.status).toBe("high");
+  });
+
+  it("ratio 21.0 → Elevated", () => {
+    // 63 / 3 = 21
+    const r = calc(bunCreatinineRatioCalculator, {
+      bun: "63",
+      creatinine: "3",
+    });
+    expect(r.value).toBeCloseTo(21.0, 2);
+    expect(r.interpretation).toBe("Elevated ratio");
+    expect(r.status).toBe("high");
+  });
+
+  it("regression: ratio 9.6 → Low", () => {
+    // 48 / 5 = 9.6
+    const r = calc(bunCreatinineRatioCalculator, {
+      bun: "48",
+      creatinine: "5",
+    });
+    expect(r.value).toBeCloseTo(9.6, 2);
+    expect(r.interpretation).toBe("Low ratio");
+    expect(r.status).toBe("low");
+  });
+
+  it("regression: ratio 20.71 → Elevated", () => {
+    // 58 / 2.8 = 20.714… → 20.71
+    const r = calc(bunCreatinineRatioCalculator, {
+      bun: "58",
+      creatinine: "2.8",
+    });
+    expect(r.value).toBeCloseTo(20.71, 2);
+    expect(r.interpretation).toBe("Elevated ratio");
+    expect(r.status).toBe("high");
   });
 });
