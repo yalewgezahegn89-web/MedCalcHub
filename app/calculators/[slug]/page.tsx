@@ -10,8 +10,10 @@ import { CalculatorComparison } from "@/components/calculators/calculator-compar
 import { CalculatorFAQ } from "@/components/calculators/calculator-faq";
 import { ReferenceRanges } from "@/components/calculators/reference-ranges";
 import { RelatedCalculators } from "@/components/calculators/related-calculators";
+import { ClinicalContentPanel } from "@/components/calculators/clinical-content-panel";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
+import { getClinicalContent } from "@/lib/clinical-content";
 import { buildCalculatorSEO } from "@/lib/seo/calculator-seo";
 import { buildCalculatorJsonLd } from "@/lib/seo/jsonld";
 
@@ -53,6 +55,7 @@ export default async function CalculatorPage({
   }
 
   const jsonLd = buildCalculatorJsonLd(calculator);
+  const clinicalContent = getClinicalContent(calculator.slug);
 
   return (
     <>
@@ -77,6 +80,10 @@ export default async function CalculatorPage({
           normalRange={calculator.normalRange}
           referenceRanges={calculator.referenceRanges}
         />
+
+        {clinicalContent && (
+          <ClinicalContentPanel content={clinicalContent} />
+        )}
 
         <ClinicalGuidancePanel
           pearl={calculator.clinical?.pearl}
