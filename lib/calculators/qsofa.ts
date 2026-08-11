@@ -22,7 +22,7 @@ export const qsofaCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["qSOFA", "Sepsis", "Emergency", "Organ Dysfunction", "Sepsis Screening", "Critical Care"],
 
   formula: "",
 

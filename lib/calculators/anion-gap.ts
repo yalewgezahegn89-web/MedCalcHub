@@ -22,7 +22,7 @@ export const anionGapCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["AG", "Metabolic Acidosis", "Electrolytes", "Acid-Base", "Anion Gap Metabolic Acidosis"],
 
   formula: "Anion Gap = Na − (Cl + HCO₃)",
 

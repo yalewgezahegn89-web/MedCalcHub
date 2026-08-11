@@ -22,7 +22,7 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["eGFR", "Kidney", "Renal", "Glomerular Filtration Rate", "CKD", "Kidney Function", "Nephrology"],
 
   formula: "eGFR = 142 * pow(min(creatinine / 0.9, 1), -0.302) * pow(max(creatinine / 0.9, 1), -1.2) * pow(0.9938, age) * 1.012",
 

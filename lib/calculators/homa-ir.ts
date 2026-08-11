@@ -22,7 +22,7 @@ export const homaIrCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["HOMA-IR", "Insulin Resistance", "Diabetes", "Metabolic Syndrome", "Glucose", "Insulin"],
 
   formula: "HOMA-IR = (glucose * insulin) / 405",
 

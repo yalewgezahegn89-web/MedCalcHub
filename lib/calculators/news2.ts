@@ -22,7 +22,7 @@ export const news2Calculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["NEWS2", "National Early Warning Score", "Deterioration", "Vital Signs", "Emergency", "Critical Care"],
 
   formula: "",
 

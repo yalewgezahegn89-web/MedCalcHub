@@ -22,7 +22,7 @@ export const fenaCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Fractional Excretion of Sodium", "FENa", "Kidney", "Renal", "Acute Kidney Injury", "AKI", "Nephrology"],
 
   formula: "FENa = (urinena / plasmana) / (urinecr / plasmacr) * 100",
 

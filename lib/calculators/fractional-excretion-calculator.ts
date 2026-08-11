@@ -42,6 +42,9 @@ export const fractionalExcretionCalculator: CalculatorDefinition = {
     "Renal",
     "AKI",
     "FENa",
+    "Kidney",
+    "Acute Kidney Injury",
+    "Nephrology",
   ],
 
   inputs: [

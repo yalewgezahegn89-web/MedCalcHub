@@ -22,7 +22,7 @@ export const bsaCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Body Surface Area", "BSA", "Mosteller", "DuBois", "Drug Dosing", "Chemotherapy Dosing"],
 
   formula: "BSA = √((height × weight) / 3600)",
 

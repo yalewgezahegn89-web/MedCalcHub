@@ -22,7 +22,7 @@ export const shockIndexCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Shock Index", "Heart Rate", "Blood Pressure", "Hemodynamics", "Sepsis", "Trauma", "Emergency"],
 
   formula: "Shock Index = Heart Rate / SBP",
 

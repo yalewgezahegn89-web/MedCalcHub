@@ -22,7 +22,7 @@ export const mapCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Mean Arterial Pressure", "Blood Pressure", "MAP", "Cardiology", "Cardiovascular", "Hemodynamics"],
 
   formula: "(sbp + 2 * dbp) / 3",
 

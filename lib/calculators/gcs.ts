@@ -22,7 +22,7 @@ export const gcsCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Glasgow Coma Scale", "Neurology", "Trauma", "Consciousness", "Emergency", "TBI"],
 
   formula: "Eye + Verbal + Motor",
 

@@ -22,7 +22,7 @@ export const a1cEagConverterCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["HbA1c", "Hemoglobin A1c", "Glycated Hemoglobin", "Diabetes", "Glucose", "Blood Sugar", "A1c"],
 
   formula: "eAG = 28.7 * a1c - 46.7",
 

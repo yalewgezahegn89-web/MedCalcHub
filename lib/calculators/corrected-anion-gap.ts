@@ -22,7 +22,7 @@ export const correctedAnionGapCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Albumin Corrected Anion Gap", "Metabolic Acidosis", "Electrolytes", "Acid-Base", "Albumin"],
 
   formula: "Corrected AG = (Na − (Cl + HCO₃)) + 2.5 × (4 − Albumin)",
 

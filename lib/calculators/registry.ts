@@ -58,6 +58,7 @@ import { levothyroxineDoseCalculator } from "./levothyroxine-dose";
 import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
+import { waistToHipRatioCalculator } from "./waist-to-hip-ratio";
 
 export const calculatorRegistry: CalculatorDefinition[] = [
   ckdEpi2021Calculator,
@@ -121,6 +122,8 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   adrenalSteroidConverterCalculator,
 
   bmiForPediatricsCalculator,
+
+  waistToHipRatioCalculator,
 ];
 
 export function getCalculatorById(

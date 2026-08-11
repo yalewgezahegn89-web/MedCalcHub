@@ -22,7 +22,7 @@ export const heartRateCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Heart Rate", "Cardiology", "Cardiac", "Pulse", "Bradycardia", "Tachycardia", "Vital Signs"],
 
   formula: "beats / time",
 

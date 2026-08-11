@@ -22,7 +22,7 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Calcium Phosphate Product", "CKD", "Kidney", "Renal", "Hyperparathyroidism", "Metastatic Calcification"],
 
   formula: "CaP = calcium * phosphate",
 

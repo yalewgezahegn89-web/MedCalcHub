@@ -22,7 +22,7 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Osmolality", "Electrolytes", "Sodium", "Glucose", "BUN", "Hyponatremia", "Toxicology"],
 
   formula: "Calculated Osmolality = 2 × Na + Glucose / 18 + BUN / 2.8",
 

@@ -22,7 +22,7 @@ export const estimatedAverageGlucoseCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["eAG", "Estimated Average Glucose", "HbA1c", "Diabetes", "Glucose", "Blood Sugar", "Glycated Hemoglobin"],
 
   formula: "eAG = 28.7 * a1c - 46.7",
 

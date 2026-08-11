@@ -22,7 +22,7 @@ export const sodiumDeficitCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Sodium Deficit", "Hyponatremia", "Electrolytes", "Sodium", "Fluid Management"],
 
   formula: "Sodium Deficit = 0.6 * weight * (desiredNa - currentNa)",
 

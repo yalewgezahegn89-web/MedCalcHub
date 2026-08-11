@@ -22,7 +22,7 @@ export const insulinSensitivityCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Insulin Sensitivity", "HOMA", "Diabetes", "Metabolic Syndrome", "Glucose"],
 
   formula: "IS = 1 / homair",
 

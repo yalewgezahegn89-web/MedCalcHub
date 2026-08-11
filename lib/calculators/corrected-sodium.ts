@@ -22,7 +22,7 @@ export const correctedSodiumCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Sodium", "Hyperglycemia", "Electrolytes", "Glucose", "Hyponatremia"],
 
   formula: "Corrected Sodium = Measured Sodium + 1.6 × (Glucose − 100) / 100",
 

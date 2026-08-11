@@ -22,7 +22,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Body Mass Index", "BMI", "Obesity", "Weight", "Anthropometry", "Body Weight"],
 
   formula: "weight / (height * height)",
 

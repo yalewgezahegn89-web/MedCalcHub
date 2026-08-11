@@ -42,6 +42,9 @@ export const albuminCorrectedCalciumCalculator: CalculatorDefinition = {
     "Calcium",
     "Albumin",
     "Electrolytes",
+    "Hypocalcemia",
+    "Hypercalcemia",
+    "Corrected Calcium",
   ],
 
   inputs: [

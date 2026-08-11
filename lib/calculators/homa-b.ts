@@ -22,7 +22,7 @@ export const homaBCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["HOMA-B", "Beta Cell Function", "Diabetes", "Insulin", "Pancreatic", "Glucose"],
 
   formula: "HOMA-B = (20 * insulin) / (glucose - 3.5)",
 

@@ -22,7 +22,7 @@ export const ttkgCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Transtubular Potassium Gradient", "TTKG", "Kidney", "Renal", "Potassium", "Hypokalemia", "Hyperkalemia"],
 
   formula: "TTKG = (urinek * plasmaosmolality) / (plasmak * urineosmolality)",
 

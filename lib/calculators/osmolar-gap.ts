@@ -22,7 +22,7 @@ export const osmolarGapCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Osmolar Gap", "Toxicology", "Ethylene Glycol", "Methanol", "Poisoning", "Osmolality"],
 
   formula: "measured - (2 * sodium + glucose / 18 + bun / 2.8)",
 

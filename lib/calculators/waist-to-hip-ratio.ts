@@ -22,7 +22,7 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-05",
 
-  keywords: [],
+  keywords: ["Waist Hip Ratio", "WHR", "Obesity", "Cardiovascular Risk", "Metabolic Syndrome", "Anthropometry"],
 
   formula: "WHR = Waist Circumference / Hip Circumference",
 

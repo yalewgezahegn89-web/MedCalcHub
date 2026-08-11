@@ -22,7 +22,7 @@ export const curb65Calculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Pneumonia", "CURB-65", "Community Acquired Pneumonia", "Emergency", "Respiratory", "Severity"],
 
   formula: "Confusion + Urea + Respiratory Rate + Blood Pressure + Age ≥65",
 

@@ -22,7 +22,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Creatinine Clearance", "Kidney", "Renal", "Drug Dosing", "Kidney Function", "Nephrology"],
 
   formula: "CrCl = ((140 - age) * weight) / (72 * creatinine) * 0.85",
 

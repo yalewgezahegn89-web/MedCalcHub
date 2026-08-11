@@ -22,7 +22,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Calcium", "Albumin", "Electrolytes", "Hypocalcemia", "Hypercalcemia"],
 
   formula: "Corrected Calcium = calcium + 0.8 * (4 - albumin)",
 

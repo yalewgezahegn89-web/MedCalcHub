@@ -22,7 +22,7 @@ export const mdrdCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["eGFR", "Kidney", "Renal", "Glomerular Filtration Rate", "CKD", "Kidney Function"],
 
   formula: "eGFR = 175 * pow(creatinine, -1.154) * pow(age, -0.203) * 0.742",
 

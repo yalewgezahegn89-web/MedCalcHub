@@ -22,7 +22,7 @@ export const feureaCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Fractional Excretion of Urea", "FEUrea", "Kidney", "Renal", "Acute Kidney Injury", "AKI", "Nephrology"],
 
   formula: "FEUrea = (urineurea / plasmaurea) / (urinecr / plasmacr) * 100",
 

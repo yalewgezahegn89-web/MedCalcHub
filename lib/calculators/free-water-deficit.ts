@@ -22,7 +22,7 @@ export const freeWaterDeficitCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["Free Water Deficit", "Hypernatremia", "Electrolytes", "Sodium", "Fluid Management", "Dehydration"],
 
   formula: "Free Water Deficit = 0.6 * weight * (currentNa / desiredNa - 1)",
 

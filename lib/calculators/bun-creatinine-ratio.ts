@@ -22,7 +22,7 @@ export const bunCreatinineRatioCalculator: CalculatorDefinition = {
 
   updatedAt: "2026-08-06",
 
-  keywords: [],
+  keywords: ["BUN", "Kidney", "Renal", "Creatinine", "Kidney Function", "Azotemia"],
 
   formula: "BUN = bun / creatinine",
 
