@@ -19,8 +19,8 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 48 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(48);
+  it("registry contains exactly 49 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(49);
   });
 
   it("every calculator has a unique id", () => {

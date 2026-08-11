@@ -1,25 +1,40 @@
 import Link from "next/link";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
+import { getRelatedCalculators } from "@/lib/search/related";
+import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 
 type Props = {
   related?: string[];
+  calculator?: CalculatorDefinition;
 };
 
 export function RelatedCalculators({
   related,
+  calculator,
 }: Props) {
-  if (!related || related.length === 0) {
-    return null;
+  let calculators: CalculatorDefinition[] = [];
+
+  if (related && related.length > 0) {
+    calculators = related
+      .map((id) =>
+        calculatorRegistry.find(
+          (calc) => calc.id === id,
+        ),
+      )
+      .filter(
+        (c): c is CalculatorDefinition =>
+          c !== undefined,
+      );
   }
 
-  const calculators = related
-    .map((id) =>
-      calculatorRegistry.find(
-        (calc) => calc.id === id,
-      ),
-    )
-    .filter(Boolean);
+  if (calculators.length === 0 && calculator) {
+    calculators = getRelatedCalculators(calculator);
+  }
+
+  if (calculators.length === 0) {
+    return null;
+  }
 
   return (
     <section className="rounded-2xl border bg-white p-6 shadow-sm dark:bg-zinc-950">
@@ -30,16 +45,16 @@ export function RelatedCalculators({
       <div className="space-y-3">
         {calculators.map((calc) => (
           <Link
-            key={calc!.id}
-            href={`/calculators/${calc!.slug}`}
+            key={calc.id}
+            href={`/calculators/${calc.slug}`}
             className="block rounded-lg border p-3 transition hover:bg-gray-50 dark:hover:bg-zinc-900"
           >
             <div className="font-medium">
-              {calc!.name}
+              {calc.name}
             </div>
 
             <div className="text-sm text-muted-foreground">
-              {calc!.description}
+              {calc.description}
             </div>
           </Link>
         ))}

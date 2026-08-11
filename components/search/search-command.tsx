@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, Calculator } from "lucide-react";
 
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import { searchCalculators } from "@/lib/search";
+import type { SearchResult } from "@/lib/search/search.types";
 
 export default function SearchCommand() {
   const [query, setQuery] = useState("");
@@ -13,21 +14,7 @@ export default function SearchCommand() {
     const trimmed = query.trim();
     if (!trimmed) return [];
 
-    const q = trimmed.toLowerCase();
-
-    return calculatorRegistry
-      .filter((calc) => {
-        return (
-          calc.name.toLowerCase().includes(q) ||
-          calc.description.toLowerCase().includes(q) ||
-          calc.category.toLowerCase().includes(q) ||
-          calc.specialty?.toLowerCase().includes(q) ||
-          (calc.keywords ?? []).some((k) =>
-            k.toLowerCase().includes(q),
-          )
-        );
-      })
-      .slice(0, 8);
+    return searchCalculators(trimmed).slice(0, 8);
   }, [query]);
 
   return (
@@ -40,6 +27,7 @@ export default function SearchCommand() {
           placeholder="Search calculators..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          aria-label="Quick search calculators"
           className="w-full rounded-2xl border border-slate-200 bg-white py-4 pl-12 pr-4 text-base shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
         />
       </div>
@@ -51,23 +39,32 @@ export default function SearchCommand() {
               No calculators found.
             </div>
           ) : (
-            results.map((calc) => (
+            results.map((result: SearchResult) => (
               <Link
-                key={calc.id}
-                href={`/calculators/${calc.slug}`}
+                key={result.document.slug}
+                href={`/calculators/${result.document.slug}`}
                 className="flex items-center justify-between border-b border-slate-100 px-5 py-4 transition hover:bg-slate-50 last:border-b-0"
               >
-                <div>
-                  <div className="font-medium">
-                    {calc.name}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                    <Calculator className="h-4 w-4" />
                   </div>
 
-                  <div className="mt-1 text-sm text-slate-500">
-                    {calc.category}
+                  <div>
+                    <div className="font-medium">
+                      {result.document.title}
+                    </div>
+
+                    <div className="mt-1 text-sm text-slate-500">
+                      {result.document.category}
+                      {result.document.specialty && (
+                        <> · {result.document.specialty}</>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <ArrowRight className="h-4 w-4 text-slate-400" />
+                <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" />
               </Link>
             ))
           )}

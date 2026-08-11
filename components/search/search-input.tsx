@@ -50,6 +50,7 @@ export const SearchInput = forwardRef<
           type="search"
           value={value}
           placeholder={placeholder}
+          aria-label="Search calculators"
           onChange={(e) => onChange(e.target.value)}
           className={cn(
             "flex-1 bg-transparent px-3 py-3 text-sm outline-none",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 
 import SearchCommand from "@/components/search/search-command";
 import { SearchBox } from "@/components/search/search-box";
@@ -54,6 +55,9 @@ export default function SearchPage() {
     });
   }, [query, category]);
 
+  const showCategorySuggestions =
+    query.trim().length > 0 && results.length === 0;
+
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-10">
 
@@ -70,6 +74,7 @@ export default function SearchPage() {
         value={query}
         onChange={setQuery}
         placeholder="Filter calculators..."
+        aria-label="Search medical calculators"
       />
 
       <SearchFilters
@@ -101,6 +106,26 @@ export default function SearchPage() {
           <p className="mt-3 text-slate-500">
             Try another keyword, specialty, or category.
           </p>
+
+          {showCategorySuggestions && (
+            <div className="mt-6">
+              <p className="mb-3 text-sm text-slate-400">
+                Browse by category:
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-2">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat}
+                    href={`/categories/${encodeURIComponent(cat)}`}
+                    className="rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-600 transition hover:border-blue-300 hover:text-blue-600"
+                  >
+                    {cat}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
       ) : (

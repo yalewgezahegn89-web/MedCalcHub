@@ -1,11 +1,16 @@
 import { describe, it, expect } from "vitest";
 
-import { searchCalculators } from "../../lib/search";
-import { buildSearchIndex } from "../../lib/search/search-index";
+import {
+  searchCalculators,
+  buildSearchIndex,
+  getSuggestions,
+} from "../../lib/search";
+import { getRelatedCalculators } from "../../lib/search/related";
+import { calculatorRegistry } from "../../lib/calculators/registry";
 
 /* ------------------------------------------------------------------
    Sprint 1.7 — Search & Discovery regression tests
-   
+
    Tests the primary search engine exported from lib/search/index.ts.
    This engine uses weighted scoring:
      title       100
@@ -16,9 +21,6 @@ import { buildSearchIndex } from "../../lib/search/search-index";
    ------------------------------------------------------------------ */
 
 describe("searchCalculators (lib/search engine)", () => {
-  // ----------------------------------------------------------------
-  // A. Exact calculator name
-  // ----------------------------------------------------------------
   describe("exact calculator name", () => {
     it("returns BMI calculator for exact name query", () => {
       const results = searchCalculators("bmi");
@@ -45,9 +47,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // B. Case-insensitive search
-  // ----------------------------------------------------------------
   describe("case-insensitive search", () => {
     it("returns consistent results regardless of case", () => {
       const lower = searchCalculators("bmi");
@@ -75,9 +74,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // C. Keyword search
-  // ----------------------------------------------------------------
   describe("keyword search", () => {
     it("returns Child-Pugh via keyword 'Liver'", () => {
       const results = searchCalculators("Liver");
@@ -116,9 +112,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // D. Description search
-  // ----------------------------------------------------------------
   describe("description search", () => {
     it("returns BMI via description term 'Body Mass Index'", () => {
       const results = searchCalculators("Body Mass Index");
@@ -139,9 +132,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // E. Category search
-  // ----------------------------------------------------------------
   describe("category search", () => {
     it("returns calculators from Renal category", () => {
       const results = searchCalculators("Renal");
@@ -162,9 +152,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // F. Specialty search
-  // ----------------------------------------------------------------
   describe("specialty search", () => {
     it("returns Internal Medicine calculators via specialty", () => {
       const results = searchCalculators("Internal Medicine");
@@ -187,9 +174,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // H. Multi-word queries
-  // ----------------------------------------------------------------
   describe("multi-word queries", () => {
     it("returns results for 'kidney function'", () => {
       const results = searchCalculators("kidney function");
@@ -215,9 +199,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // I. Empty query
-  // ----------------------------------------------------------------
   describe("empty query", () => {
     it("returns empty array for empty string", () => {
       const results = searchCalculators("");
@@ -235,14 +216,9 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // J. No-result query
-  // ----------------------------------------------------------------
   describe("no-result query", () => {
     it("returns empty array for nonexistent calculator", () => {
-      const results = searchCalculators(
-        "zzzznonexistentcalculator",
-      );
+      const results = searchCalculators("zzzznonexistentcalculator");
       expect(results).toEqual([]);
       expect(results.length).toBe(0);
     });
@@ -259,50 +235,37 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // K. Ranking
-  // ----------------------------------------------------------------
   describe("ranking", () => {
     it("exact name match is returned with high score", () => {
       const results = searchCalculators("bmi");
-      const exactMatch = results.find(
-        (r) => r.document.slug === "bmi",
-      );
+      const exactMatch = results.find((r) => r.document.slug === "bmi");
       expect(exactMatch).toBeDefined();
-      // title weight is 100
       expect(exactMatch!.score).toBeGreaterThanOrEqual(100);
 
-      // The exact title match should appear in the top results
       const topSlugs = results.slice(0, 5).map((r) => r.document.slug);
       expect(topSlugs).toContain("bmi");
     });
 
     it("title match scores higher than description-only match", () => {
       const results = searchCalculators("bmi");
-      const bmiResult = results.find(
-        (r) => r.document.slug === "bmi",
-      );
+      const bmiResult = results.find((r) => r.document.slug === "bmi");
       expect(bmiResult).toBeDefined();
       expect(bmiResult!.score).toBeGreaterThanOrEqual(100);
     });
 
     it("keyword match receives correct weight (60)", () => {
-      // "Liver" matches only Child-Pugh keywords
       const results = searchCalculators("Liver");
       expect(results.length).toBeGreaterThan(0);
       const childPugh = results.find(
         (r) => r.document.slug === "child-pugh",
       );
       expect(childPugh).toBeDefined();
-      // score should be at least 60 (keyword weight)
       expect(childPugh!.score).toBeGreaterThanOrEqual(60);
     });
 
     it("category match receives correct weight (40)", () => {
-      // "Renal" matches as a category term for calculators in the Renal category
       const results = searchCalculators("Renal");
       expect(results.length).toBeGreaterThan(0);
-      // At least one result should have a category match score of 40+
       const categoryMatches = results.filter((r) =>
         r.matchedFields.includes("category"),
       );
@@ -321,20 +284,12 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // L. Duplicate prevention
-  // ----------------------------------------------------------------
   describe("duplicate prevention", () => {
     it("each calculator appears at most once", () => {
       const queries = [
-        "bmi",
-        "Internal Medicine",
-        "Nephrology",
-        "liver",
-        "corrected",
-        "creatinine",
+        "bmi", "Internal Medicine", "Nephrology",
+        "liver", "corrected", "creatinine",
       ];
-
       for (const query of queries) {
         const results = searchCalculators(query);
         const slugs = results.map((r) => r.document.slug);
@@ -344,9 +299,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // M. Partial matching
-  // ----------------------------------------------------------------
   describe("partial matching", () => {
     it("returns calculators for partial name 'creat'", () => {
       const results = searchCalculators("creat");
@@ -363,8 +315,7 @@ describe("searchCalculators (lib/search engine)", () => {
 
     it("returns calculators for partial category 'nephr'", () => {
       const results = searchCalculators("nephr");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs.length).toBeGreaterThan(0);
+      expect(results.length).toBeGreaterThan(0);
     });
 
     it("returns calculators for partial description 'glomerular'", () => {
@@ -374,9 +325,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // N. Search stability
-  // ----------------------------------------------------------------
   describe("search stability", () => {
     it("same query produces deterministic ordering", () => {
       const query = "Internal Medicine";
@@ -403,9 +351,6 @@ describe("searchCalculators (lib/search engine)", () => {
     });
   });
 
-  // ----------------------------------------------------------------
-  // O. Existing calculator coverage
-  // ----------------------------------------------------------------
   describe("existing calculator coverage", () => {
     it("CKD-EPI calculator is searchable by name", () => {
       const results = searchCalculators("ckd-epi-2021");
@@ -456,13 +401,9 @@ describe("searchCalculators (lib/search engine)", () => {
 
     it("BMI calculator is searchable by name", () => {
       const results = searchCalculators("bmi");
-      const match = results.find(
-        (r) => r.document.slug === "bmi",
-      );
+      const match = results.find((r) => r.document.slug === "bmi");
       expect(match).toBeDefined();
-      expect(match!.document.description).toContain(
-        "Body Mass Index",
-      );
+      expect(match!.document.description).toContain("Body Mass Index");
     });
 
     it("Corrected Sodium calculator is searchable by name", () => {
@@ -475,9 +416,7 @@ describe("searchCalculators (lib/search engine)", () => {
 
     it("BSA calculator is searchable by name", () => {
       const results = searchCalculators("bsa");
-      const match = results.find(
-        (r) => r.document.slug === "bsa",
-      );
+      const match = results.find((r) => r.document.slug === "bsa");
       expect(match).toBeDefined();
     });
 
@@ -487,16 +426,12 @@ describe("searchCalculators (lib/search engine)", () => {
         (r) => r.document.slug === "cockcroft-gault",
       );
       expect(match).toBeDefined();
-      expect(match!.document.description).toContain(
-        "creatinine clearance",
-      );
+      expect(match!.document.description).toContain("creatinine clearance");
     });
 
     it("NEWS2 calculator is searchable by name", () => {
       const results = searchCalculators("news2");
-      const match = results.find(
-        (r) => r.document.slug === "news2",
-      );
+      const match = results.find((r) => r.document.slug === "news2");
       expect(match).toBeDefined();
     });
   });
@@ -549,9 +484,7 @@ describe("buildSearchIndex", () => {
 
   it("includes Child-Pugh calculator with keywords", () => {
     const index = buildSearchIndex();
-    const childPugh = index.find(
-      (d) => d.slug === "child-pugh",
-    );
+    const childPugh = index.find((d) => d.slug === "child-pugh");
     expect(childPugh).toBeDefined();
     expect(childPugh!.keywords).toContain("Liver");
     expect(childPugh!.keywords).toContain("Cirrhosis");
@@ -565,8 +498,7 @@ describe("buildSearchIndex", () => {
 });
 
 /* ------------------------------------------------------------------
-   Sprint 1.7 Batch 2 — Search normalization, cross-entry consistency,
-   index completeness, clinical discovery, ranking quality
+   Query normalization
    ------------------------------------------------------------------ */
 
 describe("query normalization", () => {
@@ -597,9 +529,6 @@ describe("query normalization", () => {
   it("multiple internal spaces do not change multi-word results", () => {
     const normal = searchCalculators("body mass");
     const spaced = searchCalculators("body  mass");
-    const tabbed = searchCalculators("body\tmass");
-
-    // body mass and body  mass should match the same calculators
     expect(normal.map((r) => r.document.slug)).toEqual(
       spaced.map((r) => r.document.slug),
     );
@@ -622,11 +551,14 @@ describe("query normalization", () => {
   });
 });
 
+/* ------------------------------------------------------------------
+   Search index completeness
+   ------------------------------------------------------------------ */
+
 describe("search index completeness", () => {
   it("every registry calculator has an index entry", () => {
     const index = buildSearchIndex();
     const indexSlugs = new Set(index.map((d) => d.slug));
-    // All calculators should have a slug in the index
     expect(indexSlugs.size).toBe(index.length);
   });
 
@@ -644,9 +576,7 @@ describe("search index completeness", () => {
 
   it("representative calculators have non-empty keywords", () => {
     const index = buildSearchIndex();
-    const childPugh = index.find(
-      (d) => d.slug === "child-pugh",
-    );
+    const childPugh = index.find((d) => d.slug === "child-pugh");
     expect(childPugh).toBeDefined();
     expect(childPugh!.keywords.length).toBeGreaterThan(0);
 
@@ -660,11 +590,8 @@ describe("search index completeness", () => {
   it("representative calculators have category and specialty", () => {
     const index = buildSearchIndex();
     for (const slug of [
-      "bmi",
-      "ckd-epi-2021",
-      "corrected-sodium",
-      "cockcroft-gault",
-      "news2",
+      "bmi", "ckd-epi-2021", "corrected-sodium",
+      "cockcroft-gault", "news2",
     ]) {
       const doc = index.find((d) => d.slug === slug);
       expect(doc).toBeDefined();
@@ -673,6 +600,10 @@ describe("search index completeness", () => {
     }
   });
 });
+
+/* ------------------------------------------------------------------
+   Clinical discovery queries
+   ------------------------------------------------------------------ */
 
 describe("clinical discovery queries", () => {
   it("returns calculators for 'renal' query", () => {
@@ -747,17 +678,18 @@ describe("clinical discovery queries", () => {
   });
 });
 
+/* ------------------------------------------------------------------
+   Ranking quality
+   ------------------------------------------------------------------ */
+
 describe("ranking quality", () => {
   it("title match scores higher than keyword-only match", () => {
-    // "Child-Pugh" appears in title (100) vs keyword (60) for other calculators
     const results = searchCalculators("Child-Pugh");
     expect(results.length).toBeGreaterThan(0);
-    // The calculator with "Child-Pugh" in title should rank first
     expect(results[0].document.slug).toBe("child-pugh");
   });
 
   it("keyword match scores higher than description-only match", () => {
-    // "Liver" appears in Child-Pugh keywords (60) vs only in description (20) for others
     const results = searchCalculators("Liver");
     expect(results.length).toBeGreaterThan(0);
     const childPugh = results.find(
@@ -768,7 +700,6 @@ describe("ranking quality", () => {
   });
 
   it("multi-field matches accumulate score", () => {
-    // "Child-Pugh" matches title (100) + keyword (60) + description (20) = 180
     const results = searchCalculators("Child-Pugh");
     const childPugh = results.find(
       (r) => r.document.slug === "child-pugh",
@@ -780,7 +711,6 @@ describe("ranking quality", () => {
   it("alphabetical tie-breaking is deterministic", () => {
     const results = searchCalculators("Nephrology");
     expect(results.length).toBeGreaterThan(1);
-    // Verify ordering is stable
     const first = searchCalculators("Nephrology");
     const second = searchCalculators("Nephrology");
     expect(first.map((r) => r.document.slug)).toEqual(
@@ -788,6 +718,10 @@ describe("ranking quality", () => {
     );
   });
 });
+
+/* ------------------------------------------------------------------
+   Search behavior consistency
+   ------------------------------------------------------------------ */
 
 describe("search behavior consistency", () => {
   it("empty query returns empty results", () => {
@@ -806,14 +740,7 @@ describe("search behavior consistency", () => {
   });
 
   it("results are never undefined", () => {
-    const queries = [
-      "bmi",
-      "renal",
-      "cardiology",
-      "",
-      " ",
-      "zzzz",
-    ];
+    const queries = ["bmi", "renal", "cardiology", "", " ", "zzzz"];
     for (const query of queries) {
       const results = searchCalculators(query);
       for (const result of results) {
@@ -827,92 +754,74 @@ describe("search behavior consistency", () => {
 });
 
 /* ------------------------------------------------------------------
-   Sprint 1.7 Batch 3 — Clinical synonym discovery
-   Tests that common clinical terminology discovers the intended
-   calculators via metadata keywords.
+   Clinical synonym discovery
    ------------------------------------------------------------------ */
 
 describe("clinical synonym discovery", () => {
-  // ------------------------------------------------------------------
-  // Renal synonyms
-  // ------------------------------------------------------------------
   describe("renal / kidney discovery", () => {
     it("discovers CKD-EPI via 'kidney'", () => {
       const results = searchCalculators("kidney");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("ckd-epi-2021");
+      expect(results.map((r) => r.document.slug)).toContain("ckd-epi-2021");
     });
 
     it("discovers CKD-EPI via 'renal'", () => {
       const results = searchCalculators("renal");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("ckd-epi-2021");
+      expect(results.map((r) => r.document.slug)).toContain("ckd-epi-2021");
     });
 
     it("discovers CKD-EPI via 'eGFR'", () => {
       const results = searchCalculators("eGFR");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("ckd-epi-2021");
+      expect(results.map((r) => r.document.slug)).toContain("ckd-epi-2021");
     });
 
     it("discovers Cockcroft-Gault via 'creatinine clearance'", () => {
       const results = searchCalculators("creatinine clearance");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("cockcroft-gault");
+      expect(results.map((r) => r.document.slug)).toContain("cockcroft-gault");
     });
 
     it("discovers Cockcroft-Gault via 'kidney'", () => {
       const results = searchCalculators("kidney");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("cockcroft-gault");
+      expect(results.map((r) => r.document.slug)).toContain("cockcroft-gault");
     });
 
     it("discovers MDRD via 'kidney'", () => {
       const results = searchCalculators("kidney");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("mdrd");
+      expect(results.map((r) => r.document.slug)).toContain("mdrd");
     });
 
     it("discovers BUN/Creatinine via 'BUN'", () => {
       const results = searchCalculators("BUN");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("bun-creatinine-ratio");
+      expect(results.map((r) => r.document.slug)).toContain("bun-creatinine-ratio");
     });
 
     it("discovers ACR via 'albumin creatinine ratio'", () => {
       const results = searchCalculators("albumin creatinine ratio");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("albumin-creatinine-ratio");
+      expect(results.map((r) => r.document.slug)).toContain("albumin-creatinine-ratio");
     });
 
     it("discovers FENa via 'kidney'", () => {
       const results = searchCalculators("kidney");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("fena");
+      expect(results.map((r) => r.document.slug)).toContain("fena");
     });
 
     it("discovers FENa via 'acute kidney injury'", () => {
       const results = searchCalculators("acute kidney injury");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("fena");
+      expect(results.map((r) => r.document.slug)).toContain("fena");
     });
 
     it("discovers FEUrea via 'kidney'", () => {
       const results = searchCalculators("kidney");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("feurea");
+      expect(results.map((r) => r.document.slug)).toContain("feurea");
     });
 
     it("discovers TTKG via 'kidney'", () => {
       const results = searchCalculators("kidney");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("ttkg");
+      expect(results.map((r) => r.document.slug)).toContain("ttkg");
     });
 
     it("discovers calcium-phosphate-product via 'CKD'", () => {
       const results = searchCalculators("CKD");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("calcium-phosphate-product");
+      expect(results.map((r) => r.document.slug)).toContain("calcium-phosphate-product");
     });
 
     it("discovers multiple renal calculators for 'kidney function'", () => {
@@ -924,127 +833,102 @@ describe("clinical synonym discovery", () => {
     });
   });
 
-  // ------------------------------------------------------------------
-  // Cardiology synonyms
-  // ------------------------------------------------------------------
   describe("cardiology discovery", () => {
     it("discovers MAP via 'mean arterial pressure'", () => {
       const results = searchCalculators("mean arterial pressure");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("map");
+      expect(results.map((r) => r.document.slug)).toContain("map");
     });
 
     it("discovers MAP via 'blood pressure'", () => {
       const results = searchCalculators("blood pressure");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("map");
+      expect(results.map((r) => r.document.slug)).toContain("map");
     });
 
     it("discovers MAP via 'hemodynamics'", () => {
       const results = searchCalculators("hemodynamics");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("map");
+      expect(results.map((r) => r.document.slug)).toContain("map");
     });
 
     it("discovers heart-rate via 'cardiology'", () => {
       const results = searchCalculators("cardiology");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("heart-rate");
+      expect(results.map((r) => r.document.slug)).toContain("heart-rate");
     });
 
     it("discovers heart-rate via 'cardiac'", () => {
       const results = searchCalculators("cardiac");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("heart-rate");
+      expect(results.map((r) => r.document.slug)).toContain("heart-rate");
     });
 
     it("discovers shock-index via 'hemodynamics'", () => {
       const results = searchCalculators("hemodynamics");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("shock-index");
+      expect(results.map((r) => r.document.slug)).toContain("shock-index");
     });
 
     it("discovers shock-index via 'shock'", () => {
       const results = searchCalculators("shock");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("shock-index");
+      expect(results.map((r) => r.document.slug)).toContain("shock-index");
     });
 
     it("discovers corrected-qt via 'cardiology'", () => {
       const results = searchCalculators("cardiology");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-qt");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-qt");
     });
 
     it("discovers corrected-qt via 'arrhythmia'", () => {
       const results = searchCalculators("arrhythmia");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-qt");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-qt");
     });
 
     it("discovers corrected-qt via 'QT prolongation'", () => {
       const results = searchCalculators("QT prolongation");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-qt");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-qt");
     });
   });
 
-  // ------------------------------------------------------------------
-  // Diabetes / endocrinology synonyms
-  // ------------------------------------------------------------------
   describe("diabetes / endocrinology discovery", () => {
     it("discovers a1c-eag-converter via 'HbA1c'", () => {
       const results = searchCalculators("HbA1c");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("a1c-eag-converter");
+      expect(results.map((r) => r.document.slug)).toContain("a1c-eag-converter");
     });
 
     it("discovers a1c-eag-converter via 'glycated hemoglobin'", () => {
       const results = searchCalculators("glycated hemoglobin");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("a1c-eag-converter");
+      expect(results.map((r) => r.document.slug)).toContain("a1c-eag-converter");
     });
 
     it("discovers a1c-eag-converter via 'diabetes'", () => {
       const results = searchCalculators("diabetes");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("a1c-eag-converter");
+      expect(results.map((r) => r.document.slug)).toContain("a1c-eag-converter");
     });
 
     it("discovers estimated-average-glucose via 'eAG'", () => {
       const results = searchCalculators("eAG");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("estimated-average-glucose");
+      expect(results.map((r) => r.document.slug)).toContain("estimated-average-glucose");
     });
 
     it("discovers estimated-average-glucose via 'diabetes'", () => {
       const results = searchCalculators("diabetes");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("estimated-average-glucose");
+      expect(results.map((r) => r.document.slug)).toContain("estimated-average-glucose");
     });
 
     it("discovers homa-ir via 'insulin resistance'", () => {
       const results = searchCalculators("insulin resistance");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("homa-ir");
+      expect(results.map((r) => r.document.slug)).toContain("homa-ir");
     });
 
     it("discovers homa-b via 'beta cell'", () => {
       const results = searchCalculators("beta cell");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("homa-b");
+      expect(results.map((r) => r.document.slug)).toContain("homa-b");
     });
 
     it("discovers insulin-sensitivity via 'insulin'", () => {
       const results = searchCalculators("insulin");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("insulin-sensitivity");
+      expect(results.map((r) => r.document.slug)).toContain("insulin-sensitivity");
     });
 
     it("discovers homa-ir via 'metabolic syndrome'", () => {
       const results = searchCalculators("metabolic syndrome");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("homa-ir");
+      expect(results.map((r) => r.document.slug)).toContain("homa-ir");
     });
 
     it("discovers multiple diabetes calculators via 'diabetes'", () => {
@@ -1056,186 +940,149 @@ describe("clinical synonym discovery", () => {
     });
   });
 
-  // ------------------------------------------------------------------
-  // Laboratory / electrolyte synonyms
-  // ------------------------------------------------------------------
   describe("laboratory / electrolyte discovery", () => {
     it("discovers corrected-sodium via 'sodium'", () => {
       const results = searchCalculators("sodium");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-sodium");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-sodium");
     });
 
     it("discovers corrected-sodium via 'hyponatremia'", () => {
       const results = searchCalculators("hyponatremia");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-sodium");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-sodium");
     });
 
     it("discovers corrected-calcium via 'calcium'", () => {
       const results = searchCalculators("calcium");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-calcium");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-calcium");
     });
 
     it("discovers corrected-calcium via 'hypocalcemia'", () => {
       const results = searchCalculators("hypocalcemia");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-calcium");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-calcium");
     });
 
     it("discovers anion-gap via 'anion gap'", () => {
       const results = searchCalculators("anion gap");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("anion-gap");
+      expect(results.map((r) => r.document.slug)).toContain("anion-gap");
     });
 
     it("discovers anion-gap via 'metabolic acidosis'", () => {
       const results = searchCalculators("metabolic acidosis");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("anion-gap");
+      expect(results.map((r) => r.document.slug)).toContain("anion-gap");
     });
 
     it("discovers serum-osmolality via 'osmolality'", () => {
       const results = searchCalculators("osmolality");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("serum-osmolality");
+      expect(results.map((r) => r.document.slug)).toContain("serum-osmolality");
     });
 
     it("discovers osmolar-gap via 'osmolar gap'", () => {
       const results = searchCalculators("osmolar gap");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("osmolar-gap");
+      expect(results.map((r) => r.document.slug)).toContain("osmolar-gap");
     });
 
     it("discovers osmolar-gap via 'toxicology'", () => {
       const results = searchCalculators("toxicology");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("osmolar-gap");
+      expect(results.map((r) => r.document.slug)).toContain("osmolar-gap");
     });
 
     it("discovers osmolar-gap via 'ethylene glycol'", () => {
       const results = searchCalculators("ethylene glycol");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("osmolar-gap");
+      expect(results.map((r) => r.document.slug)).toContain("osmolar-gap");
     });
 
     it("discovers corrected-anion-gap via 'electrolytes'", () => {
       const results = searchCalculators("electrolytes");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("corrected-anion-gap");
+      expect(results.map((r) => r.document.slug)).toContain("corrected-anion-gap");
     });
 
     it("discovers free-water-deficit via 'hypernatremia'", () => {
       const results = searchCalculators("hypernatremia");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("free-water-deficit");
+      expect(results.map((r) => r.document.slug)).toContain("free-water-deficit");
     });
 
     it("discovers sodium-deficit via 'hyponatremia'", () => {
       const results = searchCalculators("hyponatremia");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("sodium-deficit");
+      expect(results.map((r) => r.document.slug)).toContain("sodium-deficit");
     });
   });
 
-  // ------------------------------------------------------------------
-  // Emergency / critical care synonyms
-  // ------------------------------------------------------------------
   describe("emergency discovery", () => {
     it("discovers GCS via 'Glasgow Coma Scale'", () => {
       const results = searchCalculators("Glasgow Coma Scale");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("gcs");
+      expect(results.map((r) => r.document.slug)).toContain("gcs");
     });
 
     it("discovers GCS via 'TBI'", () => {
       const results = searchCalculators("TBI");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("gcs");
+      expect(results.map((r) => r.document.slug)).toContain("gcs");
     });
 
     it("discovers qsofa via 'sepsis'", () => {
       const results = searchCalculators("sepsis");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("qsofa");
+      expect(results.map((r) => r.document.slug)).toContain("qsofa");
     });
 
     it("discovers shock-index via 'sepsis'", () => {
       const results = searchCalculators("sepsis");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("shock-index");
+      expect(results.map((r) => r.document.slug)).toContain("shock-index");
     });
 
     it("discovers NEWS2 via 'deterioration'", () => {
       const results = searchCalculators("deterioration");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("news2");
+      expect(results.map((r) => r.document.slug)).toContain("news2");
     });
 
     it("discovers NEWS2 via 'vital signs'", () => {
       const results = searchCalculators("vital signs");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("news2");
+      expect(results.map((r) => r.document.slug)).toContain("news2");
     });
 
     it("discovers CURB-65 via 'pneumonia'", () => {
       const results = searchCalculators("pneumonia");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("curb-65");
+      expect(results.map((r) => r.document.slug)).toContain("curb-65");
     });
 
     it("discovers CURB-65 via 'community acquired pneumonia'", () => {
       const results = searchCalculators("community acquired pneumonia");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("curb-65");
+      expect(results.map((r) => r.document.slug)).toContain("curb-65");
     });
   });
 
-  // ------------------------------------------------------------------
-  // Anthropometry synonyms
-  // ------------------------------------------------------------------
   describe("anthropometry discovery", () => {
     it("discovers BMI via 'body mass index'", () => {
       const results = searchCalculators("body mass index");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("bmi");
+      expect(results.map((r) => r.document.slug)).toContain("bmi");
     });
 
     it("discovers BMI via 'obesity'", () => {
       const results = searchCalculators("obesity");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("bmi");
+      expect(results.map((r) => r.document.slug)).toContain("bmi");
     });
 
     it("discovers BSA via 'body surface area'", () => {
       const results = searchCalculators("body surface area");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("bsa");
+      expect(results.map((r) => r.document.slug)).toContain("bsa");
     });
 
     it("discovers BSA via 'Mosteller'", () => {
       const results = searchCalculators("Mosteller");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("bsa");
+      expect(results.map((r) => r.document.slug)).toContain("bsa");
     });
 
     it("discovers waist-to-hip-ratio via 'waist hip ratio'", () => {
       const results = searchCalculators("waist hip ratio");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("waist-to-hip-ratio");
+      expect(results.map((r) => r.document.slug)).toContain("waist-to-hip-ratio");
     });
 
     it("discovers waist-to-hip-ratio via 'WHR'", () => {
       const results = searchCalculators("WHR");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("waist-to-hip-ratio");
+      expect(results.map((r) => r.document.slug)).toContain("waist-to-hip-ratio");
     });
 
     it("discovers waist-to-hip-ratio via 'metabolic syndrome'", () => {
       const results = searchCalculators("metabolic syndrome");
-      const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("waist-to-hip-ratio");
+      expect(results.map((r) => r.document.slug)).toContain("waist-to-hip-ratio");
     });
   });
 });
@@ -1254,8 +1101,7 @@ describe("multi-word clinical queries", () => {
 
   it("returns results for 'creatinine clearance'", () => {
     const results = searchCalculators("creatinine clearance");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("cockcroft-gault");
+    expect(results.map((r) => r.document.slug)).toContain("cockcroft-gault");
   });
 
   it("returns results for 'blood pressure'", () => {
@@ -1265,44 +1111,37 @@ describe("multi-word clinical queries", () => {
 
   it("returns results for 'mean arterial pressure'", () => {
     const results = searchCalculators("mean arterial pressure");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("map");
+    expect(results.map((r) => r.document.slug)).toContain("map");
   });
 
   it("returns results for 'body mass index'", () => {
     const results = searchCalculators("body mass index");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("bmi");
+    expect(results.map((r) => r.document.slug)).toContain("bmi");
   });
 
   it("returns results for 'body surface area'", () => {
     const results = searchCalculators("body surface area");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("bsa");
+    expect(results.map((r) => r.document.slug)).toContain("bsa");
   });
 
   it("returns results for 'corrected sodium'", () => {
     const results = searchCalculators("corrected sodium");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("corrected-sodium");
+    expect(results.map((r) => r.document.slug)).toContain("corrected-sodium");
   });
 
   it("returns results for 'corrected calcium'", () => {
     const results = searchCalculators("corrected calcium");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("corrected-calcium");
+    expect(results.map((r) => r.document.slug)).toContain("corrected-calcium");
   });
 
   it("returns results for 'anion gap metabolic acidosis'", () => {
     const results = searchCalculators("anion gap metabolic acidosis");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("anion-gap");
+    expect(results.map((r) => r.document.slug)).toContain("anion-gap");
   });
 
   it("returns results for 'insulin resistance'", () => {
     const results = searchCalculators("insulin resistance");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("homa-ir");
+    expect(results.map((r) => r.document.slug)).toContain("homa-ir");
   });
 });
 
@@ -1312,29 +1151,24 @@ describe("multi-word clinical queries", () => {
 
 describe("partial clinical terms", () => {
   it("returns calculators for partial 'nephr'", () => {
-    const results = searchCalculators("nephr");
-    expect(results.length).toBeGreaterThan(0);
+    expect(searchCalculators("nephr").length).toBeGreaterThan(0);
   });
 
   it("returns calculators for partial 'cardio'", () => {
-    const results = searchCalculators("cardio");
-    expect(results.length).toBeGreaterThan(0);
+    expect(searchCalculators("cardio").length).toBeGreaterThan(0);
   });
 
   it("returns calculators for partial 'osmol'", () => {
     const results = searchCalculators("osmol");
-    const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("serum-osmolality");
+    expect(results.map((r) => r.document.slug)).toContain("serum-osmolality");
   });
 
   it("returns calculators for partial 'hypo'", () => {
-    const results = searchCalculators("hypo");
-    expect(results.length).toBeGreaterThan(0);
+    expect(searchCalculators("hypo").length).toBeGreaterThan(0);
   });
 
   it("returns calculators for partial 'electro'", () => {
-    const results = searchCalculators("electro");
-    expect(results.length).toBeGreaterThan(0);
+    expect(searchCalculators("electro").length).toBeGreaterThan(0);
   });
 });
 
@@ -1346,19 +1180,14 @@ describe("ranking after metadata additions", () => {
   it("CKD-EPI title match still outranks keyword-only matches", () => {
     const results = searchCalculators("ckd-epi-2021");
     expect(results.length).toBeGreaterThan(0);
-    // Title match should be the top result
     expect(results[0].document.slug).toBe("ckd-epi-2021");
-    // Title match score should be >= 100
     expect(results[0].score).toBeGreaterThanOrEqual(100);
   });
 
   it("MAP title match outranks keyword-only match", () => {
     const results = searchCalculators("map");
     expect(results.length).toBeGreaterThan(0);
-    // MAP calculator title match should be at or near the top
-    const mapResult = results.find(
-      (r) => r.document.slug === "map",
-    );
+    const mapResult = results.find((r) => r.document.slug === "map");
     expect(mapResult).toBeDefined();
     expect(mapResult!.score).toBeGreaterThanOrEqual(100);
   });
@@ -1366,67 +1195,52 @@ describe("ranking after metadata additions", () => {
   it("BMI title match outranks keyword-only match", () => {
     const results = searchCalculators("bmi");
     expect(results.length).toBeGreaterThan(0);
-    // "bmi" and "bmi-for-pediatrics" both match title+keywords+description (score 180)
-    // The bmi calculator should be present with high score
-    const bmiResult = results.find(
-      (r) => r.document.slug === "bmi",
-    );
+    const bmiResult = results.find((r) => r.document.slug === "bmi");
     expect(bmiResult).toBeDefined();
     expect(bmiResult!.score).toBeGreaterThanOrEqual(100);
-    // Both BMI calculators should be in top 2
     const topSlugs = results.slice(0, 2).map((r) => r.document.slug);
     expect(topSlugs).toContain("bmi");
     expect(topSlugs).toContain("bmi-for-pediatrics");
   });
 
   it("keyword matches still accumulate properly after metadata additions", () => {
-    // "Kidney" matches CKD-EPI keywords (60) + category "Nephrology" (40) = 100
     const results = searchCalculators("kidney");
     const ckdEpi = results.find(
       (r) => r.document.slug === "ckd-epi-2021",
     );
     expect(ckdEpi).toBeDefined();
-    // Should have accumulated score from keywords + category
     expect(ckdEpi!.score).toBeGreaterThanOrEqual(60);
   });
 });
 
 /* ------------------------------------------------------------------
-   Duplicate prevention (post-metadata)
+   Duplicate prevention after metadata additions
    ------------------------------------------------------------------ */
 
 describe("duplicate prevention after metadata additions", () => {
   it("each calculator appears at most once for 'kidney'", () => {
-    const results = searchCalculators("kidney");
-    const slugs = results.map((r) => r.document.slug);
-    const uniqueSlugs = new Set(slugs);
-    expect(slugs.length).toBe(uniqueSlugs.size);
+    const slugs = searchCalculators("kidney").map((r) => r.document.slug);
+    expect(slugs.length).toBe(new Set(slugs).size);
   });
 
   it("each calculator appears at most once for 'electrolytes'", () => {
-    const results = searchCalculators("electrolytes");
-    const slugs = results.map((r) => r.document.slug);
-    const uniqueSlugs = new Set(slugs);
-    expect(slugs.length).toBe(uniqueSlugs.size);
+    const slugs = searchCalculators("electrolytes").map((r) => r.document.slug);
+    expect(slugs.length).toBe(new Set(slugs).size);
   });
 
   it("each calculator appears at most once for 'diabetes'", () => {
-    const results = searchCalculators("diabetes");
-    const slugs = results.map((r) => r.document.slug);
-    const uniqueSlugs = new Set(slugs);
-    expect(slugs.length).toBe(uniqueSlugs.size);
+    const slugs = searchCalculators("diabetes").map((r) => r.document.slug);
+    expect(slugs.length).toBe(new Set(slugs).size);
   });
 
   it("each calculator appears at most once for 'sepsis'", () => {
-    const results = searchCalculators("sepsis");
-    const slugs = results.map((r) => r.document.slug);
-    const uniqueSlugs = new Set(slugs);
-    expect(slugs.length).toBe(uniqueSlugs.size);
+    const slugs = searchCalculators("sepsis").map((r) => r.document.slug);
+    expect(slugs.length).toBe(new Set(slugs).size);
   });
 });
 
 /* ------------------------------------------------------------------
-   Deterministic ordering (post-metadata)
+   Deterministic ordering after metadata additions
    ------------------------------------------------------------------ */
 
 describe("deterministic ordering after metadata additions", () => {
@@ -1464,7 +1278,7 @@ describe("deterministic ordering after metadata additions", () => {
 });
 
 /* ------------------------------------------------------------------
-   Index completeness (post-metadata)
+   Index completeness after metadata additions
    ------------------------------------------------------------------ */
 
 describe("index completeness after metadata additions", () => {
@@ -1524,9 +1338,7 @@ describe("index completeness after metadata additions", () => {
 
   it("a1c-eag-converter has new keywords in index", () => {
     const index = buildSearchIndex();
-    const a1c = index.find(
-      (d) => d.slug === "a1c-eag-converter",
-    );
+    const a1c = index.find((d) => d.slug === "a1c-eag-converter");
     expect(a1c).toBeDefined();
     expect(a1c!.keywords).toContain("HbA1c");
     expect(a1c!.keywords).toContain("Hemoglobin A1c");
@@ -1552,9 +1364,7 @@ describe("index completeness after metadata additions", () => {
 
   it("waist-to-hip-ratio has new keywords in index", () => {
     const index = buildSearchIndex();
-    const whr = index.find(
-      (d) => d.slug === "waist-to-hip-ratio",
-    );
+    const whr = index.find((d) => d.slug === "waist-to-hip-ratio");
     expect(whr).toBeDefined();
     expect(whr!.keywords).toContain("WHR");
     expect(whr!.keywords).toContain("Metabolic Syndrome");
@@ -1568,16 +1378,8 @@ describe("index completeness after metadata additions", () => {
 
 describe("result shape validation", () => {
   it("all results have valid score type", () => {
-    const queries = [
-      "kidney",
-      "diabetes",
-      "electrolytes",
-      "bmi",
-      "sepsis",
-    ];
-    for (const query of queries) {
-      const results = searchCalculators(query);
-      for (const result of results) {
+    for (const query of ["kidney", "diabetes", "electrolytes", "bmi", "sepsis"]) {
+      for (const result of searchCalculators(query)) {
         expect(typeof result.score).toBe("number");
         expect(result.score).toBeGreaterThanOrEqual(0);
         expect(Number.isFinite(result.score)).toBe(true);
@@ -1586,10 +1388,8 @@ describe("result shape validation", () => {
   });
 
   it("all results have valid matchedFields", () => {
-    const queries = ["kidney", "diabetes", "electrolytes"];
-    for (const query of queries) {
-      const results = searchCalculators(query);
-      for (const result of results) {
+    for (const query of ["kidney", "diabetes", "electrolytes"]) {
+      for (const result of searchCalculators(query)) {
         expect(Array.isArray(result.matchedFields)).toBe(true);
         expect(result.matchedFields.length).toBeGreaterThan(0);
         for (const field of result.matchedFields) {
@@ -1600,16 +1400,107 @@ describe("result shape validation", () => {
   });
 
   it("all results have valid document structure", () => {
-    const results = searchCalculators("kidney");
-    for (const result of results) {
+    for (const result of searchCalculators("kidney")) {
       expect(typeof result.document.slug).toBe("string");
       expect(typeof result.document.title).toBe("string");
       expect(typeof result.document.description).toBe("string");
       expect(typeof result.document.category).toBe("string");
       expect(typeof result.document.specialty).toBe("string");
-      expect(Array.isArray(result.document.keywords)).toBe(
-        true,
-      );
+      expect(Array.isArray(result.document.keywords)).toBe(true);
+    }
+  });
+});
+
+/* ------------------------------------------------------------------
+   getSuggestions tests — Sprint 1.7 new feature
+   ------------------------------------------------------------------ */
+
+describe("getSuggestions", () => {
+  it("returns results for valid query", () => {
+    const suggestions = getSuggestions("bmi");
+    expect(suggestions.length).toBeGreaterThan(0);
+    const slugs = suggestions.map((r) => r.document.slug);
+    expect(slugs).toContain("bmi");
+    expect(slugs).toContain("bmi-for-pediatrics");
+  });
+
+  it("returns empty array for empty string", () => {
+    expect(getSuggestions("")).toEqual([]);
+  });
+
+  it("returns empty array for single character", () => {
+    expect(getSuggestions("b")).toEqual([]);
+  });
+
+  it("returns empty array for whitespace-only", () => {
+    expect(getSuggestions("   ")).toEqual([]);
+  });
+
+  it("limits results to 8", () => {
+    expect(getSuggestions("a").length).toBeLessThanOrEqual(8);
+  });
+
+  it("returns ranked results (title matches first)", () => {
+    const suggestions = getSuggestions("bmi");
+    const topSlugs = suggestions.map((r) => r.document.slug).slice(0, 2);
+    expect(topSlugs).toContain("bmi");
+    expect(topSlugs).toContain("bmi-for-pediatrics");
+  });
+
+  it("returns empty for nonsense query", () => {
+    expect(getSuggestions("zzzznonexistent")).toEqual([]);
+  });
+
+  it("is case-insensitive", () => {
+    const lower = getSuggestions("bmi").map((r) => r.document.slug);
+    const upper = getSuggestions("BMI").map((r) => r.document.slug);
+    expect(lower).toEqual(upper);
+  });
+});
+
+/* ------------------------------------------------------------------
+   getRelatedCalculators tests — Sprint 1.7 new feature
+   ------------------------------------------------------------------ */
+
+describe("getRelatedCalculators", () => {
+  it("returns related calculators from manual field", () => {
+    const anionGap = calculatorRegistry.find((c) => c.id === "anion-gap")!;
+    const related = getRelatedCalculators(anionGap);
+    expect(related.length).toBeGreaterThan(0);
+    expect(related.map((c) => c.slug)).toContain("corrected-anion-gap");
+  });
+
+  it("excludes current calculator from results", () => {
+    const anionGap = calculatorRegistry.find((c) => c.id === "anion-gap")!;
+    const related = getRelatedCalculators(anionGap);
+    expect(related.map((c) => c.slug)).not.toContain("anion-gap");
+  });
+
+  it("respects limit option", () => {
+    const anionGap = calculatorRegistry.find((c) => c.id === "anion-gap")!;
+    const related = getRelatedCalculators(anionGap, { limit: 2 });
+    expect(related.length).toBeLessThanOrEqual(2);
+  });
+
+  it("falls back to metadata discovery when no manual related", () => {
+    const bmi = calculatorRegistry.find((c) => c.id === "bmi")!;
+    expect(bmi.relatedCalculators).toEqual([]);
+    const related = getRelatedCalculators(bmi);
+    expect(related.length).toBeGreaterThan(0);
+    expect(related.length).toBeLessThanOrEqual(5);
+  });
+
+  it("returns deterministic results", () => {
+    const ckdEpi = calculatorRegistry.find((c) => c.id === "ckd-epi-2021")!;
+    const first = getRelatedCalculators(ckdEpi).map((c) => c.id);
+    const second = getRelatedCalculators(ckdEpi).map((c) => c.id);
+    expect(first).toEqual(second);
+  });
+
+  it("no calculator appears twice in results", () => {
+    for (const calc of calculatorRegistry) {
+      const ids = getRelatedCalculators(calc).map((c) => c.id);
+      expect(ids.length).toBe(new Set(ids).size);
     }
   });
 });

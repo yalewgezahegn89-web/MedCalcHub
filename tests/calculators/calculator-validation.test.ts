@@ -97,6 +97,7 @@ const testInputs: Record<string, Record<string, string>> = {
   // -- Anthropometry --
   bmi: { weight: "70", height: "170" },
   bsa: { weight: "70", height: "170" },
+  "waist-to-hip-ratio": { waist: "80", hip: "100" },
 
   // -- Internal Medicine --
   ibw: { sex: "male", height: "170" },

@@ -105,6 +105,7 @@ export default async function CalculatorPage({
 
         <RelatedCalculators
           related={calculator.relatedCalculators}
+          calculator={calculator}
         />
       </CalculatorLayout>
     </>
