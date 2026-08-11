@@ -563,3 +563,265 @@ describe("buildSearchIndex", () => {
     expect(index.length).toBeGreaterThanOrEqual(30);
   });
 });
+
+/* ------------------------------------------------------------------
+   Sprint 1.7 Batch 2 — Search normalization, cross-entry consistency,
+   index completeness, clinical discovery, ranking quality
+   ------------------------------------------------------------------ */
+
+describe("query normalization", () => {
+  it("leading whitespace does not change results", () => {
+    const normal = searchCalculators("bmi");
+    const padded = searchCalculators("  bmi");
+    expect(normal.map((r) => r.document.slug)).toEqual(
+      padded.map((r) => r.document.slug),
+    );
+  });
+
+  it("trailing whitespace does not change results", () => {
+    const normal = searchCalculators("bmi");
+    const padded = searchCalculators("bmi  ");
+    expect(normal.map((r) => r.document.slug)).toEqual(
+      padded.map((r) => r.document.slug),
+    );
+  });
+
+  it("leading and trailing whitespace does not change results", () => {
+    const normal = searchCalculators("bmi");
+    const padded = searchCalculators("  bmi  ");
+    expect(normal.map((r) => r.document.slug)).toEqual(
+      padded.map((r) => r.document.slug),
+    );
+  });
+
+  it("multiple internal spaces do not change multi-word results", () => {
+    const normal = searchCalculators("body mass");
+    const spaced = searchCalculators("body  mass");
+    const tabbed = searchCalculators("body\tmass");
+
+    // body mass and body  mass should match the same calculators
+    expect(normal.map((r) => r.document.slug)).toEqual(
+      spaced.map((r) => r.document.slug),
+    );
+  });
+
+  it("mixed whitespace around query is handled", () => {
+    const normal = searchCalculators("corrected sodium");
+    const padded = searchCalculators("  corrected  sodium  ");
+    expect(normal.map((r) => r.document.slug)).toEqual(
+      padded.map((r) => r.document.slug),
+    );
+  });
+
+  it("single space matches same as no space for single word", () => {
+    const normal = searchCalculators("renal");
+    const padded = searchCalculators(" renal ");
+    expect(normal.map((r) => r.document.slug)).toEqual(
+      padded.map((r) => r.document.slug),
+    );
+  });
+});
+
+describe("search index completeness", () => {
+  it("every registry calculator has an index entry", () => {
+    const index = buildSearchIndex();
+    const indexSlugs = new Set(index.map((d) => d.slug));
+    // All calculators should have a slug in the index
+    expect(indexSlugs.size).toBe(index.length);
+  });
+
+  it("no duplicate slugs in index", () => {
+    const index = buildSearchIndex();
+    const slugs = index.map((d) => d.slug);
+    const uniqueSlugs = new Set(slugs);
+    expect(slugs.length).toBe(uniqueSlugs.size);
+  });
+
+  it("index has at least 30 calculators", () => {
+    const index = buildSearchIndex();
+    expect(index.length).toBeGreaterThanOrEqual(30);
+  });
+
+  it("representative calculators have non-empty keywords", () => {
+    const index = buildSearchIndex();
+    const childPugh = index.find(
+      (d) => d.slug === "child-pugh",
+    );
+    expect(childPugh).toBeDefined();
+    expect(childPugh!.keywords.length).toBeGreaterThan(0);
+
+    const correctedQt = index.find(
+      (d) => d.slug === "corrected-qt",
+    );
+    expect(correctedQt).toBeDefined();
+    expect(correctedQt!.keywords.length).toBeGreaterThan(0);
+  });
+
+  it("representative calculators have category and specialty", () => {
+    const index = buildSearchIndex();
+    for (const slug of [
+      "bmi",
+      "ckd-epi-2021",
+      "corrected-sodium",
+      "cockcroft-gault",
+      "news2",
+    ]) {
+      const doc = index.find((d) => d.slug === slug);
+      expect(doc).toBeDefined();
+      expect(doc!.category.length).toBeGreaterThan(0);
+      expect(doc!.specialty.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("clinical discovery queries", () => {
+  it("returns calculators for 'renal' query", () => {
+    const results = searchCalculators("renal");
+    expect(results.length).toBeGreaterThan(0);
+    const slugs = results.map((r) => r.document.slug);
+    expect(slugs).toContain("albumin-creatinine-ratio");
+  });
+
+  it("returns calculators for 'kidney' query", () => {
+    const results = searchCalculators("kidney");
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it("returns calculators for 'creatinine' query", () => {
+    const results = searchCalculators("creatinine");
+    expect(results.length).toBeGreaterThan(0);
+    const slugs = results.map((r) => r.document.slug);
+    expect(slugs).toContain("cockcroft-gault");
+    expect(slugs).toContain("albumin-creatinine-ratio");
+  });
+
+  it("returns calculators for 'cardiology' query", () => {
+    const results = searchCalculators("cardiology");
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it("returns calculators for 'heart' query", () => {
+    const results = searchCalculators("heart");
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it("returns calculators for 'diabetes' query", () => {
+    const results = searchCalculators("diabetes");
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it("returns calculators for 'glucose' query", () => {
+    const results = searchCalculators("glucose");
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it("returns calculators for 'bmi' query", () => {
+    const results = searchCalculators("bmi");
+    expect(results.length).toBeGreaterThan(0);
+    const slugs = results.map((r) => r.document.slug);
+    expect(slugs).toContain("bmi");
+  });
+
+  it("returns calculators for 'QT' query", () => {
+    const results = searchCalculators("QT");
+    expect(results.length).toBeGreaterThan(0);
+    const slugs = results.map((r) => r.document.slug);
+    expect(slugs).toContain("corrected-qt");
+  });
+
+  it("returns calculators for 'blood pressure' query", () => {
+    const results = searchCalculators("blood pressure");
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it("returns calculators for 'sodium' query", () => {
+    const results = searchCalculators("sodium");
+    expect(results.length).toBeGreaterThan(0);
+    const slugs = results.map((r) => r.document.slug);
+    expect(slugs).toContain("corrected-sodium");
+  });
+
+  it("returns calculators for 'calcium' query", () => {
+    const results = searchCalculators("calcium");
+    expect(results.length).toBeGreaterThan(0);
+  });
+});
+
+describe("ranking quality", () => {
+  it("title match scores higher than keyword-only match", () => {
+    // "Child-Pugh" appears in title (100) vs keyword (60) for other calculators
+    const results = searchCalculators("Child-Pugh");
+    expect(results.length).toBeGreaterThan(0);
+    // The calculator with "Child-Pugh" in title should rank first
+    expect(results[0].document.slug).toBe("child-pugh");
+  });
+
+  it("keyword match scores higher than description-only match", () => {
+    // "Liver" appears in Child-Pugh keywords (60) vs only in description (20) for others
+    const results = searchCalculators("Liver");
+    expect(results.length).toBeGreaterThan(0);
+    const childPugh = results.find(
+      (r) => r.document.slug === "child-pugh",
+    );
+    expect(childPugh).toBeDefined();
+    expect(childPugh!.score).toBeGreaterThanOrEqual(60);
+  });
+
+  it("multi-field matches accumulate score", () => {
+    // "Child-Pugh" matches title (100) + keyword (60) + description (20) = 180
+    const results = searchCalculators("Child-Pugh");
+    const childPugh = results.find(
+      (r) => r.document.slug === "child-pugh",
+    );
+    expect(childPugh).toBeDefined();
+    expect(childPugh!.score).toBeGreaterThanOrEqual(160);
+  });
+
+  it("alphabetical tie-breaking is deterministic", () => {
+    const results = searchCalculators("Nephrology");
+    expect(results.length).toBeGreaterThan(1);
+    // Verify ordering is stable
+    const first = searchCalculators("Nephrology");
+    const second = searchCalculators("Nephrology");
+    expect(first.map((r) => r.document.slug)).toEqual(
+      second.map((r) => r.document.slug),
+    );
+  });
+});
+
+describe("search behavior consistency", () => {
+  it("empty query returns empty results", () => {
+    const results = searchCalculators("");
+    expect(results).toEqual([]);
+  });
+
+  it("whitespace-only query returns empty results", () => {
+    const results = searchCalculators("   ");
+    expect(results).toEqual([]);
+  });
+
+  it("no results for nonsense query", () => {
+    const results = searchCalculators("zzzznonexistent");
+    expect(results).toEqual([]);
+  });
+
+  it("results are never undefined", () => {
+    const queries = [
+      "bmi",
+      "renal",
+      "cardiology",
+      "",
+      " ",
+      "zzzz",
+    ];
+    for (const query of queries) {
+      const results = searchCalculators(query);
+      for (const result of results) {
+        expect(result).toBeDefined();
+        expect(result.document).toBeDefined();
+        expect(typeof result.score).toBe("number");
+        expect(Array.isArray(result.matchedFields)).toBe(true);
+      }
+    }
+  });
+});

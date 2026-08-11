@@ -31,11 +31,12 @@ export default function SearchPage() {
       );
     }
 
-    if (!query.trim()) {
+    const trimmed = query.trim();
+    if (!trimmed) {
       return filtered;
     }
 
-    const search = query.toLowerCase();
+    const search = trimmed.toLowerCase();
 
     return filtered.filter((calculator) => {
       return (

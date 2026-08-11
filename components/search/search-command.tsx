@@ -10,9 +10,10 @@ export default function SearchCommand() {
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => {
-    if (!query.trim()) return [];
+    const trimmed = query.trim();
+    if (!trimmed) return [];
 
-    const q = query.toLowerCase();
+    const q = trimmed.toLowerCase();
 
     return calculatorRegistry
       .filter((calc) => {
@@ -20,9 +21,10 @@ export default function SearchCommand() {
           calc.name.toLowerCase().includes(q) ||
           calc.description.toLowerCase().includes(q) ||
           calc.category.toLowerCase().includes(q) ||
+          calc.specialty?.toLowerCase().includes(q) ||
           (calc.keywords ?? []).some((k) =>
-  k.toLowerCase().includes(q),
-)
+            k.toLowerCase().includes(q),
+          )
         );
       })
       .slice(0, 8);
