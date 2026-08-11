@@ -1503,4 +1503,179 @@ describe("getRelatedCalculators", () => {
       expect(ids.length).toBe(new Set(ids).size);
     }
   });
+
+  it("no calculator recommends itself", () => {
+    for (const calc of calculatorRegistry) {
+      const related = getRelatedCalculators(calc);
+      const ids = related.map((c) => c.id);
+      expect(ids).not.toContain(calc.id);
+    }
+  });
+
+  it("all related slugs map to registered calculators", () => {
+    const registryIds = new Set(calculatorRegistry.map((c) => c.id));
+    for (const calc of calculatorRegistry) {
+      const related = getRelatedCalculators(calc);
+      for (const rel of related) {
+        expect(registryIds.has(rel.id)).toBe(true);
+        expect(typeof rel.slug).toBe("string");
+        expect(rel.slug.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("related calculators never produce duplicate slugs across registry", () => {
+    for (const calc of calculatorRegistry) {
+      const related = getRelatedCalculators(calc);
+      const slugs = related.map((c) => c.slug);
+      expect(slugs.length).toBe(new Set(slugs).size);
+    }
+  });
+
+  it("related calculators are bounded (max 5 default)", () => {
+    for (const calc of calculatorRegistry) {
+      const related = getRelatedCalculators(calc);
+      expect(related.length).toBeLessThanOrEqual(5);
+    }
+  });
+
+  it("related calculators are deterministic across repeated calls", () => {
+    for (const calc of calculatorRegistry) {
+      const first = getRelatedCalculators(calc).map((c) => c.id);
+      const second = getRelatedCalculators(calc).map((c) => c.id);
+      expect(first).toEqual(second);
+    }
+  });
+});
+
+/* ------------------------------------------------------------------
+   Suggestions — additional regression tests
+   ------------------------------------------------------------------ */
+
+describe("getSuggestions (extended)", () => {
+  it("returns deterministic results across repeated calls", () => {
+    const a = getSuggestions("kidney").map((r) => r.document.slug);
+    const b = getSuggestions("kidney").map((r) => r.document.slug);
+    expect(a).toEqual(b);
+  });
+
+  it("returns deterministic results for 'bmi'", () => {
+    const a = getSuggestions("bmi").map((r) => r.document.slug);
+    const b = getSuggestions("bmi").map((r) => r.document.slug);
+    expect(a).toEqual(b);
+  });
+
+  it("never returns more than 8 results", () => {
+    const wide = getSuggestions("a");
+    expect(wide.length).toBeLessThanOrEqual(8);
+  });
+
+  it("whitespace-only query returns empty", () => {
+    expect(getSuggestions("   ")).toEqual([]);
+  });
+
+  it("single character returns empty (minimum 2 chars)", () => {
+    expect(getSuggestions("a")).toEqual([]);
+    expect(getSuggestions("b")).toEqual([]);
+  });
+
+  it("all suggestion slugs are valid route segments", () => {
+    for (const q of ["bmi", "renal", "kidney", "sodium", "heart"]) {
+      const suggestions = getSuggestions(q);
+      for (const s of suggestions) {
+        expect(s.document.slug).toBeTruthy();
+        expect(typeof s.document.slug).toBe("string");
+        expect(s.document.slug.length).toBeGreaterThan(0);
+        expect(s.document.slug).not.toContain(" ");
+      }
+    }
+  });
+
+  it("suggestions are a subset of searchCalculators results", () => {
+    for (const q of ["bmi", "renal", "kidney"]) {
+      const suggestions = getSuggestions(q);
+      const searchSlugs = searchCalculators(q).map((r) => r.document.slug);
+      for (const s of suggestions) {
+        expect(searchSlugs).toContain(s.document.slug);
+      }
+    }
+  });
+
+  it("does not return duplicate results", () => {
+    for (const q of ["bmi", "renal", "kidney", "calcium"]) {
+      const slugs = getSuggestions(q).map((r) => r.document.slug);
+      expect(slugs.length).toBe(new Set(slugs).size);
+    }
+  });
+});
+
+/* ------------------------------------------------------------------
+   Registry / Search integration — all calculators discoverable
+   ------------------------------------------------------------------ */
+
+describe("registry / search integration", () => {
+  it("search index length matches registry length", () => {
+    const index = buildSearchIndex();
+    expect(index.length).toBe(calculatorRegistry.length);
+  });
+
+  it("every registry slug appears in search index", () => {
+    const index = buildSearchIndex();
+    const indexSlugs = new Set(index.map((d) => d.slug));
+    for (const calc of calculatorRegistry) {
+      expect(indexSlugs.has(calc.slug)).toBe(true);
+    }
+  });
+
+  it("every registry calculator is discoverable by its name", () => {
+    for (const calc of calculatorRegistry) {
+      const results = searchCalculators(calc.name);
+      const slugs = results.map((r) => r.document.slug);
+      expect(slugs).toContain(calc.slug);
+    }
+  });
+
+  it("every registry calculator is discoverable by its category", () => {
+    for (const calc of calculatorRegistry) {
+      const results = searchCalculators(calc.category);
+      const slugs = results.map((r) => r.document.slug);
+      expect(slugs).toContain(calc.slug);
+    }
+  });
+
+  it("related calculator references are always registered", () => {
+    const registryIds = new Set(calculatorRegistry.map((c) => c.id));
+    for (const calc of calculatorRegistry) {
+      if (calc.relatedCalculators) {
+        for (const relId of calc.relatedCalculators) {
+          expect(registryIds.has(relId)).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("no calculator appears twice in registry", () => {
+    const ids = calculatorRegistry.map((c) => c.id);
+    expect(ids.length).toBe(new Set(ids).size);
+    const slugs = calculatorRegistry.map((c) => c.slug);
+    expect(slugs.length).toBe(new Set(slugs).size);
+  });
+
+  it("every registry calculator has a valid slug", () => {
+    for (const calc of calculatorRegistry) {
+      expect(typeof calc.slug).toBe("string");
+      expect(calc.slug.length).toBeGreaterThan(0);
+      expect(calc.slug).not.toContain(" ");
+    }
+  });
+
+  it("getRelatedCalculators results always reference registered calculators", () => {
+    const registryIds = new Set(calculatorRegistry.map((c) => c.id));
+    for (const calc of calculatorRegistry) {
+      const related = getRelatedCalculators(calc);
+      for (const rel of related) {
+        expect(registryIds.has(rel.id)).toBe(true);
+      }
+    }
+  });
 });

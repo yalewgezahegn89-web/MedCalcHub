@@ -15,7 +15,9 @@ export function RelatedCalculators({
 }: Props) {
   let calculators: CalculatorDefinition[] = [];
 
-  if (related && related.length > 0) {
+  if (related && related.length > 0 && calculator) {
+    const currentId = calculator.id;
+    const seen = new Set<string>([currentId]);
     calculators = related
       .map((id) =>
         calculatorRegistry.find(
@@ -24,7 +26,19 @@ export function RelatedCalculators({
       )
       .filter(
         (c): c is CalculatorDefinition =>
-          c !== undefined,
+          c !== undefined && !seen.has(c.id) && (() => { seen.add(c.id); return true; })(),
+      );
+  } else if (related && related.length > 0) {
+    const seen = new Set<string>();
+    calculators = related
+      .map((id) =>
+        calculatorRegistry.find(
+          (calc) => calc.id === id,
+        ),
+      )
+      .filter(
+        (c): c is CalculatorDefinition =>
+          c !== undefined && !seen.has(c.id) && (() => { seen.add(c.id); return true; })(),
       );
   }
 
