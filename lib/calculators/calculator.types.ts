@@ -57,11 +57,40 @@ export type CalculatorInputDefinition =
 
 
 
+export type ReferenceRangeSex = "male" | "female" | "all";
+
+export type ReferenceRangePopulation = "adult" | "pediatric" | "all";
+
+export type ReferenceRangeAgeUnit = "years" | "months" | "days";
+
+export type ReferenceRangeAgeGroup = {
+    min?: number;
+    max?: number;
+    unit?: ReferenceRangeAgeUnit;
+};
+
 export type ReferenceRange = {
 
-  label: string;
+    label: string;
 
-  range: string;
+    range: string;
+
+    unit?: string;
+
+    /** Biological/clinical sex-specific interpretation. */
+    sex?: ReferenceRangeSex;
+
+    /** Population group (adult/pediatric/all). */
+    population?: ReferenceRangePopulation;
+
+    /** Partial or bounded age range. */
+    ageGroup?: ReferenceRangeAgeGroup;
+
+    /** Pregnancy-specific designation. Absent = no pregnancy designation supplied. */
+    pregnancy?: boolean;
+
+    /** Clinical context such as "fasting", "non-fasting", "resting", "acute illness". */
+    context?: string;
 
 };
 

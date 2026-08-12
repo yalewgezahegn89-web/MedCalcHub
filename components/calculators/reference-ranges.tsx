@@ -8,6 +8,50 @@ type Props = {
   referenceRanges?: ReferenceRange[];
 };
 
+function formatAgeGroup(ageGroup?: ReferenceRange["ageGroup"]): string | null {
+  if (!ageGroup) return null;
+
+  const unit = ageGroup.unit ?? "years";
+
+  if (ageGroup.min !== undefined && ageGroup.max !== undefined) {
+    return `${ageGroup.min}–${ageGroup.max} ${unit}`;
+  }
+  if (ageGroup.min !== undefined) {
+    return `${ageGroup.min}+ ${unit}`;
+  }
+  if (ageGroup.max !== undefined) {
+    return `≤ ${ageGroup.max} ${unit}`;
+  }
+  return null;
+}
+
+function formatMetadataLabel(item: ReferenceRange): string | null {
+  const parts: string[] = [];
+
+  if (item.population && item.population !== "all") {
+    parts.push(item.population === "pediatric" ? "Pediatric" : "Adult");
+  }
+
+  if (item.sex && item.sex !== "all") {
+    parts.push(item.sex === "male" ? "Male" : "Female");
+  }
+
+  const age = formatAgeGroup(item.ageGroup);
+  if (age) {
+    parts.push(`Age: ${age}`);
+  }
+
+  if (item.pregnancy === true) {
+    parts.push("Pregnancy");
+  }
+
+  if (item.context) {
+    parts.push(item.context);
+  }
+
+  return parts.length > 0 ? parts.join(" · ") : null;
+}
+
 export function ReferenceRanges({
   normalRange,
   referenceRanges,
@@ -53,20 +97,35 @@ export function ReferenceRanges({
             </thead>
 
             <tbody>
-              {referenceRanges.map((item) => (
-                <tr
-                  key={item.label}
-                  className="border-b"
-                >
-                  <td className="py-2">
-                    {item.label}
-                  </td>
+              {referenceRanges.map((item) => {
+                const metadataLabel = formatMetadataLabel(item);
+                const rangeValue = item.unit
+                  ? `${item.range} ${item.unit}`
+                  : item.range;
 
-                  <td className="py-2">
-                    {item.range}
-                  </td>
-                </tr>
-              ))}
+                return (
+                  <tr
+                    key={item.label}
+                    className="border-b"
+                  >
+                    <td className="py-2">
+                      <div>
+                        {item.label}
+
+                        {metadataLabel && (
+                          <div className="text-xs text-muted-foreground">
+                            {metadataLabel}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="py-2">
+                      {rangeValue}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
