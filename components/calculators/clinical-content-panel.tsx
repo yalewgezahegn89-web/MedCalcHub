@@ -133,6 +133,36 @@ export function ClinicalContentPanel({
         </Section>
       )}
 
+      {content.references &&
+        content.references.length > 0 && (
+          <Section title="References">
+            <ol className="list-decimal list-inside space-y-1 text-gray-700 dark:text-gray-300 text-sm">
+              {content.references.map((ref, i) => (
+                <li key={i}>
+                  {ref.url ? (
+                    <a
+                      href={ref.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-gray-400 hover:decoration-gray-600"
+                    >
+                      {ref.citation}
+                    </a>
+                  ) : (
+                    <span>{ref.citation}</span>
+                  )}
+                  {ref.level && (
+                    <span className="text-gray-500 dark:text-gray-400">
+                      {" "}
+                      ({ref.level})
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </Section>
+        )}
+
       {content.disclaimer && (
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
           <p className="text-sm text-yellow-800 dark:text-yellow-200">

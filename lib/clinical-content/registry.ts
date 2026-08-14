@@ -598,4 +598,858 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and research purposes only. HOMA-IR is a research and screening tool and should not be used as a standalone diagnostic test. Clinical decisions should be based on comprehensive metabolic assessment.",
   },
+
+  "curb-65": {
+    clinicalPurpose:
+      "Stratifies severity and 30-day mortality risk in adults with community-acquired pneumonia (CAP) to help guide site-of-care decisions.",
+    howToUse: [
+      "Confirm the patient has community-acquired pneumonia before applying the score.",
+      "Enter the patient's age, urea, respiratory rate, and systolic blood pressure.",
+      "Select whether new-onset confusion is present.",
+      "Review the score and the corresponding severity-based management suggestion.",
+    ],
+    interpretation: {
+      guide:
+        "CURB-65 is scored 0–5 with one point each for new-onset confusion, urea > 7 mmol/L, respiratory rate ≥ 30/min, systolic blood pressure < 90 mmHg, and age ≥ 65. Scores of 0–1 are typically managed as outpatients; a score of 2 suggests hospital admission; a score ≥ 3 indicates severe pneumonia and consideration of ICU-level care.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Severity assessment in community-acquired pneumonia in adults",
+      "Site-of-care decision (outpatient vs hospital vs ICU)",
+      "Mortality risk stratification at presentation",
+    ],
+    whenNotToUse: [
+      "Hospital-acquired or ventilator-associated pneumonia",
+      "Pediatric pneumonia — CURB-65 is not validated in children",
+      "As a substitute for clinical judgment in unstable patients",
+      "As the sole determinant of disposition in patients with severe hypoxia or sepsis",
+    ],
+    limitations: [
+      "Derived and validated in adults with community-acquired pneumonia; not validated in children.",
+      "Urea must reflect the current presentation and can be affected by renal function, dehydration, and GI bleeding.",
+      "Age contributes a fixed point regardless of comorbidity burden.",
+      "Does not account for hypoxia, immunocompromise, or sepsis severity beyond hypotension.",
+      "The score should be combined with clinical judgment and assessment of oxygen requirements.",
+    ],
+    example: {
+      description:
+        "A 70-year-old man with community-acquired pneumonia has no new-onset confusion, urea 8.5 mmol/L, respiratory rate 24/min, and systolic blood pressure 105 mmHg.",
+      inputs: {
+        age: "70",
+        confusion: "0",
+        urea: "8.5",
+        "respiratory-rate": "24",
+        sbp: "105",
+      },
+      expectedResult:
+        "CURB-65 = 2 (age ≥ 65 and urea > 7 mmol/L). Moderate severity — strongly consider hospital admission.",
+    },
+    clinicalSignificance:
+      "CURB-65 is a validated, widely used tool that predicts 30-day mortality in community-acquired pneumonia and helps avoid both unnecessary admission of low-risk patients and unsafe discharge of high-risk patients.",
+    references: [
+      {
+        citation:
+          "Lim WS, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003;58(5):377-382.",
+        level: "Derivation/Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Severity scores inform but do not replace clinical judgment, especially in patients with hypoxia, sepsis, or significant comorbidity.",
+  },
+
+  "qsofa": {
+    clinicalPurpose:
+      "Identifies adults with suspected infection who are at high risk of sepsis-related organ dysfunction and death, prompting escalation of care.",
+    howToUse: [
+      "Use in a patient with suspected infection to prompt further assessment.",
+      "Measure the respiratory rate and systolic blood pressure and assess mental status.",
+      "Enter each value; each criterion met scores 1 point.",
+      "A score of 2 or more should prompt escalation, including assessment for organ dysfunction and consideration of ICU-level care.",
+    ],
+    interpretation: {
+      guide:
+        "qSOFA ranges from 0–3. A score of 0 is low concern, 1 indicates moderate concern, and ≥ 2 indicates high risk of sepsis-related organ dysfunction and mortality and should prompt escalation of care.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Bedside screening in patients with suspected infection outside the ICU",
+      "Rapid triage in the emergency department",
+      "Serial reassessment for clinical deterioration in suspected sepsis",
+    ],
+    whenNotToUse: [
+      "As the sole diagnostic tool for sepsis — use full clinical sepsis criteria and assessment",
+      "In pediatric patients — qSOFA is not validated in children",
+      "As a substitute for thorough clinical assessment and vital sign monitoring",
+      "In pregnancy, where physiological changes may alter normal blood pressure and respiratory rate",
+    ],
+    limitations: [
+      "qSOFA is a screening tool, not a diagnostic test for sepsis.",
+      "It has lower sensitivity than the full SOFA score; a low qSOFA does not exclude sepsis.",
+      "Intended primarily for non-ICU settings; predictive value is reduced in the ICU.",
+      "Does not include lactate or other biomarkers.",
+      "Physiological changes in pregnancy may affect interpretation of blood pressure and respiratory rate.",
+    ],
+    example: {
+      description:
+        "A 58-year-old woman with suspected urinary sepsis has a systolic blood pressure of 95 mmHg, respiratory rate 24/min, and is alert and oriented.",
+      inputs: {
+        sbp: "95",
+        "respiratory-rate": "24",
+        "mental-status": "0",
+      },
+      expectedResult:
+        "qSOFA = 2 (SBP ≤ 100 mmHg and RR ≥ 22/min). High risk of sepsis-related organ dysfunction — escalate care urgently.",
+    },
+    clinicalSignificance:
+      "qSOFA provides a rapid bedside screen that, in the setting of suspected infection, flags patients at elevated risk of poor outcomes and enables earlier recognition and treatment of sepsis.",
+    references: [
+      {
+        citation:
+          "Seymour CW, et al. Assessment of Clinical Criteria for Sepsis: For the Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):762-774.",
+        level: "Derivation/Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. qSOFA is a screening tool and must not replace full clinical assessment or delay treatment in patients with suspected sepsis.",
+  },
+
+  "gcs": {
+    clinicalPurpose:
+      "Provides a standardized measure of the level of consciousness based on eye, verbal, and motor responses, widely used in trauma, neurology, and critical care.",
+    howToUse: [
+      "Assess the best eye, verbal, and motor response, using noxious stimulation when the patient does not respond spontaneously or to voice.",
+      "Record the best response in each component.",
+      "Sum the three component scores to obtain the total GCS (3–15).",
+      "Repeat at intervals and document trends — a fall of 2 points is clinically significant.",
+    ],
+    interpretation: {
+      guide:
+        "GCS 13–15 is generally considered mild impairment, 9–12 moderate, and ≤ 8 severe. A GCS ≤ 8 is commonly used as a threshold for consideration of airway protection. Scores must be interpreted in the context of sedation, intoxication, and baseline neurologic status, and pediatric verbal scoring differs for pre-verbal children.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Initial and serial assessment of consciousness after head trauma",
+      "Monitoring neurologic status in critical illness",
+      "Standardized communication of level of consciousness",
+      "Triggering consideration of airway protection in severe brain injury",
+    ],
+    whenNotToUse: [
+      "As the sole determinant of neurologic prognosis",
+      "In patients whose responses are confounded by paralysis, deep sedation, or intubation (a modified GCS should be documented instead)",
+      "As a replacement for a full neurologic examination including pupils",
+    ],
+    limitations: [
+      "Does not assess brainstem function, pupil reactivity, or focal deficits.",
+      "Interobserver variability exists; the best response should be recorded.",
+      "Intubation, sedation, paralysis, and language barriers confound the verbal component.",
+      "Pre-verbal children require age-adjusted verbal scoring.",
+      "A single score is less informative than the trend over time.",
+    ],
+    example: {
+      description:
+        "A 40-year-old man after a fall opens his eyes to speech, is confused in conversation, and localizes to pain.",
+      inputs: {
+        eye: "3",
+        verbal: "4",
+        motor: "5",
+      },
+      expectedResult:
+        "GCS = 3 + 4 + 5 = 12, indicating moderate impairment (9–12 range). Serial reassessment is warranted.",
+    },
+    clinicalSignificance:
+      "The Glasgow Coma Scale is one of the most widely used clinical scales; it standardizes communication about the level of consciousness and correlates with outcome after traumatic brain injury.",
+    references: [
+      {
+        citation:
+          "Teasdale G, Jennett B. Assessment of coma and impaired consciousness: a practical scale. Lancet. 1974;304(7872):81-84.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The GCS is one component of neurologic assessment and must be interpreted alongside the full clinical picture.",
+  },
+
+  "shock-index": {
+    clinicalPurpose:
+      "Relates heart rate to systolic blood pressure to flag patients whose heart rate is inappropriately high relative to blood pressure, indicating impaired hemodynamic reserve.",
+    howToUse: [
+      "Obtain heart rate (bpm) and systolic blood pressure (mmHg) at the same time.",
+      "Enter both values.",
+      "Compare the result against the normal range (approximately 0.5–0.7).",
+      "Use serial measurements to track trends during resuscitation.",
+    ],
+    interpretation: {
+      guide:
+        "A shock index of 0.5–0.7 is generally considered normal. Values above 0.7 are commonly regarded as elevated and warrant investigation; progressively higher values indicate increasing concern for impaired hemodynamic reserve, particularly in trauma, hemorrhage, and sepsis.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Rapid bedside assessment in trauma and suspected hemorrhage",
+      "Screening for occult hypoperfusion in sepsis and critical illness",
+      "Monitoring response to volume resuscitation",
+      "Emergency triage when hemodynamics are concerning",
+    ],
+    whenNotToUse: [
+      "As the sole indicator of shock",
+      "In patients with bradycardia, pacemakers, or arrhythmias where heart rate is not a reliable marker",
+      "In children, where normal values differ by age",
+      "As a replacement for blood pressure, lactate, urine output, or perfusion assessment",
+    ],
+    limitations: [
+      "Heart rate is affected by rate-control medications, pacemakers, and autonomic dysfunction.",
+      "Does not measure cardiac output, lactate, or tissue perfusion directly.",
+      "Normal reference values differ in children.",
+      "A single normal value does not exclude compensated shock.",
+    ],
+    example: {
+      description:
+        "A 45-year-old man after a motor vehicle accident has a heart rate of 120 bpm and a systolic blood pressure of 80 mmHg.",
+      inputs: {
+        "heart-rate": "120",
+        sbp: "80",
+      },
+      expectedResult:
+        "Shock Index = 120 / 80 = 1.5. This is well above the normal range (0.5–0.7) and indicates significant hemodynamic compromise requiring urgent evaluation.",
+    },
+    clinicalSignificance:
+      "The shock index is a simple, inexpensive screening tool that can identify compensated shock before frank hypotension develops, because heart rate often rises before blood pressure falls.",
+    references: [
+      {
+        citation:
+          "Rady MY, Smithline HA, Blake H, et al. A comparison of the shock index and conventional vital signs to identify acute, critical illness in the emergency department. Ann Emerg Med. 1994;24(4):685-690.",
+        level: "Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The shock index is a screening adjunct and must be interpreted with full hemodynamic and clinical assessment.",
+  },
+
+  "map": {
+    clinicalPurpose:
+      "Calculates mean arterial pressure (MAP), the average pressure driving perfusion of vital organs, from systolic and diastolic blood pressure.",
+    howToUse: [
+      "Measure the systolic and diastolic blood pressure.",
+      "Enter both values.",
+      "Review the calculated MAP against normal values and perfusion targets.",
+    ],
+    interpretation: {
+      guide:
+        "Normal resting MAP is approximately 70–100 mmHg. In sepsis and septic shock, a MAP ≥ 65 mmHg is a commonly cited target to support organ perfusion. Very low MAP raises concern for organ hypoperfusion, while the optimal target varies with the patient's baseline blood pressure and condition.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Hemodynamic assessment in the critically ill",
+      "Guiding blood pressure targets in sepsis and shock",
+      "Monitoring vasopressor therapy",
+      "Assessing the risk of organ hypoperfusion",
+    ],
+    whenNotToUse: [
+      "As a substitute for full hemodynamic monitoring (cardiac output, lactate, urine output)",
+      "In isolation without clinical context",
+    ],
+    limitations: [
+      "The formula estimates MAP from a formula rather than a direct measurement.",
+      "It is less reliable with wide pulse pressures or very high heart rates.",
+      "Optimal MAP targets vary by patient and condition (e.g., chronic hypertension, age).",
+      "Does not reflect the adequacy of cardiac output or tissue perfusion.",
+    ],
+    example: {
+      description:
+        "A 60-year-old man with septic shock has a blood pressure of 90/60 mmHg.",
+      inputs: {
+        sbp: "90",
+        dbp: "60",
+      },
+      expectedResult:
+        "MAP = (90 + 2 × 60) / 3 = 70 mmHg, meeting the commonly cited ≥ 65 mmHg perfusion target in sepsis.",
+    },
+    clinicalSignificance:
+      "MAP reflects the driving pressure for organ perfusion more closely than systolic or diastolic pressure alone and is a central parameter in resuscitation and vasopressor management.",
+    references: [
+      {
+        citation:
+          "Meaney E, Alva F, Moguel R, et al. Formula and nomogram for the sphygmomanometric calculation of the mean arterial pressure. Heart. 2000;84(1):64.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Evans L, et al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Crit Care Med. 2021;49(11):e1063-e1143.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. MAP targets should be individualized based on clinical context and institutional protocols.",
+  },
+
+  "mdrd": {
+    clinicalPurpose:
+      "Estimates glomerular filtration rate (eGFR) using the 4-variable MDRD equation, primarily encountered in older laboratory reports and historical comparisons.",
+    howToUse: [
+      "Enter the patient's age, sex, and serum creatinine (mg/dL).",
+      "Review the estimated eGFR and the corresponding CKD G stage.",
+      "For new clinical decisions, prefer the CKD-EPI 2021 equation when available.",
+    ],
+    interpretation: {
+      guide:
+        "MDRD eGFR is interpreted using the same KDIGO G stages as CKD-EPI: G1 ≥ 90, G2 60–89, G3a 45–59, G3b 30–44, G4 15–29, and G5 < 15 mL/min/1.73 m². The equation applies a female adjustment factor (× 0.742).",
+      sexSpecific: true,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Comparing with older laboratory reports that still report MDRD eGFR",
+      "Historical interpretation of eGFR trends",
+      "Where CKD-EPI is unavailable",
+    ],
+    whenNotToUse: [
+      "For new clinical decisions when CKD-EPI is available",
+      "For medication dosing without drug-specific guidance (Cockcroft-Gault is commonly referenced)",
+      "In acute kidney injury with unstable creatinine",
+      "At extremes of body size or muscle mass without clinical correlation",
+    ],
+    limitations: [
+      "Tends to underestimate GFR when the true GFR is above 60 mL/min/1.73 m².",
+      "Was developed in patients with known CKD and is less accurate in healthy individuals.",
+      "Values may differ from CKD-EPI; trends should be compared within the same equation.",
+      "Less accurate at extremes of muscle mass and body habitus.",
+    ],
+    example: {
+      description:
+        "A 65-year-old woman has a serum creatinine of 1.1 mg/dL.",
+      inputs: {
+        age: "65",
+        sex: "2",
+        creatinine: "1.1",
+      },
+      expectedResult:
+        "eGFR ≈ 175 × 1.1^-1.154 × 65^-0.203 × 0.742 ≈ 50 mL/min/1.73 m², corresponding to CKD stage G3a (45–59).",
+    },
+    clinicalSignificance:
+      "The MDRD equation made eGFR reporting practical and remains important for interpreting older laboratory results and understanding why CKD-EPI has replaced it.",
+    references: [
+      {
+        citation:
+          "Levey AS, Bosch JP, Lewis JB, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine: a new prediction equation. Ann Intern Med. 1999;130(6):461-470.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. eGFR is an estimate and MDRD has been largely superseded by CKD-EPI for current clinical decisions.",
+  },
+
+  "fena": {
+    clinicalPurpose:
+      "Quantifies the fractional excretion of sodium to help distinguish prerenal azotemia from intrinsic renal injury (such as acute tubular necrosis) in acute kidney injury.",
+    howToUse: [
+      "Obtain a spot urine sodium and urine creatinine together with paired plasma sodium and plasma creatinine.",
+      "Enter all four values.",
+      "Review the FENa and its suggested category.",
+      "In patients receiving diuretics, consider FEUrea instead.",
+    ],
+      interpretation: {
+        guide:
+          "FENa < 1% suggests prerenal azotemia (the kidneys are appropriately conserving sodium), 1–2% is indeterminate, and > 2% suggests intrinsic renal injury such as ATN. Interpretation is unreliable in the setting of diuretics, chronic kidney disease, and in the elderly.",
+        sexSpecific: false,
+        ageSpecific: false,
+      },
+      whenToUse: [
+        "Evaluation of acute kidney injury to differentiate prerenal from intrinsic causes",
+        "When paired urine and plasma electrolytes are available",
+        "Complementing the BUN/Cr ratio and FEUrea",
+      ],
+    whenNotToUse: [
+      "In patients receiving diuretics — prefer FEUrea",
+      "In chronic kidney disease or the elderly, where thresholds are less reliable",
+      "In acute kidney injury with rapidly changing renal function",
+      "As a standalone diagnostic test",
+    ],
+    limitations: [
+      "Diuretics increase urinary sodium excretion and invalidate the test.",
+      "Chronic kidney disease and older age reduce its discriminating ability.",
+      "Requires spot urine and plasma samples from the same time point.",
+      "Results may be variable with obstruction and other intrinsic causes.",
+      "Does not, by itself, establish the cause of acute kidney injury.",
+    ],
+    example: {
+      description:
+        "A 55-year-old man with diarrhea-induced volume depletion has a urine sodium of 20 mmol/L, plasma sodium 140 mmol/L, urine creatinine 100 mg/dL, and plasma creatinine 1.0 mg/dL.",
+      inputs: {
+        urineNa: "20",
+        plasmaNa: "140",
+        urineCr: "100",
+        plasmaCr: "1.0",
+      },
+      expectedResult:
+        "FENa = (20/140) ÷ (100/1.0) × 100 ≈ 0.14%. This low value suggests prerenal azotemia — the kidneys are conserving sodium appropriately.",
+    },
+    clinicalSignificance:
+      "FENa is a classic bedside test that helps clinicians identify potentially reversible prerenal causes of AKI, where prompt volume resuscitation may prevent progression to intrinsic injury.",
+    references: [
+      {
+        citation:
+          "Carvounis CP, et al. Significance of the fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62(3):1184-1191.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. FENa must be interpreted with the clinical context and is unreliable in patients on diuretics or with chronic kidney disease.",
+  },
+
+  "feurea": {
+    clinicalPurpose:
+      "Estimates the fractional excretion of urea to help distinguish prerenal azotemia from intrinsic renal injury, particularly useful when diuretics make FENa unreliable.",
+    howToUse: [
+      "Use when the patient is receiving diuretics or FENa is otherwise unreliable.",
+      "Obtain paired urine urea, plasma urea, urine creatinine, and plasma creatinine.",
+      "Enter all four values.",
+      "Review the FEUrea and its suggested category.",
+    ],
+    interpretation: {
+      guide:
+        "FEUrea < 35% suggests prerenal azotemia, 35–50% is indeterminate, and > 50% suggests intrinsic renal injury such as ATN. Because urea reabsorption is less affected by diuretics than sodium, FEUrea retains diagnostic utility in patients on diuretics.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "AKI evaluation when diuretics have been given",
+      "Complementing FENa in the prerenal-versus-intrinsic distinction",
+      "When the BUN/Cr ratio is inconclusive",
+    ],
+    whenNotToUse: [
+      "As a replacement for FENa when no diuretics are involved",
+      "As a standalone diagnostic test",
+      "In severe liver disease, where urea production is reduced",
+    ],
+    limitations: [
+      "Less widely validated than FENa.",
+      "Urea handling is influenced by protein intake, catabolic states, and corticosteroids.",
+      "Reduced hepatic urea production affects both serum and urine urea.",
+      "Thresholds are less well established in some populations.",
+    ],
+    example: {
+      description:
+        "A 68-year-old woman with heart failure on furosemide has a urine urea of 300 mg/dL, plasma urea 25 mg/dL, urine creatinine 100 mg/dL, and plasma creatinine 1.5 mg/dL.",
+      inputs: {
+        urineUrea: "300",
+        plasmaUrea: "25",
+        urineCr: "100",
+        plasmaCr: "1.5",
+      },
+      expectedResult:
+        "FEUrea = (300/25) ÷ (100/1.5) × 100 ≈ 18%. This value below 35% suggests prerenal azotemia.",
+    },
+    clinicalSignificance:
+      "Because diuretics blunt the diagnostic utility of FENa, FEUrea provides a useful complementary test for the prerenal-versus-intrinsic distinction in patients on diuretics.",
+    references: [
+      {
+        citation:
+          "Pépin MN, et al. Reassessment of the fractional excretion of urea for the differential diagnosis of acute renal failure. Clin Invest Med. 2007;30(5):E163-167.",
+        level: "Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. FEUrea is a complementary test and must be interpreted alongside FENa, urine studies, and clinical context.",
+  },
+
+  "albumin-creatinine-ratio": {
+    clinicalPurpose:
+      "Quantifies urine albumin relative to urine creatinine to screen for and stage chronic kidney disease (albuminuria categories A1–A3).",
+    howToUse: [
+      "Obtain a spot urine sample; a first-morning void is preferred.",
+      "Enter urine albumin (mg/L) and urine creatinine (g/L).",
+      "Review the ACR and the corresponding albuminuria category.",
+      "Confirm persistence with repeated measurements over at least 3 months before diagnosing CKD.",
+    ],
+    interpretation: {
+      guide:
+        "ACR < 30 mg/g is normal to mildly increased albuminuria (A1), 30–300 mg/g is moderately increased (A2), and > 300 mg/g is severely increased (A3). Albuminuria should be interpreted together with eGFR, and persistent elevation for at least 3 months supports a diagnosis of CKD. Pediatric reference values and pregnancy-specific criteria differ and require age- and pregnancy-appropriate interpretation.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: true,
+      pregnancy: true,
+    },
+    whenToUse: [
+      "CKD screening in diabetes, hypertension, and cardiovascular disease",
+      "CKD staging alongside eGFR",
+      "Monitoring response to renin-angiotensin system blockade",
+      "Risk stratification for CKD progression",
+    ],
+    whenNotToUse: [
+      "To diagnose CKD from a single abnormal result",
+      "During acute conditions causing transient albuminuria (fever, exercise, urinary tract infection, heart failure decompensation)",
+      "As a replacement for eGFR assessment",
+      "Without pregnancy-specific guidance in pregnant patients",
+    ],
+    limitations: [
+      "Transient albuminuria from fever, exercise, or urinary tract infection can elevate the ratio.",
+      "Urine creatinine varies with muscle mass, affecting the ratio at extremes of body habitus.",
+      "First-morning voids are preferred; the collection method and urine concentration affect the result.",
+      "Pediatric reference values and pregnancy-specific thresholds differ from adult non-pregnant values.",
+      "Assesses albuminuria only — it does not measure kidney function (eGFR).",
+    ],
+    example: {
+      description:
+        "A 52-year-old man with type 2 diabetes has a spot urine albumin of 250 mg/L and urine creatinine of 1.0 g/L.",
+      inputs: {
+        albumin: "250",
+        creatinine: "1.0",
+      },
+      expectedResult:
+        "ACR = 250 / 1.0 = 250 mg/g, indicating moderately increased albuminuria (A2). Repeat measurement is needed to confirm persistence.",
+    },
+    clinicalSignificance:
+      "ACR is a cornerstone of CKD screening and staging; it detects early kidney damage before eGFR declines and independently stratifies cardiovascular and renal risk.",
+    references: [
+      {
+        citation:
+          "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Persistent albuminuria and the diagnosis of CKD require confirmatory testing over at least 3 months alongside eGFR.",
+  },
+
+  "corrected-calcium": {
+    clinicalPurpose:
+      "Adjusts measured total serum calcium for hypoalbuminemia to estimate the physiologically relevant total calcium, since a large fraction of serum calcium is albumin-bound.",
+    howToUse: [
+      "Measure total serum calcium (mg/dL) and albumin (g/dL) from the same blood sample.",
+      "Enter both values.",
+      "Review the corrected calcium against the normal range.",
+      "When ionized calcium is available, use it for clinical decisions, especially in the critically ill.",
+    ],
+    interpretation: {
+      guide:
+        "Corrected calcium < 8.5 mg/dL indicates hypocalcemia, 8.5–10.5 mg/dL is normal, ≥ 10.6 mg/dL is hypercalcemia, and ≥ 12.5 mg/dL is severe hypercalcemia. The correction assumes a normal albumin of 4.0 g/dL and becomes less reliable when albumin is below 2.0 g/dL. In neonates and children, correction factors and reference ranges differ.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Interpreting total calcium when serum albumin is low (liver disease, nephrotic syndrome, malnutrition)",
+      "Initial assessment for possible hypocalcemia or hypercalcemia",
+      "When ionized calcium measurement is unavailable",
+    ],
+    whenNotToUse: [
+      "In critically ill patients, where ionized calcium is preferred",
+      "When hypercalcemia is suspected — the correction is not validated for that setting",
+      "In neonates and children, where reference ranges and correction factors differ",
+      "In patients with marked acid-base disturbance, which alters calcium–albumin binding",
+    ],
+    limitations: [
+      "Assumes a fixed relationship between albumin and calcium binding that varies across populations.",
+      "Does not account for serum pH, which changes calcium–protein binding.",
+      "Becomes less reliable when albumin is below 2.0 g/dL.",
+      "Is not a substitute for ionized calcium measurement.",
+      "The 0.8 correction factor is an estimate; some institutions use 0.7 or 0.73.",
+    ],
+    example: {
+      description:
+        "A 63-year-old woman with cirrhosis has a measured total calcium of 8.0 mg/dL and serum albumin of 2.0 g/dL.",
+      inputs: {
+        calcium: "8.0",
+        albumin: "2.0",
+      },
+      expectedResult:
+        "Corrected calcium = 8.0 + 0.8 × (4 − 2) = 9.6 mg/dL, within the normal range. The low measured calcium was explained by hypoalbuminemia.",
+    },
+    clinicalSignificance:
+      "Because a large fraction of serum calcium is protein-bound, low albumin can mask true calcium status; correction helps avoid unnecessary treatment of spurious hypocalcemia.",
+    references: [
+      {
+        citation:
+          "Pay DA, et al. Corrected calcium in hypercalcaemia and hypocalcaemia. Ann Clin Biochem. 2004;41(6):486-488.",
+        level: "Review Article",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The correction is an estimate; ionized calcium is the preferred measurement in the critically ill and when hypercalcemia is suspected.",
+  },
+
+  "homa-b": {
+    clinicalPurpose:
+      "Estimates pancreatic beta-cell function relative to the prevailing fasting glucose, complementing HOMA-IR in the assessment of glucose–insulin homeostasis.",
+    howToUse: [
+      "Obtain fasting plasma glucose (mmol/L) and fasting serum insulin (µU/mL).",
+      "Enter both values.",
+      "Review the HOMA-B percentage against the reference ranges.",
+      "Interpret together with HOMA-IR to separate beta-cell dysfunction from insulin resistance.",
+    ],
+    interpretation: {
+      guide:
+        "HOMA-B of 100–200% is generally considered normal beta-cell function; 50–100% suggests reduced function; < 50% suggests significant beta-cell dysfunction; and ≥ 200% reflects hyperinsulinemia. Values must be interpreted in the context of the patient's fasting glucose and insulin.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Estimating beta-cell function in type 2 diabetes",
+      "Research and longitudinal tracking of beta-cell decline",
+      "Pairing with HOMA-IR to characterize glucose handling",
+    ],
+    whenNotToUse: [
+      "In type 1 diabetes or in patients on exogenous insulin",
+      "As a diagnostic test for diabetes",
+      "When the patient is not fasting",
+      "As a substitute for C-peptide when precise beta-cell assessment is needed",
+    ],
+    limitations: [
+      "Requires fasting samples; non-fasting values are unreliable.",
+      "Insulin assay variability limits comparability across laboratories and studies.",
+      "May be transiently elevated in newly diagnosed type 2 diabetes due to glucotoxicity.",
+      "Not validated for type 1 diabetes or exogenous insulin use.",
+      "Is an estimate, not a direct measure of beta-cell mass.",
+    ],
+    example: {
+      description:
+        "A 50-year-old man with type 2 diabetes has a fasting glucose of 6.0 mmol/L and fasting insulin of 10 µU/mL.",
+      inputs: {
+        glucose: "6.0",
+        insulin: "10",
+      },
+      expectedResult:
+        "HOMA-B = (20 × 10) / (6.0 − 3.5) = 80%, suggesting reduced beta-cell function (50–100% range).",
+    },
+    clinicalSignificance:
+      "HOMA-B provides a practical estimate of beta-cell function from routine fasting labs and helps track the progressive beta-cell decline characteristic of type 2 diabetes.",
+    references: [
+      {
+        citation:
+          "Matthews DR, Hosker JP, Rudenski AS, et al. Homeostasis model assessment: insulin resistance and beta-cell function from fasting plasma glucose and insulin concentrations in man. Diabetologia. 1985;28(7):412-419.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and research purposes only. HOMA-B is an estimate of beta-cell function and must not be used as a standalone diagnostic test.",
+  },
+
+  "insulin-sensitivity": {
+    clinicalPurpose:
+      "Presents insulin resistance as its reciprocal so that higher values indicate better insulin sensitivity, providing an intuitive complement to HOMA-IR.",
+    howToUse: [
+      "Enter the patient's HOMA-IR value.",
+      "Review the insulin sensitivity score.",
+      "Higher values (toward 1.0) reflect better sensitivity.",
+    ],
+    interpretation: {
+      guide:
+        "A score > 0.4 is generally considered good insulin sensitivity; 0.2–0.4 suggests reduced sensitivity; and < 0.2 indicates significant insulin resistance.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Quick clinic or bedside estimate of insulin sensitivity",
+      "Presenting HOMA-IR results in a more intuitive direction",
+      "Monitoring response to lifestyle interventions",
+    ],
+    whenNotToUse: [
+      "In type 1 diabetes",
+      "In patients on exogenous insulin",
+      "As a dynamic measure of the insulin response to meals",
+      "As a standalone diagnostic test",
+    ],
+    limitations: [
+      "Is derived entirely from HOMA-IR and inherits its fasting and assay limitations.",
+      "Captures a single fasting measurement, not the dynamic response to meals.",
+      "Not validated in type 1 diabetes.",
+      "Insulin assay variability affects the result.",
+    ],
+    example: {
+      description:
+        "A 48-year-old woman has a HOMA-IR of 4.0.",
+      inputs: {
+        homaIr: "4.0",
+      },
+      expectedResult:
+        "Insulin sensitivity = 1 / 4.0 = 0.25, in the reduced range (0.2–0.4), consistent with meaningful insulin resistance.",
+    },
+    clinicalSignificance:
+      "Expressing insulin resistance as sensitivity (1/HOMA-IR) makes results more intuitive for patients and clinicians tracking improvement, since values rise as metabolic health improves.",
+    references: [
+      {
+        citation:
+          "Wallace TM, Levy JC, Matthews DR. Use and abuse of HOMA modeling. Diabetes Care. 2004;27(6):1487-1495.",
+        level: "Review Article",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and research purposes only. Insulin sensitivity derived from HOMA-IR is an estimate and should not be used as a standalone diagnostic test.",
+  },
+
+  "bsa": {
+    clinicalPurpose:
+      "Estimates body surface area using the Mosteller formula, used to normalize physiological parameters and to dose selected medications.",
+    howToUse: [
+      "Measure weight (kg) and height (cm).",
+      "Enter both values.",
+      "Review the calculated BSA in m².",
+    ],
+    interpretation: {
+      guide:
+        "Typical adult BSA ranges from approximately 1.4–2.2 m². The value is used to index physiological parameters such as cardiac output and to dose certain medications normalized to body surface area.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Dosing medications that are normalized to body surface area",
+      "Indexing cardiac output, renal, or other physiological parameters",
+      "Assessment of body size in clinical studies",
+    ],
+    whenNotToUse: [
+      "As a measure of body fatness — use BMI and body composition instead",
+      "In place of weight-based dosing where the drug label specifies weight-based dosing",
+      "As a substitute for the direct assessment of burn surface area",
+    ],
+    limitations: [
+      "Several BSA formulas exist (Mosteller, DuBois, Haycock) and results differ slightly between them.",
+      "Assumes a fixed weight–height relationship that is less accurate at extremes of body habitus.",
+      "Is not a measure of body composition.",
+      "Pediatric use is common, but the formula chosen should be consistent within an institution.",
+    ],
+    example: {
+      description:
+        "A 40-year-old woman weighs 70 kg and is 170 cm tall.",
+      inputs: {
+        weight: "70",
+        height: "170",
+      },
+      expectedResult:
+        "BSA = √((170 × 70) / 3600) ≈ 1.82 m², within the typical adult range.",
+    },
+    clinicalSignificance:
+      "BSA is a standard index in physiology and pharmacology, used to scale physiological variables and guide dosing of several high-risk medications.",
+    references: [
+      {
+        citation:
+          "Mosteller RD. Simplified calculation of body-surface area. N Engl J Med. 1987;317(17):1098.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Dosing decisions must always follow drug-specific labeling and institutional protocols.",
+  },
+
+  "ideal-body-weight": {
+    clinicalPurpose:
+      "Estimates ideal body weight using the Devine formula, providing a size-adjusted reference weight used in drug dosing and physiological comparisons.",
+    howToUse: [
+      "Select the patient's sex.",
+      "Enter height in centimeters.",
+      "Review the estimated ideal body weight in kg.",
+    ],
+    interpretation: {
+      guide:
+        "IBW provides a reference weight for a given height and sex; it does not define health or body composition. It is commonly used as the weight basis for certain drug-dosing calculations and for deriving adjusted body weight.",
+      sexSpecific: true,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "As a size-adjusted weight for drug dosing",
+      "Calculating adjusted body weight for dosing in obesity",
+      "Comparing patient weight against a height-based reference",
+    ],
+    whenNotToUse: [
+      "To diagnose obesity or underweight — use BMI",
+      "As a target weight for weight-loss programs",
+      "In children, where age- and height-based references are needed",
+      "In patients with major amputations without adjustment",
+    ],
+    limitations: [
+      "The Devine formula was derived for adults and is not validated in children.",
+      "May underestimate for patients with high lean mass and overestimate in other body types.",
+      "IBW is a mathematical reference, not a measure of health.",
+      "Different formulas (Devine, Robinson, Miller, Hamwi) yield different values.",
+    ],
+    example: {
+      description:
+        "A 35-year-old man is 180 cm tall.",
+      inputs: {
+        sex: "male",
+        height: "180",
+      },
+      expectedResult:
+        "IBW = 50 + 2.3 × (180/2.54 − 60) ≈ 75.0 kg using the Devine formula.",
+    },
+    clinicalSignificance:
+      "IBW is the foundation for several weight-based dosing adjustments, particularly adjusted body weight in obese patients, and is widely used in clinical pharmacy and dosing practice.",
+    references: [
+      {
+        citation:
+          "Devine BJ. Gentamicin therapy. Drug Intell Clin Pharm. 1974;8(11):650-655.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Ideal body weight is an estimate and dosing decisions must follow drug-specific guidance.",
+  },
+
+  "adjusted-body-weight": {
+    clinicalPurpose:
+      "Provides a dosing weight for overweight and obese adults by combining ideal body weight with a fraction of the excess weight, used when medications require a body-weight-adjusted dose.",
+    howToUse: [
+      "Confirm the patient is overweight or obese, as this adjustment is intended for that population.",
+      "Select sex, and enter height and actual weight.",
+      "Review the adjusted body weight in kg.",
+      "Use the adjusted weight in place of actual weight only where drug-specific guidance calls for it.",
+    ],
+    interpretation: {
+      guide:
+        "Adjusted body weight falls between ideal and actual body weight. It is intended for medication dosing in overweight and obese adults, where actual weight may lead to over-dosing and ideal weight to under-dosing.",
+      sexSpecific: true,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Medication dosing in overweight and obese adults where the drug label or guidance specifies adjusted weight",
+      "As a size-adjusted dosing weight when actual weight overestimates the relevant lean mass",
+    ],
+    whenNotToUse: [
+      "In normal-weight patients, where the adjustment provides no benefit",
+      "For all medications — many drugs are dosed by actual weight",
+      "In children, where pediatric weight references apply",
+      "Without checking drug-specific dosing guidance",
+    ],
+    limitations: [
+      "The 0.4 adjustment factor is empirical and varies by source.",
+      "Applies to adults; pediatric use requires other references.",
+      "Is not a measure of body composition or lean mass.",
+      "Whether to use actual, ideal, or adjusted weight depends on the specific drug.",
+    ],
+    example: {
+      description:
+        "A 45-year-old man who is 180 cm tall weighs 110 kg.",
+      inputs: {
+        sex: "male",
+        height: "180",
+        weight: "110",
+      },
+      expectedResult:
+        "AdjBW = 75.0 + 0.4 × (110 − 75.0) = 89.0 kg, the adjusted dosing weight for this patient.",
+    },
+    clinicalSignificance:
+      "Adjusted body weight helps balance the risk of over-dosing (with actual weight) and under-dosing (with ideal weight) for weight-based medications in obesity, where both extremes carry clinical risk.",
+    references: [
+      {
+        citation:
+          "ClinCalc Drug Dosing Reference. Adjusted Body Weight.",
+        level: "Reference",
+      },
+      {
+        citation:
+          "ASHP Clinical Guidelines on medication dosing in obese patients.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Medication dosing must follow drug-specific labeling, pharmacokinetics, and institutional protocols.",
+  },
 };
