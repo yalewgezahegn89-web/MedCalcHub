@@ -41,6 +41,23 @@ const BATCH_5_SLUGS = [
   "adjusted-body-weight",
 ];
 
+const BATCH_6_SLUGS = [
+  "child-pugh",
+  "corrected-anion-gap",
+  "serum-osmolality",
+  "ttkg",
+  "calcium-phosphate-product",
+  "a1c-eag-converter",
+  "estimated-average-glucose",
+  "bmi-for-pediatrics",
+  "lean-body-weight",
+  "mifflin-st-jeor",
+  "harris-benedict",
+  "sodium-deficit",
+  "heart-rate",
+  "waist-to-hip-ratio",
+];
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -578,6 +595,261 @@ describe("Clinical Content — Sprint 1.8 Batch 5 Expansion", () => {
     const covered = new Set([
       ...PILOT_SLUGS,
       ...BATCH_5_SLUGS,
+    ]);
+    for (const slug of covered) {
+      expect(
+        clinicalContentRegistry[slug],
+        `Covered slug "${slug}" missing content`,
+      ).toBeDefined();
+    }
+  });
+});
+
+describe("Clinical Content — Sprint 1.8 Batch 6 Expansion", () => {
+  it("every batch-6 selected calculator has clinical content", () => {
+    for (const slug of BATCH_6_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(
+        content,
+        `Batch 6 calculator "${slug}" missing clinical content`,
+      ).toBeDefined();
+    }
+  });
+
+  it("every batch-6 slug corresponds to a registered calculator", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of BATCH_6_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `Batch 6 slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("every batch-6 record has required core fields", () => {
+    for (const slug of BATCH_6_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      const record = content!;
+
+      expect(
+        record.clinicalPurpose,
+        `${slug}.clinicalPurpose`,
+      ).toBeDefined();
+      expect(
+        record.clinicalPurpose!.length,
+        `${slug}.clinicalPurpose length`,
+      ).toBeGreaterThan(0);
+
+      expect(record.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(
+        record.howToUse!.length,
+        `${slug}.howToUse length`,
+      ).toBeGreaterThan(0);
+      for (const step of record.howToUse!) {
+        expect(step.length).toBeGreaterThan(0);
+      }
+
+      expect(
+        record.whenToUse,
+        `${slug}.whenToUse`,
+      ).toBeDefined();
+      expect(
+        record.whenToUse!.length,
+        `${slug}.whenToUse length`,
+      ).toBeGreaterThan(0);
+
+      expect(
+        record.limitations,
+        `${slug}.limitations`,
+      ).toBeDefined();
+      expect(
+        record.limitations!.length,
+        `${slug}.limitations length`,
+      ).toBeGreaterThan(0);
+
+      expect(
+        record.disclaimer,
+        `${slug}.disclaimer`,
+      ).toBeDefined();
+      expect(
+        record.disclaimer!.length,
+        `${slug}.disclaimer length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("every batch-6 record has an interpretation guide", () => {
+    for (const slug of BATCH_6_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      const record = content!;
+
+      expect(
+        record.interpretation,
+        `${slug}.interpretation`,
+      ).toBeDefined();
+      expect(
+        record.interpretation!.guide,
+        `${slug}.interpretation.guide`,
+      ).toBeDefined();
+      expect(
+        record.interpretation!.guide!.length,
+        `${slug}.interpretation.guide length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("every batch-6 record has a valid worked example", () => {
+    for (const slug of BATCH_6_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      const record = content!;
+
+      expect(record.example, `${slug}.example`).toBeDefined();
+      expect(
+        record.example!.description,
+        `${slug}.example.description`,
+      ).toBeDefined();
+      expect(
+        record.example!.inputs,
+        `${slug}.example.inputs`,
+      ).toBeDefined();
+      const inputs = record.example!.inputs!;
+      expect(
+        Object.keys(inputs).length,
+        `${slug}.example.inputs keys`,
+      ).toBeGreaterThan(0);
+      for (const [key, value] of Object.entries(inputs)) {
+        expect(
+          value.length,
+          `${slug}.example.inputs.${key}`,
+        ).toBeGreaterThan(0);
+      }
+      expect(
+        record.example!.expectedResult,
+        `${slug}.example.expectedResult`,
+      ).toBeDefined();
+    }
+  });
+
+  it("every batch-6 example input key matches a registered calculator input", () => {
+    const bySlug = new Map(
+      calculatorRegistry.map((c) => [c.slug, c]),
+    );
+    for (const slug of BATCH_6_SLUGS) {
+      const calculator = bySlug.get(slug);
+      const inputIds = new Set(
+        (calculator?.inputs ?? []).map((i) => i.id),
+      );
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      for (const key of Object.keys(
+        content!.example!.inputs!,
+      )) {
+        expect(
+          inputIds.has(key),
+          `${slug} example key "${key}" is not a calculator input`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("every batch-6 record has valid references", () => {
+    for (const slug of BATCH_6_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      const record = content!;
+
+      expect(
+        record.references,
+        `${slug}.references`,
+      ).toBeDefined();
+      expect(
+        record.references!.length,
+        `${slug}.references length`,
+      ).toBeGreaterThan(0);
+      for (const ref of record.references!) {
+        expect(
+          ref.citation.length,
+          `${slug} reference citation`,
+        ).toBeGreaterThan(0);
+        if (ref.url !== undefined) {
+          expect(ref.url.startsWith("http")).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("every batch-6 record with evidence has valid structure", () => {
+    for (const slug of BATCH_6_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      const record = content!;
+
+      expect(record.evidence, `${slug}.evidence`).toBeDefined();
+      const evidence = record.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(evidence.source!.length).toBeGreaterThan(0);
+      if (evidence.references !== undefined) {
+        expect(Array.isArray(evidence.references)).toBe(true);
+        for (const ref of evidence.references) {
+          expect(ref.length).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it("every batch-6 record with comparison has valid structure", () => {
+    for (const slug of BATCH_6_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      const record = content!;
+
+      if (record.comparison === undefined) continue;
+      const calculators = record.comparison!.calculators ?? [];
+      expect(
+        calculators.length,
+        `${slug}.comparison.calculators length`,
+      ).toBeGreaterThan(0);
+      for (const item of calculators) {
+        expect(item.name.length).toBeGreaterThan(0);
+        expect(item.href.startsWith("/")).toBe(true);
+      }
+    }
+  });
+
+  it("adds no orphan content and keeps the registry deterministic", () => {
+    const keys = Object.keys(clinicalContentRegistry);
+    expect(new Set(keys).size).toBe(keys.length);
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const key of keys) {
+      expect(registrySlugs.has(key)).toBe(true);
+    }
+    expect(getClinicalContent("child-pugh")).toBe(
+      clinicalContentRegistry["child-pugh"],
+    );
+  });
+
+  it("keeps the existing pilots and batch 5 records intact", () => {
+    const covered = new Set([
+      ...PILOT_SLUGS,
+      ...BATCH_5_SLUGS,
+    ]);
+    for (const slug of covered) {
+      expect(clinicalContentRegistry[slug]).toBeDefined();
+    }
+  });
+
+  it("reports full coverage of pilots plus batch 5 plus batch 6", () => {
+    const covered = new Set([
+      ...PILOT_SLUGS,
+      ...BATCH_5_SLUGS,
+      ...BATCH_6_SLUGS,
     ]);
     for (const slug of covered) {
       expect(

@@ -1452,4 +1452,1331 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Medication dosing must follow drug-specific labeling, pharmacokinetics, and institutional protocols.",
   },
+
+  "child-pugh": {
+    clinicalPurpose:
+      "Scores the severity and prognosis of chronic liver disease and cirrhosis using bilirubin, albumin, INR, ascites, and hepatic encephalopathy.",
+    howToUse: [
+      "Confirm the patient has chronic liver disease or cirrhosis before applying the score.",
+      "Select the point value for total bilirubin, albumin, INR, ascites, and encephalopathy.",
+      "Sum the five component scores to obtain the total (5–15 points).",
+      "Use the resulting class to guide prognosis and treatment planning.",
+    ],
+    interpretation: {
+      guide:
+        "Class A (5–6 points) reflects well-compensated liver disease with an estimated 1-year survival of ≈95%. Class B (7–9 points) reflects significant functional compromise (≈80% 1-year survival). Class C (10–15 points) indicates decompensated disease with a poor prognosis (≈45% 1-year survival).",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Assessing prognosis in patients with cirrhosis",
+      "Estimating surgical risk in patients with liver disease",
+      "Evaluating candidacy for treatment and transplantation planning",
+      "Monitoring disease progression over time",
+    ],
+    whenNotToUse: [
+      "In acute liver failure without cirrhosis",
+      "As the sole basis for transplantation listing — transplant candidacy requires additional evaluation",
+      "In patients without confirmed chronic liver disease",
+    ],
+    limitations: [
+      "Subject to inter-observer variability in grading ascites and encephalopathy.",
+      "Does not capture portal hypertension complications such as variceal bleeding or hepatorenal syndrome.",
+      "Not validated for acute liver injury.",
+    ],
+    example: {
+      description:
+        "A 58-year-old man with alcoholic cirrhosis has a bilirubin of 1.5 mg/dL (<2, 1 point), albumin 3.8 g/dL (>3.5, 1 point), INR 1.2 (<1.7, 1 point), mild ascites (2 points), and grade I–II encephalopathy (2 points).",
+      inputs: {
+        bilirubin: "1",
+        albumin: "1",
+        inr: "1",
+        ascites: "2",
+        encephalopathy: "2",
+      },
+      expectedResult:
+        "Total score = 7 points, Child-Pugh Class B — significant functional compromise with an estimated 1-year survival of ≈80%.",
+    },
+    clinicalSignificance:
+      "The Child-Pugh score stratifies the severity of cirrhosis, informs surgical and procedural risk assessment, and helps identify patients who need early referral for liver transplantation evaluation.",
+    references: [
+      {
+        citation:
+          "Pugh RNH, Murray-Lyon IM, Dawson JL, et al. Transection of the oesophagus for bleeding oesophageal varices. Br J Surg. 1973;60(8):646-649.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Child CG, Turcotte JG. Surgery and portal hypertension. Major Probl Clin Surg. 1964;1:1-85.",
+        level: "Original Description",
+      },
+    ],
+    evidence: {
+      source: "Hepatology Literature",
+      reference: "Pugh RNH, et al. Br J Surg. 1973;60(8):646-649.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1973",
+      references: [
+        "Pugh RNH, et al. Br J Surg. 1973;60(8):646-649.",
+        "Child CG, Turcotte JG. Major Probl Clin Surg. 1964;1:1-85.",
+        "AASLD Practice Guidance on cirrhosis.",
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The Child-Pugh score is one component of a full prognostic assessment and does not replace specialist evaluation.",
+  },
+
+  "corrected-anion-gap": {
+    clinicalPurpose:
+      "Adjusts the serum anion gap for hypoalbuminemia to unmask a hidden high anion gap metabolic acidosis (HAGMA) that a low albumin would otherwise conceal.",
+    howToUse: [
+      "Measure serum sodium, chloride, bicarbonate, and albumin from the same blood draw.",
+      "Enter each value in the appropriate field.",
+      "Compare the corrected result to the reference range of 8–12 mmol/L.",
+      "If elevated, pursue the same differential as for a standard high anion gap acidosis.",
+    ],
+    interpretation: {
+      guide:
+        "A corrected anion gap of 8–12 mmol/L is normal. ≥13 mmol/L indicates a high corrected anion gap, and ≥20 mmol/L is markedly elevated. Each 1 g/dL drop in albumin below 4.0 g/dL lowers the measured anion gap by roughly 2.5 mmol/L.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Hypoalbuminemic patients (critical illness, nephrotic syndrome, liver disease, malnutrition)",
+      "Critically ill patients with suspected acid-base disorders",
+      "Any evaluation of metabolic acidosis when albumin is low",
+    ],
+    whenNotToUse: [
+      "When serum albumin is normal — the standard anion gap calculator is sufficient",
+      "As a standalone diagnostic without ABG and clinical correlation",
+    ],
+    limitations: [
+      "The 2.5 mmol/L correction factor is an approximation; some sources use 2.4 or 2.8.",
+      "Very low albumin (<2.0 g/dL) may reduce the reliability of the correction.",
+      "Does not account for other unmeasured proteins or anions.",
+    ],
+    example: {
+      description:
+        "A 62-year-old ICU patient has sodium 140 mmol/L, chloride 105 mmol/L, bicarbonate 12 mmol/L, and albumin 3.0 g/dL.",
+      inputs: {
+        sodium: "140",
+        chloride: "105",
+        bicarbonate: "12",
+        albumin: "3.0",
+      },
+      expectedResult:
+        "Corrected AG = (140 − (105 + 12)) + 2.5 × (4 − 3) = 23 + 2.5 = 25.5 mmol/L — markedly elevated, consistent with a high anion gap metabolic acidosis.",
+    },
+    clinicalSignificance:
+      "Albumin normally contributes roughly 75% of the anion gap. In hypoalbuminemia the measured gap is falsely low, so correction is essential in critically ill patients where a HAGMA could otherwise be missed.",
+    references: [
+      {
+        citation:
+          "Figge J, Jabor A, Kazda A, et al. Anion gap and hypoalbuminemia. Crit Care Med. 1998;26(11):1807-1810.",
+        level: "Primary Study",
+      },
+      {
+        citation:
+          "Kraut JA, Madias NE. Serum anion gap: its uses and limitations in clinical medicine. Clin J Am Soc Nephrol. 2007;2(1):162-174.",
+        level: "Review",
+      },
+    ],
+    evidence: {
+      source: "Critical Care Medicine",
+      reference: "Figge J, et al. Crit Care Med. 1998;26(11):1807-1810.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      references: [
+        "Figge J, et al. Crit Care Med. 1998;26(11):1807-1810.",
+        "Kraut JA, Madias NE. Clin J Am Soc Nephrol. 2007;2(1):162-174.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "Why does low albumin lower the measured anion gap?",
+        answer:
+          "Albumin is a negatively charged protein that contributes significantly to the normal anion gap. When albumin is low, there are fewer unmeasured negative charges, so the calculated gap falls even when an acidosis is present.",
+      },
+      {
+        question:
+          "What correction factor should I use?",
+        answer:
+          "The most common correction adds 2.5 mmol/L to the measured anion gap for every 1 g/dL that albumin falls below 4.0 g/dL. Some sources use 2.4 or 2.8 mmol/L per g/dL depending on the population.",
+      },
+    ],
+    comparison: {
+      title: "Which Anion Gap Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Anion Gap",
+          href: "/calculators/anion-gap",
+          bestFor: "Routine screening when albumin is normal.",
+          limitation: "Falsely low in hypoalbuminemia.",
+        },
+        {
+          name: "Albumin-Corrected Anion Gap",
+          href: "/calculators/corrected-anion-gap",
+          bestFor: "Unmasking HAGMA in hypoalbuminemic patients.",
+          limitation: "Correction factor is approximate.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Interpret the corrected anion gap together with arterial blood gas and the clinical context.",
+  },
+
+  "serum-osmolality": {
+    clinicalPurpose:
+      "Estimates serum osmolality from sodium, glucose, and blood urea nitrogen, supporting evaluation of electrolyte disorders, hydration status, and toxic ingestions.",
+    howToUse: [
+      "Enter serum sodium (mmol/L), glucose (mg/dL), and BUN (mg/dL).",
+      "Review the calculated osmolality (normal ≈ 275–295 mOsm/kg).",
+      "If a measured osmolality is available, compare it with the calculated value to derive the osmolar gap.",
+    ],
+    interpretation: {
+      guide:
+        "Normal serum osmolality is 275–295 mOsm/kg. Values below ~275 mOsm/kg suggest dilutional hyponatremia. Values ≥296 mOsm/kg are high and ≥320 mOsm/kg are critically elevated, indicating hypernatremia, hyperglycemia, uremia, or ingestion of osmotically active substances.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluation of hyponatremia and hypernatremia",
+      "Assessment of hydration status",
+      "Suspected toxic alcohol ingestion (paired with the osmolar gap)",
+      "Guiding the rate of hypernatremia correction",
+    ],
+    whenNotToUse: [
+      "Without a measured osmolality when calculating the osmolar gap",
+      "When glucose and BUN are entered in different units than mg/dL",
+      "As a substitute for measured osmolality when the clinical question demands it",
+    ],
+    limitations: [
+      "Requires glucose and BUN in mg/dL; results are incorrect with other units.",
+      "Does not account for ethanol — add ethanol/4.6 for effective osmolality.",
+      "An elevated osmolar gap requires a measured osmolality from the laboratory.",
+    ],
+    example: {
+      description:
+        "A 45-year-old man with poor intake and nausea has sodium 140 mmol/L, glucose 200 mg/dL, and BUN 14 mg/dL.",
+      inputs: {
+        sodium: "140",
+        glucose: "200",
+        bun: "14",
+      },
+      expectedResult:
+        "Calculated osmolality = 2(140) + 200/18 + 14/2.8 = 280 + 11.1 + 5 = 296.1 mOsm/kg — high, warranting a measured osmolality to assess the osmolar gap.",
+    },
+    clinicalSignificance:
+      "Serum osmolality is a core component of evaluating sodium disorders, guides the interpretation of the osmolar gap for toxic alcohol exposure, and informs the rate of hypernatremia correction.",
+    references: [
+      {
+        citation:
+          "Dorwart WV, Chalmers T. Comparison of methods for calculating serum osmolality from chemical concentrations, and the prognostic value of such calculations. Clin Chem. 1975;21(2):190-194.",
+        level: "Primary Study",
+      },
+      {
+        citation:
+          "UpToDate. Serum osmolality.",
+        level: "Reference",
+      },
+    ],
+    evidence: {
+      source: "Emergency Medicine / Nephrology",
+      reference: "Dorwart WV, Chalmers T. Clin Chem. 1975;21(2):190-194.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      references: [
+        "Dorwart WV, Chalmers T. Clin Chem. 1975;21(2):190-194.",
+        "Tintinalli's Emergency Medicine, 9th ed.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "What is the osmolar gap and why does it matter?",
+        answer:
+          "The osmolar gap is the difference between measured and calculated osmolality. An elevated gap (>10 mOsm/kg) suggests unmeasured osmotically active substances such as methanol, ethylene glycol, or ethanol.",
+      },
+      {
+        question:
+          "How does ethanol affect osmolality?",
+        answer:
+          "Ethanol contributes to measured osmolality but not to this calculated value. Add approximately ethanol (mg/dL)/4.6 to account for its contribution when estimating effective osmolality.",
+      },
+    ],
+    comparison: {
+      title: "Which Osmolality Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Serum Osmolality",
+          href: "/calculators/serum-osmolality",
+          bestFor: "Estimating osmolality from basic labs.",
+          limitation: "Does not include ethanol or unmeasured osmoles.",
+        },
+        {
+          name: "Osmolar Gap",
+          href: "/calculators/osmolar-gap",
+          bestFor: "Detecting toxic alcohol ingestion.",
+          limitation: "Requires a measured osmolality.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Confirm critical results with a measured osmolality and interpret within the clinical context.",
+  },
+
+  "ttkg": {
+    clinicalPurpose:
+      "Calculates the transtubular potassium gradient (TTKG) to assess renal potassium handling, primarily in the evaluation of hyperkalemia.",
+    howToUse: [
+      "Collect simultaneous urine and plasma potassium, and urine and plasma osmolality.",
+      "Enter urine potassium (mmol/L), plasma potassium (mmol/L), urine osmolality (mOsm/kg), and plasma osmolality (mOsm/kg).",
+      "Review the TTKG against the reference range of 8–12.",
+    ],
+    interpretation: {
+      guide:
+        "A TTKG of 8–12 reflects a normal renal potassium response. In hyperkalemia, a TTKG <8 suggests impaired distal potassium secretion (e.g., hypoaldosteronism or acute kidney injury), while a value >10 suggests intact aldosterone-mediated potassium secretion.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluating hyperkalemia of unclear cause",
+      "Assessing the renal response to potassium handling",
+      "Differentiating hypoaldosteronism from other causes of hyperkalemia",
+    ],
+    whenNotToUse: [
+      "In patients on potassium-wasting or potassium-sparing diuretics without caution",
+      "As the sole diagnostic test — some experts question its physiological validity",
+      "When urine and plasma values are not collected simultaneously",
+    ],
+    limitations: [
+      "Interpretation may be confounded by diuretics and renal conditions.",
+      "The physiological validity of TTKG has been questioned by some experts.",
+      "Requires simultaneous collection of all four values for meaningful results.",
+    ],
+    example: {
+      description:
+        "A 70-year-old man with diabetic nephropathy has hyperkalemia (plasma K 5.0 mmol/L). Urine K is 40 mmol/L, urine osmolality 400 mOsm/kg, and plasma osmolality 300 mOsm/kg.",
+      inputs: {
+        urineK: "40",
+        plasmaK: "5.0",
+        urineOsmolality: "400",
+        plasmaOsmolality: "300",
+      },
+      expectedResult:
+        "TTKG = (40 × 300) / (5.0 × 400) = 12,000 / 2,000 = 6.0 — impaired K⁺ secretion (<8), suggesting hypoaldosteronism; check aldosterone and renin levels.",
+    },
+    clinicalSignificance:
+      "TTKG helps localize the cause of hyperkalemia to the kidney by evaluating distal potassium secretion, guiding further evaluation for hypoaldosteronism and tubular disorders.",
+    references: [
+      {
+        citation:
+          "Kamel KS, Halperin ML. Transtubular potassium gradient: a useful tool in the assessment of hyperkalemia. J Am Soc Nephrol. 2001;12(8):1839-1844.",
+        level: "Review",
+      },
+    ],
+    evidence: {
+      source: "Nephrology Literature",
+      reference: "Kamel KS, Halperin ML. J Am Soc Nephrol. 2001;12(8):1839-1844.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2001",
+      references: [
+        "Kamel KS, Halperin ML. J Am Soc Nephrol. 2001;12(8):1839-1844.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "What does a low TTKG mean in hyperkalemia?",
+        answer:
+          "A low TTKG (<8) in the setting of hyperkalemia suggests impaired distal potassium secretion, often due to hypoaldosteronism or distal tubular dysfunction.",
+      },
+      {
+        question:
+          "Is TTKG still used clinically?",
+        answer:
+          "TTKG remains a useful bedside tool, though some experts have questioned its physiological basis. It should be interpreted alongside other clinical data.",
+      },
+    ],
+    comparison: {
+      title: "Which Renal Function Calculator Should I Use?",
+      calculators: [
+        {
+          name: "TTKG",
+          href: "/calculators/ttkg",
+          bestFor: "Assessing renal potassium secretion.",
+          limitation: "Physiological validity has been questioned.",
+        },
+        {
+          name: "FENa",
+          href: "/calculators/fena",
+          bestFor: "Distinguishing prerenal azotemia from intrinsic AKI.",
+          limitation: "Does not assess potassium handling.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. TTKG should be interpreted within the full clinical context and not used alone.",
+  },
+
+  "calcium-phosphate-product": {
+    clinicalPurpose:
+      "Calculates the calcium–phosphate product to assess the risk of metastatic and vascular calcification, particularly in chronic kidney disease and dialysis patients.",
+    howToUse: [
+      "Enter serum calcium (mg/dL) and serum phosphate (mg/dL) from the same blood draw.",
+      "Review the product against the target of <55 mg²/dL².",
+      "For elevated results, evaluate mineral metabolism including PTH and vitamin D.",
+    ],
+    interpretation: {
+      guide:
+        "A product <55 mg²/dL² is acceptable. Values of 55–70 mg²/dL² are elevated with increased calcification risk, and values ≥70 mg²/dL² are critically elevated with high calcification risk.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Monitoring patients with chronic kidney disease",
+      "Assessing vascular calcification risk in dialysis patients",
+      "Guiding management of hyperphosphatemia",
+    ],
+    whenNotToUse: [
+      "As a substitute for assessing PTH, vitamin D, or FGF23 status",
+      "In isolation without considering the renal and mineral metabolism picture",
+    ],
+    limitations: [
+      "Does not directly measure PTH, vitamin D, or vascular calcification burden.",
+      "Interpretation should always be with the patient's renal and mineral metabolism status.",
+      "Historical targets have been debated; KDIGO emphasizes managing underlying mineral abnormalities.",
+    ],
+    example: {
+      description:
+        "A 65-year-old woman on hemodialysis has serum calcium 9.5 mg/dL and phosphate 6.0 mg/dL.",
+      inputs: {
+        calcium: "9.5",
+        phosphate: "6.0",
+      },
+      expectedResult:
+        "Calcium–phosphate product = 9.5 × 6.0 = 57 mg²/dL² — elevated, indicating increased calcification risk; review phosphorus intake and phosphate binder use.",
+    },
+    clinicalSignificance:
+      "An elevated calcium–phosphate product is associated with increased vascular calcification and cardiovascular morbidity, making it an important monitoring target in CKD-MBD management.",
+    references: [
+      {
+        citation:
+          "KDIGO. Clinical practice guideline update for the diagnosis, evaluation, prevention, and treatment of CKD-MBD. Kidney Int Suppl. 2017;7(1):1-59.",
+        level: "Guideline",
+      },
+    ],
+    evidence: {
+      source: "KDIGO",
+      reference: "KDIGO CKD-MBD Guideline. Kidney Int Suppl. 2017;7(1):1-59.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2017",
+      references: [
+        "KDIGO CKD-MBD Guideline. Kidney Int Suppl. 2017;7(1):1-59.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "How do I lower an elevated calcium–phosphate product?",
+        answer:
+          "Reduce dietary phosphorus, use phosphate binders, and optimize dialysis adequacy. Avoid excessive calcium-based binders to prevent hypercalcemia.",
+      },
+      {
+        question:
+          "Why does the product matter in CKD?",
+        answer:
+          "In CKD and dialysis patients, elevated calcium and phosphate drive vascular and soft-tissue calcification, which is linked to increased cardiovascular risk.",
+      },
+    ],
+    comparison: {
+      title: "Which Mineral Metabolism Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Calcium-Phosphate Product",
+          href: "/calculators/calcium-phosphate-product",
+          bestFor: "Assessing calcification risk in CKD.",
+          limitation: "Does not measure PTH or vitamin D.",
+        },
+        {
+          name: "CKD-EPI 2021",
+          href: "/calculators/ckd-epi-2021",
+          bestFor: "Estimating kidney function.",
+          limitation: "Does not assess mineral metabolism.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Manage the underlying mineral abnormalities rather than treating the number alone.",
+  },
+
+  "a1c-eag-converter": {
+    clinicalPurpose:
+      "Converts between hemoglobin A1c and estimated average glucose (eAG) using the ADAG equation, helping patients relate A1c to familiar glucose readings.",
+    howToUse: [
+      "Enter the NGSP-standardized HbA1c value (%).",
+      "Review the corresponding eAG in mg/dL.",
+      "Use the ADA target of A1c <7% (eAG <154 mg/dL) for most non-pregnant adults as a starting point.",
+    ],
+    interpretation: {
+      guide:
+        "A1c <6.1% is in the normal range, 6.0–6.5% is the pre-diabetes range, and ≥6.5% is diagnostic of diabetes. An A1c of 7% corresponds to an eAG of approximately 154 mg/dL.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Explaining A1c results to patients in glucose units",
+      "Setting and reviewing glycemic targets",
+      "Translating between A1c and eAG in diabetes care",
+    ],
+    whenNotToUse: [
+      "When A1c is unreliable (haemoglobinopathies, iron deficiency, pregnancy, altered red cell turnover)",
+      "With assays not standardized to NGSP",
+      "As a measure of glycemic variability",
+    ],
+    limitations: [
+      "eAG is an average and does not capture glucose variability or hypoglycemic episodes.",
+      "The ADAG formula applies to NGSP-standardized assays only.",
+      "A1c may be falsely low or high with altered red blood cell lifespan.",
+    ],
+    example: {
+      description:
+        "A 52-year-old patient with type 2 diabetes has an HbA1c of 7.0%.",
+      inputs: {
+        a1c: "7",
+      },
+      expectedResult:
+        "eAG = 28.7 × 7 − 46.7 = 154.2 mg/dL, consistent with the ADA target of <7% (eAG <154 mg/dL).",
+    },
+    clinicalSignificance:
+      "Converting A1c to eAG translates a percentage into everyday glucose units, improving patient understanding and engagement in diabetes self-management.",
+    references: [
+      {
+        citation:
+          "Nathan DM, Kuenen J, Borg R, et al. Translating the A1c assay into estimated average glucose values. Diabetes Care. 2008;31(8):1473-1478.",
+        level: "Primary Study",
+      },
+      {
+        citation:
+          "American Diabetes Association. Standards of Care in Diabetes. Diabetes Care. 2025.",
+        level: "Guideline",
+      },
+    ],
+    evidence: {
+      source: "ADA / ADAG Study",
+      reference: "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2008",
+      references: [
+        "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
+        "ADA Standards of Care in Diabetes. 2025.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "What is the ADA target for most adults with diabetes?",
+        answer:
+          "The ADA recommends an HbA1c target of <7% (eAG <154 mg/dL) for most non-pregnant adults, with individualization based on age, comorbidities, and hypoglycemia risk.",
+      },
+      {
+        question:
+          "How accurate is the A1c to eAG conversion?",
+        answer:
+          "The ADAG equation explains most of the relationship between A1c and average glucose, but individual results vary with assay standardization and red cell turnover.",
+      },
+    ],
+    comparison: {
+      title: "Which Glycemic Calculator Should I Use?",
+      calculators: [
+        {
+          name: "A1c ↔ eAG Converter",
+          href: "/calculators/a1c-eag-converter",
+          bestFor: "Bidirectional A1c ↔ eAG conversion.",
+          limitation: "Same underlying ADAG formula.",
+        },
+        {
+          name: "Estimated Average Glucose",
+          href: "/calculators/estimated-average-glucose",
+          bestFor: "A1c to eAG conversion only.",
+          limitation: "Unidirectional.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Glycemic targets should be individualized and verified with appropriate laboratory assays.",
+  },
+
+  "estimated-average-glucose": {
+    clinicalPurpose:
+      "Estimates mean plasma glucose from HbA1c using the ADAG equation, translating A1c into a mg/dL value patients can compare with home glucose readings.",
+    howToUse: [
+      "Enter the NGSP-standardized HbA1c value (%).",
+      "Review the estimated average glucose in mg/dL.",
+      "Interpret against the normal range of 70–140 mg/dL and the ADA target of eAG ≈154 mg/dL.",
+    ],
+    interpretation: {
+      guide:
+        "eAG <140 mg/dL is normal, 140–200 mg/dL is the pre-diabetic range, and ≥200 mg/dL is in the diabetic range. eAG reflects average glucose over the preceding 2–3 months.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Translating A1c into familiar glucose units for patient education",
+      "Assessing overall glycemic control over 2–3 months",
+      "Setting and reviewing glycemic targets",
+    ],
+    whenNotToUse: [
+      "In conditions altering red cell lifespan (iron deficiency, sickle cell trait, pregnancy)",
+      "As a substitute for CGM or self-monitoring data when variability is the question",
+    ],
+    limitations: [
+      "Derived from continuous glucose monitoring studies and may differ from finger-stick averages.",
+      "Does not reflect glucose variability or hypoglycemic episodes.",
+      "Affected by conditions that change red blood cell survival.",
+    ],
+    example: {
+      description:
+        "A 60-year-old patient with impaired glucose tolerance has an HbA1c of 6.0%.",
+      inputs: {
+        a1c: "6.0",
+      },
+      expectedResult:
+        "eAG = 28.7 × 6.0 − 46.7 = 125.5 mg/dL — normal average glucose range.",
+    },
+    clinicalSignificance:
+      "eAG converts A1c into a practical mg/dL value, improving patient comprehension and facilitating shared decision-making about glycemic control.",
+    references: [
+      {
+        citation:
+          "Nathan DM, Kuenen J, Borg R, et al. Translating the A1c assay into estimated average glucose values. Diabetes Care. 2008;31(8):1473-1478.",
+        level: "Primary Study",
+      },
+    ],
+    evidence: {
+      source: "ADA / ADAG Study",
+      reference: "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2008",
+      references: [
+        "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "What is estimated average glucose?",
+        answer:
+          "eAG converts HbA1c into the estimated average blood glucose in mg/dL over the preceding 2–3 months, making it easier for patients to relate A1c to home glucose readings.",
+      },
+      {
+        question:
+          "What A1c corresponds to an eAG of 126 mg/dL?",
+        answer:
+          "An eAG of 126 mg/dL corresponds to an HbA1c of approximately 6.0% using the ADAG formula.",
+      },
+    ],
+    comparison: {
+      title: "Which Glycemic Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Estimated Average Glucose",
+          href: "/calculators/estimated-average-glucose",
+          bestFor: "Converting A1c to mg/dL average.",
+          limitation: "Unidirectional.",
+        },
+        {
+          name: "A1c ↔ eAG Converter",
+          href: "/calculators/a1c-eag-converter",
+          bestFor: "Bidirectional conversion.",
+          limitation: "Same underlying formula.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Use NGSP-standardized A1c values and interpret within the clinical context.",
+  },
+
+  "bmi-for-pediatrics": {
+    clinicalPurpose:
+      "Calculates BMI for children and adolescents (ages 2–20) and classifies weight status using CDC 2000 BMI-for-age percentile references.",
+    howToUse: [
+      "Enter the child's age (2–20 years), sex, weight (kg), and height (cm).",
+      "Review the BMI and the BMI-for-age percentile.",
+      "Classify using the percentile: <5th underweight, 5th–<85th healthy, 85th–<95th overweight, ≥95th obesity.",
+    ],
+    interpretation: {
+      guide:
+        "Pediatric BMI must be interpreted by age- and sex-specific percentiles, not raw BMI. Underweight <5th percentile; healthy weight 5th–<85th; overweight 85th–<95th; obesity ≥95th percentile.",
+      sexSpecific: true,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Growth and weight assessment in children and adolescents aged 2–20 years",
+      "Screening for overweight, obesity, and underweight",
+      "Monitoring growth trajectory over time",
+    ],
+    whenNotToUse: [
+      "In children under 2 years — use weight-for-length WHO charts",
+      "Without age and sex to reference percentiles",
+      "As a direct measure of body fat",
+    ],
+    limitations: [
+      "BMI does not distinguish fat from muscle mass.",
+      "Percentile references are population-based and may not apply to all ethnic groups.",
+      "Clinical assessment should include growth velocity, pubertal stage, and family history.",
+    ],
+    example: {
+      description:
+        "A 10-year-old boy weighs 35 kg and is 140 cm tall.",
+      inputs: {
+        age: "10",
+        sex: "1",
+        weight: "35",
+        height: "140",
+      },
+      expectedResult:
+        "BMI = 35 / (1.40)² = 17.9 kg/m², at the 94.3rd percentile — Overweight (85th–<95th percentile).",
+    },
+    clinicalSignificance:
+      "BMI-for-age percentiles are the standard screening tool for pediatric weight status, informing interventions for childhood obesity and its metabolic consequences.",
+    references: [
+      {
+        citation:
+          "Kuczmarski RJ, Ogden CL, Guo SS, et al. 2000 CDC Growth Charts for the United States: Methods and Development. Vital Health Stat 11. 2002;(246):1-190.",
+        level: "Reference Standard",
+      },
+    ],
+    evidence: {
+      source: "CDC Growth Charts",
+      reference: "Kuczmarski RJ, et al. Vital Health Stat 11. 2002;(246):1-190.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2000",
+      references: [
+        "Kuczmarski RJ, et al. Vital Health Stat 11. 2002;(246):1-190.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "Why can't I interpret a pediatric BMI like an adult BMI?",
+        answer:
+          "Children are still growing, so BMI changes with age and sex. Percentiles relative to age- and sex-matched CDC references are required for correct interpretation.",
+      },
+      {
+        question:
+          "When is pediatric BMI-for-age not appropriate?",
+        answer:
+          "BMI-for-age percentiles are not valid for children under 2 years of age, where weight-for-length charts should be used instead.",
+      },
+    ],
+    comparison: {
+      title: "Which BMI Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Pediatric BMI",
+          href: "/calculators/bmi-for-pediatrics",
+          bestFor: "Children and adolescents aged 2–20 years.",
+          limitation: "Requires age and sex for percentile interpretation.",
+        },
+        {
+          name: "BMI",
+          href: "/calculators/bmi",
+          bestFor: "Adults with fixed BMI thresholds.",
+          limitation: "Not applicable to children.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Pediatric weight assessment should also consider growth velocity, pubertal stage, and family history.",
+  },
+
+  "lean-body-weight": {
+    clinicalPurpose:
+      "Estimates lean body weight using the Boer formula, useful for drug dosing, anesthesia, and nutritional assessment.",
+    howToUse: [
+      "Select the patient's sex.",
+      "Enter height (cm) and weight (kg).",
+      "Review the estimated lean body weight in kg.",
+      "Use it for dosing decisions only where the drug-specific guidance supports lean body weight.",
+    ],
+    interpretation: {
+      guide:
+        "Lean body weight approximates the weight of body mass excluding fat. Male: 0.407 × weight + 0.267 × height − 19.2. Female: 0.252 × weight + 0.473 × height − 48.3.",
+      sexSpecific: true,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Drug dosing in medications where lean body weight is the size descriptor (e.g., certain anesthetics and antimicrobials)",
+      "Nutritional and metabolic assessment",
+      "Anesthesia dosing considerations",
+    ],
+    whenNotToUse: [
+      "Where the drug label specifies actual or ideal body weight",
+      "As a direct measure of body fat or muscle mass",
+      "Without confirming the drug-specific dosing guidance",
+    ],
+    limitations: [
+      "The Boer formula is an estimate validated in adult populations.",
+      "May be less accurate at the extremes of body size.",
+      "Does not capture hydration status or muscle mass directly.",
+    ],
+    example: {
+      description:
+        "A 40-year-old man is 180 cm tall and weighs 80 kg.",
+      inputs: {
+        sex: "male",
+        height: "180",
+        weight: "80",
+      },
+      expectedResult:
+        "LBW = 0.407 × 80 + 0.267 × 180 − 19.2 = 61.4 kg.",
+    },
+    clinicalSignificance:
+      "Lean body weight better reflects drug distribution volume than total body weight in some medications, reducing dosing error in patients at the extremes of body size.",
+    references: [
+      {
+        citation:
+          "Boer P. Estimated lean body mass as an index for normalization of body fluid volumes in humans. Am J Physiol. 1984;247(4):F632-F635.",
+        level: "Original Description",
+      },
+    ],
+    evidence: {
+      source: "Body Composition Literature",
+      reference: "Boer P. Am J Physiol. 1984;247(4):F632-F635.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1984",
+      references: [
+        "Boer P. Am J Physiol. 1984;247(4):F632-F635.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "When should lean body weight be used for dosing?",
+        answer:
+          "Use it when the drug-specific labeling or institutional guidance specifies lean body weight as the dosing size descriptor — it is common in some anesthetic and antimicrobial regimens.",
+      },
+      {
+        question:
+          "How does lean body weight differ from ideal body weight?",
+        answer:
+          "Ideal body weight is a height-based reference, whereas lean body weight is an estimate of the fat-free mass and therefore also incorporates measured weight.",
+      },
+    ],
+    comparison: {
+      title: "Which Body Weight Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Lean Body Weight",
+          href: "/calculators/lean-body-weight",
+          bestFor: "Estimating fat-free mass for dosing.",
+          limitation: "Formula-based estimate only.",
+        },
+        {
+          name: "Ideal Body Weight",
+          href: "/calculators/ideal-body-weight",
+          bestFor: "Height-based dosing reference.",
+          limitation: "Ignores actual weight.",
+        },
+        {
+          name: "Adjusted Body Weight",
+          href: "/calculators/adjusted-body-weight",
+          bestFor: "Dosing in overweight and obese adults.",
+          limitation: "Empirical adjustment factor.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Dosing decisions must follow drug-specific labeling and institutional protocols.",
+  },
+
+  "mifflin-st-jeor": {
+    clinicalPurpose:
+      "Estimates resting energy expenditure (REE) using the Mifflin-St Jeor equation for nutritional assessment and weight management.",
+    howToUse: [
+      "Select sex and enter age (years), weight (kg), and height (cm).",
+      "Review the estimated resting energy expenditure in kcal/day.",
+      "Multiply by an activity factor to estimate total daily calorie needs.",
+    ],
+    interpretation: {
+      guide:
+        "REE is the energy required at rest. Mifflin-St Jeor: male = 10 × weight + 6.25 × height − 5 × age + 5; female = 10 × weight + 6.25 × height − 5 × age − 161.",
+      sexSpecific: true,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Estimating resting energy expenditure in healthy and overweight adults",
+      "Baseline for calorie planning in weight management",
+      "Nutritional assessment in clinical practice",
+    ],
+    whenNotToUse: [
+      "In critically ill patients where indirect calorimetry is preferred",
+      "In children (formula validated in adults)",
+      "As a substitute for individualized metabolic assessment",
+    ],
+    limitations: [
+      "Estimate only; actual needs vary with body composition and clinical status.",
+      "Less accurate at extremes of body size.",
+      "Does not account for illness, activity, or thermic effect of food.",
+    ],
+    example: {
+      description:
+        "A 40-year-old man weighs 80 kg, is 180 cm tall, and is sedentary.",
+      inputs: {
+        sex: "male",
+        age: "40",
+        weight: "80",
+        height: "180",
+      },
+      expectedResult:
+        "REE = 10 × 80 + 6.25 × 180 − 5 × 40 + 5 = 1,730 kcal/day.",
+    },
+    clinicalSignificance:
+      "The Mifflin-St Jeor equation is one of the most accurate predictive equations for resting energy expenditure and is widely used to anchor nutrition and weight-management plans.",
+    references: [
+      {
+        citation:
+          "Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.",
+        level: "Primary Study",
+      },
+    ],
+    evidence: {
+      source: "Nutrition Literature",
+      reference: "Mifflin MD, et al. Am J Clin Nutr. 1990;51(2):241-247.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1990",
+      references: [
+        "Mifflin MD, et al. Am J Clin Nutr. 1990;51(2):241-247.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "How does Mifflin-St Jeor compare to Harris-Benedict?",
+        answer:
+          "Mifflin-St Jeor is generally considered more accurate than the original Harris-Benedict equation in modern, overweight populations and is preferred by many nutrition guidelines.",
+      },
+      {
+        question:
+          "How do I convert REE to total daily calories?",
+        answer:
+          "Multiply REE by an activity factor — approximately 1.2 for sedentary, 1.375 for light activity, 1.55 for moderate, and 1.725 for active individuals.",
+      },
+    ],
+    comparison: {
+      title: "Which Energy Expenditure Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Mifflin-St Jeor",
+          href: "/calculators/mifflin-st-jeor",
+          bestFor: "Modern REE estimation in adults.",
+          limitation: "Adult populations only.",
+        },
+        {
+          name: "Harris-Benedict",
+          href: "/calculators/harris-benedict",
+          bestFor: "Historical BMR estimation.",
+          limitation: "May overestimate in overweight patients.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. REE is an estimate and nutrition plans should be individualized.",
+  },
+
+  "harris-benedict": {
+    clinicalPurpose:
+      "Estimates basal metabolic rate (BMR) using the Harris-Benedict equation for nutritional assessment and calorie planning.",
+    howToUse: [
+      "Select sex and enter age (years), weight (kg), and height (cm).",
+      "Review the estimated BMR in kcal/day.",
+      "Multiply by an activity factor for total daily energy needs.",
+    ],
+    interpretation: {
+      guide:
+        "BMR is the energy expended at complete rest. Harris-Benedict (revised): male = 88.362 + 13.397 × weight + 4.799 × height − 5.677 × age; female = 447.593 + 9.247 × weight + 3.098 × height − 4.33 × age.",
+      sexSpecific: true,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Estimating basal metabolic rate in adults",
+      "Baseline calorie needs for weight management",
+      "Nutritional assessment when indirect calorimetry is unavailable",
+    ],
+    whenNotToUse: [
+      "In critically ill patients needing measured energy expenditure",
+      "In children",
+      "As a substitute for individualized metabolic assessment",
+    ],
+    limitations: [
+      "May overestimate energy needs in overweight and obese patients.",
+      "Estimate only; individual needs vary by body composition and clinical status.",
+      "Original equation dates from 1918–1919; revised coefficients improved accuracy.",
+    ],
+    example: {
+      description:
+        "A 40-year-old man weighs 80 kg, is 180 cm tall, and is sedentary.",
+      inputs: {
+        sex: "male",
+        age: "40",
+        weight: "80",
+        height: "180",
+      },
+      expectedResult:
+        "BMR = 88.362 + 13.397 × 80 + 4.799 × 180 − 5.677 × 40 ≈ 1,796.9 kcal/day.",
+    },
+    clinicalSignificance:
+      "The Harris-Benedict equation is a historical cornerstone of energy estimation and remains a commonly used reference for baseline calorie planning.",
+    references: [
+      {
+        citation:
+          "Harris JA, Benedict FG. A biometric study of basal metabolism in man. Washington, DC: Carnegie Institution of Washington; 1919.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Roza AM, Shizgal HM. The Harris Benedict equation reevaluated: resting energy requirements and the body cell mass. Am J Clin Nutr. 1984;40(1):168-182.",
+        level: "Revision",
+      },
+    ],
+    evidence: {
+      source: "Nutrition Literature",
+      reference: "Roza AM, Shizgal HM. Am J Clin Nutr. 1984;40(1):168-182.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1919",
+      references: [
+        "Harris JA, Benedict FG. Carnegie Institution of Washington. 1919.",
+        "Roza AM, Shizgal HM. Am J Clin Nutr. 1984;40(1):168-182.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "What is the difference between BMR and REE?",
+        answer:
+          "BMR is measured under strictly standardized resting conditions, while REE is measured under slightly less strict conditions. In practice the terms are often used interchangeably in equations.",
+      },
+      {
+        question:
+          "How do I calculate total daily energy needs?",
+        answer:
+          "Multiply BMR by an activity factor (e.g., 1.2 sedentary, 1.55 moderate activity, 1.725 very active) to estimate total daily energy expenditure.",
+      },
+    ],
+    comparison: {
+      title: "Which Energy Expenditure Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Harris-Benedict",
+          href: "/calculators/harris-benedict",
+          bestFor: "Historical BMR estimation.",
+          limitation: "May overestimate in overweight patients.",
+        },
+        {
+          name: "Mifflin-St Jeor",
+          href: "/calculators/mifflin-st-jeor",
+          bestFor: "Modern REE estimation.",
+          limitation: "Adult populations only.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Energy estimates should be individualized and verified clinically.",
+  },
+
+  "sodium-deficit": {
+    clinicalPurpose:
+      "Estimates the total sodium deficit to guide hyponatremia correction, helping clinicians plan replacement while avoiding over-correction.",
+    howToUse: [
+      "Enter the patient's weight (kg), current serum sodium, and target sodium (mmol/L).",
+      "Review the estimated sodium deficit in mmol.",
+      "Correct slowly — limit to 8–10 mmol/L in the first 24 hours to reduce the risk of osmotic demyelination.",
+    ],
+    interpretation: {
+      guide:
+        "The sodium deficit is calculated as 0.6 × weight × (target Na − current Na) using an estimated total body water of 0.6 × weight. Values are interpreted against the clinical urgency of correction rather than a fixed normal range.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Planning correction of chronic hyponatremia",
+      "Estimating sodium replacement needs in hypovolemic hyponatremia",
+      "Guiding the rate of sodium correction in hospitalized patients",
+    ],
+    whenNotToUse: [
+      "As the sole guide for acute severe symptomatic hyponatremia — use hypertonic saline and institutional protocols",
+      "Without accounting for ongoing losses and intake",
+      "When the desired target exceeds safe correction limits",
+    ],
+    limitations: [
+      "Uses an estimated total body water of 0.6 × weight; actual TBW varies with body composition.",
+      "Does not account for ongoing free water intake or losses.",
+      "Over-correction risk requires close monitoring regardless of the calculated deficit.",
+    ],
+    example: {
+      description:
+        "A 70 kg man with chronic hyponatremia has a serum sodium of 125 mmol/L; the goal is 135 mmol/L.",
+      inputs: {
+        weight: "70",
+        currentNa: "125",
+        desiredNa: "135",
+      },
+      expectedResult:
+        "Sodium deficit = 0.6 × 70 × (135 − 125) = 420 mmol. Correct slowly, limiting the rise to 8–10 mmol/L in the first 24 hours.",
+    },
+    clinicalSignificance:
+      "Estimating the sodium deficit helps clinicians replace sodium methodically and avoid osmotic demyelination syndrome caused by over-rapid correction.",
+    references: [
+      {
+        citation:
+          "Adrogue HJ, Madias NE. Hyponatremia. N Engl J Med. 2000;342(21):1581-1589.",
+        level: "Review",
+      },
+      {
+        citation:
+          "Sterns RH. Disorders of plasma sodium. N Engl J Med. 2015;372(1):55-65.",
+        level: "Review",
+      },
+    ],
+    evidence: {
+      source: "Nephrology Literature",
+      reference: "Adrogue HJ, Madias NE. N Engl J Med. 2000;342(21):1581-1589.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2000",
+      references: [
+        "Adrogue HJ, Madias NE. N Engl J Med. 2000;342(21):1581-1589.",
+        "Sterns RH. N Engl J Med. 2015;372(1):55-65.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "How fast should sodium be corrected?",
+        answer:
+          "For chronic hyponatremia, limit correction to 8–10 mmol/L in the first 24 hours and 18 mmol/L in 48 hours to reduce the risk of osmotic demyelination syndrome.",
+      },
+      {
+        question:
+          "Why does the estimate use 0.6 × weight?",
+        answer:
+          "Total body water is approximately 60% of body weight in men and 50% in women. This calculator uses 0.6 × weight as a default estimate.",
+      },
+    ],
+    comparison: {
+      title: "Which Sodium Disorder Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Sodium Deficit",
+          href: "/calculators/sodium-deficit",
+          bestFor: "Planning hyponatremia correction.",
+          limitation: "Does not account for ongoing losses.",
+        },
+        {
+          name: "Free Water Deficit",
+          href: "/calculators/free-water-deficit",
+          bestFor: "Estimating water replacement in hypernatremia.",
+          limitation: "Addresses hypernatremia, not hyponatremia.",
+        },
+        {
+          name: "Corrected Sodium",
+          href: "/calculators/corrected-sodium",
+          bestFor: "Adjusting sodium for hyperglycemia.",
+          limitation: "Does not estimate the sodium deficit.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Sodium correction must be guided by frequent monitoring and institutional protocols.",
+  },
+
+  "heart-rate": {
+    clinicalPurpose:
+      "Calculates heart rate from the number of beats counted over a measured time interval.",
+    howToUse: [
+      "Count the number of beats over a measured interval (e.g., 15, 30, or 60 seconds).",
+      "Enter the beat count and the time in minutes.",
+      "Review the calculated heart rate in beats per minute.",
+    ],
+    interpretation: {
+      guide:
+        "A normal resting heart rate for adults is 60–100 bpm. Values below 60 bpm may indicate bradycardia, and values above 100 bpm may indicate tachycardia, though athletes and certain medications affect these thresholds.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Bedside calculation of heart rate from pulse counting",
+      "Estimating heart rate from ECG or pulse when only a short interval is counted",
+      "Rapid vital sign assessment",
+    ],
+    whenNotToUse: [
+      "For a detailed ECG rhythm diagnosis",
+      "When the rhythm is grossly irregular — a longer count interval is preferable",
+    ],
+    limitations: [
+      "Accuracy depends on the counting interval; longer intervals are more accurate.",
+      "The calculator reports beats per minute but does not diagnose the rhythm.",
+      "Physiological interpretation requires clinical context (age, medications, fitness).",
+    ],
+    example: {
+      description:
+        "A nurse counts 72 beats over 1 minute in an adult patient.",
+      inputs: {
+        beats: "72",
+        time: "1",
+      },
+      expectedResult:
+        "Heart rate = 72 / 1 = 72 bpm, within the normal adult range of 60–100 bpm.",
+    },
+    clinicalSignificance:
+      "Heart rate is a fundamental vital sign used to assess hemodynamic status, guide further evaluation of bradycardia or tachycardia, and monitor response to treatment.",
+    references: [
+      {
+        citation:
+          "Al-Khatib SM, et al. 2017 AHA/ACC/HRS guideline for management of patients with ventricular arrhythmias and sudden cardiac death. Circulation. 2018.",
+        level: "Guideline",
+      },
+    ],
+    evidence: {
+      source: "Cardiology Literature",
+      reference: "AHA/ACC Guidelines on heart rhythm and rate assessment.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      references: [
+        "AHA/ACC/HRS Guideline. Circulation. 2018.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "What is a normal resting heart rate?",
+        answer:
+          "The normal resting heart rate for adults is 60–100 bpm. Well-trained athletes may have rates below 60 bpm without pathology.",
+      },
+      {
+        question:
+          "When is a longer count interval better?",
+        answer:
+          "For irregular rhythms such as atrial fibrillation, count over 30–60 seconds to obtain a more accurate average heart rate.",
+      },
+    ],
+    comparison: {
+      title: "Which Vital Sign Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Heart Rate",
+          href: "/calculators/heart-rate",
+          bestFor: "Computing bpm from a beat count.",
+          limitation: "Does not diagnose rhythm.",
+        },
+        {
+          name: "Mean Arterial Pressure",
+          href: "/calculators/map",
+          bestFor: "Assessing tissue perfusion pressure.",
+          limitation: "Separate from heart rate.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Heart rate interpretation requires clinical context and is not a substitute for ECG when arrhythmia is suspected.",
+  },
+
+  "waist-to-hip-ratio": {
+    clinicalPurpose:
+      "Calculates waist-to-hip ratio (WHR) to assess central adiposity and cardiovascular risk.",
+    howToUse: [
+      "Measure waist circumference at the narrowest point between the rib cage and iliac crest.",
+      "Measure hip circumference at the widest point of the buttocks.",
+      "Divide waist by hip to obtain the ratio.",
+    ],
+    interpretation: {
+      guide:
+        "WHR classifies central adiposity and risk using sex-specific thresholds. For males, <0.90 is low risk, 0.90–0.99 moderate risk, and ≥1.0 high risk. For females, WHO thresholds are <0.85 low risk and ≥0.85 increased risk.",
+      sexSpecific: true,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Assessing central (abdominal) adiposity",
+      "Cardiovascular and type 2 diabetes risk assessment",
+      "Metabolic syndrome evaluation",
+    ],
+    whenNotToUse: [
+      "As the only cardiovascular risk assessment",
+      "Without standardized measurement technique",
+    ],
+    limitations: [
+      "Measurement technique must be standardized for consistent results.",
+      "Thresholds differ between sexes and populations.",
+      "Should be interpreted alongside blood pressure, lipids, and glucose.",
+    ],
+    example: {
+      description:
+        "A 48-year-old man has a waist circumference of 95 cm and hip circumference of 100 cm.",
+      inputs: {
+        waist: "95",
+        hip: "100",
+      },
+      expectedResult:
+        "WHR = 95 / 100 = 0.95 — moderate cardiovascular risk for a male.",
+    },
+    clinicalSignificance:
+      "Waist-to-hip ratio captures central adiposity, which is a strong predictor of cardiovascular disease and type 2 diabetes, complementing BMI in risk assessment.",
+    references: [
+      {
+        citation:
+          "World Health Organization. Waist circumference and waist-hip ratio: report of a WHO expert consultation. Geneva: WHO; 2008.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Yusuf S, et al. Obesity and the risk of myocardial infarction in 27,000 participants from 52 countries. Lancet. 2005;366(9497):1640-1649.",
+        level: "Primary Study",
+      },
+    ],
+    evidence: {
+      source: "WHO",
+      reference: "WHO. Waist circumference and waist-hip ratio. Geneva: WHO; 2008.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2008",
+      references: [
+        "WHO. Waist circumference and waist-hip ratio. 2008.",
+        "Yusuf S, et al. Lancet. 2005;366(9497):1640-1649.",
+      ],
+    },
+    faq: [
+      {
+        question:
+          "What does waist-to-hip ratio measure?",
+        answer:
+          "WHR measures the distribution of body fat — specifically central or abdominal adiposity, which is a strong predictor of cardiovascular and metabolic risk.",
+      },
+      {
+        question:
+          "What are the sex-specific thresholds?",
+        answer:
+          "For males, WHR <0.90 is low risk, 0.90–0.99 moderate risk, and ≥1.0 high risk. For females, WHO defines <0.85 as low risk and ≥0.85 as increased risk.",
+      },
+    ],
+    comparison: {
+      title: "Which Body Composition Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Waist-to-Hip Ratio",
+          href: "/calculators/waist-to-hip-ratio",
+          bestFor: "Assessing central adiposity.",
+          limitation: "Requires standardized measurement.",
+        },
+        {
+          name: "BMI",
+          href: "/calculators/bmi",
+          bestFor: "General obesity screening.",
+          limitation: "Does not capture fat distribution.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. WHR should be interpreted alongside other cardiovascular risk factors.",
+  },
 };
