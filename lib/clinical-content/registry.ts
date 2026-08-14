@@ -2779,4 +2779,286 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. WHR should be interpreted alongside other cardiovascular risk factors.",
   },
+
+  "calorie-requirement": {
+    clinicalPurpose:
+      "Estimates total daily calorie requirement by multiplying an individual's basal metabolic rate (BMR) by an activity factor.",
+    howToUse: [
+      "Obtain a basal metabolic rate — for example from the Mifflin-St Jeor or Harris-Benedict calculator.",
+      "Select an activity factor reflecting the patient's typical daily activity (e.g., 1.2 sedentary, 1.55 moderate, 1.725 active).",
+      "Enter the BMR (kcal/day) and the chosen activity factor.",
+      "Review the estimated daily calorie requirement in kcal/day.",
+    ],
+    interpretation: {
+      guide:
+        "The result estimates total daily energy expenditure. Multiplying BMR by an activity factor converts resting energy needs into a daily calorie target: sedentary ≈ 1.2× BMR, light ≈ 1.375×, moderate ≈ 1.55×, very active ≈ 1.725×, extremely active ≈ 1.9×.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Estimating daily calorie targets in nutrition and weight management",
+      "Planning dietary energy goals in stable outpatients",
+      "As a starting point when indirect calorimetry is unavailable",
+    ],
+    whenNotToUse: [
+      "In critically ill patients, where measured energy expenditure (indirect calorimetry) is preferred",
+      "As a substitute for individualized dietary prescription",
+      "Without an appropriate BMR input — the result depends entirely on the BMR entered",
+    ],
+    limitations: [
+      "The accuracy of the estimate depends on the accuracy of the BMR entered.",
+      "Does not account for illness, fever, body composition, or ongoing metabolic stress.",
+      "Activity factors are approximations and vary between individuals.",
+    ],
+    example: {
+      description:
+        "A 40-year-old man has a resting energy expenditure (Mifflin-St Jeor) of 1,730 kcal/day and is moderately active.",
+      inputs: {
+        bmr: "1730",
+        activity: "1.55",
+      },
+      expectedResult:
+        "Daily calorie requirement = 1,730 × 1.55 = 2,682 kcal/day.",
+    },
+    clinicalSignificance:
+      "Daily calorie requirements are the foundation of nutrition planning; estimating them from BMR and activity lets clinicians set rational energy targets rather than relying on guesswork.",
+    references: [
+      {
+        citation:
+          "Institute of Medicine. Dietary Reference Intakes for Energy, Carbohydrate, Fiber, Fat, Fatty Acids, Cholesterol, Protein, and Amino Acids (Macronutrients). Washington, DC: The National Academies Press; 2005.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Food and Agriculture Organization / World Health Organization / United Nations University. Human Energy Requirements: Report of a Joint FAO/WHO/UNU Expert Consultation. Rome: FAO; 2004.",
+        level: "Guideline",
+      },
+    ],
+    evidence: {
+      source: "FAO/WHO/UNU & IOM",
+      reference: "FAO/WHO/UNU Human Energy Requirements. 2004.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2004",
+      references: [
+        "FAO/WHO/UNU. Human Energy Requirements. 2004.",
+        "Institute of Medicine. Dietary Reference Intakes for Energy. 2005.",
+      ],
+    },
+    faq: [
+      {
+        question: "What is an activity factor?",
+        answer:
+          "An activity factor reflects how much a person moves relative to resting energy expenditure — roughly 1.2 for sedentary, 1.375 light, 1.55 moderate, 1.725 active, and 1.9 extremely active individuals.",
+      },
+      {
+        question: "How do I get the BMR input?",
+        answer:
+          "BMR (or REE) can be estimated with the Mifflin-St Jeor or Harris-Benedict calculator, which use sex, age, weight, and height.",
+      },
+    ],
+    comparison: {
+      title: "Which Energy Calculators Work Together?",
+      calculators: [
+        {
+          name: "Calorie Requirement",
+          href: "/calculators/calorie-requirement",
+          bestFor: "Daily calorie targets from a known BMR.",
+          limitation: "Requires a BMR input.",
+        },
+        {
+          name: "Mifflin-St Jeor",
+          href: "/calculators/mifflin-st-jeor",
+          bestFor: "Estimating the resting energy expenditure input.",
+          limitation: "Adult populations only.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Calorie targets are estimates and nutrition plans should be individualized.",
+  },
+
+  "fluid-requirement": {
+    clinicalPurpose:
+      "Estimates a simple daily maintenance fluid requirement using a fixed 35 mL/kg/day rule based on body weight.",
+    howToUse: [
+      "Enter the patient's weight in kg.",
+      "Review the estimated maintenance fluid volume in mL/day.",
+      "Adjust for clinical context — the result is a starting estimate only.",
+    ],
+    interpretation: {
+      guide:
+        "The result approximates daily maintenance fluid needs at 35 mL/kg/day. For a 70 kg adult this is 2,450 mL/day (~2.5 L), consistent with typical adult maintenance estimates.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Rough daily maintenance fluid planning in adults",
+      "Estimating baseline hydration needs in stable patients",
+      "As a teaching estimate for maintenance fluid volumes",
+    ],
+    whenNotToUse: [
+      "In patients with ongoing fluid losses, fever, vomiting, diarrhea, or drains",
+      "In heart failure, renal impairment, or fluid overload states",
+      "As a substitute for individualized fluid prescription",
+    ],
+    limitations: [
+      "A fixed per-kilogram estimate cannot capture individual variation in losses or clinical status.",
+      "Does not account for electrolyte content or route of administration.",
+      "Weight-based rules are approximations and require clinical judgment.",
+    ],
+    example: {
+      description:
+        "A 70 kg adult requires an estimate of daily maintenance fluid.",
+      inputs: {
+        weight: "70",
+      },
+      expectedResult:
+        "Fluid requirement = 70 × 35 = 2,450 mL/day (~2.5 L).",
+    },
+    clinicalSignificance:
+      "Simple weight-based rules give clinicians a rapid baseline for maintenance fluid planning, helping avoid both under- and over-hydration in routine care.",
+    references: [
+      {
+        citation:
+          "National Institute for Health and Care Excellence. Intravenous fluid therapy in adults in hospital. NICE Guideline CG174. London: NICE; 2013 (updated 2017).",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Clinical practice references on adult maintenance fluid management.",
+        level: "Expert Consensus",
+      },
+    ],
+    evidence: {
+      source: "NICE CG174",
+      reference: "NICE. Intravenous fluid therapy in adults in hospital. CG174; 2013.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2017",
+      references: [
+        "NICE CG174. Intravenous fluid therapy in adults in hospital. 2013.",
+      ],
+    },
+    faq: [
+      {
+        question: "Why 35 mL/kg/day?",
+        answer:
+          "It is a common adult approximation for daily maintenance water needs. The Maintenance Fluids calculator uses the more granular 100/50/20 weight-based rule.",
+      },
+    ],
+    comparison: {
+      title: "Which Fluid Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Fluid Requirement",
+          href: "/calculators/fluid-requirement",
+          bestFor: "Quick daily volume estimate in adults.",
+          limitation: "Fixed per-kg rule; no hourly detail.",
+        },
+        {
+          name: "Maintenance Fluids",
+          href: "/calculators/maintenance-fluids",
+          bestFor: "Weight-based 100/50/20 maintenance rule.",
+          limitation: "Assumes no significant ongoing losses.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Fluid management must account for the individual's clinical status, losses, and comorbidities.",
+  },
+
+  "maintenance-fluids": {
+    clinicalPurpose:
+      "Estimates daily maintenance fluid volume using the weight-based 100/50/20 rule: 100 mL/kg for the first 10 kg, 50 mL/kg for the next 10 kg, and 20 mL/kg thereafter.",
+    howToUse: [
+      "Enter the patient's weight in kg.",
+      "Review the estimated maintenance fluid volume in mL/day.",
+      "Convert to an hourly rate if prescribing (divide by 24).",
+    ],
+    interpretation: {
+      guide:
+        "The 100/50/20 rule (Holliday-Segar) estimates maintenance water needs by body weight. For a 70 kg adult: 1,000 + 500 + 1,000 = 2,500 mL/day.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Estimating maintenance fluid volume in children and adults",
+      "As a starting point for daily fluid prescription",
+      "Teaching the classic Holliday-Segar maintenance approach",
+    ],
+    whenNotToUse: [
+      "In patients with ongoing losses, hypovolemia, or fluid overload",
+      "In heart failure, renal impairment, or states requiring fluid restriction",
+      "As a substitute for individualized fluid prescription",
+    ],
+    limitations: [
+      "The rule assumes no significant ongoing fluid losses and normal renal function.",
+      "Does not provide electrolyte composition or route guidance.",
+      "Designed for maintenance needs, not replacement of deficits.",
+    ],
+    example: {
+      description:
+        "A 70 kg adult needs an estimate of daily maintenance fluids.",
+      inputs: {
+        weight: "70",
+      },
+      expectedResult:
+        "Maintenance fluids = 100 mL/kg × 10 kg + 50 mL/kg × 10 kg + 20 mL/kg × 50 kg = 2,500 mL/day.",
+    },
+    clinicalSignificance:
+      "The Holliday-Segar 100/50/20 rule remains a widely taught and clinically used starting point for maintenance fluid volumes across children and adults.",
+    references: [
+      {
+        citation:
+          "Holliday MA, Segar WE. The maintenance need for water in parenteral fluid therapy. Pediatrics. 1957;19(5):823-832.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "National Institute for Health and Care Excellence. Intravenous fluid therapy in adults in hospital. NICE Guideline CG174. London: NICE; 2013.",
+        level: "Guideline",
+      },
+    ],
+    evidence: {
+      source: "Holliday & Segar",
+      reference: "Holliday MA, Segar WE. Pediatrics. 1957;19(5):823-832.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1957",
+      references: [
+        "Holliday MA, Segar WE. Pediatrics. 1957;19(5):823-832.",
+        "NICE CG174. Intravenous fluid therapy in adults in hospital. 2013.",
+      ],
+    },
+    faq: [
+      {
+        question: "How is the 100/50/20 rule applied?",
+        answer:
+          "The first 10 kg of body weight contributes 100 mL/kg/day, the second 10 kg 50 mL/kg/day, and every kilogram above 20 kg contributes 20 mL/kg/day. The three amounts are summed.",
+      },
+      {
+        question: "How do I convert mL/day to an hourly rate?",
+        answer:
+          "Divide the daily volume by 24. For 2,500 mL/day this is approximately 104 mL/hour.",
+      },
+    ],
+    comparison: {
+      title: "Which Fluid Calculator Should I Use?",
+      calculators: [
+        {
+          name: "Maintenance Fluids",
+          href: "/calculators/maintenance-fluids",
+          bestFor: "Weight-based 100/50/20 maintenance rule.",
+          limitation: "Assumes no significant ongoing losses.",
+        },
+        {
+          name: "Fluid Requirement",
+          href: "/calculators/fluid-requirement",
+          bestFor: "Quick daily volume estimate in adults.",
+          limitation: "Fixed per-kg rule; no hourly detail.",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Maintenance fluid plans must account for clinical status, losses, and organ function.",
+  },
 };

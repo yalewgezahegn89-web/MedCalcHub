@@ -58,6 +58,12 @@ const BATCH_6_SLUGS = [
   "waist-to-hip-ratio",
 ];
 
+const BATCH_7_SLUGS = [
+  "calorie-requirement",
+  "fluid-requirement",
+  "maintenance-fluids",
+] as const;
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -857,5 +863,236 @@ describe("Clinical Content — Sprint 1.8 Batch 6 Expansion", () => {
         `Covered slug "${slug}" missing content`,
       ).toBeDefined();
     }
+  });
+});
+
+describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => {
+  it("every batch-7 slug is a registered calculator", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of BATCH_7_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `Batch 7 slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("every batch-7 slug has clinical content", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      expect(
+        clinicalContentRegistry[slug],
+        `Batch 7 calculator "${slug}" missing clinical content`,
+      ).toBeDefined();
+    }
+  });
+
+  it("every batch-7 clinicalPurpose is non-empty", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(
+        content!.clinicalPurpose,
+        `${slug}.clinicalPurpose`,
+      ).toBeDefined();
+      expect(content!.clinicalPurpose!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("every batch-7 howToUse is non-empty", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(content!.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(content!.howToUse!.length).toBeGreaterThan(0);
+      for (const step of content!.howToUse!) {
+        expect(step.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every batch-7 limitations are non-empty", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(
+        content!.limitations,
+        `${slug}.limitations`,
+      ).toBeDefined();
+      expect(content!.limitations!.length).toBeGreaterThan(0);
+      for (const item of content!.limitations!) {
+        expect(item.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every batch-7 disclaimer is non-empty", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(
+        content!.disclaimer,
+        `${slug}.disclaimer`,
+      ).toBeDefined();
+      expect(content!.disclaimer!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("every batch-7 interpretation is valid", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(
+        content!.interpretation,
+        `${slug}.interpretation`,
+      ).toBeDefined();
+      expect(
+        content!.interpretation!.guide,
+        `${slug}.interpretation.guide`,
+      ).toBeDefined();
+      expect(
+        content!.interpretation!.guide!.length,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("every batch-7 example is structurally valid", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(content!.example, `${slug}.example`).toBeDefined();
+      expect(
+        content!.example!.description,
+        `${slug}.example.description`,
+      ).toBeDefined();
+      expect(content!.example!.inputs, `${slug}.example.inputs`).toBeDefined();
+      const inputs = content!.example!.inputs!;
+      expect(Object.keys(inputs).length).toBeGreaterThan(0);
+      for (const [key, value] of Object.entries(inputs)) {
+        expect(value.length).toBeGreaterThan(0);
+      }
+      expect(
+        content!.example!.expectedResult,
+        `${slug}.example.expectedResult`,
+      ).toBeDefined();
+    }
+  });
+
+  it("every batch-7 example key matches a registered calculator input id", () => {
+    const bySlug = new Map(
+      calculatorRegistry.map((c) => [c.slug, c]),
+    );
+    for (const slug of BATCH_7_SLUGS) {
+      const calculator = bySlug.get(slug);
+      const inputIds = new Set(
+        (calculator?.inputs ?? []).map((i) => i.id),
+      );
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      for (const key of Object.keys(content!.example!.inputs!)) {
+        expect(
+          inputIds.has(key),
+          `${slug} example key "${key}" is not a calculator input`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("every batch-7 references are structurally valid", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(
+        content!.references,
+        `${slug}.references`,
+      ).toBeDefined();
+      expect(content!.references!.length).toBeGreaterThan(0);
+      for (const ref of content!.references!) {
+        expect(ref.citation.length).toBeGreaterThan(0);
+        if (ref.url !== undefined) {
+          expect(ref.url.startsWith("http")).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("every batch-7 evidence is valid when present", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      if (content!.evidence === undefined) continue;
+      expect(
+        content!.evidence!.source,
+        `${slug}.evidence.source`,
+      ).toBeDefined();
+      expect(content!.evidence!.source!.length).toBeGreaterThan(0);
+      if (content!.evidence!.references !== undefined) {
+        expect(Array.isArray(content!.evidence!.references)).toBe(true);
+        for (const ref of content!.evidence!.references) {
+          expect(ref.length).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it("every batch-7 faq is valid when present", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      if (content!.faq === undefined) continue;
+      expect(content!.faq!.length).toBeGreaterThan(0);
+      for (const item of content!.faq!) {
+        expect(item.question.length).toBeGreaterThan(0);
+        expect(item.answer.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every batch-7 comparison is valid when present", () => {
+    for (const slug of BATCH_7_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      if (content!.comparison === undefined) continue;
+      const calculators = content!.comparison!.calculators ?? [];
+      expect(calculators.length).toBeGreaterThan(0);
+      for (const item of calculators) {
+        expect(item.name.length).toBeGreaterThan(0);
+        expect(item.href.startsWith("/")).toBe(true);
+      }
+    }
+  });
+
+  it("has no duplicate clinical content keys", () => {
+    const keys = Object.keys(clinicalContentRegistry);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it("has no orphan clinical content records", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const key of Object.keys(clinicalContentRegistry)) {
+      expect(registrySlugs.has(key)).toBe(true);
+    }
+  });
+
+  it("keeps existing pilot records intact", () => {
+    for (const slug of PILOT_SLUGS) {
+      expect(
+        clinicalContentRegistry[slug],
+        `Pilot slug "${slug}" missing content`,
+      ).toBeDefined();
+    }
+  });
+
+  it("reports the correct total count after the batch", () => {
+    const expected = new Set([
+      ...PILOT_SLUGS,
+      ...BATCH_5_SLUGS,
+      ...BATCH_6_SLUGS,
+      ...BATCH_7_SLUGS,
+    ]).size;
+    expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
   });
 });
