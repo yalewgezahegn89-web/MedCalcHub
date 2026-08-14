@@ -24,7 +24,8 @@ export const qsofaCalculator: CalculatorDefinition = {
 
   keywords: ["qSOFA", "Sepsis", "Emergency", "Organ Dysfunction", "Sepsis Screening", "Critical Care"],
 
-  formula: "",
+  formula:
+    "Altered mentation (1 point) + RR ≥ 22/min (1 point) + SBP ≤ 100 mmHg (1 point)",
 
   normalRange: "0–3 points",
 
@@ -37,7 +38,7 @@ export const qsofaCalculator: CalculatorDefinition = {
   },
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "qSOFA (quick SOFA) uses three bedside criteria to identify adults with suspected infection who are likely to have poor outcomes. A score ≥ 2 identifies patients at greater risk of death or prolonged ICU stay.",
 
   evidence: undefined,
 
@@ -46,7 +47,7 @@ export const qsofaCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "Seymour CW, et al. Assessment of Clinical Criteria for Sepsis. JAMA 2016;315(8):762-774.",
   ],
 
   relatedCalculators: [],
@@ -71,6 +72,10 @@ export const qsofaCalculator: CalculatorDefinition = {
     label: "Altered Mental Status",
     type: "select",
     required: true,
+    options: [
+      { label: "No", value: "0" },
+      { label: "Yes", value: "1" },
+    ],
   }
 ],
 
@@ -121,9 +126,11 @@ if (Number(values.sbp) === 0) {
 }
 
 
+const respiratoryRateRaw = values["respiratory-rate"];
+
 if (
-  values.respiratory_rate === "" ||
-  values.respiratory_rate === undefined
+  respiratoryRateRaw === "" ||
+  respiratoryRateRaw === undefined
 ) {
   return {
     value: 0,
@@ -134,7 +141,7 @@ if (
 
 
 if (
-  Number.isNaN(Number(values.respiratory_rate))
+  Number.isNaN(Number(respiratoryRateRaw))
 ) {
   return {
     value: 0,
@@ -144,7 +151,7 @@ if (
 }
 
 
-if (Number(values.respiratory_rate) < 0) {
+if (Number(respiratoryRateRaw) < 0) {
   return {
     value: 0,
     interpretation: "Respiratory Rate cannot be negative.",
@@ -153,7 +160,7 @@ if (Number(values.respiratory_rate) < 0) {
 }
 
 
-if (Number(values.respiratory_rate) === 0) {
+if (Number(respiratoryRateRaw) === 0) {
   return {
     value: 0,
     interpretation: "Respiratory Rate cannot be zero.",
@@ -162,9 +169,11 @@ if (Number(values.respiratory_rate) === 0) {
 }
 
 
+const mentalStatusRaw = values["mental-status"];
+
 if (
-  values.mental_status === "" ||
-  values.mental_status === undefined
+  mentalStatusRaw === "" ||
+  mentalStatusRaw === undefined
 ) {
   return {
     value: 0,
@@ -174,8 +183,11 @@ if (
 }
 
 
+const mentalStatus = Number(mentalStatusRaw);
+
 if (
-  Number.isNaN(Number(values.mental_status))
+  !Number.isFinite(mentalStatus) ||
+  (mentalStatus !== 0 && mentalStatus !== 1)
 ) {
   return {
     value: 0,
@@ -185,52 +197,49 @@ if (
 }
 
 
-if (Number(values.mental_status) < 0) {
-  return {
-    value: 0,
-    interpretation: "Altered Mental Status cannot be negative.",
-    status: "critical",
-  };
-}
-
-
-if (Number(values.mental_status) === 0) {
-  return {
-    value: 0,
-    interpretation: "Altered Mental Status cannot be zero.",
-    status: "critical",
-  };
-}
-
-
 
 const sbp = Number(values.sbp);
-const systolicBloodPressure = sbp;
-const respiratory_rate = Number(values.respiratory_rate);
-const mental_status = Number(values.mental_status);
+const respiratoryRate = Number(respiratoryRateRaw);
+
+// qSOFA criteria (each worth 1 point):
+//   - SBP ≤ 100 mmHg
+//   - RR ≥ 22/min
+//   - Altered mentation
+let score = 0;
+if (sbp <= 100) score += 1;
+if (respiratoryRate >= 22) score += 1;
+if (mentalStatus === 1) score += 1;
+
+const result = Math.min(score, 3);
 
 
-  let score = 0;
-  score += sbp;
-  score += respiratory_rate;
-
-
-  const result = score;
-
-
-  
-const interpretation =
-  "Clinical interpretation pending.";
-
-const status:
+let interpretation: string;
+let status:
   "normal" |
   "low" |
   "high" |
-  "critical" =
-  "normal";
+  "critical";
+
+switch (result) {
+  case 0:
+    interpretation =
+      "qSOFA 0 – Low clinical concern. Continue to monitor for signs of deterioration.";
+    status = "normal";
+    break;
+  case 1:
+    interpretation =
+      "qSOFA 1 – Moderate concern. Monitor closely and reassess frequently.";
+    status = "low";
+    break;
+  default:
+    interpretation =
+      "qSOFA ≥ 2 – High risk of sepsis-related organ dysfunction and mortality. Escalate care urgently.";
+    status = "high";
+    break;
+}
 
 const referenceRange =
-  "";
+  "0–3";
 
 
 

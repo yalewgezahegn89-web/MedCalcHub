@@ -24,7 +24,8 @@ export const curb65Calculator: CalculatorDefinition = {
 
   keywords: ["Pneumonia", "CURB-65", "Community Acquired Pneumonia", "Emergency", "Respiratory", "Severity"],
 
-  formula: "Confusion + Urea + Respiratory Rate + Blood Pressure + Age ≥65",
+  formula:
+    "Confusion + Urea > 7 mmol/L + RR ≥ 30/min + SBP < 90 or DBP ≤ 60 mmHg + Age ≥ 65",
 
   normalRange: "0–5",
 
@@ -37,7 +38,7 @@ export const curb65Calculator: CalculatorDefinition = {
   },
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "CURB-65 stratifies severity in community-acquired pneumonia. Scores of 0–1 are typically managed as outpatients; 2 suggests hospital admission; ≥ 3 suggests severe pneumonia and consideration of ICU admission. Interpret alongside clinical judgement.",
 
   evidence: undefined,
 
@@ -46,7 +47,7 @@ export const curb65Calculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "Lim WS, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax 2003;58(5):377-382.",
   ],
 
   relatedCalculators: [],
@@ -58,6 +59,16 @@ export const curb65Calculator: CalculatorDefinition = {
     type: "number",
     unit: "years",
     required: true,
+  },
+  {
+    id: "confusion",
+    label: "New-Onset Confusion",
+    type: "select",
+    required: true,
+    options: [
+      { label: "No", value: "0" },
+      { label: "Yes", value: "1" },
+    ],
   },
   {
     id: "urea",
@@ -129,6 +140,33 @@ if (Number(values.age) === 0) {
 }
 
 
+const confusionRaw = values.confusion;
+
+if (
+  confusionRaw === "" ||
+  confusionRaw === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "New-Onset Confusion is required.",
+    status: "critical",
+  };
+}
+
+const confusion = Number(confusionRaw);
+
+if (
+  !Number.isFinite(confusion) ||
+  (confusion !== 0 && confusion !== 1)
+) {
+  return {
+    value: 0,
+    interpretation: "Invalid New-Onset Confusion.",
+    status: "critical",
+  };
+}
+
+
 if (
   values.urea === "" ||
   values.urea === undefined
@@ -170,9 +208,11 @@ if (Number(values.urea) === 0) {
 }
 
 
+const respiratoryRateRaw = values["respiratory-rate"];
+
 if (
-  values.respiratory_rate === "" ||
-  values.respiratory_rate === undefined
+  respiratoryRateRaw === "" ||
+  respiratoryRateRaw === undefined
 ) {
   return {
     value: 0,
@@ -183,7 +223,7 @@ if (
 
 
 if (
-  Number.isNaN(Number(values.respiratory_rate))
+  Number.isNaN(Number(respiratoryRateRaw))
 ) {
   return {
     value: 0,
@@ -193,7 +233,7 @@ if (
 }
 
 
-if (Number(values.respiratory_rate) < 0) {
+if (Number(respiratoryRateRaw) < 0) {
   return {
     value: 0,
     interpretation: "Respiratory Rate cannot be negative.",
@@ -202,7 +242,7 @@ if (Number(values.respiratory_rate) < 0) {
 }
 
 
-if (Number(values.respiratory_rate) === 0) {
+if (Number(respiratoryRateRaw) === 0) {
   return {
     value: 0,
     interpretation: "Respiratory Rate cannot be zero.",
@@ -255,28 +295,57 @@ if (Number(values.sbp) === 0) {
 
 const age = Number(values.age);
 const urea = Number(values.urea);
-const respiratory_rate = Number(values.respiratory_rate);
+const respiratoryRate = Number(respiratoryRateRaw);
 const sbp = Number(values.sbp);
-const systolicBloodPressure = sbp;
+
+// CURB-65 criteria (each worth 1 point):
+//   - New-onset confusion
+//   - Urea > 7 mmol/L
+//   - Respiratory rate ≥ 30/min
+//   - SBP < 90 mmHg
+//   - Age ≥ 65
+let score = 0;
+if (confusion === 1) score += 1;
+if (urea > 7) score += 1;
+if (respiratoryRate >= 30) score += 1;
+if (sbp < 90) score += 1;
+if (age >= 65) score += 1;
+
+const result = Math.min(score, 5);
 
 
-  const result =
-    65;
-
-
-  
-const interpretation =
-  "Clinical interpretation pending.";
-
-const status:
+let interpretation: string;
+let status:
   "normal" |
   "low" |
   "high" |
-  "critical" =
-  "normal";
+  "critical";
+
+switch (result) {
+  case 0:
+    interpretation =
+      "CURB-65 0 – Low severity. Suitable for outpatient management.";
+    status = "normal";
+    break;
+  case 1:
+    interpretation =
+      "CURB-65 1 – Low severity. Usually suitable for outpatient management.";
+    status = "low";
+    break;
+  case 2:
+    interpretation =
+      "CURB-65 2 – Moderate severity. Strongly consider hospital admission.";
+    status = "low";
+    break;
+  default:
+    interpretation =
+      "CURB-65 ≥ 3 – Severe pneumonia. Consider urgent hospital/ICU admission.";
+    status = "high";
+    break;
+}
 
 const referenceRange =
-  "";
+  "0–5";
 
 
 
