@@ -121,6 +121,49 @@ describe("Calculator Registry Integrity", () => {
     expect(results.length).toBeGreaterThanOrEqual(1);
   });
 
+  it("every calculator has a unique shortName", () => {
+    const shortNames = calculatorRegistry.map((c) => c.shortName);
+    const uniqueShortNames = new Set(shortNames);
+    expect(uniqueShortNames.size).toBe(shortNames.length);
+  });
+
+  it("every relatedCalculators reference resolves to a registered calculator", () => {
+    const ids = new Set(calculatorRegistry.map((c) => c.id));
+    for (const calc of calculatorRegistry) {
+      for (const ref of calc.relatedCalculators ?? []) {
+        expect(
+          ids.has(ref),
+          `${calc.id}: relatedCalculators references "${ref}" which is not a registered calculator id`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("every inline comparison href resolves to a registered calculator slug", () => {
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const calc of calculatorRegistry) {
+      const comparison = calc.comparison;
+      const items = Array.isArray(comparison)
+        ? comparison
+        : (comparison?.calculators ?? []);
+      for (const item of items) {
+        const slug = item.href?.replace("/calculators/", "");
+        expect(
+          slug && slugs.has(slug),
+          `${calc.id}: comparison references "${item.href}" which is not a registered calculator slug`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("every calculator id and slug is reachable from its definition", () => {
+    for (const calc of calculatorRegistry) {
+      expect(getCalculatorById(calc.id)).toBe(calc);
+      const bySlug = calculatorRegistry.find((c) => c.slug === calc.slug);
+      expect(bySlug).toBe(calc);
+    }
+  });
+
   it("searchCalculators returns empty array for nonsense query", () => {
     const results = searchCalculators(
       "xyzzy_nonexistent_12345",

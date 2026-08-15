@@ -11,7 +11,10 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { calculatorRegistry } from "../../lib/calculators/registry";
+import {
+  calculatorRegistry,
+  getCalculatorById,
+} from "../../lib/calculators/registry";
 import type {
   CalculatorDefinition,
   CalculatorResult,
@@ -505,5 +508,90 @@ describe("Calculator Input Validation", () => {
         `${calc.id}: must have a status property`,
       ).toHaveProperty("status");
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Direct-call validation guard regression tests.
+//
+// lbm and adjbw previously propagated NaN into the result value for missing,
+// non-numeric, negative, or zero numeric inputs and silently misclassified
+// invalid sex selections. These guards must return critical and never emit
+// a NaN value.
+// ---------------------------------------------------------------------------
+
+const GUARDED_IDS = ["lean-body-weight", "adjbw"];
+
+function guardedCalculator(id: string) {
+  const calc = getCalculatorById(id);
+  expect(calc, `guarded calculator "${id}" must be registered`).toBeDefined();
+  return calc!;
+}
+
+describe("Direct-Call Validation Guards", () => {
+  it.each(GUARDED_IDS)("%s returns critical and no NaN for missing inputs", (id) => {
+    const calc = guardedCalculator(id);
+    const result = calc.calculate({});
+    expect(result.status).toBe("critical");
+    expect(Number.isNaN(Number(result.value))).toBe(false);
+  });
+
+  it.each(GUARDED_IDS)("%s returns critical and no NaN for non-numeric inputs", (id) => {
+    const calc = guardedCalculator(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = input.type === "select" ? "male" : "abc";
+    }
+    const result = calc.calculate(inputs);
+    expect(result.status).toBe("critical");
+    expect(Number.isNaN(Number(result.value))).toBe(false);
+  });
+
+  it.each(GUARDED_IDS)("%s returns critical for negative numeric inputs", (id) => {
+    const calc = guardedCalculator(id);
+    const inputs: Record<string, string> = {
+      sex: "male",
+      height: "-100",
+      weight: "-50",
+    };
+    const result = calc.calculate(inputs);
+    expect(result.status).toBe("critical");
+    expect(Number.isNaN(Number(result.value))).toBe(false);
+  });
+
+  it.each(GUARDED_IDS)("%s returns critical for zero numeric inputs", (id) => {
+    const calc = guardedCalculator(id);
+    const inputs: Record<string, string> = {
+      sex: "male",
+      height: "0",
+      weight: "0",
+    };
+    const result = calc.calculate(inputs);
+    expect(result.status).toBe("critical");
+    expect(Number.isNaN(Number(result.value))).toBe(false);
+  });
+
+  it.each(GUARDED_IDS)("%s returns critical for invalid sex selection", (id) => {
+    const calc = guardedCalculator(id);
+    const inputs: Record<string, string> = {
+      sex: "not-a-sex",
+      height: "170",
+      weight: "70",
+    };
+    const result = calc.calculate(inputs);
+    expect(result.status).toBe("critical");
+    expect(Number.isNaN(Number(result.value))).toBe(false);
+  });
+
+  it.each(GUARDED_IDS)("%s keeps producing valid results for valid inputs", (id) => {
+    const calc = guardedCalculator(id);
+    const inputs: Record<string, string> = {
+      sex: "male",
+      height: "170",
+      weight: "70",
+    };
+    const result = calc.calculate(inputs);
+    expect(result.status).toBe("normal");
+    expect(Number.isFinite(Number(result.value))).toBe(true);
   });
 });

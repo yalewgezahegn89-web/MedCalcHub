@@ -76,6 +76,84 @@ export const lbmCalculator: CalculatorDefinition = {
   ],
 
   calculate(values) {
+    if (values.sex !== "male" && values.sex !== "female") {
+      return {
+        value: 0,
+        interpretation: "Sex is required.",
+        status: "critical",
+      };
+    }
+
+    if (
+      values.height === "" ||
+      values.height === undefined
+    ) {
+      return {
+        value: 0,
+        interpretation: "Height is required.",
+        status: "critical",
+      };
+    }
+
+    if (Number.isNaN(Number(values.height))) {
+      return {
+        value: 0,
+        interpretation: "Invalid Height.",
+        status: "critical",
+      };
+    }
+
+    if (Number(values.height) < 0) {
+      return {
+        value: 0,
+        interpretation: "Height cannot be negative.",
+        status: "critical",
+      };
+    }
+
+    if (Number(values.height) === 0) {
+      return {
+        value: 0,
+        interpretation: "Height cannot be zero.",
+        status: "critical",
+      };
+    }
+
+    if (
+      values.weight === "" ||
+      values.weight === undefined
+    ) {
+      return {
+        value: 0,
+        interpretation: "Weight is required.",
+        status: "critical",
+      };
+    }
+
+    if (Number.isNaN(Number(values.weight))) {
+      return {
+        value: 0,
+        interpretation: "Invalid Weight.",
+        status: "critical",
+      };
+    }
+
+    if (Number(values.weight) < 0) {
+      return {
+        value: 0,
+        interpretation: "Weight cannot be negative.",
+        status: "critical",
+      };
+    }
+
+    if (Number(values.weight) === 0) {
+      return {
+        value: 0,
+        interpretation: "Weight cannot be zero.",
+        status: "critical",
+      };
+    }
+
     const sex = values.sex;
     const height = parseFloat(values.height);
     const weight = parseFloat(values.weight);
