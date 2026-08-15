@@ -24,7 +24,7 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
 
   keywords: ["eGFR", "Kidney", "Renal", "Glomerular Filtration Rate", "CKD", "Kidney Function", "Nephrology"],
 
-  formula: "eGFR = 142 * pow(min(creatinine / 0.9, 1), -0.302) * pow(max(creatinine / 0.9, 1), -1.2) * pow(0.9938, age) * 1.012",
+  formula: "eGFR = 142 * min(creatinine / κ, 1)^α * max(creatinine / κ, 1)^-1.2 * 0.9938^age (× 1.012 if female); κ = 0.7 female / 0.9 male; α = −0.241 female / −0.302 male",
 
   normalRange: "≥90 mL/min/1.73 m²",
 
@@ -89,6 +89,10 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
     label: "Sex",
     type: "select",
     required: true,
+    options: [
+      { label: "Male", value: "1" },
+      { label: "Female", value: "2" },
+    ],
   },
   {
     id: "creatinine",
@@ -228,12 +232,15 @@ if (Number(values.creatinine) === 0) {
 
 
 const age = Number(values.age);
-const sex = Number(values.sex);
 const creatinine = Number(values.creatinine);
 
+const isFemale = values.sex === "2" || values.sex?.toLowerCase() === "female";
+const kappa = isFemale ? 0.7 : 0.9;
+const alpha = isFemale ? -0.241 : -0.302;
+const femaleFactor = isFemale ? 1.012 : 1;
 
   const result =
-    142 * Math.pow(Math.min(creatinine / 0.9, 1), -0.302) * Math.pow(Math.max(creatinine / 0.9, 1), -1.2) * Math.pow(0.9938, age) * 1.012;
+    142 * Math.pow(Math.min(creatinine / kappa, 1), alpha) * Math.pow(Math.max(creatinine / kappa, 1), -1.2) * Math.pow(0.9938, age) * femaleFactor;
 
 
   

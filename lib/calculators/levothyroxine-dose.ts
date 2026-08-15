@@ -130,60 +130,21 @@ const wt = weight;
     1.6 * weight;
 
 
-  
-let interpretation =
-  "Clinical interpretation pending.";
-
-let status:
-  "normal" |
-  "low" |
-  "high" |
-  "critical" =
-  "normal";
-
-let referenceRange =
-  "";
-
-if (false) {}
-
-
-else if (result <= 1) {
-
-  interpretation =
-    "Conservative starting dose";
-
-  status =
-    "low";
-
-  referenceRange =
-  "<1.1";
-}
-
-
-else if (result >= 1 && result <= 1.6) {
-
-  interpretation =
-    "Moderate dose";
-
-  status =
-    "normal";
-
-  referenceRange =
-  "1–1.6";
-}
-
-
-else if (result >= 1.6) {
-
-  interpretation =
+  // The formula always yields the full replacement rate (1.6 µg/kg/day),
+  // which is within the normal range of 1.0–2.0 µg/kg/day. The result is
+  // the total daily dose in µg (rate × weight).
+  let interpretation =
     "Full replacement dose";
 
-  status =
-    "high";
+  let status:
+    "normal" |
+    "low" |
+    "high" |
+    "critical" =
+    "normal";
 
-  referenceRange =
-  "≥1.6";
-}
+  let referenceRange =
+    "≥1.6";
 
 
 

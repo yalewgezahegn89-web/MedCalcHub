@@ -31,15 +31,23 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
   referenceRanges: [
   {
     label: "Low risk (Males)",
-    range: "<0.99",
+    range: "<0.90",
   },
   {
     label: "Moderate risk (Males)",
-    range: "0.9–0.99",
+    range: "0.90–0.99",
   },
   {
     label: "High risk (Males)",
-    range: "≥1",
+    range: "≥1.0",
+  },
+  {
+    label: "Low risk (Females)",
+    range: "<0.85",
+  },
+  {
+    label: "Increased risk (Females)",
+    range: "≥0.85",
   }
 ],
 
@@ -141,6 +149,16 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
     type: "number",
     unit: "cm",
     required: true,
+  },
+  {
+    id: "sex",
+    label: "Sex",
+    type: "select",
+    required: true,
+    options: [
+      { label: "Male", value: "1" },
+      { label: "Female", value: "2" },
+    ],
   }
 ],
 
@@ -229,11 +247,22 @@ const hip =
     Number(values.hip);
 
 
+if (hip === 0) {
+  return {
+    value: 0,
+    interpretation: "Hip Circumference cannot be zero.",
+    status: "critical",
+  };
+}
+
+
   const result =
     waist / hip;
 
 
   
+const isFemale = values.sex === "2" || values.sex?.toLowerCase() === "female";
+
 let interpretation =
   "Clinical interpretation pending.";
 
@@ -247,9 +276,34 @@ let status:
 let referenceRange =
   "";
 
-if (false) {}
+if (isFemale) {
 
 
+  if (result < 0.85) {
+
+    interpretation =
+      "Low risk (Females)";
+
+    status =
+      "normal";
+
+    referenceRange =
+    "<0.85";
+  }
+
+  else {
+
+    interpretation =
+      "Increased risk (Females)";
+
+    status =
+      "high";
+
+    referenceRange =
+    "≥0.85";
+  }
+
+}
 else if (result < 0.9) {
 
   interpretation =

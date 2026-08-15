@@ -1,4 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
+import { calculateFreeWaterDeficit } from "./utils/internal-medicine";
 
 export const freeWaterDeficitCalculator: CalculatorDefinition = {
   id: "free-water-deficit",
@@ -233,7 +234,7 @@ const desiredSodium = desiredNa;
 
 
   const result =
-    0.6 * weight * (desiredNa / desiredNa - 1);
+    calculateFreeWaterDeficit(weight, currentNa, desiredNa);
 
 
   

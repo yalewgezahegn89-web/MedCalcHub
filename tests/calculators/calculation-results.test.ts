@@ -50,6 +50,18 @@ import {
 import {
   sodiumDeficitCalculator,
 } from "../../lib/calculators/sodium-deficit";
+import {
+  shockIndexCalculator,
+} from "../../lib/calculators/shock-index";
+import {
+  freeWaterDeficitCalculator,
+} from "../../lib/calculators/free-water-deficit";
+import {
+  thyroidDoseCalculator,
+} from "../../lib/calculators/thyroid-dose";
+import {
+  levothyroxineDoseCalculator,
+} from "../../lib/calculators/levothyroxine-dose";
 
 import type {
   CalculatorDefinition,
@@ -156,7 +168,9 @@ describe("BMI calculate() output", () => {
 
 // ---------------------------------------------------------------------------
 // CKD-EPI 2021 —
-// Formula: 142 * min(Scr/0.9,1)^-0.302 * max(Scr/0.9,1)^-1.2 * 0.9938^age * 1.012
+// Formula (sex-aware, 2021 race-free equation):
+//   142 * min(Scr/κ,1)^α * max(Scr/κ,1)^-1.2 * 0.9938^age * (1.012 if female)
+//   κ = 0.7 female / 0.9 male; α = −0.241 female / −0.302 male
 // Classification (contiguous, no gaps):
 //   ≥ 90 → G1 Normal or high
 //   ≥ 60 → G2 Mildly decreased
@@ -164,36 +178,43 @@ describe("BMI calculate() output", () => {
 //   ≥ 30 → G3b Moderate to severe
 //   ≥ 15 → G4 Severely decreased
 //   < 15 → G5 Kidney failure
+// Sex input: "1" = male, "2" = female
 // Result = Number(result.toFixed(2))
 // ---------------------------------------------------------------------------
 describe("CKD-EPI 2021 calculate() output", () => {
-  // Helper to compute the raw expected value for verification
+  // Helper to compute the expected value for a given sex
   function expectedEgfr(
+    sex: "1" | "2",
     creatinine: number,
     age: number,
   ) {
+    const isFemale = sex === "2";
+    const kappa = isFemale ? 0.7 : 0.9;
+    const alpha = isFemale ? -0.241 : -0.302;
+    const factor = isFemale ? 1.012 : 1;
+
     return Number(
       (
         142 *
         Math.pow(
-          Math.min(creatinine / 0.9, 1),
-          -0.302,
+          Math.min(creatinine / kappa, 1),
+          alpha,
         ) *
         Math.pow(
-          Math.max(creatinine / 0.9, 1),
+          Math.max(creatinine / kappa, 1),
           -1.2,
         ) *
         Math.pow(0.9938, age) *
-        1.012
+        factor
       ).toFixed(2),
     );
   }
 
-  it("normal renal function: female, age 40, Cr 0.8", () => {
-    const expected = expectedEgfr(0.8, 40);
+  it("normal renal function: female, age 40, Cr 0.8 → G1", () => {
+    const expected = expectedEgfr("2", 0.8, 40);
     const r = calc(ckdEpi2021Calculator, {
       age: "40",
-      sex: "1",
+      sex: "2",
       creatinine: "0.8",
     });
     expect(r.value).toBeCloseTo(expected, 1);
@@ -203,8 +224,8 @@ describe("CKD-EPI 2021 calculate() output", () => {
     );
   });
 
-  it("mildly decreased: female, age 65, Cr 1.1", () => {
-    const expected = expectedEgfr(1.1, 65);
+  it("male, age 65, Cr 1.1 → G2 (mildly decreased)", () => {
+    const expected = expectedEgfr("1", 1.1, 65);
     const r = calc(ckdEpi2021Calculator, {
       age: "65",
       sex: "1",
@@ -217,9 +238,42 @@ describe("CKD-EPI 2021 calculate() output", () => {
     );
   });
 
-  it("moderate decrease: female, age 55, Cr 1.5", () => {
-    // Cr 1.5, age 55 → eGFR ≈ 56.6, clearly in G3a (45–59)
-    const expected = expectedEgfr(1.5, 55);
+  it("female, age 65, Cr 1.1 → G3a (sex-specific κ/α/factor)", () => {
+    const expected = expectedEgfr("2", 1.1, 65);
+    const r = calc(ckdEpi2021Calculator, {
+      age: "65",
+      sex: "2",
+      creatinine: "1.1",
+    });
+    expect(r.value).toBeCloseTo(expected, 1);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe(
+      "G3a: Mild to moderate",
+    );
+  });
+
+  it("regression: same creatinine — female eGFR differs from male", () => {
+    // Previously the sex input was ignored (always male κ with 1.012 factor)
+    const female = expectedEgfr("2", 1.1, 65);
+    const male = expectedEgfr("1", 1.1, 65);
+    expect(female).toBeLessThan(male);
+
+    const rF = calc(ckdEpi2021Calculator, {
+      age: "65",
+      sex: "2",
+      creatinine: "1.1",
+    });
+    const rM = calc(ckdEpi2021Calculator, {
+      age: "65",
+      sex: "1",
+      creatinine: "1.1",
+    });
+    expect(rF.value).toBeCloseTo(female, 1);
+    expect(rM.value).toBeCloseTo(male, 1);
+  });
+
+  it("male, age 55, Cr 1.5 → G3a", () => {
+    const expected = expectedEgfr("1", 1.5, 55);
     const r = calc(ckdEpi2021Calculator, {
       age: "55",
       sex: "1",
@@ -232,8 +286,8 @@ describe("CKD-EPI 2021 calculate() output", () => {
     );
   });
 
-  it("severe decrease: female, age 72, Cr 3.5", () => {
-    const expected = expectedEgfr(3.5, 72);
+  it("male, age 72, Cr 3.5 → G4 (severely decreased)", () => {
+    const expected = expectedEgfr("1", 3.5, 72);
     const r = calc(ckdEpi2021Calculator, {
       age: "72",
       sex: "1",
@@ -246,13 +300,11 @@ describe("CKD-EPI 2021 calculate() output", () => {
     );
   });
 
-  it("regression: Cr 1.8 age 55 now classified as G3b", () => {
-    // Previously ~44.87 fell through the gap; now correctly
-    // classified as G3b Moderate to severe
-    const expected = expectedEgfr(1.8, 55);
+  it("regression: male, age 55, Cr 1.8 → G3b", () => {
+    const expected = expectedEgfr("1", 1.8, 55);
     const r = calc(ckdEpi2021Calculator, {
       age: "55",
-      sex: "2",
+      sex: "1",
       creatinine: "1.8",
     });
     expect(r.value).toBeCloseTo(expected, 1);
@@ -262,10 +314,8 @@ describe("CKD-EPI 2021 calculate() output", () => {
     );
   });
 
-  it("regression: boundary eGFR ≈ 45 → G3a", () => {
-    // Find inputs that produce eGFR very close to 45
-    // age=40, Cr≈1.57 → eGFR ≈ 45.0
-    const expected = expectedEgfr(1.57, 40);
+  it("regression: male, age 40, Cr 1.57 → G3a (45–59 band)", () => {
+    const expected = expectedEgfr("1", 1.57, 40);
     expect(expected).toBeGreaterThanOrEqual(45);
     expect(expected).toBeLessThan(60);
     const r = calc(ckdEpi2021Calculator, {
@@ -280,10 +330,9 @@ describe("CKD-EPI 2021 calculate() output", () => {
     );
   });
 
-  it("regression: boundary eGFR ≈ 30 → G3b", () => {
-    // age=80, Cr≈2.0 → eGFR ≈ 30-ish, should be G3b or G4
-    const expected = expectedEgfr(2.0, 80);
-    expect(expected).toBeGreaterThanOrEqual(15);
+  it("regression: male, age 80, Cr 2.0 → G3b (30–44 band)", () => {
+    const expected = expectedEgfr("1", 2.0, 80);
+    expect(expected).toBeGreaterThanOrEqual(30);
     expect(expected).toBeLessThan(45);
     const r = calc(ckdEpi2021Calculator, {
       age: "80",
@@ -292,18 +341,16 @@ describe("CKD-EPI 2021 calculate() output", () => {
     });
     expect(r.value).toBeCloseTo(expected, 1);
     expect(r.status).toBe("low");
-    // Should be G3b or G4 depending on exact value
-    expect([
+    expect(r.interpretation).toBe(
       "G3b: Moderate to severe",
-      "G4: Severely decreased",
-    ]).toContain(r.interpretation);
+    );
   });
 
-  it("kidney failure: male, age 80, Cr 5.0", () => {
-    const expected = expectedEgfr(5.0, 80);
+  it("kidney failure: male, age 80, Cr 5.0 → G5", () => {
+    const expected = expectedEgfr("1", 5.0, 80);
     const r = calc(ckdEpi2021Calculator, {
       age: "80",
-      sex: "2",
+      sex: "1",
       creatinine: "5.0",
     });
     expect(r.value).toBeCloseTo(expected, 1);
@@ -364,40 +411,117 @@ describe("GCS calculate() output", () => {
 
 // ---------------------------------------------------------------------------
 // NEWS2 — National Early Warning Score 2
-// NOTE: The current NEWS2 implementation is a placeholder that sums raw
-// vital signs instead of scoring them per the NEWS2 protocol. It also has
-// no classification logic (always returns status "normal"). This section
-// documents the current (known-broken) behavior. These tests serve as
-// regression tests so any future fix can be validated.
+// Sub-scores: RR ≤8=3, 9–11=1, 12–20=0, 21–24=2, ≥25=3
+//            SpO2 ≤91=3, 92–93=2, 94–95=1, ≥96=0
+//            Temp ≤35=3, 35.1–36=1, 36.1–38=0, 38.1–39=1, ≥39.1=2
+//            SBP ≤90=3, 91–100=2, 101–110=1, 111–219=0, ≥220=3
+//            Pulse ≤40=3, 41–50=1, 51–90=0, 91–110=1, 111–130=2, ≥131=3
+// Aggregate (0–15). 0 → low; 1–4 → low-to-moderate; 5–6 or any single 3 →
+// high; ≥7 → very high.
+// Result = Number(result.toFixed(2))
 // ---------------------------------------------------------------------------
 describe("NEWS2 calculate() boundary audit", () => {
-  it("produces a numeric result from valid inputs", () => {
+  it("normal vitals produce score 0 (low clinical risk)", () => {
     const r = calc(news2Calculator, {
-      respiratory_rate: "20",
+      "respiratory-rate": "14",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe(
+      "NEWS2 0 – Low clinical risk.",
+    );
+  });
+
+  it("scores each parameter per NEWS2 bands (RR 24, SpO2 93, temp 38.2, SBP 100, pulse 110 → 8)", () => {
+    // Sub-scores: RR 2, SpO₂ 2, temperature 1, SBP 2, pulse 1 → 8
+    const r = calc(news2Calculator, {
+      "respiratory-rate": "24",
+      spo2: "93",
+      temperature: "38.2",
+      sbp: "100",
+      pulse: "110",
+    });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe(
+      "NEWS2 8 – Very high risk.",
+    );
+  });
+
+  it("mixed mild inputs produce a low-to-moderate score", () => {
+    // RR 20 → 0, SpO2 94 → 1, temp 38 → 0, SBP 110 → 1, pulse 110 → 1 → 3
+    const r = calc(news2Calculator, {
+      "respiratory-rate": "20",
       spo2: "94",
       temperature: "38",
       sbp: "110",
       pulse: "110",
     });
-    expect(typeof r.value).toBe("number");
-    expect(r.value).toBeGreaterThan(0);
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe(
+      "NEWS2 3 – Low-to-moderate risk.",
+    );
   });
 
-  it("classification is always normal (known limitation)", () => {
-    // NEWS2 currently has no classification logic; always returns "normal"
+  it("any single parameter scoring 3 triggers high risk", () => {
+    // RR 8 → 3, all others normal → aggregate 3 but high-risk response
     const r = calc(news2Calculator, {
-      respiratory_rate: "8",
-      spo2: "88",
-      temperature: "34",
-      sbp: "70",
-      pulse: "40",
+      "respiratory-rate": "8",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
     });
-    expect(r.status).toBe("normal");
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe(
+      "NEWS2 3 – High risk.",
+    );
+  });
+
+  it("aggregate 5–6 is high risk", () => {
+    // RR 25 → 3, SpO2 92 → 2 → 5
+    const r = calc(news2Calculator, {
+      "respiratory-rate": "25",
+      spo2: "92",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe(
+      "NEWS2 5 – High risk.",
+    );
+  });
+
+  it("boundary: RR 20 vs 21 changes sub-score 0 → 2", () => {
+    const r20 = calc(news2Calculator, {
+      "respiratory-rate": "20",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    const r21 = calc(news2Calculator, {
+      "respiratory-rate": "21",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r20.value).toBe(0);
+    expect(r21.value).toBe(2);
   });
 
   it("returns critical status for missing input", () => {
     const r = calc(news2Calculator, {
-      respiratory_rate: "",
+      "respiratory-rate": "",
       spo2: "94",
       temperature: "38",
       sbp: "110",
@@ -410,27 +534,135 @@ describe("NEWS2 calculate() boundary audit", () => {
 
 // ---------------------------------------------------------------------------
 // CURB-65 — Severity score for community-acquired pneumonia
-// NOTE: The current CURB-65 implementation has a hardcoded result of 65
-// and no actual scoring logic. It also lacks a "confusion" input.
-// These tests document current (known-broken) behavior.
+// One point each: new-onset confusion, urea > 7 mmol/L, RR ≥ 30/min,
+// SBP < 90 mmHg, age ≥ 65. Score 0–5.
+// 0–1 → low; 2 → moderate; ≥ 3 → severe.
+// Result = Number(result.toFixed(2))
 // ---------------------------------------------------------------------------
 describe("CURB-65 calculate() boundary audit", () => {
-  it("result is always 65 (known limitation)", () => {
+  const baseline = {
+    age: "40",
+    confusion: "0",
+    urea: "6",
+    "respiratory-rate": "20",
+    sbp: "110",
+  };
+
+  it("score 0 when no criteria met", () => {
+    const r = calc(curb65Calculator, baseline);
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe(
+      "CURB-65 0 – Low severity. Suitable for outpatient management.",
+    );
+  });
+
+  it("score 1 for age ≥ 65 alone", () => {
     const r = calc(curb65Calculator, {
+      ...baseline,
+      age: "65",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("low");
+  });
+
+  it("score 2 for age ≥ 65 + urea > 7", () => {
+    const r = calc(curb65Calculator, {
+      ...baseline,
+      age: "70",
+      urea: "8",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe(
+      "CURB-65 2 – Moderate severity. Strongly consider hospital admission.",
+    );
+  });
+
+  it("score ≥ 3 is severe", () => {
+    // age 70 + urea 8 + RR 30 → 3
+    const r = calc(curb65Calculator, {
+      ...baseline,
+      age: "70",
+      urea: "8",
+      "respiratory-rate": "30",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe(
+      "CURB-65 ≥ 3 – Severe pneumonia. Consider urgent hospital/ICU admission.",
+    );
+  });
+
+  it("boundary: urea 7 (no point) vs 7.1 (point)", () => {
+    const r7 = calc(curb65Calculator, {
+      ...baseline,
       age: "70",
       urea: "7",
-      respiratory_rate: "22",
+    });
+    const r71 = calc(curb65Calculator, {
+      ...baseline,
+      age: "70",
+      urea: "7.1",
+    });
+    expect(r7.value).toBe(1);
+    expect(r71.value).toBe(2);
+  });
+
+  it("boundary: RR 29 (no point) vs 30 (point)", () => {
+    const r29 = calc(curb65Calculator, {
+      ...baseline,
+      "respiratory-rate": "29",
+    });
+    const r30 = calc(curb65Calculator, {
+      ...baseline,
+      "respiratory-rate": "30",
+    });
+    expect(r29.value).toBe(0);
+    expect(r30.value).toBe(1);
+  });
+
+  it("boundary: SBP 90 (no point) vs 89 (point)", () => {
+    const r90 = calc(curb65Calculator, {
+      ...baseline,
       sbp: "90",
     });
-    expect(r.value).toBe(65);
-    expect(r.status).toBe("normal");
+    const r89 = calc(curb65Calculator, {
+      ...baseline,
+      sbp: "89",
+    });
+    expect(r90.value).toBe(0);
+    expect(r89.value).toBe(1);
+  });
+
+  it("boundary: age 64 (no point) vs 65 (point)", () => {
+    const r64 = calc(curb65Calculator, {
+      ...baseline,
+      age: "64",
+    });
+    const r65 = calc(curb65Calculator, {
+      ...baseline,
+      age: "65",
+    });
+    expect(r64.value).toBe(0);
+    expect(r65.value).toBe(1);
+  });
+
+  it("confusion contributes 1 point", () => {
+    const r = calc(curb65Calculator, {
+      ...baseline,
+      confusion: "1",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("low");
   });
 
   it("returns critical status for missing age", () => {
     const r = calc(curb65Calculator, {
       age: "",
+      confusion: "0",
       urea: "7",
-      respiratory_rate: "22",
+      "respiratory-rate": "22",
       sbp: "90",
     });
     expect(r.status).toBe("critical");
@@ -619,37 +851,102 @@ describe("Corrected Sodium boundary-gap regression", () => {
 
 // ---------------------------------------------------------------------------
 // qSOFA — Quick Sequential Organ Failure Assessment
-// NOTE: The current qSOFA implementation sums raw SBP + RR instead of
-// scoring them (SBP ≤100 → 1, RR ≥22 → 1, altered mental status → 1).
-// The mental_status input is parsed but never used in the score.
-// These tests document current (known-broken) behavior.
+// One point each: SBP ≤ 100 mmHg, RR ≥ 22/min, altered mental status.
+// Score 0–3. 0 → low concern; 1 → moderate concern; ≥ 2 → high risk.
+// Result = Number(result.toFixed(2))
 // ---------------------------------------------------------------------------
 describe("qSOFA calculate() boundary audit", () => {
-  it("produces a numeric result from valid inputs", () => {
+  it("score 0 when no criteria met", () => {
     const r = calc(qsofaCalculator, {
-      sbp: "100",
-      respiratory_rate: "22",
-      mental_status: "1",
+      sbp: "110",
+      "respiratory-rate": "20",
+      "mental-status": "0",
     });
-    expect(typeof r.value).toBe("number");
-    expect(r.value).toBeGreaterThan(0);
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe(
+      "qSOFA 0 – Low clinical concern. Continue to monitor for signs of deterioration.",
+    );
   });
 
-  it("classification is always normal (known limitation)", () => {
-    // qSOFA currently has no classification logic
+  it("score 1 for SBP ≤ 100 alone", () => {
+    const r = calc(qsofaCalculator, {
+      sbp: "100",
+      "respiratory-rate": "20",
+      "mental-status": "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("low");
+  });
+
+  it("score 2 → high risk (SBP 95, RR 24)", () => {
+    const r = calc(qsofaCalculator, {
+      sbp: "95",
+      "respiratory-rate": "24",
+      "mental-status": "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe(
+      "qSOFA ≥ 2 – High risk of sepsis-related organ dysfunction and mortality. Escalate care urgently.",
+    );
+  });
+
+  it("score 3 (all three criteria met)", () => {
     const r = calc(qsofaCalculator, {
       sbp: "80",
-      respiratory_rate: "30",
-      mental_status: "1",
+      "respiratory-rate": "30",
+      "mental-status": "1",
     });
-    expect(r.status).toBe("normal");
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary: SBP 100 (point) vs 101 (no point)", () => {
+    const r100 = calc(qsofaCalculator, {
+      sbp: "100",
+      "respiratory-rate": "20",
+      "mental-status": "0",
+    });
+    const r101 = calc(qsofaCalculator, {
+      sbp: "101",
+      "respiratory-rate": "20",
+      "mental-status": "0",
+    });
+    expect(r100.value).toBe(1);
+    expect(r101.value).toBe(0);
+  });
+
+  it("boundary: RR 22 (point) vs 21 (no point)", () => {
+    const r22 = calc(qsofaCalculator, {
+      sbp: "110",
+      "respiratory-rate": "22",
+      "mental-status": "0",
+    });
+    const r21 = calc(qsofaCalculator, {
+      sbp: "110",
+      "respiratory-rate": "21",
+      "mental-status": "0",
+    });
+    expect(r22.value).toBe(1);
+    expect(r21.value).toBe(0);
+  });
+
+  it("altered mental status contributes 1 point", () => {
+    const r = calc(qsofaCalculator, {
+      sbp: "110",
+      "respiratory-rate": "20",
+      "mental-status": "1",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("low");
   });
 
   it("returns critical status for missing input", () => {
     const r = calc(qsofaCalculator, {
       sbp: "",
-      respiratory_rate: "22",
-      mental_status: "1",
+      "respiratory-rate": "22",
+      "mental-status": "1",
     });
     expect(r.status).toBe("critical");
   });
@@ -2714,6 +3011,253 @@ describe("Sodium Deficit calculate() boundary-gap regression", () => {
     expect(r.value).toBe(840);
     expect(r.interpretation).toBe("Large sodium deficit");
     expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Shock Index — Heart Rate / SBP
+// Normal range 0.5–0.7. <0.5 low; >0.7 elevated; ≥1.0 critical.
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Shock Index calculate() regression", () => {
+  it("reads hyphenated heart-rate input (matches declared input id)", () => {
+    // Previously calculate() read values.heart_rate, which the form never sends
+    const r = calc(shockIndexCalculator, {
+      "heart-rate": "120",
+      sbp: "80",
+    });
+    expect(r.value).toBe(1.5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("0.6 → normal", () => {
+    const r = calc(shockIndexCalculator, {
+      "heart-rate": "72",
+      sbp: "120",
+    });
+    expect(r.value).toBe(0.6);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe(
+      "Normal shock index.",
+    );
+  });
+
+  it("boundary: 0.5 → normal, 0.4 → low", () => {
+    const r05 = calc(shockIndexCalculator, {
+      "heart-rate": "60",
+      sbp: "120",
+    });
+    const r04 = calc(shockIndexCalculator, {
+      "heart-rate": "48",
+      sbp: "120",
+    });
+    expect(r05.value).toBe(0.5);
+    expect(r05.status).toBe("normal");
+    expect(r04.value).toBe(0.4);
+    expect(r04.status).toBe("low");
+  });
+
+  it("boundary: 0.7 → normal, 0.8 → elevated", () => {
+    const r07 = calc(shockIndexCalculator, {
+      "heart-rate": "84",
+      sbp: "120",
+    });
+    const r08 = calc(shockIndexCalculator, {
+      "heart-rate": "96",
+      sbp: "120",
+    });
+    expect(r07.value).toBe(0.7);
+    expect(r07.status).toBe("normal");
+    expect(r08.value).toBe(0.8);
+    expect(r08.status).toBe("high");
+  });
+
+  it("boundary: 0.9 → elevated, 1.0 → critical", () => {
+    const r09 = calc(shockIndexCalculator, {
+      "heart-rate": "108",
+      sbp: "120",
+    });
+    const r10 = calc(shockIndexCalculator, {
+      "heart-rate": "120",
+      sbp: "120",
+    });
+    expect(r09.value).toBe(0.9);
+    expect(r09.status).toBe("high");
+    expect(r10.value).toBe(1);
+    expect(r10.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Free Water Deficit — 0.6 * weight * (currentNa / desiredNa − 1)
+// Uses the shared calculateFreeWaterDeficit utility (clamps at ≥ 0).
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Free Water Deficit calculate() regression", () => {
+  it("computes a positive deficit in hypernatremia (was always 0)", () => {
+    // Previously the formula used desiredNa/desiredNa, always returning 0
+    const r = calc(freeWaterDeficitCalculator, {
+      weight: "70",
+      currentNa: "150",
+      desiredNa: "140",
+    });
+    expect(r.value).toBe(3);
+    expect(r.interpretation).toBe(
+      "Mild free water deficit",
+    );
+    expect(r.status).toBe("low");
+  });
+
+  it("moderate deficit", () => {
+    const r = calc(freeWaterDeficitCalculator, {
+      weight: "80",
+      currentNa: "155",
+      desiredNa: "145",
+    });
+    // 48 * (155/145 − 1) = 48 * 0.06897 = 3.31 → 3.3
+    expect(r.value).toBe(3.3);
+    expect(r.interpretation).toBe(
+      "Moderate free water deficit",
+    );
+    expect(r.status).toBe("high");
+  });
+
+  it("no deficit when current sodium is not elevated", () => {
+    const r = calc(freeWaterDeficitCalculator, {
+      weight: "60",
+      currentNa: "135",
+      desiredNa: "140",
+    });
+    expect(r.value).toBe(0);
+    expect(r.interpretation).toBe("No deficit");
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Thyroid Dose / Levothyroxine Dose — Dose = 1.6 * weight (µg/day)
+// The formula always yields the full replacement rate (1.6 µg/kg/day),
+// which is within the normal range of 1.0–2.0 µg/kg/day.
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Thyroid Dose calculate() regression", () => {
+  it("returns the total daily dose for weight 70", () => {
+    const r = calc(thyroidDoseCalculator, {
+      weight: "70",
+    });
+    expect(r.value).toBe(112);
+    expect(r.interpretation).toBe(
+      "Full replacement dose",
+    );
+    expect(r.status).toBe("normal");
+  });
+
+  it("returns the total daily dose for weight 90", () => {
+    const r = calc(thyroidDoseCalculator, {
+      weight: "90",
+    });
+    expect(r.value).toBe(144);
+    expect(r.status).toBe("normal");
+  });
+});
+
+describe("Levothyroxine Dose calculate() regression", () => {
+  it("returns the total daily dose for weight 70", () => {
+    const r = calc(levothyroxineDoseCalculator, {
+      weight: "70",
+    });
+    expect(r.value).toBe(112);
+    expect(r.interpretation).toBe(
+      "Full replacement dose",
+    );
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Waist-to-Hip Ratio — sex-specific thresholds (WHO)
+// Male: <0.90 low, 0.90–0.99 moderate, ≥1.0 high
+// Female: <0.85 low, ≥0.85 increased risk
+// Missing sex defaults to male (backward compatible)
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Waist-to-Hip Ratio sex-specific regression", () => {
+  it("female 0.80 → Low risk (Females)", () => {
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "80",
+      hip: "100",
+      sex: "2",
+    });
+    expect(r.value).toBe(0.8);
+    expect(r.interpretation).toBe(
+      "Low risk (Females)",
+    );
+    expect(r.status).toBe("normal");
+  });
+
+  it("female 0.85 → Increased risk (Females)", () => {
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "85",
+      hip: "100",
+      sex: "2",
+    });
+    expect(r.value).toBe(0.85);
+    expect(r.interpretation).toBe(
+      "Increased risk (Females)",
+    );
+    expect(r.status).toBe("high");
+  });
+
+  it("female 0.84 → Low risk (Females) just below threshold", () => {
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "84",
+      hip: "100",
+      sex: "2",
+    });
+    expect(r.value).toBe(0.84);
+    expect(r.interpretation).toBe(
+      "Low risk (Females)",
+    );
+    expect(r.status).toBe("normal");
+  });
+
+  it("same ratio classifies differently by sex", () => {
+    const male = calc(waistToHipRatioCalculator, {
+      waist: "95",
+      hip: "100",
+      sex: "1",
+    });
+    const female = calc(waistToHipRatioCalculator, {
+      waist: "95",
+      hip: "100",
+      sex: "2",
+    });
+    expect(male.interpretation).toBe(
+      "Moderate risk (Males)",
+    );
+    expect(female.interpretation).toBe(
+      "Increased risk (Females)",
+    );
+  });
+
+  it("missing sex defaults to male (backward compatible)", () => {
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "95",
+      hip: "100",
+    });
+    expect(r.interpretation).toBe(
+      "Moderate risk (Males)",
+    );
+  });
+
+  it("hip circumference of zero returns critical (division by zero)", () => {
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "95",
+      hip: "0",
+      sex: "1",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("zero");
   });
 });
 

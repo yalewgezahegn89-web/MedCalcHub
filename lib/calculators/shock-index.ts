@@ -75,8 +75,8 @@ calculate(
 
 
 if (
-  values.heart_rate === "" ||
-  values.heart_rate === undefined
+  values["heart-rate"] === "" ||
+  values["heart-rate"] === undefined
 ) {
   return {
     value: 0,
@@ -87,7 +87,7 @@ if (
 
 
 if (
-  Number.isNaN(Number(values.heart_rate))
+  Number.isNaN(Number(values["heart-rate"]))
 ) {
   return {
     value: 0,
@@ -97,7 +97,7 @@ if (
 }
 
 
-if (Number(values.heart_rate) < 0) {
+if (Number(values["heart-rate"]) < 0) {
   return {
     value: 0,
     interpretation: "Heart Rate cannot be negative.",
@@ -106,7 +106,7 @@ if (Number(values.heart_rate) < 0) {
 }
 
 
-if (Number(values.heart_rate) === 0) {
+if (Number(values["heart-rate"]) === 0) {
   return {
     value: 0,
     interpretation: "Heart Rate cannot be zero.",
@@ -157,28 +157,70 @@ if (Number(values.sbp) === 0) {
 
 
 
-const heart_rate = Number(values.heart_rate);
+const heartRate = Number(values["heart-rate"]);
 const sbp = Number(values.sbp);
-const systolicBloodPressure = sbp;
 
 
   const result =
-    heart_rate / sbp;
+    heartRate / sbp;
 
 
   
-const interpretation =
-  "Clinical interpretation pending.";
-
-const status:
+let interpretation: string;
+let status:
   "normal" |
   "low" |
   "high" |
-  "critical" =
-  "normal";
+  "critical";
+let referenceRange = "";
 
-const referenceRange =
-  "";
+if (result < 0.5) {
+
+  interpretation =
+    "Low shock index.";
+
+  status =
+    "low";
+
+  referenceRange =
+  "<0.5";
+}
+
+else if (result <= 0.7) {
+
+  interpretation =
+    "Normal shock index.";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "0.5–0.7";
+}
+
+else if (result < 1) {
+
+  interpretation =
+    "Elevated shock index – investigate for hypoperfusion.";
+
+  status =
+    "high";
+
+  referenceRange =
+  "0.7–0.9";
+}
+
+else {
+
+  interpretation =
+    "High shock index – significant hemodynamic compromise.";
+
+  status =
+    "critical";
+
+  referenceRange =
+  "≥1.0";
+}
 
 
 

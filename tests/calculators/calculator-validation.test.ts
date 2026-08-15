@@ -71,14 +71,15 @@ const testInputs: Record<string, Record<string, string>> = {
   // -- Emergency --
   "curb-65": {
     age: "70",
+    confusion: "0",
     urea: "7",
-    respiratory_rate: "22",
+    "respiratory-rate": "22",
     sbp: "90",
   },
   gcs: { eye: "4", verbal: "5", motor: "6" },
-  "shock-index": { heart_rate: "120", sbp: "80" },
+  "shock-index": { "heart-rate": "120", sbp: "80" },
   news2: {
-    respiratory_rate: "20",
+    "respiratory-rate": "20",
     spo2: "94",
     temperature: "38",
     sbp: "110",
@@ -86,8 +87,8 @@ const testInputs: Record<string, Record<string, string>> = {
   },
   qsofa: {
     sbp: "100",
-    respiratory_rate: "22",
-    mental_status: "1",
+    "respiratory-rate": "22",
+    "mental-status": "1",
   },
 
   // -- Cardiology --
@@ -97,7 +98,7 @@ const testInputs: Record<string, Record<string, string>> = {
   // -- Anthropometry --
   bmi: { weight: "70", height: "170" },
   bsa: { weight: "70", height: "170" },
-  "waist-to-hip-ratio": { waist: "80", hip: "100" },
+  "waist-to-hip-ratio": { waist: "80", hip: "100", sex: "1" },
 
   // -- Internal Medicine --
   ibw: { sex: "male", height: "170" },
@@ -317,7 +318,7 @@ const exactExpectations: Record<string, ExpectedExact> = {
   "shock-index": {
     value: 1.5,
     tolerance: 0.01,
-    status: "normal",
+    status: "critical",
   },
   "corrected-qt": {
     value: 432,
@@ -327,10 +328,12 @@ const exactExpectations: Record<string, ExpectedExact> = {
   "thyroid-dose": {
     value: 112,
     tolerance: 0.01,
+    status: "normal",
   },
   "levothyroxine-dose": {
     value: 112,
     tolerance: 0.01,
+    status: "normal",
   },
   "bmi-for-pediatrics": {
     value: 16.3,

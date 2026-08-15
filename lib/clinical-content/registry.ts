@@ -119,7 +119,7 @@ export const clinicalContentRegistry: Record<
         creatinine: "1.1",
       },
       expectedResult:
-        "eGFR ≈ 54 mL/min/1.73 m², which corresponds to CKD stage G3a (mild-to-moderate decrease). Repeat in 3 months to confirm chronicity.",
+        "eGFR ≈ 56 mL/min/1.73 m², which corresponds to CKD stage G3a (mild-to-moderate decrease). Repeat in 3 months to confirm chronicity.",
     },
     clinicalSignificance:
       "eGFR is essential for CKD staging, drug dosing decisions, and monitoring kidney function over time. The 2021 CKD-EPI equation is the current standard recommended by KDIGO.",
@@ -472,7 +472,7 @@ export const clinicalContentRegistry: Record<
         pulse: "110",
       },
       expectedResult:
-        "NEWS2 sub-scores: RR 2, SpO₂ 2, temperature 1, SBP 2, pulse 2 — aggregate 9, indicating very high clinical risk and requiring emergency clinical assessment.",
+        "NEWS2 sub-scores: RR 2, SpO₂ 2, temperature 1, SBP 2, pulse 1 — aggregate 8, indicating very high clinical risk and requiring emergency clinical assessment.",
     },
     clinicalSignificance:
       "NEWS2 provides a standardized, evidence-based approach to detecting clinical deterioration. It has been shown to improve patient outcomes by enabling early intervention before critical deterioration occurs.",
