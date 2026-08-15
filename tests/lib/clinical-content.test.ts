@@ -1258,3 +1258,277 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     );
   });
 });
+
+describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
+  const DEFERRED_WITHOUT_CONTENT = [
+    "basal-metabolic-rate",
+    "free-water-deficit",
+    "albumin-corrected-calcium",
+    "fractional-excretion-calculator",
+    "thyroid-dose",
+    "levothyroxine-dose",
+    "adrenal-steroid-converter",
+  ];
+
+  const KNOWN_INPUT_DEFECTIVE = ["news2", "shock-index"];
+  const KNOWN_NUMERIC_DEFECTIVE = ["news2", "shock-index", "ckd-epi-2021"];
+
+  const VERIFIED_EXAMPLE_VALUES: Record<string, string | number> = {
+    "anion-gap": 23,
+    "corrected-qt": 503.9,
+    bmi: 24.98,
+    "bun-creatinine-ratio": 22.5,
+    "corrected-sodium": 134.4,
+    "osmolar-gap": 39.09,
+    "cockcroft-gault": 52.08,
+    "homa-ir": 4.07,
+    "curb-65": 2,
+    qsofa: 2,
+    gcs: 12,
+    map: 70,
+    mdrd: 49.85,
+    fena: 0.14,
+    feurea: 18,
+    "albumin-creatinine-ratio": 250,
+    "corrected-calcium": 9.6,
+    "homa-b": 80,
+    "insulin-sensitivity": 0.25,
+    bsa: 1.82,
+    "ideal-body-weight": 75,
+    "adjusted-body-weight": 89,
+    "child-pugh": "Child-Pugh Class B",
+    "corrected-anion-gap": 25.5,
+    "serum-osmolality": 296.11,
+    ttkg: 6,
+    "calcium-phosphate-product": 57,
+    "a1c-eag-converter": 154.2,
+    "estimated-average-glucose": 125.5,
+    "bmi-for-pediatrics": 17.9,
+    "lean-body-weight": 61.4,
+    "mifflin-st-jeor": 1730,
+    "harris-benedict": 1796.9,
+    "sodium-deficit": 420,
+    "heart-rate": 72,
+    "waist-to-hip-ratio": 0.95,
+    "calorie-requirement": 2682,
+    "fluid-requirement": 2450,
+    "maintenance-fluids": 2500,
+  };
+
+  it("reports the final coverage totals (49 registered, 42 with content, 7 deferred)", () => {
+    const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
+    expect(calculatorRegistry.length).toBe(49);
+    expect(contentSlugs.size).toBe(42);
+    for (const slug of DEFERRED_WITHOUT_CONTENT) {
+      expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
+        false,
+      );
+    }
+    for (const calc of calculatorRegistry) {
+      if (DEFERRED_WITHOUT_CONTENT.includes(calc.slug)) continue;
+      expect(
+        contentSlugs.has(calc.slug),
+        `registered calculator "${calc.slug}" missing clinical content`,
+      ).toBe(true);
+    }
+  });
+
+  it("every record has the full required core field set", () => {
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      expect(content.clinicalPurpose, `${slug}.clinicalPurpose`).toBeDefined();
+      expect(content.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(content.howToUse!.length, `${slug}.howToUse length`).toBeGreaterThan(0);
+      expect(content.interpretation, `${slug}.interpretation`).toBeDefined();
+      expect(
+        content.interpretation!.guide,
+        `${slug}.interpretation.guide`,
+      ).toBeDefined();
+      expect(content.whenToUse, `${slug}.whenToUse`).toBeDefined();
+      expect(content.whenToUse!.length).toBeGreaterThan(0);
+      expect(content.whenNotToUse, `${slug}.whenNotToUse`).toBeDefined();
+      expect(content.whenNotToUse!.length).toBeGreaterThan(0);
+      expect(content.limitations, `${slug}.limitations`).toBeDefined();
+      expect(content.limitations!.length).toBeGreaterThan(0);
+      expect(content.example, `${slug}.example`).toBeDefined();
+      expect(content.example!.description, `${slug}.example.description`).toBeDefined();
+      expect(content.example!.inputs, `${slug}.example.inputs`).toBeDefined();
+      expect(
+        Object.keys(content.example!.inputs!).length,
+        `${slug}.example.inputs keys`,
+      ).toBeGreaterThan(0);
+      expect(
+        content.example!.expectedResult,
+        `${slug}.example.expectedResult`,
+      ).toBeDefined();
+      expect(
+        content.clinicalSignificance,
+        `${slug}.clinicalSignificance`,
+      ).toBeDefined();
+      expect(content.references, `${slug}.references`).toBeDefined();
+      expect(content.references!.length, `${slug}.references length`).toBeGreaterThan(0);
+      expect(content.disclaimer, `${slug}.disclaimer`).toBeDefined();
+    }
+  });
+
+  it("no reference or evidence text contains placeholder patterns", () => {
+    const placeholderPatterns = [
+      /medcalchub clinical references/i,
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      const texts: string[] = [];
+      for (const ref of content.references ?? []) {
+        texts.push(ref.citation ?? "");
+        if (ref.level !== undefined) texts.push(ref.level);
+        if (ref.url !== undefined) texts.push(ref.url);
+      }
+      if (content.evidence !== undefined) {
+        texts.push(content.evidence.source ?? "");
+        texts.push(content.evidence.reference ?? "");
+        texts.push(content.evidence.version ?? "");
+        for (const ref of content.evidence.references ?? []) {
+          texts.push(ref);
+        }
+      }
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} reference/evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("no comparison references the calculator itself", () => {
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      if (!content.comparison) continue;
+      for (const item of content.comparison.calculators ?? []) {
+        expect(
+          item.href,
+          `${slug}.comparison self-reference`,
+        ).not.toBe(`/calculators/${slug}`);
+      }
+    }
+  });
+
+  it("every comparison href resolves to a registered calculator", () => {
+    const calcSlugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      if (!content.comparison) continue;
+      for (const item of content.comparison.calculators ?? []) {
+        expect(
+          item.href.startsWith("/calculators/"),
+          `${slug}.comparison href prefix`,
+        ).toBe(true);
+        const target = item.href.replace("/calculators/", "");
+        expect(
+          calcSlugs.has(target),
+          `${slug}.comparison href "${item.href}" is not a registered calculator`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("no comparison contains duplicate calculator hrefs", () => {
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      if (!content.comparison) continue;
+      const hrefs = (content.comparison.calculators ?? []).map((i) => i.href);
+      expect(
+        new Set(hrefs).size,
+        `${slug}.comparison duplicate hrefs`,
+      ).toBe(hrefs.length);
+    }
+  });
+
+  it("no duplicate questions or answers exist within any FAQ list", () => {
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      if (!content.faq || content.faq.length === 0) continue;
+      const questions = content.faq.map((f) => f.question);
+      const answers = content.faq.map((f) => f.answer);
+      expect(
+        new Set(questions).size,
+        `${slug}.faq duplicate questions`,
+      ).toBe(questions.length);
+      expect(new Set(answers).size, `${slug}.faq duplicate answers`).toBe(
+        answers.length,
+      );
+    }
+  });
+
+  it("interpretation flag fields are boolean when present", () => {
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      const interp = content.interpretation;
+      if (interp === undefined) continue;
+      if (interp.sexSpecific !== undefined) {
+        expect(typeof interp.sexSpecific, `${slug}.sexSpecific`).toBe("boolean");
+      }
+      if (interp.ageSpecific !== undefined) {
+        expect(typeof interp.ageSpecific, `${slug}.ageSpecific`).toBe("boolean");
+      }
+      if (interp.pediatric !== undefined) {
+        expect(typeof interp.pediatric, `${slug}.pediatric`).toBe("boolean");
+      }
+      if (interp.pregnancy !== undefined) {
+        expect(typeof interp.pregnancy, `${slug}.pregnancy`).toBe("boolean");
+      }
+    }
+  });
+
+  it("worked examples execute through the calculator without a missing-input error", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const [slug, content] of Object.entries(clinicalContentRegistry)) {
+      if (KNOWN_INPUT_DEFECTIVE.includes(slug)) continue;
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content.example!.inputs!);
+      const isMissingInput =
+        typeof result.value === "number" &&
+        result.value === 0 &&
+        result.status === "critical" &&
+        result.interpretation !== undefined &&
+        /required/i.test(result.interpretation);
+      expect(
+        isMissingInput,
+        `${slug} example produced a missing-input error: "${result.interpretation}"`,
+      ).toBe(false);
+    }
+  });
+
+  it("worked examples match verified calculator output", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const [slug, expected] of Object.entries(VERIFIED_EXAMPLE_VALUES)) {
+      if (KNOWN_NUMERIC_DEFECTIVE.includes(slug)) continue;
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      if (typeof expected === "number") {
+        expect(typeof result.value, `${slug} result value`).toBe("number");
+        expect(result.value as number, `${slug} numeric consistency`).toBeCloseTo(
+          expected,
+          1,
+        );
+      } else {
+        expect(result.value, `${slug} string result`).toBe(expected);
+      }
+    }
+  });
+
+  it("no orphan records and no duplicate keys after the final batch", () => {
+    const keys = Object.keys(clinicalContentRegistry);
+    expect(new Set(keys).size).toBe(keys.length);
+    const calcSlugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const key of keys) {
+      expect(calcSlugs.has(key)).toBe(true);
+    }
+  });
+});

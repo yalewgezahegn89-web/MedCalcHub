@@ -192,7 +192,7 @@ export const clinicalContentRegistry: Record<
         sex: "2",
       },
       expectedResult:
-        "QTc ≈ 435 ms (using Bazett formula). This is within the normal range for women (<460 ms).",
+        "QTc ≈ 504 ms (using Bazett formula). This is markedly prolonged (≥500 ms) and indicates increased risk of Torsades de Pointes.",
     },
     clinicalSignificance:
       "QT prolongation is a risk factor for Torsades de Pointes, a potentially fatal ventricular arrhythmia. Identifying prolonged QTc allows clinicians to address modifiable risk factors such as electrolyte abnormalities and QT-prolonging medications.",
@@ -527,7 +527,7 @@ export const clinicalContentRegistry: Record<
         sex: "1",
       },
       expectedResult:
-        "CrCl ≈ (140 − 70) × 75 / (72 × 1.4) ≈ 54.7 mL/min. This indicates moderate renal impairment and may require dose adjustment for renally cleared drugs.",
+        "CrCl ≈ (140 − 70) × 75 / (72 × 1.4) ≈ 52.1 mL/min. This indicates moderate renal impairment and may require dose adjustment for renally cleared drugs.",
     },
     clinicalSignificance:
       "The Cockcroft-Gault equation remains the most widely referenced method for drug dosing adjustments in renal impairment, as most drug labeling and pharmacokinetic studies used this equation for dose adjustments.",
@@ -581,7 +581,7 @@ export const clinicalContentRegistry: Record<
         insulin: "15",
       },
       expectedResult:
-        "HOMA-IR = (110 × 15) / (405) ≈ 4.07. This indicates significant insulin resistance and warrants evaluation for metabolic syndrome.",
+        "HOMA-IR = (110 × 15) / (405) ≈ 4.07. This is above the normal threshold and indicates insulin resistance; evaluation for metabolic syndrome is warranted.",
     },
     clinicalSignificance:
       "HOMA-IR provides a simple, inexpensive estimate of insulin resistance that is useful in identifying patients at risk for type 2 diabetes and cardiovascular disease, and in monitoring the effectiveness of lifestyle interventions.",
@@ -1611,12 +1611,6 @@ export const clinicalContentRegistry: Record<
           bestFor: "Routine screening when albumin is normal.",
           limitation: "Falsely low in hypoalbuminemia.",
         },
-        {
-          name: "Albumin-Corrected Anion Gap",
-          href: "/calculators/corrected-anion-gap",
-          bestFor: "Unmasking HAGMA in hypoalbuminemic patients.",
-          limitation: "Correction factor is approximate.",
-        },
       ],
     },
     disclaimer:
@@ -1706,12 +1700,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Osmolality Calculator Should I Use?",
       calculators: [
         {
-          name: "Serum Osmolality",
-          href: "/calculators/serum-osmolality",
-          bestFor: "Estimating osmolality from basic labs.",
-          limitation: "Does not include ethanol or unmeasured osmoles.",
-        },
-        {
           name: "Osmolar Gap",
           href: "/calculators/osmolar-gap",
           bestFor: "Detecting toxic alcohol ingestion.",
@@ -1800,12 +1788,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Renal Function Calculator Should I Use?",
       calculators: [
         {
-          name: "TTKG",
-          href: "/calculators/ttkg",
-          bestFor: "Assessing renal potassium secretion.",
-          limitation: "Physiological validity has been questioned.",
-        },
-        {
           name: "FENa",
           href: "/calculators/fena",
           bestFor: "Distinguishing prerenal azotemia from intrinsic AKI.",
@@ -1890,12 +1872,6 @@ export const clinicalContentRegistry: Record<
     comparison: {
       title: "Which Mineral Metabolism Calculator Should I Use?",
       calculators: [
-        {
-          name: "Calcium-Phosphate Product",
-          href: "/calculators/calcium-phosphate-product",
-          bestFor: "Assessing calcification risk in CKD.",
-          limitation: "Does not measure PTH or vitamin D.",
-        },
         {
           name: "CKD-EPI 2021",
           href: "/calculators/ckd-epi-2021",
@@ -1988,12 +1964,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Glycemic Calculator Should I Use?",
       calculators: [
         {
-          name: "A1c ↔ eAG Converter",
-          href: "/calculators/a1c-eag-converter",
-          bestFor: "Bidirectional A1c ↔ eAG conversion.",
-          limitation: "Same underlying ADAG formula.",
-        },
-        {
           name: "Estimated Average Glucose",
           href: "/calculators/estimated-average-glucose",
           bestFor: "A1c to eAG conversion only.",
@@ -2077,12 +2047,6 @@ export const clinicalContentRegistry: Record<
     comparison: {
       title: "Which Glycemic Calculator Should I Use?",
       calculators: [
-        {
-          name: "Estimated Average Glucose",
-          href: "/calculators/estimated-average-glucose",
-          bestFor: "Converting A1c to mg/dL average.",
-          limitation: "Unidirectional.",
-        },
         {
           name: "A1c ↔ eAG Converter",
           href: "/calculators/a1c-eag-converter",
@@ -2173,12 +2137,6 @@ export const clinicalContentRegistry: Record<
       title: "Which BMI Calculator Should I Use?",
       calculators: [
         {
-          name: "Pediatric BMI",
-          href: "/calculators/bmi-for-pediatrics",
-          bestFor: "Children and adolescents aged 2–20 years.",
-          limitation: "Requires age and sex for percentile interpretation.",
-        },
-        {
           name: "BMI",
           href: "/calculators/bmi",
           bestFor: "Adults with fixed BMI thresholds.",
@@ -2266,12 +2224,6 @@ export const clinicalContentRegistry: Record<
     comparison: {
       title: "Which Body Weight Calculator Should I Use?",
       calculators: [
-        {
-          name: "Lean Body Weight",
-          href: "/calculators/lean-body-weight",
-          bestFor: "Estimating fat-free mass for dosing.",
-          limitation: "Formula-based estimate only.",
-        },
         {
           name: "Ideal Body Weight",
           href: "/calculators/ideal-body-weight",
@@ -2367,12 +2319,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Energy Expenditure Calculator Should I Use?",
       calculators: [
         {
-          name: "Mifflin-St Jeor",
-          href: "/calculators/mifflin-st-jeor",
-          bestFor: "Modern REE estimation in adults.",
-          limitation: "Adult populations only.",
-        },
-        {
           name: "Harris-Benedict",
           href: "/calculators/harris-benedict",
           bestFor: "Historical BMR estimation.",
@@ -2467,12 +2413,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Energy Expenditure Calculator Should I Use?",
       calculators: [
         {
-          name: "Harris-Benedict",
-          href: "/calculators/harris-benedict",
-          bestFor: "Historical BMR estimation.",
-          limitation: "May overestimate in overweight patients.",
-        },
-        {
           name: "Mifflin-St Jeor",
           href: "/calculators/mifflin-st-jeor",
           bestFor: "Modern REE estimation.",
@@ -2566,12 +2506,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Sodium Disorder Calculator Should I Use?",
       calculators: [
         {
-          name: "Sodium Deficit",
-          href: "/calculators/sodium-deficit",
-          bestFor: "Planning hyponatremia correction.",
-          limitation: "Does not account for ongoing losses.",
-        },
-        {
           name: "Free Water Deficit",
           href: "/calculators/free-water-deficit",
           bestFor: "Estimating water replacement in hypernatremia.",
@@ -2662,12 +2596,6 @@ export const clinicalContentRegistry: Record<
     comparison: {
       title: "Which Vital Sign Calculator Should I Use?",
       calculators: [
-        {
-          name: "Heart Rate",
-          href: "/calculators/heart-rate",
-          bestFor: "Computing bpm from a beat count.",
-          limitation: "Does not diagnose rhythm.",
-        },
         {
           name: "Mean Arterial Pressure",
           href: "/calculators/map",
@@ -2760,12 +2688,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Body Composition Calculator Should I Use?",
       calculators: [
         {
-          name: "Waist-to-Hip Ratio",
-          href: "/calculators/waist-to-hip-ratio",
-          bestFor: "Assessing central adiposity.",
-          limitation: "Requires standardized measurement.",
-        },
-        {
           name: "BMI",
           href: "/calculators/bmi",
           bestFor: "General obesity screening.",
@@ -2857,12 +2779,6 @@ export const clinicalContentRegistry: Record<
       title: "Which Energy Calculators Work Together?",
       calculators: [
         {
-          name: "Calorie Requirement",
-          href: "/calculators/calorie-requirement",
-          bestFor: "Daily calorie targets from a known BMR.",
-          limitation: "Requires a BMR input.",
-        },
-        {
           name: "Mifflin-St Jeor",
           href: "/calculators/mifflin-st-jeor",
           bestFor: "Estimating the resting energy expenditure input.",
@@ -2945,12 +2861,6 @@ export const clinicalContentRegistry: Record<
     comparison: {
       title: "Which Fluid Calculator Should I Use?",
       calculators: [
-        {
-          name: "Fluid Requirement",
-          href: "/calculators/fluid-requirement",
-          bestFor: "Quick daily volume estimate in adults.",
-          limitation: "Fixed per-kg rule; no hourly detail.",
-        },
         {
           name: "Maintenance Fluids",
           href: "/calculators/maintenance-fluids",
@@ -3041,12 +2951,6 @@ export const clinicalContentRegistry: Record<
     comparison: {
       title: "Which Fluid Calculator Should I Use?",
       calculators: [
-        {
-          name: "Maintenance Fluids",
-          href: "/calculators/maintenance-fluids",
-          bestFor: "Weight-based 100/50/20 maintenance rule.",
-          limitation: "Assumes no significant ongoing losses.",
-        },
         {
           name: "Fluid Requirement",
           href: "/calculators/fluid-requirement",
