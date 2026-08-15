@@ -77,6 +77,17 @@ const BATCH_10_SLUGS = [
   "parkland-formula",
 ] as const;
 
+const BATCH_11_SLUGS = [
+  "timi",
+  "grace",
+  "cha2ds2-vasc",
+  "has-bled",
+  "rcri",
+  "ascvd",
+  "dapt",
+  "h2fpef",
+] as const;
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -1106,6 +1117,7 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
       ...BATCH_6_SLUGS,
       ...BATCH_7_SLUGS,
       ...BATCH_10_SLUGS,
+      ...BATCH_11_SLUGS,
     ]).size;
     expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
   });
@@ -1114,8 +1126,8 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 52 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(52);
+  it("all 60 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(60);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -1256,13 +1268,14 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     }
   });
 
-  it("existing 52 records remain intact", () => {
+  it("existing 60 records remain intact", () => {
     const expected = new Set([
       ...PILOT_SLUGS,
       ...BATCH_5_SLUGS,
       ...BATCH_6_SLUGS,
       ...BATCH_7_SLUGS,
       ...BATCH_10_SLUGS,
+      ...BATCH_11_SLUGS,
     ]).size;
     expect(ALL_SLUGS.length).toBe(expected);
     expect(getClinicalContent("anion-gap")).toBe(
@@ -1352,12 +1365,20 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     "psi-port": 128,
     rts: 7.8408,
     "parkland-formula": 9000,
+    timi: 5,
+    grace: 205,
+    "cha2ds2-vasc": 7,
+    "has-bled": 4,
+    rcri: 4,
+    ascvd: 5.38,
+    dapt: 4,
+    h2fpef: 9,
   };
 
-  it("reports the final coverage totals (73 registered, 52 with content, 21 deferred)", () => {
+  it("reports the final coverage totals (81 registered, 60 with content, 21 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
-    expect(calculatorRegistry.length).toBe(73);
-    expect(contentSlugs.size).toBe(52);
+    expect(calculatorRegistry.length).toBe(81);
+    expect(contentSlugs.size).toBe(60);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,

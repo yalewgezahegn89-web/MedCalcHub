@@ -88,6 +88,15 @@ import { psiPortCalculator } from "./psi-port";
 import { rtsCalculator } from "./rts";
 import { parklandFormulaCalculator } from "./parkland-formula";
 
+import { timiCalculator } from "./timi";
+import { graceCalculator } from "./grace";
+import { cha2ds2VascCalculator } from "./cha2ds2-vasc";
+import { hasBledCalculator } from "./has-bled";
+import { rcriCalculator } from "./rcri";
+import { ascvdCalculator } from "./ascvd";
+import { daptCalculator } from "./dapt";
+import { h2fpefCalculator } from "./h2fpef";
+
 export const calculatorRegistry: CalculatorDefinition[] = [
   ckdEpi2021Calculator,
   curb65Calculator,
@@ -180,6 +189,15 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   psiPortCalculator,
   rtsCalculator,
   parklandFormulaCalculator,
+
+  timiCalculator,
+  graceCalculator,
+  cha2ds2VascCalculator,
+  hasBledCalculator,
+  rcriCalculator,
+  ascvdCalculator,
+  daptCalculator,
+  h2fpefCalculator,
 ];
 
 export function getCalculatorById(

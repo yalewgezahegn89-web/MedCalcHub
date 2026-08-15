@@ -3593,4 +3593,476 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Burn resuscitation must be titrated continuously to urine output, hemodynamics, and clinical response.",
   },
+
+  "timi": {
+    clinicalPurpose:
+      "Estimates 14-day risk of all-cause mortality, new or recurrent myocardial infarction, or severe recurrent ischemia requiring urgent revascularization in unstable angina / non-ST-elevation MI.",
+    howToUse: [
+      "Confirm the patient has unstable angina or NSTEMI.",
+      "Assign 1 point for each of the seven TIMI criteria that is present.",
+      "Sum the points to obtain the total score (0–7).",
+      "Interpret the score against the risk strata and apply guideline-directed management.",
+    ],
+    interpretation: {
+      guide:
+        "Score 0–1: low risk (~4.7% 14-day composite event rate); 2–4: intermediate risk (~8.3–19.9%); 5–7: high risk (~26.2–40.9%). Higher scores support earlier invasive strategy and intensified antithrombotic therapy.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Risk stratification of unstable angina / NSTEMI at presentation",
+      "Triaging patients to early invasive vs. conservative strategy",
+      "Communicating prognosis with patients",
+    ],
+    whenNotToUse: [
+      "ST-elevation MI — use a STEMI-specific tool",
+      "As a substitute for serial ECG and troponin monitoring",
+    ],
+    limitations: [
+      "Derived and validated in a clinical trial population (TIMI 11B), which may not reflect real-world cohorts.",
+      "Does not capture dynamic ECG or biomarker evolution after presentation.",
+      "Considers only a subset of prognostic factors; clinician judgment remains essential.",
+    ],
+    example: {
+      description:
+        "A 72-year-old man with hypertension and diabetes presents with recurrent chest pain over the past day, ST-segment depression on ECG, and a mildly elevated troponin. No known prior CAD and no aspirin use.",
+      inputs: {
+        "age-65": "1",
+        "risk-factors": "1",
+        "known-cad": "0",
+        aspirin: "0",
+        "anginal-events": "1",
+        "ecg-changes": "1",
+        troponin: "1",
+      },
+      expectedResult:
+        "TIMI risk score 5 — HIGH risk (~26.2% 14-day event rate). Urgent invasive strategy and intensified antithrombotic therapy should be considered.",
+    },
+    clinicalSignificance:
+      "The TIMI risk score is a widely used, validated bedside tool that rapidly identifies high-risk UA/NSTEMI patients who benefit most from early invasive management.",
+    references: [
+      {
+        citation:
+          "Antman EM, et al. The TIMI risk score for unstable angina/non-ST elevation MI: A method for prognostication and therapeutic decision making. JAMA. 2000;284(7):835-842.",
+        level: "Level I",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. It does not replace clinical judgment or serial reassessment of the patient.",
+  },
+
+  "grace": {
+    clinicalPurpose:
+      "Estimates in-hospital mortality risk for patients with acute coronary syndromes (STEMI, NSTEMI, or unstable angina) using the validated GRACE model.",
+    howToUse: [
+      "Enter the patient's age, admission heart rate, systolic blood pressure, and serum creatinine.",
+      "Select the Killip class and note whether cardiac arrest occurred at admission.",
+      "Indicate ST-segment deviation and elevated cardiac enzymes on admission.",
+      "Sum the points and interpret against the in-hospital mortality risk categories.",
+    ],
+    interpretation: {
+      guide:
+        "Total score ≤108: low risk (<1% in-hospital mortality); 109–140: intermediate risk (1–3%); >140: high risk (>3%). The GRACE model is the preferred risk stratification tool recommended by European and US guidelines for ACS.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Risk stratification of all ACS presentations (STEMI, NSTEMI, UA)",
+      "Guiding decisions on early invasive vs. conservative management",
+      "Estimating in-hospital mortality for prognosis and consent",
+    ],
+    whenNotToUse: [
+      "Non-ACS chest pain syndromes",
+      "As a substitute for continuous clinical monitoring and repeat biomarkers",
+    ],
+    limitations: [
+      "The discrete nomogram approximates the continuous GRACE model; values between points require interpolation.",
+      "The original risk model is time-limited (in-hospital); separate GRACE models exist for 6-month and discharge risk.",
+      "Assumes standardized ACS care; outcomes vary with local systems and treatment.",
+    ],
+    example: {
+      description:
+        "A 78-year-old woman presents with STEMI, heart rate 110 bpm, blood pressure 110/70 mmHg, creatinine 1.4 mg/dL, Killip class II, ST-segment elevation, and positive troponin. No cardiac arrest.",
+      inputs: {
+        age: "75",
+        "heart-rate": "15",
+        sbp: "43",
+        creatinine: "10",
+        killip: "20",
+        "cardiac-arrest": "0",
+        "st-deviation": "28",
+        "elevated-enzymes": "14",
+      },
+      expectedResult:
+        "GRACE in-hospital score 205 — HIGH risk (>3% predicted in-hospital mortality). Urgent risk-directed therapy, including early invasive strategy.",
+    },
+    clinicalSignificance:
+      "GRACE is the most extensively validated ACS risk model, using continuous physiological variables to estimate in-hospital mortality more accurately than point-score-only tools.",
+    references: [
+      {
+        citation:
+          "Granger CB, et al. Predictors of hospital mortality in the global registry of acute coronary events. Arch Intern Med. 2003;163(19):2345-2353.",
+        level: "Level I",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. It does not replace clinical judgment in the acute management of ACS.",
+  },
+
+  "cha2ds2-vasc": {
+    clinicalPurpose:
+      "Estimates annual ischemic stroke risk in patients with non-valvular atrial fibrillation to guide oral anticoagulation decisions.",
+    howToUse: [
+      "Confirm the patient has non-valvular atrial fibrillation.",
+      "Assign points for heart failure, hypertension, age category, diabetes, prior stroke/TIA/thromboembolism, vascular disease, and female sex.",
+      "Sum the points (0–9).",
+      "Compare the score with the anticoagulation thresholds, weighing bleeding risk separately (e.g., HAS-BLED).",
+    ],
+    interpretation: {
+      guide:
+        "Score 0 (men) / 1 (women): low annual stroke risk (~0.2–0.6%) — no antithrombotic therapy recommended. Men score 1 / women score 2: consider OAC based on net clinical benefit. Men ≥2 / women ≥3: oral anticoagulation is recommended.",
+      sexSpecific: true,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Stroke risk assessment in non-valvular atrial fibrillation",
+      "Deciding whether to start oral anticoagulation",
+      "Routine re-assessment in AF patients on or off anticoagulation",
+    ],
+    whenNotToUse: [
+      "Valvular (especially rheumatic mitral) atrial fibrillation — anticoagulation is indicated regardless of score",
+      "Patients who have already had a stroke, where risk alone should not drive a no-treatment decision",
+    ],
+    limitations: [
+      "Estimates stroke risk only; bleeding risk (HAS-BLED) must be considered separately.",
+      "Risk estimates vary with time in therapeutic range if on warfarin.",
+      "Does not incorporate renal function, which is captured in other tools (e.g., CHA₂DS₂-VASc variations in some guidelines).",
+    ],
+    example: {
+      description:
+        "A 78-year-old woman with paroxysmal atrial fibrillation, hypertension, and diabetes who had a TIA 2 years ago.",
+      inputs: {
+        chf: "0",
+        hypertension: "1",
+        age: "2",
+        diabetes: "1",
+        stroke: "2",
+        "vascular-disease": "0",
+        sex: "1",
+      },
+      expectedResult:
+        "CHA₂DS₂-VASc score 7 — HIGH stroke risk. Oral anticoagulation is recommended (e.g., DOAC).",
+    },
+    clinicalSignificance:
+      "CHA₂DS₂-VASc refined the older CHADS₂ score by better differentiating truly low-risk patients, reducing unnecessary anticoagulation while capturing more risk factors.",
+    references: [
+      {
+        citation:
+          "Lip GYH, et al. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation using a novel risk factor-based approach: the Euro Heart Survey on atrial fibrillation. Chest. 2010;137(2):263-272.",
+        level: "Level II",
+      },
+      {
+        citation:
+          "January CT, et al. 2019 AHA/ACC/HRS Focused Update of the 2014 AHA/ACC/HRS Guideline for the Management of Patients With Atrial Fibrillation. Circulation. 2019;140(2):e125-e151.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Anticoagulation decisions require assessment of both stroke and bleeding risk together with patient values and preferences.",
+  },
+
+  "has-bled": {
+    clinicalPurpose:
+      "Estimates 1-year risk of major bleeding in patients receiving anticoagulation, most commonly for atrial fibrillation, to identify modifiable bleeding risk factors.",
+    howToUse: [
+      "Confirm the patient is a candidate for or currently on anticoagulation.",
+      "Assign 1 point for each HAS-BLED criterion present (hypertension, renal/liver dysfunction, stroke, bleeding history, labile INR, age >65, drugs, alcohol).",
+      "Sum the points (0–9).",
+      "Use the result to address modifiable risk factors rather than to automatically withhold anticoagulation.",
+    ],
+    interpretation: {
+      guide:
+        "Score 0–1: low risk (~1% major bleeding per year); 2: moderate risk (~2%/year); ≥3: high risk (~4%/year). A high score flags the need to correct modifiable factors (BP control, alcohol, drug interactions, INR monitoring).",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Bleeding risk assessment when starting oral anticoagulation",
+      "Periodic reassessment of bleeding risk on long-term anticoagulation",
+      "Evaluating modifiable bleeding risk factors in AF patients",
+    ],
+    whenNotToUse: [
+      "To withhold anticoagulation outright in AF — compare against stroke risk and net clinical benefit",
+      "In patients with mechanical valves where anticoagulation is mandatory",
+    ],
+    limitations: [
+      "Predicts bleeding but does not incorporate bleeding-specific lab thresholds beyond INR.",
+      "Some criteria (e.g., drugs, alcohol, labile INR) depend on accurate history and INR control.",
+      "Risk estimates are calibrated to warfarin-era cohorts; DOAC bleeding rates are generally lower.",
+    ],
+    example: {
+      description:
+        "A 75-year-old man on warfarin for AF has uncontrolled hypertension (SBP 165 mmHg), a history of a GI bleed 2 years ago, and time in therapeutic range of 50%.",
+      inputs: {
+        hypertension: "1",
+        renal: "0",
+        liver: "0",
+        stroke: "0",
+        bleeding: "1",
+        "labile-inr": "1",
+        elderly: "1",
+        drugs: "0",
+        alcohol: "0",
+      },
+      expectedResult:
+        "HAS-BLED score 4 — HIGH bleeding risk. Address blood pressure control and INR stability, and reassess the anticoagulation strategy in the context of net clinical benefit.",
+    },
+    clinicalSignificance:
+      "HAS-BLED is the recommended bleeding risk tool in AF guidelines; its clinical value lies in prompting correction of modifiable risk factors rather than denying anticoagulation.",
+    references: [
+      {
+        citation:
+          "Pisters R, et al. A novel user-friendly score (HAS-BLED) to assess 1-year risk of major bleeding in patients with atrial fibrillation: the Euro Heart Survey. Chest. 2010;138(5):1093-1100.",
+        level: "Level II",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Decisions about anticoagulation must balance stroke and bleeding risk with patient values.",
+  },
+
+  "rcri": {
+    clinicalPurpose:
+      "Estimates the 30-day risk of major cardiac complications (MI, pulmonary edema, ventricular fibrillation or primary cardiac arrest, complete heart block) in patients undergoing non-cardiac surgery.",
+    howToUse: [
+      "Confirm the surgical procedure and the patient's cardiovascular history.",
+      "Assign 1 point for each of the six RCRI predictors present.",
+      "Sum the points (0–6).",
+      "Interpret the score together with functional capacity and surgical risk to plan perioperative management.",
+    ],
+    interpretation: {
+      guide:
+        "Score 0: ~0.4% risk; 1: ~0.9%; 2: ~7%; ≥3: ~11%. Patients with higher scores warrant closer perioperative cardiac monitoring and optimization of modifiable risk factors.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Preoperative cardiac risk stratification for non-cardiac surgery",
+      "Guiding perioperative testing and monitoring intensity",
+      "Informed consent discussions about surgical cardiac risk",
+    ],
+    whenNotToUse: [
+      "Cardiac surgery — use procedure-specific risk tools",
+      "As a replacement for clinical assessment of functional capacity and acute cardiac conditions",
+    ],
+    limitations: [
+      "Derived from a predominantly male cohort from a single tertiary center in the 1990s.",
+      "Does not capture age, functional capacity, or procedure-specific risk separately.",
+      "Predicted risk may underestimate current event rates given changes in surgical and anesthetic practice.",
+    ],
+    example: {
+      description:
+        "A 68-year-old insulin-treated diabetic with known ischemic heart disease is scheduled for open colectomy. Preoperative creatinine is 2.2 mg/dL.",
+      inputs: {
+        "high-risk-surgery": "1",
+        "ischemic-heart-disease": "1",
+        chf: "0",
+        cerebrovascular: "0",
+        "insulin-diabetes": "1",
+        creatinine: "1",
+      },
+      expectedResult:
+        "RCRI score 4 — HIGH risk (~11% major cardiac events). Close perioperative cardiac monitoring and optimization of cardiac risk factors are warranted.",
+    },
+    clinicalSignificance:
+      "RCRI remains the most widely validated and guideline-endorsed index for perioperative cardiac risk in non-cardiac surgery, framing the preoperative risk assessment.",
+    references: [
+      {
+        citation:
+          "Lee TH, et al. Derivation and prospective validation of a simple index for prediction of cardiac risk of major noncardiac surgery. Circulation. 1999;100(10):1043-1049.",
+        level: "Level II",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Preoperative risk assessment must integrate the score with functional capacity, surgical risk, and the patient's clinical status.",
+  },
+
+  "ascvd": {
+    clinicalPurpose:
+      "Estimates 10-year risk of first atherosclerotic cardiovascular disease event (nonfatal MI, coronary heart disease death, or fatal/nonfatal stroke) using the ACC/AHA Pooled Cohort Equations.",
+    howToUse: [
+      "Confirm the patient is 40–79 years old and has no clinical ASCVD.",
+      "Enter age, sex, race, total cholesterol, HDL cholesterol, systolic blood pressure, hypertension treatment status, smoking, and diabetes.",
+      "Review the 10-year ASCVD risk percentage.",
+      "Use the risk category together with risk-enhancing factors to guide statin intensity decisions.",
+    ],
+    interpretation: {
+      guide:
+        "<5%: low; 5–7.4%: borderline; 7.5–19.9%: intermediate; ≥20%: high risk. In adults 40–75 years, borderline/intermediate risk prompts a clinician–patient risk discussion, often supported by risk-enhancing factors or coronary artery calcium scoring.",
+      sexSpecific: true,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Primary prevention cardiovascular risk assessment in adults 40–79 years",
+      "Initial statin decision-making per the 2018 ACC/AHA cholesterol guideline",
+      "Monitoring risk over time and motivating lifestyle change",
+    ],
+    whenNotToUse: [
+      "Patients with established clinical ASCVD — use secondary prevention pathways",
+      "Patients outside the validated age and lab ranges (40–79 y; TC 130–320, HDL 20–100, SBP 90–200 mg/dL or mmHg)",
+      "As a substitute for clinical judgment in high-risk phenotypes (e.g., FH, severe CKD)",
+    ],
+    limitations: [
+      "Risk can be overestimated or underestimated in certain groups (e.g., Hispanic/Latino, South Asian, older adults).",
+      "The equations were derived from US cohorts in the 1990s–2000s; contemporary cohorts may have lower event rates.",
+      "Provides a 10-year estimate only; lifetime risk assessment is a separate consideration for young adults.",
+    ],
+    example: {
+      description:
+        "A 55-year-old white man, nonsmoker, without diabetes or hypertension treatment, has total cholesterol 213 mg/dL, HDL 50 mg/dL, and systolic blood pressure 120 mmHg.",
+      inputs: {
+        age: "55",
+        sex: "male",
+        race: "white",
+        "total-cholesterol": "213",
+        hdl: "50",
+        sbp: "120",
+        "hypertension-treated": "untreated",
+        smoker: "0",
+        diabetes: "0",
+      },
+      expectedResult:
+        "10-year ASCVD risk ≈ 5.4% — BORDERLINE risk. A risk discussion is warranted; risk-enhancing factors may influence statin initiation.",
+    },
+    clinicalSignificance:
+      "The Pooled Cohort Equations are the foundation of modern primary prevention statin guidelines, quantifying ASCVD risk to target preventive therapy where it provides the greatest benefit.",
+    references: [
+      {
+        citation:
+          "Goff DC Jr, et al. 2013 ACC/AHA guideline on the assessment of cardiovascular risk. J Am Coll Cardiol. 2014;63(25 Pt B):2935-2959.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Grundy SM, et al. 2018 AHA/ACC guideline on the management of blood cholesterol. Circulation. 2019;139(25):e1082-e1143.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. ASCVD risk estimates are population-based and must be interpreted in the context of the individual patient.",
+  },
+
+  "dapt": {
+    clinicalPurpose:
+      "Determines whether the net benefit of continuing dual antiplatelet therapy (DAPT) beyond 12 months after coronary stenting outweighs the bleeding risk, guiding DAPT duration decisions.",
+    howToUse: [
+      "Confirm the patient has completed 12 months of DAPT after coronary stenting and is being considered for continued treatment.",
+      "Assign points for age, smoking, diabetes, MI at presentation, prior MI/PCI, small stent diameter, paclitaxel-eluting stent, CHF/LVEF <30%, and saphenous vein graft PCI.",
+      "Sum the points (−2 to +10).",
+      "Scores ≥2 favor extended DAPT; scores <2 favor stopping at 12 months.",
+    ],
+    interpretation: {
+      guide:
+        "Score ≥2: net benefit of extended DAPT (up to 30 months) — ischemic reduction outweighs bleeding risk. Score <2: bleeding risk outweighs ischemic benefit — standard 12-month DAPT is preferred.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Deciding whether to continue DAPT beyond 12 months after DES implantation",
+      "Shared decision-making about DAPT duration after PCI",
+      "Risk-benefit discussion balancing stent ischemia against major bleeding",
+    ],
+    whenNotToUse: [
+      "Patients with high-risk ischemic indications where extended DAPT is mandated regardless of score",
+      "As a substitute for bleeding risk assessment in patients with active bleeding or high-risk anatomy",
+    ],
+    limitations: [
+      "Derived from the DAPT Study, which used specific antiplatelet regimens and stents; applicability to contemporary stents and P2Y12 inhibitors varies.",
+      "Does not account for all bleeding risk factors (e.g., renal function, baseline anemia).",
+      "The 2-point threshold is derived, not head-to-head validated across all populations.",
+    ],
+    example: {
+      description:
+        "A 60-year-old current smoker underwent PCI with a 2.75 mm DES for an NSTEMI, with a history of a prior PCI. No diabetes, no CHF, no SVG graft, and no paclitaxel stent.",
+      inputs: {
+        age: "0",
+        smoking: "1",
+        diabetes: "0",
+        "mi-at-presentation": "1",
+        "prior-mi-pci": "1",
+        "stent-diameter": "1",
+        paclitaxel: "0",
+        "chf-lvef": "0",
+        "svg-pci": "0",
+      },
+      expectedResult:
+        "DAPT score 4 — favors EXTENDED dual antiplatelet therapy beyond 12 months. Expected ischemic reduction outweighs bleeding risk.",
+    },
+    clinicalSignificance:
+      "The DAPT score operationalizes the trade-off between stent ischemia and major bleeding, supporting individualized, evidence-based DAPT duration decisions after stenting.",
+    references: [
+      {
+        citation:
+          "Yeh RW, et al. Development and validation of a prediction rule for benefit and harm of dual antiplatelet therapy beyond 1 year after percutaneous coronary intervention. JAMA. 2016;315(16):1735-1749.",
+        level: "Level II",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. DAPT duration decisions must incorporate stent type, ischemic risk, bleeding risk, and patient preferences.",
+  },
+
+  "h2fpef": {
+    clinicalPurpose:
+      "Estimates the probability of heart failure with preserved ejection fraction (HFpEF) in patients with unexplained dyspnea, using clinical and echocardiographic features.",
+    howToUse: [
+      "Confirm the patient has unexplained dyspnea with a preserved (≥50%) left ventricular ejection fraction.",
+      "Record atrial fibrillation status, BMI, age, number of antihypertensives, E/e' ratio, and pulmonary artery systolic pressure.",
+      "Sum the points (0–9).",
+      "Use the result to guide further testing or to begin HFpEF therapy.",
+    ],
+    interpretation: {
+      guide:
+        "Score 0–1: low probability of HFpEF (~6%); 2–5: intermediate (~10–46%) — consider further testing such as exercise echocardiography or invasive hemodynamics; 6–9: high probability (~67–95%) — HFpEF is very likely and treatment should be considered.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Evaluation of unexplained exertional dyspnea with preserved LVEF",
+      "Determining which dyspneic patients warrant HFpEF therapy",
+      "Quantifying the diagnostic likelihood of HFpEF before invasive testing",
+    ],
+    whenNotToUse: [
+      "Patients with reduced or mid-range LVEF — classify HFrEF/HFmrEF separately",
+      "As a replacement for exercise testing or invasive hemodynamics in ambiguous cases",
+    ],
+    limitations: [
+      "Derived from a referral population evaluated for unexplained exertional dyspnea; performance in general primary care cohorts is less certain.",
+      "Requires echocardiographic data (E/e', PASP) that may not be available at first assessment.",
+      "Does not include resting/exercise filling pressure data that may be needed in intermediate-risk patients.",
+    ],
+    example: {
+      description:
+        "A 66-year-old woman with persistent atrial fibrillation, BMI 32, taking 3 antihypertensives, has E/e' 11 and PASP 40 mmHg on echocardiography, with unexplained dyspnea.",
+      inputs: {
+        afib: "3",
+        bmi: "32",
+        age: "66",
+        antihypertensives: "1",
+        "e-e-ratio": "1",
+        pasp: "1",
+      },
+      expectedResult:
+        "H2FPEF score 9 — HIGH probability of HFpEF (~95%). HFpEF is very likely; proceed with HFpEF treatment.",
+    },
+    clinicalSignificance:
+      "H2FPEF provides a practical, evidence-based framework for diagnosing HFpEF, reducing reliance on invasive testing while accurately identifying patients likely to benefit from HFpEF therapy.",
+    references: [
+      {
+        citation:
+          "Reddy YNV, et al. A simple, evidence-based approach to help guide diagnosis of heart failure with preserved ejection fraction. Circulation. 2018;138(9):861-870.",
+        level: "Level II",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The diagnosis of HFpEF requires clinical judgment and may warrant further testing in intermediate-risk patients.",
+  },
 };
