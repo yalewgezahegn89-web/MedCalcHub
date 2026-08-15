@@ -74,6 +74,19 @@ export const albuminCorrectedCalciumCalculator: CalculatorDefinition = {
     const calcium = parseFloat(values.calcium);
     const albumin = parseFloat(values.albumin);
 
+    if (
+      !Number.isFinite(calcium) ||
+      !Number.isFinite(albumin) ||
+      calcium <= 0 ||
+      albumin <= 0
+    ) {
+      return {
+        value: 0,
+        interpretation: "Calcium and albumin are required.",
+        status: "critical",
+      };
+    }
+
     const rounded = calculateCorrectedCalcium(calcium, albumin);
 
     let interpretation: string;

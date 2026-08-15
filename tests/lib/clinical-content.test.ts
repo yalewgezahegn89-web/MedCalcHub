@@ -64,6 +64,19 @@ const BATCH_7_SLUGS = [
   "maintenance-fluids",
 ] as const;
 
+const BATCH_10_SLUGS = [
+  "perc-rule",
+  "wells-pe",
+  "wells-dvt",
+  "heart-score",
+  "sofa-score",
+  "sirs-criteria",
+  "crb-65",
+  "psi-port",
+  "rts",
+  "parkland-formula",
+] as const;
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -1092,6 +1105,7 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
       ...BATCH_5_SLUGS,
       ...BATCH_6_SLUGS,
       ...BATCH_7_SLUGS,
+      ...BATCH_10_SLUGS,
     ]).size;
     expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
   });
@@ -1100,8 +1114,8 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 42 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(42);
+  it("all 52 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(52);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -1242,12 +1256,13 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     }
   });
 
-  it("existing 42 records remain intact", () => {
+  it("existing 52 records remain intact", () => {
     const expected = new Set([
       ...PILOT_SLUGS,
       ...BATCH_5_SLUGS,
       ...BATCH_6_SLUGS,
       ...BATCH_7_SLUGS,
+      ...BATCH_10_SLUGS,
     ]).size;
     expect(ALL_SLUGS.length).toBe(expected);
     expect(getClinicalContent("anion-gap")).toBe(
@@ -1327,12 +1342,22 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     "calorie-requirement": 2682,
     "fluid-requirement": 2450,
     "maintenance-fluids": 2500,
+    "perc-rule": 8,
+    "wells-pe": 1.5,
+    "wells-dvt": 5,
+    "heart-score": 5,
+    "sofa-score": 10,
+    "sirs-criteria": 4,
+    "crb-65": 2,
+    "psi-port": 128,
+    rts: 7.8408,
+    "parkland-formula": 9000,
   };
 
-  it("reports the final coverage totals (63 registered, 42 with content, 21 deferred)", () => {
+  it("reports the final coverage totals (73 registered, 52 with content, 21 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
-    expect(calculatorRegistry.length).toBe(63);
-    expect(contentSlugs.size).toBe(42);
+    expect(calculatorRegistry.length).toBe(73);
+    expect(contentSlugs.size).toBe(52);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,

@@ -77,6 +77,17 @@ import { rockallCalculator } from "./rockall-score";
 import { eddCalculator } from "./edd";
 import { gestationalAgeCalculator } from "./gestational-age";
 
+import { percRuleCalculator } from "./perc-rule";
+import { wellsPeCalculator } from "./wells-pe";
+import { wellsDvtCalculator } from "./wells-dvt";
+import { heartScoreCalculator } from "./heart-score";
+import { sofaScoreCalculator } from "./sofa-score";
+import { sirsCriteriaCalculator } from "./sirs-criteria";
+import { crb65Calculator } from "./crb-65";
+import { psiPortCalculator } from "./psi-port";
+import { rtsCalculator } from "./rts";
+import { parklandFormulaCalculator } from "./parkland-formula";
+
 export const calculatorRegistry: CalculatorDefinition[] = [
   ckdEpi2021Calculator,
   curb65Calculator,
@@ -158,6 +169,17 @@ export const calculatorRegistry: CalculatorDefinition[] = [
 
   eddCalculator,
   gestationalAgeCalculator,
+
+  percRuleCalculator,
+  wellsPeCalculator,
+  wellsDvtCalculator,
+  heartScoreCalculator,
+  sofaScoreCalculator,
+  sirsCriteriaCalculator,
+  crb65Calculator,
+  psiPortCalculator,
+  rtsCalculator,
+  parklandFormulaCalculator,
 ];
 
 export function getCalculatorById(

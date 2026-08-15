@@ -1679,3 +1679,91 @@ describe("registry / search integration", () => {
     }
   });
 });
+
+/* ------------------------------------------------------------------
+   Sprint 1.9 — Emergency / Critical Care discovery regression tests
+   ------------------------------------------------------------------ */
+
+describe("Sprint 1.9 emergency / critical care discovery", () => {
+  const NEW_SLUGS = [
+    "perc-rule",
+    "wells-pe",
+    "wells-dvt",
+    "heart-score",
+    "sofa-score",
+    "sirs-criteria",
+    "crb-65",
+    "psi-port",
+    "rts",
+    "parkland-formula",
+  ];
+
+  it("every new calculator is in the search index", () => {
+    const index = buildSearchIndex();
+    const slugs = new Set(index.map((d) => d.slug));
+    for (const slug of NEW_SLUGS) {
+      expect(slugs.has(slug), `${slug} missing from search index`).toBe(true);
+    }
+  });
+
+  it("discovers PERC rule via 'pulmonary embolism'", () => {
+    const results = searchCalculators("pulmonary embolism");
+    expect(results.map((r) => r.document.slug)).toContain("perc-rule");
+    expect(results.map((r) => r.document.slug)).toContain("wells-pe");
+  });
+
+  it("discovers Wells PE via 'PE'", () => {
+    const results = searchCalculators("PE");
+    expect(results.map((r) => r.document.slug)).toContain("wells-pe");
+  });
+
+  it("discovers Wells DVT via 'deep vein thrombosis'", () => {
+    const results = searchCalculators("deep vein thrombosis");
+    expect(results.map((r) => r.document.slug)).toContain("wells-dvt");
+  });
+
+  it("discovers HEART score via 'chest pain'", () => {
+    const results = searchCalculators("chest pain");
+    expect(results.map((r) => r.document.slug)).toContain("heart-score");
+  });
+
+  it("discovers SOFA score via 'sepsis'", () => {
+    const results = searchCalculators("sepsis");
+    expect(results.map((r) => r.document.slug)).toContain("sofa-score");
+  });
+
+  it("discovers SIRS criteria via 'SIRS'", () => {
+    const results = searchCalculators("SIRS");
+    expect(results.map((r) => r.document.slug)).toContain("sirs-criteria");
+  });
+
+  it("discovers CRB-65 via 'pneumonia'", () => {
+    const results = searchCalculators("pneumonia");
+    expect(results.map((r) => r.document.slug)).toContain("crb-65");
+    expect(results.map((r) => r.document.slug)).toContain("psi-port");
+  });
+
+  it("discovers PSI/PORT via 'pneumonia severity'", () => {
+    const results = searchCalculators("pneumonia severity");
+    expect(results.map((r) => r.document.slug)).toContain("psi-port");
+  });
+
+  it("discovers Revised Trauma Score via 'trauma'", () => {
+    const results = searchCalculators("trauma");
+    expect(results.map((r) => r.document.slug)).toContain("rts");
+  });
+
+  it("discovers Parkland formula via 'burn'", () => {
+    const results = searchCalculators("burn");
+    expect(results.map((r) => r.document.slug)).toContain("parkland-formula");
+  });
+
+  it("each new calculator appears at most once per query", () => {
+    for (const slug of NEW_SLUGS) {
+      const slugs = searchCalculators(slug).map((r) => r.document.slug);
+      expect(slugs.length, `${slug} duplicate in results`).toBe(
+        new Set(slugs).size,
+      );
+    }
+  });
+});

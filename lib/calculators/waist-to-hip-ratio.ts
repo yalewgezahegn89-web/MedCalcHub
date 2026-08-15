@@ -170,7 +170,7 @@ calculate(
 
 
 for (
-  const key of Object.keys(values)
+  const key of ["waist", "hip"]
 ) {
 
   const inputValue =

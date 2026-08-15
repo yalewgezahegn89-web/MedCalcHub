@@ -19,8 +19,8 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 63 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(63);
+  it("registry contains exactly 73 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(73);
   });
 
   it("the 14 Reliability Batch 5 calculators are registered and searchable", () => {

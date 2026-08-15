@@ -749,3 +749,146 @@ describe("Direct-Call Validation Guards", () => {
     expect(Number.isFinite(Number(result.value))).toBe(true);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Batch 7 — Direct-call validation guard regression tests.
+//
+// Batch 7 hardened 10 calculators whose direct invocation previously emitted
+// NaN (silently misclassifying results) for missing, non-numeric, negative,
+// or zero inputs. Each guard must return critical and never emit a NaN value;
+// valid inputs must remain unaffected. Gestational-age deliberately allows
+// zero (0 weeks 0 days), so its zero case is treated as non-critical.
+// ---------------------------------------------------------------------------
+
+const BATCH7_GUARDED_IDS = [
+  "basal-metabolic-rate",
+  "mifflin-st-jeor",
+  "harris-benedict",
+  "calorie-requirement",
+  "fluid-requirement",
+  "maintenance-fluids",
+  "albumin-corrected-calcium",
+  "fractional-excretion-calculator",
+  "gestational-age",
+  "waist-to-hip-ratio",
+] as const;
+
+const BATCH7_VALID_INPUTS: Record<string, Record<string, string>> = {
+  "basal-metabolic-rate": { sex: "male", age: "30", weight: "70", height: "170" },
+  "mifflin-st-jeor": { sex: "male", age: "30", weight: "70", height: "170" },
+  "harris-benedict": { sex: "male", age: "30", weight: "70", height: "170" },
+  "calorie-requirement": { bmr: "1700", activity: "1.55" },
+  "fluid-requirement": { weight: "70" },
+  "maintenance-fluids": { weight: "70" },
+  "albumin-corrected-calcium": { calcium: "8.0", albumin: "3.0" },
+  "fractional-excretion-calculator": { urineNa: "40", plasmaNa: "140", urineCr: "80", plasmaCr: "1.0" },
+  "gestational-age": { weeks: "30", days: "4" },
+  "waist-to-hip-ratio": { waist: "80", hip: "100", sex: "1" },
+};
+
+const BATCH7_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
+  "basal-metabolic-rate": { sex: "male", age: "-30", weight: "-70", height: "-170" },
+  "mifflin-st-jeor": { sex: "male", age: "-30", weight: "-70", height: "-170" },
+  "harris-benedict": { sex: "male", age: "-30", weight: "-70", height: "-170" },
+  "calorie-requirement": { bmr: "-1700", activity: "-1.55" },
+  "fluid-requirement": { weight: "-70" },
+  "maintenance-fluids": { weight: "-70" },
+  "albumin-corrected-calcium": { calcium: "-8.0", albumin: "-3.0" },
+  "fractional-excretion-calculator": { urineNa: "-40", plasmaNa: "-140", urineCr: "-80", plasmaCr: "-1.0" },
+  "gestational-age": { weeks: "-1", days: "4" },
+  "waist-to-hip-ratio": { waist: "-80", hip: "-100", sex: "1" },
+};
+
+const BATCH7_ZERO_OVERRIDES: Record<string, Record<string, string>> = {
+  "basal-metabolic-rate": { sex: "male", age: "30", weight: "0", height: "170" },
+  "mifflin-st-jeor": { sex: "male", age: "30", weight: "0", height: "170" },
+  "harris-benedict": { sex: "male", age: "30", weight: "0", height: "170" },
+  "calorie-requirement": { bmr: "0", activity: "1.55" },
+  "fluid-requirement": { weight: "0" },
+  "maintenance-fluids": { weight: "0" },
+  "albumin-corrected-calcium": { calcium: "8.0", albumin: "0" },
+  "fractional-excretion-calculator": { urineNa: "40", plasmaNa: "140", urineCr: "80", plasmaCr: "0" },
+  "waist-to-hip-ratio": { waist: "80", hip: "0", sex: "1" },
+};
+
+const BATCH7_ZERO_GUARDED_IDS = BATCH7_GUARDED_IDS.filter(
+  (id) => id !== "gestational-age",
+);
+
+describe("Batch 7 Direct-Call Validation Guards", () => {
+  function batch7Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 7 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch7Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH7_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch7Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH7_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch7Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH7_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch7Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH7_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(
+        batch7Calc(id).calculate(BATCH7_NEGATIVE_OVERRIDES[id]),
+        id,
+      );
+    },
+  );
+
+  it.each(BATCH7_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch7Calc(id).calculate(BATCH7_ZERO_OVERRIDES[id]), id);
+    },
+  );
+
+  it("gestational-age allows zero weeks and days (returns normal)", () => {
+    const result = batch7Calc("gestational-age").calculate({ weeks: "0", days: "0" });
+    expect(result.status).not.toBe("critical");
+    expect(Number.isFinite(Number(result.value))).toBe(true);
+  });
+
+  it.each(BATCH7_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch7Calc(id).calculate(BATCH7_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+});

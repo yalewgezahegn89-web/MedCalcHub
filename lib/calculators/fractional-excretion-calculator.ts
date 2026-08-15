@@ -96,6 +96,23 @@ export const fractionalExcretionCalculator: CalculatorDefinition = {
     const urineCr = parseFloat(values.urineCr);
     const plasmaCr = parseFloat(values.plasmaCr);
 
+    if (
+      !Number.isFinite(urineNa) ||
+      !Number.isFinite(plasmaNa) ||
+      !Number.isFinite(urineCr) ||
+      !Number.isFinite(plasmaCr) ||
+      urineNa <= 0 ||
+      plasmaNa <= 0 ||
+      urineCr <= 0 ||
+      plasmaCr <= 0
+    ) {
+      return {
+        value: 0,
+        interpretation: "Urine and plasma sodium and creatinine are required.",
+        status: "critical",
+      };
+    }
+
     const fe = calculateFractionalExcretion(urineNa, plasmaNa, urineCr, plasmaCr);
 
     return {

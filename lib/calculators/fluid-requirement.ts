@@ -67,6 +67,14 @@ export const fluidRequirementCalculator: CalculatorDefinition = {
   calculate(values) {
     const weight = parseFloat(values.weight);
 
+    if (!Number.isFinite(weight) || weight <= 0) {
+      return {
+        value: 0,
+        interpretation: "Weight is required.",
+        status: "critical",
+      };
+    }
+
     const fluids = calculateFluidRequirement(weight);
 
     return {

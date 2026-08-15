@@ -63,6 +63,19 @@ export const gestationalAgeCalculator: CalculatorDefinition = {
     const weeks = parseFloat(values.weeks);
     const days = parseFloat(values.days);
 
+    if (
+      !Number.isFinite(weeks) ||
+      !Number.isFinite(days) ||
+      weeks < 0 ||
+      days < 0
+    ) {
+      return {
+        value: 0,
+        interpretation: "Weeks and days are required.",
+        status: "critical",
+      };
+    }
+
     const ga = calculateGestationalAge(weeks, days);
 
     return {

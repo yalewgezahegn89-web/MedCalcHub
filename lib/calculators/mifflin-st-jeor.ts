@@ -99,6 +99,29 @@ export const mifflinStJeorCalculator: CalculatorDefinition = {
     const weight = parseFloat(values.weight);
     const height = parseFloat(values.height);
 
+    if (values.sex !== "male" && values.sex !== "female") {
+      return {
+        value: 0,
+        interpretation: "Sex is required.",
+        status: "critical",
+      };
+    }
+
+    if (
+      !Number.isFinite(age) ||
+      !Number.isFinite(weight) ||
+      !Number.isFinite(height) ||
+      age <= 0 ||
+      weight <= 0 ||
+      height <= 0
+    ) {
+      return {
+        value: 0,
+        interpretation: "Age, weight, and height are required.",
+        status: "critical",
+      };
+    }
+
     const bmr = calculateMifflinStJeor(values.sex, age, weight, height);
 
     return {

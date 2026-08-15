@@ -2962,4 +2962,635 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Maintenance fluid plans must account for clinical status, losses, and organ function.",
   },
+
+  "perc-rule": {
+    clinicalPurpose:
+      "Determines whether pulmonary embolism can be safely ruled out in a patient with low pre-test probability, without D-dimer or imaging.",
+    howToUse: [
+      "Confirm the patient has a low pre-test probability of PE (e.g., Wells PE score below 4).",
+      "Assess each of the eight PERC criteria.",
+      "Select Yes for each criterion that is satisfied.",
+      "If all 8 are met, PE is considered ruled out.",
+    ],
+    interpretation: {
+      guide:
+        "8/8 criteria met: PERC negative, PE can be ruled out without further testing. Fewer than 8/8: PERC positive, proceed with D-dimer and/or imaging.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Adult emergency patients with suspected PE and low pre-test probability",
+      "Before ordering D-dimer or CT pulmonary angiography in low-risk patients",
+      "To reduce unnecessary testing and radiation exposure",
+    ],
+    whenNotToUse: [
+      "Patients with intermediate or high pre-test probability of PE",
+      "Patients with signs of hemodynamic instability or shock",
+      "Pregnant patients",
+      "As a stand-alone rule-out in patients with a high-risk presentation",
+    ],
+    limitations: [
+      "The rule only applies when pre-test probability is low; it does not replace clinical judgment.",
+      "Original derivation excluded pregnant patients and children.",
+      "A positive PERC does not diagnose PE; it only indicates further testing is warranted.",
+    ],
+    example: {
+      description:
+        "A 35-year-old woman with pleuritic chest pain has HR 88 bpm, SpO2 97% on room air, no hemoptysis, no estrogen use, no prior DVT/PE, no leg swelling, and no recent surgery or trauma.",
+      inputs: {
+        age: "1",
+        "heart-rate": "1",
+        "oxygen-saturation": "1",
+        hemoptysis: "1",
+        estrogen: "1",
+        "prior-dvt-pe": "1",
+        "leg-swelling": "1",
+        "surgery-trauma": "1",
+      },
+      expectedResult:
+        "All 8 PERC criteria met — PERC negative. PE can be considered ruled out without D-dimer or imaging given the low pre-test probability.",
+    },
+    clinicalSignificance:
+      "The PERC rule safely reduces unnecessary D-dimer testing and CT pulmonary angiography in low-risk patients, lowering cost and radiation exposure without missing clinically significant PE.",
+    references: [
+      {
+        citation:
+          "Kline JA, et al. Clinical criteria to prevent unnecessary diagnostic testing in emergency department patients with suspected pulmonary embolism. J Thromb Haemost. 2004;2(8):1247-1255.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Kline JA, et al. Impact of a rapid rule-out protocol for pulmonary embolism on the rate of screening, missed cases, and pulmonary vascular imaging in an urban US emergency department. Ann Emerg Med. 2004;44(5):490-502.",
+        level: "Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The PERC rule applies only to patients with a low pre-test probability of PE and does not replace clinical judgment.",
+  },
+
+  "wells-pe": {
+    clinicalPurpose:
+      "Estimates the pre-test probability of pulmonary embolism to guide D-dimer testing and imaging decisions.",
+    howToUse: [
+      "Assess each of the seven clinical items in the Wells criteria.",
+      "Select Yes for each criterion that is present.",
+      "The weighted score is totaled automatically.",
+      "Use the two-tier interpretation for D-dimer-driven strategies.",
+    ],
+    interpretation: {
+      guide:
+        "Two-tier: score ≤4 = PE unlikely (negative high-sensitivity D-dimer safely excludes PE); score >4 = PE likely (proceed to CT pulmonary angiography). Three-tier: 0–1 low, 2–6 moderate, >6 high probability.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Emergency department evaluation of suspected PE",
+      "Deciding whether a D-dimer test is appropriate",
+      "Structuring the clinical assessment of dyspnea or pleuritic chest pain",
+    ],
+    whenNotToUse: [
+      "Hemodynamically unstable patients who need immediate imaging or treatment",
+      "Patients with an alternative confirmed diagnosis",
+      "As a stand-alone test; it is a pre-test probability tool, not a diagnostic test",
+    ],
+    limitations: [
+      "Several items ('PE most likely diagnosis') are subjective and operator-dependent.",
+      "Pre-test probability tools perform differently in inpatient versus outpatient populations.",
+      "The score does not replace diagnostic testing in intermediate or high probability patients.",
+    ],
+    example: {
+      description:
+        "A 40-year-old woman presents with palpitations and mild dyspnea, HR 118 bpm. She has no DVT signs, no immobilization, no prior VTE, and no malignancy; PE is not felt to be the most likely diagnosis.",
+      inputs: {
+        "dvt-signs": "0",
+        "pe-most-likely": "0",
+        tachycardia: "1",
+        immobilization: "0",
+        "prior-dvt-pe": "0",
+        hemoptysis: "0",
+        malignancy: "0",
+      },
+      expectedResult:
+        "Wells score 1.5 — PE unlikely. A negative high-sensitivity D-dimer safely excludes PE without imaging.",
+    },
+    clinicalSignificance:
+      "The Wells criteria enable risk-stratified testing for PE, reducing unnecessary CT angiography while maintaining diagnostic safety when paired with a high-sensitivity D-dimer.",
+    references: [
+      {
+        citation:
+          "Wells PS, et al. Excluding pulmonary embolism at the bedside without diagnostic imaging: management of patients with suspected pulmonary embolism presenting to the emergency department by using a simple clinical model and D-dimer. Ann Intern Med. 2001;135(2):98-107.",
+        level: "Management Study",
+      },
+      {
+        citation:
+          "Wells PS, et al. Derivation of a simple clinical model to categorize patients probability of pulmonary embolism: increasing the models utility with the SimpliRED D-dimer. Thromb Haemost. 2000;83(3):416-420.",
+        level: "Original Derivation",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Wells scoring guides, but does not replace, diagnostic testing and clinical judgment.",
+  },
+
+  "wells-dvt": {
+    clinicalPurpose:
+      "Estimates the pre-test probability of deep vein thrombosis to guide D-dimer testing and compression ultrasound.",
+    howToUse: [
+      "Assess each of the nine clinical items in the Wells criteria.",
+      "Select Yes for each criterion that is present.",
+      "Select whether an alternative diagnosis is at least as likely as DVT (subtracts 2 points).",
+      "Use the two-tier interpretation to guide testing.",
+    ],
+    interpretation: {
+      guide:
+        "Two-tier: score ≤1 = DVT unlikely (negative high-sensitivity D-dimer safely excludes DVT); score ≥2 = DVT likely (proceed to compression ultrasound). Three-tier: ≤0 low, 1–2 moderate, ≥3 high probability.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Emergency department evaluation of suspected lower extremity DVT",
+      "Deciding whether to order D-dimer before ultrasound",
+      "Structuring the assessment of unilateral leg swelling or pain",
+    ],
+    whenNotToUse: [
+      "Patients with a swollen leg and hemodynamic instability suggestive of phlegmasia",
+      "When clinical suspicion is high regardless of the score",
+      "As a stand-alone diagnostic test",
+    ],
+    limitations: [
+      "The alternative-diagnosis item is subjective.",
+      "Performance varies in populations with a high baseline DVT prevalence.",
+      "A low score does not exclude DVT when clinical suspicion remains high.",
+    ],
+    example: {
+      description:
+        "A 55-year-old man is 2 weeks post hip surgery with a swollen, tender left leg, entire-leg swelling, calf swelling, and pitting edema. No alternative diagnosis is as likely as DVT.",
+      inputs: {
+        "active-cancer": "0",
+        paralysis: "0",
+        bedridden: "1",
+        "localized-tenderness": "1",
+        "entire-leg-swollen": "1",
+        "calf-swelling": "1",
+        "pitting-edema": "1",
+        "collateral-veins": "0",
+        "previous-dvt": "0",
+        "alternative-diagnosis": "0",
+      },
+      expectedResult:
+        "Wells DVT score 5 — DVT likely. Proceed directly to compression ultrasound; D-dimer is not recommended.",
+    },
+    clinicalSignificance:
+      "Wells DVT criteria allow clinicians to stratify pre-test probability, safely using D-dimer to avoid unnecessary ultrasound while not missing clinically significant thrombosis.",
+    references: [
+      {
+        citation:
+          "Wells PS, et al. Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. N Engl J Med. 2003;349(13):1227-1235.",
+        level: "Management Study",
+      },
+      {
+        citation:
+          "Wells PS, et al. Accuracy of clinical assessment of deep-vein thrombosis. Lancet. 1995;345(8960):1326-1330.",
+        level: "Original Derivation",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Wells scoring guides, but does not replace, diagnostic testing and clinical judgment.",
+  },
+
+  "heart-score": {
+    clinicalPurpose:
+      "Risk-stratifies undifferentiated chest pain in the emergency department for 6-week risk of major adverse cardiac events (MACE).",
+    howToUse: [
+      "Score the five components: History, ECG, Age, Risk factors, Troponin.",
+      "Each component is scored 0, 1, or 2 using the descriptions in each dropdown.",
+      "Sum the five component scores for a total out of 10.",
+      "Use the risk band to guide disposition and monitoring.",
+    ],
+    interpretation: {
+      guide:
+        "0–3 low risk (MACE ~1–2%): candidate for early discharge with serial troponins. 4–6 moderate risk (MACE ~12–17%): observation with serial troponins. 7–10 high risk (MACE ~50–65%): early invasive strategy and cardiology consultation.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Emergency evaluation of chest pain without ST-elevation MI",
+      "Patients with a non-diagnostic ECG and initial troponin",
+      "Deciding between early discharge and observation admission",
+    ],
+    whenNotToUse: [
+      "Patients with ST-elevation MI or clearly unstable ACS",
+      "Patients with an alternative high-risk diagnosis such as aortic dissection",
+      "Pediatric patients",
+    ],
+    limitations: [
+      "Component scoring has some subjectivity (history and risk factors).",
+      "MACE estimates vary between validation cohorts.",
+      "The score should not delay emergent management in clinically unstable patients.",
+    ],
+    example: {
+      description:
+        "A 62-year-old man with hypertension and diabetes presents with moderately suspicious chest pain, non-specific ECG changes, and a troponin 1.5 times the upper reference limit.",
+      inputs: {
+        history: "1",
+        ecg: "1",
+        age: "1",
+        "risk-factors": "1",
+        troponin: "1",
+      },
+      expectedResult:
+        "HEART score 5 — moderate risk (6-week MACE ~12–17%). Admit for observation and serial troponin measurement.",
+    },
+    clinicalSignificance:
+      "The HEART score is one of the most widely validated tools for chest pain risk stratification, helping emergency clinicians avoid both missed MACE and unnecessary admissions.",
+    references: [
+      {
+        citation:
+          "Six AJ, et al. Chest pain in the emergency room: value of the HEART score. Neth Heart J. 2008;16(6):191-196.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Backus BE, et al. A prospective validation of the HEART score for chest pain patients at the emergency department. Int J Cardiol. 2013;168(3):2153-2158.",
+        level: "Prospective Validation",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The HEART score supports, but does not replace, clinical judgment in acute coronary syndrome evaluation.",
+  },
+
+  "sofa-score": {
+    clinicalPurpose:
+      "Quantifies organ dysfunction across six organ systems in critically ill patients and supports the Sepsis-3 definition of sepsis.",
+    howToUse: [
+      "Enter the worst values in the preceding 24 hours for each organ system.",
+      "For respiration and cardiovascular status, select the appropriate category.",
+      "Enter platelet count, bilirubin, GCS, and creatinine values.",
+      "Sum the six component scores for a total out of 24.",
+    ],
+    interpretation: {
+      guide:
+        "Each organ scores 0–4. An acute increase of ≥2 points from baseline indicates organ dysfunction consistent with sepsis (Sepsis-3). Higher total scores correlate with higher ICU mortality.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Monitoring organ dysfunction in critically ill patients",
+      "Supporting the Sepsis-3 diagnosis of sepsis",
+      "Serial assessment of ICU patients over time",
+      "Prognostication in ICU cohorts",
+    ],
+    whenNotToUse: [
+      "As an isolated screening test in the emergency department (use qSOFA for screening)",
+      "To replace bedside clinical assessment",
+    ],
+    limitations: [
+      "Requires laboratory values, so it cannot be computed at the bedside without results.",
+      "Baseline SOFA is frequently unknown, complicating the 'increase of 2' criterion.",
+      "Component thresholds were derived for adults and are not validated in children.",
+    ],
+    example: {
+      description:
+        "A septic patient has a PaO2/FiO2 of 180 mmHg, platelets 80, bilirubin 2.5 mg/dL, MAP 60 mmHg without vasopressors, GCS 11, and creatinine 1.8 mg/dL.",
+      inputs: {
+        "pao2-fio2": "2",
+        platelets: "80",
+        bilirubin: "2.5",
+        cardiovascular: "1",
+        gcs: "11",
+        creatinine: "1.8",
+      },
+      expectedResult:
+        "SOFA score 10 — severe organ dysfunction. Escalate organ support and reassess frequently.",
+    },
+    clinicalSignificance:
+      "SOFA provides a validated, reproducible measure of organ failure in critical illness and is central to the Sepsis-3 consensus definition of sepsis.",
+    references: [
+      {
+        citation:
+          "Vincent JL, et al. The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure. Intensive Care Med. 1996;22(7):707-710.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Singer M, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810.",
+        level: "Consensus Definition",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. SOFA describes, but does not diagnose, sepsis; clinical judgment and serial assessment remain essential.",
+  },
+
+  "sirs-criteria": {
+    clinicalPurpose:
+      "Identifies the systemic inflammatory response syndrome by counting how many of four physiologic criteria are met.",
+    howToUse: [
+      "Enter the patient's temperature, heart rate, respiratory rate, and white blood cell count.",
+      "Each criterion outside the normal band scores 1 point.",
+      "Two or more criteria indicate SIRS.",
+      "Combine with a suspected infection source to consider sepsis.",
+    ],
+    interpretation: {
+      guide:
+        "0–1 criteria: SIRS not met. 2 or more criteria: SIRS present. SIRS plus infection is consistent with the historical definition of sepsis; Sepsis-3 now requires organ dysfunction (SOFA increase ≥2).",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Early recognition of the inflammatory response in undifferentiated illness",
+      "Screening for sepsis in the emergency department",
+      "Teaching and audit of the historical sepsis definitions",
+    ],
+    whenNotToUse: [
+      "As the sole definition of sepsis — Sepsis-3 requires organ dysfunction",
+      "In isolation, without clinical assessment for a source of infection",
+    ],
+    limitations: [
+      "SIRS is non-specific and is met in many non-infectious conditions (trauma, pancreatitis, surgery).",
+      "The Sepsis-3 consensus removed SIRS from the formal sepsis definition.",
+      "Physiologic values can be masked by beta-blockade, antipyretics, or immunosuppression.",
+    ],
+    example: {
+      description:
+        "A patient has temperature 38.5 °C, heart rate 110 bpm, respiratory rate 22/min, and WBC 14 ×10⁹/L.",
+      inputs: {
+        temperature: "38.5",
+        "heart-rate": "110",
+        "respiratory-rate": "22",
+        wbc: "14",
+      },
+      expectedResult:
+        "SIRS present — 4/4 criteria met. Evaluate for infection and consider sepsis workup.",
+    },
+    clinicalSignificance:
+      "SIRS criteria have historically underpinned the early recognition and management of sepsis and remain a useful bedside screening framework.",
+    references: [
+      {
+        citation:
+          "Bone RC, et al. Definitions for sepsis and organ failure and guidelines for the use of innovative therapies in sepsis. Chest. 1992;101(6):1644-1655.",
+        level: "Consensus Definitions",
+      },
+      {
+        citation:
+          "Singer M, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810.",
+        level: "Consensus Definition",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. SIRS criteria screen for, but do not diagnose, sepsis; clinical judgment remains essential.",
+  },
+
+  "crb-65": {
+    clinicalPurpose:
+      "Stratifies severity and mortality risk in community-acquired pneumonia without requiring laboratory testing.",
+    howToUse: [
+      "Assess mental status for new confusion.",
+      "Measure respiratory rate and blood pressure.",
+      "Record the patient's age.",
+      "Score 1 point for each criterion met: confusion, RR ≥30/min, SBP <90 or DBP ≤60 mmHg, age ≥65 years.",
+    ],
+    interpretation: {
+      guide:
+        "Score 0: low risk (mortality ~1%), consider outpatient care. Score 1–2: intermediate risk (mortality ~8%), consider hospital admission. Score 3–4: high risk (mortality ~30%), urgent admission and consider ICU.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Primary care and out-of-hospital assessment of pneumonia severity",
+      "Initial triage when laboratory results are not yet available",
+      "Teaching the CURB-65 family of severity scores",
+    ],
+    whenNotToUse: [
+      "In patients with immunocompromise or severe comorbidity where lab-based scores are preferred",
+      "As a substitute for clinical judgment in young adults with concerning features",
+    ],
+    limitations: [
+      "CRB-65 omits the urea component of CURB-65, slightly reducing discrimination.",
+      "Age alone drives a point in all patients over 65, which can over-score otherwise stable patients.",
+      "Mortality estimates come from specific cohorts and may not generalize.",
+    ],
+    example: {
+      description:
+        "A 70-year-old man with pneumonia is confused, has a respiratory rate of 28/min, blood pressure 110/70 mmHg.",
+      inputs: {
+        confusion: "1",
+        "respiratory-rate": "28",
+        sbp: "110",
+        dbp: "70",
+        age: "70",
+      },
+      expectedResult:
+        "CRB-65 score 2 — intermediate risk. Consider hospital admission.",
+    },
+    clinicalSignificance:
+      "CRB-65 enables rapid, lab-free risk stratification of pneumonia at the point of care, guiding the decision between outpatient treatment and hospital admission.",
+    references: [
+      {
+        citation:
+          "Lim WS, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003;58(5):377-382.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "National Institute for Health and Care Excellence. Pneumonia in adults: diagnosis and management. NICE Clinical Guideline CG191. 2014.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Site-of-care decisions must integrate comorbidities, social factors, and clinical judgment.",
+  },
+
+  "psi-port": {
+    clinicalPurpose:
+      "Predicts 30-day mortality in community-acquired pneumonia to guide site-of-care decisions, from outpatient to ICU admission.",
+    howToUse: [
+      "Enter demographics, comorbidities, and vital signs.",
+      "Enter available laboratory results; arterial pH and PaO2 may be left blank.",
+      "The score and PSI class (I–V) are computed automatically.",
+      "Use the class to inform site-of-care decisions.",
+    ],
+    interpretation: {
+      guide:
+        "Class I–II (≤70 points): low mortality (~0.1–0.6%), consider outpatient. Class III (71–90): low-intermediate risk, consider observation or inpatient. Class IV (91–130): moderate risk (~8–9%), admit. Class V (>130): high risk (~27–31%), admit and consider ICU.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Risk stratification of community-acquired pneumonia in adults",
+      "Supporting discharge-versus-admission decisions",
+      "Identifying patients who may need ICU-level care",
+    ],
+    whenNotToUse: [
+      "Hospital-acquired or ventilator-associated pneumonia",
+      "Immunocompromised patients outside the original validation populations",
+      "Pregnant women, in whom the original cohort was not validated",
+    ],
+    limitations: [
+      "Requires several laboratory values, making it less practical than CRB-65 at the bedside.",
+      "Class I designation requires absence of all comorbidities and risk findings.",
+      "The rule was derived in adults with CAP and may not generalize to all populations.",
+    ],
+    example: {
+      description:
+        "A 68-year-old nursing home man with heart failure is confused. RR 24/min, BP 100/70 mmHg, temperature 38.2 °C, HR 98 bpm, pH 7.36, BUN 35 mg/dL, sodium 131 mmol/L, glucose 150 mg/dL, hematocrit 31%, PaO2 70 mmHg, no pleural effusion.",
+      inputs: {
+        age: "68",
+        sex: "male",
+        "nursing-home": "1",
+        "neoplastic-disease": "0",
+        "liver-disease": "0",
+        chf: "1",
+        cerebrovascular: "0",
+        "renal-disease": "0",
+        ams: "1",
+        "respiratory-rate": "24",
+        sbp: "100",
+        temperature: "38.2",
+        "heart-rate": "98",
+        ph: "7.36",
+        bun: "35",
+        sodium: "131",
+        glucose: "150",
+        hematocrit: "31",
+        pao2: "70",
+        "pleural-effusion": "0",
+      },
+      expectedResult:
+        "PSI class IV (score 128) — moderate mortality risk (~8–9%). Admit to hospital.",
+    },
+    clinicalSignificance:
+      "The PSI/PORT score is a landmark, extensively validated prediction tool that has shaped site-of-care decisions for community-acquired pneumonia for over two decades.",
+    references: [
+      {
+        citation:
+          "Fine MJ, et al. A prediction rule to identify low-risk patients with community-acquired pneumonia. N Engl J Med. 1997;336(4):243-250.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Fine MJ, et al. Prognosis and outcomes of patients with community-acquired pneumonia: a meta-analysis. JAMA. 1996;275(2):134-141.",
+        level: "Meta-Analysis",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Site-of-care decisions must integrate comorbidities, social factors, and clinical judgment.",
+  },
+
+  rts: {
+    clinicalPurpose:
+      "Provides an objective, coded measure of physiologic derangement in trauma patients for triage and outcome prediction.",
+    howToUse: [
+      "Record the Glasgow Coma Scale score (3–15).",
+      "Record the systolic blood pressure in mmHg.",
+      "Record the respiratory rate in breaths/min.",
+      "Each parameter is coded 0–4 and weighted to produce the RTS.",
+    ],
+    interpretation: {
+      guide:
+        "RTS range 0–7.8408. An RTS below 4 is associated with a predicted survival below 70% and supports transfer to a trauma center. Values at the top of the range indicate minor physiologic derangement.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Field and emergency department triage of trauma patients",
+      "Decision support for transfer to a trauma center",
+      "Outcome prediction and trauma registry scoring",
+    ],
+    whenNotToUse: [
+      "As the sole determinant of triage — anatomical injury and mechanism also matter",
+      "In non-trauma medical emergencies",
+    ],
+    limitations: [
+      "RTS captures physiologic state at a single time point; patients can deteriorate.",
+      "Normal vital signs can mask severe internal injury.",
+      "The score is adult-derived and requires adult thresholds.",
+    ],
+    example: {
+      description:
+        "A motor-vehicle collision patient has GCS 13, systolic blood pressure 110 mmHg, and respiratory rate 20/min.",
+      inputs: {
+        gcs: "13",
+        sbp: "110",
+        rr: "20",
+      },
+      expectedResult:
+        "RTS 7.8408 — minor physiologic derangement; standard trauma care.",
+    },
+    clinicalSignificance:
+      "The Revised Trauma Score is a standard triage instrument in trauma systems worldwide, combining the three most prognostic physiologic parameters into a single weighted score.",
+    references: [
+      {
+        citation:
+          "Champion HR, et al. A revision of the Trauma Score. J Trauma. 1989;29(5):623-629.",
+        level: "Original Revision",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Trauma triage must integrate anatomic injury, mechanism, physiology, and institutional protocols.",
+  },
+
+  "parkland-formula": {
+    clinicalPurpose:
+      "Estimates the initial crystalloid resuscitation volume for adult thermal burns using weight and total body surface area burned.",
+    howToUse: [
+      "Estimate %TBSA burned (second- and third-degree only) using the Rule of Nines regions.",
+      "Enter the patient's weight in kg.",
+      "Enter the %TBSA for each body region.",
+      "Review the 24-hour total, first-8-hour and next-16-hour volumes and rates.",
+    ],
+    interpretation: {
+      guide:
+        "Total volume = 4 mL/kg/%TBSA of Ringer's lactate over 24 hours: half in the first 8 hours, half over the next 16 hours. Titrate to urine output 0.5–1.0 mL/kg/h. Burns <20% TBSA generally do not require formal resuscitation.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Adults with thermal burns ≥20% TBSA",
+      "Initial resuscitation planning in the emergency department",
+      "Estimating early fluid needs while awaiting definitive burn care",
+    ],
+    whenNotToUse: [
+      "Children under 30 kg — use pediatric burn formulas",
+      "Electrical or chemical burns, which may require different volumes",
+      "Isolated inhalation injury without cutaneous burns",
+      "Ongoing resuscitation — the estimate must be continuously titrated to output",
+    ],
+    limitations: [
+      "The 4 mL/kg/%TBSA is a starting point, not a fixed prescription.",
+      "TBSA estimation varies significantly between clinicians.",
+      "The formula does not account for maintenance fluids, comorbidities, or ongoing losses.",
+    ],
+    example: {
+      description:
+        "A 75 kg adult has 30% TBSA partial-thickness burns (anterior trunk 9%, posterior trunk 9%, right arm 9%, right leg 3%).",
+      inputs: {
+        weight: "75",
+        head: "0",
+        "anterior-trunk": "9",
+        "posterior-trunk": "9",
+        "right-upper-limb": "9",
+        "left-upper-limb": "0",
+        "right-lower-limb": "3",
+        "left-lower-limb": "0",
+        perineum: "0",
+      },
+      expectedResult:
+        "Parkland total 9,000 mL over 24 hours: 4,500 mL (≈562.5 mL/h) in the first 8 hours, then 4,500 mL (≈281.3 mL/h) over 16 hours of Ringer's lactate.",
+    },
+    clinicalSignificance:
+      "The Parkland formula is the most widely used burn resuscitation guideline, standardizing initial fluid therapy while emphasizing ongoing titration to physiologic endpoints.",
+    references: [
+      {
+        citation:
+          "Baxter CR. Fluid volume and electrolyte changes of the early postburn period. Clin Plast Surg. 1974;1(4):693-709.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Alvarado R, et al. Burn resuscitation. Burns. 2009;35(1):4-14.",
+        level: "Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Burn resuscitation must be titrated continuously to urine output, hemodynamics, and clinical response.",
+  },
 };

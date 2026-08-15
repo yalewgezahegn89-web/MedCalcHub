@@ -85,6 +85,19 @@ export const calorieRequirementCalculator: CalculatorDefinition = {
     const bmr = parseFloat(values.bmr);
     const activity = parseFloat(values.activity);
 
+    if (
+      !Number.isFinite(bmr) ||
+      !Number.isFinite(activity) ||
+      bmr <= 0 ||
+      activity <= 0
+    ) {
+      return {
+        value: 0,
+        interpretation: "Basal metabolic rate and activity factor are required.",
+        status: "critical",
+      };
+    }
+
     const calories = calculateCalorieRequirement(bmr, activity);
 
     return {
