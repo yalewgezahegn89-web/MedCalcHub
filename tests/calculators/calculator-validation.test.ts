@@ -1,7 +1,7 @@
 /**
  * Calculator Validation Tests
  *
- * Comprehensive validation tests for all 48 registered calculators.
+ * Comprehensive validation tests for all 49 registered calculators.
  * 
  * Verifies:
  * - Every calculator calculate() executes without throwing
@@ -21,7 +21,7 @@ import type {
 } from "../../lib/calculators/calculator.types";
 
 // ---------------------------------------------------------------------------
-// Test input data for all 48 calculators
+// Test input data for all 49 calculators
 // ---------------------------------------------------------------------------
 
 const testInputs: Record<string, Record<string, string>> = {
@@ -497,7 +497,7 @@ describe("Calculator Input Validation", () => {
 
       const result = calc.calculate(emptyInputs);
       // Most calculators should return critical for empty inputs,
-      // but some (like ibw) may return normal with NaN.
+      // but some may return normal with NaN.
       // The key invariant: the result must have a valid structure.
       expect(
         result,
@@ -520,7 +520,7 @@ describe("Calculator Input Validation", () => {
 // a NaN value.
 // ---------------------------------------------------------------------------
 
-const GUARDED_IDS = ["lean-body-weight", "adjbw"];
+const GUARDED_IDS = ["lean-body-weight", "adjbw", "ibw"];
 
 function guardedCalculator(id: string) {
   const calc = getCalculatorById(id);
