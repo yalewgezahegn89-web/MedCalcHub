@@ -24,7 +24,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
   keywords: ["Creatinine Clearance", "Kidney", "Renal", "Drug Dosing", "Kidney Function", "Nephrology"],
 
-  formula: "CrCl = ((140 - age) * weight) / (72 * creatinine) * 0.85",
+  formula: "CrCl = ((140 − age) × weight) / (72 × creatinine) × 0.85 (if female)",
 
   normalRange: "90–120 mL/min",
 
@@ -47,7 +47,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
   },
   {
     label: "Kidney failure",
-    range: "<14.1",
+    range: "<15",
   }
 ],
 
@@ -92,6 +92,10 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
     label: "Sex",
     type: "select",
     required: true,
+    options: [
+      { label: "Male", value: "1" },
+      { label: "Female", value: "2" },
+    ],
   },
   {
     id: "creatinine",
@@ -315,7 +319,7 @@ else if (result >= 90) {
 }
 
 
-else if (result >= 60 && result <= 89) {
+else if (result >= 60) {
 
   interpretation =
     "Mild renal impairment";
@@ -328,7 +332,7 @@ else if (result >= 60 && result <= 89) {
 }
 
 
-else if (result >= 30 && result <= 59) {
+else if (result >= 30) {
 
   interpretation =
     "Moderate renal impairment";
@@ -341,7 +345,7 @@ else if (result >= 30 && result <= 59) {
 }
 
 
-else if (result >= 15 && result <= 29) {
+else if (result >= 15) {
 
   interpretation =
     "Severe renal impairment";
@@ -354,7 +358,7 @@ else if (result >= 15 && result <= 29) {
 }
 
 
-else if (result < 15) {
+else {
 
   interpretation =
     "Kidney failure";

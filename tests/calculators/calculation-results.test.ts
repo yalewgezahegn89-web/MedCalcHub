@@ -62,6 +62,9 @@ import {
 import {
   levothyroxineDoseCalculator,
 } from "../../lib/calculators/levothyroxine-dose";
+import {
+  adrenalSteroidConverterCalculator,
+} from "../../lib/calculators/adrenal-steroid-converter";
 
 import type {
   CalculatorDefinition,
@@ -364,8 +367,8 @@ describe("CKD-EPI 2021 calculate() output", () => {
 // ---------------------------------------------------------------------------
 // GCS — eye + verbal + motor
 // Result = Number(result.toFixed(2))
-// Interpretation/status are always "Clinical interpretation pending."/"normal"
-// (no classification logic in the current implementation)
+// Classification (Teasdale & Jennett severity bands):
+//   13–15 → mild (normal), 9–12 → moderate (high), 3–8 → severe (critical)
 // ---------------------------------------------------------------------------
 describe("GCS calculate() output", () => {
   it("fully normal: eye 4 + verbal 5 + motor 6 = 15", () => {
@@ -376,6 +379,9 @@ describe("GCS calculate() output", () => {
     });
     expect(r.value).toBe(15);
     expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe(
+      "GCS 13–15 – Mild brain injury",
+    );
   });
 
   it("moderate: eye 3 + verbal 4 + motor 5 = 12", () => {
@@ -385,7 +391,10 @@ describe("GCS calculate() output", () => {
       motor: "5",
     });
     expect(r.value).toBe(12);
-    expect(r.status).toBe("normal");
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe(
+      "GCS 9–12 – Moderate brain injury",
+    );
   });
 
   it("severe: eye 1 + verbal 1 + motor 1 = 3", () => {
@@ -395,17 +404,49 @@ describe("GCS calculate() output", () => {
       motor: "1",
     });
     expect(r.value).toBe(3);
-    expect(r.status).toBe("normal");
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe(
+      "GCS 3–8 – Severe brain injury",
+    );
   });
 
-  it("mid-range: eye 2 + verbal 3 + motor 4 = 9", () => {
+  it("moderate boundary: eye 2 + verbal 3 + motor 4 = 9", () => {
     const r = calc(gcsCalculator, {
       eye: "2",
       verbal: "3",
       motor: "4",
     });
     expect(r.value).toBe(9);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe(
+      "GCS 9–12 – Moderate brain injury",
+    );
+  });
+
+  it("mild boundary: eye 3 + verbal 4 + motor 6 = 13", () => {
+    const r = calc(gcsCalculator, {
+      eye: "3",
+      verbal: "4",
+      motor: "6",
+    });
+    expect(r.value).toBe(13);
     expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe(
+      "GCS 13–15 – Mild brain injury",
+    );
+  });
+
+  it("severe boundary: eye 2 + verbal 3 + motor 3 = 8", () => {
+    const r = calc(gcsCalculator, {
+      eye: "2",
+      verbal: "3",
+      motor: "3",
+    });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe(
+      "GCS 3–8 – Severe brain injury",
+    );
   });
 });
 
@@ -751,6 +792,30 @@ describe("Serum Osmolality boundary-gap regression", () => {
     expect(r.interpretation).toBe("Normal osmolality");
     expect(r.status).toBe("normal");
   });
+
+  it("gap regression: osmolality 295.5 previously returned pending", () => {
+    // 2*140 + 180/18 + 15.4/2.8 = 280 + 10 + 5.5 = 295.5
+    const r = calc(serumOsmolalityCalculator, {
+      sodium: "140",
+      glucose: "180",
+      bun: "15.4",
+    });
+    expect(r.value).toBeCloseTo(295.5, 1);
+    expect(r.interpretation).toBe("Normal osmolality");
+    expect(r.status).toBe("normal");
+  });
+
+  it("gap regression: osmolality 296 → High osmolality (boundary)", () => {
+    // 2*140 + 180/18 + 22.4/2.8 = 280 + 10 + 8 = 298 → high
+    const r = calc(serumOsmolalityCalculator, {
+      sodium: "140",
+      glucose: "180",
+      bun: "22.4",
+    });
+    expect(r.value).toBeCloseTo(298, 0);
+    expect(r.interpretation).toBe("High osmolality");
+    expect(r.status).toBe("high");
+  });
 });
 
 describe("Anion Gap boundary-gap regression", () => {
@@ -846,6 +911,17 @@ describe("Corrected Sodium boundary-gap regression", () => {
     expect(r.value).toBe(146);
     expect(r.interpretation).toBe("Hypernatremia (corrected)");
     expect(r.status).toBe("high");
+  });
+
+  it("gap regression: corrected Na 145.5 previously returned pending", () => {
+    // Na=145.5, glucose=100 → 145.5 + 0 = 145.5 (in the old 145–146 gap)
+    const r = calc(correctedSodiumCalculator, {
+      sodium: "145.5",
+      glucose: "100",
+    });
+    expect(r.value).toBe(145.5);
+    expect(r.interpretation).toBe("Normal corrected sodium");
+    expect(r.status).toBe("normal");
   });
 });
 
@@ -1189,6 +1265,48 @@ describe("Cockcroft-Gault calculate() boundary audit", () => {
     expect(r.interpretation).toBe("Severe renal impairment");
     expect(r.status).toBe("low");
   });
+
+  it("gap regression: result ≈ 89.7 previously returned pending", () => {
+    // age 60, weight 60, male, Cr 0.7433 → 4800 / (72 × 0.7433) ≈ 89.69
+    const r = calc(cockcroftGaultCalculator, {
+      age: "60",
+      weight: "60",
+      sex: "1",
+      creatinine: "0.7433",
+    });
+    expect(r.value).toBeGreaterThan(89);
+    expect(r.value).toBeLessThan(90);
+    expect(r.interpretation).toBe("Mild renal impairment");
+    expect(r.status).toBe("normal");
+  });
+
+  it("gap regression: result ≈ 59.7 previously returned pending", () => {
+    // age 80, weight 60, male, Cr 0.8375 → (60×60)/(72×0.8375) ≈ 59.70
+    const r = calc(cockcroftGaultCalculator, {
+      age: "80",
+      weight: "60",
+      sex: "1",
+      creatinine: "0.8375",
+    });
+    expect(r.value).toBeGreaterThan(59);
+    expect(r.value).toBeLessThan(60);
+    expect(r.interpretation).toBe("Moderate renal impairment");
+    expect(r.status).toBe("low");
+  });
+
+  it("gap regression: result ≈ 29.7 previously returned pending", () => {
+    // age 80, weight 50, male, Cr 1.4029 → (60×50)/(72×1.4029) ≈ 29.70
+    const r = calc(cockcroftGaultCalculator, {
+      age: "80",
+      weight: "50",
+      sex: "1",
+      creatinine: "1.4029",
+    });
+    expect(r.value).toBeGreaterThan(29);
+    expect(r.value).toBeLessThan(30);
+    expect(r.interpretation).toBe("Severe renal impairment");
+    expect(r.status).toBe("low");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -1360,6 +1478,142 @@ describe("MDRD calculate() boundary audit", () => {
     expect(r.interpretation).toBe("G5: Kidney failure");
     expect(r.status).toBe("critical");
   });
+
+  it("gap regression: eGFR ≈ 89.5 previously returned pending", () => {
+    // Cr=0.8984, age=50, male → eGFR ≈ 89.5 (in the 89–90 gap)
+    const expected = expectedMdrd(0.8984, 50, "1");
+    expect(expected).toBeGreaterThan(89);
+    expect(expected).toBeLessThan(90);
+    const r = calc(mdrdCalculator, {
+      age: "50",
+      sex: "1",
+      creatinine: "0.8984",
+    });
+    expect(r.value).toBeCloseTo(expected, 1);
+    expect(r.interpretation).toBe("G2: Mildly decreased");
+    expect(r.status).toBe("normal");
+  });
+
+  it("gap regression: eGFR ≈ 59.7 previously returned pending", () => {
+    // Cr=1.2762, age=50, male → eGFR ≈ 59.7 (in the 59–60 gap)
+    const expected = expectedMdrd(1.2762, 50, "1");
+    expect(expected).toBeGreaterThan(59);
+    expect(expected).toBeLessThan(60);
+    const r = calc(mdrdCalculator, {
+      age: "50",
+      sex: "1",
+      creatinine: "1.2762",
+    });
+    expect(r.value).toBeCloseTo(expected, 1);
+    expect(r.interpretation).toBe("G3a: Mild to moderate");
+    expect(r.status).toBe("low");
+  });
+
+  it("gap regression: eGFR ≈ 44.7 previously returned pending", () => {
+    // Cr=1.639, age=50, male → eGFR ≈ 44.7 (in the 44–45 gap)
+    const expected = expectedMdrd(1.639, 50, "1");
+    expect(expected).toBeGreaterThan(44);
+    expect(expected).toBeLessThan(45);
+    const r = calc(mdrdCalculator, {
+      age: "50",
+      sex: "1",
+      creatinine: "1.639",
+    });
+    expect(r.value).toBeCloseTo(expected, 1);
+    expect(r.interpretation).toBe("G3b: Moderate to severe");
+    expect(r.status).toBe("low");
+  });
+
+  it("gap regression: eGFR ≈ 29.7 previously returned pending", () => {
+    // Cr=2.3368, age=50, male → eGFR ≈ 29.7 (in the 29–30 gap)
+    const expected = expectedMdrd(2.3368, 50, "1");
+    expect(expected).toBeGreaterThan(29);
+    expect(expected).toBeLessThan(30);
+    const r = calc(mdrdCalculator, {
+      age: "50",
+      sex: "1",
+      creatinine: "2.3368",
+    });
+    expect(r.value).toBeCloseTo(expected, 1);
+    expect(r.interpretation).toBe("G4: Severely decreased");
+    expect(r.status).toBe("low");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Adrenal Steroid Converter — prednisone-equivalent glucocorticoid dose
+// Result = dose × equivalence factor (standard glucocorticoid table)
+//   dexamethasone/betamethasone ×6.667, methylprednisolone/triamcinolone ×1.25,
+//   prednisone/prednisolone ×1, hydrocortisone ×0.25, cortisone ×0.2
+// Classification (prednisone-equivalent mg/day):
+//   ≤ 7.5 → Low-dose, 7.5–20 → Moderate-dose, ≥ 20 → High-dose
+// ---------------------------------------------------------------------------
+describe("Adrenal Steroid Converter calculate() output", () => {
+  it("prednisone 10 mg → 10 mg prednisone-equivalent, moderate", () => {
+    const r = calc(adrenalSteroidConverterCalculator, {
+      dose: "10",
+      steroid: "prednisone",
+    });
+    expect(r.value).toBe(10);
+    expect(r.interpretation).toBe("Moderate-dose glucocorticoid");
+    expect(r.status).toBe("high");
+  });
+
+  it("dexamethasone 1.5 mg → 10 mg prednisone-equivalent (conversion works)", () => {
+    const r = calc(adrenalSteroidConverterCalculator, {
+      dose: "1.5",
+      steroid: "dexamethasone",
+    });
+    expect(r.value).toBeCloseTo(10, 1);
+    expect(r.interpretation).toBe("Moderate-dose glucocorticoid");
+    expect(r.status).toBe("high");
+  });
+
+  it("hydrocortisone 20 mg → 5 mg prednisone-equivalent, low", () => {
+    const r = calc(adrenalSteroidConverterCalculator, {
+      dose: "20",
+      steroid: "hydrocortisone",
+    });
+    expect(r.value).toBe(5);
+    expect(r.interpretation).toBe("Low-dose glucocorticoid");
+    expect(r.status).toBe("normal");
+  });
+
+  it("prednisolone 30 mg → 30 mg prednisone-equivalent, high", () => {
+    const r = calc(adrenalSteroidConverterCalculator, {
+      dose: "30",
+      steroid: "prednisolone",
+    });
+    expect(r.value).toBe(30);
+    expect(r.interpretation).toBe("High-dose glucocorticoid");
+    expect(r.status).toBe("critical");
+  });
+
+  it("betamethasone 1.5 mg → 10 mg prednisone-equivalent", () => {
+    const r = calc(adrenalSteroidConverterCalculator, {
+      dose: "1.5",
+      steroid: "betamethasone",
+    });
+    expect(r.value).toBeCloseTo(10, 1);
+  });
+
+  it("methylprednisolone 16 mg → 20 mg prednisone-equivalent, moderate boundary", () => {
+    const r = calc(adrenalSteroidConverterCalculator, {
+      dose: "16",
+      steroid: "methylprednisolone",
+    });
+    expect(r.value).toBe(20);
+    expect(r.interpretation).toBe("Moderate-dose glucocorticoid");
+  });
+
+  it("unknown steroid → critical invalid", () => {
+    const r = calc(adrenalSteroidConverterCalculator, {
+      dose: "10",
+      steroid: "not-a-steroid",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Invalid Source Steroid.");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -1481,6 +1735,32 @@ describe("Corrected Anion Gap calculate() regression", () => {
     });
     expect(r.value).not.toBe(-99);
     expect(r.value).toBe(17);
+  });
+
+  it("gap regression: corrected AG 7.5 previously returned pending", () => {
+    // Na=140, Cl=108.5, HCO3=24, alb=4 → 140 − 132.5 = 7.5
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "108.5",
+      bicarbonate: "24",
+      albumin: "4",
+    });
+    expect(r.value).toBeCloseTo(7.5, 1);
+    expect(r.interpretation).toBe("Low corrected anion gap");
+    expect(r.status).toBe("low");
+  });
+
+  it("gap regression: corrected AG 12.5 previously returned pending", () => {
+    // Na=140, Cl=103.5, HCO3=24, alb=4 → 140 − 127.5 = 12.5
+    const r = calc(correctedAnionGapCalculator, {
+      sodium: "140",
+      chloride: "103.5",
+      bicarbonate: "24",
+      albumin: "4",
+    });
+    expect(r.value).toBeCloseTo(12.5, 1);
+    expect(r.interpretation).toBe("Normal corrected anion gap");
+    expect(r.status).toBe("normal");
   });
 });
 
@@ -2864,6 +3144,18 @@ describe("Waist-to-Hip Ratio calculate() boundary-gap regression", () => {
     const r = calc(waistToHipRatioCalculator, {
       waist: "99",
       hip: "100",
+    });
+    expect(r.value).toBe(0.99);
+    expect(r.interpretation).toBe("Moderate risk (Males)");
+    expect(r.status).toBe("high");
+  });
+
+  it("gap regression: 0.995 (male) previously returned pending", () => {
+    // waist=99.5, hip=100 → 0.995 (in the old 0.99–1.0 gap)
+    const r = calc(waistToHipRatioCalculator, {
+      waist: "99.5",
+      hip: "100",
+      sex: "1",
     });
     expect(r.value).toBe(0.99);
     expect(r.interpretation).toBe("Moderate risk (Males)");

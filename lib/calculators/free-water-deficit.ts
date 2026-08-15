@@ -32,19 +32,19 @@ export const freeWaterDeficitCalculator: CalculatorDefinition = {
   referenceRanges: [
   {
     label: "No deficit",
-    range: "<0.1",
+    range: "≤0",
   },
   {
     label: "Mild free water deficit",
-    range: "0–3",
+    range: "0.1–3",
   },
   {
     label: "Moderate free water deficit",
-    range: "3–7",
+    range: "3.1–7",
   },
   {
     label: "Severe free water deficit",
-    range: "≥7",
+    range: ">7",
   }
 ],
 
@@ -263,11 +263,11 @@ else if (result <= 0) {
     "normal";
 
   referenceRange =
-  "<0.1";
+  "≤0";
 }
 
 
-else if (result >= 0 && result <= 3) {
+else if (result <= 3) {
 
   interpretation =
     "Mild free water deficit";
@@ -276,11 +276,11 @@ else if (result >= 0 && result <= 3) {
     "low";
 
   referenceRange =
-  "0–3";
+  "0.1–3";
 }
 
 
-else if (result >= 3 && result <= 7) {
+else if (result <= 7) {
 
   interpretation =
     "Moderate free water deficit";
@@ -289,11 +289,11 @@ else if (result >= 3 && result <= 7) {
     "high";
 
   referenceRange =
-  "3–7";
+  "3.1–7";
 }
 
 
-else if (result >= 7) {
+else {
 
   interpretation =
     "Severe free water deficit";
@@ -302,7 +302,7 @@ else if (result >= 7) {
     "critical";
 
   referenceRange =
-  "≥7";
+  ">7";
 }
 
 

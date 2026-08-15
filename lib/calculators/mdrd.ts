@@ -24,7 +24,7 @@ export const mdrdCalculator: CalculatorDefinition = {
 
   keywords: ["eGFR", "Kidney", "Renal", "Glomerular Filtration Rate", "CKD", "Kidney Function"],
 
-  formula: "eGFR = 175 * pow(creatinine, -1.154) * pow(age, -0.203) * 0.742",
+  formula: "eGFR = 175 × (creatinine)^-1.154 × (age)^-0.203 × 0.742 (if female)",
 
   normalRange: "≥90 mL/min/1.73 m²",
 
@@ -51,7 +51,7 @@ export const mdrdCalculator: CalculatorDefinition = {
   },
   {
     label: "G5: Kidney failure",
-    range: "<14.1",
+    range: "<15",
   }
 ],
 
@@ -89,6 +89,10 @@ export const mdrdCalculator: CalculatorDefinition = {
     label: "Sex",
     type: "select",
     required: true,
+    options: [
+      { label: "Male", value: "1" },
+      { label: "Female", value: "2" },
+    ],
   },
   {
     id: "creatinine",
@@ -269,7 +273,7 @@ else if (result >= 90) {
 }
 
 
-else if (result >= 60 && result <= 89) {
+else if (result >= 60) {
 
   interpretation =
     "G2: Mildly decreased";
@@ -282,7 +286,7 @@ else if (result >= 60 && result <= 89) {
 }
 
 
-else if (result >= 45 && result <= 59) {
+else if (result >= 45) {
 
   interpretation =
     "G3a: Mild to moderate";
@@ -295,7 +299,7 @@ else if (result >= 45 && result <= 59) {
 }
 
 
-else if (result >= 30 && result <= 44) {
+else if (result >= 30) {
 
   interpretation =
     "G3b: Moderate to severe";
@@ -308,7 +312,7 @@ else if (result >= 30 && result <= 44) {
 }
 
 
-else if (result >= 15 && result <= 29) {
+else if (result >= 15) {
 
   interpretation =
     "G4: Severely decreased";
@@ -321,7 +325,7 @@ else if (result >= 15 && result <= 29) {
 }
 
 
-else if (result < 15) {
+else {
 
   interpretation =
     "G5: Kidney failure";

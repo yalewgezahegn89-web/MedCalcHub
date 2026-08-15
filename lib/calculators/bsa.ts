@@ -169,7 +169,9 @@ const ht = height;
 
   
 const interpretation =
-  "Clinical interpretation pending.";
+  "Body surface area " +
+  Number(result.toFixed(2)) +
+  " m².";
 
 const status:
   "normal" |

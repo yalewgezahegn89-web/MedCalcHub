@@ -57,18 +57,39 @@ export const gcsCalculator: CalculatorDefinition = {
     label: "Eye Opening",
     type: "select",
     required: true,
+    options: [
+      { label: "4 – Spontaneous", value: "4" },
+      { label: "3 – To speech", value: "3" },
+      { label: "2 – To pain", value: "2" },
+      { label: "1 – None", value: "1" },
+    ],
   },
   {
     id: "verbal",
     label: "Verbal Response",
     type: "select",
     required: true,
+    options: [
+      { label: "5 – Oriented", value: "5" },
+      { label: "4 – Confused", value: "4" },
+      { label: "3 – Inappropriate words", value: "3" },
+      { label: "2 – Incomprehensible sounds", value: "2" },
+      { label: "1 – None", value: "1" },
+    ],
   },
   {
     id: "motor",
     label: "Motor Response",
     type: "select",
     required: true,
+    options: [
+      { label: "6 – Obeys commands", value: "6" },
+      { label: "5 – Localizes to pain", value: "5" },
+      { label: "4 – Withdraws to pain", value: "4" },
+      { label: "3 – Abnormal flexion", value: "3" },
+      { label: "2 – Abnormal extension", value: "2" },
+      { label: "1 – None", value: "1" },
+    ],
   }
 ],
 
@@ -212,18 +233,54 @@ const motor = Number(values.motor);
 
 
   
-const interpretation =
+let interpretation =
   "Clinical interpretation pending.";
 
-const status:
+let status:
   "normal" |
   "low" |
   "high" |
   "critical" =
   "normal";
 
-const referenceRange =
+let referenceRange =
   "";
+
+if (result >= 13) {
+
+  interpretation =
+    "GCS 13–15 – Mild brain injury";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "13–15";
+}
+
+else if (result >= 9) {
+
+  interpretation =
+    "GCS 9–12 – Moderate brain injury";
+
+  status =
+    "high";
+
+  referenceRange =
+  "9–12";
+}
+
+else {
+
+  interpretation =
+    "GCS 3–8 – Severe brain injury";
+
+  status =
+    "critical";
+
+  referenceRange =
+  "3–8";
+}
 
 
 

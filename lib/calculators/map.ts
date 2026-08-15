@@ -169,7 +169,9 @@ const diastolicBloodPressure = dbp;
 
   
 const interpretation =
-  "Clinical interpretation pending.";
+  "Mean arterial pressure " +
+  Number(result.toFixed(2)) +
+  " mmHg.";
 
 const status:
   "normal" |

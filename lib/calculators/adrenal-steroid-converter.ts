@@ -24,14 +24,14 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
 
   keywords: [],
 
-  formula: "dose",
+  formula: "Prednisone-equivalent dose = dose × equivalence factor",
 
   normalRange: "Dose-dependent",
 
   referenceRanges: [
   {
     label: "Low-dose glucocorticoid",
-    range: "<7.6",
+    range: "≤7.5",
   },
   {
     label: "Moderate-dose glucocorticoid",
@@ -39,7 +39,7 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
   },
   {
     label: "High-dose glucocorticoid",
-    range: "≥20",
+    range: ">20",
   }
 ],
 
@@ -77,6 +77,16 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
     label: "Source Steroid",
     type: "select",
     required: true,
+    options: [
+      { label: "Hydrocortisone", value: "hydrocortisone" },
+      { label: "Cortisone", value: "cortisone" },
+      { label: "Prednisone", value: "prednisone" },
+      { label: "Prednisolone", value: "prednisolone" },
+      { label: "Methylprednisolone", value: "methylprednisolone" },
+      { label: "Triamcinolone", value: "triamcinolone" },
+      { label: "Dexamethasone", value: "dexamethasone" },
+      { label: "Betamethasone", value: "betamethasone" },
+    ],
   }
 ],
 
@@ -139,9 +149,20 @@ if (
 }
 
 
-if (
-  Number.isNaN(Number(values.steroid))
-) {
+const steroidEquivalence: Record<string, number> = {
+  hydrocortisone: 0.25,
+  cortisone: 0.2,
+  prednisone: 1,
+  prednisolone: 1,
+  methylprednisolone: 1.25,
+  triamcinolone: 1.25,
+  dexamethasone: 6.667,
+  betamethasone: 6.667,
+};
+
+const factor = steroidEquivalence[values.steroid];
+
+if (factor === undefined) {
   return {
     value: 0,
     interpretation: "Invalid Source Steroid.",
@@ -150,31 +171,12 @@ if (
 }
 
 
-if (Number(values.steroid) < 0) {
-  return {
-    value: 0,
-    interpretation: "Source Steroid cannot be negative.",
-    status: "critical",
-  };
-}
-
-
-if (Number(values.steroid) === 0) {
-  return {
-    value: 0,
-    interpretation: "Source Steroid cannot be zero.",
-    status: "critical",
-  };
-}
-
-
 
 const dose = Number(values.dose);
-const steroid = Number(values.steroid);
 
 
   const result =
-    dose;
+    dose * factor;
 
 
   
@@ -203,11 +205,11 @@ else if (result <= 7.5) {
     "normal";
 
   referenceRange =
-  "<7.6";
+  "≤7.5";
 }
 
 
-else if (result >= 7.5 && result <= 20) {
+else if (result <= 20) {
 
   interpretation =
     "Moderate-dose glucocorticoid";
@@ -220,7 +222,7 @@ else if (result >= 7.5 && result <= 20) {
 }
 
 
-else if (result >= 20) {
+else {
 
   interpretation =
     "High-dose glucocorticoid";
@@ -229,7 +231,7 @@ else if (result >= 20) {
     "critical";
 
   referenceRange =
-  "≥20";
+  ">20";
 }
 
 

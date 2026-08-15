@@ -167,7 +167,9 @@ const time = Number(values.time);
 
   
 const interpretation =
-  "Clinical interpretation pending.";
+  "Heart rate " +
+  Number(result.toFixed(2)) +
+  " bpm.";
 
 const status:
   "normal" |

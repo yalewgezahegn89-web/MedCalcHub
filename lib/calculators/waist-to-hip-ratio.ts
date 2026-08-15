@@ -317,7 +317,7 @@ else if (result < 0.9) {
 }
 
 
-else if (result >= 0.9 && result <= 0.99) {
+else if (result < 1) {
 
   interpretation =
     "Moderate risk (Males)";
@@ -330,7 +330,7 @@ else if (result >= 0.9 && result <= 0.99) {
 }
 
 
-else if (result >= 1) {
+else {
 
   interpretation =
     "High risk (Males)";

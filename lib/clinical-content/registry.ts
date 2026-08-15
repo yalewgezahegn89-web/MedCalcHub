@@ -435,7 +435,7 @@ export const clinicalContentRegistry: Record<
     clinicalPurpose:
       "Calculates the National Early Warning Score 2 (NEWS2) to standardize the assessment of acute illness severity and trigger appropriate clinical responses.",
     howToUse: [
-      "Enter the patient's respiratory rate, SpO₂, supplemental oxygen, temperature, systolic blood pressure, heart rate, and level of consciousness (AVPU).",
+      "Enter the patient's respiratory rate, SpO₂, temperature, systolic blood pressure, and heart rate.",
       "Review the aggregate NEWS2 score and the corresponding clinical response level.",
     ],
     interpretation: {

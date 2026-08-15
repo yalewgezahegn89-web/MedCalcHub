@@ -207,7 +207,7 @@ const testInputs: Record<string, Record<string, string>> = {
   "levothyroxine-dose": { weight: "70" },
   "adrenal-steroid-converter": {
     dose: "10",
-    steroid: "1",
+    steroid: "prednisone",
   },
   "bmi-for-pediatrics": {
     age: "10",

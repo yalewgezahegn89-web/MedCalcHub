@@ -301,32 +301,6 @@ let referenceRange =
 if (false) {}
 
 
-else if (result <= 7) {
-
-  interpretation =
-    "Low corrected anion gap";
-
-  status =
-    "low";
-
-  referenceRange =
-  "<7.1";
-}
-
-
-else if (result >= 8 && result <= 12) {
-
-  interpretation =
-    "Normal corrected anion gap";
-
-  status =
-    "normal";
-
-  referenceRange =
-  "8–12";
-}
-
-
 else if (result >= 20) {
 
   interpretation =
@@ -350,6 +324,32 @@ else if (result >= 13) {
 
   referenceRange =
   "≥13";
+}
+
+
+else if (result >= 8) {
+
+  interpretation =
+    "Normal corrected anion gap";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "8–12";
+}
+
+
+else {
+
+  interpretation =
+    "Low corrected anion gap";
+
+  status =
+    "low";
+
+  referenceRange =
+  "<7.1";
 }
 
 

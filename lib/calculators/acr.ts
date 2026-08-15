@@ -109,6 +109,68 @@ export const acrCalculator: CalculatorDefinition = {
     const albumin = Number(values.albumin);
     const creatinine = Number(values.creatinine);
 
+    if (
+      values.albumin === "" ||
+      values.albumin === undefined
+    ) {
+      return {
+        value: 0,
+        interpretation: "Urine Albumin is required.",
+        status: "critical",
+      };
+    }
+
+    if (Number.isNaN(albumin)) {
+      return {
+        value: 0,
+        interpretation: "Invalid Urine Albumin.",
+        status: "critical",
+      };
+    }
+
+    if (albumin < 0) {
+      return {
+        value: 0,
+        interpretation: "Urine Albumin cannot be negative.",
+        status: "critical",
+      };
+    }
+
+    if (
+      values.creatinine === "" ||
+      values.creatinine === undefined
+    ) {
+      return {
+        value: 0,
+        interpretation: "Urine Creatinine is required.",
+        status: "critical",
+      };
+    }
+
+    if (Number.isNaN(creatinine)) {
+      return {
+        value: 0,
+        interpretation: "Invalid Urine Creatinine.",
+        status: "critical",
+      };
+    }
+
+    if (creatinine < 0) {
+      return {
+        value: 0,
+        interpretation: "Urine Creatinine cannot be negative.",
+        status: "critical",
+      };
+    }
+
+    if (creatinine === 0) {
+      return {
+        value: 0,
+        interpretation: "Urine Creatinine cannot be zero.",
+        status: "critical",
+      };
+    }
+
     const acr = albumin / creatinine;
 
     let interpretation = "";

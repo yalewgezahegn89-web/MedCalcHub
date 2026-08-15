@@ -199,33 +199,6 @@ let referenceRange =
 
 if (false) {}
 
-
-else if (result < 135) {
-
-  interpretation =
-    "Hyponatremia (corrected)";
-
-  status =
-    "low";
-
-  referenceRange =
-  "<134.1";
-}
-
-
-else if (result <= 145) {
-
-  interpretation =
-    "Normal corrected sodium";
-
-  status =
-    "normal";
-
-  referenceRange =
-  "135–145";
-}
-
-
 else if (result >= 160) {
 
   interpretation =
@@ -238,6 +211,7 @@ else if (result >= 160) {
   "≥160";
 }
 
+
 else if (result >= 146) {
 
   interpretation =
@@ -248,6 +222,32 @@ else if (result >= 146) {
 
   referenceRange =
   "≥146";
+}
+
+
+else if (result >= 135) {
+
+  interpretation =
+    "Normal corrected sodium";
+
+  status =
+    "normal";
+
+  referenceRange =
+  "135–145";
+}
+
+
+else {
+
+  interpretation =
+    "Hyponatremia (corrected)";
+
+  status =
+    "low";
+
+  referenceRange =
+  "<134.1";
 }
 
 
