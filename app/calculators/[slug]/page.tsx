@@ -90,25 +90,31 @@ export default async function CalculatorPage({
           mistakes={calculator.clinical?.commonMistakes}
         />
 
-        <EvidenceCard
-          source={
-            calculator.references?.[0] ??
-            "Medical Literature"
-          }
-          reference={calculator.references?.join(", ")}
-          reviewedBy="MedCalcHub Clinical Team"
-          version={calculator.version}
-          updatedAt={calculator.updatedAt}
-        />
+        {!clinicalContent?.evidence && (
+          <EvidenceCard
+            source={
+              calculator.references?.[0] ??
+              "Medical Literature"
+            }
+            reference={calculator.references?.join(", ")}
+            reviewedBy="MedCalcHub Clinical Team"
+            version={calculator.version}
+            updatedAt={calculator.updatedAt}
+          />
+        )}
 
-        <CalculatorComparison
-          slug={calculator.slug}
-          comparison={calculator.comparison}
-        />
+        {!clinicalContent?.comparison && (
+          <CalculatorComparison
+            slug={calculator.slug}
+            comparison={calculator.comparison}
+          />
+        )}
 
-        <CalculatorFAQ
-          slug={calculator.slug}
-        />
+        {!clinicalContent?.faq?.length && (
+          <CalculatorFAQ
+            slug={calculator.slug}
+          />
+        )}
 
         <RelatedCalculators
           related={calculator.relatedCalculators}

@@ -1096,3 +1096,165 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
     expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
   });
 });
+
+describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
+  const ALL_SLUGS = Object.keys(clinicalContentRegistry);
+
+  it("all 42 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(42);
+    for (const slug of ALL_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(
+        content.clinicalPurpose,
+        `${slug}.clinicalPurpose`,
+      ).toBeDefined();
+      expect(content.clinicalPurpose!.length).toBeGreaterThan(0);
+      expect(content.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(content.howToUse!.length).toBeGreaterThan(0);
+      expect(
+        content.disclaimer,
+        `${slug}.disclaimer`,
+      ).toBeDefined();
+      expect(content.disclaimer!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("references, when present, have valid structure", () => {
+    for (const slug of ALL_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      if (!content.references || content.references.length === 0) continue;
+      for (const ref of content.references) {
+        expect(ref.citation.length).toBeGreaterThan(0);
+        if (ref.url !== undefined) {
+          expect(ref.url.startsWith("http")).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("evidence, when present, has valid structure", () => {
+    for (const slug of ALL_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      if (!content.evidence) continue;
+      expect(content.evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(content.evidence.source!.length).toBeGreaterThan(0);
+      if (content.evidence.references !== undefined) {
+        expect(Array.isArray(content.evidence.references)).toBe(true);
+        for (const ref of content.evidence.references) {
+          expect(ref.length).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it("faq, when present, has valid structure", () => {
+    for (const slug of ALL_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      if (!content.faq || content.faq.length === 0) continue;
+      for (const item of content.faq) {
+        expect(item.question.length).toBeGreaterThan(0);
+        expect(item.answer.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("comparison, when present, has valid structure", () => {
+    for (const slug of ALL_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      if (!content.comparison) continue;
+      const calculators = content.comparison.calculators ?? [];
+      expect(calculators.length).toBeGreaterThan(0);
+      for (const item of calculators) {
+        expect(item.name.length).toBeGreaterThan(0);
+        expect(item.href.startsWith("/")).toBe(true);
+      }
+    }
+  });
+
+  it("examples, when present, have valid input keys matching calculator inputs", () => {
+    const bySlug = new Map(
+      calculatorRegistry.map((c) => [c.slug, c]),
+    );
+    for (const slug of ALL_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      if (!content.example || !content.example.inputs) continue;
+      const calculator = bySlug.get(slug);
+      const inputIds = new Set(
+        (calculator?.inputs ?? []).map((i) => i.id),
+      );
+      for (const key of Object.keys(content.example.inputs)) {
+        expect(
+          inputIds.has(key),
+          `${slug} example key "${key}" is not a calculator input`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("no clinical content record contains an empty section object", () => {
+    for (const slug of ALL_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      if (content.howToUse !== undefined) {
+        expect(content.howToUse.length).toBeGreaterThan(0);
+      }
+      if (content.whenToUse !== undefined) {
+        expect(content.whenToUse.length).toBeGreaterThan(0);
+      }
+      if (content.whenNotToUse !== undefined) {
+        expect(content.whenNotToUse.length).toBeGreaterThan(0);
+      }
+      if (content.limitations !== undefined) {
+        expect(content.limitations.length).toBeGreaterThan(0);
+      }
+      if (content.references !== undefined) {
+        expect(content.references.length).toBeGreaterThan(0);
+      }
+      if (content.faq !== undefined) {
+        expect(content.faq.length).toBeGreaterThan(0);
+      }
+      if (content.comparison !== undefined) {
+        expect(content.comparison.calculators?.length ?? 0).toBeGreaterThan(0);
+      }
+      if (content.example !== undefined) {
+        expect(
+          content.example.description !== undefined ||
+            content.example.inputs !== undefined ||
+            content.example.expectedResult !== undefined,
+        ).toBe(true);
+      }
+      if (content.interpretation !== undefined) {
+        expect(content.interpretation.guide?.length ?? 0).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("clinical content registry remains synchronized with calculator registry", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    const contentSlugs = new Set(ALL_SLUGS);
+    for (const key of contentSlugs) {
+      expect(registrySlugs.has(key)).toBe(true);
+    }
+    for (const slug of PILOT_SLUGS) {
+      expect(contentSlugs.has(slug)).toBe(true);
+    }
+  });
+
+  it("existing 42 records remain intact", () => {
+    const expected = new Set([
+      ...PILOT_SLUGS,
+      ...BATCH_5_SLUGS,
+      ...BATCH_6_SLUGS,
+      ...BATCH_7_SLUGS,
+    ]).size;
+    expect(ALL_SLUGS.length).toBe(expected);
+    expect(getClinicalContent("anion-gap")).toBe(
+      clinicalContentRegistry["anion-gap"],
+    );
+    expect(getClinicalContent("maintenance-fluids")).toBe(
+      clinicalContentRegistry["maintenance-fluids"],
+    );
+  });
+});

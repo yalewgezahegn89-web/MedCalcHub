@@ -379,9 +379,9 @@ export const clinicalContentRegistry: Record<
     clinicalPurpose:
       "Calculates the difference between measured and calculated serum osmolality to detect the presence of unmeasured osmoles, which may indicate toxic alcohol ingestion.",
     howToUse: [
-      "Enter serum sodium (mmol/L), BUN (mg/dL), glucose (mg/dL), and ethanol (mg/dL).",
       "Enter the measured serum osmolality (mOsm/kg) from the laboratory.",
-      "Review the osmolar gap.",
+      "Enter serum sodium (mmol/L), glucose (mg/dL), and BUN (mg/dL).",
+      "Review the osmolar gap and its interpretation.",
     ],
     interpretation: {
       guide:
@@ -408,16 +408,15 @@ export const clinicalContentRegistry: Record<
     ],
     example: {
       description:
-        "A 30-year-old man presents with altered mental status and metabolic acidosis. Sodium is 140 mmol/L, glucose is 100 mg/dL, BUN is 15 mg/dL, ethanol is 0 mg/dL, and measured osmolality is 330 mOsm/kg.",
+        "A 30-year-old man presents with altered mental status and metabolic acidosis. Measured serum osmolality is 330 mOsm/kg, sodium is 140 mmol/L, glucose is 100 mg/dL, and BUN is 15 mg/dL.",
       inputs: {
+        measured: "330",
         sodium: "140",
         glucose: "100",
         bun: "15",
-        ethanol: "0",
-        measuredOsmolality: "330",
       },
       expectedResult:
-        "Calculated osmolality ≈ 2 × 140 + 100/18 + 15/2.8 + 0 = 280 + 5.6 + 5.4 = 291 mOsm/kg. Osmolar gap ≈ 330 − 291 = 39 mOsm/kg. This markedly elevated osmolar gap, in the context of metabolic acidosis, raises concern for toxic alcohol ingestion.",
+        "Calculated osmolality ≈ 2 × 140 + 100/18 + 15/2.8 = 280 + 5.6 + 5.4 = 291 mOsm/kg. Osmolar gap ≈ 330 − 291 = 39 mOsm/kg. This elevated osmolar gap, in the context of metabolic acidosis, raises concern for unmeasured osmoles such as toxic alcohol ingestion.",
     },
     clinicalSignificance:
       "An elevated osmolar gap in the appropriate clinical setting suggests the presence of an unmeasured osmole, which may be a toxic alcohol. Early identification is critical because specific antidotes (fomepizole, ethanol) and dialysis can be life-saving.",
@@ -464,18 +463,16 @@ export const clinicalContentRegistry: Record<
     ],
     example: {
       description:
-        "A 72-year-old woman on the surgical ward has: respiratory rate 24, SpO₂ 93% on air, temperature 38.2°C, systolic BP 100 mmHg, heart rate 110 bpm, and is alert.",
+        "A 72-year-old woman on the surgical ward has respiratory rate 24/min, SpO₂ 93% on air, temperature 38.2°C, systolic BP 100 mmHg, and pulse 110 bpm, and is alert.",
       inputs: {
-        respiratoryRate: "24",
-        spO2: "93",
-        supplementalOxygen: "0",
+        "respiratory-rate": "24",
+        spo2: "93",
         temperature: "38.2",
-        systolicBP: "100",
-        heartRate: "110",
-        consciousness: "1",
+        sbp: "100",
+        pulse: "110",
       },
       expectedResult:
-        "NEWS2 score indicates moderate-to-high clinical risk, warranting urgent clinical review and increased monitoring frequency.",
+        "NEWS2 sub-scores: RR 2, SpO₂ 2, temperature 1, SBP 2, pulse 2 — aggregate 9, indicating very high clinical risk and requiring emergency clinical assessment.",
     },
     clinicalSignificance:
       "NEWS2 provides a standardized, evidence-based approach to detecting clinical deterioration. It has been shown to improve patient outcomes by enabling early intervention before critical deterioration occurs.",

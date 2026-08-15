@@ -5,6 +5,8 @@
  * Falls back gracefully when no clinical content exists.
  */
 
+import Link from "next/link";
+
 import type { ClinicalContent } from "@/lib/clinical-content";
 
 type ClinicalContentPanelProps = {
@@ -31,6 +33,28 @@ export function ClinicalContentPanel({
               <li key={i}>{step}</li>
             ))}
           </ol>
+        </Section>
+      )}
+
+      {content.interpretation?.guide && (
+        <Section title="Interpretation Guide">
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+            {content.interpretation.guide}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {content.interpretation.sexSpecific && (
+              <Badge label="Sex-specific interpretation" />
+            )}
+            {content.interpretation.ageSpecific && (
+              <Badge label="Age-specific interpretation" />
+            )}
+            {content.interpretation.pediatric && (
+              <Badge label="Pediatric ranges differ" />
+            )}
+            {content.interpretation.pregnancy && (
+              <Badge label="Pregnancy-specific" />
+            )}
+          </div>
         </Section>
       )}
 
@@ -63,28 +87,6 @@ export function ClinicalContentPanel({
             </ul>
           </Section>
         )}
-
-      {content.interpretation?.guide && (
-        <Section title="Interpretation Guide">
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-            {content.interpretation.guide}
-          </p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {content.interpretation.sexSpecific && (
-              <Badge label="Sex-specific interpretation" />
-            )}
-            {content.interpretation.ageSpecific && (
-              <Badge label="Age-specific interpretation" />
-            )}
-            {content.interpretation.pediatric && (
-              <Badge label="Pediatric ranges differ" />
-            )}
-            {content.interpretation.pregnancy && (
-              <Badge label="Pregnancy-specific" />
-            )}
-          </div>
-        </Section>
-      )}
 
       {content.limitations &&
         content.limitations.length > 0 && (
@@ -133,12 +135,96 @@ export function ClinicalContentPanel({
         </Section>
       )}
 
+      {content.evidence && (
+        <Section title="Evidence">
+          <dl className="space-y-2 text-sm">
+            {content.evidence.source && (
+              <div>
+                <dt className="font-medium text-gray-500 dark:text-gray-400">
+                  Source
+                </dt>
+                <dd className="text-gray-700 dark:text-gray-300">
+                  {content.evidence.source}
+                </dd>
+              </div>
+            )}
+            {content.evidence.reference && (
+              <div>
+                <dt className="font-medium text-gray-500 dark:text-gray-400">
+                  Reference
+                </dt>
+                <dd className="text-gray-700 dark:text-gray-300">
+                  {content.evidence.reference}
+                </dd>
+              </div>
+            )}
+            {content.evidence.reviewedBy && (
+              <div>
+                <dt className="font-medium text-gray-500 dark:text-gray-400">
+                  Reviewed By
+                </dt>
+                <dd className="text-gray-700 dark:text-gray-300">
+                  {content.evidence.reviewedBy}
+                </dd>
+              </div>
+            )}
+            {content.evidence.version && (
+              <div>
+                <dt className="font-medium text-gray-500 dark:text-gray-400">
+                  Version
+                </dt>
+                <dd className="text-gray-700 dark:text-gray-300">
+                  {content.evidence.version}
+                </dd>
+              </div>
+            )}
+            {content.evidence.updatedAt && (
+              <div>
+                <dt className="font-medium text-gray-500 dark:text-gray-400">
+                  Updated
+                </dt>
+                <dd className="text-gray-700 dark:text-gray-300">
+                  {content.evidence.updatedAt}
+                </dd>
+              </div>
+            )}
+            {content.evidence.link && (
+              <div>
+                <dt className="font-medium text-gray-500 dark:text-gray-400">
+                  Source Link
+                </dt>
+                <dd>
+                  <a
+                    href={content.evidence.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline decoration-gray-400 hover:decoration-gray-600 break-all"
+                  >
+                    {content.evidence.link}
+                  </a>
+                </dd>
+              </div>
+            )}
+          </dl>
+          {content.evidence.references &&
+            content.evidence.references.length > 0 && (
+              <ol className="mt-3 list-decimal list-inside space-y-1 text-sm text-gray-700 dark:text-gray-300">
+                {content.evidence.references.map((ref, i) => (
+                  <li key={i} className="break-words">
+                    {ref}
+                  </li>
+                ))}
+              </ol>
+            )}
+        </Section>
+      )}
+
       {content.references &&
         content.references.length > 0 && (
           <Section title="References">
             <ol className="list-decimal list-inside space-y-1 text-gray-700 dark:text-gray-300 text-sm">
               {content.references.map((ref, i) => (
-                <li key={i}>
+                <li key={i} className="break-words">
                   {ref.url ? (
                     <a
                       href={ref.url}
@@ -160,6 +246,62 @@ export function ClinicalContentPanel({
                 </li>
               ))}
             </ol>
+          </Section>
+        )}
+
+      {content.faq && content.faq.length > 0 && (
+        <Section title="Frequently Asked Questions">
+          <div className="space-y-4">
+            {content.faq.map((item, i) => (
+              <div key={i}>
+                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
+                  {item.question}
+                </h4>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  {item.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {content.comparison &&
+        content.comparison.calculators &&
+        content.comparison.calculators.length > 0 && (
+          <Section
+            title={
+              content.comparison.title ??
+              "Related Clinical Calculators"
+            }
+          >
+            <div className="space-y-3">
+              {content.comparison.calculators.map(
+                (item, i) => (
+                  <div
+                    key={item.href ?? i}
+                    className="rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+                  >
+                    <Link
+                      href={item.href}
+                      className="font-medium text-blue-700 dark:text-blue-400 hover:underline"
+                    >
+                      {item.name}
+                    </Link>
+                    {item.bestFor && (
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {item.bestFor}
+                      </p>
+                    )}
+                    {item.limitation && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {item.limitation}
+                      </p>
+                    )}
+                  </div>
+                ),
+              )}
+            </div>
           </Section>
         )}
 
