@@ -19,8 +19,34 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 49 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(49);
+  it("registry contains exactly 63 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(63);
+  });
+
+  it("the 14 Reliability Batch 5 calculators are registered and searchable", () => {
+    const batch5Ids = [
+      "a-a-gradient",
+      "apri",
+      "edd",
+      "fib-4",
+      "gestational-age",
+      "glasgow-blatchford",
+      "maddrey",
+      "meld",
+      "meld-na",
+      "nafld-fibrosis",
+      "oxygen-index",
+      "pf-ratio",
+      "rockall",
+      "rox-index",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const id of batch5Ids) {
+      const calc = getCalculatorById(id);
+      expect(calc, `batch-5 calculator "${id}" must resolve`).toBeDefined();
+      expect(slugs.has(calc!.slug)).toBe(true);
+      expect(searchCalculators(calc!.name).length).toBeGreaterThanOrEqual(1);
+    }
   });
 
   it("every calculator has a unique id", () => {

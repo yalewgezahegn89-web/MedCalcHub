@@ -1,7 +1,7 @@
 /**
  * Calculator Validation Tests
  *
- * Comprehensive validation tests for all 49 registered calculators.
+ * Comprehensive validation tests for all 63 registered calculators.
  * 
  * Verifies:
  * - Every calculator calculate() executes without throwing
@@ -21,7 +21,7 @@ import type {
 } from "../../lib/calculators/calculator.types";
 
 // ---------------------------------------------------------------------------
-// Test input data for all 49 calculators
+// Test input data for all 63 calculators
 // ---------------------------------------------------------------------------
 
 const testInputs: Record<string, Record<string, string>> = {
@@ -218,6 +218,95 @@ const testInputs: Record<string, Record<string, string>> = {
     weight: "32",
     height: "140",
   },
+
+  // -- Pulmonology --
+  "a-a-gradient": {
+    age: "40",
+    fio2: "0.21",
+    pao2: "90",
+    paco2: "40",
+  },
+  "oxygen-index": {
+    fio2: "0.5",
+    map: "10",
+    pao2: "100",
+  },
+  "pf-ratio": {
+    pao2: "100",
+    fio2: "0.5",
+  },
+  "rox-index": {
+    spo2: "94",
+    fio2: "0.4",
+    rr: "30",
+  },
+
+  // -- Gastroenterology --
+  apri: {
+    ast: "40",
+    uln: "40",
+    platelets: "200",
+  },
+  "fib-4": {
+    age: "60",
+    ast: "40",
+    alt: "40",
+    platelets: "200",
+  },
+  "glasgow-blatchford": {
+    bun: "25",
+    hemoglobin: "12.5",
+    sex: "male",
+    sbp: "100",
+    pulse: "90",
+    melena: "no",
+    syncope: "no",
+    hepatic: "no",
+    cardiac: "no",
+  },
+  maddrey: {
+    patient_pt: "20",
+    control_pt: "12",
+    bilirubin: "5",
+  },
+  meld: {
+    bilirubin: "2",
+    creatinine: "1.2",
+    inr: "1.5",
+    dialysis: "no",
+  },
+  "meld-na": {
+    bilirubin: "2",
+    creatinine: "1.2",
+    inr: "1.5",
+    sodium: "135",
+    dialysis: "no",
+  },
+  "nafld-fibrosis": {
+    age: "55",
+    bmi: "32",
+    diabetes: "1",
+    ast: "40",
+    alt: "40",
+    platelets: "150",
+    albumin: "3.5",
+  },
+  rockall: {
+    age: "1",
+    shock: "0",
+    comorbidity: "0",
+    diagnosis: "1",
+    stigmata: "0",
+  },
+
+  // -- Obstetrics & Gynecology --
+  edd: {
+    lmp: "2025-01-01",
+  },
+  "gestational-age": {
+    weeks: "30",
+    days: "4",
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -346,6 +435,71 @@ const exactExpectations: Record<string, ExpectedExact> = {
   "albumin-creatinine-ratio": {
     value: 25,
     tolerance: 0.01,
+    status: "normal",
+  },
+  "a-a-gradient": {
+    value: 9.7,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "oxygen-index": {
+    value: 5,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "pf-ratio": {
+    value: 200,
+    tolerance: 0.01,
+    status: "critical",
+  },
+  "rox-index": {
+    value: 7.83,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  apri: {
+    value: 0.5,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "fib-4": {
+    value: 1.9,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "glasgow-blatchford": {
+    value: 5,
+    tolerance: 0.01,
+    status: "high",
+  },
+  maddrey: {
+    value: 41.8,
+    tolerance: 0.1,
+    status: "critical",
+  },
+  meld: {
+    value: 15,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "meld-na": {
+    value: 17,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "nafld-fibrosis": {
+    value: 1.228,
+    tolerance: 0.001,
+    status: "critical",
+  },
+  rockall: {
+    value: 2,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "gestational-age": {
+    value: 30.5714,
+    tolerance: 0.001,
     status: "normal",
   },
 };

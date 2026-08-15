@@ -60,6 +60,23 @@ import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 import { bmiForPediatricsCalculator } from "./bmi-for-pediatrics";
 import { waistToHipRatioCalculator } from "./waist-to-hip-ratio";
 
+import { aaGradientCalculator } from "./a-a-gradient";
+import { oxygenIndexCalculator } from "./oxygen-index";
+import { pfRatioCalculator } from "./pf-ratio";
+import { roxIndexCalculator } from "./rox-index";
+
+import { apriCalculator } from "./apri";
+import { fib4Calculator } from "./fib-4";
+import { glasgowBlatchfordCalculator } from "./glasgow-blatchford-score";
+import { maddreyCalculator } from "./maddrey-discriminant-function";
+import { meldCalculator } from "./meld";
+import { meldNaCalculator } from "./meld-na";
+import { nafldFibrosisCalculator } from "./nafld-fibrosis-score";
+import { rockallCalculator } from "./rockall-score";
+
+import { eddCalculator } from "./edd";
+import { gestationalAgeCalculator } from "./gestational-age";
+
 export const calculatorRegistry: CalculatorDefinition[] = [
   ckdEpi2021Calculator,
   curb65Calculator,
@@ -124,6 +141,23 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   bmiForPediatricsCalculator,
 
   waistToHipRatioCalculator,
+
+  aaGradientCalculator,
+  oxygenIndexCalculator,
+  pfRatioCalculator,
+  roxIndexCalculator,
+
+  apriCalculator,
+  fib4Calculator,
+  glasgowBlatchfordCalculator,
+  maddreyCalculator,
+  meldCalculator,
+  meldNaCalculator,
+  nafldFibrosisCalculator,
+  rockallCalculator,
+
+  eddCalculator,
+  gestationalAgeCalculator,
 ];
 
 export function getCalculatorById(

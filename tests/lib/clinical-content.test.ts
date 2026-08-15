@@ -1268,6 +1268,20 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     "thyroid-dose",
     "levothyroxine-dose",
     "adrenal-steroid-converter",
+    "a-a-gradient",
+    "apri-score",
+    "edd",
+    "fib-4-index",
+    "gestational-age",
+    "glasgow-blatchford-score",
+    "maddrey-discriminant-function",
+    "meld-score",
+    "meld-na-score",
+    "nafld-fibrosis-score",
+    "oxygen-index",
+    "pf-ratio",
+    "rockall-score",
+    "rox-index",
   ];
 
   const KNOWN_INPUT_DEFECTIVE = ["news2", "shock-index"];
@@ -1315,9 +1329,9 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     "maintenance-fluids": 2500,
   };
 
-  it("reports the final coverage totals (49 registered, 42 with content, 7 deferred)", () => {
+  it("reports the final coverage totals (63 registered, 42 with content, 21 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
-    expect(calculatorRegistry.length).toBe(49);
+    expect(calculatorRegistry.length).toBe(63);
     expect(contentSlugs.size).toBe(42);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
