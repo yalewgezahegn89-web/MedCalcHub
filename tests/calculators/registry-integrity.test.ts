@@ -19,8 +19,36 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 91 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(91);
+  it("registry contains exactly 107 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(107);
+  });
+
+  it("the 16 Renal & Laboratory/Metabolic Batch 4 (Sprint 1.9) calculators are registered and searchable", () => {
+    const batch4Ids = [
+      "fractional-excretion-uric-acid",
+      "fractional-excretion-phosphate",
+      "fractional-excretion-calcium",
+      "renal-failure-index",
+      "urine-osmolal-gap",
+      "free-water-clearance",
+      "electrolyte-free-water-clearance",
+      "urine-protein-creatinine-ratio",
+      "creatinine-clearance-24h",
+      "total-cholesterol-hdl-ratio",
+      "atherogenic-index-of-plasma",
+      "apob-apoa1-ratio",
+      "respiratory-compensation",
+      "metabolic-alkalosis-compensation",
+      "free-thyroxine-index",
+      "metabolic-syndrome-atp3",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const id of batch4Ids) {
+      const calc = getCalculatorById(id);
+      expect(calc, `batch-4 calculator "${id}" must resolve`).toBeDefined();
+      expect(slugs.has(calc!.slug)).toBe(true);
+      expect(searchCalculators(calc!.name).length).toBeGreaterThanOrEqual(1);
+    }
   });
 
   it("the 10 Laboratory/Metabolic Batch 3 (Sprint 1.9) calculators are registered and searchable", () => {

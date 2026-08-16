@@ -1884,3 +1884,165 @@ describe("Sprint 1.9 Batch 3 laboratory / metabolic discovery", () => {
     }
   });
 });
+
+/* ------------------------------------------------------------------
+   Sprint 1.9 Batch 4 — Renal & Laboratory/Metabolic discovery
+   regression tests
+   ------------------------------------------------------------------ */
+
+describe("Sprint 1.9 Batch 4 renal / laboratory / metabolic discovery", () => {
+  const NEW_SLUGS = [
+    "fractional-excretion-uric-acid",
+    "fractional-excretion-phosphate",
+    "fractional-excretion-calcium",
+    "renal-failure-index",
+    "urine-osmolal-gap",
+    "free-water-clearance",
+    "electrolyte-free-water-clearance",
+    "urine-protein-creatinine-ratio",
+    "creatinine-clearance-24h",
+    "total-cholesterol-hdl-ratio",
+    "atherogenic-index-of-plasma",
+    "apob-apoa1-ratio",
+    "respiratory-compensation",
+    "metabolic-alkalosis-compensation",
+    "free-thyroxine-index",
+    "metabolic-syndrome-atp3",
+  ];
+
+  it("every new calculator is in the search index", () => {
+    const index = buildSearchIndex();
+    const slugs = new Set(index.map((d) => d.slug));
+    for (const slug of NEW_SLUGS) {
+      expect(slugs.has(slug), `${slug} missing from search index`).toBe(true);
+    }
+  });
+
+  it("discovers FEUA via 'FEUA'", () => {
+    const results = searchCalculators("FEUA");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "fractional-excretion-uric-acid",
+    );
+  });
+
+  it("discovers FEUA via 'uric acid'", () => {
+    const results = searchCalculators("uric acid");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "fractional-excretion-uric-acid",
+    );
+  });
+
+  it("discovers FEP via 'FEP'", () => {
+    const results = searchCalculators("FEP");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "fractional-excretion-phosphate",
+    );
+  });
+
+  it("discovers FECa via 'FECa' and 'CCCR'", () => {
+    const slugs = searchCalculators("FECa").map((r) => r.document.slug);
+    expect(slugs).toContain("fractional-excretion-calcium");
+    const cccr = searchCalculators("CCCR").map((r) => r.document.slug);
+    expect(cccr).toContain("fractional-excretion-calcium");
+  });
+
+  it("discovers RFI via 'renal failure index'", () => {
+    const results = searchCalculators("renal failure index");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "renal-failure-index",
+    );
+  });
+
+  it("discovers urine osmolal gap via 'urine osmolal gap'", () => {
+    const results = searchCalculators("urine osmolal gap");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "urine-osmolal-gap",
+    );
+  });
+
+  it("discovers CH2O via 'free water clearance'", () => {
+    const results = searchCalculators("free water clearance");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "free-water-clearance",
+    );
+  });
+
+  it("discovers EFWC via 'electrolyte-free water clearance'", () => {
+    const results = searchCalculators("electrolyte-free water clearance");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "electrolyte-free-water-clearance",
+    );
+  });
+
+  it("discovers UPCR via 'urine protein creatinine'", () => {
+    const results = searchCalculators("urine protein creatinine");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "urine-protein-creatinine-ratio",
+    );
+  });
+
+  it("discovers 24h CrCl via '24 hour urine'", () => {
+    const results = searchCalculators("24 hour urine");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "creatinine-clearance-24h",
+    );
+  });
+
+  it("discovers TC/HDL via 'total cholesterol hdl'", () => {
+    const results = searchCalculators("total cholesterol hdl");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "total-cholesterol-hdl-ratio",
+    );
+  });
+
+  it("discovers AIP via 'atherogenic index'", () => {
+    const results = searchCalculators("atherogenic index");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "atherogenic-index-of-plasma",
+    );
+  });
+
+  it("discovers ApoB/ApoA1 via 'apolipoprotein'", () => {
+    const results = searchCalculators("apolipoprotein");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "apob-apoa1-ratio",
+    );
+  });
+
+  it("discovers respiratory compensation via 'expected bicarbonate'", () => {
+    const results = searchCalculators("expected bicarbonate");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "respiratory-compensation",
+    );
+  });
+
+  it("discovers metabolic alkalosis compensation via 'metabolic alkalosis'", () => {
+    const results = searchCalculators("metabolic alkalosis");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "metabolic-alkalosis-compensation",
+    );
+  });
+
+  it("discovers FTI via 'free thyroxine index'", () => {
+    const results = searchCalculators("free thyroxine index");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "free-thyroxine-index",
+    );
+  });
+
+  it("discovers metabolic syndrome via 'metabolic syndrome'", () => {
+    const results = searchCalculators("metabolic syndrome");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "metabolic-syndrome-atp3",
+    );
+  });
+
+  it("each new calculator appears at most once per query", () => {
+    for (const slug of NEW_SLUGS) {
+      const slugs = searchCalculators(slug).map((r) => r.document.slug);
+      expect(slugs.length, `${slug} duplicate in results`).toBe(
+        new Set(slugs).size,
+      );
+    }
+  });
+});

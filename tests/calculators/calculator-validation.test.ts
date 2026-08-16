@@ -526,6 +526,96 @@ const testInputs: Record<string, Record<string, string>> = {
     weeks: "30",
     days: "4",
   },
+
+  // -- Sprint 1.9 Batch 4: Renal & Laboratory/Metabolic --
+  "fractional-excretion-uric-acid": {
+    urineUricAcid: "20",
+    serumUricAcid: "6",
+    urineCr: "80",
+    plasmaCr: "1.2",
+  },
+  "fractional-excretion-phosphate": {
+    urinePhosphate: "50",
+    serumPhosphate: "3.0",
+    urineCr: "80",
+    plasmaCr: "1.2",
+  },
+  "fractional-excretion-calcium": {
+    urineCalcium: "50",
+    serumCalcium: "10",
+    urineCr: "100",
+    plasmaCr: "1.0",
+  },
+  "renal-failure-index": {
+    urineSodium: "40",
+    plasmaCr: "1.2",
+    urineCr: "80",
+  },
+  "urine-osmolal-gap": {
+    urineOsmolality: "600",
+    urineSodium: "80",
+    urinePotassium: "40",
+    urineUrea: "560",
+    urineGlucose: "0",
+  },
+  "free-water-clearance": {
+    urineVolume: "1.5",
+    urineOsmolality: "80",
+    plasmaOsmolality: "290",
+  },
+  "electrolyte-free-water-clearance": {
+    urineVolume: "1.5",
+    urineSodium: "80",
+    urinePotassium: "40",
+    plasmaSodium: "140",
+  },
+  "urine-protein-creatinine-ratio": {
+    urineProtein: "150",
+    urineCreatinine: "100",
+  },
+  "creatinine-clearance-24h": {
+    urineCreatinine: "80",
+    urineVolume: "1800",
+    serumCreatinine: "1.0",
+  },
+  "total-cholesterol-hdl-ratio": {
+    totalCholesterol: "180",
+    hdlCholesterol: "60",
+  },
+  "atherogenic-index-of-plasma": {
+    triglycerides: "100",
+    hdlCholesterol: "80",
+  },
+  "apob-apoa1-ratio": {
+    apoB: "1.0",
+    apoA1: "1.4",
+    sex: "male",
+  },
+  "respiratory-compensation": {
+    disorderType: "acuteRespAcidosis",
+    paCO2: "50",
+    measuredBicarbonate: "25",
+  },
+  "metabolic-alkalosis-compensation": {
+    bicarbonate: "40",
+    measuredPaCO2: "50",
+  },
+  "free-thyroxine-index": {
+    totalT4: "8",
+    t3Uptake: "30",
+  },
+  "metabolic-syndrome-atp3": {
+    sex: "female",
+    waist: "90",
+    triglycerides: "160",
+    hdl: "45",
+    sbp: "135",
+    dbp: "85",
+    fastingGlucose: "110",
+    lipidRx: "no",
+    bpRx: "no",
+    glucoseRx: "no",
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -812,6 +902,88 @@ const exactExpectations: Record<string, ExpectedExact> = {
     value: 1.29,
     tolerance: 0.01,
     status: "normal",
+  },
+
+  // -- Sprint 1.9 Batch 4 (Renal & Laboratory/Metabolic) --
+  "fractional-excretion-uric-acid": {
+    value: 5,
+    tolerance: 0.01,
+    status: "low",
+  },
+  "fractional-excretion-phosphate": {
+    value: 25,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "fractional-excretion-calcium": {
+    value: 5,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "renal-failure-index": {
+    value: 0.6,
+    tolerance: 0.01,
+    status: "low",
+  },
+  "urine-osmolal-gap": {
+    value: 160,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "free-water-clearance": {
+    value: 1.09,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "electrolyte-free-water-clearance": {
+    value: 0.21,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "urine-protein-creatinine-ratio": {
+    value: 1.5,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "creatinine-clearance-24h": {
+    value: 100,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "total-cholesterol-hdl-ratio": {
+    value: 3,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "atherogenic-index-of-plasma": {
+    value: 0.1,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "apob-apoa1-ratio": {
+    value: 0.71,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "respiratory-compensation": {
+    value: 25,
+    tolerance: 0.1,
+    status: "normal",
+  },
+  "metabolic-alkalosis-compensation": {
+    value: 49.6,
+    tolerance: 0.1,
+    status: "normal",
+  },
+  "free-thyroxine-index": {
+    value: 2.4,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "metabolic-syndrome-atp3": {
+    value: 5,
+    tolerance: 0.01,
+    status: "critical",
   },
 };
 
@@ -1519,6 +1691,369 @@ describe("Batch 3 Direct-Call Validation Guards", () => {
       totalCholesterol: "100",
       hdl: "90",
       triglycerides: "100",
+    });
+    expect(result.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Sprint 1.9 Batch 4 (Renal & Laboratory/Metabolic) Direct-Call Validation
+// Guards. Verifies that guarded calculators return critical (never NaN) for
+// missing, empty, non-numeric, negative, and (where applicable) zero inputs,
+// and that clinically valid inputs remain non-critical and finite.
+// Domain-specific guards (disorder-type validity, metabolic alkalosis
+// applicability, uric-acid/prerenal cut-points, nephrotic boundaries,
+// CH2O/EFWC signs, TC/HDL and AIP cut-points, ApoB/ApoA1 sex thresholds,
+// respiratory/metabolic compensation deviation) are also exercised.
+// ---------------------------------------------------------------------------
+
+const BATCH4_GUARDED_IDS = [
+  "fractional-excretion-uric-acid",
+  "fractional-excretion-phosphate",
+  "fractional-excretion-calcium",
+  "renal-failure-index",
+  "urine-osmolal-gap",
+  "free-water-clearance",
+  "electrolyte-free-water-clearance",
+  "urine-protein-creatinine-ratio",
+  "creatinine-clearance-24h",
+  "total-cholesterol-hdl-ratio",
+  "atherogenic-index-of-plasma",
+  "apob-apoa1-ratio",
+  "respiratory-compensation",
+  "metabolic-alkalosis-compensation",
+  "free-thyroxine-index",
+  "metabolic-syndrome-atp3",
+] as const;
+
+const BATCH4_VALID_INPUTS: Record<string, Record<string, string>> = {
+  "fractional-excretion-uric-acid": { urineUricAcid: "20", serumUricAcid: "6", urineCr: "80", plasmaCr: "1.2" },
+  "fractional-excretion-phosphate": { urinePhosphate: "50", serumPhosphate: "3", urineCr: "80", plasmaCr: "1.2" },
+  "fractional-excretion-calcium": { urineCalcium: "50", serumCalcium: "10", urineCr: "100", plasmaCr: "1.0" },
+  "renal-failure-index": { urineSodium: "40", plasmaCr: "1.2", urineCr: "80" },
+  "urine-osmolal-gap": { urineOsmolality: "600", urineSodium: "80", urinePotassium: "40", urineUrea: "560", urineGlucose: "0" },
+  "free-water-clearance": { urineVolume: "1.5", urineOsmolality: "80", plasmaOsmolality: "290" },
+  "electrolyte-free-water-clearance": { urineVolume: "1.5", urineSodium: "80", urinePotassium: "40", plasmaSodium: "140" },
+  "urine-protein-creatinine-ratio": { urineProtein: "150", urineCreatinine: "100" },
+  "creatinine-clearance-24h": { urineCreatinine: "80", urineVolume: "1800", serumCreatinine: "1.0" },
+  "total-cholesterol-hdl-ratio": { totalCholesterol: "180", hdlCholesterol: "60" },
+  "atherogenic-index-of-plasma": { triglycerides: "100", hdlCholesterol: "80" },
+  "apob-apoa1-ratio": { apoB: "1.0", apoA1: "1.4", sex: "male" },
+  "respiratory-compensation": { disorderType: "chronicRespAcidosis", paCO2: "60", measuredBicarbonate: "32" },
+  "metabolic-alkalosis-compensation": { bicarbonate: "40", measuredPaCO2: "50" },
+  "free-thyroxine-index": { totalT4: "8", t3Uptake: "30" },
+  "metabolic-syndrome-atp3": { sex: "male", waist: "90", triglycerides: "100", hdl: "55", sbp: "120", dbp: "80", fastingGlucose: "90", lipidRx: "no", bpRx: "no", glucoseRx: "no" },
+};
+
+const BATCH4_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
+  "fractional-excretion-uric-acid": { urineUricAcid: "-20", serumUricAcid: "-6", urineCr: "-80", plasmaCr: "-1.2" },
+  "fractional-excretion-phosphate": { urinePhosphate: "-50", serumPhosphate: "-3", urineCr: "-80", plasmaCr: "-1.2" },
+  "fractional-excretion-calcium": { urineCalcium: "-50", serumCalcium: "-10", urineCr: "-100", plasmaCr: "-1.0" },
+  "renal-failure-index": { urineSodium: "-40", plasmaCr: "-1.2", urineCr: "-80" },
+  "urine-osmolal-gap": { urineOsmolality: "-600", urineSodium: "-80", urinePotassium: "-40", urineUrea: "-560", urineGlucose: "-0" },
+  "free-water-clearance": { urineVolume: "-1.5", urineOsmolality: "-80", plasmaOsmolality: "-290" },
+  "electrolyte-free-water-clearance": { urineVolume: "-1.5", urineSodium: "-80", urinePotassium: "-40", plasmaSodium: "-140" },
+  "urine-protein-creatinine-ratio": { urineProtein: "-150", urineCreatinine: "-100" },
+  "creatinine-clearance-24h": { urineCreatinine: "-80", urineVolume: "-1800", serumCreatinine: "-1.0" },
+  "total-cholesterol-hdl-ratio": { totalCholesterol: "-180", hdlCholesterol: "-60" },
+  "atherogenic-index-of-plasma": { triglycerides: "-100", hdlCholesterol: "-80" },
+  "apob-apoa1-ratio": { apoB: "-1.0", apoA1: "-1.4", sex: "male" },
+  "respiratory-compensation": { disorderType: "chronicRespAcidosis", paCO2: "-60", measuredBicarbonate: "-32" },
+  "metabolic-alkalosis-compensation": { bicarbonate: "-40", measuredPaCO2: "-50" },
+  "free-thyroxine-index": { totalT4: "-8", t3Uptake: "-30" },
+  "metabolic-syndrome-atp3": { sex: "female", waist: "-90", triglycerides: "-160", hdl: "-45", sbp: "-135", dbp: "-85", fastingGlucose: "-110", lipidRx: "no", bpRx: "no", glucoseRx: "no" },
+};
+
+const BATCH4_ZERO_OVERRIDES: Record<string, Record<string, string>> = {
+  "fractional-excretion-uric-acid": { urineUricAcid: "0", serumUricAcid: "6", urineCr: "80", plasmaCr: "1.2" },
+  "fractional-excretion-phosphate": { urinePhosphate: "0", serumPhosphate: "3", urineCr: "80", plasmaCr: "1.2" },
+  "fractional-excretion-calcium": { urineCalcium: "0", serumCalcium: "10", urineCr: "100", plasmaCr: "1.0" },
+  "renal-failure-index": { urineSodium: "0", plasmaCr: "1.2", urineCr: "80" },
+  "urine-osmolal-gap": { urineOsmolality: "0", urineSodium: "80", urinePotassium: "40", urineUrea: "560", urineGlucose: "0" },
+  "free-water-clearance": { urineVolume: "0", urineOsmolality: "80", plasmaOsmolality: "290" },
+  "electrolyte-free-water-clearance": { urineVolume: "0", urineSodium: "80", urinePotassium: "40", plasmaSodium: "140" },
+  "urine-protein-creatinine-ratio": { urineProtein: "150", urineCreatinine: "0" },
+  "creatinine-clearance-24h": { urineCreatinine: "80", urineVolume: "0", serumCreatinine: "1.0" },
+  "total-cholesterol-hdl-ratio": { totalCholesterol: "180", hdlCholesterol: "0" },
+  "atherogenic-index-of-plasma": { triglycerides: "100", hdlCholesterol: "0" },
+  "apob-apoa1-ratio": { apoB: "1.0", apoA1: "0", sex: "male" },
+  "respiratory-compensation": { disorderType: "chronicRespAcidosis", paCO2: "60", measuredBicarbonate: "0" },
+  "metabolic-alkalosis-compensation": { bicarbonate: "40", measuredPaCO2: "0" },
+  "free-thyroxine-index": { totalT4: "8", t3Uptake: "0" },
+  "metabolic-syndrome-atp3": { sex: "female", waist: "90", triglycerides: "160", hdl: "45", sbp: "135", dbp: "85", fastingGlucose: "110", lipidRx: "no", bpRx: "no", glucoseRx: "no" },
+};
+
+const BATCH4_BOUNDARY_CASES: BoundaryCase[] = [
+  // FEUA prerenal vs indeterminate vs intrinsic cut-points
+  {
+    id: "fractional-excretion-uric-acid",
+    inputs: { urineUricAcid: "30", serumUricAcid: "5", urineCr: "100", plasmaCr: "1.0" },
+    expectedStatus: "low",
+    expectedValue: 6,
+  },
+  {
+    id: "fractional-excretion-uric-acid",
+    inputs: { urineUricAcid: "70", serumUricAcid: "5", urineCr: "100", plasmaCr: "1.0" },
+    expectedStatus: "normal",
+    expectedValue: 14,
+  },
+  {
+    id: "fractional-excretion-uric-acid",
+    inputs: { urineUricAcid: "120", serumUricAcid: "5", urineCr: "100", plasmaCr: "1.0" },
+    expectedStatus: "high",
+    expectedValue: 24,
+  },
+  // FEP renal wasting threshold
+  {
+    id: "fractional-excretion-phosphate",
+    inputs: { urinePhosphate: "10", serumPhosphate: "3", urineCr: "100", plasmaCr: "1.0" },
+    expectedStatus: "low",
+    expectedValue: 3.33,
+  },
+  // FECa > 2% favors PHPT
+  {
+    id: "fractional-excretion-calcium",
+    inputs: { urineCalcium: "50", serumCalcium: "10", urineCr: "100", plasmaCr: "1.0" },
+    expectedStatus: "high",
+    expectedValue: 5,
+  },
+  // RFI prerenal
+  {
+    id: "renal-failure-index",
+    inputs: { urineSodium: "20", plasmaCr: "1.2", urineCr: "80" },
+    expectedStatus: "low",
+    expectedValue: 0.3,
+  },
+  // UOG elevated (unmeasured osmoles)
+  {
+    id: "urine-osmolal-gap",
+    inputs: { urineOsmolality: "600", urineSodium: "80", urinePotassium: "40", urineUrea: "560", urineGlucose: "0" },
+    expectedStatus: "high",
+    expectedValue: 160,
+  },
+  // CH2O negative (concentrated urine)
+  {
+    id: "free-water-clearance",
+    inputs: { urineVolume: "1.5", urineOsmolality: "600", plasmaOsmolality: "290" },
+    expectedStatus: "high",
+  },
+  // EFWC negative (electrolyte-rich urine)
+  {
+    id: "electrolyte-free-water-clearance",
+    inputs: { urineVolume: "1.5", urineSodium: "150", urinePotassium: "100", plasmaSodium: "140" },
+    expectedStatus: "normal",
+  },
+  // UPCR nephrotic range boundary
+  {
+    id: "urine-protein-creatinine-ratio",
+    inputs: { urineProtein: "350", urineCreatinine: "100" },
+    expectedStatus: "critical",
+    expectedValue: 3.5,
+  },
+  // UPCR normal
+  {
+    id: "urine-protein-creatinine-ratio",
+    inputs: { urineProtein: "10", urineCreatinine: "100" },
+    expectedStatus: "normal",
+    expectedValue: 0.1,
+  },
+  // CrCl normal
+  {
+    id: "creatinine-clearance-24h",
+    inputs: { urineCreatinine: "80", urineVolume: "1800", serumCreatinine: "1.0" },
+    expectedStatus: "normal",
+    expectedValue: 100,
+  },
+  // TC/HDL desirable vs elevated
+  {
+    id: "total-cholesterol-hdl-ratio",
+    inputs: { totalCholesterol: "180", hdlCholesterol: "60" },
+    expectedStatus: "normal",
+    expectedValue: 3,
+  },
+  {
+    id: "total-cholesterol-hdl-ratio",
+    inputs: { totalCholesterol: "240", hdlCholesterol: "40" },
+    expectedStatus: "critical",
+    expectedValue: 6,
+  },
+  // AIP low vs intermediate
+  {
+    id: "atherogenic-index-of-plasma",
+    inputs: { triglycerides: "100", hdlCholesterol: "80" },
+    expectedStatus: "normal",
+    expectedValue: 0.1,
+  },
+  {
+    id: "atherogenic-index-of-plasma",
+    inputs: { triglycerides: "200", hdlCholesterol: "40" },
+    expectedStatus: "critical",
+    expectedValue: 0.7,
+  },
+  // ApoB/ApoA1 female threshold (elevated)
+  {
+    id: "apob-apoa1-ratio",
+    inputs: { apoB: "1.0", apoA1: "1.1", sex: "female" },
+    expectedStatus: "critical",
+    expectedValue: 0.91,
+  },
+  // Respiratory compensation chronic acidosis (appropriate)
+  {
+    id: "respiratory-compensation",
+    inputs: { disorderType: "chronicRespAcidosis", paCO2: "60", measuredBicarbonate: "32" },
+    expectedStatus: "normal",
+    expectedValue: 32,
+  },
+  // Respiratory compensation acute alkalosis (appropriate)
+  {
+    id: "respiratory-compensation",
+    inputs: { disorderType: "acuteRespAlkalosis", paCO2: "30", measuredBicarbonate: "26" },
+    expectedStatus: "normal",
+    expectedValue: 26,
+  },
+  // Metabolic alkalosis appropriate compensation
+  {
+    id: "metabolic-alkalosis-compensation",
+    inputs: { bicarbonate: "40", measuredPaCO2: "50" },
+    expectedStatus: "normal",
+    expectedValue: 49.6,
+  },
+  // FTI normal
+  {
+    id: "free-thyroxine-index",
+    inputs: { totalT4: "8", t3Uptake: "30" },
+    expectedStatus: "normal",
+    expectedValue: 2.4,
+  },
+  // MetS criteria counting
+  {
+    id: "metabolic-syndrome-atp3",
+    inputs: { sex: "male", waist: "110", triglycerides: "200", hdl: "35", sbp: "140", dbp: "90", fastingGlucose: "120", lipidRx: "no", bpRx: "no", glucoseRx: "no" },
+    expectedStatus: "critical",
+    expectedValue: 5,
+  },
+];
+
+describe("Batch 4 Direct-Call Validation Guards", () => {
+  function batch4Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 4 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch4Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH4_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch4Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH4_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch4Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH4_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch4Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH4_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(
+        batch4Calc(id).calculate(BATCH4_NEGATIVE_OVERRIDES[id]),
+        id,
+      );
+    },
+  );
+
+  it.each(BATCH4_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch4Calc(id).calculate(BATCH4_ZERO_OVERRIDES[id]), id);
+    },
+  );
+
+  it.each(BATCH4_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch4Calc(id).calculate(BATCH4_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it.each(BATCH4_BOUNDARY_CASES)(
+    "%s boundary inputs yield expected status and value",
+    (tc) => {
+      const result = batch4Calc(tc.id).calculate(tc.inputs);
+      expect(result.status, `${tc.id}: unexpected status`).toBe(tc.expectedStatus);
+      if (tc.expectedValue !== undefined) {
+        expect(Math.abs(Number(result.value) - tc.expectedValue)).toBeLessThan(0.01);
+      }
+    },
+  );
+
+  it("respiratory-compensation returns critical for an invalid disorder type", () => {
+    const result = batch4Calc("respiratory-compensation").calculate({
+      disorderType: "not-a-type",
+      paCO2: "50",
+      measuredBicarbonate: "25",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("metabolic-alkalosis-compensation returns critical when bicarbonate is not elevated", () => {
+    const result = batch4Calc("metabolic-alkalosis-compensation").calculate({
+      bicarbonate: "22",
+      measuredPaCO2: "45",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("apob-apoa1-ratio returns critical for an invalid sex", () => {
+    const result = batch4Calc("apob-apoa1-ratio").calculate({
+      apoB: "1.0",
+      apoA1: "1.4",
+      sex: "other",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("metabolic-syndrome-atp3 returns critical for an invalid sex", () => {
+    const result = batch4Calc("metabolic-syndrome-atp3").calculate({
+      sex: "other",
+      waist: "90",
+      triglycerides: "160",
+      hdl: "45",
+      sbp: "135",
+      dbp: "85",
+      fastingGlucose: "110",
+      lipidRx: "no",
+      bpRx: "no",
+      glucoseRx: "no",
     });
     expect(result.status).toBe("critical");
   });

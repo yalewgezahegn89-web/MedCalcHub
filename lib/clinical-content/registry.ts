@@ -5061,4 +5061,945 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Dialysis adequacy decisions must incorporate the prescription, access function, patient status, and KDOQI guidelines.",
   },
+
+  "fractional-excretion-uric-acid": {
+    clinicalPurpose:
+      "Quantifies the fractional excretion of uric acid (FEUA) to help distinguish prerenal azotemia from intrinsic renal injury in acute kidney injury, and to assess urate handling in conditions such as SIADH, tumor lysis syndrome, and Fanconi syndrome.",
+    howToUse: [
+      "Obtain urine and serum uric acid together with urine and serum creatinine from the same time point.",
+      "Enter all four values in the appropriate fields.",
+      "Review the calculated FEUA and its suggested category.",
+      "Combine with FENa, FEUrea, urine microscopy, and clinical volume status.",
+    ],
+    interpretation: {
+      guide:
+        "In AKI, FEUA < 12% supports a prerenal pattern, 12–20% is indeterminate, and > 20% is more consistent with intrinsic renal injury such as ATN. In hyponatremia evaluation, a FEUA above 12% has been proposed as supporting SIADH. Thresholds overlap substantially and should not be used in isolation.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Acute kidney injury differential (prerenal vs intrinsic)",
+      "When diuretics make FENa unreliable",
+      "Hyponatremia evaluation where SIADH is suspected",
+      "Assessment of urate handling in tumor lysis or Fanconi syndrome",
+    ],
+    whenNotToUse: [
+      "As a standalone diagnostic test for AKI",
+      "In patients receiving uricosuric drugs without accounting for their effect",
+      "When serum and urine uric acid are not sampled simultaneously",
+    ],
+    limitations: [
+      "Thresholds (12% and 20%) derive from observational AKI data and overlap substantially.",
+      "FEUA is influenced by volume status, uricosuric drugs (e.g., losartan, probenecid), and renal function.",
+      "Requires simultaneous urine and serum samples.",
+      "Does not, by itself, establish the cause of AKI.",
+    ],
+    example: {
+      description:
+        "A 45-year-old man with early AKI has a urine uric acid of 20 mg/dL, serum uric acid 6 mg/dL, urine creatinine 80 mg/dL, and plasma creatinine 1.2 mg/dL.",
+      inputs: {
+        urineUricAcid: "20",
+        serumUricAcid: "6",
+        urineCr: "80",
+        plasmaCr: "1.2",
+      },
+      expectedResult:
+        "FEUA = (20 × 1.2) ÷ (6 × 80) × 100 = 5.0%. This value below 12% supports a prerenal pattern.",
+    },
+    clinicalSignificance:
+      "FEUA is less affected by diuretics than FENa, making it a useful complementary index in the AKI differential and in disorders of urate excretion such as SIADH and tumor lysis syndrome.",
+    references: [
+      {
+        citation:
+          "Steinhäuslin F, et al. Fractional excretion of trace lithium and uric acid in acute renal failure. J Am Soc Nephrol. 1994;4(7):1429-1437.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Fenske W, et al. FE-urate and FE-urea in the differential diagnosis of SIADH. Eur J Clin Invest. 2010;40(6):506-513.",
+        level: "Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. FEUA must be interpreted with the clinical context and alongside other urinary indices.",
+  },
+
+  "fractional-excretion-phosphate": {
+    clinicalPurpose:
+      "Quantifies the fractional excretion of phosphate (FEP) to localize the cause of hypophosphatemia: a high FEP indicates renal phosphate wasting, whereas a low FEP favors redistribution or gastrointestinal losses.",
+    howToUse: [
+      "Measure urine and serum phosphate with paired urine and serum creatinine from the same time point.",
+      "Enter all four values.",
+      "Review the FEP and its interpretation relative to the prevailing serum phosphate.",
+    ],
+    interpretation: {
+      guide:
+        "During hypophosphatemia, a FEP above 5% indicates inappropriate renal phosphate wasting (e.g., FGF23 excess, Fanconi syndrome, tumor-induced osteomalacia). A FEP below 5% favors redistribution or gastrointestinal loss. FEP rises physiologically as GFR falls and is not useful when serum phosphate is elevated.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluation of hypophosphatemia",
+      "Suspected renal phosphate wasting (FGF23 excess, Fanconi syndrome, tumor-induced osteomalacia)",
+      "Assessment of phosphate handling in proximal tubular disorders",
+    ],
+    whenNotToUse: [
+      "When serum phosphate is elevated (e.g., CKD), where FEP is expected to be high",
+      "As a standalone diagnostic test",
+      "Without simultaneous serum and urine sampling",
+    ],
+    limitations: [
+      "The 5% threshold is a clinical convention, not a formally standardized cutoff.",
+      "High dietary phosphate, vitamin D therapy, and PTH/FGF23 status all affect phosphate excretion.",
+      "Requires simultaneous urine and serum samples.",
+    ],
+    example: {
+      description:
+        "A 60-year-old woman with hypophosphatemia has a urine phosphate of 50 mg/dL, serum phosphate 3.0 mg/dL, urine creatinine 80 mg/dL, and plasma creatinine 1.2 mg/dL.",
+      inputs: {
+        urinePhosphate: "50",
+        serumPhosphate: "3.0",
+        urineCr: "80",
+        plasmaCr: "1.2",
+      },
+      expectedResult:
+        "FEP = (50 × 1.2) ÷ (3.0 × 80) × 100 = 25%. This markedly elevated value indicates renal phosphate wasting.",
+    },
+    clinicalSignificance:
+      "FEP separates renal phosphate wasting from redistribution or gastrointestinal causes of hypophosphatemia, guiding evaluation of FGF23-mediated disorders and proximal tubular disease.",
+    references: [
+      {
+        citation:
+          "Broadus AE, et al. Phosphate homeostasis and evaluation of hypophosphatemia. J Clin Invest. 1983;72(1):119-126.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Imel EA, Econs MJ. Approach to the hypophosphatemic patient. J Clin Endocrinol Metab. 2012;97(3):696-706.",
+        level: "Expert Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. FEP must be interpreted with the clinical context and the prevailing serum phosphate.",
+  },
+
+  "fractional-excretion-calcium": {
+    clinicalPurpose:
+      "Calculates the fractional excretion of calcium (calcium–creatinine clearance ratio, CCCR) to help distinguish familial hypocalciuric hypercalcemia (FHH) from primary hyperparathyroidism in PTH-dependent hypercalcemia.",
+    howToUse: [
+      "Use in patients with hypercalcemia and elevated or inappropriately normal PTH.",
+      "Collect spot urine calcium, urine creatinine, serum calcium, and serum creatinine at the same time.",
+      "Enter all four values and review the FECa and its category.",
+      "Consider CASR gene testing when the result is in the gray zone but FHH is suspected.",
+    ],
+    interpretation: {
+      guide:
+        "A FECa below 1% (CCCR < 0.01) suggests FHH; 1–2% is a gray zone where some FHH patients fall; above 2% primary hyperparathyroidism is more likely. Low urine calcium also occurs with vitamin D deficiency, thiazides, lithium, and renal insufficiency.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "PTH-dependent hypercalcemia: FHH vs primary hyperparathyroidism",
+      "Preoperative screening recommended by NICE before parathyroid surgery",
+      "Family history of hypercalcemia",
+    ],
+    whenNotToUse: [
+      "In hypercalcemia with suppressed PTH (malignancy, sarcoidosis)",
+      "In vitamin D deficiency or low calcium intake, which lower urine calcium",
+      "As the sole basis for genetic testing decisions",
+    ],
+    limitations: [
+      "The 1% and 2% thresholds overlap clinically; up to ~20–35% of genetically confirmed FHH may have CCCR ≥ 0.01.",
+      "Thiazides, lithium, vitamin D deficiency, and renal insufficiency lower urine calcium.",
+      "CASR gene analysis remains the reference standard in ambiguous cases.",
+    ],
+    example: {
+      description:
+        "A 52-year-old woman with hypercalcemia has a urine calcium of 50 mg/dL, serum calcium 10 mg/dL, urine creatinine 100 mg/dL, and plasma creatinine 1.0 mg/dL.",
+      inputs: {
+        urineCalcium: "50",
+        serumCalcium: "10",
+        urineCr: "100",
+        plasmaCr: "1.0",
+      },
+      expectedResult:
+        "FECa = (50 × 1.0) ÷ (10 × 100) × 100 = 5% (CCCR 0.05). Above 2%, primary hyperparathyroidism is more likely than FHH.",
+    },
+    clinicalSignificance:
+      "FHH is caused by a reset calcium-sensing receptor with relative hypocalciuria despite hypercalcemia. The calcium–creatinine clearance ratio is a key discriminator that prevents unnecessary parathyroid surgery in FHH patients.",
+    references: [
+      {
+        citation:
+          "Christiansen C, et al. Discriminative power of three indices of renal calcium excretion for the distinction between familial hypocalciuric hypercalcaemia and primary hyperparathyroidism. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
+        level: "Validation Study",
+      },
+      {
+        citation:
+          "National Institute for Health and Care Excellence (NICE). Hyperparathyroidism (primary): diagnosis, assessment and initial management. NG132. 2019.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. FECa is one component of the FHH evaluation and must be interpreted with PTH, family history, and genetic testing when indicated.",
+  },
+
+  "renal-failure-index": {
+    clinicalPurpose:
+      "Calculates the renal failure index (RFI), a classic urinary index using urine sodium relative to the urine:plasma creatinine ratio to help distinguish prerenal azotemia from acute tubular necrosis.",
+    howToUse: [
+      "Obtain spot urine sodium, urine creatinine, and plasma creatinine from the same time point.",
+      "Enter all three values.",
+      "Review the RFI and its suggested category.",
+      "Combine with FENa, FEUrea, urine microscopy, and clinical volume assessment.",
+    ],
+    interpretation: {
+      guide:
+        "An RFI below 1 supports prerenal azotemia, 1–2 is indeterminate, and above 2 favors intrinsic renal injury such as ATN. The test shares the limitations of FENa: diuretics and saline resuscitation raise urine sodium and can produce false intrinsic-like values.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Acute kidney injury differential when urine sodium is available",
+      "Complementing FENa and FEUrea in the prerenal-versus-intrinsic distinction",
+      "Bedside teaching of classic urinary indices",
+    ],
+    whenNotToUse: [
+      "In patients receiving diuretics without accounting for their effect",
+      "As a standalone diagnostic test",
+      "When urine output is absent or creatinine assays are non-standardized",
+    ],
+    limitations: [
+      "Shares the limitations of FENa, including diuretic and saline-resuscitation effects.",
+      "The <1/>1 convention derives from classic literature and is not a validated diagnostic threshold alone.",
+      "Requires simultaneous samples.",
+    ],
+    example: {
+      description:
+        "A 60-year-old man with volume depletion and rising creatinine has a urine sodium of 40 mmol/L, plasma creatinine 1.2 mg/dL, and urine creatinine 80 mg/dL.",
+      inputs: {
+        urineSodium: "40",
+        plasmaCr: "1.2",
+        urineCr: "80",
+      },
+      expectedResult:
+        "RFI = (40 × 1.2) ÷ 80 = 0.6. This value below 1 supports prerenal azotemia.",
+    },
+    clinicalSignificance:
+      "The renal failure index is a classic bedside urinary index introduced in the 1960s–70s. It is essentially FENa without the plasma sodium term and remains a useful teaching and clinical adjunct in the AKI differential.",
+    references: [
+      {
+        citation:
+          "Miller TR, et al. Urinary diagnostic indices in acute renal failure: a prospective study. Ann Intern Med. 1978;89(1):47-50.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Espinel CH. The FENa test: use in the differential diagnosis of acute renal failure. JAMA. 1976;236(6):579-581.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. RFI must be interpreted with the clinical context and alongside other urinary indices.",
+  },
+
+  "urine-osmolal-gap": {
+    clinicalPurpose:
+      "Calculates the urine osmolal gap — the difference between measured and estimated urine osmolality — to detect unmeasured osmoles in the urine (e.g., ethylene glycol, methanol, mannitol).",
+    howToUse: [
+      "Use when toxic alcohol or mannitol exposure is suspected and the serum osmolar gap is unreliable or negative.",
+      "Enter measured urine osmolality, urine sodium, urine potassium, urine urea, and urine glucose.",
+      "Review the residual gap, which represents unmeasured osmotically active solutes.",
+    ],
+    interpretation: {
+      guide:
+        "The estimated urine osmolality is 2 × (Na + K) + urea/2.8 + glucose/18 (urea and glucose in mg/dL). A gap of 10 mOsm/kg or less is normal; a gap above 10 suggests unmeasured osmoles such as ethylene glycol or mannitol. A normal gap does not exclude toxic alcohol ingestion.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Suspected ethylene glycol or methanol poisoning",
+      "Mannitol or other low-molecular-weight solute exposure",
+      "When the serum osmolar gap is negative but intoxication is still suspected",
+    ],
+    whenNotToUse: [
+      "As a replacement for serum osmolar gap or specific alcohol assays",
+      "When urine electrolytes, urea, and glucose are not measured on the same sample",
+    ],
+    limitations: [
+      "A normal gap does not exclude toxic alcohol ingestion; specific assays remain essential.",
+      "The 10 mOsm/kg cutoff is a practical convention, not a standardized diagnostic threshold.",
+      "Rapid alcohol metabolism can lower the gap, so early sampling matters.",
+    ],
+    example: {
+      description:
+        "A 35-year-old man with suspected ethylene glycol ingestion has a measured urine osmolality of 600 mOsm/kg, urine sodium 80 mmol/L, urine potassium 40 mmol/L, urine urea 560 mg/dL, and urine glucose 0 mg/dL.",
+      inputs: {
+        urineOsmolality: "600",
+        urineSodium: "80",
+        urinePotassium: "40",
+        urineUrea: "560",
+        urineGlucose: "0",
+      },
+      expectedResult:
+        "Estimated urine osmolality = 2 × (80 + 40) + 560/2.8 + 0 = 440 mOsm/kg. The gap of 160 mOsm/kg indicates substantial unmeasured osmoles.",
+    },
+    clinicalSignificance:
+      "The urine osmolal gap detects osmotically active solutes not captured by routine urine chemistries and complements the serum osmolar gap in the evaluation of toxic alcohol and mannitol exposure.",
+    references: [
+      {
+        citation:
+          "Kraut JA, Kurtz I. Toxic alcohol ingestions: clinical features, diagnosis, and management. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
+        level: "Expert Review",
+      },
+      {
+        citation:
+          "Hoffman RS, et al. Osmol and gap: a critical appraisal. Am J Emerg Med. 1993;11(5):543-547.",
+        level: "Expert Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Suspected toxic alcohol ingestion requires specific assays and urgent clinical management regardless of the urine osmolal gap.",
+  },
+
+  "free-water-clearance": {
+    clinicalPurpose:
+      "Calculates renal free water clearance (CH₂O) from urine flow, urine osmolality, and plasma osmolality to characterize renal water handling in polyuria, hyponatremia, and hypernatremia.",
+    howToUse: [
+      "Enter urine flow, urine osmolality, and plasma osmolality from the same time point.",
+      "Any consistent urine flow unit works; the result shares that unit (mL/min is shown).",
+      "Review the sign of CH₂O: positive means free water excretion, negative means free water conservation.",
+    ],
+    interpretation: {
+      guide:
+        "A positive CH₂O (dilute urine, Uosm < Posm) is seen in diabetes insipidus, primary polydipsia, and after water loading. A negative CH₂O (concentrated urine, Uosm > Posm) is seen in SIADH, volume depletion, and dehydration. Because urea contributes to osmolality but not tonicity, CH₂O can mislead in high-urea osmotic diuresis — use electrolyte-free water clearance there.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluation of polyuria (diabetes insipidus vs polydipsia)",
+      "Dysnatremia assessment and water balance",
+      "Post-water-load physiology evaluation",
+    ],
+    whenNotToUse: [
+      "In high-urea (osmotic) diuresis, where EFWC is preferable",
+      "As a substitute for serum sodium and urine osmolality in isolation",
+      "Without concurrent plasma and urine osmolality measurement",
+    ],
+    limitations: [
+      "Urea contributes to urine osmolality but not tonicity, limiting CH₂O in osmotic diuresis.",
+      "It is a point estimate that does not account for intake or non-renal losses.",
+      "Requires accurate simultaneous osmolality measurements.",
+    ],
+    example: {
+      description:
+        "A 30-year-old man with suspected diabetes insipidus has a urine flow of 1.5 mL/min, urine osmolality 80 mOsm/kg, and plasma osmolality 290 mOsm/kg.",
+      inputs: {
+        urineVolume: "1.5",
+        urineOsmolality: "80",
+        plasmaOsmolality: "290",
+      },
+      expectedResult:
+        "CH₂O = 1.5 × (1 − 80/290) ≈ 1.09 mL/min. This positive value indicates dilute urine with free water excretion.",
+    },
+    clinicalSignificance:
+      "Free water clearance is a classic renal physiology metric that quantifies whether the kidney is excreting or conserving water, supporting the evaluation of polyuria and dysnatremia.",
+    references: [
+      {
+        citation:
+          "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+        level: "Textbook",
+      },
+      {
+        citation:
+          "Goldberg M. Hyponatremia. Med Clin North Am. 1981;65(2):251-269.",
+        level: "Expert Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Water balance decisions require the full clinical picture, including intake, insensible losses, and serum sodium trends.",
+  },
+
+  "electrolyte-free-water-clearance": {
+    clinicalPurpose:
+      "Calculates urinary electrolyte-free water clearance (EFWC) from urine flow and urinary/plasma sodium and potassium to distinguish renal from extrarenal water losses and guide fluid therapy in dysnatremia.",
+    howToUse: [
+      "Enter urine flow, urine sodium, urine potassium, and plasma sodium from the same urine sample and time point.",
+      "Review the EFWC: positive values indicate ongoing renal electrolyte-free water loss.",
+      "Account for the ongoing loss when planning water replacement in hypernatremia.",
+    ],
+    interpretation: {
+      guide:
+        "An EFWC above 0 indicates ongoing renal electrolyte-free water loss (osmotic diuresis, diuretics, diabetes insipidus, renal failure) that tends to raise serum sodium. Values near zero or negative point to gastrointestinal or insensible losses as the source of hypernatremia. The value estimates the free water that must be replaced to prevent further sodium rise.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Hypernatremia when the source of water loss is unclear",
+      "Dysnatremia with osmotic diuresis (glucose, urea, mannitol)",
+      "Planning free water replacement rates",
+    ],
+    whenNotToUse: [
+      "As a replacement for serum sodium and clinical volume assessment",
+      "When urine sodium and potassium are not measured on the same urine sample as the flow rate",
+    ],
+    limitations: [
+      "Point estimate assuming a steady plasma sodium during the collection.",
+      "Does not account for water intake or non-renal losses.",
+      "The formula is a classic derivation; newer Edelman-based variants exist.",
+    ],
+    example: {
+      description:
+        "A 70-year-old man with hypernatremia during an osmotic diuresis has a urine flow of 1.5 mL/min, urine sodium 80 mmol/L, urine potassium 40 mmol/L, and plasma sodium 140 mmol/L.",
+      inputs: {
+        urineVolume: "1.5",
+        urineSodium: "80",
+        urinePotassium: "40",
+        plasmaSodium: "140",
+      },
+      expectedResult:
+        "EFWC = 1.5 × (1 − (80 + 40)/140) ≈ 0.21 mL/min. This positive value indicates ongoing renal electrolyte-free water loss.",
+    },
+    clinicalSignificance:
+      "By excluding urea, EFWC reflects the tonicity-relevant water loss and is more accurate than CH₂O in osmotic diuresis, guiding whether hypernatremia is renal in origin and how much free water is being lost.",
+    references: [
+      {
+        citation:
+          "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+        level: "Textbook",
+      },
+      {
+        citation:
+          "Nguyen MK, Kurtz I. Derivation of a new formula for calculating urinary electrolyte-free water clearance based on the Edelman equation. Am J Physiol Renal Physiol. 2005;288(1):F1-7.",
+        level: "Expert Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Fluid therapy in dysnatremia must account for the full clinical picture and serial laboratory monitoring.",
+  },
+
+  "urine-protein-creatinine-ratio": {
+    clinicalPurpose:
+      "Calculates the urine protein-to-creatinine ratio (UPCR) from a spot urine sample to estimate 24-hour proteinuria for CKD detection, monitoring, and nephrotic range proteinuria screening.",
+    howToUse: [
+      "Collect a spot (preferably first-morning) urine for protein and creatinine.",
+      "Enter urine protein and urine creatinine (both in mg/dL).",
+      "Review the ratio; values in mg/mg approximate grams of protein per day.",
+    ],
+    interpretation: {
+      guide:
+        "UPCR < 0.15 mg/mg is normal; 0.15–0.5 is mild; 0.5–3.5 is moderate (sub-nephrotic); and ≥ 3.5 mg/mg approximates nephrotic range proteinuria in adults (≥ 3.5 g/day). The ratio corrects for urine concentration. It does not distinguish albumin from non-albumin protein.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Detection and monitoring of proteinuria in CKD",
+      "Screening for nephrotic syndrome",
+      "When 24-hour urine collection is impractical",
+    ],
+    whenNotToUse: [
+      "When gross hematuria or heavy Bence Jones protein is present (non-albumin protein alters the ratio)",
+      "In early diabetic kidney disease, where albuminuria (ACR) is preferred",
+      "In pediatric patients, where the nephrotic threshold differs (ratio ≥ 2.0)",
+    ],
+    limitations: [
+      "Does not distinguish albuminuria from other proteinuria.",
+      "Less reliable with gross hematuria or extreme urine dilution/concentration.",
+      "Approximates but does not exactly equal 24-hour protein in all patients.",
+    ],
+    example: {
+      description:
+        "A 58-year-old man with CKD has a spot urine protein of 150 mg/dL and urine creatinine of 100 mg/dL.",
+      inputs: {
+        urineProtein: "150",
+        urineCreatinine: "100",
+      },
+      expectedResult:
+        "UPCR = 150 ÷ 100 = 1.5 mg/mg. This moderate (sub-nephrotic) proteinuria warrants quantification with ACR and repeat measurement.",
+    },
+    clinicalSignificance:
+      "The spot UPCR is a validated, KDIGO-recommended surrogate for 24-hour urinary protein that simplifies the detection and monitoring of proteinuria and identifies nephrotic range disease.",
+    references: [
+      {
+        citation:
+          "National Kidney Foundation. KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int Suppl. 2013;3(1):1-150.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Ginsberg JM, et al. Use of single voided urine samples to estimate quantitative proteinuria. N Engl J Med. 1983;309(25):1543-1546.",
+        level: "Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Proteinuria results must be interpreted with the clinical context and confirmed with repeat testing when abnormal.",
+  },
+
+  "creatinine-clearance-24h": {
+    clinicalPurpose:
+      "Calculates creatinine clearance from a 24-hour urine collection using urine creatinine, serum creatinine, and 24-hour urine volume, providing the classic timed-collection estimate of GFR.",
+    howToUse: [
+      "Use a complete 24-hour collection; incomplete collection underestimates clearance.",
+      "Enter urine creatinine, 24-hour urine volume, and serum creatinine.",
+      "Review the CrCl and verify collection completeness against expected daily creatinine excretion.",
+    ],
+    interpretation: {
+      guide:
+        "CrCl ≥ 90 mL/min is normal in young adults, 60–89 mildly reduced (CKD G2), 30–59 moderately reduced (CKD G3), 15–29 severely reduced (CKD G4), and < 15 indicates kidney failure (CKD G5). CrCl overestimates true GFR because creatinine is also secreted by tubules, especially at low GFR.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "When a timed collection is feasible and estimating equations are unreliable (extremes of body habitus)",
+      "Research protocols requiring measured GFR estimates",
+      "Verifying drug-dosing estimates in select patients",
+    ],
+    whenNotToUse: [
+      "When the 24-hour collection is incomplete or serum creatinine is unstable",
+      "As a routine replacement for CKD-EPI or Cockcroft-Gault in drug dosing",
+      "In acute kidney injury with rapidly changing renal function",
+    ],
+    limitations: [
+      "Collection errors are common and underestimated clearance.",
+      "Overestimates true GFR due to tubular creatinine secretion.",
+      "Serum creatinine must be stable during the collection.",
+    ],
+    example: {
+      description:
+        "A 55-year-old man undergoing renal evaluation has a 24-hour urine creatinine of 80 mg/dL in a volume of 1800 mL, with a serum creatinine of 1.0 mg/dL.",
+      inputs: {
+        urineCreatinine: "80",
+        urineVolume: "1800",
+        serumCreatinine: "1.0",
+      },
+      expectedResult:
+        "CrCl = (80 × 1800) ÷ (1.0 × 1440) = 100 mL/min. This is a normal creatinine clearance.",
+    },
+    clinicalSignificance:
+      "The timed 24-hour creatinine clearance remains the classical bedside GFR estimate and a benchmark against which estimating equations are validated, though it requires careful collection.",
+    references: [
+      {
+        citation:
+          "Levey AS, et al. Expressing the Modification of Diet in Renal Disease Study equation for estimating glomerular filtration rate with standardized serum creatinine values. Clin Chem. 2007;53(4):766-772.",
+        level: "Validation Study",
+      },
+      {
+        citation:
+          "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16(1):31-41.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Collection completeness and clinical context are essential when interpreting creatinine clearance.",
+  },
+
+  "total-cholesterol-hdl-ratio": {
+    clinicalPurpose:
+      "Calculates the total cholesterol to HDL ratio (TC/HDL), a simple lipid-based indicator of cardiovascular risk that compares total cholesterol with the protective HDL fraction.",
+    howToUse: [
+      "Use a fasting lipid panel for consistency.",
+      "Enter total cholesterol and HDL cholesterol (both in mg/dL).",
+      "Review the ratio and its risk category.",
+      "Interpret together with LDL, non-HDL cholesterol, and a global risk score.",
+    ],
+    interpretation: {
+      guide:
+        "A TC/HDL ratio below 4 is desirable, 4–5 is moderate, and above 5 is elevated and associated with higher cardiovascular risk. Values near 3.5 or lower are associated with lower risk in epidemiological cohorts. The ratio is a risk marker, not a treatment target.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Cardiovascular risk screening in primary prevention",
+      "Patient education about lipid profile balance",
+      "Quick bedside risk communication",
+    ],
+    whenNotToUse: [
+      "As the sole basis for statin initiation — use validated risk scores",
+      "In acute illness or with non-fasting samples without adjustment",
+      "As a replacement for LDL or non-HDL cholesterol in treatment decisions",
+    ],
+    limitations: [
+      "Does not replace LDL or non-HDL cholesterol in most modern guidelines.",
+      "Non-fasting samples and acute illness can alter triglycerides and the ratio.",
+      "Healthy women typically have a lower ratio than men of the same age.",
+    ],
+    example: {
+      description:
+        "A 48-year-old man has a total cholesterol of 180 mg/dL and HDL of 60 mg/dL.",
+      inputs: {
+        totalCholesterol: "180",
+        hdlCholesterol: "60",
+      },
+      expectedResult:
+        "TC/HDL = 180 ÷ 60 = 3.0. This value below 4 is desirable and associated with lower cardiovascular risk.",
+    },
+    clinicalSignificance:
+      "The TC/HDL ratio summarizes the balance of atherogenic total cholesterol and protective HDL and has been used for decades in cardiovascular epidemiology (e.g., PROCAM, Framingham) as a simple risk indicator.",
+    references: [
+      {
+        citation:
+          "Stampfer MJ, et al. A prospective study of cholesterol, apolipoproteins, and the risk of myocardial infarction. N Engl J Med. 1991;325(6):373-381.",
+        level: "Validation Study",
+      },
+      {
+        citation:
+          "Assmann G, et al. The role of HDL cholesterol in the metabolic syndrome. Atheroscler Suppl. 2002;3(4):35-41.",
+        level: "Expert Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The TC/HDL ratio should be interpreted within the framework of a complete cardiovascular risk assessment.",
+  },
+
+  "atherogenic-index-of-plasma": {
+    clinicalPurpose:
+      "Calculates the atherogenic index of plasma (AIP), the logarithmically transformed ratio of triglycerides to HDL cholesterol, reflecting the balance of atherogenic and protective lipoproteins.",
+    howToUse: [
+      "Use fasting triglycerides and HDL cholesterol measured on the same sample.",
+      "Enter both values (any consistent unit, as the ratio is unit-independent).",
+      "Review the AIP against the Dobiásová risk categories.",
+    ],
+    interpretation: {
+      guide:
+        "An AIP below 0.11 indicates low atherogenic risk, 0.11–0.21 intermediate risk, and above 0.21 high risk in the Dobiásová classification. Higher AIP correlates with smaller, denser LDL particles and increased cardiovascular risk. Cutoffs derive from the original research literature and are not a universal clinical standard.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Dyslipidemia and insulin resistance assessment",
+      "Cardiovascular risk evaluation when apolipoproteins are unavailable",
+      "Research applications of lipoprotein phenotype",
+    ],
+    whenNotToUse: [
+      "As the sole basis for treatment decisions",
+      "With non-fasting samples without accounting for triglyceride elevation",
+      "As a replacement for LDL, non-HDL cholesterol, and global risk scores",
+    ],
+    limitations: [
+      "The 0.11/0.21 cutoffs derive from the original Dobiásová work and are not universally standardized.",
+      "Non-fasting samples and high dietary fat inflate triglycerides and raise AIP.",
+      "Adjunct marker only; not a treatment target.",
+    ],
+    example: {
+      description:
+        "A 50-year-old woman has fasting triglycerides of 100 mg/dL and HDL of 80 mg/dL.",
+      inputs: {
+        triglycerides: "100",
+        hdlCholesterol: "80",
+      },
+      expectedResult:
+        "AIP = log10(100/80) = log10(1.25) ≈ 0.10. This value below 0.11 indicates low atherogenic risk.",
+    },
+    clinicalSignificance:
+      "The AIP (log10 TG/HDL) is a validated marker of the triglyceride–HDL axis that correlates with LDL particle size, providing a simple, accessible proxy for atherogenic dyslipidemia.",
+    references: [
+      {
+        citation:
+          "Dobiásová M, Frohlich J. The plasma parameter log (TG/HDL-C) as an atherogenic index: correlation with lipoprotein particle size and esterification rate in apoB-lipoprotein-depleted plasma (FERHDL). Clin Biochem. 2001;34(7):583-588.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Dobiásová M. Atherogenic index of plasma [log(triglycerides/HDL-cholesterol)]: theoretical and practical implications. Clin Chem. 2004;50(7):1113-1115.",
+        level: "Expert Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The AIP should be used as an adjunct to, not a substitute for, comprehensive lipid and cardiovascular risk assessment.",
+  },
+
+  "apob-apoa1-ratio": {
+    clinicalPurpose:
+      "Calculates the apolipoprotein B to apolipoprotein A1 ratio (ApoB:ApoA1), an index of the balance between atherogenic and anti-atherogenic lipoproteins used in cardiovascular risk assessment.",
+    howToUse: [
+      "Enter ApoB and ApoA1 in the same units (typically g/L).",
+      "Select the patient's sex for the appropriate reference threshold.",
+      "Review the ratio against the sex-specific reference range.",
+    ],
+    interpretation: {
+      guide:
+        "The typical reference range is 0.30–1.00 in men and 0.30–0.80 in women. A ratio above 1.0 (men) or 0.8 (women) is elevated and associated with higher cardiovascular risk. Thresholds are population conventions; use the performing laboratory's reference interval when available.",
+      sexSpecific: true,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Cardiovascular risk assessment with apolipoprotein measurements",
+      "When LDL particle number (ApoB) is preferred over LDL cholesterol",
+      "Monitoring response to lipid-lowering therapy",
+    ],
+    whenNotToUse: [
+      "As the sole basis for statin decisions — apply validated risk scores",
+      "When ApoB and ApoA1 are measured in inconsistent units",
+      "In settings where the laboratory reference interval is unknown",
+    ],
+    limitations: [
+      "The 1.0/0.8 thresholds are population reference conventions, not guideline treatment targets.",
+      "Ratios vary by assay, ethnicity, and age.",
+      "Does not replace validated global cardiovascular risk scoring.",
+    ],
+    example: {
+      description:
+        "A 45-year-old man has an ApoB of 1.0 g/L and an ApoA1 of 1.4 g/L.",
+      inputs: {
+        apoB: "1.0",
+        apoA1: "1.4",
+        sex: "male",
+      },
+      expectedResult:
+        "ApoB:ApoA1 = 1.0 ÷ 1.4 ≈ 0.71. This value is within the male reference range (0.30–1.00).",
+    },
+    clinicalSignificance:
+      "ApoB counts the number of atherogenic particles while ApoA1 reflects the protective HDL fraction, making their ratio a strong cardiovascular risk marker studied in large cohorts such as AMORIS and INTERHEART.",
+    references: [
+      {
+        citation:
+          "Walldius G, Jungner I. The apoB/apoA-I ratio: a strong, new risk factor for cardiovascular disease and a target for lipid-lowering therapy — a review of the evidence. J Intern Med. 2006;259(5):493-519.",
+        level: "Expert Review",
+      },
+      {
+        citation:
+          "Yusuf S, et al. Effect of potentially modifiable risk factors associated with myocardial infarction in 52 countries (INTERHEART). Lancet. 2004;364(9438):937-952.",
+        level: "Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Use the performing laboratory's reference interval and incorporate the ratio into a complete cardiovascular risk assessment.",
+  },
+
+  "respiratory-compensation": {
+    clinicalPurpose:
+      "Estimates the expected serum bicarbonate during acute or chronic respiratory acidosis and alkalosis using the Winters/Merck compensation rules, to identify appropriate compensation or a mixed acid–base disorder.",
+    howToUse: [
+      "Select the disorder type (acute/chronic, acidosis/alkalosis).",
+      "Enter the arterial PaCO₂ and the measured serum bicarbonate.",
+      "Compare the measured bicarbonate to the expected range.",
+      "If the measured bicarbonate deviates more than ~2 mEq/L, evaluate for a coexisting metabolic disorder.",
+    ],
+    interpretation: {
+      guide:
+        "Expected HCO₃ = 24 + k × (PaCO₂ − 40)/10, with k = 1 (acute respiratory acidosis), 4 (chronic), −2 (acute respiratory alkalosis), and −5 (chronic). The measured bicarbonate should be within about ±2 mEq/L of the expected value; larger deviations suggest a mixed acid–base disorder.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Interpreting blood gases in known respiratory acid-base disorders",
+      "Detecting mixed acid–base disorders",
+      "Teaching classic compensation rules",
+    ],
+    whenNotToUse: [
+      "Within the first few hours of a respiratory change, before steady-state compensation",
+      "As a replacement for a full acid–base analysis (anion gap, delta ratio)",
+      "Without reliable PaCO₂ and bicarbonate measurements",
+    ],
+    limitations: [
+      "Compensation rules are approximations; early changes may be lower than steady-state predictions.",
+      "Chronic respiratory acidosis is defined by duration (> 3–5 days) as well as the gas pattern.",
+      "A discordant bicarbonate requires a full acid–base workup to characterize the mixed disorder.",
+    ],
+    example: {
+      description:
+        "A 65-year-old man with acute hypercapnic respiratory failure has a PaCO₂ of 50 mmHg and a measured bicarbonate of 25 mEq/L.",
+      inputs: {
+        disorderType: "acuteRespAcidosis",
+        paCO2: "50",
+        measuredBicarbonate: "25",
+      },
+      expectedResult:
+        "Expected HCO₃ = 24 + 1 × (50 − 40)/10 = 25 mEq/L. The measured value (25) is within ±2 mEq/L — appropriate acute respiratory compensation.",
+    },
+    clinicalSignificance:
+      "Compensation rules quantify the normal metabolic response to chronic PaCO₂ alterations. Deviations beyond the expected range unmask mixed acid–base disorders that would otherwise be overlooked.",
+    references: [
+      {
+        citation:
+          "Merck Manual Professional Version. Respiratory Acidosis and Respiratory Alkalosis. www.merckmanuals.com.",
+        level: "Expert Review",
+      },
+      {
+        citation:
+          "Brewer ED. Disorders of acid-base balance. Pediatr Clin North Am. 1990;37(2):429-447.",
+        level: "Expert Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Acid–base interpretation requires the full clinical picture, including electrolytes, albumin, and the anion gap.",
+  },
+
+  "metabolic-alkalosis-compensation": {
+    clinicalPurpose:
+      "Calculates the expected arterial PaCO₂ in metabolic alkalosis (PaCO₂ ≈ 40 + 0.6 × (HCO₃ − 24)) to assess whether respiratory compensation is appropriate or a concurrent respiratory disorder is present.",
+    howToUse: [
+      "Confirm the patient has metabolic alkalosis (elevated HCO₃ with alkalemia).",
+      "Enter the serum bicarbonate and the measured arterial PaCO₂.",
+      "Compare the measured PaCO₂ to the expected value (within ~5 mmHg).",
+    ],
+    interpretation: {
+      guide:
+        "Expected PaCO₂ = 40 + 0.6 × (HCO₃ − 24), capped near 55 mmHg. The measured PaCO₂ should be within about 5 mmHg of the expected value. A value well below expected suggests a concurrent respiratory alkalosis; well above suggests a concurrent respiratory acidosis or a blunted ventilatory response.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluating respiratory compensation in metabolic alkalosis",
+      "Detecting mixed acid–base disorders in alkalemia",
+      "Assessing ventilatory response in chloride-depletion alkalosis",
+    ],
+    whenNotToUse: [
+      "In metabolic acidosis (HCO₃ ≤ 24 mEq/L)",
+      "In mechanically ventilated patients with fixed ventilation",
+      "At extreme bicarbonate values where the cap (~55 mmHg) flattens the relationship",
+    ],
+    limitations: [
+      "Requires HCO₃ > 24 mEq/L; not applicable to metabolic acidosis.",
+      "The linear rule flattens near the 55 mmHg compensation ceiling.",
+      "COPD or sedating medications can blunt the expected ventilatory response.",
+    ],
+    example: {
+      description:
+        "A 50-year-old woman with vomiting-related metabolic alkalosis has a bicarbonate of 40 mEq/L and a measured PaCO₂ of 50 mmHg.",
+      inputs: {
+        bicarbonate: "40",
+        measuredPaCO2: "50",
+      },
+      expectedResult:
+        "Expected PaCO₂ = 40 + 0.6 × (40 − 24) = 49.6 mmHg. The measured value (50) is within ±5 mmHg — appropriate respiratory compensation.",
+    },
+    clinicalSignificance:
+      "Metabolic alkalosis is compensated by hypoventilation, raising PaCO₂ by roughly 0.6 mmHg per 1 mEq/L rise in bicarbonate up to a ceiling near 55 mmHg. The expected-PaCO₂ comparison detects inappropriate ventilation and mixed disorders.",
+    references: [
+      {
+        citation:
+          "Jarolem FS, et al. Metabolic alkalosis: evaluation and treatment. UpToDate, Wolters Kluwer. 2024.",
+        level: "Expert Review",
+      },
+      {
+        citation:
+          "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+        level: "Textbook",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Acid–base interpretation requires the full clinical picture and should guide, not replace, clinical judgment.",
+  },
+
+  "free-thyroxine-index": {
+    clinicalPurpose:
+      "Calculates the free thyroxine index (FTI or T7) from total T4 and the T3 resin uptake, an indirect estimate of free thyroid hormone used when direct free T4 assays are unavailable or binding-protein status is in question.",
+    howToUse: [
+      "Use total T4 and T3 resin uptake (or thyroid hormone-binding ratio) measured on the same sample.",
+      "Enter both values.",
+      "Review the FTI against the laboratory's reference interval and interpret with TSH and clinical status.",
+    ],
+    interpretation: {
+      guide:
+        "The typical adult reference range is approximately 1.0–4.5, though this is assay- and laboratory-specific. FTI below 1.0 is low (hypothyroidism pattern), and above 4.5 is high (hyperthyroidism pattern). The index corrects total T4 for changes in thyroid hormone-binding proteins but is largely superseded by direct free T4 assays where available.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "When direct free T4 is not available",
+      "When abnormal thyroid hormone-binding proteins confound total T4 (pregnancy, estrogens, illness)",
+      "Historical interpretation of thyroid function panels",
+    ],
+    whenNotToUse: [
+      "When a direct free T4 assay is available",
+      "As a replacement for TSH in thyroid function assessment",
+      "Without accounting for the performing laboratory's reference interval",
+    ],
+    limitations: [
+      "The 1.0–4.5 reference is assay- and laboratory-specific.",
+      "Drugs (salicylates, phenytoin, heparin) and illness alter binding proteins and the index.",
+      "Largely superseded by direct free T4 assays in modern laboratories.",
+    ],
+    example: {
+      description:
+        "A 40-year-old woman on oral estrogen has a total T4 of 8 µg/dL and a T3 resin uptake of 30%.",
+      inputs: {
+        totalT4: "8",
+        t3Uptake: "30",
+      },
+      expectedResult:
+        "FTI = 8 × 30/100 = 2.4. This value is within the typical adult reference range (1.0–4.5).",
+    },
+    clinicalSignificance:
+      "The free thyroxine index was a long-standing standard for estimating free hormone when direct assays were unavailable, correcting total T4 for binding-protein variation in pregnancy, estrogen therapy, and systemic illness.",
+    references: [
+      {
+        citation:
+          "Mayo Clinic Laboratories. Free Thyroxine Index (FTI), Serum. www.mayocliniclabs.com.",
+        level: "Laboratory Reference",
+      },
+      {
+        citation:
+          "Surks MI, et al. American Thyroid Association guidelines for use of laboratory tests in thyroid disorders. JAMA. 1990;263(11):1529-1532.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Use the performing laboratory's reference interval and interpret the FTI together with TSH and clinical status.",
+  },
+
+  "metabolic-syndrome-atp3": {
+    clinicalPurpose:
+      "Assesses metabolic syndrome using the updated NCEP ATP III criteria, requiring at least 3 of 5 components: elevated waist circumference, elevated triglycerides (or treatment), reduced HDL (or treatment), elevated blood pressure (or treatment), and elevated fasting glucose (or treatment).",
+    howToUse: [
+      "Select sex and enter waist circumference, triglycerides, HDL, systolic and diastolic blood pressure, and fasting glucose.",
+      "Answer whether the patient is on drug treatment for dyslipidemia, hypertension, or elevated glucose.",
+      "Review the number of criteria met (≥ 3 = metabolic syndrome).",
+    ],
+    interpretation: {
+      guide:
+        "Metabolic syndrome is present when at least 3 of 5 ATP III criteria are met: waist ≥ 102 cm (men) or ≥ 88 cm (women); triglycerides ≥ 150 mg/dL or drug treatment; HDL < 40 mg/dL (men) or < 50 mg/dL (women) or drug treatment; blood pressure ≥ 130/85 mmHg or drug treatment; fasting glucose ≥ 100 mg/dL or drug treatment. This calculator uses the classic 102/88 cm waist cutoffs.",
+      sexSpecific: true,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Cardiometabolic risk clustering assessment",
+      "Screening for insulin resistance-related conditions",
+      "Guidance for lifestyle intervention and follow-up screening",
+    ],
+    whenNotToUse: [
+      "As a substitute for formal 10-year cardiovascular risk scoring",
+      "As a diagnostic test for diabetes, hypertension, or dyslipidemia individually",
+      "In populations where ethnic-specific waist thresholds (e.g., Asian 90/80 cm) are more appropriate",
+    ],
+    limitations: [
+      "Waist thresholds differ by population (e.g., Asian cutoffs); this calculator uses the classic ATP III values.",
+      "Treatment exemptions vary among guidelines (ATP III vs IDF vs harmonized).",
+      "Clusters risk factors but does not quantify 10-year cardiovascular risk.",
+    ],
+    example: {
+      description:
+        "A 50-year-old woman has a waist of 90 cm, triglycerides 160 mg/dL, HDL 45 mg/dL, blood pressure 135/85 mmHg, and fasting glucose 110 mg/dL, on no relevant drug treatment.",
+      inputs: {
+        sex: "female",
+        waist: "90",
+        triglycerides: "160",
+        hdl: "45",
+        sbp: "135",
+        dbp: "85",
+        fastingGlucose: "110",
+        lipidRx: "no",
+        bpRx: "no",
+        glucoseRx: "no",
+      },
+      expectedResult:
+        "All 5 ATP III criteria are met (waist, triglycerides, HDL, blood pressure, and fasting glucose), so metabolic syndrome is present.",
+    },
+    clinicalSignificance:
+      "Metabolic syndrome identifies patients with clustered cardiometabolic risk factors who warrant aggressive lifestyle modification and screening for diabetes, hypertension, and cardiovascular disease.",
+    references: [
+      {
+        citation:
+          "Grundy SM, et al. Diagnosis and management of the metabolic syndrome: an American Heart Association/National Heart, Lung, and Blood Institute scientific statement. Circulation. 2005;112(17):2735-2752.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Alberti KG, et al. Harmonizing the metabolic syndrome: a joint interim statement of the IDF Task Force on Epidemiology and Prevention; NHLBI; AHA; WHF; IAS; IASO. Circulation. 2009;120(16):1640-1645.",
+        level: "Expert Consensus",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Metabolic syndrome assessment should be combined with global cardiovascular risk scoring and clinical judgment.",
+  },
 };

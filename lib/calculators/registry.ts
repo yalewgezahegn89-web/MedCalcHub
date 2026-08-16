@@ -61,6 +61,25 @@ import { wintersFormulaCalculator } from "./winters-formula";
 import { anionGapDeltaRatioCalculator } from "./anion-gap-delta-ratio";
 import { urineAnionGapCalculator } from "./urine-anion-gap";
 import { ktVCalculator } from "./kt-v";
+import { feuaCalculator } from "./fractional-excretion-uric-acid";
+import { fepCalculator } from "./fractional-excretion-phosphate";
+import { fecaCalculator } from "./fractional-excretion-calcium";
+import { rfiCalculator } from "./renal-failure-index";
+import { urineOsmolalGapCalculator } from "./urine-osmolal-gap";
+import { freeWaterClearanceCalculator } from "./free-water-clearance";
+import { electrolyteFreeWaterClearanceCalculator } from "./electrolyte-free-water-clearance";
+import { upcrCalculator } from "./urine-protein-creatinine-ratio";
+import { creatinineClearance24hCalculator } from "./creatinine-clearance-24h";
+
+import { totalCholesterolHdlRatioCalculator } from "./total-cholesterol-hdl-ratio";
+import { atherogenicIndexPlasmaCalculator } from "./atherogenic-index-of-plasma";
+import { apobApoa1RatioCalculator } from "./apob-apoa1-ratio";
+
+import { respiratoryCompensationCalculator } from "./respiratory-compensation";
+import { metabolicAlkalosisCompensationCalculator } from "./metabolic-alkalosis-compensation";
+
+import { freeThyroxineIndexCalculator } from "./free-thyroxine-index";
+import { metabolicSyndromeAtp3Calculator } from "./metabolic-syndrome-atp3";
 
 import { correctedQtCalculator } from "./corrected-qt";
 
@@ -157,6 +176,23 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   calciumPhosphateProductCalculator,
   fractionalExcretionCalculator,
 
+  feuaCalculator,
+  fepCalculator,
+  fecaCalculator,
+  rfiCalculator,
+  urineOsmolalGapCalculator,
+  freeWaterClearanceCalculator,
+  electrolyteFreeWaterClearanceCalculator,
+  upcrCalculator,
+  creatinineClearance24hCalculator,
+
+  totalCholesterolHdlRatioCalculator,
+  atherogenicIndexPlasmaCalculator,
+  apobApoa1RatioCalculator,
+
+  respiratoryCompensationCalculator,
+  metabolicAlkalosisCompensationCalculator,
+
   homaIrCalculator,
   homaBCalculator,
   insulinSensitivityCalculator,
@@ -179,6 +215,8 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   thyroidDoseCalculator,
   levothyroxineDoseCalculator,
   adrenalSteroidConverterCalculator,
+  freeThyroxineIndexCalculator,
+  metabolicSyndromeAtp3Calculator,
 
   bmiForPediatricsCalculator,
 
