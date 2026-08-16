@@ -278,7 +278,11 @@ describe("searchCalculators (lib/search engine)", () => {
     it("specialty match receives correct weight (30)", () => {
       const results = searchCalculators("General Medicine");
       expect(results.length).toBeGreaterThan(0);
-      for (const r of results) {
+      const specialtyMatches = results.filter((r) =>
+        r.matchedFields.includes("specialty"),
+      );
+      expect(specialtyMatches.length).toBeGreaterThan(0);
+      for (const r of specialtyMatches) {
         expect(r.score).toBeGreaterThanOrEqual(30);
       }
     });
@@ -2035,6 +2039,98 @@ describe("Sprint 1.9 Batch 4 renal / laboratory / metabolic discovery", () => {
     expect(results.map((r) => r.document.slug)).toContain(
       "metabolic-syndrome-atp3",
     );
+  });
+
+  it("each new calculator appears at most once per query", () => {
+    for (const slug of NEW_SLUGS) {
+      const slugs = searchCalculators(slug).map((r) => r.document.slug);
+      expect(slugs.length, `${slug} duplicate in results`).toBe(
+        new Set(slugs).size,
+      );
+    }
+  });
+});
+
+/* ------------------------------------------------------------------
+   Sprint 1.9 Batch 5 — Obstetrics discovery regression tests
+   ------------------------------------------------------------------ */
+
+describe("Sprint 1.9 Batch 5 obstetrics discovery", () => {
+  const NEW_SLUGS = [
+    "bishop-score",
+    "biophysical-profile",
+    "hellp-syndrome",
+    "hadlock-efw",
+    "preeclampsia-criteria",
+    "gestational-weight-gain",
+    "magnesium-sulfate-preeclampsia",
+    "ebl-obstetric",
+    "epds",
+  ];
+
+  it("every new calculator is in the search index", () => {
+    const index = buildSearchIndex();
+    const slugs = new Set(index.map((d) => d.slug));
+    for (const slug of NEW_SLUGS) {
+      expect(slugs.has(slug), `${slug} missing from search index`).toBe(true);
+    }
+  });
+
+  it("discovers Bishop Score via 'bishop score'", () => {
+    const results = searchCalculators("bishop score");
+    expect(results.map((r) => r.document.slug)).toContain("bishop-score");
+  });
+
+  it("discovers BPP via 'biophysical profile' and 'BPP'", () => {
+    const byName = searchCalculators("biophysical profile").map((r) => r.document.slug);
+    const byAbbr = searchCalculators("BPP").map((r) => r.document.slug);
+    expect(byName).toContain("biophysical-profile");
+    expect(byAbbr).toContain("biophysical-profile");
+  });
+
+  it("discovers HELLP via 'HELLP syndrome'", () => {
+    const results = searchCalculators("HELLP syndrome");
+    expect(results.map((r) => r.document.slug)).toContain("hellp-syndrome");
+  });
+
+  it("discovers EFW via 'fetal weight' and 'estimated fetal weight'", () => {
+    const byFetal = searchCalculators("fetal weight").map((r) => r.document.slug);
+    const byFull = searchCalculators("estimated fetal weight").map((r) => r.document.slug);
+    expect(byFetal).toContain("hadlock-efw");
+    expect(byFull).toContain("hadlock-efw");
+  });
+
+  it("discovers preeclampsia criteria via 'preeclampsia' and 'pre eclampsia'", () => {
+    const byTerm = searchCalculators("preeclampsia").map((r) => r.document.slug);
+    const bySplit = searchCalculators("pre eclampsia").map((r) => r.document.slug);
+    expect(byTerm).toContain("preeclampsia-criteria");
+    expect(bySplit).toContain("preeclampsia-criteria");
+  });
+
+  it("discovers weight gain via 'gestational weight gain'", () => {
+    const results = searchCalculators("gestational weight gain");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "gestational-weight-gain",
+    );
+  });
+
+  it("discovers MgSO4 via 'magnesium sulfate' and 'MgSO4'", () => {
+    const byName = searchCalculators("magnesium sulfate").map((r) => r.document.slug);
+    const byAbbr = searchCalculators("MgSO4").map((r) => r.document.slug);
+    expect(byName).toContain("magnesium-sulfate-preeclampsia");
+    expect(byAbbr).toContain("magnesium-sulfate-preeclampsia");
+  });
+
+  it("discovers EBL via 'estimated blood loss' and 'EBL'", () => {
+    const byName = searchCalculators("estimated blood loss").map((r) => r.document.slug);
+    const byAbbr = searchCalculators("EBL").map((r) => r.document.slug);
+    expect(byName).toContain("ebl-obstetric");
+    expect(byAbbr).toContain("ebl-obstetric");
+  });
+
+  it("discovers EPDS via 'edinburgh postnatal depression'", () => {
+    const results = searchCalculators("edinburgh postnatal depression");
+    expect(results.map((r) => r.document.slug)).toContain("epds");
   });
 
   it("each new calculator appears at most once per query", () => {

@@ -527,6 +527,70 @@ const testInputs: Record<string, Record<string, string>> = {
     days: "4",
   },
 
+  // -- Sprint 1.9 Batch 5: Obstetrics --
+  "bishop-score": {
+    dilation: "2",
+    effacement: "2",
+    station: "2",
+    consistency: "1",
+    position: "1",
+  },
+  "biophysical-profile": {
+    breathing: "2",
+    movement: "2",
+    tone: "2",
+    amnioticFluid: "2",
+    nst: "2",
+  },
+  "hellp-syndrome": {
+    platelets: "120",
+    ast: "90",
+    ldh: "400",
+    hemolysis: "no",
+  },
+  "hadlock-efw": {
+    bpd: "9.4",
+    hc: "33.0",
+    ac: "32.5",
+    fl: "7.0",
+  },
+  "preeclampsia-criteria": {
+    sbp: "145",
+    dbp: "95",
+    proteinuria: "yes",
+    platelets: "150",
+    creatinine: "0.9",
+    transaminases: "no",
+    ruqPain: "no",
+    pulmonaryEdema: "no",
+    headache: "no",
+    visual: "no",
+  },
+  "gestational-weight-gain": {
+    bmi: "26",
+  },
+  "magnesium-sulfate-preeclampsia": {
+    loadingDose: "4",
+    maintenance: "2",
+  },
+  "ebl-obstetric": {
+    method: "gravimetric",
+    wetWeight: "500",
+    dryWeight: "200",
+  },
+  epds: {
+    item1: "0",
+    item2: "0",
+    item3: "0",
+    item4: "0",
+    item5: "0",
+    item6: "0",
+    item7: "0",
+    item8: "0",
+    item9: "0",
+    item10: "0",
+  },
+
   // -- Sprint 1.9 Batch 4: Renal & Laboratory/Metabolic --
   "fractional-excretion-uric-acid": {
     urineUricAcid: "20",
@@ -809,6 +873,51 @@ const exactExpectations: Record<string, ExpectedExact> = {
   "gestational-age": {
     value: 30.5714,
     tolerance: 0.001,
+    status: "normal",
+  },
+  "bishop-score": {
+    value: 8,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "biophysical-profile": {
+    value: 10,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "hellp-syndrome": {
+    value: 1,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "hadlock-efw": {
+    value: 2985,
+    tolerance: 1,
+    status: "normal",
+  },
+  "preeclampsia-criteria": {
+    value: 0,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "gestational-weight-gain": {
+    value: 20,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "magnesium-sulfate-preeclampsia": {
+    value: 52,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "ebl-obstetric": {
+    value: 300,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  epds: {
+    value: 0,
+    tolerance: 0.01,
     status: "normal",
   },
   timi: {
@@ -2054,6 +2163,353 @@ describe("Batch 4 Direct-Call Validation Guards", () => {
       lipidRx: "no",
       bpRx: "no",
       glucoseRx: "no",
+    });
+    expect(result.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Sprint 1.9 Batch 5 (Obstetrics) Direct-Call Validation Guards. Verifies
+// that guarded calculators return critical (never NaN) for missing, empty,
+// non-numeric, negative, and (where applicable) zero inputs, and that
+// clinically valid inputs remain non-critical and finite.
+//
+// Select-only calculators (bishop-score, biophysical-profile,
+// magnesium-sulfate-preeclampsia, epds) are excluded from the zero-input
+// guard because "0" is a valid option value for every select; their missing /
+// empty / non-numeric / negative guards still apply.
+//
+// Domain-specific boundary checks (Bishop favorability, BPP score bands,
+// HELLP criteria counting, preeclampsia severe features, IOM weight-gain
+// midpoints, MgSO4 totals, EBL gravimetric/hematocrit cut-points, EPDS
+// screen-positive and self-harm thresholds) are also exercised.
+// ---------------------------------------------------------------------------
+
+const BATCH5_GUARDED_IDS = [
+  "bishop-score",
+  "biophysical-profile",
+  "hellp-syndrome",
+  "hadlock-efw",
+  "preeclampsia-criteria",
+  "gestational-weight-gain",
+  "magnesium-sulfate-preeclampsia",
+  "ebl-obstetric",
+  "epds",
+] as const;
+
+// "0" is a valid select option for these calculators, so they cannot be
+// required to turn a zero input into a critical result.
+const BATCH5_SELECT_ONLY_IDS = new Set([
+  "bishop-score",
+  "biophysical-profile",
+  "magnesium-sulfate-preeclampsia",
+  "epds",
+]);
+
+const BATCH5_ZERO_GUARDED_IDS = BATCH5_GUARDED_IDS.filter(
+  (id) => !BATCH5_SELECT_ONLY_IDS.has(id),
+);
+
+const BATCH5_VALID_INPUTS: Record<string, Record<string, string>> = {
+  "bishop-score": { dilation: "2", effacement: "2", station: "2", consistency: "1", position: "1" },
+  "biophysical-profile": { breathing: "2", movement: "2", tone: "2", amnioticFluid: "2", nst: "2" },
+  "hellp-syndrome": { platelets: "120", ast: "90", ldh: "400", hemolysis: "no" },
+  "hadlock-efw": { bpd: "9.4", hc: "33.0", ac: "32.5", fl: "7.0" },
+  "preeclampsia-criteria": { sbp: "145", dbp: "95", proteinuria: "yes", platelets: "150", creatinine: "0.9", transaminases: "no", ruqPain: "no", pulmonaryEdema: "no", headache: "no", visual: "no" },
+  "gestational-weight-gain": { bmi: "26" },
+  "magnesium-sulfate-preeclampsia": { loadingDose: "4", maintenance: "2" },
+  "ebl-obstetric": { method: "gravimetric", wetWeight: "500", dryWeight: "200" },
+  epds: { item1: "0", item2: "0", item3: "0", item4: "0", item5: "0", item6: "0", item7: "0", item8: "0", item9: "0", item10: "0" },
+};
+
+const BATCH5_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
+  "bishop-score": { dilation: "-1", effacement: "-1", station: "-1", consistency: "-1", position: "-1" },
+  "biophysical-profile": { breathing: "-1", movement: "-1", tone: "-1", amnioticFluid: "-1", nst: "-1" },
+  "hellp-syndrome": { platelets: "-1", ast: "-1", ldh: "-1", hemolysis: "-1" },
+  "hadlock-efw": { bpd: "-1", hc: "-1", ac: "-1", fl: "-1" },
+  "preeclampsia-criteria": { sbp: "-1", dbp: "-1", proteinuria: "-1", platelets: "-1", creatinine: "-1", transaminases: "-1", ruqPain: "-1", pulmonaryEdema: "-1", headache: "-1", visual: "-1" },
+  "gestational-weight-gain": { bmi: "-1" },
+  "magnesium-sulfate-preeclampsia": { loadingDose: "-1", maintenance: "-1" },
+  "ebl-obstetric": { method: "gravimetric", wetWeight: "-1", dryWeight: "-1" },
+  epds: { item1: "-1", item2: "-1", item3: "-1", item4: "-1", item5: "-1", item6: "-1", item7: "-1", item8: "-1", item9: "-1", item10: "-1" },
+};
+
+const BATCH5_ZERO_OVERRIDES: Record<string, Record<string, string>> = {
+  "hellp-syndrome": { platelets: "0", ast: "0", ldh: "0", hemolysis: "no" },
+  "hadlock-efw": { bpd: "0", hc: "0", ac: "0", fl: "0" },
+  "preeclampsia-criteria": { sbp: "0", dbp: "0", proteinuria: "no", platelets: "0", creatinine: "0", transaminases: "no", ruqPain: "no", pulmonaryEdema: "no", headache: "no", visual: "no" },
+  "gestational-weight-gain": { bmi: "0" },
+  "ebl-obstetric": { method: "gravimetric", wetWeight: "0", dryWeight: "0" },
+};
+
+const BATCH5_BOUNDARY_CASES: BoundaryCase[] = [
+  // Bishop unfavorable (score 5)
+  {
+    id: "bishop-score",
+    inputs: { dilation: "1", effacement: "1", station: "1", consistency: "1", position: "1" },
+    expectedStatus: "high",
+    expectedValue: 5,
+  },
+  // Bishop favorable (score 8)
+  {
+    id: "bishop-score",
+    inputs: { dilation: "2", effacement: "2", station: "2", consistency: "1", position: "1" },
+    expectedStatus: "normal",
+    expectedValue: 8,
+  },
+  // BPP equivocal (score 6)
+  {
+    id: "biophysical-profile",
+    inputs: { breathing: "2", movement: "2", tone: "0", amnioticFluid: "2", nst: "0" },
+    expectedStatus: "high",
+    expectedValue: 6,
+  },
+  // BPP abnormal (score 4)
+  {
+    id: "biophysical-profile",
+    inputs: { breathing: "0", movement: "0", tone: "0", amnioticFluid: "2", nst: "2" },
+    expectedStatus: "critical",
+    expectedValue: 4,
+  },
+  // HELLP complete (all three criteria)
+  {
+    id: "hellp-syndrome",
+    inputs: { platelets: "95", ast: "85", ldh: "550", hemolysis: "yes" },
+    expectedStatus: "critical",
+    expectedValue: 3,
+  },
+  // HELLP partial (single criterion)
+  {
+    id: "hellp-syndrome",
+    inputs: { platelets: "120", ast: "90", ldh: "400", hemolysis: "no" },
+    expectedStatus: "high",
+    expectedValue: 1,
+  },
+  // Preeclampsia with four severe features
+  {
+    id: "preeclampsia-criteria",
+    inputs: { sbp: "162", dbp: "104", proteinuria: "yes", platelets: "90", creatinine: "1.2", transaminases: "yes", ruqPain: "no", pulmonaryEdema: "no", headache: "no", visual: "no" },
+    expectedStatus: "critical",
+    expectedValue: 4,
+  },
+  // No preeclampsia, no severe features
+  {
+    id: "preeclampsia-criteria",
+    inputs: { sbp: "120", dbp: "75", proteinuria: "no", platelets: "200", creatinine: "0.8", transaminases: "no", ruqPain: "no", pulmonaryEdema: "no", headache: "no", visual: "no" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // IOM underweight midpoint (28-40 lb)
+  {
+    id: "gestational-weight-gain",
+    inputs: { bmi: "17" },
+    expectedStatus: "normal",
+    expectedValue: 34,
+  },
+  // IOM normal-weight midpoint (25-35 lb)
+  {
+    id: "gestational-weight-gain",
+    inputs: { bmi: "22" },
+    expectedStatus: "normal",
+    expectedValue: 30,
+  },
+  // IOM obese midpoint (11-20 lb)
+  {
+    id: "gestational-weight-gain",
+    inputs: { bmi: "32" },
+    expectedStatus: "normal",
+    expectedValue: 16,
+  },
+  // MgSO4 4 g load + 2 g/h
+  {
+    id: "magnesium-sulfate-preeclampsia",
+    inputs: { loadingDose: "4", maintenance: "2" },
+    expectedStatus: "normal",
+    expectedValue: 52,
+  },
+  // MgSO4 6 g load + 1 g/h
+  {
+    id: "magnesium-sulfate-preeclampsia",
+    inputs: { loadingDose: "6", maintenance: "1" },
+    expectedStatus: "normal",
+    expectedValue: 30,
+  },
+  // EBL gravimetric below 500 mL
+  {
+    id: "ebl-obstetric",
+    inputs: { method: "gravimetric", wetWeight: "500", dryWeight: "200" },
+    expectedStatus: "normal",
+    expectedValue: 300,
+  },
+  // EBL hematocrit severe (>1000 mL)
+  {
+    id: "ebl-obstetric",
+    inputs: { method: "hct", weightKg: "70", preHct: "36", postHct: "28" },
+    expectedStatus: "critical",
+    expectedValue: 1322,
+  },
+  // EBL hematocrit moderate (500-999 mL)
+  {
+    id: "ebl-obstetric",
+    inputs: { method: "hct", weightKg: "70", preHct: "36", postHct: "30" },
+    expectedStatus: "high",
+    expectedValue: 992,
+  },
+  // EPDS below screen-positive threshold (9/30)
+  {
+    id: "epds",
+    inputs: { item1: "1", item2: "1", item3: "1", item4: "1", item5: "1", item6: "1", item7: "1", item8: "1", item9: "1", item10: "0" },
+    expectedStatus: "normal",
+    expectedValue: 9,
+  },
+  // EPDS screen-positive threshold (10/30)
+  {
+    id: "epds",
+    inputs: { item1: "2", item2: "2", item3: "2", item4: "2", item5: "2", item6: "0", item7: "0", item8: "0", item9: "0", item10: "0" },
+    expectedStatus: "high",
+    expectedValue: 10,
+  },
+  // EPDS self-harm item triggers critical regardless of total
+  {
+    id: "epds",
+    inputs: { item1: "0", item2: "0", item3: "0", item4: "0", item5: "0", item6: "0", item7: "0", item8: "0", item9: "0", item10: "1" },
+    expectedStatus: "critical",
+    expectedValue: 1,
+  },
+];
+
+describe("Batch 5 Direct-Call Validation Guards", () => {
+  function batch5Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 5 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch5Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH5_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch5Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH5_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch5Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH5_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch5Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH5_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(
+        batch5Calc(id).calculate(BATCH5_NEGATIVE_OVERRIDES[id]),
+        id,
+      );
+    },
+  );
+
+  it.each(BATCH5_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch5Calc(id).calculate(BATCH5_ZERO_OVERRIDES[id]), id);
+    },
+  );
+
+  it.each(BATCH5_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch5Calc(id).calculate(BATCH5_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it.each(BATCH5_BOUNDARY_CASES)(
+    "%s boundary inputs yield expected status and value",
+    (tc) => {
+      const result = batch5Calc(tc.id).calculate(tc.inputs);
+      expect(result.status, `${tc.id}: unexpected status`).toBe(tc.expectedStatus);
+      if (tc.expectedValue !== undefined) {
+        expect(Math.abs(Number(result.value) - tc.expectedValue)).toBeLessThan(0.01);
+      }
+    },
+  );
+
+  it("ebl-obstetric returns critical for an invalid method", () => {
+    const result = batch5Calc("ebl-obstetric").calculate({
+      method: "not-a-method",
+      wetWeight: "500",
+      dryWeight: "200",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("ebl-obstetric gravimetric returns critical when dry weight exceeds wet weight", () => {
+    const result = batch5Calc("ebl-obstetric").calculate({
+      method: "gravimetric",
+      wetWeight: "200",
+      dryWeight: "500",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("ebl-obstetric hematocrit returns critical when post-Hct exceeds pre-Hct", () => {
+    const result = batch5Calc("ebl-obstetric").calculate({
+      method: "hct",
+      weightKg: "70",
+      preHct: "28",
+      postHct: "36",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("preeclampsia-criteria returns critical when diastolic exceeds systolic", () => {
+    const result = batch5Calc("preeclampsia-criteria").calculate({
+      sbp: "120",
+      dbp: "160",
+      proteinuria: "no",
+      platelets: "200",
+      creatinine: "0.8",
+      transaminases: "no",
+      ruqPain: "no",
+      pulmonaryEdema: "no",
+      headache: "no",
+      visual: "no",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("hellp-syndrome returns critical for an invalid hemolysis selection", () => {
+    const result = batch5Calc("hellp-syndrome").calculate({
+      platelets: "120",
+      ast: "90",
+      ldh: "400",
+      hemolysis: "maybe",
     });
     expect(result.status).toBe("critical");
   });

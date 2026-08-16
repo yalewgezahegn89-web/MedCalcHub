@@ -19,8 +19,29 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 107 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(107);
+  it("registry contains exactly 116 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(116);
+  });
+
+  it("the 9 Obstetrics Batch 5 (Sprint 1.9) calculators are registered and searchable", () => {
+    const batch5Ids = [
+      "bishop-score",
+      "biophysical-profile",
+      "hellp-syndrome",
+      "hadlock-efw",
+      "preeclampsia-criteria",
+      "gestational-weight-gain",
+      "magnesium-sulfate-preeclampsia",
+      "ebl-obstetric",
+      "epds",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const id of batch5Ids) {
+      const calc = getCalculatorById(id);
+      expect(calc, `batch-5 calculator "${id}" must resolve`).toBeDefined();
+      expect(slugs.has(calc!.slug)).toBe(true);
+      expect(searchCalculators(calc!.name).length).toBeGreaterThanOrEqual(1);
+    }
   });
 
   it("the 16 Renal & Laboratory/Metabolic Batch 4 (Sprint 1.9) calculators are registered and searchable", () => {

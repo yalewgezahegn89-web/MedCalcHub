@@ -107,6 +107,16 @@ import { rockallCalculator } from "./rockall-score";
 import { eddCalculator } from "./edd";
 import { gestationalAgeCalculator } from "./gestational-age";
 
+import { bishopScoreCalculator } from "./bishop-score";
+import { biophysicalProfileCalculator } from "./biophysical-profile";
+import { hellpSyndromeCalculator } from "./hellp-syndrome";
+import { hadlockEfwCalculator } from "./hadlock-efw";
+import { preeclampsiaCriteriaCalculator } from "./preeclampsia-criteria";
+import { gestationalWeightGainCalculator } from "./gestational-weight-gain";
+import { magnesiumSulfatePreeclampsiaCalculator } from "./magnesium-sulfate-preeclampsia";
+import { eblObstetricCalculator } from "./ebl-obstetric";
+import { epdsCalculator } from "./epds";
+
 import { percRuleCalculator } from "./perc-rule";
 import { wellsPeCalculator } from "./wells-pe";
 import { wellsDvtCalculator } from "./wells-dvt";
@@ -238,6 +248,16 @@ export const calculatorRegistry: CalculatorDefinition[] = [
 
   eddCalculator,
   gestationalAgeCalculator,
+
+  bishopScoreCalculator,
+  biophysicalProfileCalculator,
+  hellpSyndromeCalculator,
+  hadlockEfwCalculator,
+  preeclampsiaCriteriaCalculator,
+  gestationalWeightGainCalculator,
+  magnesiumSulfatePreeclampsiaCalculator,
+  eblObstetricCalculator,
+  epdsCalculator,
 
   percRuleCalculator,
   wellsPeCalculator,

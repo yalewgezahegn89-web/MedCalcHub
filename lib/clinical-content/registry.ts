@@ -6002,4 +6002,538 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Metabolic syndrome assessment should be combined with global cardiovascular risk scoring and clinical judgment.",
   },
+
+  "bishop-score": {
+    clinicalPurpose:
+      "Scores cervical readiness for induction of labor (Bishop 1964) using dilatation, effacement, station, consistency, and position, summing to a total of 0–13 to predict the likelihood of successful induction and vaginal delivery.",
+    howToUse: [
+      "Perform a sterile cervical examination and record each of the five components at the same examination.",
+      "Select the score for each component (dilatation 0–3, effacement 0–3, station 0–3, consistency 0–2, position 0–2).",
+      "Review the total score and its interpretation (favorable ≥ 8; modified-favorable ≥ 6).",
+    ],
+    interpretation: {
+      guide:
+        "A total of 8 or higher is traditionally considered favorable for induction; a modified Bishop score of 6 or higher is used in many current protocols. Scores of 0–5 indicate an unfavorable cervix, for which cervical ripening (pharmacologic or mechanical) is typically recommended before oxytocin.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Pre-induction assessment to plan the induction method",
+      "Predicting the likelihood of successful labor induction",
+      "Documenting cervical status in the obstetric record",
+    ],
+    whenNotToUse: [
+      "As a substitute for fetal or maternal indications when deciding whether to induce",
+      "In the absence of a clinical indication for induction",
+      "To predict the course of spontaneous labor in women not being induced",
+    ],
+    limitations: [
+      "The score is examiner-dependent and inter-observer variability is real.",
+      "Parity, gestational age, and prior vaginal delivery also influence induction success.",
+      "A single value is less informative than serial assessments.",
+    ],
+    example: {
+      description:
+        "A primigravid woman at 41 weeks undergoes a pre-induction cervical exam: dilatation 2 cm (2), effacement 70% (2), station −1 (2), soft consistency (1), anterior position (1).",
+      inputs: {
+        dilation: "2",
+        effacement: "2",
+        station: "2",
+        consistency: "1",
+        position: "1",
+      },
+      expectedResult:
+        "Bishop score 8/13 — favorable cervix; a high likelihood of successful induction and vaginal delivery.",
+    },
+    clinicalSignificance:
+      "The Bishop score is the most widely used bedside assessment of cervical favorability for induction, guiding the choice between direct oxytocin and cervical ripening and informing counseling about induction success.",
+    references: [
+      {
+        citation:
+          "Bishop EH. Pelvic scoring for elective induction. Obstet Gynecol. 1964;24:266-268.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "ACOG Practice Bulletin No. 107: Induction of labor. Obstet Gynecol. 2009;114(2 Pt 1):386-397.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Induction decisions require the full clinical picture, including maternal and fetal indications, and should guide — not replace — clinical judgment.",
+  },
+
+  "biophysical-profile": {
+    clinicalPurpose:
+      "Scores fetal well-being using the biophysical profile (Manning 1980): fetal breathing, gross body movement, fetal tone, amniotic fluid volume, and the non-stress test, each scored 0 or 2 for a total of 0–10.",
+    howToUse: [
+      "Perform a 30-minute ultrasound observation of fetal breathing, movement, tone, and amniotic fluid.",
+      "Record the non-stress test result during the same session.",
+      "Score each component 2 (normal) or 0 (absent/abnormal) and review the total.",
+    ],
+    interpretation: {
+      guide:
+        "A score of 8–10 is reassuring; 6 is equivocal and is typically repeated within 24 hours; a score of 4 or less is abnormal and warrants obstetric evaluation and delivery planning. Reduced amniotic fluid indicates chronic compromise, while the other components reflect acute fetal status.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Antepartum fetal surveillance in high-risk pregnancies",
+      "Decreased fetal movement evaluation",
+      "Post-term and growth-restriction monitoring",
+    ],
+    whenNotToUse: [
+      "As the sole test in acute fetal distress (continuous fetal monitoring is indicated)",
+      "In place of gestational age-appropriate management for previable or post-term pregnancies without obstetric input",
+    ],
+    limitations: [
+      "Operator-dependent and time-consuming (30-minute observation window).",
+      "The NST component requires separate equipment and interpretation.",
+      "Equivocal scores require clinical correlation and repeat testing.",
+    ],
+    example: {
+      description:
+        "A 36-week fetus with decreased movement shows: normal breathing (2), normal movement (2), normal tone (2), reduced amniotic fluid with SDP < 2 cm (0), and a reactive NST (2).",
+      inputs: {
+        breathing: "2",
+        movement: "2",
+        tone: "2",
+        amnioticFluid: "0",
+        nst: "2",
+      },
+      expectedResult:
+        "BPP 8/10 — normal, reassuring fetal status; the isolated reduced amniotic fluid warrants further evaluation for the underlying cause.",
+    },
+    clinicalSignificance:
+      "The BPP integrates acute markers of fetal oxygenation (breathing, movement, tone, NST) with a chronic marker (amniotic fluid), providing a structured, validated antepartum surveillance tool for high-risk pregnancies.",
+    references: [
+      {
+        citation:
+          "Manning FA, et al. Fetal biophysical profile scoring: a prospective study in 1,184 high-risk patients. Am J Obstet Gynecol. 1981;140(3):289-294.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "ACOG Practice Bulletin No. 145: Antepartum fetal surveillance. Obstet Gynecol. 2014;124(1):182-201.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Fetal well-being assessment must be interpreted with the full clinical context by the managing obstetric provider.",
+  },
+
+  "hellp-syndrome": {
+    clinicalPurpose:
+      "Assesses the HELLP syndrome using the Tennessee (Sibai) criteria: hemolysis (LDH ≥ 600 U/L or schistocytes/low haptoglobin), elevated liver enzymes (AST ≥ 70 U/L), and low platelets (< 100,000/µL); complete HELLP requires all three.",
+    howToUse: [
+      "Enter the platelet count, AST, and LDH from the same blood draw.",
+      "Indicate whether peripheral smear schistocytes or low haptoglobin (hemolysis evidence) are present.",
+      "Review whether complete HELLP (3 criteria), partial HELLP (1–2 criteria), or no criteria are met.",
+    ],
+    interpretation: {
+      guide:
+        "Complete HELLP requires all three Tennessee criteria (hemolysis, AST ≥ 70 U/L, platelets < 100,000/µL). Patients meeting only some criteria are classified as partial/atypical HELLP and are managed with the same vigilance because of the risk of rapid progression.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Preeclampsia with epigastric/RUQ pain, headache, or visual symptoms",
+      "Unexplained thrombocytopenia and transaminitis in pregnancy or postpartum",
+      "Evaluation of suspected hypertensive disorders of pregnancy with severe features",
+    ],
+    whenNotToUse: [
+      "As a substitute for blood pressure and urine protein assessment",
+      "To exclude other causes of thrombocytopenia or liver dysfunction (thrombotic microangiopathy, hepatitis, fatty liver of pregnancy)",
+    ],
+    limitations: [
+      "HELLP may occur without significant hypertension or proteinuria.",
+      "The Tennessee criteria are one of several classification systems (Mississippi differs in severity grading).",
+      "Diagnosis requires clinical correlation; laboratory values can change rapidly.",
+    ],
+    example: {
+      description:
+        "A 32-week patient with preeclampsia and RUQ pain has platelets 95 ×10³/µL, AST 85 U/L, LDH 550 U/L, and schistocytes on the peripheral smear.",
+      inputs: {
+        platelets: "95",
+        ast: "85",
+        ldh: "550",
+        hemolysis: "yes",
+      },
+      expectedResult:
+        "Complete HELLP syndrome — all three Tennessee criteria are met (hemolysis via smear evidence, AST ≥ 70, platelets < 100). Urgent delivery and multidisciplinary management are indicated.",
+    },
+    clinicalSignificance:
+      "HELLP syndrome is a severe, rapidly progressive hypertensive disorder of pregnancy associated with maternal mortality from hepatic rupture, DIC, renal failure, and eclampsia; prompt recognition is life-saving.",
+    references: [
+      {
+        citation:
+          "Sibai BM, et al. Maternal morbidity and mortality in 442 pregnancies with hemolysis, elevated liver enzymes, and low platelets (HELLP syndrome). Am J Obstet Gynecol. 1993;169(4):1000-1006.",
+        level: "Guideline / Original Description",
+      },
+      {
+        citation:
+          "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. HELLP syndrome is a clinical emergency; laboratory-based scoring supplements, but does not replace, urgent clinical judgment.",
+  },
+
+  "hadlock-efw": {
+    clinicalPurpose:
+      "Estimates fetal weight from the Hadlock four-parameter model (1985) using biparietal diameter, head circumference, abdominal circumference, and femur length, output as estimated fetal weight in grams.",
+    howToUse: [
+      "Obtain BPD, HC, AC, and FL from a standard fetal ultrasound biometric assessment.",
+      "Enter each measurement in centimeters.",
+      "Review the estimated fetal weight and its ± 1 SD (≈ 7.5%) error band.",
+    ],
+    interpretation: {
+      guide:
+        "The formula returns an estimated fetal weight with an error of approximately ± 7.5% (1 SD). Compare the result with gestational-age growth charts; an EFW below the 10th percentile suggests growth restriction, and above the 90th percentile suggests macrosomia, but serial measurements are far more reliable than a single value.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Suspected fetal growth restriction or macrosomia",
+      "Gestational age dating when ultrasound biometry is performed",
+      "Serial growth assessment in high-risk pregnancies",
+    ],
+    whenNotToUse: [
+      "As an exact birth-weight predictor (all formulas carry substantial error)",
+      "As a substitute for antenatal fetal surveillance when fetal status is in question",
+    ],
+    limitations: [
+      "1 SD error ≈ 7.5% (± ~250 g near term) — treat the value as an estimate, not a measurement.",
+      "Accuracy declines at the extremes of fetal size and in late gestation.",
+      "Operator-dependent measurements propagate into the EFW.",
+    ],
+    example: {
+      description:
+        "A 34-week ultrasound shows BPD 9.4 cm, HC 33.0 cm, AC 32.5 cm, and FL 7.0 cm.",
+      inputs: {
+        bpd: "9.4",
+        hc: "33.0",
+        ac: "32.5",
+        fl: "7.0",
+      },
+      expectedResult:
+        "Estimated fetal weight 2,985 g (≈ 6.6 lb), ± 1 SD ≈ ± 224 g (7.5%).",
+    },
+    clinicalSignificance:
+      "The Hadlock four-parameter formula is a widely used, externally validated method for estimating fetal weight from routine ultrasound biometry, supporting the diagnosis of growth restriction and macrosomia and informing delivery planning.",
+    references: [
+      {
+        citation:
+          "Hadlock FP, et al. Estimation of fetal weight with the use of head, body, and femur measurements — a prospective study. Am J Obstet Gynecol. 1985;151(3):333-337.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "ACOG Practice Bulletin No. 227: Fetal growth restriction. Obstet Gynecol. 2021;137(2):e16-e28.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Estimated fetal weight is inherently imprecise and must be interpreted with gestational age, growth trends, and clinical judgment.",
+  },
+
+  "preeclampsia-criteria": {
+    clinicalPurpose:
+      "Assesses the ACOG (2020) diagnostic criteria for preeclampsia — new-onset hypertension after 20 weeks with proteinuria or end-organ dysfunction — and counts the number of severe features present to guide management and delivery timing.",
+    howToUse: [
+      "Enter the systolic and diastolic blood pressures and indicate whether significant proteinuria is present.",
+      "Enter platelets, creatinine, and answer whether transaminases are ≥ 2× ULN, RUQ/epigastric pain, pulmonary edema, new headache, or visual symptoms are present.",
+      "Review whether preeclampsia criteria are met and the count of severe features.",
+    ],
+    interpretation: {
+      guide:
+        "Preeclampsia requires hypertension (≥ 140/90 after 20 weeks) plus proteinuria (≥ 300 mg/24 h, PCR ≥ 0.3, dipstick ≥ 2+) or, without proteinuria, any end-organ feature. Severe features — SBP ≥ 160 or DBP ≥ 110, platelets < 100,000, creatinine > 1.1, transaminases ≥ 2× ULN, pulmonary edema, new headache, or visual symptoms — warrant inpatient care and delivery planning.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluation of new-onset hypertension in pregnancy after 20 weeks",
+      "Diagnosis and severity classification of preeclampsia",
+      "Delivery-timing decisions in hypertensive disorders of pregnancy",
+    ],
+    whenNotToUse: [
+      "For gestational hypertension without proteinuria or end-organ dysfunction (use clinical judgment for monitoring)",
+      "As a substitute for chronic hypertension or proteinuric renal disease evaluation before 20 weeks",
+    ],
+    limitations: [
+      "Diagnosis requires hypertension after 20 weeks in a woman with previously normal blood pressure — this calculator assumes such a context.",
+      "Severe features must be confirmed on repeat readings and correlated clinically.",
+      "Eclampsia can occur without meeting all severe-feature criteria.",
+    ],
+    example: {
+      description:
+        "A 31-week patient has BP 150/95 mmHg, 2+ proteinuria on dipstick, platelets 150 ×10³/µL, and creatinine 0.9 mg/dL, with no other severe features.",
+      inputs: {
+        sbp: "150",
+        dbp: "95",
+        proteinuria: "yes",
+        platelets: "150",
+        creatinine: "0.9",
+        transaminases: "no",
+        ruqPain: "no",
+        pulmonaryEdema: "no",
+        headache: "no",
+        visual: "no",
+      },
+      expectedResult:
+        "Preeclampsia without severe features (0 severe features) — manage with maternal and fetal surveillance; delivery typically planned at 37 weeks.",
+    },
+    clinicalSignificance:
+      "Standardized ACOG criteria for preeclampsia and its severe features drive critical decisions about inpatient management, magnesium sulfate seizure prophylaxis, antihypertensive therapy, and delivery timing, reducing maternal and perinatal morbidity.",
+    references: [
+      {
+        citation:
+          "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Preeclampsia diagnosis and management require complete clinical assessment; treat severe hypertension promptly regardless of the calculated feature count.",
+  },
+
+  "gestational-weight-gain": {
+    clinicalPurpose:
+      "Provides the IOM/NRC 2009 recommended total gestational weight gain and second/third-trimester weekly rate based on pre-pregnancy BMI (underweight < 18.5, normal 18.5–24.9, overweight 25–29.9, obese ≥ 30).",
+    howToUse: [
+      "Enter the pre-pregnancy BMI (from pre-pregnancy or first-visit weight and height).",
+      "Review the recommended total gain range and 2nd/3rd-trimester rate for the BMI category.",
+      "Track serial weight gain against the range at each prenatal visit.",
+    ],
+    interpretation: {
+      guide:
+        "IOM 2009 recommends total gains of 28–40 lb (underweight), 25–35 lb (normal), 15–25 lb (overweight), and 11–20 lb (obese), with 2nd/3rd-trimester rates of 1.0–1.3, 0.8–1.0, 0.5–0.7, and 0.4–0.6 lb/week respectively.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Routine prenatal counseling on weight gain",
+      "Assessment of women at risk for excessive or inadequate gestational weight gain",
+      "Screening for obesity-related pregnancy complications",
+    ],
+    whenNotToUse: [
+      "For twin or higher-order multiple gestations (separate IOM ranges apply)",
+      "As a substitute for individualized nutrition counseling in women with eating disorders or severe obesity",
+    ],
+    limitations: [
+      "IOM ranges target singleton pregnancies in the general population.",
+      "Recalled pre-pregnancy weight is less accurate than a measured value.",
+      "The calculator returns the midpoint of the recommended range, not an individual target.",
+    ],
+    example: {
+      description:
+        "A woman with a pre-pregnancy BMI of 26 kg/m² (overweight) asks how much weight she should gain.",
+      inputs: {
+        bmi: "26",
+      },
+      expectedResult:
+        "Recommended total gestational weight gain 15–25 lb (midpoint ~20 lb), at a 2nd/3rd-trimester rate of 0.5–0.7 lb/week.",
+    },
+    clinicalSignificance:
+      "Appropriate gestational weight gain is associated with reduced risks of macrosomia, cesarean delivery, postpartum weight retention, and adverse neonatal outcomes; IOM targets guide routine prenatal counseling.",
+    references: [
+      {
+        citation:
+          "Institute of Medicine and National Research Council. Weight Gain During Pregnancy: Reexamining the Guidelines. The National Academies Press; 2009.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "ACOG Committee Opinion No. 548: Weight gain during pregnancy. Obstet Gynecol. 2013;121(1):210-212.",
+        level: "Committee Opinion",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Weight-gain recommendations should be individualized and integrated with nutrition counseling and clinical judgment.",
+  },
+
+  "magnesium-sulfate-preeclampsia": {
+    clinicalPurpose:
+      "Calculates the total 24-hour magnesium sulfate dose for seizure prophylaxis in preeclampsia with severe features or eclampsia from the IV loading dose (4–6 g) and maintenance infusion rate (1–2 g/h) per ACOG (2020).",
+    howToUse: [
+      "Select the planned IV loading dose (4–6 g over 20–30 minutes).",
+      "Select the maintenance infusion rate (1–2 g/h, commonly 2 g/h).",
+      "Review the total 24-hour dose and monitoring guidance.",
+    ],
+    interpretation: {
+      guide:
+        "The total 24-hour dose equals the loading dose plus 24 × the maintenance rate (e.g., 4 g + 2 g/h = 52 g). The therapeutic serum magnesium range is 4.8–8.4 mg/dL; loss of patellar reflexes occurs near 10 mg/dL and respiratory depression near 12 mg/dL, treated with IV calcium gluconate.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Seizure prophylaxis in preeclampsia with severe features",
+      "Treatment of eclampsia",
+      "Standard 24-hour postpartum magnesium protocols",
+    ],
+    whenNotToUse: [
+      "Without an obstetric indication for magnesium therapy",
+      "In the presence of significant renal impairment without dose adjustment and monitoring",
+      "As a substitute for antihypertensive therapy in severe hypertension",
+    ],
+    limitations: [
+      "Doses must be individualized, especially in renal impairment, oliguria, and extremes of body weight.",
+      "This calculator computes a regimen total; it does not account for infusion duration beyond 24 hours or pharmacokinetic factors.",
+      "Serum monitoring and clinical examination for toxicity remain essential.",
+    ],
+    example: {
+      description:
+        "A patient with preeclampsia with severe features is started on the standard ACOG regimen: 4 g IV loading dose and a 2 g/h maintenance infusion.",
+      inputs: {
+        loadingDose: "4",
+        maintenance: "2",
+      },
+      expectedResult:
+        "Total 24-hour magnesium sulfate dose 52 g (4 g load + 2 g/h × 24 h); therapeutic serum magnesium 4.8–8.4 mg/dL.",
+    },
+    clinicalSignificance:
+      "Magnesium sulfate remains the standard of care for seizure prophylaxis in preeclampsia with severe features and for eclampsia, substantially reducing the risk of eclamptic seizures and associated mortality.",
+    references: [
+      {
+        citation:
+          "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Zuspan FP. Treatment of severe preeclampsia and eclampsia. Clin Obstet Gynecol. 1966;9(4):954-972.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Pritchard JA. The use of the magnesium ion in the management of eclamptogenic toxemias. Surg Gynecol Obstet. 1955;100(2):131-140.",
+        level: "Original Description",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Magnesium sulfate therapy requires individualized dosing, monitoring for toxicity, and prompt treatment of adverse effects.",
+  },
+
+  "ebl-obstetric": {
+    clinicalPurpose:
+      "Estimates obstetric blood loss by the gravimetric method (weighed sponges and drapes; 1 g ≈ 1 mL) or the hematocrit-based method (EBL = estimated blood volume × (pre-Hct − post-Hct)/pre-Hct, with a pregnancy blood volume of ~85 mL/kg).",
+    howToUse: [
+      "Choose the estimation method (gravimetric or hematocrit-based).",
+      "For gravimetric: weigh all blood-soaked materials and subtract the known dry weight.",
+      "For hematocrit-based: enter maternal weight, pre-delivery and post-delivery hematocrit.",
+      "Review the estimated loss against the ACOG postpartum hemorrhage threshold (≥ 1000 mL).",
+    ],
+    interpretation: {
+      guide:
+        "Cumulative blood loss ≥ 1000 mL within 24 hours (or bleeding with signs of hypovolemia) meets the ACOG definition of postpartum hemorrhage. Loss of 500–999 mL exceeds typical expectations and warrants close monitoring; < 500 mL is within the expected range for delivery.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Quantitative blood-loss tracking during vaginal or cesarean delivery",
+      "Recognition of postpartum hemorrhage",
+      "Documentation of cumulative obstetric blood loss",
+    ],
+    whenNotToUse: [
+      "As a substitute for clinical assessment of hypovolemia (vital signs, urine output)",
+      "In acute massive hemorrhage where hematocrit is not yet reflective of loss",
+    ],
+    limitations: [
+      "Gravimetric estimates omit uncollected blood (floor, linens) and underestimate losses.",
+      "Hematocrit-based estimates lag behind acute bleeding and are unreliable immediately after loss.",
+      "Blood volume varies (70–100 mL/kg); 85 mL/kg is an approximation.",
+    ],
+    example: {
+      description:
+        "A 70 kg patient has a pre-delivery hematocrit of 36% and a post-delivery hematocrit of 30%.",
+      inputs: {
+        method: "hct",
+        weightKg: "70",
+        preHct: "36",
+        postHct: "30",
+      },
+      expectedResult:
+        "Estimated blood loss ~992 mL (BV 5,950 mL × 6/36) — above the typical expected loss; monitor closely with the hemorrhage protocol ready.",
+    },
+    clinicalSignificance:
+      "Quantitative assessment of blood loss is a cornerstone of postpartum hemorrhage recognition and response; early identification of ≥ 1000 mL loss triggers protocol-based management that reduces maternal morbidity and mortality.",
+    references: [
+      {
+        citation:
+          "ACOG Committee Opinion No. 794: Quantitative blood loss in obstetric hemorrhage. Obstet Gynecol. 2019;134(6):e150-e156.",
+        level: "Committee Opinion",
+      },
+      {
+        citation:
+          "ACOG Practice Bulletin No. 183: Postpartum hemorrhage. Obstet Gynecol. 2017;130(4):e168-e186.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Blood-loss estimates are imprecise; clinical signs of hypovolemia always take precedence in hemorrhage management.",
+  },
+
+  "epds": {
+    clinicalPurpose:
+      "Screens for postpartum (and antenatal) depression using the 10-item Edinburgh Postnatal Depression Scale (Cox 1987), each item scored 0–3 for a total of 0–30; a total ≥ 10 is screen-positive and any positive item-10 response requires urgent assessment.",
+    howToUse: [
+      "Ask the patient to answer each item according to how she has felt in the past 7 days.",
+      "Select the response for each of the 10 items (items 1 and 2 are reverse-worded).",
+      "Review the total score, the screening result, and the item-10 self-harm flag.",
+    ],
+    interpretation: {
+      guide:
+        "A total of 10 or higher is commonly used as the screen-positive cutoff for possible depression (some settings use ≥ 13 for higher specificity). Any positive response on item 10 (thoughts of harming self) warrants immediate clinical safety assessment regardless of the total score.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Routine postpartum depression screening at postnatal visits",
+      "Antenatal depression screening",
+      "Evaluation of mood symptoms in the perinatal period",
+    ],
+    whenNotToUse: [
+      "As a diagnostic test for depression — it is a screening instrument",
+      "As the sole basis for psychiatric referral in the absence of a positive score when clinical concern exists",
+    ],
+    limitations: [
+      "Self-report instruments are subject to response bias.",
+      "Cutoffs vary across settings and languages.",
+      "A low score does not exclude depression in the presence of clinical concern.",
+    ],
+    example: {
+      description:
+        "A 6-week postpartum patient completes the EPDS: items scored 1, 2, 1, 2, 1, 1, 1, 1, 0, 0.",
+      inputs: {
+        item1: "1",
+        item2: "2",
+        item3: "1",
+        item4: "2",
+        item5: "1",
+        item6: "1",
+        item7: "1",
+        item8: "1",
+        item9: "0",
+        item10: "0",
+      },
+      expectedResult:
+        "EPDS total 10/30 — screen positive for possible postpartum depression (cutoff ≥ 10); arrange a full clinical assessment.",
+    },
+    clinicalSignificance:
+      "Perinatal depression is common and underdiagnosed; validated screening with the EPDS, combined with follow-up assessment and treatment, improves maternal and child outcomes.",
+    references: [
+      {
+        citation:
+          "Cox JL, Holden JM, Sagovsky R. Detection of postnatal depression: development of the 10-item Edinburgh Postnatal Depression Scale. Br J Psychiatry. 1987;150:782-786.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "ACOG Committee Opinion No. 757: Screening for perinatal depression. Obstet Gynecol. 2018;132(5):e208-e212.",
+        level: "Committee Opinion",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The EPDS is a screening tool; a positive screen requires full clinical assessment, and any item-10 positive response requires immediate safety evaluation.",
+  },
 };
