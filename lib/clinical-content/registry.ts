@@ -8974,4 +8974,221 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The NAFLD Fibrosis Score is a screening tool and does not replace clinical evaluation or confirmatory fibrosis testing.",
   },
+
+  "rox-index": {
+    clinicalPurpose:
+      "Calculates the ROX index, which combines oxygenation (SpO₂/FiO₂) with respiratory rate to estimate the likelihood that high-flow nasal cannula (HFNC) therapy will succeed or fail in adults with acute hypoxemic respiratory failure.",
+    howToUse: [
+      "Use only in patients already receiving high-flow nasal cannula (HFNC) therapy.",
+      "Enter SpO₂ as a percentage (e.g., 92 for 92%), FiO₂ as a fraction (e.g., 0.6 for 60%), and the respiratory rate.",
+      "The index is designed to be reassessed over time during the initial hours of HFNC therapy rather than used as a one-time definitive decision.",
+      "Interpret the result together with the patient's clinical trajectory when deciding whether to continue or escalate respiratory support.",
+    ],
+    interpretation: {
+      guide:
+        "ROX ≥4.88 suggests a high likelihood of HFNC success with low risk of intubation; 3.85–4.87 indicates intermediate risk warranting close monitoring and reassessment; <3.85 indicates a high risk of HFNC failure and supports earlier consideration of escalation of respiratory support.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Adults with acute hypoxemic respiratory failure receiving HFNC",
+      "Serial monitoring of HFNC response during the initial hours of therapy",
+      "Supporting decisions about continuing HFNC versus escalating respiratory support",
+    ],
+    whenNotToUse: [
+      "Patients not receiving HFNC therapy",
+      "Children and neonates, where the index has not been validated in the same way as in adults",
+      "As a standalone indication for immediate intubation without clinical assessment",
+    ],
+    limitations: [
+      "The ROX index is a dynamic assessment and must be reassessed over time; a single value is not definitive.",
+      "It was derived and validated primarily in adults with pneumonia-related acute hypoxemic respiratory failure.",
+      "SpO₂-based ratios can be affected by hemoglobin level, peripheral perfusion, and measurement conditions.",
+      "It does not replace clinical judgment or account for comorbidities, work of breathing, or overall trajectory.",
+    ],
+    example: {
+      description:
+        "A 68-year-old man with COVID-19 pneumonia on high-flow nasal cannula has SpO₂ 85% on FiO₂ 0.8 with a respiratory rate of 30 breaths/min.",
+      inputs: {
+        spo2: "85",
+        fio2: "0.8",
+        rr: "30",
+      },
+      expectedResult:
+        "ROX = (85 / 0.8) / 30 ≈ 3.54 — high risk of HFNC failure; consider earlier escalation of respiratory support.",
+    },
+    clinicalSignificance:
+      "The ROX index combines simple bedside measurements to help clinicians gauge the likelihood of HFNC success in acute hypoxemic respiratory failure, supporting earlier identification of patients who may require invasive mechanical ventilation.",
+    references: [
+      {
+        citation: "Roca O, et al. Predicting success of high-flow nasal cannula in pneumonia patients with hypoxemic respiratory failure: The utility of the ROX index. J Crit Care. 2016;35:200-205.",
+        level: "Original index",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The ROX index is one component of respiratory-failure assessment and must be interpreted with serial measurements and full clinical judgment.",
+  },
+
+  "pf-ratio": {
+    clinicalPurpose:
+      "Calculates the PaO₂/FiO₂ (P/F) ratio to quantify the degree of oxygenation impairment and to support classification of ARDS severity according to the Berlin Definition.",
+    howToUse: [
+      "Enter the arterial oxygen tension (PaO₂) in mmHg and the fraction of inspired oxygen (FiO₂) as a fraction (room air = 0.21).",
+      "Use PaO₂ and FiO₂ measured concurrently, ideally from the same arterial blood gas.",
+      "Recognize that formal Berlin ARDS classification requires the appropriate clinical context, including timing, bilateral opacities, and the required PEEP.",
+    ],
+    interpretation: {
+      guide:
+        "P/F >400 indicates normal oxygenation; 301–400 mild oxygenation impairment; 201–300 mild ARDS; 101–200 moderate ARDS; ≤100 severe ARDS. The ARDS bands apply when the broader Berlin criteria, including the appropriate PEEP and clinical context, are met.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Quantifying the degree of oxygenation impairment in hypoxemic patients",
+      "Supporting ARDS severity classification within the appropriate clinical context",
+      "Monitoring oxygenation trends in critically ill patients",
+    ],
+    whenNotToUse: [
+      "As the sole criterion for an ARDS diagnosis, without the full Berlin Definition context",
+      "When PaO₂ and FiO₂ are not measured concurrently",
+      "In children, where pediatric-specific ARDS (PARDS) criteria apply",
+    ],
+    limitations: [
+      "The P/F ratio varies with FiO₂, so values obtained at different FiO₂ levels are not directly comparable.",
+      "Formal Berlin ARDS classification also requires timing of onset, bilateral infiltrates, and a PEEP of at least 5 cmH₂O, which this calculator does not capture.",
+      "The Berlin Definition applies to adults; pediatric ARDS is classified separately.",
+      "The P/F ratio alone does not identify the cause of hypoxemia.",
+    ],
+    example: {
+      description:
+        "A 62-year-old woman with pneumonia is intubated on FiO₂ 0.4 with a concurrent PaO₂ of 110 mmHg.",
+      inputs: {
+        pao2: "110",
+        fio2: "0.4",
+      },
+      expectedResult:
+        "P/F ratio = 110 / 0.4 = 275 — mild ARDS (Berlin Definition band 201–300, with appropriate PEEP).",
+    },
+    clinicalSignificance:
+      "The P/F ratio is a standard bedside measure of oxygenation and, within the full Berlin Definition framework, is used to grade ARDS severity and guide the intensity of respiratory support.",
+    references: [
+      {
+        citation: "ARDS Definition Task Force; Ranieri VM, et al. Acute respiratory distress syndrome: the Berlin definition. JAMA. 2012;307(23):2526-2533.",
+        level: "Original classification",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The P/F ratio is a component of ARDS assessment and does not by itself establish the diagnosis of ARDS.",
+  },
+
+  "a-a-gradient": {
+    clinicalPurpose:
+      "Calculates the alveolar-arterial oxygen (A–a) gradient from an arterial blood gas to evaluate whether hypoxemia is explained by impaired gas exchange.",
+    howToUse: [
+      "Enter age, FiO₂ as a fraction, PaO₂, and PaCO₂ from the same arterial blood gas.",
+      "The calculator assumes sea level (barometric pressure 760 mmHg) and a respiratory quotient of 0.8.",
+      "Compare the result with the age-expected gradient (roughly age/4 + 4 mmHg).",
+    ],
+    interpretation: {
+      guide:
+        "The A–a gradient normally increases with age (roughly age/4 + 4 mmHg). A gradient within the expected range is more consistent with hypoventilation, while a gradient above the age-expected value suggests a pulmonary cause of hypoxemia such as ventilation/perfusion mismatch, diffusion impairment, or right-to-left shunt. The severity bands used by this calculator (mild, moderate, severe elevation relative to the age-expected value) are pragmatic thresholds for this tool, not standardized guideline cut-offs.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Evaluating the cause of hypoxemia on an arterial blood gas",
+      "Distinguishing pulmonary gas-exchange abnormalities from pure hypoventilation",
+      "Assessing gas exchange in the appropriate clinical context",
+    ],
+    whenNotToUse: [
+      "When the assumed sea-level conditions do not apply (e.g., at altitude)",
+      "When FiO₂ and PaCO₂ are not from the same blood gas",
+      "As a standalone test of lung function or to quantify shunt severity without further investigation",
+    ],
+    limitations: [
+      "Assumes sea level (760 mmHg), an FiO₂-derived inspired oxygen tension, and a respiratory quotient of 0.8; at altitude or with a different RQ the result will differ.",
+      "The age-expected value and the calculator's severity bands are convenient clinical guides, not universally established guideline thresholds.",
+      "Requires arterial sampling, and a normal gradient does not exclude pulmonary disease.",
+      "The gradient alone cannot quantify the relative contributions of shunt, V/Q mismatch, or diffusion impairment.",
+    ],
+    example: {
+      description:
+        "A 55-year-old man with dyspnea has a room-air arterial blood gas: FiO₂ 0.21, PaO₂ 65 mmHg, PaCO₂ 30 mmHg.",
+      inputs: {
+        age: "55",
+        fio2: "0.21",
+        pao2: "65",
+        paco2: "30",
+      },
+      expectedResult:
+        "A–a gradient = [0.21 × (760 − 47) − 30/0.8] − 65 ≈ 47.2 mmHg — moderately elevated for age (expected ≈ 17.8 mmHg).",
+    },
+    clinicalSignificance:
+      "The A–a gradient is a core ABG-derived measure that helps clinicians separate hypoxemia due to pulmonary gas-exchange abnormalities from hypoxemia due to hypoventilation alone.",
+    references: [
+      {
+        citation: "West JB. Respiratory Physiology.",
+        level: "Textbook",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The A–a gradient is one component of ABG interpretation and must be considered together with the clinical picture.",
+  },
+
+  "oxygen-index": {
+    clinicalPurpose:
+      "Calculates the Oxygen Index (OI), combining FiO₂, mean airway pressure, and PaO₂ to gauge the severity of oxygenation failure in mechanically ventilated patients.",
+    howToUse: [
+      "Use only in mechanically ventilated patients.",
+      "Enter FiO₂ as a fraction, the mean airway pressure (MAP) measured directly from the ventilator, and PaO₂ from a concurrent arterial blood gas.",
+      "Interpret the result against the calculator's severity bands.",
+    ],
+    interpretation: {
+      guide:
+        "The Oxygen Index reflects the amount of oxygen and ventilatory pressure required to achieve a given PaO₂. In this calculator, OI <5 is reported as mild oxygenation impairment, 5–15 moderate, 16–25 severe, and >25 very severe. Note that values <5 are assigned a 'normal' status by the calculator even though the interpretation describes mild impairment; this reflects the tool's banding and does not mean oxygenation is fully normal.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Severity assessment of oxygenation failure in mechanically ventilated patients",
+      "Monitoring the intensity of respiratory support in critical care, including pediatric and neonatal settings",
+      "Serial tracking of response to ventilatory management",
+    ],
+    whenNotToUse: [
+      "Non-ventilated patients",
+      "Without a directly measured mean airway pressure",
+      "In isolation to guide withdrawal of respiratory support",
+    ],
+    limitations: [
+      "The severity bands used by this calculator are pragmatic thresholds; the Oxygen Index does not have a single universally standardized classification.",
+      "Results depend on ventilator settings and the timing of PaO₂, so serial measurements are more informative than a single value.",
+      "Mean airway pressure must be measured from the ventilator; estimated values will bias the result.",
+      "Requires an arterial blood gas; SpO₂-based surrogates are not used by this calculator.",
+    ],
+    example: {
+      description:
+        "A ventilated patient with ARDS has FiO₂ 0.7, a mean airway pressure of 18 cmH₂O, and a PaO₂ of 70 mmHg.",
+      inputs: {
+        fio2: "0.7",
+        map: "18",
+        pao2: "70",
+      },
+      expectedResult:
+        "OI = (0.7 × 18 × 100) / 70 ≈ 18 — severe oxygenation impairment.",
+    },
+    clinicalSignificance:
+      "The Oxygen Index integrates the intensity of oxygen and pressure support with the resulting arterial oxygenation, making it a widely used severity metric for hypoxemic respiratory failure in critical care, including pediatric and neonatal intensive care.",
+    references: [
+      {
+        citation: "AAP Neonatal Guidelines.",
+        level: "Clinical guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The Oxygen Index is one component of oxygenation assessment in ventilated patients and must be interpreted with the full clinical context.",
+  },
 };
