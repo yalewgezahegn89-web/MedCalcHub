@@ -3879,3 +3879,424 @@ describe("Batch 8 Direct-Call Validation Guards", () => {
     expect(result.status).toBe("critical");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Batch 1 (Emergency) and Batch 2 (Cardiology) Direct-Call Validation Guards.
+// These batches predate the guard pattern used by Batches 3-8; the same
+// missing/empty/non-numeric/negative/zero guards are applied here so every
+// registered calculator is covered by the same validation contract.
+// ---------------------------------------------------------------------------
+
+const BATCH1_GUARDED_IDS = [
+  "perc-rule",
+  "wells-pe",
+  "wells-dvt",
+  "heart-score",
+  "sofa-score",
+  "sirs-criteria",
+  "crb-65",
+  "psi-port",
+  "rts",
+  "parkland-formula",
+] as const;
+
+const BATCH1_SELECT_ONLY_IDS = new Set<string>([
+  "perc-rule",
+  "wells-pe",
+  "wells-dvt",
+  "heart-score",
+]);
+
+const BATCH1_ZERO_GUARDED_IDS = BATCH1_GUARDED_IDS.filter(
+  (id) => !BATCH1_SELECT_ONLY_IDS.has(id),
+);
+
+const BATCH1_VALID_INPUTS: Record<string, Record<string, string>> = {
+  "perc-rule": {
+    age: "1",
+    "heart-rate": "1",
+    "oxygen-saturation": "1",
+    hemoptysis: "1",
+    estrogen: "1",
+    "prior-dvt-pe": "1",
+    "leg-swelling": "1",
+    "surgery-trauma": "1",
+  },
+  "wells-pe": {
+    "dvt-signs": "0",
+    "pe-most-likely": "0",
+    tachycardia: "0",
+    immobilization: "0",
+    "prior-dvt-pe": "0",
+    hemoptysis: "0",
+    malignancy: "0",
+  },
+  "wells-dvt": {
+    "active-cancer": "0",
+    paralysis: "0",
+    bedridden: "0",
+    "localized-tenderness": "0",
+    "entire-leg-swollen": "0",
+    "calf-swelling": "0",
+    "pitting-edema": "0",
+    "collateral-veins": "0",
+    "previous-dvt": "0",
+    "alternative-diagnosis": "0",
+  },
+  "heart-score": {
+    history: "0",
+    ecg: "0",
+    age: "0",
+    "risk-factors": "0",
+    troponin: "0",
+  },
+  "sofa-score": {
+    "pao2-fio2": "0",
+    platelets: "150",
+    bilirubin: "1",
+    cardiovascular: "0",
+    gcs: "15",
+    creatinine: "1",
+  },
+  "sirs-criteria": {
+    temperature: "37",
+    "heart-rate": "80",
+    "respiratory-rate": "16",
+    wbc: "8",
+  },
+  "crb-65": {
+    confusion: "0",
+    "respiratory-rate": "16",
+    sbp: "120",
+    dbp: "80",
+    age: "40",
+  },
+  "psi-port": {
+    age: "40",
+    sex: "male",
+    "nursing-home": "0",
+    "neoplastic-disease": "0",
+    "liver-disease": "0",
+    chf: "0",
+    cerebrovascular: "0",
+    "renal-disease": "0",
+    ams: "0",
+    "respiratory-rate": "16",
+    sbp: "120",
+    temperature: "37",
+    "heart-rate": "80",
+    ph: "7.4",
+    bun: "14",
+    sodium: "140",
+    glucose: "100",
+    hematocrit: "42",
+    pao2: "95",
+    "pleural-effusion": "0",
+  },
+  rts: { gcs: "15", sbp: "120", rr: "16" },
+  "parkland-formula": {
+    weight: "70",
+    head: "9",
+    "anterior-trunk": "0",
+    "posterior-trunk": "0",
+    "right-upper-limb": "0",
+    "left-upper-limb": "0",
+    "right-lower-limb": "0",
+    "left-lower-limb": "0",
+    perineum: "0",
+  },
+};
+
+describe("Batch 1 Direct-Call Validation Guards", () => {
+  function batch1Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 1 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch1Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH1_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch1Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH1_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch1Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH1_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch1Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH1_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(batch1Calc(id).calculate(fillEveryInput(id, "-1")), id);
+    },
+  );
+
+  it.each(BATCH1_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch1Calc(id).calculate(fillEveryInput(id, "0")), id);
+    },
+  );
+
+  it.each(BATCH1_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch1Calc(id).calculate(BATCH1_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it("wells-pe returns critical for an invalid criterion value", () => {
+    const result = batch1Calc("wells-pe").calculate({
+      "dvt-signs": "2",
+      "pe-most-likely": "0",
+      tachycardia: "0",
+      immobilization: "0",
+      "prior-dvt-pe": "0",
+      hemoptysis: "0",
+      malignancy: "0",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("sofa-score returns critical for an invalid PaO2/FiO2 selection", () => {
+    const result = batch1Calc("sofa-score").calculate({
+      "pao2-fio2": "5",
+      platelets: "150",
+      bilirubin: "1",
+      cardiovascular: "0",
+      gcs: "15",
+      creatinine: "1",
+    });
+    expect(result.status).toBe("critical");
+  });
+});
+
+const BATCH2_GUARDED_IDS = [
+  "timi",
+  "grace",
+  "cha2ds2-vasc",
+  "has-bled",
+  "rcri",
+  "ascvd",
+  "dapt",
+  "h2fpef",
+] as const;
+
+const BATCH2_SELECT_ONLY_IDS = new Set<string>([
+  "timi",
+  "grace",
+  "cha2ds2-vasc",
+  "has-bled",
+  "rcri",
+  "dapt",
+]);
+
+const BATCH2_ZERO_GUARDED_IDS = BATCH2_GUARDED_IDS.filter(
+  (id) => !BATCH2_SELECT_ONLY_IDS.has(id),
+);
+
+const BATCH2_VALID_INPUTS: Record<string, Record<string, string>> = {
+  timi: {
+    "age-65": "0",
+    "risk-factors": "0",
+    "known-cad": "0",
+    aspirin: "0",
+    "anginal-events": "0",
+    "ecg-changes": "0",
+    troponin: "0",
+  },
+  grace: {
+    age: "0",
+    "heart-rate": "0",
+    sbp: "58",
+    creatinine: "1",
+    killip: "0",
+    "cardiac-arrest": "0",
+    "st-deviation": "0",
+    "elevated-enzymes": "0",
+  },
+  "cha2ds2-vasc": {
+    chf: "0",
+    hypertension: "0",
+    age: "0",
+    diabetes: "0",
+    stroke: "0",
+    "vascular-disease": "0",
+    sex: "0",
+  },
+  "has-bled": {
+    hypertension: "0",
+    renal: "0",
+    liver: "0",
+    stroke: "0",
+    bleeding: "0",
+    "labile-inr": "0",
+    elderly: "0",
+    drugs: "0",
+    alcohol: "0",
+  },
+  rcri: {
+    "high-risk-surgery": "0",
+    "ischemic-heart-disease": "0",
+    chf: "0",
+    cerebrovascular: "0",
+    "insulin-diabetes": "0",
+    creatinine: "0",
+  },
+  ascvd: {
+    age: "50",
+    sex: "male",
+    race: "black",
+    "total-cholesterol": "180",
+    hdl: "50",
+    sbp: "120",
+    "hypertension-treated": "untreated",
+    smoker: "0",
+    diabetes: "0",
+  },
+  dapt: {
+    age: "0",
+    smoking: "0",
+    diabetes: "0",
+    "mi-at-presentation": "0",
+    "prior-mi-pci": "0",
+    "stent-diameter": "0",
+    paclitaxel: "0",
+    "chf-lvef": "0",
+    "svg-pci": "0",
+  },
+  "h2fpef": {
+    afib: "0",
+    bmi: "28",
+    age: "65",
+    antihypertensives: "0",
+    "e-e-ratio": "0",
+    pasp: "0",
+  },
+};
+
+describe("Batch 2 Direct-Call Validation Guards", () => {
+  function batch2Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 2 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch2Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH2_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch2Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH2_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch2Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH2_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch2Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH2_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(batch2Calc(id).calculate(fillEveryInput(id, "-1")), id);
+    },
+  );
+
+  it.each(BATCH2_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch2Calc(id).calculate(fillEveryInput(id, "0")), id);
+    },
+  );
+
+  it.each(BATCH2_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch2Calc(id).calculate(BATCH2_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it("grace returns critical for an invalid option selection", () => {
+    const result = batch2Calc("grace").calculate({
+      age: "999",
+      "heart-rate": "0",
+      sbp: "58",
+      creatinine: "1",
+      killip: "0",
+      "cardiac-arrest": "0",
+      "st-deviation": "0",
+      "elevated-enzymes": "0",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("cha2ds2-vasc returns critical for an invalid stroke selection", () => {
+    const result = batch2Calc("cha2ds2-vasc").calculate({
+      chf: "0",
+      hypertension: "0",
+      age: "0",
+      diabetes: "0",
+      stroke: "3",
+      "vascular-disease": "0",
+      sex: "0",
+    });
+    expect(result.status).toBe("critical");
+  });
+});
