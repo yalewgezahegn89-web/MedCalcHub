@@ -7081,4 +7081,807 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. PEWS complements, but does not replace, clinical assessment; escalate any child who looks unwell regardless of the score.",
   },
+
+  "nihss": {
+    clinicalPurpose:
+      "Quantifies neurologic impairment in acute ischemic stroke by scoring 15 standardized examination items (level of consciousness, orientation, commands, gaze, visual fields, facial palsy, arm and leg motor function, ataxia, sensory, language, dysarthria, and extinction), producing a total of 0–42.",
+    howToUse: [
+      "Administer the 15 items in the standard order, scoring each item's best response.",
+      "Score the left and right arm and leg motor items separately.",
+      "Sum all 15 item scores to obtain the total (0–42).",
+      "Repeat the assessment serially to track improvement or deterioration.",
+    ],
+    interpretation: {
+      guide:
+        "A total of 0 indicates no stroke symptoms; 1–4 is a minor stroke; 5–15 moderate; 16–20 moderate–severe; and 21–42 severe. The baseline score helps stratify reperfusion eligibility and predicts outcome. A change of ≥ 2 points on repeat assessment indicates significant neurologic change.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Standardized quantification of deficit at acute stroke presentation",
+      "Monitoring neurologic status after thrombolysis or thrombectomy",
+      "Stratifying severity and communicating exam findings between teams",
+    ],
+    whenNotToUse: [
+      "As a measure of functional disability or outcome — use the modified Rankin Scale instead",
+      "To rule out posterior circulation stroke, which the NIHSS may underweight",
+    ],
+    limitations: [
+      "Ceiling and floor effects — very mild and very severe deficits are under-differentiated.",
+      "Underweights posterior circulation (e.g., ataxia, visual) and right-hemisphere signs.",
+      "Confounded by sedation, intubation, aphasia, and language barriers.",
+    ],
+    example: {
+      description:
+        "A 70-year-old man presents 90 minutes after sudden right-sided weakness and word-finding difficulty. Examination shows he is drowsy but arousable (1a = 1), answers one of two questions (1b = 1), performs one of two commands (1c = 1), mild left gaze palsy (2 = 1), partial visual field loss (3 = 1), facial droop (4 = 1), left arm 2 (drifts to bed), left leg 2, right side normal, no ataxia, mild sensory loss (8 = 1), moderate aphasia (9 = 1), mild dysarthria (10 = 1), mild inattention (11 = 1).",
+      inputs: {
+        loc: "1",
+        locQuestions: "1",
+        locCommands: "1",
+        gaze: "1",
+        visual: "1",
+        facial: "1",
+        armLeft: "2",
+        armRight: "0",
+        legLeft: "2",
+        legRight: "0",
+        ataxia: "0",
+        sensory: "1",
+        language: "1",
+        dysarthria: "1",
+        extinction: "1",
+      },
+      expectedResult: "NIHSS 14/42 — MODERATE stroke; evaluate for reperfusion therapy.",
+    },
+    clinicalSignificance:
+      "The NIHSS provides a reproducible, quantitative language for acute stroke severity that guides reperfusion decisions, predicts outcome, and enables serial monitoring — making it a cornerstone of acute stroke care.",
+    references: [
+      {
+        citation:
+          "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+        level: "Original Description",
+        url: "https://www.ahajournals.org/doi/10.1161/01.STR.20.7.864",
+      },
+      {
+        citation:
+          "Lyden P, Brott T, Tilley B, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.",
+        level: "Reliability Study",
+        url: "https://www.ahajournals.org/doi/10.1161/01.STR.25.11.2220",
+      },
+    ],
+    evidence: {
+      source: "Clinical scoring system validated in acute stroke",
+      reference:
+        "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+      ],
+    },
+    faq: [
+      {
+        question: "What NIHSS score defines a severe stroke?",
+        answer:
+          "Scores of 21–42 are conventionally classified as severe, 16–20 as moderate–severe, 5–15 as moderate, and 1–4 as minor.",
+      },
+      {
+        question: "Why score both arms and both legs?",
+        answer:
+          "Motor deficits are often asymmetric; scoring each limb separately captures the maximal deficit and adds up to 16 points total.",
+      },
+    ],
+    comparison: {
+      title: "Stroke assessment tools",
+      calculators: [
+        {
+          name: "Modified Rankin Scale",
+          href: "/calculators/modified-rankin-scale",
+          use: "Functional outcome after stroke",
+          bestFor: "Long-term disability measurement",
+        },
+        {
+          name: "RACE Scale",
+          href: "/calculators/race-scale",
+          use: "Prehospital detection of large vessel occlusion",
+          bestFor: "Field triage for thrombectomy",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The NIHSS requires standardized training; treatment decisions should follow current acute stroke guidelines and the patient's overall clinical picture.",
+  },
+
+  "abcd2-score": {
+    clinicalPurpose:
+      "Stratifies the short-term (2-day) risk of stroke after a transient ischemic attack using age, blood pressure, clinical features, duration of symptoms, and diabetes, giving a total of 0–7.",
+    howToUse: [
+      "Score age 60 or older as 1 point.",
+      "Score blood pressure ≥ 140/90 mmHg as 1 point.",
+      "Score clinical features: unilateral weakness = 2, speech disturbance without weakness = 1, other = 0.",
+      "Score duration: ≥ 60 minutes = 2, 10–59 minutes = 1, < 10 minutes = 0.",
+      "Add 1 point for diabetes and sum the total.",
+    ],
+    interpretation: {
+      guide:
+        "Scores of 0–3 are low risk with a 2-day stroke risk of about 1.0%; 4–5 moderate (≈ 4.1%); and 6–7 high (≈ 8.1%). All patients with a suspected TIA need urgent specialist evaluation regardless of the score.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Triage of patients presenting with a suspected transient ischemic attack",
+      "Prioritizing urgency of TIA clinic referral and investigation",
+    ],
+    whenNotToUse: [
+      "To diagnose a TIA — the score assumes the diagnosis is already established",
+      "To rule out stroke in patients with persistent symptoms",
+    ],
+    limitations: [
+      "Moderate discrimination — many strokes occur in the low-risk group.",
+      "Derived in cohorts before routine diffusion-weighted MRI and modern rapid pathways.",
+      "Does not incorporate imaging or carotid stenosis findings.",
+    ],
+    example: {
+      description:
+        "A 72-year-old hypertensive diabetic woman had 90 minutes of right-hand and face weakness that fully resolved. On arrival BP is 165/95.",
+      inputs: {
+        age: "1",
+        bloodPressure: "1",
+        clinicalFeatures: "2",
+        duration: "2",
+        diabetes: "1",
+      },
+      expectedResult: "ABCD2 7/7 — HIGH short-term stroke risk (2-day risk ≈ 8.1%); arrange same-day specialist evaluation.",
+    },
+    clinicalSignificance:
+      "The ABCD2 score enables rapid, evidence-based triage of TIA patients, directing the highest-risk patients to same-day assessment and early secondary prevention that reduces the early risk of stroke.",
+    references: [
+      {
+        citation:
+          "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
+        level: "Derivation/Validation Cohort",
+        url: "https://doi.org/10.1016/S0140-6736(07)60150-0",
+      },
+      {
+        citation:
+          "Rothwell PM, Giles MF, Flossmann E, et al. A simple score (ABCD) to identify individuals at high early risk of stroke after transient ischaemic attack. Lancet. 2005;366(9479):29-36.",
+        level: "Derivation",
+        url: "https://doi.org/10.1016/S0140-6736(05)66702-5",
+      },
+    ],
+    evidence: {
+      source: "Validation study (Lancet 2007)",
+      reference:
+        "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
+      ],
+    },
+    faq: [
+      {
+        question: "What does an ABCD2 score of 4–5 mean?",
+        answer:
+          "It indicates moderate risk, with a 2-day stroke risk of about 4.1%; patients should be seen urgently, typically within the same day.",
+      },
+      {
+        question: "Should imaging change the management even with a low score?",
+        answer:
+          "Yes. Modern pathways incorporate MRI findings and carotid imaging; a low ABCD2 does not replace urgent assessment and secondary prevention.",
+      },
+    ],
+    comparison: {
+      title: "Stroke risk prediction",
+      calculators: [
+        {
+          name: "Essen Stroke Risk Score",
+          href: "/calculators/esrs",
+          use: "Long-term recurrent stroke risk",
+          bestFor: "Chronic secondary prevention decisions",
+        },
+        {
+          name: "NIH Stroke Scale",
+          href: "/calculators/nihss",
+          use: "Acute stroke severity",
+          bestFor: "Deficit quantification when stroke has occurred",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The ABCD2 score complements, but does not replace, urgent specialist assessment, neuroimaging, and initiation of secondary prevention.",
+  },
+
+  "hunt-hess-scale": {
+    clinicalPurpose:
+      "Classifies the clinical severity of aneurysmal subarachnoid hemorrhage into five grades (I–V) based on headache, nuchal rigidity, level of consciousness, and focal deficits, and is used to estimate prognosis.",
+    howToUse: [
+      "Assign the grade from the patient's clinical condition before any intervention that could alter the examination.",
+      "Grade I: no or minimal symptoms; II: moderate–severe headache with nuchal rigidity and no deficit other than cranial nerve palsy; III: drowsy/confused with mild focal deficit; IV: stupor with moderate–severe hemiparesis; V: deep coma with decerebrate rigidity.",
+      "In the 1974 modification, add one grade in the presence of serious systemic disease.",
+    ],
+    interpretation: {
+      guide:
+        "Lower grades predict better outcomes. Grades I–III are generally candidates for early aneurysm securing; grades IV–V require stabilization before treatment. Historical mortality ranged from 1–3% (grade I) to 70–77% (grade V), though modern outcomes are better.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Clinical grading of confirmed or suspected aneurysmal subarachnoid hemorrhage",
+      "Communicating severity and guiding timing of aneurysm treatment",
+      "Stratifying prognosis in neurosurgical units",
+    ],
+    whenNotToUse: [
+      "To decide whether CT is needed to diagnose SAH — use the Ottawa SAH Rule",
+      "As the sole basis for prognosis in patients already treated with modern endovascular techniques",
+    ],
+    limitations: [
+      "Subjective grading with imperfect interobserver agreement.",
+      "Historical mortality figures overestimate current mortality.",
+      "Does not incorporate imaging findings such as the modified Fisher grade.",
+    ],
+    example: {
+      description:
+        "A 55-year-old woman with a confirmed posterior communicating artery aneurysm is drowsy, disoriented, and has a mild right hemiparesis after her SAH.",
+      inputs: {
+        grade: "3",
+      },
+      expectedResult: "Hunt and Hess grade III — drowsy/confused with mild focal deficit; historical mortality ≈ 9–19%.",
+    },
+    clinicalSignificance:
+      "Hunt and Hess grading provides a rapid, universally recognized language for SAH severity that guides the timing and intensity of aneurysm treatment and supports prognostication.",
+    references: [
+      {
+        citation:
+          "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
+        level: "Original Description",
+        url: "https://doi.org/10.3171/jns.1968.28.1.0014",
+      },
+      {
+        citation:
+          "Hunt WE, Kosnik EJ. Timing and perioperative care in intracranial aneurysm surgery. Clin Neurosurg. 1974;21:79-89.",
+        level: "Modification",
+      },
+    ],
+    evidence: {
+      source: "Original clinical grading system (J Neurosurg 1968)",
+      reference:
+        "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
+      ],
+    },
+    faq: [
+      {
+        question: "What is the mortality for grade V SAH?",
+        answer:
+          "Historically 70–77%, but modern series with aggressive neurointensive care report substantially better outcomes.",
+      },
+      {
+        question: "Is the Hunt and Hess scale used together with other scores?",
+        answer:
+          "Yes, it is commonly combined with the WFNS grade and the modified Fisher scale for a fuller assessment of SAH severity.",
+      },
+    ],
+    comparison: {
+      title: "Subarachnoid hemorrhage assessment",
+      calculators: [
+        {
+          name: "Ottawa SAH Rule",
+          href: "/calculators/ottawa-sah-rule",
+          use: "Rule-out SAH in the emergency department",
+          bestFor: "Pre-diagnosis triage of acute headache",
+        },
+        {
+          name: "Glasgow Coma Scale",
+          href: "/calculators/gcs",
+          use: "Consciousness monitoring",
+          bestFor: "Serial neurologic monitoring",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Mortality figures are historical; treatment decisions must follow current guidelines and the patient's full clinical picture.",
+  },
+
+  "modified-rankin-scale": {
+    clinicalPurpose:
+      "Measures the degree of functional disability after stroke or other neurologic events on a six-level scale (0 = no symptoms to 5 = severe disability), with 6 indicating death; it is the standard outcome measure in stroke trials.",
+    howToUse: [
+      "Interview the patient (and caregivers when appropriate) about what they can actually do.",
+      "Assign a single level from 0 to 6 matching the patient's global level of disability.",
+      "Use a structured interview to improve reproducibility.",
+      "Record the score at a defined time point such as 90 days post-stroke.",
+    ],
+    interpretation: {
+      guide:
+        "0 = no symptoms; 1 = no significant disability despite symptoms; 2 = slight disability (independent in daily affairs but unable to do all previous activities); 3 = moderate disability (needs some help but walks unassisted); 4 = moderately severe disability (unable to walk or attend bodily needs unassisted); 5 = severe disability (bedridden, incontinent, constant care); 6 = death. Scores 0–2 are conventionally a favorable outcome.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Outcome measurement in stroke trials and registries",
+      "Discharge planning and rehabilitation goal setting",
+      "Longitudinal assessment of functional recovery",
+    ],
+    whenNotToUse: [
+      "To quantify acute neurologic impairment — use the NIHSS",
+      "To guide acute reperfusion treatment decisions",
+    ],
+    limitations: [
+      "Ordinal scale — intervals are not equal and scores should not be averaged arithmetically.",
+      "Cognitive, language, and mood deficits are easily underestimated.",
+      "Interobserver agreement is moderate without structured interviews.",
+    ],
+    example: {
+      description:
+        "Three months after a left MCA stroke, a patient walks without another person's help but needs assistance with dressing and preparing meals.",
+      inputs: {
+        score: "3",
+      },
+      expectedResult: "mRS 3 — moderate disability; requires some help but able to walk unassisted.",
+    },
+    clinicalSignificance:
+      "The mRS is the most widely used functional outcome measure in stroke research, providing a clinically meaningful, patient-centered measure of disability that complements the NIHSS.",
+    references: [
+      {
+        citation:
+          "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
+        level: "Validation Study",
+        url: "https://www.ahajournals.org/doi/10.1161/01.STR.19.5.604",
+      },
+      {
+        citation:
+          "Rankin J. Cerebrovascular accidents in patients over the age of 60. II. Prognosis. Scott Med J. 1957;2(5):200-215.",
+        level: "Original Description",
+      },
+    ],
+    evidence: {
+      source: "Validated functional outcome scale (Stroke 1988)",
+      reference:
+        "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
+      ],
+    },
+    faq: [
+      {
+        question: "Why is mRS 0–2 called a good outcome?",
+        answer:
+          "Because patients at mRS 0–2 are functionally independent in daily life, which is the goal of stroke treatment.",
+      },
+      {
+        question: "Can the mRS be used at the bedside?",
+        answer:
+          "Yes, but a structured assessment improves agreement; it is most informative at a fixed time point such as 90 days.",
+      },
+    ],
+    comparison: {
+      title: "Stroke severity and outcome",
+      calculators: [
+        {
+          name: "NIH Stroke Scale",
+          href: "/calculators/nihss",
+          use: "Acute neurologic impairment",
+          bestFor: "Severity at presentation and treatment decisions",
+        },
+        {
+          name: "Hunt and Hess Scale",
+          href: "/calculators/hunt-hess-scale",
+          use: "SAH clinical grade",
+          bestFor: "Subarachnoid hemorrhage prognosis",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The mRS should be assigned by a trained clinician using a structured assessment and interpreted within the full clinical context.",
+  },
+
+  "ottawa-sah-rule": {
+    clinicalPurpose:
+      "Determines whether an emergency department patient with an acute nontraumatic headache requires a non-contrast CT to rule out subarachnoid hemorrhage. The rule is positive if any of six high-risk findings is present and has 100% sensitivity for SAH.",
+    howToUse: [
+      "Confirm eligibility: alert patient (GCS 15), aged 15 years or older, acute nontraumatic headache reaching maximum intensity within 1 hour, normal neurologic examination.",
+      "Check each of the six criteria: age ≥ 40, neck pain or stiffness, witnessed loss of consciousness, onset during exertion, thunderclap headache, and limited neck flexion on examination.",
+      "If ANY criterion is present, the rule is positive and CT is indicated.",
+    ],
+    interpretation: {
+      guide:
+        "Rule negative (0 criteria): CT to rule out SAH is not required — sensitivity 100%, specificity 15.3%. Rule positive (≥ 1 criterion): non-contrast CT is indicated. A negative CT with ongoing suspicion may still require lumbar puncture per local protocol.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Emergency department evaluation of acute severe nontraumatic headache",
+      "Triage decisions on who needs CT for suspected SAH",
+    ],
+    whenNotToUse: [
+      "Patients with focal neurologic deficits, prior SAH, known brain tumors, or headache of traumatic origin",
+      "Headache that peaks over more than 1 hour",
+    ],
+    limitations: [
+      "Derived and validated in alert ED patients with normal examinations.",
+      "Specificity is low (15.3%), so many CTs are still obtained.",
+      "Timing of CT and center protocol (CT ± LP) still govern management.",
+    ],
+    example: {
+      description:
+        "A 58-year-old man presents with a sudden severe headache that peaked instantly while he was lifting weights, described as the worst headache of his life. His neurologic examination is normal.",
+      inputs: {
+        age40: "yes",
+        neckPainStiffness: "no",
+        witnessedLoc: "no",
+        exertionOnset: "yes",
+        thunderclap: "yes",
+        limitedNeckFlexion: "no",
+      },
+      expectedResult: "Ottawa SAH Rule POSITIVE (3 of 6 criteria) — non-contrast CT is indicated to rule out SAH.",
+    },
+    clinicalSignificance:
+      "The Ottawa SAH Rule provides an evidence-based, highly sensitive method to rule out subarachnoid hemorrhage in ED patients with acute headache, avoiding unnecessary CTs while safely identifying those who need imaging.",
+    references: [
+      {
+        citation:
+          "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
+        level: "Multicenter Validation",
+        url: "https://doi.org/10.1001/jama.2013.278018",
+      },
+      {
+        citation:
+          "Perry JJ, Stiell IG, Sivilotti MLA, et al. High risk clinical characteristics for subarachnoid haemorrhage in patients with acute headache: prospective cohort study. BMJ. 2010;341:c5204.",
+        level: "Derivation",
+        url: "https://doi.org/10.1136/bmj.c5204",
+      },
+    ],
+    evidence: {
+      source: "Multicenter validation cohort (JAMA 2013)",
+      reference:
+        "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
+      ],
+    },
+    faq: [
+      {
+        question: "What happens if the rule is negative?",
+        answer:
+          "CT to rule out SAH is not required (100% sensitivity); other causes of headache should still be considered clinically.",
+      },
+      {
+        question: "Does a negative CT always rule out SAH?",
+        answer:
+          "Modern CT within 6 hours is highly sensitive; when CT is negative but suspicion persists, lumbar puncture may still be performed per local protocol.",
+      },
+    ],
+    comparison: {
+      title: "Headache decision tools",
+      calculators: [
+        {
+          name: "Hunt and Hess Scale",
+          href: "/calculators/hunt-hess-scale",
+          use: "Severity grading once SAH is confirmed",
+          bestFor: "Prognosis and treatment planning",
+        },
+        {
+          name: "Glasgow Coma Scale",
+          href: "/calculators/gcs",
+          use: "Consciousness assessment",
+          bestFor: "Monitoring neurologic status",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The Ottawa SAH Rule applies only to the specified population; always apply clinical judgment and local protocol.",
+  },
+
+  "fout-score": {
+    clinicalPurpose:
+      "Assesses the depth of impaired consciousness using four components — Eye response, Motor response, Brainstem reflexes, and Respiration — each scored 0–4, for a total of 0–16. Lower totals indicate deeper coma and higher in-hospital mortality.",
+    howToUse: [
+      "Score eye response from open with tracking/blinking to command (4) down to remaining closed to pain (0).",
+      "Score motor response from command following such as thumbs-up, fist, or peace sign (4) down to no response or myoclonus status (0).",
+      "Score brainstem reflexes from both pupil and corneal present (4) down to pupil, corneal, and cough all absent (0).",
+      "Score respiration from regular non-intubated breathing (4) down to apnea or breathing at the ventilator rate (0).",
+      "Sum the four components to a total of 0–16.",
+    ],
+    interpretation: {
+      guide:
+        "Scores of 13–16 indicate relatively favorable status, 9–12 intermediate impairment, 5–8 poor status, and 0–4 very poor status with the highest in-hospital mortality. The score should be interpreted alongside the cause of coma.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Assessing depth of coma in intubated and non-intubated patients",
+      "Monitoring brainstem function in the ICU",
+      "Prognostication after cardiac arrest and in neurocritical care",
+    ],
+    whenNotToUse: [
+      "As a substitute for a full neurologic examination",
+      "To assess focal neurologic deficits — use the NIHSS",
+    ],
+    limitations: [
+      "Confounded by sedation and neuromuscular blockade.",
+      "Requires careful training for the respiratory scoring in ventilated patients.",
+      "Not a substitute for EEG or neuroimaging in prognostication.",
+    ],
+    example: {
+      description:
+        "A comatose patient after cardiac arrest: eyes open but not tracking (3), localizes to pain (3), one pupil fixed and wide (3), and Cheyne-Stokes breathing on room air (3).",
+      inputs: {
+        eye: "3",
+        motor: "3",
+        brainstem: "3",
+        respiration: "3",
+      },
+      expectedResult: "FOUR 12/16 — intermediate impairment; monitor closely.",
+    },
+    clinicalSignificance:
+      "The FOUR score captures brainstem and respiratory function that the GCS does not, remains testable in intubated patients, and provides strong prognostic information in coma, making it valuable in neurocritical care.",
+    references: [
+      {
+        citation:
+          "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
+        level: "Original Description/Validation",
+        url: "https://doi.org/10.1002/ana.20611",
+      },
+      {
+        citation:
+          "Wijdicks EFM. The bare essentials: coma. Pract Neurol. 2010;10(1):51-60.",
+        level: "Review",
+      },
+    ],
+    evidence: {
+      source: "Original description and validation (Ann Neurol 2005)",
+      reference:
+        "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
+      ],
+    },
+    faq: [
+      {
+        question: "How is the FOUR score better than the GCS?",
+        answer:
+          "It omits the verbal component (so it works in intubated patients) and adds brainstem reflexes and respiration, capturing more prognostic information.",
+      },
+      {
+        question: "What FOUR score is associated with very poor prognosis?",
+        answer:
+          "Totals of 0–4 are associated with the highest in-hospital mortality in validation studies.",
+      },
+    ],
+    comparison: {
+      title: "Coma assessment scales",
+      calculators: [
+        {
+          name: "Glasgow Coma Scale",
+          href: "/calculators/gcs",
+          use: "Standard consciousness assessment",
+          bestFor: "Rapid trauma triage and familiarity",
+        },
+        {
+          name: "NIH Stroke Scale",
+          href: "/calculators/nihss",
+          use: "Focal neurologic deficit quantification",
+          bestFor: "Stroke-specific assessment",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The FOUR score complements clinical assessment and should not be used alone to limit care or predict outcome.",
+  },
+
+  "race-scale": {
+    clinicalPurpose:
+      "A prehospital stroke scale that scores facial palsy, arm and leg motor function, gaze deviation, and aphasia/agnosia to identify large vessel occlusion (LVO) in acute ischemic stroke, with a total of 0–9; a score ≥ 5 suggests LVO.",
+    howToUse: [
+      "Score facial palsy (0–2), left arm motor (0–2), left leg motor (0–2), gaze deviation (0–1), and aphasia or agnosia (0–2) using the worst finding in each domain.",
+      "Sum the five items to a total of 0–9.",
+      "A score ≥ 5 supports routing the patient to an endovascular-capable center.",
+    ],
+    interpretation: {
+      guide:
+        "Scores of 0–4 indicate a lower probability of large vessel occlusion; scores ≥ 5 suggest LVO (sensitivity 0.85, specificity 0.68) and warrant activation of the endovascular stroke pathway.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Prehospital and emergency triage of suspected acute ischemic stroke",
+      "Selecting patients for direct transport to thrombectomy-capable centers",
+    ],
+    whenNotToUse: [
+      "To quantify overall stroke severity — use the NIHSS",
+      "To exclude posterior circulation stroke, which may score low",
+    ],
+    limitations: [
+      "Sensitivity of 0.85 — some LVOs will be missed.",
+      "Validated primarily in the prehospital setting with trained EMS personnel.",
+      "Does not capture all stroke syndromes (e.g., isolated posterior circulation findings).",
+    ],
+    example: {
+      description:
+        "An EMS crew evaluates an elderly patient with dense left facial palsy (2), left arm plegia (2), left leg plegia (2), conjugate gaze deviation to the right (1), and inability to name objects or identify her own arm (2).",
+      inputs: {
+        facialPalsy: "2",
+        armMotor: "2",
+        legMotor: "2",
+        gaze: "1",
+        aphasiaAgnosia: "2",
+      },
+      expectedResult: "RACE 9/9 — large vessel occlusion suspected; transport to an endovascular-capable stroke center.",
+    },
+    clinicalSignificance:
+      "The RACE scale enables prehospital identification of large vessel occlusion, allowing direct transport to thrombectomy-capable centers and reducing delays to endovascular treatment.",
+    references: [
+      {
+        citation:
+          "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
+        level: "Derivation/Validation",
+        url: "https://doi.org/10.1161/STROKEAHA.114.005202",
+      },
+      {
+        citation:
+          "Carrera D, Gorchs M, Querol M, et al. Revalidation of the RACE scale after its regional implementation in Catalonia: a triage tool for large vessel occlusion. J Neurointerv Surg. 2019;11(8):751-756.",
+        level: "Revalidation",
+        url: "https://doi.org/10.1136/neurintsurg-2018-014519",
+      },
+    ],
+    evidence: {
+      source: "Prehospital validation study (Stroke 2014)",
+      reference:
+        "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
+      ],
+    },
+    faq: [
+      {
+        question: "Why does a RACE score ≥ 5 matter?",
+        answer:
+          "It predicts large vessel occlusion, making the patient a candidate for direct transport to a center offering mechanical thrombectomy.",
+      },
+      {
+        question: "Can RACE replace the NIHSS in the hospital?",
+        answer:
+          "No. RACE is a focused prehospital triage tool; the NIHSS provides a more complete severity assessment in the hospital.",
+      },
+    ],
+    comparison: {
+      title: "Acute stroke screening",
+      calculators: [
+        {
+          name: "NIH Stroke Scale",
+          href: "/calculators/nihss",
+          use: "Comprehensive stroke severity scoring",
+          bestFor: "In-hospital assessment and monitoring",
+        },
+        {
+          name: "ABCD2 Score for TIA",
+          href: "/calculators/abcd2-score",
+          use: "TIA risk stratification",
+          bestFor: "Post-TIA early stroke risk",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The RACE scale supports, but does not replace, clinical judgment and regional stroke transport protocols.",
+  },
+
+  "esrs": {
+    clinicalPurpose:
+      "Estimates the long-term risk of recurrent ischemic stroke in patients with prior ischemic stroke or TIA using age, hypertension, diabetes, prior myocardial infarction, other cardiovascular disease, peripheral arterial disease, smoking, and prior ischemic events, producing a total of 0–9.",
+    howToUse: [
+      "Score age 65–75 as 1 point and age over 75 as 2 points.",
+      "Add 1 point each for hypertension, diabetes, prior myocardial infarction, other cardiovascular disease (excluding MI and atrial fibrillation), peripheral arterial disease, smoking, and prior ischemic stroke or TIA.",
+      "Sum to a total of 0–9 and classify as low (0–2) or high (3–9) risk.",
+    ],
+    interpretation: {
+      guide:
+        "Scores of 0–2 indicate low long-term recurrent stroke risk; scores of 3–9 indicate high risk and warrant aggressive secondary prevention. In patients with atrial fibrillation, use AF-specific tools (e.g., CHA2DS2-VASc) for anticoagulation decisions.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Secondary prevention planning after ischemic stroke or TIA",
+      "Identifying patients who may benefit from more intensive antithrombotic and risk-factor therapy",
+    ],
+    whenNotToUse: [
+      "To guide anticoagulation in atrial fibrillation — use CHA2DS2-VASc",
+      "For 2-day TIA risk triage — use ABCD2",
+    ],
+    limitations: [
+      "Derived from the CAPRIE cohort and does not capture all predictors of recurrence.",
+      "Does not include imaging or biomarker data.",
+      "Discrimination is modest in some validation cohorts.",
+    ],
+    example: {
+      description:
+        "A 78-year-old hypertensive diabetic patient with a prior myocardial infarction and a recent minor ischemic stroke continues to smoke.",
+      inputs: {
+        ageGroup: "2",
+        hypertension: "yes",
+        diabetes: "yes",
+        priorMi: "yes",
+        otherCvd: "no",
+        pad: "no",
+        smoking: "yes",
+        priorTiaStroke: "yes",
+      },
+      expectedResult: "ESRS 7/9 — HIGH recurrent stroke risk; aggressive secondary prevention warranted.",
+    },
+    clinicalSignificance:
+      "The ESRS supports long-term secondary prevention decisions by quantifying recurrent stroke risk, guiding the intensity of antiplatelet therapy and vascular risk-factor management.",
+    references: [
+      {
+        citation:
+          "Diener HC, Ringleb PA, Savi P. Clopidogrel for the secondary prevention of stroke. Expert Opin Pharmacother. 2005;6(5):755-764.",
+        level: "Derivation Cohort (CAPRIE)",
+      },
+      {
+        citation:
+          "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
+        level: "Validation",
+        url: "https://doi.org/10.1161/STROKEAHA.108.521419",
+      },
+    ],
+    evidence: {
+      source: "CAPRIE-derived score validated in REACH registry",
+      reference:
+        "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
+      ],
+    },
+    faq: [
+      {
+        question: "What is a high ESRS?",
+        answer:
+          "A score of 3 or more indicates high recurrent stroke risk and justifies aggressive secondary prevention.",
+      },
+      {
+        question: "Does the ESRS replace CHA2DS2-VASc?",
+        answer:
+          "No — CHA2DS2-VASc is for stroke risk in atrial fibrillation; ESRS is for recurrent stroke risk after an ischemic event.",
+      },
+    ],
+    comparison: {
+      title: "Stroke risk assessment",
+      calculators: [
+        {
+          name: "ABCD2 Score for TIA",
+          href: "/calculators/abcd2-score",
+          use: "Very early stroke risk after TIA",
+          bestFor: "Acute TIA triage",
+        },
+        {
+          name: "NIH Stroke Scale",
+          href: "/calculators/nihss",
+          use: "Acute stroke severity",
+          bestFor: "Deficit quantification",
+        },
+      ],
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The ESRS supports risk stratification; treatment decisions must follow current clinical guidelines and individual patient circumstances.",
+  },
 };

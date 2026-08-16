@@ -657,6 +657,69 @@ const testInputs: Record<string, Record<string, string>> = {
     concern: "no",
   },
 
+  // -- Sprint 1.9 Batch 7: Neurology --
+  nihss: {
+    loc: "1",
+    locQuestions: "1",
+    locCommands: "1",
+    gaze: "1",
+    visual: "1",
+    facial: "1",
+    armLeft: "2",
+    armRight: "0",
+    legLeft: "2",
+    legRight: "0",
+    ataxia: "0",
+    sensory: "1",
+    language: "1",
+    dysarthria: "1",
+    extinction: "1",
+  },
+  "abcd2-score": {
+    age: "1",
+    bloodPressure: "1",
+    clinicalFeatures: "2",
+    duration: "0",
+    diabetes: "0",
+  },
+  "hunt-hess-scale": {
+    grade: "3",
+  },
+  "modified-rankin-scale": {
+    score: "3",
+  },
+  "ottawa-sah-rule": {
+    age40: "no",
+    neckPainStiffness: "no",
+    witnessedLoc: "no",
+    exertionOnset: "no",
+    thunderclap: "no",
+    limitedNeckFlexion: "no",
+  },
+  "fout-score": {
+    eye: "3",
+    motor: "3",
+    brainstem: "3",
+    respiration: "3",
+  },
+  "race-scale": {
+    facialPalsy: "2",
+    armMotor: "1",
+    legMotor: "1",
+    gaze: "0",
+    aphasiaAgnosia: "0",
+  },
+  esrs: {
+    ageGroup: "2",
+    hypertension: "yes",
+    diabetes: "yes",
+    priorMi: "yes",
+    otherCvd: "no",
+    pad: "no",
+    smoking: "yes",
+    priorTiaStroke: "yes",
+  },
+
   // -- Sprint 1.9 Batch 4: Renal & Laboratory/Metabolic --
   "fractional-excretion-uric-acid": {
     urineUricAcid: "20",
@@ -1028,6 +1091,46 @@ const exactExpectations: Record<string, ExpectedExact> = {
   },
   "peds-pews": {
     value: 3,
+    tolerance: 0.01,
+    status: "high",
+  },
+  nihss: {
+    value: 14,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "abcd2-score": {
+    value: 4,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "hunt-hess-scale": {
+    value: 3,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "modified-rankin-scale": {
+    value: 3,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "ottawa-sah-rule": {
+    value: 0,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "fout-score": {
+    value: 12,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "race-scale": {
+    value: 4,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  esrs: {
+    value: 7,
     tolerance: 0.01,
     status: "high",
   },
@@ -2964,6 +3067,307 @@ describe("Batch 6 Direct-Call Validation Guards", () => {
     const result = batch6Calc("pediatric-hypotension").calculate({
       ageGroup: "1-10yr",
       sbp: "85",
+    });
+    expect(result.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Sprint 1.9 Batch 7 (Neurology) Direct-Call Validation Guards. Verifies that
+// guarded calculators return critical (never NaN) for missing, empty,
+// non-numeric, and negative inputs, and that clinically valid inputs remain
+// non-critical and finite. All eight Batch 7 calculators are select-only, so
+// "0" is a valid option value for every input and none are zero-guarded.
+//
+// Domain-specific boundary checks (NIHSS severity bands, ABCD2 risk strata,
+// Hunt and Hess grade outcomes, mRS levels, Ottawa SAH rule counting, FOUR
+// bands, RACE LVO threshold, and ESRS risk strata) are also exercised.
+// ---------------------------------------------------------------------------
+
+const BATCH7_NEURO_GUARDED_IDS = [
+  "nihss",
+  "abcd2-score",
+  "hunt-hess-scale",
+  "modified-rankin-scale",
+  "ottawa-sah-rule",
+  "fout-score",
+  "race-scale",
+  "esrs",
+] as const;
+
+const BATCH7_NEURO_SELECT_ONLY_IDS = new Set(BATCH7_NEURO_GUARDED_IDS);
+
+const BATCH7_NEURO_ZERO_GUARDED_IDS = BATCH7_NEURO_GUARDED_IDS.filter(
+  (id) => !BATCH7_NEURO_SELECT_ONLY_IDS.has(id),
+);
+
+const BATCH7_NEURO_VALID_INPUTS: Record<string, Record<string, string>> = {
+  nihss: { loc: "1", locQuestions: "1", locCommands: "1", gaze: "1", visual: "1", facial: "1", armLeft: "2", armRight: "0", legLeft: "2", legRight: "0", ataxia: "0", sensory: "1", language: "1", dysarthria: "1", extinction: "1" },
+  "abcd2-score": { age: "1", bloodPressure: "1", clinicalFeatures: "2", duration: "0", diabetes: "0" },
+  "hunt-hess-scale": { grade: "3" },
+  "modified-rankin-scale": { score: "3" },
+  "ottawa-sah-rule": { age40: "no", neckPainStiffness: "no", witnessedLoc: "no", exertionOnset: "no", thunderclap: "no", limitedNeckFlexion: "no" },
+  "fout-score": { eye: "3", motor: "3", brainstem: "3", respiration: "3" },
+  "race-scale": { facialPalsy: "2", armMotor: "1", legMotor: "1", gaze: "0", aphasiaAgnosia: "0" },
+  esrs: { ageGroup: "2", hypertension: "yes", diabetes: "yes", priorMi: "yes", otherCvd: "no", pad: "no", smoking: "yes", priorTiaStroke: "yes" },
+};
+
+const BATCH7_NEURO_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
+  nihss: { loc: "-1", locQuestions: "-1", locCommands: "-1", gaze: "-1", visual: "-1", facial: "-1", armLeft: "-1", armRight: "-1", legLeft: "-1", legRight: "-1", ataxia: "-1", sensory: "-1", language: "-1", dysarthria: "-1", extinction: "-1" },
+  "abcd2-score": { age: "-1", bloodPressure: "-1", clinicalFeatures: "-1", duration: "-1", diabetes: "-1" },
+  "hunt-hess-scale": { grade: "-1" },
+  "modified-rankin-scale": { score: "-1" },
+  "ottawa-sah-rule": { age40: "-1", neckPainStiffness: "-1", witnessedLoc: "-1", exertionOnset: "-1", thunderclap: "-1", limitedNeckFlexion: "-1" },
+  "fout-score": { eye: "-1", motor: "-1", brainstem: "-1", respiration: "-1" },
+  "race-scale": { facialPalsy: "-1", armMotor: "-1", legMotor: "-1", gaze: "-1", aphasiaAgnosia: "-1" },
+  esrs: { ageGroup: "-1", hypertension: "-1", diabetes: "-1", priorMi: "-1", otherCvd: "-1", pad: "-1", smoking: "-1", priorTiaStroke: "-1" },
+};
+
+const BATCH7_NEURO_ZERO_OVERRIDES: Record<string, Record<string, string>> = {};
+
+const BATCH7_NEURO_BOUNDARY_CASES: BoundaryCase[] = [
+  // NIHSS maximal severity (42)
+  {
+    id: "nihss",
+    inputs: { loc: "3", locQuestions: "2", locCommands: "2", gaze: "2", visual: "3", facial: "3", armLeft: "4", armRight: "4", legLeft: "4", legRight: "4", ataxia: "2", sensory: "2", language: "3", dysarthria: "2", extinction: "2" },
+    expectedStatus: "critical",
+    expectedValue: 42,
+  },
+  // NIHSS minor stroke (score 1)
+  {
+    id: "nihss",
+    inputs: { loc: "1", locQuestions: "0", locCommands: "0", gaze: "0", visual: "0", facial: "0", armLeft: "0", armRight: "0", legLeft: "0", legRight: "0", ataxia: "0", sensory: "0", language: "0", dysarthria: "0", extinction: "0" },
+    expectedStatus: "normal",
+    expectedValue: 1,
+  },
+  // NIHSS moderate (score 15)
+  {
+    id: "nihss",
+    inputs: { loc: "1", locQuestions: "1", locCommands: "1", gaze: "1", visual: "1", facial: "1", armLeft: "2", armRight: "1", legLeft: "1", legRight: "1", ataxia: "0", sensory: "1", language: "1", dysarthria: "1", extinction: "1" },
+    expectedStatus: "high",
+    expectedValue: 15,
+  },
+  // ABCD2 low risk (score 0)
+  {
+    id: "abcd2-score",
+    inputs: { age: "0", bloodPressure: "0", clinicalFeatures: "0", duration: "0", diabetes: "0" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // ABCD2 moderate risk (score 4)
+  {
+    id: "abcd2-score",
+    inputs: { age: "1", bloodPressure: "1", clinicalFeatures: "0", duration: "2", diabetes: "0" },
+    expectedStatus: "high",
+    expectedValue: 4,
+  },
+  // Hunt and Hess grade II
+  {
+    id: "hunt-hess-scale",
+    inputs: { grade: "2" },
+    expectedStatus: "normal",
+    expectedValue: 2,
+  },
+  // Hunt and Hess grade V
+  {
+    id: "hunt-hess-scale",
+    inputs: { grade: "5" },
+    expectedStatus: "critical",
+    expectedValue: 5,
+  },
+  // mRS 0
+  {
+    id: "modified-rankin-scale",
+    inputs: { score: "0" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // mRS 6
+  {
+    id: "modified-rankin-scale",
+    inputs: { score: "6" },
+    expectedStatus: "critical",
+    expectedValue: 6,
+  },
+  // Ottawa SAH rule negative (0 criteria)
+  {
+    id: "ottawa-sah-rule",
+    inputs: { age40: "no", neckPainStiffness: "no", witnessedLoc: "no", exertionOnset: "no", thunderclap: "no", limitedNeckFlexion: "no" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // Ottawa SAH rule positive with a single criterion
+  {
+    id: "ottawa-sah-rule",
+    inputs: { age40: "yes", neckPainStiffness: "no", witnessedLoc: "no", exertionOnset: "no", thunderclap: "no", limitedNeckFlexion: "no" },
+    expectedStatus: "critical",
+    expectedValue: 1,
+  },
+  // FOUR fully intact (16)
+  {
+    id: "fout-score",
+    inputs: { eye: "4", motor: "4", brainstem: "4", respiration: "4" },
+    expectedStatus: "normal",
+    expectedValue: 16,
+  },
+  // FOUR minimal (0)
+  {
+    id: "fout-score",
+    inputs: { eye: "0", motor: "0", brainstem: "0", respiration: "0" },
+    expectedStatus: "critical",
+    expectedValue: 0,
+  },
+  // RACE at the LVO threshold (score 5)
+  {
+    id: "race-scale",
+    inputs: { facialPalsy: "2", armMotor: "1", legMotor: "1", gaze: "1", aphasiaAgnosia: "0" },
+    expectedStatus: "critical",
+    expectedValue: 5,
+  },
+  // RACE just below the LVO threshold (score 4)
+  {
+    id: "race-scale",
+    inputs: { facialPalsy: "2", armMotor: "1", legMotor: "1", gaze: "0", aphasiaAgnosia: "0" },
+    expectedStatus: "normal",
+    expectedValue: 4,
+  },
+  // ESRS low risk (score 2)
+  {
+    id: "esrs",
+    inputs: { ageGroup: "0", hypertension: "yes", diabetes: "no", priorMi: "no", otherCvd: "no", pad: "no", smoking: "yes", priorTiaStroke: "no" },
+    expectedStatus: "normal",
+    expectedValue: 2,
+  },
+  // ESRS high risk (score 3)
+  {
+    id: "esrs",
+    inputs: { ageGroup: "1", hypertension: "yes", diabetes: "no", priorMi: "no", otherCvd: "no", pad: "no", smoking: "no", priorTiaStroke: "yes" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+];
+
+describe("Batch 7 Direct-Call Validation Guards", () => {
+  function batch7NeuroCalc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 7 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch7NeuroCalc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH7_NEURO_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch7NeuroCalc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH7_NEURO_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch7NeuroCalc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH7_NEURO_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch7NeuroCalc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH7_NEURO_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(
+        batch7NeuroCalc(id).calculate(BATCH7_NEURO_NEGATIVE_OVERRIDES[id]),
+        id,
+      );
+    },
+  );
+
+  it.each(BATCH7_NEURO_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch7NeuroCalc(id).calculate(BATCH7_NEURO_ZERO_OVERRIDES[id]), id);
+    },
+  );
+
+  it.each(BATCH7_NEURO_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch7NeuroCalc(id).calculate(BATCH7_NEURO_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it.each(BATCH7_NEURO_BOUNDARY_CASES)(
+    "%s boundary inputs yield expected status and value",
+    (tc) => {
+      const result = batch7NeuroCalc(tc.id).calculate(tc.inputs);
+      expect(result.status, `${tc.id}: unexpected status`).toBe(tc.expectedStatus);
+      if (tc.expectedValue !== undefined) {
+        expect(Math.abs(Number(result.value) - tc.expectedValue)).toBeLessThan(0.01);
+      }
+    },
+  );
+
+  it("nihss returns critical for an invalid visual-fields selection", () => {
+    const result = batch7NeuroCalc("nihss").calculate({
+      loc: "0", locQuestions: "0", locCommands: "0", gaze: "0", visual: "9", facial: "0", armLeft: "0", armRight: "0", legLeft: "0", legRight: "0", ataxia: "0", sensory: "0", language: "0", dysarthria: "0", extinction: "0",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("hunt-hess-scale returns critical for an invalid grade", () => {
+    const result = batch7NeuroCalc("hunt-hess-scale").calculate({ grade: "6" });
+    expect(result.status).toBe("critical");
+  });
+
+  it("modified-rankin-scale returns critical for an invalid score", () => {
+    const result = batch7NeuroCalc("modified-rankin-scale").calculate({ score: "7" });
+    expect(result.status).toBe("critical");
+  });
+
+  it("esrs returns critical for an invalid age-group selection", () => {
+    const result = batch7NeuroCalc("esrs").calculate({
+      ageGroup: "not-a-group",
+      hypertension: "no",
+      diabetes: "no",
+      priorMi: "no",
+      otherCvd: "no",
+      pad: "no",
+      smoking: "no",
+      priorTiaStroke: "no",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("ottawa-sah-rule returns critical for an invalid criterion value", () => {
+    const result = batch7NeuroCalc("ottawa-sah-rule").calculate({
+      age40: "maybe",
+      neckPainStiffness: "no",
+      witnessedLoc: "no",
+      exertionOnset: "no",
+      thunderclap: "no",
+      limitedNeckFlexion: "no",
     });
     expect(result.status).toBe("critical");
   });

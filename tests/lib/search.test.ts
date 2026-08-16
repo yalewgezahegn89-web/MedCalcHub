@@ -2240,3 +2240,93 @@ describe("Sprint 1.9 Batch 6 pediatrics discovery", () => {
     }
   });
 });
+
+/* ------------------------------------------------------------------
+   Sprint 1.9 Batch 7 — Neurology discovery regression tests
+   ------------------------------------------------------------------ */
+
+describe("Sprint 1.9 Batch 7 neurology discovery", () => {
+  const NEW_SLUGS = [
+    "nihss",
+    "abcd2-score",
+    "hunt-hess-scale",
+    "modified-rankin-scale",
+    "ottawa-sah-rule",
+    "fout-score",
+    "race-scale",
+    "esrs",
+  ];
+
+  it("every new calculator is in the search index", () => {
+    const index = buildSearchIndex();
+    const slugs = new Set(index.map((d) => d.slug));
+    for (const slug of NEW_SLUGS) {
+      expect(slugs.has(slug), `${slug} missing from search index`).toBe(true);
+    }
+  });
+
+  it("discovers NIH Stroke Scale via 'NIHSS' and 'stroke scale'", () => {
+    const byAbbr = searchCalculators("NIHSS").map((r) => r.document.slug);
+    const byTerm = searchCalculators("stroke scale").map((r) => r.document.slug);
+    expect(byAbbr).toContain("nihss");
+    expect(byTerm).toContain("nihss");
+  });
+
+  it("discovers ABCD2 score via 'abcd2' and 'TIA'", () => {
+    const byAbbr = searchCalculators("abcd2").map((r) => r.document.slug);
+    const byTerm = searchCalculators("TIA").map((r) => r.document.slug);
+    expect(byAbbr).toContain("abcd2-score");
+    expect(byTerm).toContain("abcd2-score");
+  });
+
+  it("discovers Hunt and Hess scale via 'hunt hess' and 'subarachnoid'", () => {
+    const byName = searchCalculators("hunt hess").map((r) => r.document.slug);
+    const byTerm = searchCalculators("subarachnoid").map((r) => r.document.slug);
+    expect(byName).toContain("hunt-hess-scale");
+    expect(byTerm).toContain("hunt-hess-scale");
+  });
+
+  it("discovers modified Rankin scale via 'rankin' and 'mRS'", () => {
+    const byName = searchCalculators("rankin").map((r) => r.document.slug);
+    const byAbbr = searchCalculators("mRS").map((r) => r.document.slug);
+    expect(byName).toContain("modified-rankin-scale");
+    expect(byAbbr).toContain("modified-rankin-scale");
+  });
+
+  it("discovers Ottawa SAH rule via 'ottawa sah' and 'thunderclap'", () => {
+    const byName = searchCalculators("ottawa sah").map((r) => r.document.slug);
+    const byTerm = searchCalculators("thunderclap").map((r) => r.document.slug);
+    expect(byName).toContain("ottawa-sah-rule");
+    expect(byTerm).toContain("ottawa-sah-rule");
+  });
+
+  it("discovers FOUR score via 'four score' and 'coma'", () => {
+    const byName = searchCalculators("four score").map((r) => r.document.slug);
+    const byTerm = searchCalculators("coma").map((r) => r.document.slug);
+    expect(byName).toContain("fout-score");
+    expect(byTerm).toContain("fout-score");
+  });
+
+  it("discovers RACE scale via 'RACE' and 'large vessel occlusion'", () => {
+    const byAbbr = searchCalculators("RACE").map((r) => r.document.slug);
+    const byTerm = searchCalculators("large vessel occlusion").map((r) => r.document.slug);
+    expect(byAbbr).toContain("race-scale");
+    expect(byTerm).toContain("race-scale");
+  });
+
+  it("discovers Essen score via 'essen' and 'recurrent stroke'", () => {
+    const byName = searchCalculators("essen").map((r) => r.document.slug);
+    const byTerm = searchCalculators("recurrent stroke").map((r) => r.document.slug);
+    expect(byName).toContain("esrs");
+    expect(byTerm).toContain("esrs");
+  });
+
+  it("each new calculator appears at most once per query", () => {
+    for (const slug of NEW_SLUGS) {
+      const slugs = searchCalculators(slug).map((r) => r.document.slug);
+      expect(slugs.length, `${slug} duplicate in results`).toBe(
+        new Set(slugs).size,
+      );
+    }
+  });
+});

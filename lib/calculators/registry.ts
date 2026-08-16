@@ -127,6 +127,15 @@ import { gorelickDehydrationCalculator } from "./gorelick-dehydration";
 import { pediatricHypotensionCalculator } from "./pediatric-hypotension";
 import { pedsPewsCalculator } from "./peds-pews";
 
+import { nihssCalculator } from "./nihss";
+import { abcd2ScoreCalculator } from "./abcd2-score";
+import { huntHessScaleCalculator } from "./hunt-hess-scale";
+import { modifiedRankinScaleCalculator } from "./modified-rankin-scale";
+import { ottawaSahRuleCalculator } from "./ottawa-sah-rule";
+import { foutScoreCalculator } from "./fout-score";
+import { raceScaleCalculator } from "./race-scale";
+import { esrsCalculator } from "./esrs";
+
 import { percRuleCalculator } from "./perc-rule";
 import { wellsPeCalculator } from "./wells-pe";
 import { wellsDvtCalculator } from "./wells-dvt";
@@ -278,6 +287,15 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   gorelickDehydrationCalculator,
   pediatricHypotensionCalculator,
   pedsPewsCalculator,
+
+  nihssCalculator,
+  abcd2ScoreCalculator,
+  huntHessScaleCalculator,
+  modifiedRankinScaleCalculator,
+  ottawaSahRuleCalculator,
+  foutScoreCalculator,
+  raceScaleCalculator,
+  esrsCalculator,
 
   percRuleCalculator,
   wellsPeCalculator,
