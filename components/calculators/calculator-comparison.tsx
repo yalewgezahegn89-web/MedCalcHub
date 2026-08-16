@@ -1,7 +1,12 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { comparisonRegistry } from "@/lib/calculators/comparisons";
+import {
+  getComparisonGroupBySlug,
+  getComparisonQuery,
+} from "@/lib/comparison";
 import type {
   ComparisonMetadata,
   ComparisonItem,
@@ -48,6 +53,12 @@ export function CalculatorComparison({
   }
 
   const title = resolveTitle(comparison);
+
+  const group = getComparisonGroupBySlug(slug);
+  const compareHref =
+    group.slugs.length >= 2
+      ? `/comparison?${getComparisonQuery(group.slugs)}`
+      : null;
 
   return (
     <Card className="rounded-2xl border p-6 shadow-sm">
@@ -100,6 +111,16 @@ export function CalculatorComparison({
           </div>
         ))}
       </div>
+
+      {compareHref && (
+        <Link
+          href={compareHref}
+          className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+        >
+          Compare side-by-side
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      )}
     </Card>
   );
 }

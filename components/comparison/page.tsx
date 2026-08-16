@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
-
 import { SectionHeader } from "@/components/ui/section-header";
 
 import {
@@ -11,10 +9,10 @@ import {
   ComparisonSelector,
 } from "@/components/comparison";
 
+import { resolveSelectedCalculators } from "@/lib/comparison";
+
 export default function ComparisonPage() {
-  const [selected, setSelected] = useState<
-    CalculatorDefinition[]
-  >([]);
+  const [selected, setSelected] = useState<string[]>([]);
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-10">
@@ -25,11 +23,12 @@ export default function ComparisonPage() {
       />
 
       <ComparisonSelector
+        selected={selected}
         onChange={setSelected}
       />
 
       <ComparisonGrid
-        calculators={selected}
+        calculators={resolveSelectedCalculators(selected)}
       />
 
     </main>

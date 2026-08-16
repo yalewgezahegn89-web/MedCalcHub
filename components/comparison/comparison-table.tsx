@@ -1,15 +1,53 @@
 "use client";
 
+import Link from "next/link";
+
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
+
+import {
+  MISSING_VALUE,
+  prepareComparisonRows,
+} from "@/lib/comparison";
 
 type Props = {
   calculators: CalculatorDefinition[];
 };
 
+function Row({
+  label,
+  cells,
+  last = false,
+}: {
+  label: string;
+  cells: string[];
+  last?: boolean;
+}) {
+  return (
+    <tr>
+      <td
+        className={`px-4 py-3 font-medium ${last ? "" : "border-b"}`}
+      >
+        {label}
+      </td>
+
+      {cells.map((cell, index) => (
+        <td
+          key={index}
+          className={`px-4 py-3 text-sm ${last ? "" : "border-b"}`}
+        >
+          {cell}
+        </td>
+      ))}
+    </tr>
+  );
+}
+
 export function ComparisonTable({
   calculators,
 }: Props) {
-  if (calculators.length < 2) {
+  const rows = prepareComparisonRows(calculators);
+
+  if (rows.length < 2) {
     return null;
   }
 
@@ -22,109 +60,71 @@ export function ComparisonTable({
               Feature
             </th>
 
-            {calculators.map((calculator) => (
+            {rows.map((row) => (
               <th
-                key={calculator.id}
+                key={row.id}
                 className="border-b px-4 py-3 text-left font-semibold"
               >
-                {calculator.shortName ?? calculator.name}
+                <Link
+                  href={`/calculators/${row.slug}`}
+                  className="hover:underline"
+                >
+                  {row.name}
+                </Link>
               </th>
             ))}
           </tr>
         </thead>
 
         <tbody>
+          <Row
+            label="Category"
+            cells={rows.map((row) => row.category)}
+          />
 
-          <tr>
-            <td className="border-b px-4 py-3 font-medium">
-              Category
-            </td>
+          <Row
+            label="Specialty"
+            cells={rows.map((row) => row.specialty)}
+          />
 
-            {calculators.map((calculator) => (
-              <td
-                key={calculator.id}
-                className="border-b px-4 py-3"
-              >
-                {calculator.category}
-              </td>
-            ))}
-          </tr>
+          <Row
+            label="Purpose / Best for"
+            cells={rows.map((row) => row.purpose)}
+          />
 
-          <tr>
-            <td className="border-b px-4 py-3 font-medium">
-              Specialty
-            </td>
+          <Row
+            label="Limitation"
+            cells={rows.map((row) => row.limitation)}
+          />
 
-            {calculators.map((calculator) => (
-              <td
-                key={calculator.id}
-                className="border-b px-4 py-3"
-              >
-                {calculator.specialty ?? "—"}
-              </td>
-            ))}
-          </tr>
+          <Row
+            label="Input fields"
+            cells={rows.map((row) =>
+              row.inputs.length > 0
+                ? row.inputs.join(", ")
+                : MISSING_VALUE,
+            )}
+          />
 
-          <tr>
-            <td className="border-b px-4 py-3 font-medium">
-              Inputs
-            </td>
+          <Row
+            label="Formula"
+            cells={rows.map((row) => row.formula)}
+          />
 
-            {calculators.map((calculator) => (
-              <td
-                key={calculator.id}
-                className="border-b px-4 py-3"
-              >
-                {calculator.inputs.length}
-              </td>
-            ))}
-          </tr>
+          <Row
+            label="Clinical notes"
+            cells={rows.map((row) => row.clinicalNotes)}
+          />
 
-          <tr>
-            <td className="border-b px-4 py-3 font-medium">
-              Formula
-            </td>
-
-            {calculators.map((calculator) => (
-              <td
-                key={calculator.id}
-                className="border-b px-4 py-3 text-sm"
-              >
-                {calculator.formula ?? "—"}
-              </td>
-            ))}
-          </tr>
-
-          <tr>
-            <td className="border-b px-4 py-3 font-medium">
-              Clinical Notes
-            </td>
-
-            {calculators.map((calculator) => (
-              <td
-                key={calculator.id}
-                className="border-b px-4 py-3 text-sm"
-              >
-                {calculator.clinicalNotes ?? "—"}
-              </td>
-            ))}
-          </tr>
-
-          <tr>
-            <td className="px-4 py-3 font-medium">
-              References
-            </td>
-
-            {calculators.map((calculator) => (
-              <td
-                key={calculator.id}
-                className="px-4 py-3 text-sm"
-              >
-                {calculator.references?.length ?? 0}
-              </td>
-            ))}
-          </tr>
-
+          <Row
+            label="References"
+            last
+            cells={rows.map((row) =>
+              row.referenceCount > 0
+                ? String(row.referenceCount)
+                : MISSING_VALUE,
+            )}
+          />
         </tbody>
       </table>
     </div>
