@@ -8522,4 +8522,456 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is for educational and clinical decision support. ECOG performance status is one input into treatment decisions, which must be individualized with clinical judgment and the patient's goals and preferences.",
   },
+
+  "meld-score": {
+    clinicalPurpose:
+      "Calculates the Model for End-stage Liver Disease (MELD) score to estimate 3-month mortality in adults with chronic liver disease and to guide liver transplant prioritization.",
+    howToUse: [
+      "Use the most recent serum bilirubin, creatinine, and INR from the same clinical assessment.",
+      "Indicate whether the patient has been on dialysis at least twice in the past week — the calculator sets creatinine to 4 mg/dL in that case, per UNOS convention.",
+      "Note that bilirubin and INR are floored at 1 and non-dialysis creatinine is capped at 4 mg/dL before scoring.",
+      "Review the score against the mortality-risk bands and the patient's clinical trajectory.",
+    ],
+    interpretation: {
+      guide:
+        "MELD <10 indicates low 3-month mortality risk; 10–19 moderate; 20–29 high; 30–39 very high; ≥40 extremely high risk. Higher scores warrant expedited transplant evaluation.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Liver transplant listing and risk stratification",
+      "Prognosis in decompensated cirrhosis",
+      "Serial monitoring of disease severity over time",
+      "Risk stratification before major interventions in cirrhotic patients",
+    ],
+    whenNotToUse: [
+      "Acute liver failure, which uses dedicated criteria rather than MELD",
+      "Pediatric patients, where PELD-based scores apply",
+      "As a substitute for a full clinical assessment, including ascites and encephalopathy",
+      "Solely to predict outcomes in non-liver surgical procedures",
+    ],
+    limitations: [
+      "Does not include ascites or hepatic encephalopathy, which carry independent prognostic information.",
+      "Creatinine depends on muscle mass, so MELD may under-estimate risk in low-muscle-mass patients.",
+      "INR assays vary between laboratories, affecting reproducibility.",
+      "The score is validated for chronic liver disease, not acute liver failure.",
+    ],
+    example: {
+      description:
+        "A 55-year-old man with decompensated alcoholic cirrhosis is being evaluated for transplant listing. Bilirubin is 2.5 mg/dL, creatinine 1.2 mg/dL, INR 1.5, and he is not on dialysis.",
+      inputs: {
+        bilirubin: "2.5",
+        creatinine: "1.2",
+        inr: "1.5",
+        dialysis: "no",
+      },
+      expectedResult:
+        "MELD = 3.78×ln(2.5) + 11.2×ln(1.5) + 9.57×ln(1.2) + 6.43 ≈ 16 — moderate 3-month mortality risk (band 10–19).",
+    },
+    clinicalSignificance:
+      "MELD is a well-validated mortality-risk score that estimates 3-month survival in chronic liver disease and historically underpinned liver transplant prioritization in the United States. Current U.S. liver allocation uses the MELD 3.0 model (adopted July 2023), which incorporates albumin, sex, and updated coefficients rather than the classic MELD formula.",
+    references: [
+      {
+        citation: "Kamath PS, et al. A model to predict survival in patients with end-stage liver disease. Hepatology. 2001.",
+        level: "Original model",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. Classic MELD is a prognostic mortality-risk score; current U.S. liver allocation uses the MELD 3.0 model. Transplant decisions must incorporate the full clinical picture and institutional policies.",
+  },
+
+  "meld-na-score": {
+    clinicalPurpose:
+      "Calculates the MELD-Na score, which adds serum sodium to the MELD model to improve 3-month mortality prediction in advanced liver disease. MELD-Na is a widely used prognostic model for transplant waitlist mortality; U.S. liver allocation transitioned to the MELD 3.0 model in July 2023.",
+    howToUse: [
+      "Enter the most recent serum bilirubin, creatinine, INR, and sodium.",
+      "Indicate whether the patient has been on dialysis at least twice in the past week (creatinine is set to 4 mg/dL).",
+      "Serum sodium is clamped between 125 and 137 mmol/L by the model before calculation.",
+      "Review the score against the same mortality-risk bands used for MELD.",
+    ],
+    interpretation: {
+      guide:
+        "MELD-Na <10 indicates low 3-month mortality risk; 10–19 moderate; 20–29 high; 30–39 very high; ≥40 extremely high risk. Sodium below 137 mmol/L raises the score because hyponatremia worsens prognosis.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Transplant waitlist risk assessment in cirrhosis",
+      "Prognosis in cirrhosis with hyponatremia",
+      "Serial severity monitoring in decompensated liver disease",
+    ],
+    whenNotToUse: [
+      "Acute liver failure, which is not modeled by MELD-Na",
+      "Pediatric patients (PELD-based allocation applies)",
+      "When serum sodium is unreliable, such as with recent aggressive diuresis or hypotonic fluid administration",
+      "As a replacement for clinical assessment of ascites and encephalopathy",
+    ],
+    limitations: [
+      "Sodium is clamped to a maximum of 137 mmol/L, so the score does not reward supra-normal sodium.",
+      "Non-hepatic causes of hyponatremia (e.g., SIADH, diuretics) can bias the score.",
+      "Retains the creatinine/INR caveats of the underlying MELD model.",
+    ],
+    example: {
+      description:
+        "A 60-year-old woman with cirrhosis and ascites is listed for transplant. Bilirubin is 2.5 mg/dL, creatinine 1.2 mg/dL, INR 1.5, sodium 130 mmol/L, and she is not on dialysis.",
+      inputs: {
+        bilirubin: "2.5",
+        creatinine: "1.2",
+        inr: "1.5",
+        sodium: "130",
+        dialysis: "no",
+      },
+      expectedResult:
+        "MELD ≈ 16; MELD-Na = 16 + 1.32×(137−130) − 0.033×16×(137−130) ≈ 22 — high 3-month mortality risk (band 20–29).",
+    },
+    clinicalSignificance:
+      "MELD-Na was adopted by UNOS for liver allocation because adding serum sodium improves mortality prediction compared with MELD alone, particularly in patients with hyponatremia. U.S. liver allocation transitioned to the MELD 3.0 model in July 2023.",
+    references: [
+      {
+        citation: "Kim WR, et al. Hyponatremia and mortality among patients on the liver-transplant waiting list. N Engl J Med. 2008;359:1018-1026.",
+        level: "Original model",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. MELD-Na is one component of transplant evaluation; allocation decisions follow current institutional and UNOS/OPTN policy (MELD 3.0 in the United States).",
+  },
+
+  "fib-4-index": {
+    clinicalPurpose:
+      "Calculates the FIB-4 index, a non-invasive score using age, AST, ALT, and platelet count to estimate the probability of advanced liver fibrosis in chronic liver disease.",
+    howToUse: [
+      "Enter the patient's age, AST, ALT, and platelet count.",
+      "Use steady-state liver enzymes rather than values from an acute hepatitis flare.",
+      "Interpret the result against the 1.30 and 2.67 thresholds.",
+      "For indeterminate results, consider additional testing such as elastography before referral decisions.",
+    ],
+    interpretation: {
+      guide:
+        "FIB-4 <1.30 indicates low probability of advanced fibrosis; 1.30–2.67 is indeterminate (intermediate risk); >2.67 indicates high probability of advanced fibrosis. Performance is reduced under age 35.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Screening for advanced fibrosis in NAFLD/MASLD and viral hepatitis",
+      "Primary-care risk stratification before hepatology referral",
+      "Serial follow-up of fibrosis risk in chronic liver disease",
+    ],
+    whenNotToUse: [
+      "Patients younger than 35 years, where the score underperforms",
+      "Acute hepatitis flares with rapidly changing transaminases",
+      "Children and adolescents",
+      "To replace elastography or biopsy when fibrosis staging is required",
+    ],
+    limitations: [
+      "The indeterminate range (1.30–2.67) requires further evaluation and does not resolve the question alone.",
+      "Age heavily influences the score, limiting accuracy at extremes.",
+      "Thrombocytopenia from non-hepatic causes confounds the platelet component.",
+    ],
+    example: {
+      description:
+        "A 55-year-old man with metabolic dysfunction-associated steatohepatitis has AST 45 U/L, ALT 60 U/L, and platelets 200 ×10⁹/L.",
+      inputs: {
+        age: "55",
+        ast: "45",
+        alt: "60",
+        platelets: "200",
+      },
+      expectedResult:
+        "FIB-4 = (55 × 45) / (200 × √60) ≈ 1.6 — indeterminate risk (1.30–2.67); further assessment with elastography is reasonable.",
+    },
+    clinicalSignificance:
+      "FIB-4 is a widely recommended first-line, inexpensive fibrosis risk tool that helps primary-care clinicians identify patients needing specialty evaluation without unnecessary liver biopsy.",
+    references: [
+      {
+        citation: "Sterling RK, et al. Development of a simple noninvasive index to predict significant fibrosis in patients with HIV/HCV coinfection. Hepatology. 2006;43:1317-1325.",
+        level: "Original model",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. FIB-4 is a screening index and does not replace clinical evaluation or confirmatory fibrosis testing.",
+  },
+
+  "apri-score": {
+    clinicalPurpose:
+      "Calculates the AST-to-Platelet Ratio Index (APRI) to estimate the likelihood of significant liver fibrosis and cirrhosis from AST and platelet count, particularly in chronic hepatitis.",
+    howToUse: [
+      "Enter the patient's AST, the AST upper limit of normal (ULN) for the laboratory, and the platelet count.",
+      "Confirm the correct local ULN, because the result scales directly with the ratio AST/ULN.",
+      "Interpret the score against the 0.5, 1.5, and 2.0 thresholds.",
+    ],
+    interpretation: {
+      guide:
+        "APRI <0.5 indicates low likelihood of significant fibrosis; 0.5–1.5 intermediate probability; >1.5 significant fibrosis is likely; >2.0 is suggestive of cirrhosis.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Non-invasive fibrosis estimation in chronic hepatitis, especially HCV",
+      "WHO-endorsed fibrosis screening in resource-limited settings",
+      "Risk stratification where elastography is unavailable",
+    ],
+    whenNotToUse: [
+      "Acute hepatitis with a transient AST flare",
+      "Thrombocytopenia due to non-portal-hypertension causes",
+      "Children and adolescents",
+      "When the laboratory AST ULN is uncertain",
+    ],
+    limitations: [
+      "The result depends on the chosen AST ULN, which varies between laboratories.",
+      "Accuracy is lowest in the intermediate band (0.5–1.5).",
+      "Platelet disorders unrelated to fibrosis confound the score.",
+      "The model is best validated in chronic hepatitis C.",
+    ],
+    example: {
+      description:
+        "A 48-year-old man with chronic hepatitis C has AST 120 U/L, an AST upper limit of normal of 40 U/L, and platelets 150 ×10⁹/L.",
+      inputs: {
+        ast: "120",
+        uln: "40",
+        platelets: "150",
+      },
+      expectedResult:
+        "APRI = ((120 / 40) × 100) / 150 = 2.0 — significant fibrosis is likely, bordering the cirrhosis threshold (>2.0).",
+    },
+    clinicalSignificance:
+      "APRI is a simple, laboratory-only index endorsed by WHO for fibrosis screening in chronic hepatitis, enabling risk stratification in settings without access to elastography.",
+    references: [
+      {
+        citation: "Wai CT, et al. A simple noninvasive index can predict both significant fibrosis and cirrhosis in patients with chronic hepatitis C. Hepatology. 2003;38:518-526.",
+        level: "Original model",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. APRI is a screening index; fibrosis stage should be confirmed with further testing when clinically indicated.",
+  },
+
+  "rockall-score": {
+    clinicalPurpose:
+      "Calculates the Rockall score to predict mortality and the risk of rebleeding after acute upper gastrointestinal bleeding using clinical and endoscopic findings.",
+    howToUse: [
+      "Select the age band, shock category, comorbidity, endoscopic diagnosis, and major stigmata of recent hemorrhage.",
+      "The full Rockall score requires endoscopic findings, so complete it after endoscopy.",
+      "Interpret the total score against the 0–2, 3–4, and ≥5 bands.",
+    ],
+    interpretation: {
+      guide:
+        "Rockall 0–2 indicates low risk of mortality and rebleeding; 3–4 moderate risk with close monitoring; ≥5 high risk of mortality and recurrent bleeding requiring urgent specialist management.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Post-endoscopy risk stratification in upper GI bleeding",
+      "Estimating mortality in hospitalized patients with UGIB",
+      "Guiding the intensity of monitoring and follow-up endoscopy",
+    ],
+    whenNotToUse: [
+      "Pre-endoscopy triage in the emergency department, where scores such as the Glasgow-Blatchford are used",
+      "Isolated lower GI bleeding",
+      "Children",
+    ],
+    limitations: [
+      "The full score requires endoscopic findings and cannot be completed before endoscopy.",
+      "Comorbidity weighting is coarse and may under-represent complex illness.",
+      "It predicts mortality/rebleeding but was not designed to decide pre-endoscopy admission.",
+    ],
+    example: {
+      description:
+        "An 82-year-old man presents with hematemesis. He is tachycardic but not hypotensive. Endoscopy shows a non-bleeding ulcer without major stigmata.",
+      inputs: {
+        age: "2",
+        shock: "1",
+        comorbidity: "0",
+        diagnosis: "1",
+        stigmata: "0",
+      },
+      expectedResult:
+        "Rockall score = 2 + 1 + 0 + 1 + 0 = 4 — moderate risk of mortality and rebleeding; close monitoring is recommended.",
+    },
+    clinicalSignificance:
+      "The Rockall score is a well-validated tool for predicting mortality after upper GI bleeding and complements pre-endoscopy scores such as the Glasgow-Blatchford score.",
+    references: [
+      {
+        citation: "Rockall TA, et al. Risk assessment after acute upper gastrointestinal haemorrhage. Gut. 1996;38:316-321.",
+        level: "Original score",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. Risk scores inform but do not replace clinical judgment in the management of upper GI bleeding.",
+  },
+
+  "glasgow-blatchford-score": {
+    clinicalPurpose:
+      "Calculates the Glasgow-Blatchford score to predict the need for endoscopic intervention, transfusion, or death in patients presenting with suspected upper gastrointestinal bleeding.",
+    howToUse: [
+      "Enter BUN, hemoglobin, systolic blood pressure, and pulse from the presentation.",
+      "Indicate the presence of melena, syncope, known hepatic disease, and known cardiac failure.",
+      "A score of 0 identifies very low-risk patients in whom outpatient management may be appropriate.",
+    ],
+    interpretation: {
+      guide:
+        "Glasgow-Blatchford 0 indicates very low risk, and outpatient management may be appropriate; 1–5 low risk with hospital assessment; 6–12 moderate risk with endoscopic evaluation; ≥13 high risk requiring urgent resuscitation and endoscopy.",
+      sexSpecific: true,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Emergency department triage of suspected upper GI bleeding",
+      "Deciding between admission and outpatient management",
+      "Pre-endoscopy risk stratification",
+    ],
+    whenNotToUse: [
+      "Established variceal bleeding, where portal-hypertension-specific scores apply",
+      "Melena of uncertain gastrointestinal origin",
+      "Children",
+    ],
+    limitations: [
+      "BUN can be elevated by prerenal states unrelated to bleeding, inflating the score.",
+      "The score estimates the need for intervention rather than predicting rebleeding.",
+      "Validated chiefly in acute non-variceal upper GI bleeding.",
+    ],
+    example: {
+      description:
+        "A 58-year-old man with melena has BUN 35 mg/dL, hemoglobin 10.5 g/dL, SBP 105 mmHg, pulse 105 bpm, no syncope, and no known hepatic or cardiac disease.",
+      inputs: {
+        bun: "35",
+        hemoglobin: "10.5",
+        sex: "male",
+        sbp: "105",
+        pulse: "105",
+        melena: "yes",
+        syncope: "no",
+        hepatic: "no",
+        cardiac: "no",
+      },
+      expectedResult:
+        "Glasgow-Blatchford score = 4 (BUN) + 3 (hemoglobin) + 1 (SBP) + 1 (pulse) + 1 (melena) = 10 — moderate risk; endoscopic evaluation is recommended.",
+    },
+    clinicalSignificance:
+      "A Glasgow-Blatchford score of 0 is supported by NICE guidance as identifying patients safe for outpatient management, helping avoid unnecessary admissions in low-risk upper GI bleeding.",
+    references: [
+      {
+        citation: "Blatchford O, et al. A risk score to predict need for treatment for upper-gastrointestinal haemorrhage. Lancet. 2000;356:1318-1321.",
+        level: "Original score",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The Glasgow-Blatchford score supports triage decisions but does not replace clinical judgment.",
+  },
+
+  "maddrey-discriminant-function": {
+    clinicalPurpose:
+      "Calculates the Maddrey Discriminant Function to identify severe alcoholic hepatitis, in which corticosteroid therapy may be considered.",
+    howToUse: [
+      "Enter the patient's prothrombin time, the control (reference) prothrombin time, and total bilirubin.",
+      "The score uses the difference between patient and control prothrombin times.",
+      "A value ≥32 defines severe alcoholic hepatitis and triggers consideration of corticosteroids if no contraindications exist.",
+    ],
+    interpretation: {
+      guide:
+        "MDF <32 indicates mild alcoholic hepatitis with a less ominous short-term prognosis; MDF ≥32 indicates severe alcoholic hepatitis, where corticosteroid therapy should be considered in the absence of contraindications.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Suspected alcoholic hepatitis",
+      "Identifying candidates for corticosteroid therapy",
+      "Initial severity assessment in acute-on-chronic alcohol-related liver disease",
+    ],
+    whenNotToUse: [
+      "Without a secure diagnosis of alcoholic hepatitis",
+      "When corticosteroids are contraindicated",
+      "Other causes of acute liver injury or cholestatic disease",
+      "Children",
+    ],
+    limitations: [
+      "Requires a control prothrombin time and is sensitive to laboratory variation.",
+      "Diagnosis of alcoholic hepatitis itself rests on clinical and often biopsy-based criteria.",
+      "The score does not capture treatment response, which is assessed separately (e.g., with the Lille score).",
+    ],
+    example: {
+      description:
+        "A 45-year-old man with heavy alcohol use and clinical alcoholic hepatitis has a prothrombin time of 20 seconds (control 13 seconds) and total bilirubin 8 mg/dL.",
+      inputs: {
+        patient_pt: "20",
+        control_pt: "13",
+        bilirubin: "8",
+      },
+      expectedResult:
+        "MDF = 4.6 × (20 − 13) + 8 = 40.2 — severe alcoholic hepatitis (MDF ≥32); corticosteroid therapy should be considered if no contraindications exist.",
+    },
+    clinicalSignificance:
+      "The MDF ≥32 threshold is the classic criterion for severe alcoholic hepatitis and remains central to deciding which patients may benefit from corticosteroid therapy.",
+    references: [
+      {
+        citation: "Maddrey WC, et al. Corticosteroid therapy of alcoholic hepatitis. Gastroenterology. 1978;75:193-199.",
+        level: "Original score",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The diagnosis of alcoholic hepatitis and treatment decisions must be individualized with clinical judgment.",
+  },
+
+  "nafld-fibrosis-score": {
+    clinicalPurpose:
+      "Calculates the NAFLD Fibrosis Score to estimate the probability of advanced fibrosis non-invasively in patients with NAFLD/MASLD.",
+    howToUse: [
+      "Enter age, BMI, diabetes/impaired fasting glucose status, AST, ALT, platelet count, and albumin.",
+      "Confirm the patient has a diagnosis of NAFLD/MASLD before applying the score.",
+      "Interpret the result against the −1.455 and 0.676 thresholds.",
+    ],
+    interpretation: {
+      guide:
+        "NFS <−1.455 indicates low probability of advanced fibrosis; −1.455 to 0.676 is indeterminate; >0.676 indicates high probability of advanced fibrosis.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Risk-stratifying patients with NAFLD/MASLD in primary care",
+      "Triaging which patients need hepatology referral",
+      "Estimating advanced fibrosis risk when elastography is not available",
+    ],
+    whenNotToUse: [
+      "Liver disease other than NAFLD/MASLD",
+      "Acute liver injury with unstable transaminases",
+      "Children and adolescents",
+      "To stage fibrosis when indeterminate — confirm with elastography or biopsy",
+    ],
+    limitations: [
+      "Accuracy is limited in the indeterminate band, which requires further evaluation.",
+      "The diabetes/IFG input is binary and does not capture glycemic detail.",
+      "Requires albumin measurement and is best validated in NAFLD cohorts.",
+    ],
+    example: {
+      description:
+        "A 58-year-old man with MASLD and type 2 diabetes has BMI 32 kg/m², AST 60 U/L, ALT 40 U/L, platelets 180 ×10⁹/L, and albumin 3.8 g/dL.",
+      inputs: {
+        age: "58",
+        bmi: "32",
+        diabetes: "1",
+        ast: "60",
+        alt: "40",
+        platelets: "180",
+        albumin: "3.8",
+      },
+      expectedResult:
+        "NFS = −1.675 + 0.037(58) + 0.094(32) + 1.13(1) + 0.99(60/40) − 0.013(180) − 0.66(3.8) ≈ 1.246 — high probability of advanced fibrosis (>0.676).",
+    },
+    clinicalSignificance:
+      "The NAFLD Fibrosis Score is an AASLD-endorsed, non-invasive tool that helps identify patients with NAFLD/MASLD at risk of advanced fibrosis, reducing unnecessary biopsies.",
+    references: [
+      {
+        citation: "Angulo P, et al. The NAFLD fibrosis score: a noninvasive system that identifies liver fibrosis in patients with NAFLD. Hepatology. 2007;45:846-854.",
+        level: "Original score",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The NAFLD Fibrosis Score is a screening tool and does not replace clinical evaluation or confirmatory fibrosis testing.",
+  },
 };

@@ -166,6 +166,17 @@ const BATCH_17_SLUGS = [
   "ecog",
 ] as const;
 
+const BATCH_18_SLUGS = [
+  "apri-score",
+  "fib-4-index",
+  "glasgow-blatchford-score",
+  "maddrey-discriminant-function",
+  "meld-score",
+  "meld-na-score",
+  "nafld-fibrosis-score",
+  "rockall-score",
+] as const;
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -1202,6 +1213,7 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
       ...BATCH_15_SLUGS,
       ...BATCH_16_SLUGS,
       ...BATCH_17_SLUGS,
+      ...BATCH_18_SLUGS,
     ]).size;
     expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
   });
@@ -1862,12 +1874,156 @@ describe("Clinical Content — Sprint 1.9 Batch 17 (General Medicine)", () => {
   });
 });
 
+describe("Clinical Content — Sprint 1.9 Batch 18 (GI/Hepatology)", () => {
+  const batch18VerifiedValues: Record<string, string | number> = {
+    "apri-score": 2,
+    "fib-4-index": 1.6,
+    "glasgow-blatchford-score": 10,
+    "maddrey-discriminant-function": 40.2,
+    "meld-score": 16,
+    "meld-na-score": 22,
+    "nafld-fibrosis-score": 1.246,
+    "rockall-score": 4,
+  };
+
+  it("every batch-18 calculator has clinical content", () => {
+    for (const slug of BATCH_18_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(getClinicalContent(slug)).toBe(content);
+    }
+  });
+
+  it("every batch-18 record has the full core field set", () => {
+    for (const slug of BATCH_18_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(content!.clinicalPurpose, `${slug}.clinicalPurpose`).toBeDefined();
+      expect(content!.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(content!.howToUse!.length).toBeGreaterThan(0);
+      expect(content!.interpretation, `${slug}.interpretation`).toBeDefined();
+      expect(
+        content!.interpretation!.guide,
+        `${slug}.interpretation.guide`,
+      ).toBeDefined();
+      expect(content!.whenToUse, `${slug}.whenToUse`).toBeDefined();
+      expect(content!.whenToUse!.length).toBeGreaterThan(0);
+      expect(content!.whenNotToUse, `${slug}.whenNotToUse`).toBeDefined();
+      expect(content!.whenNotToUse!.length).toBeGreaterThan(0);
+      expect(content!.limitations, `${slug}.limitations`).toBeDefined();
+      expect(content!.limitations!.length).toBeGreaterThan(0);
+      expect(content!.example, `${slug}.example`).toBeDefined();
+      expect(
+        content!.example!.description,
+        `${slug}.example.description`,
+      ).toBeDefined();
+      expect(content!.example!.inputs, `${slug}.example.inputs`).toBeDefined();
+      expect(
+        Object.keys(content!.example!.inputs!).length,
+        `${slug}.example.inputs keys`,
+      ).toBeGreaterThan(0);
+      expect(
+        content!.example!.expectedResult,
+        `${slug}.example.expectedResult`,
+      ).toBeDefined();
+      expect(
+        content!.clinicalSignificance,
+        `${slug}.clinicalSignificance`,
+      ).toBeDefined();
+      expect(content!.references, `${slug}.references`).toBeDefined();
+      expect(content!.references!.length).toBeGreaterThan(0);
+      expect(content!.disclaimer, `${slug}.disclaimer`).toBeDefined();
+    }
+  });
+
+  it("every batch-18 example input key matches a registered calculator input", () => {
+    for (const slug of BATCH_18_SLUGS) {
+      const calc = calculatorRegistry.find((c) => c.slug === slug);
+      expect(calc, `${slug} has no registered calculator`).toBeDefined();
+      const inputIds = new Set(calc!.inputs.map((i) => i.id));
+      const content = clinicalContentRegistry[slug];
+      for (const key of Object.keys(content!.example!.inputs!)) {
+        expect(
+          inputIds.has(key),
+          `${slug} example key "${key}" is not a calculator input`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("every batch-18 worked example executes without a missing-input error", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_18_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      const isMissingInput =
+        typeof result.value === "number" &&
+        result.value === 0 &&
+        result.status === "critical" &&
+        result.interpretation !== undefined &&
+        /required/i.test(result.interpretation);
+      expect(
+        isMissingInput,
+        `${slug} example produced a missing-input error: "${result.interpretation}"`,
+      ).toBe(false);
+    }
+  });
+
+  it("every batch-18 worked example matches verified output", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_18_SLUGS) {
+      const expected = batch18VerifiedValues[slug];
+      expect(expected, `${slug} has no verified example value`).toBeDefined();
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      expect(typeof expected, `${slug} expected value`).toBe("number");
+      expect(result.value as number, `${slug} numeric consistency`).toBeCloseTo(
+        expected as number,
+        1,
+      );
+    }
+  });
+
+  it("every batch-18 calculator is registered under the Gastroenterology category", () => {
+    for (const slug of BATCH_18_SLUGS) {
+      const calc = calculatorRegistry.find((c) => c.slug === slug);
+      expect(calc, `${slug} has no registered calculator`).toBeDefined();
+      expect(calc!.category, `${slug}.category`).toBe("Gastroenterology");
+    }
+  });
+
+  it("does not describe classic MELD as the current U.S. liver allocation model", () => {
+    const content = clinicalContentRegistry["meld-score"];
+    expect(content).toBeDefined();
+    expect(content!.clinicalSignificance).toContain("MELD 3.0");
+    expect(content!.clinicalSignificance).toMatch(/mortality-risk score/i);
+    expect(content!.clinicalSignificance).not.toMatch(
+      /standard risk model used for liver transplant allocation in the United States/i,
+    );
+  });
+
+  it("does not describe MELD-Na as the current U.S. liver allocation model", () => {
+    const content = clinicalContentRegistry["meld-na-score"];
+    expect(content).toBeDefined();
+    expect(content!.clinicalSignificance).toContain("MELD 3.0");
+    expect(content!.clinicalPurpose).not.toMatch(
+      /basis for current liver allocation/i,
+    );
+    expect(content!.whenToUse!.join(" ")).not.toMatch(
+      /MELD-Na is the current standard/i,
+    );
+  });
+});
 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 120 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(120);
+  it("all 128 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(128);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -2021,7 +2177,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     ]).size;
     expect(expected).toBe(86);
     expect(ALL_SLUGS.length).toBe(
-      expected + BATCH_14_SLUGS.length + BATCH_15_SLUGS.length + BATCH_16_SLUGS.length + BATCH_17_SLUGS.length,
+      expected + BATCH_14_SLUGS.length + BATCH_15_SLUGS.length + BATCH_16_SLUGS.length + BATCH_17_SLUGS.length + BATCH_18_SLUGS.length,
     );
     expect(getClinicalContent("anion-gap")).toBe(
       clinicalContentRegistry["anion-gap"],
@@ -2042,18 +2198,10 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     "levothyroxine-dose",
     "adrenal-steroid-converter",
     "a-a-gradient",
-    "apri-score",
     "edd",
-    "fib-4-index",
     "gestational-age",
-    "glasgow-blatchford-score",
-    "maddrey-discriminant-function",
-    "meld-score",
-    "meld-na-score",
-    "nafld-fibrosis-score",
     "oxygen-index",
     "pf-ratio",
-    "rockall-score",
     "rox-index",
   ];
 
@@ -2162,10 +2310,10 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     ecog: 2,
   };
 
-  it("reports the final coverage totals (141 registered, 120 with content, 21 deferred)", () => {
+  it("reports the final coverage totals (141 registered, 128 with content, 13 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
     expect(calculatorRegistry.length).toBe(141);
-    expect(contentSlugs.size).toBe(120);
+    expect(contentSlugs.size).toBe(128);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,
