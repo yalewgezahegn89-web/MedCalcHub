@@ -2895,3 +2895,176 @@ describe("Clinical Content — Sprint 1.9 Batch 13A P1 Remediation", () => {
     ).toBe(true);
   });
 });
+
+describe("Clinical Content — Sprint 1.9 Batch 13B P2 Editorial Remediation", () => {
+  const exampleOf = (slug: string) => clinicalContentRegistry[slug]!.example!;
+
+  it("timi example narrative lists three CAD risk factors to match risk-factors = 1", () => {
+    const desc = exampleOf("timi").description!;
+    expect(desc).toContain("hypertension");
+    expect(desc).toContain("diabetes");
+    expect(desc).toContain("hyperlipidemia");
+    expect(exampleOf("timi").inputs!["risk-factors"]).toBe("1");
+  });
+
+  it("grace example narrative heart rate matches the 90–109 bpm band", () => {
+    const desc = exampleOf("grace").description!;
+    expect(desc).toContain("heart rate 100 bpm");
+    expect(desc).not.toContain("110 bpm");
+    expect(exampleOf("grace").inputs!["heart-rate"]).toBe("15");
+  });
+
+  it("nihss example narrative laterality matches the left-sided motor scores", () => {
+    const desc = exampleOf("nihss").description!;
+    expect(desc).toContain("left-sided weakness");
+    expect(desc).not.toContain("right-sided weakness");
+    expect(exampleOf("nihss").inputs!["armLeft"]).toBe("2");
+    expect(exampleOf("nihss").inputs!["legLeft"]).toBe("2");
+  });
+
+  it("stop-bang example narrative no longer claims witnessed apnea", () => {
+    const desc = exampleOf("stop-bang").description!;
+    expect(desc).toContain("has not witnessed");
+    expect(desc).not.toContain("has witnessed him stop breathing");
+    expect(exampleOf("stop-bang").inputs!["observedApnea"]).toBe("no");
+  });
+
+  it("barthel example narrative matches the item scores", () => {
+    const desc = exampleOf("barthel").description!;
+    const inputs = exampleOf("barthel").inputs!;
+    expect(inputs["feeding"]).toBe("5");
+    expect(inputs["grooming"]).toBe("5");
+    expect(inputs["transfers"]).toBe("15");
+    expect(inputs["stairs"]).toBe("5");
+    expect(desc).toContain("needs help with feeding and stairs");
+    expect(desc).toContain(
+      "independent in grooming, dressing, bowel control, toilet use, and transfers",
+    );
+  });
+
+  it("corrected-sodium example output wording matches the runtime low status", () => {
+    const expected = exampleOf("corrected-sodium").expectedResult!;
+    expect(expected).toContain("remains mildly low");
+    expect(expected).not.toContain("near-normal");
+    const result = calculatorRegistry
+      .find((c) => c.slug === "corrected-sodium")!
+      .calculate(exampleOf("corrected-sodium").inputs!);
+    expect(result.value).toBeCloseTo(134.4, 1);
+    expect(result.interpretation).toBe("Hyponatremia (corrected)");
+  });
+
+  it("waist-to-hip-ratio example includes the required sex input", () => {
+    const inputs = exampleOf("waist-to-hip-ratio").inputs!;
+    expect(inputs["sex"]).toBe("1");
+    const result = calculatorRegistry
+      .find((c) => c.slug === "waist-to-hip-ratio")!
+      .calculate(inputs);
+    expect(result.value).toBeCloseTo(0.95, 2);
+    expect(result.interpretation).toBe("Moderate risk (Males)");
+  });
+
+  it("glasgow-blatchford howToUse instructs the user to provide sex", () => {
+    const howToUse = clinicalContentRegistry["glasgow-blatchford-score"]!
+      .howToUse!;
+    expect(
+      howToUse.some((step) => /sex/i.test(step)),
+    ).toBe(true);
+    expect(
+      howToUse.some((step) => /sex-specific/i.test(step)),
+    ).toBe(true);
+  });
+
+  it("insulin-sensitivity boundary wording matches the runtime ≤ 0.2 band", () => {
+    const guide = clinicalContentRegistry["insulin-sensitivity"]!
+      .interpretation!.guide!;
+    expect(guide).toContain("> 0.4");
+    expect(guide).toContain("between 0.2 and 0.4");
+    expect(guide).toContain("0.2 or less");
+    expect(guide).not.toContain("< 0.2");
+    const is = calculatorRegistry.find(
+      (c) => c.slug === "insulin-sensitivity",
+    )!;
+    expect(is.calculate({ homaIr: "5" }).interpretation).toBe(
+      "Severe insulin resistance",
+    );
+    expect(is.calculate({ homaIr: "2.5" }).interpretation).toBe(
+      "Reduced insulin sensitivity",
+    );
+    expect(is.calculate({ homaIr: "2" }).interpretation).toBe(
+      "Normal insulin sensitivity",
+    );
+  });
+
+  it("estimated-average-glucose boundary wording matches the runtime bands", () => {
+    const guide = clinicalContentRegistry["estimated-average-glucose"]!
+      .interpretation!.guide!;
+    expect(guide).toContain("eAG ≤140 mg/dL is normal");
+    expect(guide).toContain("above 140 up to 200");
+    expect(guide).toContain(">200 mg/dL is in the diabetic range");
+    expect(guide).not.toContain("<140 mg/dL is normal");
+    expect(guide).not.toContain("≥200 mg/dL is in the diabetic range");
+    const eag = calculatorRegistry.find(
+      (c) => c.slug === "estimated-average-glucose",
+    )!;
+    expect(eag.calculate({ a1c: "6.5" }).interpretation).toBe(
+      "Normal average glucose",
+    );
+    expect(eag.calculate({ a1c: "8.59" }).interpretation).toBe(
+      "Pre-diabetic range",
+    );
+    expect(eag.calculate({ a1c: "8.6" }).interpretation).toBe(
+      "Diabetic range",
+    );
+  });
+
+  it("has-bled instructions describe renal and liver criteria separately", () => {
+    const howToUse = clinicalContentRegistry["has-bled"]!.howToUse!;
+    expect(
+      howToUse.some((step) => step.includes("abnormal renal function")),
+    ).toBe(true);
+    expect(
+      howToUse.some((step) => step.includes("abnormal liver function")),
+    ).toBe(true);
+    expect(
+      howToUse.some((step) => step.includes("renal/liver")),
+    ).toBe(false);
+  });
+
+  it("thyroid-dose and levothyroxine-dose content are distinct but accurate", () => {
+    const t = clinicalContentRegistry["thyroid-dose"]!;
+    const l = clinicalContentRegistry["levothyroxine-dose"]!;
+    expect(t.clinicalPurpose).not.toBe(l.clinicalPurpose);
+    expect(t.howToUse![2]).not.toBe(l.howToUse![2]);
+    for (const c of [t, l]) {
+      expect(
+        c.howToUse!.some((step) =>
+          step.includes("does not incorporate age, cardiac risk, or pregnancy"),
+        ),
+      ).toBe(true);
+      expect(c.disclaimer).toContain("not a prescription");
+    }
+  });
+
+  it("the eight P2 disclaimers use the standardized opener", () => {
+    const slugs = [
+      "phq-9",
+      "gad-7",
+      "epworth",
+      "stop-bang",
+      "centor",
+      "charlson",
+      "barthel",
+      "ecog",
+    ];
+    for (const slug of slugs) {
+      const disclaimer = clinicalContentRegistry[slug]!.disclaimer!;
+      expect(
+        disclaimer.startsWith(
+          "This calculator is intended for educational and clinical decision support purposes only.",
+        ),
+        `${slug} disclaimer opener`,
+      ).toBe(true);
+      expect(disclaimer.length).toBeGreaterThan(90);
+    }
+  });
+});

@@ -360,7 +360,7 @@ export const clinicalContentRegistry: Record<
         glucose: "500",
       },
       expectedResult:
-        "Corrected sodium ≈ 128 + 1.6 × (500−100)/100 = 128 + 6.4 = 134.4 mmol/L. The corrected sodium is near-normal, suggesting that the low measured sodium is primarily due to glucose-driven dilution.",
+        "Corrected sodium ≈ 128 + 1.6 × (500−100)/100 = 128 + 6.4 = 134.4 mmol/L. The corrected value remains mildly low, showing that glucose-driven dilution accounts for a large part (6.4 mmol/L) of the measured fall.",
     },
     clinicalSignificance:
       "In hyperglycemic states, water shifts from the intracellular to the extracellular space, diluting serum sodium. Without correction, the true sodium status may be masked, leading to inappropriate fluid management.",
@@ -1240,7 +1240,7 @@ export const clinicalContentRegistry: Record<
     ],
     interpretation: {
       guide:
-        "A score > 0.4 is generally considered good insulin sensitivity; 0.2–0.4 suggests reduced sensitivity; and < 0.2 indicates significant insulin resistance.",
+        "A score > 0.4 indicates good insulin sensitivity; a score between 0.2 and 0.4 suggests reduced sensitivity; and a score of 0.2 or less indicates significant insulin resistance.",
       sexSpecific: false,
       ageSpecific: false,
     },
@@ -1985,7 +1985,7 @@ export const clinicalContentRegistry: Record<
     ],
     interpretation: {
       guide:
-        "eAG <140 mg/dL is normal, 140–200 mg/dL is the pre-diabetic range, and ≥200 mg/dL is in the diabetic range. eAG reflects average glucose over the preceding 2–3 months.",
+        "eAG ≤140 mg/dL is normal, eAG above 140 up to 200 mg/dL is the pre-diabetic range, and eAG >200 mg/dL is in the diabetic range. eAG reflects average glucose over the preceding 2–3 months.",
       sexSpecific: false,
       ageSpecific: false,
     },
@@ -2642,6 +2642,7 @@ export const clinicalContentRegistry: Record<
       inputs: {
         waist: "95",
         hip: "100",
+        sex: "1",
       },
       expectedResult:
         "WHR = 95 / 100 = 0.95 — moderate cardiovascular risk for a male.",
@@ -3625,7 +3626,7 @@ export const clinicalContentRegistry: Record<
     ],
     example: {
       description:
-        "A 72-year-old man with hypertension and diabetes presents with recurrent chest pain over the past day, ST-segment depression on ECG, and a mildly elevated troponin. No known prior CAD and no aspirin use.",
+        "A 72-year-old man with hypertension, diabetes, and hyperlipidemia presents with recurrent chest pain over the past day, ST-segment depression on ECG, and a mildly elevated troponin. No known prior CAD and no aspirin use.",
       inputs: {
         "age-65": "1",
         "risk-factors": "1",
@@ -3682,7 +3683,7 @@ export const clinicalContentRegistry: Record<
     ],
     example: {
       description:
-        "A 78-year-old woman presents with STEMI, heart rate 110 bpm, blood pressure 110/70 mmHg, creatinine 1.4 mg/dL, Killip class II, ST-segment elevation, and positive troponin. No cardiac arrest.",
+        "A 78-year-old woman presents with STEMI, heart rate 100 bpm, blood pressure 110/70 mmHg, creatinine 1.4 mg/dL, Killip class II, ST-segment elevation, and positive troponin. No cardiac arrest.",
       inputs: {
         age: "75",
         "heart-rate": "15",
@@ -3776,7 +3777,7 @@ export const clinicalContentRegistry: Record<
       "Estimates 1-year risk of major bleeding in patients receiving anticoagulation, most commonly for atrial fibrillation, to identify modifiable bleeding risk factors.",
     howToUse: [
       "Confirm the patient is a candidate for or currently on anticoagulation.",
-      "Assign 1 point for each HAS-BLED criterion present (hypertension, renal/liver dysfunction, stroke, bleeding history, labile INR, age >65, drugs, alcohol).",
+      "Assign 1 point for each HAS-BLED criterion present: uncontrolled hypertension, abnormal renal function, abnormal liver function, prior stroke, prior major bleeding, labile INR, age > 65, concomitant drugs, and alcohol excess.",
       "Sum the points (0–9).",
       "Use the result to address modifiable risk factors rather than to automatically withhold anticoagulation.",
     ],
@@ -7114,7 +7115,7 @@ export const clinicalContentRegistry: Record<
     ],
     example: {
       description:
-        "A 70-year-old man presents 90 minutes after sudden right-sided weakness and word-finding difficulty. Examination shows he is drowsy but arousable (1a = 1), answers one of two questions (1b = 1), performs one of two commands (1c = 1), mild left gaze palsy (2 = 1), partial visual field loss (3 = 1), facial droop (4 = 1), left arm 2 (drifts to bed), left leg 2, right side normal, no ataxia, mild sensory loss (8 = 1), moderate aphasia (9 = 1), mild dysarthria (10 = 1), mild inattention (11 = 1).",
+        "A 70-year-old man presents 90 minutes after sudden left-sided weakness and word-finding difficulty. Examination shows he is drowsy but arousable (1a = 1), answers one of two questions (1b = 1), performs one of two commands (1c = 1), mild left gaze palsy (2 = 1), partial visual field loss (3 = 1), facial droop (4 = 1), left arm 2 (drifts to bed), left leg 2, right side normal, no ataxia, mild sensory loss (8 = 1), moderate aphasia (9 = 1), mild dysarthria (10 = 1), mild inattention (11 = 1).",
       inputs: {
         loc: "1",
         locQuestions: "1",
@@ -7961,7 +7962,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. The PHQ-9 is a screening instrument, not a substitute for a clinical diagnostic assessment; any concern for self-harm requires immediate evaluation.",
+      "This calculator is intended for educational and clinical decision support purposes only. The PHQ-9 is a screening instrument, not a substitute for a clinical diagnostic assessment; any concern for self-harm requires immediate evaluation.",
   },
 
   "gad-7": {
@@ -8038,7 +8039,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. The GAD-7 is a screening tool and does not replace clinical assessment or exclude other anxiety disorders.",
+      "This calculator is intended for educational and clinical decision support purposes only. The GAD-7 is a screening tool and does not replace clinical assessment or exclude other anxiety disorders.",
   },
 
   "epworth": {
@@ -8116,7 +8117,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. The ESS is a screening measure of sleep propensity; a diagnosis of sleep apnea requires objective sleep testing, and driving safety must always be addressed.",
+      "This calculator is intended for educational and clinical decision support purposes only. The ESS is a screening measure of sleep propensity; a diagnosis of sleep apnea requires objective sleep testing, and driving safety must always be addressed.",
   },
 
   "stop-bang": {
@@ -8151,7 +8152,7 @@ export const clinicalContentRegistry: Record<
     ],
     example: {
       description:
-        "A 58-year-old man with treated hypertension reports loud snoring and daytime sleepiness; his wife has witnessed him stop breathing at night. His BMI is 32 kg/m², neck circumference 38 cm, and he is over 50 and male.",
+        "A 58-year-old man with treated hypertension reports loud snoring and daytime sleepiness; his wife has not witnessed him stop breathing during sleep. His BMI is 32 kg/m², neck circumference 38 cm, and he is over 50 and male.",
       inputs: {
         snoring: "yes",
         tired: "yes",
@@ -8194,7 +8195,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. A positive STOP-BANG screen requires objective confirmation with polysomnography or home sleep apnea testing before OSA is diagnosed or treated.",
+      "This calculator is intended for educational and clinical decision support purposes only. A positive STOP-BANG screen requires objective confirmation with polysomnography or home sleep apnea testing before OSA is diagnosed or treated.",
   },
 
   "centor": {
@@ -8273,7 +8274,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. The Modified Centor score estimates GAS probability and must be combined with clinical assessment and local testing/treatment policies; it is not a substitute for the IDSA pharyngitis guideline.",
+      "This calculator is intended for educational and clinical decision support purposes only. The Modified Centor score estimates GAS probability and must be combined with clinical assessment and local testing/treatment policies; it is not a substitute for the IDSA pharyngitis guideline.",
   },
 
   "charlson": {
@@ -8363,7 +8364,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. The CCI predicts population-level mortality risk and must not be used to forecast an individual patient's outcome or to make treatment decisions in isolation.",
+      "This calculator is intended for educational and clinical decision support purposes only. The CCI predicts population-level mortality risk and must not be used to forecast an individual patient's outcome or to make treatment decisions in isolation.",
   },
 
   "barthel": {
@@ -8399,7 +8400,7 @@ export const clinicalContentRegistry: Record<
     ],
     example: {
       description:
-        "A 68-year-old woman one month after a moderate stroke is independent in feeding, dressing, bowels, toilet use, and stairs; needs help with grooming, bladder control, transfers, and walking, and is fully dependent for bathing.",
+        "A 68-year-old woman one month after a moderate stroke needs help with feeding and stairs, is fully dependent for bathing, has occasional bladder accidents, and walks with help; she is independent in grooming, dressing, bowel control, toilet use, and transfers.",
       inputs: {
         feeding: "5",
         bathing: "0",
@@ -8448,7 +8449,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. The Barthel Index quantifies physical ADL dependence and should be used with clinical judgment and broader functional, social, and caregiver assessment.",
+      "This calculator is intended for educational and clinical decision support purposes only. The Barthel Index quantifies physical ADL dependence and should be used with clinical judgment and broader functional, social, and caregiver assessment.",
   },
 
   "ecog": {
@@ -8520,7 +8521,7 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is for educational and clinical decision support. ECOG performance status is one input into treatment decisions, which must be individualized with clinical judgment and the patient's goals and preferences.",
+      "This calculator is intended for educational and clinical decision support purposes only. ECOG performance status is one input into treatment decisions, which must be individualized with clinical judgment and the patient's goals and preferences.",
   },
 
   "meld-score": {
@@ -8808,7 +8809,7 @@ export const clinicalContentRegistry: Record<
     clinicalPurpose:
       "Calculates the Glasgow-Blatchford score to predict the need for endoscopic intervention, transfusion, or death in patients presenting with suspected upper gastrointestinal bleeding.",
     howToUse: [
-      "Enter BUN, hemoglobin, systolic blood pressure, and pulse from the presentation.",
+      "Enter BUN, hemoglobin, systolic blood pressure, and pulse from the presentation, and select the patient's sex (hemoglobin scoring is sex-specific).",
       "Indicate the presence of melena, syncope, known hepatic disease, and known cardiac failure.",
       "A score of 0 identifies very low-risk patients in whom outpatient management may be appropriate.",
     ],
@@ -9581,11 +9582,11 @@ export const clinicalContentRegistry: Record<
 
   "thyroid-dose": {
     clinicalPurpose:
-      "Estimates a weight-based levothyroxine replacement dose (≈1.6 µg/kg/day) using the calculator's implemented equation, for educational review of starting-dose estimation in hypothyroidism.",
+      "Estimates a weight-based levothyroxine replacement dose (≈1.6 µg/kg/day) using the calculator's implemented equation, anchoring the 'full replacement dose' concept that clinicians individualize in hypothyroidism.",
     howToUse: [
       "Enter body weight in kg.",
       "The calculator returns the total daily dose in µg based on 1.6 µg/kg/day.",
-      "Treat the result as an educational estimate from a weight-based equation.",
+      "Treat the result as an educational estimate of the full replacement dose; real-world dosing is titrated to a target TSH.",
       "Actual starting doses are individualized; the calculator does not incorporate age, cardiac risk, or pregnancy.",
     ],
     interpretation: {
@@ -9633,11 +9634,11 @@ export const clinicalContentRegistry: Record<
 
   "levothyroxine-dose": {
     clinicalPurpose:
-      "Estimates a weight-based levothyroxine replacement dose (≈1.6 µg/kg/day) using the calculator's implemented equation, for educational review of hypothyroidism replacement dosing.",
+      "Estimates a weight-based levothyroxine dose (≈1.6 µg/kg/day) using the calculator's implemented equation, illustrating the weight-based reference point used when starting levothyroxine replacement.",
     howToUse: [
       "Enter body weight in kg.",
       "The calculator returns the total daily dose in µg based on 1.6 µg/kg/day.",
-      "Treat the result as an educational estimate from a weight-based equation.",
+      "Use the estimate as a weight-based reference point, not a prescription; doses are titrated to a target TSH.",
       "Actual starting doses are individualized; the calculator does not incorporate age, cardiac risk, or pregnancy.",
     ],
     interpretation: {
