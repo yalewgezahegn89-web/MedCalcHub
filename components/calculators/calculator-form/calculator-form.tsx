@@ -24,6 +24,13 @@ import {
 
 import { toast } from "sonner";
 
+import {
+  buildResultText,
+  isValidationStyleResult,
+  prepareResultSections,
+} from "@/lib/result-presentation";
+import type { ResultSections } from "@/lib/result-presentation";
+
 import type { CalculatorFormProps } from "./calculator-form.types";
 import type { CalculatorResult } from "@/lib/calculators";
 
@@ -216,6 +223,10 @@ export const CalculatorForm = forwardRef<
     setResult(null);
   }, [calculator.inputs]);
 
+  const sections: ResultSections | undefined = result
+    ? prepareResultSections(result)
+    : undefined;
+
   return (
     <form
       ref={ref}
@@ -260,17 +271,10 @@ export const CalculatorForm = forwardRef<
 
           try {
             await copyToClipboard(
-              `${calculator.name}
-
-Result: ${result.value}${
-                result.unit
-                  ? ` ${result.unit}`
-                  : ""
-              }
-
-Interpretation: ${
-                result.interpretation
-              }`,
+              buildResultText(
+                calculator.name,
+                result,
+              ),
             );
 
             toast.success(
@@ -346,6 +350,16 @@ Interpretation: ${
 
       {result && (
         <>
+          <p
+            aria-live="polite"
+            role="status"
+            className="sr-only"
+          >
+            {calculator.name}:{" "}
+            {result.interpretation ??
+              "Result calculated."}
+          </p>
+
           <ResultCard
             label={calculator.name}
             value={result.value}
@@ -354,11 +368,20 @@ Interpretation: ${
               result.interpretation
             }
             status={result.status}
+            statusLabel={
+              isValidationStyleResult(result)
+                ? "Check inputs"
+                : undefined
+            }
+            sections={sections}
           />
 
           <ClassificationCard
             title="Clinical Classification"
             value={Number(result.value)}
+            classification={
+              calculator.classification
+            }
           />
         </>
       )}

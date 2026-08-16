@@ -29,6 +29,7 @@ export function ClassificationCard({
 }: Props) {
   if (
     value === undefined ||
+    Number.isNaN(value) ||
     !classification ||
     classification.length === 0
   ) {
