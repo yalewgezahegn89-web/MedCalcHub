@@ -7884,4 +7884,642 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The ESRS supports risk stratification; treatment decisions must follow current clinical guidelines and individual patient circumstances.",
   },
+
+  "phq-9": {
+    clinicalPurpose:
+      "Screens for and grades the severity of depressive symptoms over the previous two weeks and identifies possible suicidal ideation, guiding treatment initiation and follow-up in primary care.",
+    howToUse: [
+      "Ask the patient to rate each of the nine symptoms for the past two weeks using the four frequency options (0 = not at all to 3 = nearly every day).",
+      "Sum the nine item scores to obtain the PHQ-9 total (0–27).",
+      "Review the severity band and, whenever item 9 is endorsed, perform an immediate suicide risk assessment.",
+    ],
+    interpretation: {
+      guide:
+        "Total 0–4 = minimal, 5–9 = mild, 10–14 = moderate, 15–19 = moderately severe, and 20–27 = severe depression. A total ≥ 10 has ~88% sensitivity and ~88% specificity for major depressive disorder and is the recommended threshold for initiating treatment. Any endorsement of item 9 requires urgent evaluation regardless of the total.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Routine depression screening in primary care",
+      "Assessment of patients with low mood, anhedonia, fatigue, or sleep disturbance",
+      "Monitoring response to depression treatment",
+      "Patients with chronic illness associated with depression",
+    ],
+    whenNotToUse: [
+      "As a standalone diagnostic instrument without clinical assessment",
+      "To grade symptoms in patients who cannot comprehend the questionnaire (severe cognitive impairment, language barriers)",
+      "In acute emergencies — a positive suicide screen requires immediate action, not delayed scoring",
+    ],
+    limitations: [
+      "Self-report may under- or over-estimate symptom severity.",
+      "A score of 10 identifies probable depression; the diagnosis requires clinical confirmation.",
+      "Somatic symptoms (fatigue, sleep disturbance) may reflect physical illness rather than depression.",
+    ],
+    example: {
+      description:
+        "A 46-year-old woman reports two weeks of low mood and loss of interest. She scores 2 (more than half the days) for anhedonia and depressed mood, 3 for sleep disturbance, 2 for fatigue, 1 for appetite change, 0 for guilt, 2 for poor concentration, and 1 for slowed movements; she denies suicidal ideation (item 9 = 0).",
+      inputs: {
+        phq1: "2",
+        phq2: "2",
+        phq3: "3",
+        phq4: "2",
+        phq5: "1",
+        phq6: "0",
+        phq7: "2",
+        phq8: "1",
+        phq9: "0",
+      },
+      expectedResult:
+        "PHQ-9 = 2 + 2 + 3 + 2 + 1 + 0 + 2 + 1 + 0 = 13/27 — MODERATE depressive symptoms. A score ≥ 10 supports initiating treatment (e.g., antidepressant and/or psychotherapy) with close follow-up.",
+    },
+    clinicalSignificance:
+      "The PHQ-9 is the most widely used brief depression severity measure; its validated cut-point of 10 makes it a practical case-finding and monitoring tool that directly quantifies each DSM-5 depressive criterion and screens for suicidal ideation.",
+    references: [
+      {
+        citation:
+          "Kroenke K, Spitzer RL, Williams JB. The PHQ-9: validity of a brief depression severity measure. J Gen Intern Med. 2001;16(9):606-613.",
+        level: "Validation study",
+        url: "https://doi.org/10.1046/j.1525-1497.2001.016009606.x",
+      },
+      {
+        citation:
+          "Spitzer RL, Kroenke K, Williams JB. Validation and utility of a self-report version of PRIME-MD: the PHQ primary care study. JAMA. 1999;282(18):1737-1744.",
+        level: "Primary care validation",
+      },
+    ],
+    faq: [
+      {
+        question: "When should I act on item 9?",
+        answer:
+          "Any endorsement of item 9 (thoughts of being better off dead or of self-harm), even a score of 1, warrants an immediate, direct suicide risk assessment and urgent management.",
+      },
+      {
+        question: "How much change on the PHQ-9 is clinically meaningful?",
+        answer:
+          "A change of 5 points is the conventional minimal clinically important difference when monitoring treatment response.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. The PHQ-9 is a screening instrument, not a substitute for a clinical diagnostic assessment; any concern for self-harm requires immediate evaluation.",
+  },
+
+  "gad-7": {
+    clinicalPurpose:
+      "Screens for and grades the severity of generalized anxiety symptoms over the previous two weeks, guiding identification and treatment decisions in primary care and general medicine.",
+    howToUse: [
+      "Ask the patient to rate each of the seven symptoms for the past two weeks (0 = not at all to 3 = nearly every day).",
+      "Sum the seven item scores to obtain the GAD-7 total (0–21).",
+      "Interpret using the cut-point of 10 and the severity bands.",
+    ],
+    interpretation: {
+      guide:
+        "Total 0–4 = minimal, 5–9 = mild, 10–14 = moderate, and 15–21 = severe anxiety. A cut-point of 10 maximizes sensitivity (~89%) and specificity (~82%) for generalized anxiety disorder.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Routine anxiety screening in primary care",
+      "Patients with worry, restlessness, irritability, or sleep disturbance",
+      "Monitoring response to anxiety treatment",
+      "Assessing anxiety comorbid with depression (with the PHQ-9)",
+    ],
+    whenNotToUse: [
+      "As a standalone diagnostic instrument",
+      "To distinguish among anxiety disorders (panic disorder, social anxiety, OCD, specific phobia)",
+      "In patients who cannot understand or complete self-report scales",
+    ],
+    limitations: [
+      "Focuses on generalized anxiety and may miss other anxiety disorders.",
+      "Physical symptoms and medication side effects can elevate scores.",
+      "Screening positive requires clinical confirmation.",
+    ],
+    example: {
+      description:
+        "A 34-year-old man reports two weeks of persistent worry and tension. He scores 2 for feeling nervous and for being unable to stop worrying, 3 for worrying too much, 1 for trouble relaxing, 2 for restlessness, 0 for irritability, and 1 for a feeling that something awful may happen.",
+      inputs: {
+        gad1: "2",
+        gad2: "2",
+        gad3: "3",
+        gad4: "1",
+        gad5: "2",
+        gad6: "0",
+        gad7: "1",
+      },
+      expectedResult:
+        "GAD-7 = 2 + 2 + 3 + 1 + 2 + 0 + 1 = 11/21 — MODERATE anxiety symptoms. A score ≥ 10 supports the diagnosis of generalized anxiety disorder and initiation of treatment.",
+    },
+    clinicalSignificance:
+      "The GAD-7 provides a brief, reliable measure of anxiety severity whose cut-point of 10 enables efficient case-finding and treatment monitoring, filling a key gap in primary care mental health screening.",
+    references: [
+      {
+        citation:
+          "Spitzer RL, Kroenke K, Williams JB, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med. 2006;166(10):1092-1097.",
+        level: "Validation study",
+        url: "https://doi.org/10.1001/archinte.166.10.1092",
+      },
+      {
+        citation:
+          "Kroenke K, Spitzer RL, Williams JB, Monahan PO, Löwe B. Anxiety disorders in primary care: prevalence, impairment, comorbidity, and detection. Ann Intern Med. 2007;146(5):317-325.",
+        level: "Primary care cohort",
+      },
+    ],
+    faq: [
+      {
+        question: "Does a high GAD-7 mean the patient has generalized anxiety disorder?",
+        answer:
+          "Not necessarily. A score ≥ 10 indicates probable GAD and warrants treatment consideration, but the diagnosis is confirmed clinically, and other anxiety disorders must be considered.",
+      },
+      {
+        question: "Should I screen for anxiety and depression together?",
+        answer:
+          "Yes — anxiety and depression frequently co-occur. Administering the GAD-7 alongside the PHQ-9 provides a more complete mental health assessment.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. The GAD-7 is a screening tool and does not replace clinical assessment or exclude other anxiety disorders.",
+  },
+
+  "epworth": {
+    clinicalPurpose:
+      "Quantifies the general level of daytime sleepiness, supporting the evaluation of sleep disorders such as obstructive sleep apnea and narcolepsy.",
+    howToUse: [
+      "Ask the patient to rate the chance of dozing in each of the eight situations, comparing the score against their usual level of sleepiness (not after sleep deprivation).",
+      "Sum the eight item scores (0–3 each) to obtain the ESS total (0–24).",
+      "Interpret using the normal, mild, moderate, and severe bands.",
+    ],
+    interpretation: {
+      guide:
+        "0–10 = normal daytime sleepiness; 11–14 = mild; 15–17 = moderate; ≥ 18 = severe excessive daytime sleepiness. Scores of 11 or more warrant evaluation for sleep disorders, particularly obstructive sleep apnea.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Evaluation of suspected obstructive sleep apnea",
+      "Patients reporting daytime fatigue or sleepiness",
+      "Preoperative risk assessment in patients at risk for sleep apnea",
+      "Monitoring sleepiness over time",
+    ],
+    whenNotToUse: [
+      "To measure fatigue or lack of energy (it measures sleep propensity)",
+      "To diagnose sleep apnea without objective testing",
+      "To grade insomnia severity",
+    ],
+    limitations: [
+      "Self-report of sleep propensity correlates imperfectly with objective sleep latency.",
+      "Patients with insomnia may score low despite significant impairment.",
+      "The scale does not capture sleepiness in all settings.",
+    ],
+    example: {
+      description:
+        "A 52-year-old man with loud snoring and observed apneas rates his chance of dozing as 3 when reading, 3 watching TV, 2 in a meeting, 2 as a car passenger, 2 lying down in the afternoon, 1 while talking, 1 after lunch, and 0 in traffic.",
+      inputs: {
+        ess1: "3",
+        ess2: "3",
+        ess3: "2",
+        ess4: "2",
+        ess5: "2",
+        ess6: "1",
+        ess7: "1",
+        ess8: "0",
+      },
+      expectedResult:
+        "ESS = 3 + 3 + 2 + 2 + 2 + 1 + 1 + 0 = 14/24 — MILD excessive daytime sleepiness, supporting further evaluation for obstructive sleep apnea.",
+    },
+    clinicalSignificance:
+      "The Epworth Sleepiness Scale is the standard bedside measure of sleep propensity; an elevated score flags clinically significant daytime sleepiness that may indicate treatable sleep-disordered breathing and carries driving-safety implications.",
+    references: [
+      {
+        citation:
+          "Johns MW. A new method for measuring daytime sleepiness: the Epworth sleepiness scale. Sleep. 1991;14(6):540-545.",
+        level: "Original description",
+        url: "https://doi.org/10.1093/sleep/14.6.540",
+      },
+      {
+        citation:
+          "Johns MW. Daytime sleepiness, snoring, and obstructive sleep apnea. The Epworth Sleepiness Scale. Chest. 1993;103(1):30-36.",
+        level: "Clinical correlation",
+      },
+    ],
+    faq: [
+      {
+        question: "What should I do with an ESS of 11 or more?",
+        answer:
+          "Refer the patient for sleep medicine evaluation and objective testing (polysomnography or home sleep apnea testing) when clinically indicated, and discuss driving safety.",
+      },
+      {
+        question: "Can the ESS be normal in sleep apnea?",
+        answer:
+          "Yes. Some patients with obstructive sleep apnea, especially those without perceived sleepiness, score within the normal range.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. The ESS is a screening measure of sleep propensity; a diagnosis of sleep apnea requires objective sleep testing, and driving safety must always be addressed.",
+  },
+
+  "stop-bang": {
+    clinicalPurpose:
+      "Rapidly estimates the pretest probability of obstructive sleep apnea (OSA) from history and physical examination findings, guiding the need for objective sleep testing.",
+    howToUse: [
+      "Answer each of the eight items (Snoring, Tiredness, Observed apnea, high blood Pressure, BMI > 35 kg/m², Age > 50, Neck circumference > 40 cm, male Gender) as yes or no.",
+      "Count the number of yes answers to obtain the STOP-BANG total (0–8).",
+      "Interpret the risk category and arrange testing when indicated.",
+    ],
+    interpretation: {
+      guide:
+        "0–2 = low, 3–4 = intermediate, and 5–8 = high probability of OSA. A score ≥ 3 is ~93% sensitive for moderate and 100% sensitive for severe OSA, so low scores help rule out clinically significant disease, while high scores warrant confirmatory testing.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Screening for OSA in patients with snoring, fatigue, or witnessed apnea",
+      "Preoperative evaluation for anesthesia planning",
+      "Risk stratification in suspected sleep-disordered breathing",
+    ],
+    whenNotToUse: [
+      "As a diagnostic test for OSA",
+      "To exclude mild OSA or central sleep apnea",
+      "In pediatric populations (not validated in children)",
+    ],
+    limitations: [
+      "Lower specificity means many screening-positive patients will not have moderate-to-severe OSA on testing.",
+      "Validated largely in surgical and sleep-clinic populations.",
+      "Requires accurate measurement of BMI and neck circumference.",
+    ],
+    example: {
+      description:
+        "A 58-year-old man with treated hypertension reports loud snoring and daytime sleepiness; his wife has witnessed him stop breathing at night. His BMI is 32 kg/m², neck circumference 38 cm, and he is over 50 and male.",
+      inputs: {
+        snoring: "yes",
+        tired: "yes",
+        observedApnea: "no",
+        bloodPressure: "yes",
+        bmi: "no",
+        age: "yes",
+        neck: "no",
+        gender: "yes",
+      },
+      expectedResult:
+        "STOP-BANG = 5/8 (snoring, tiredness, blood pressure, age, gender) — HIGH probability of moderate-to-severe OSA, warranting objective testing (polysomnography or home sleep apnea test).",
+    },
+    clinicalSignificance:
+      "The STOP-BANG score is one of the most widely used OSA screening tools; its high sensitivity at a threshold of 3 makes it an effective rule-out instrument and its graded scores stratify risk to guide diagnostic testing and perioperative management.",
+    references: [
+      {
+        citation:
+          "Chung F, Yegneswaran B, Liao P, et al. STOP questionnaire: a tool to screen patients for obstructive sleep apnea. Anesthesiology. 2008;108(5):812-821.",
+        level: "Original description",
+        url: "https://doi.org/10.1097/ALN.0b013e31816d83e4",
+      },
+      {
+        citation:
+          "Chung F, Subramanyam R, Liao P, Sasaki E, Shapiro C, Sun Y. High STOP-Bang score indicates a high probability of obstructive sleep apnoea. Br J Anaesth. 2012;108(5):768-775.",
+        level: "Large-cohort validation",
+        url: "https://doi.org/10.1093/bja/aes022",
+      },
+    ],
+    faq: [
+      {
+        question: "Is a STOP-BANG of 5 diagnostic of sleep apnea?",
+        answer:
+          "No. It indicates a high probability of moderate-to-severe OSA and warrants confirmatory testing, but it does not by itself establish the diagnosis.",
+      },
+      {
+        question: "Can I use STOP-BANG to rule out OSA preoperatively?",
+        answer:
+          "Yes — a score below 3 has strong negative predictive value for moderate-to-severe OSA and is commonly used in preoperative screening, but clinical judgment remains essential.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. A positive STOP-BANG screen requires objective confirmation with polysomnography or home sleep apnea testing before OSA is diagnosed or treated.",
+  },
+
+  "centor": {
+    clinicalPurpose:
+      "Estimates the probability of group A streptococcal (GAS) pharyngitis from clinical criteria and age, guiding decisions about rapid antigen testing and antibiotic use in sore throat.",
+    howToUse: [
+      "Confirm the patient has acute pharyngitis without clinical features suggesting a viral cause (cough, rhinorrhea, oral ulcers, hoarseness).",
+      "Score 1 for each criterion present: fever > 38°C, absence of cough, tonsillar exudates or swelling, and tender anterior cervical lymphadenopathy.",
+      "Apply the age adjustment (3–14 years +1, 15–44 years 0, ≥ 45 years −1) and read the total (clamped to 0–4).",
+    ],
+    interpretation: {
+      guide:
+        "0–1 = low GAS probability (~2.5–5%), no testing or antibiotics; 2–3 = intermediate (~11–28%), test with RADT (and culture in children/adolescents) and treat only if positive; 4 = high probability (~53%), confirm and treat only if positive per IDSA guidelines.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Acute sore throat in children and adults being assessed for GAS pharyngitis",
+      "Supporting appropriate antibiotic stewardship in upper respiratory infections",
+    ],
+    whenNotToUse: [
+      "Patients with a clear viral syndrome (cough, rhinorrhea, conjunctivitis, hoarseness, oral ulcers)",
+      "Severe illness, peritonsillar abscess, or stridor — these need urgent evaluation regardless of the score",
+      "Patients with rheumatic fever history, immune compromise, or recurrent GAS complications where empiric consideration may differ",
+    ],
+    limitations: [
+      "Derivation probabilities come from a single large primary-care cohort and vary across settings.",
+      "The score is validated for typical pharyngitis presentations.",
+      "Testing and treatment policies differ by age group and local guidance.",
+    ],
+    example: {
+      description:
+        "A 28-year-old woman presents with severe sore throat, fever of 38.6°C, tonsillar exudates, and tender anterior cervical nodes, but no cough.",
+      inputs: {
+        fever: "yes",
+        absenceOfCough: "yes",
+        tonsillarExudates: "yes",
+        cervicalAdenopathy: "yes",
+        ageGroup: "0",
+      },
+      expectedResult:
+        "Modified Centor = 4/4 (all four criteria, age 28 adds 0) — HIGH probability of GAS pharyngitis (~53%). Confirm with a rapid antigen test and/or culture and treat only if positive, per IDSA recommendations.",
+    },
+    clinicalSignificance:
+      "The Modified Centor (McIsaac) score quantifies the pretest probability of GAS pharyngitis and is central to antibiotic stewardship — it identifies patients who benefit from testing while discouraging unnecessary antibiotic prescriptions at low scores.",
+    references: [
+      {
+        citation:
+          "McIsaac WJ, White D, Tannenbaum D, Low DE. A clinical score to reduce unnecessary antibiotic use in patients with sore throat. CMAJ. 1998;158(1):75-83.",
+        level: "Derivation and validation",
+        url: "https://www.cmaj.ca/content/158/1/75",
+      },
+      {
+        citation:
+          "Centor RM, Witherspoon JM, Dalton HP, Brody CE, Link K. The diagnosis of strep throat in adults in the emergency room. Med Decis Making. 1981;1(3):239-246.",
+        level: "Original criteria",
+      },
+      {
+        citation:
+          "Shulman ST, Bisno AL, Clegg HW, et al. Clinical practice guideline for the diagnosis and management of group A streptococcal pharyngitis: 2012 update by the Infectious Diseases Society of America. Clin Infect Dis. 2012;55(10):e86-e102.",
+        level: "Clinical practice guideline",
+        url: "https://doi.org/10.1093/cid/cis629",
+      },
+    ],
+    faq: [
+      {
+        question: "What is the difference between Centor and McIsaac scores?",
+        answer:
+          "The Centor criteria score four clinical features; the McIsaac modification adds an age adjustment and is the version recommended for guiding testing decisions in both children and adults.",
+      },
+      {
+        question: "Should a patient with all four criteria be treated without a test?",
+        answer:
+          "Current IDSA guidelines recommend confirming GAS with a rapid antigen test and/or culture and treating only if positive, even when the clinical score is 4.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. The Modified Centor score estimates GAS probability and must be combined with clinical assessment and local testing/treatment policies; it is not a substitute for the IDSA pharyngitis guideline.",
+  },
+
+  "charlson": {
+    clinicalPurpose:
+      "Quantifies comorbid disease burden from a weighted list of conditions plus age, providing an estimate of ten-year survival that supports prognosis, research adjustment, and treatment planning.",
+    howToUse: [
+      "Select the age band and answer yes/no for each of the 19 comorbidity items from the patient's current record.",
+      "The calculator sums the comorbidity weights and adds the age adjustment to give the age-adjusted CCI.",
+      "Read the estimated ten-year survival and severity band.",
+    ],
+    interpretation: {
+      guide:
+        "0 = no comorbidity burden; 1–2 = low; 3–4 = moderate; ≥ 5 = high. Estimated ten-year survival follows 0.983^e^(0.9 × score): ~96% at 1, ~90% at 2, ~77% at 3, ~53% at 4, ~21% at 5. The index predicts group outcomes, not individual survival.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Estimating prognosis in patients with multiple comorbidities",
+      "Case-mix adjustment in clinical research and quality comparisons",
+      "Supporting discussions of treatment intensity and goals of care",
+    ],
+    whenNotToUse: [
+      "To predict an individual patient's survival",
+      "As the sole basis for withholding treatment",
+      "To capture frailty or functional status, which it does not measure",
+    ],
+    limitations: [
+      "Derived from 1980s inpatient cohorts and does not account for modern treatments.",
+      "Requires complete documentation; missing conditions lower the score.",
+      "Does not include frailty, functional, or cognitive status.",
+    ],
+    example: {
+      description:
+        "A 75-year-old man with prior myocardial infarction and congestive heart failure also has diabetes without end-organ damage.",
+      inputs: {
+        ageGroup: "3",
+        myocardialInfarction: "yes",
+        congestiveHeartFailure: "yes",
+        peripheralVascularDisease: "no",
+        cerebrovascularDisease: "no",
+        dementia: "no",
+        chronicPulmonaryDisease: "no",
+        connectiveTissueDisease: "no",
+        pepticUlcer: "no",
+        mildLiverDisease: "no",
+        diabetesNoComplications: "yes",
+        hemiplegia: "no",
+        moderateSevereRenalDisease: "no",
+        diabetesEndOrganDamage: "no",
+        anyMalignancy: "no",
+        leukemia: "no",
+        lymphoma: "no",
+        moderateSevereLiverDisease: "no",
+        metastaticSolidTumor: "no",
+        aids: "no",
+      },
+      expectedResult:
+        "CCI = 3 (MI 1 + CHF 1 + diabetes 1) + 3 (age 70–79) = 6 — HIGH comorbidity burden with an estimated ten-year survival of approximately 2%. This supports careful weighing of goals of care.",
+    },
+    clinicalSignificance:
+      "The Charlson Comorbidity Index is the most widely used comorbidity measure in clinical research; its age-adjusted form provides a reproducible estimate of mortality risk that helps contextualize prognosis and adjust for case mix.",
+    references: [
+      {
+        citation:
+          "Charlson ME, Pompei P, Ales KL, MacKenzie CR. A new method of classifying prognostic comorbidity in longitudinal studies: development and validation. J Chronic Dis. 1987;40(5):373-383.",
+        level: "Original derivation and validation",
+        url: "https://doi.org/10.1016/0021-9681(87)90171-8",
+      },
+      {
+        citation:
+          "Charlson M, Szatrowski TP, Peterson J, Gold J. Validation of a combined comorbidity index. J Clin Epidemiol. 1994;47(11):1245-1251.",
+        level: "Age-adjusted validation",
+        url: "https://doi.org/10.1016/0895-4356(94)90129-5",
+      },
+    ],
+    faq: [
+      {
+        question: "Should I use the age-adjusted CCI or the raw score?",
+        answer:
+          "Use the age-adjusted CCI when estimating ten-year survival, since the exponential survival model was validated with the age adjustment included.",
+      },
+      {
+        question: "Why is metastatic cancer and AIDS weighted 6?",
+        answer:
+          "Because these conditions carried the highest relative risks of one-year mortality in the derivation cohort, so they receive the highest weight in the index.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. The CCI predicts population-level mortality risk and must not be used to forecast an individual patient's outcome or to make treatment decisions in isolation.",
+  },
+
+  "barthel": {
+    clinicalPurpose:
+      "Measures functional independence in ten activities of daily living, providing an objective disability score for rehabilitation, geriatric care, and stroke services.",
+    howToUse: [
+      "Select the descriptor that matches the patient's actual current performance for each of the ten activities.",
+      "Sum the item scores to obtain the Barthel total (0–100).",
+      "Interpret the dependence band and use serial scores to track functional change.",
+    ],
+    interpretation: {
+      guide:
+        "100 = independent; 91–99 = slight dependence; 61–90 = moderate dependence; 21–60 = severe dependence; 0–20 = total dependence. The scale measures physical ADL performance, not cognition or caregiver burden.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Baseline and serial functional assessment after stroke",
+      "Admission and discharge assessment in rehabilitation",
+      "Geriatric assessment of dependency and care needs",
+      "Measuring outcomes in clinical services",
+    ],
+    whenNotToUse: [
+      "To assess cognitive function or communication",
+      "To measure instrumental ADLs (shopping, finances, transport)",
+      "As the sole tool for discharge planning — combine with social and caregiver assessment",
+    ],
+    limitations: [
+      "Ceiling and floor effects limit sensitivity at the extremes.",
+      "Different versions (original vs. Shah-modified) are not directly interchangeable.",
+      "Does not capture quality of life or patient-perceived disability.",
+    ],
+    example: {
+      description:
+        "A 68-year-old woman one month after a moderate stroke is independent in feeding, dressing, bowels, toilet use, and stairs; needs help with grooming, bladder control, transfers, and walking, and is fully dependent for bathing.",
+      inputs: {
+        feeding: "5",
+        bathing: "0",
+        grooming: "5",
+        dressing: "10",
+        bowels: "10",
+        bladder: "5",
+        toiletUse: "10",
+        transfers: "15",
+        mobility: "10",
+        stairs: "5",
+      },
+      expectedResult:
+        "Barthel Index = 5 + 0 + 5 + 10 + 10 + 5 + 10 + 15 + 10 + 5 = 75/100 — MODERATE dependence, indicating the need for assistance with daily activities and structured rehabilitation.",
+    },
+    clinicalSignificance:
+      "The Barthel Index is a widely used, reliable measure of ADL independence whose serial scoring documents functional recovery after stroke and in rehabilitation, guiding therapy intensity and discharge planning.",
+    references: [
+      {
+        citation:
+          "Mahoney FI, Barthel DW. Functional evaluation: the Barthel Index. Md State Med J. 1965;14:61-65.",
+        level: "Original scale",
+      },
+      {
+        citation:
+          "Shah S, Vanclay F, Cooper B. Improving the sensitivity of the Barthel Index for stroke rehabilitation. J Clin Epidemiol. 1989;42(8):703-709.",
+        level: "Modified scoring validation",
+        url: "https://doi.org/10.1016/0895-4356(89)90065-6",
+      },
+      {
+        citation:
+          "Collin C, Wade DT, Davies S, Horne V. The Barthel ADL Index: a reliability study. Int Disabil Stud. 1988;10(2):61-63.",
+        level: "Reliability study",
+      },
+    ],
+    faq: [
+      {
+        question: "What score indicates the patient is ready for discharge?",
+        answer:
+          "There is no universal cut-off; discharge readiness depends on the care environment. Scores in the 61–90 range indicate moderate dependence requiring some support, while higher scores suggest greater independence.",
+      },
+      {
+        question: "Is the Barthel Index suitable for people with dementia?",
+        answer:
+          "It measures physical ADL performance and can be completed by an observer, but it does not assess cognition — use it alongside cognitive screening.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. The Barthel Index quantifies physical ADL dependence and should be used with clinical judgment and broader functional, social, and caregiver assessment.",
+  },
+
+  "ecog": {
+    clinicalPurpose:
+      "Grades a patient's functional performance status on a single 0–5 scale, guiding chemotherapy eligibility, treatment intensity, and prognosis in oncology and serious chronic illness.",
+    howToUse: [
+      "Select the grade that best describes the patient's current functional status.",
+      "Use grades 0–1 as the conventional eligibility threshold for most intensive chemotherapy regimens and clinical trials.",
+      "Re-assess the grade at each treatment decision point.",
+    ],
+    interpretation: {
+      guide:
+        "0 = fully active; 1 = restricted in strenuous activity but ambulatory; 2 = ambulatory, capable of self-care, unable to work; 3 = limited self-care, bed/chair-bound > 50% of waking hours; 4 = completely disabled; 5 = dead. ECOG 0–1 is the usual threshold for intensive treatment.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Determining eligibility for chemotherapy and clinical trials",
+      "Adjusting treatment intensity in oncology",
+      "Estimating prognosis in advanced illness",
+      "Functional assessment in geriatric medicine",
+    ],
+    whenNotToUse: [
+      "As the only measure of eligibility — clinical, laboratory, and patient-preference factors also matter",
+      "To measure cognitive function or specific disability",
+      "To replace a comprehensive geriatric assessment in older adults",
+    ],
+    limitations: [
+      "Physician-rated and may under-represent patient-perceived impairment.",
+      "A single snapshot may not capture a rapidly changing clinical course.",
+      "Inter-rater variability exists despite its simplicity.",
+    ],
+    example: {
+      description:
+        "A 61-year-old woman with newly diagnosed metastatic colon cancer is ambulatory, manages all self-care, and can do light housework but is unable to return to her previous full-time work.",
+      inputs: {
+        grade: "2",
+      },
+      expectedResult:
+        "ECOG = 2/5 — AMBULATORY, capable of all self-care but unable to work. Many regimens and some trials accept ECOG 0–2; treatment intensity and expected tolerance should be weighed.",
+    },
+    clinicalSignificance:
+      "ECOG performance status is one of the strongest single predictors of treatment tolerance and survival in cancer patients, and its routine use standardizes functional assessment across oncology practice and research.",
+    references: [
+      {
+        citation:
+          "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655.",
+        level: "Original scale",
+        url: "https://doi.org/10.1097/00000421-198212000-00014",
+      },
+      {
+        citation:
+          "Zubrod CG, Schneiderman M, Frei E, et al. Appraisal of methods for the study of chemotherapy of cancer in man: comparative therapeutic trial of nitrogen mustard and triethylene thiophosphoramide. J Chronic Dis. 1960;11(1):7-33.",
+        level: "Precursor (Zubrod) scale",
+        url: "https://doi.org/10.1016/0021-9681(60)90137-5",
+      },
+    ],
+    faq: [
+      {
+        question: "Why is ECOG 0–1 used for most trials?",
+        answer:
+          "Patients with ECOG 0–1 tolerate chemotherapy better and have more favorable outcomes, so trials standardize this threshold to reduce heterogeneity and improve safety.",
+      },
+      {
+        question: "How does ECOG compare to the Karnofsky score?",
+        answer:
+          "ECOG uses six grades (0–5); Karnofsky uses percentages (100–0). Common cross-walks: ECOG 0 ≈ KPS 100, ECOG 1 ≈ 80–90, ECOG 2 ≈ 60–70, ECOG 3 ≈ 40–50, ECOG 4 ≈ 10–30.",
+      },
+    ],
+    disclaimer:
+      "This calculator is for educational and clinical decision support. ECOG performance status is one input into treatment decisions, which must be individualized with clinical judgment and the patient's goals and preferences.",
+  },
 };

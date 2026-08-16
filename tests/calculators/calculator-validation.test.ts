@@ -720,6 +720,92 @@ const testInputs: Record<string, Record<string, string>> = {
     priorTiaStroke: "yes",
   },
 
+  // -- Sprint 1.9 Batch 8: General Medicine --
+  "phq-9": {
+    phq1: "2",
+    phq2: "2",
+    phq3: "3",
+    phq4: "2",
+    phq5: "1",
+    phq6: "0",
+    phq7: "2",
+    phq8: "1",
+    phq9: "0",
+  },
+  "gad-7": {
+    gad1: "2",
+    gad2: "3",
+    gad3: "1",
+    gad4: "2",
+    gad5: "2",
+    gad6: "0",
+    gad7: "1",
+  },
+  epworth: {
+    ess1: "3",
+    ess2: "3",
+    ess3: "2",
+    ess4: "2",
+    ess5: "2",
+    ess6: "1",
+    ess7: "1",
+    ess8: "0",
+  },
+  "stop-bang": {
+    snoring: "yes",
+    tired: "no",
+    observedApnea: "yes",
+    bloodPressure: "yes",
+    bmi: "no",
+    age: "no",
+    neck: "no",
+    gender: "no",
+  },
+  centor: {
+    fever: "yes",
+    absenceOfCough: "yes",
+    tonsillarExudates: "yes",
+    cervicalAdenopathy: "no",
+    ageGroup: "0",
+  },
+  charlson: {
+    ageGroup: "2",
+    myocardialInfarction: "yes",
+    congestiveHeartFailure: "yes",
+    peripheralVascularDisease: "no",
+    cerebrovascularDisease: "no",
+    dementia: "no",
+    chronicPulmonaryDisease: "no",
+    connectiveTissueDisease: "no",
+    pepticUlcer: "no",
+    mildLiverDisease: "no",
+    diabetesNoComplications: "no",
+    hemiplegia: "no",
+    moderateSevereRenalDisease: "no",
+    diabetesEndOrganDamage: "no",
+    anyMalignancy: "no",
+    leukemia: "no",
+    lymphoma: "no",
+    moderateSevereLiverDisease: "no",
+    metastaticSolidTumor: "no",
+    aids: "no",
+  },
+  barthel: {
+    feeding: "5",
+    bathing: "0",
+    grooming: "5",
+    dressing: "10",
+    bowels: "10",
+    bladder: "5",
+    toiletUse: "10",
+    transfers: "15",
+    mobility: "10",
+    stairs: "5",
+  },
+  ecog: {
+    grade: "2",
+  },
+
   // -- Sprint 1.9 Batch 4: Renal & Laboratory/Metabolic --
   "fractional-excretion-uric-acid": {
     urineUricAcid: "20",
@@ -1131,6 +1217,46 @@ const exactExpectations: Record<string, ExpectedExact> = {
   },
   esrs: {
     value: 7,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "phq-9": {
+    value: 13,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "gad-7": {
+    value: 11,
+    tolerance: 0.01,
+    status: "high",
+  },
+  epworth: {
+    value: 14,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "stop-bang": {
+    value: 3,
+    tolerance: 0.01,
+    status: "high",
+  },
+  centor: {
+    value: 3,
+    tolerance: 0.01,
+    status: "high",
+  },
+  charlson: {
+    value: 4,
+    tolerance: 0.01,
+    status: "high",
+  },
+  barthel: {
+    value: 75,
+    tolerance: 0.01,
+    status: "high",
+  },
+  ecog: {
+    value: 2,
     tolerance: 0.01,
     status: "high",
   },
@@ -3369,6 +3495,387 @@ describe("Batch 7 Direct-Call Validation Guards", () => {
       thunderclap: "no",
       limitedNeckFlexion: "no",
     });
+    expect(result.status).toBe("critical");
+  });
+});
+
+const BATCH8_GUARDED_IDS = [
+  "phq-9",
+  "gad-7",
+  "epworth",
+  "stop-bang",
+  "centor",
+  "charlson",
+  "barthel",
+  "ecog",
+] as const;
+
+const BATCH8_SELECT_ONLY_IDS = new Set(BATCH8_GUARDED_IDS);
+
+const BATCH8_ZERO_GUARDED_IDS = BATCH8_GUARDED_IDS.filter(
+  (id) => !BATCH8_SELECT_ONLY_IDS.has(id),
+);
+
+const BATCH8_VALID_INPUTS: Record<string, Record<string, string>> = {
+  "phq-9": { phq1: "2", phq2: "2", phq3: "3", phq4: "2", phq5: "1", phq6: "0", phq7: "2", phq8: "1", phq9: "0" },
+  "gad-7": { gad1: "2", gad2: "3", gad3: "1", gad4: "2", gad5: "2", gad6: "0", gad7: "1" },
+  epworth: { ess1: "3", ess2: "3", ess3: "2", ess4: "2", ess5: "2", ess6: "1", ess7: "1", ess8: "0" },
+  "stop-bang": { snoring: "yes", tired: "no", observedApnea: "yes", bloodPressure: "yes", bmi: "no", age: "no", neck: "no", gender: "no" },
+  centor: { fever: "yes", absenceOfCough: "yes", tonsillarExudates: "yes", cervicalAdenopathy: "no", ageGroup: "0" },
+  charlson: { ageGroup: "2", myocardialInfarction: "yes", congestiveHeartFailure: "yes", peripheralVascularDisease: "no", cerebrovascularDisease: "no", dementia: "no", chronicPulmonaryDisease: "no", connectiveTissueDisease: "no", pepticUlcer: "no", mildLiverDisease: "no", diabetesNoComplications: "no", hemiplegia: "no", moderateSevereRenalDisease: "no", diabetesEndOrganDamage: "no", anyMalignancy: "no", leukemia: "no", lymphoma: "no", moderateSevereLiverDisease: "no", metastaticSolidTumor: "no", aids: "no" },
+  barthel: { feeding: "5", bathing: "0", grooming: "5", dressing: "10", bowels: "10", bladder: "5", toiletUse: "10", transfers: "15", mobility: "10", stairs: "5" },
+  ecog: { grade: "2" },
+};
+
+const BATCH8_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
+  "phq-9": { phq1: "-1", phq2: "-1", phq3: "-1", phq4: "-1", phq5: "-1", phq6: "-1", phq7: "-1", phq8: "-1", phq9: "-1" },
+  "gad-7": { gad1: "-1", gad2: "-1", gad3: "-1", gad4: "-1", gad5: "-1", gad6: "-1", gad7: "-1" },
+  epworth: { ess1: "-1", ess2: "-1", ess3: "-1", ess4: "-1", ess5: "-1", ess6: "-1", ess7: "-1", ess8: "-1" },
+  "stop-bang": { snoring: "-1", tired: "-1", observedApnea: "-1", bloodPressure: "-1", bmi: "-1", age: "-1", neck: "-1", gender: "-1" },
+  centor: { fever: "-1", absenceOfCough: "-1", tonsillarExudates: "-1", cervicalAdenopathy: "-1", ageGroup: "-1" },
+  charlson: { ageGroup: "-1", myocardialInfarction: "-1", congestiveHeartFailure: "-1", peripheralVascularDisease: "-1", cerebrovascularDisease: "-1", dementia: "-1", chronicPulmonaryDisease: "-1", connectiveTissueDisease: "-1", pepticUlcer: "-1", mildLiverDisease: "-1", diabetesNoComplications: "-1", hemiplegia: "-1", moderateSevereRenalDisease: "-1", diabetesEndOrganDamage: "-1", anyMalignancy: "-1", leukemia: "-1", lymphoma: "-1", moderateSevereLiverDisease: "-1", metastaticSolidTumor: "-1", aids: "-1" },
+  barthel: { feeding: "-1", bathing: "-1", grooming: "-1", dressing: "-1", bowels: "-1", bladder: "-1", toiletUse: "-1", transfers: "-1", mobility: "-1", stairs: "-1" },
+  ecog: { grade: "-1" },
+};
+
+const BATCH8_ZERO_OVERRIDES: Record<string, Record<string, string>> = {};
+
+const BATCH8_BOUNDARY_CASES: BoundaryCase[] = [
+  // PHQ-9 minimal (score 0)
+  {
+    id: "phq-9",
+    inputs: { phq1: "0", phq2: "0", phq3: "0", phq4: "0", phq5: "0", phq6: "0", phq7: "0", phq8: "0", phq9: "0" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // PHQ-9 moderate threshold (score 10)
+  {
+    id: "phq-9",
+    inputs: { phq1: "2", phq2: "1", phq3: "1", phq4: "1", phq5: "1", phq6: "1", phq7: "1", phq8: "1", phq9: "1" },
+    expectedStatus: "high",
+    expectedValue: 10,
+  },
+  // PHQ-9 severe threshold (score 15)
+  {
+    id: "phq-9",
+    inputs: { phq1: "2", phq2: "2", phq3: "2", phq4: "2", phq5: "2", phq6: "2", phq7: "2", phq8: "1", phq9: "0" },
+    expectedStatus: "critical",
+    expectedValue: 15,
+  },
+  // PHQ-9 maximum (score 27)
+  {
+    id: "phq-9",
+    inputs: { phq1: "3", phq2: "3", phq3: "3", phq4: "3", phq5: "3", phq6: "3", phq7: "3", phq8: "3", phq9: "3" },
+    expectedStatus: "critical",
+    expectedValue: 27,
+  },
+  // GAD-7 minimal (score 0)
+  {
+    id: "gad-7",
+    inputs: { gad1: "0", gad2: "0", gad3: "0", gad4: "0", gad5: "0", gad6: "0", gad7: "0" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // GAD-7 moderate threshold (score 10)
+  {
+    id: "gad-7",
+    inputs: { gad1: "2", gad2: "2", gad3: "2", gad4: "1", gad5: "1", gad6: "1", gad7: "1" },
+    expectedStatus: "high",
+    expectedValue: 10,
+  },
+  // GAD-7 severe threshold (score 15)
+  {
+    id: "gad-7",
+    inputs: { gad1: "2", gad2: "2", gad3: "2", gad4: "2", gad5: "2", gad6: "2", gad7: "3" },
+    expectedStatus: "critical",
+    expectedValue: 15,
+  },
+  // GAD-7 maximum (score 21)
+  {
+    id: "gad-7",
+    inputs: { gad1: "3", gad2: "3", gad3: "3", gad4: "3", gad5: "3", gad6: "3", gad7: "3" },
+    expectedStatus: "critical",
+    expectedValue: 21,
+  },
+  // ESS minimal (score 0)
+  {
+    id: "epworth",
+    inputs: { ess1: "0", ess2: "0", ess3: "0", ess4: "0", ess5: "0", ess6: "0", ess7: "0", ess8: "0" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // ESS moderate threshold (score 11)
+  {
+    id: "epworth",
+    inputs: { ess1: "2", ess2: "2", ess3: "2", ess4: "2", ess5: "1", ess6: "1", ess7: "1", ess8: "0" },
+    expectedStatus: "high",
+    expectedValue: 11,
+  },
+  // ESS high threshold (score 18)
+  {
+    id: "epworth",
+    inputs: { ess1: "2", ess2: "2", ess3: "2", ess4: "2", ess5: "2", ess6: "2", ess7: "3", ess8: "3" },
+    expectedStatus: "critical",
+    expectedValue: 18,
+  },
+  // ESS maximum (score 24)
+  {
+    id: "epworth",
+    inputs: { ess1: "3", ess2: "3", ess3: "3", ess4: "3", ess5: "3", ess6: "3", ess7: "3", ess8: "3" },
+    expectedStatus: "critical",
+    expectedValue: 24,
+  },
+  // STOP-BANG minimal (score 0)
+  {
+    id: "stop-bang",
+    inputs: { snoring: "no", tired: "no", observedApnea: "no", bloodPressure: "no", bmi: "no", age: "no", neck: "no", gender: "no" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // STOP-BANG intermediate risk threshold (score 3)
+  {
+    id: "stop-bang",
+    inputs: { snoring: "yes", tired: "no", observedApnea: "yes", bloodPressure: "yes", bmi: "no", age: "no", neck: "no", gender: "no" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+  // STOP-BANG high risk threshold (score 5)
+  {
+    id: "stop-bang",
+    inputs: { snoring: "yes", tired: "yes", observedApnea: "yes", bloodPressure: "yes", bmi: "yes", age: "no", neck: "no", gender: "no" },
+    expectedStatus: "critical",
+    expectedValue: 5,
+  },
+  // STOP-BANG maximum (score 8)
+  {
+    id: "stop-bang",
+    inputs: { snoring: "yes", tired: "yes", observedApnea: "yes", bloodPressure: "yes", bmi: "yes", age: "yes", neck: "yes", gender: "yes" },
+    expectedStatus: "critical",
+    expectedValue: 8,
+  },
+  // Centor score 0 (all criteria absent, ages 15-44)
+  {
+    id: "centor",
+    inputs: { fever: "no", absenceOfCough: "no", tonsillarExudates: "no", cervicalAdenopathy: "no", ageGroup: "0" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // Centor score 3 (high-risk probability)
+  {
+    id: "centor",
+    inputs: { fever: "yes", absenceOfCough: "yes", tonsillarExudates: "yes", cervicalAdenopathy: "no", ageGroup: "0" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+  // Centor score 4 (max criteria)
+  {
+    id: "centor",
+    inputs: { fever: "yes", absenceOfCough: "yes", tonsillarExudates: "yes", cervicalAdenopathy: "yes", ageGroup: "0" },
+    expectedStatus: "critical",
+    expectedValue: 4,
+  },
+  // Centor age 45+ clamps score (4 criteria -> 3)
+  {
+    id: "centor",
+    inputs: { fever: "yes", absenceOfCough: "yes", tonsillarExudates: "yes", cervicalAdenopathy: "yes", ageGroup: "-1" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+  // Charlson score 0 (age <50, no comorbidities)
+  {
+    id: "charlson",
+    inputs: { ageGroup: "0", myocardialInfarction: "no", congestiveHeartFailure: "no", peripheralVascularDisease: "no", cerebrovascularDisease: "no", dementia: "no", chronicPulmonaryDisease: "no", connectiveTissueDisease: "no", pepticUlcer: "no", mildLiverDisease: "no", diabetesNoComplications: "no", hemiplegia: "no", moderateSevereRenalDisease: "no", diabetesEndOrganDamage: "no", anyMalignancy: "no", leukemia: "no", lymphoma: "no", moderateSevereLiverDisease: "no", metastaticSolidTumor: "no", aids: "no" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // Charlson score 3 (high-risk threshold)
+  {
+    id: "charlson",
+    inputs: { ageGroup: "1", myocardialInfarction: "yes", congestiveHeartFailure: "yes", peripheralVascularDisease: "no", cerebrovascularDisease: "no", dementia: "no", chronicPulmonaryDisease: "no", connectiveTissueDisease: "no", pepticUlcer: "no", mildLiverDisease: "no", diabetesNoComplications: "no", hemiplegia: "no", moderateSevereRenalDisease: "no", diabetesEndOrganDamage: "no", anyMalignancy: "no", leukemia: "no", lymphoma: "no", moderateSevereLiverDisease: "no", metastaticSolidTumor: "no", aids: "no" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+  // Charlson score 5 (critical threshold)
+  {
+    id: "charlson",
+    inputs: { ageGroup: "2", myocardialInfarction: "yes", congestiveHeartFailure: "yes", peripheralVascularDisease: "yes", cerebrovascularDisease: "no", dementia: "no", chronicPulmonaryDisease: "no", connectiveTissueDisease: "no", pepticUlcer: "no", mildLiverDisease: "no", diabetesNoComplications: "no", hemiplegia: "no", moderateSevereRenalDisease: "no", diabetesEndOrganDamage: "no", anyMalignancy: "no", leukemia: "no", lymphoma: "no", moderateSevereLiverDisease: "no", metastaticSolidTumor: "no", aids: "no" },
+    expectedStatus: "critical",
+    expectedValue: 5,
+  },
+  // Barthel minimal dependence (score 0)
+  {
+    id: "barthel",
+    inputs: { feeding: "0", bathing: "0", grooming: "0", dressing: "0", bowels: "0", bladder: "0", toiletUse: "0", transfers: "0", mobility: "0", stairs: "0" },
+    expectedStatus: "critical",
+    expectedValue: 0,
+  },
+  // Barthel severe dependence edge (score 60)
+  {
+    id: "barthel",
+    inputs: { feeding: "10", bathing: "0", grooming: "0", dressing: "0", bowels: "10", bladder: "10", toiletUse: "10", transfers: "15", mobility: "5", stairs: "0" },
+    expectedStatus: "critical",
+    expectedValue: 60,
+  },
+  // Barthel moderate dependence (score 65)
+  {
+    id: "barthel",
+    inputs: { feeding: "10", bathing: "0", grooming: "5", dressing: "0", bowels: "10", bladder: "10", toiletUse: "10", transfers: "15", mobility: "0", stairs: "5" },
+    expectedStatus: "high",
+    expectedValue: 65,
+  },
+  // Barthel independent (score 100)
+  {
+    id: "barthel",
+    inputs: { feeding: "10", bathing: "5", grooming: "5", dressing: "10", bowels: "10", bladder: "10", toiletUse: "10", transfers: "15", mobility: "15", stairs: "10" },
+    expectedStatus: "normal",
+    expectedValue: 100,
+  },
+  // ECOG fully active (grade 0)
+  {
+    id: "ecog",
+    inputs: { grade: "0" },
+    expectedStatus: "normal",
+    expectedValue: 0,
+  },
+  // ECOG high threshold (grade 3)
+  {
+    id: "ecog",
+    inputs: { grade: "3" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+  // ECOG maximum (grade 5)
+  {
+    id: "ecog",
+    inputs: { grade: "5" },
+    expectedStatus: "critical",
+    expectedValue: 5,
+  },
+];
+
+describe("Batch 8 Direct-Call Validation Guards", () => {
+  function batch8Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 8 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch8Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH8_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch8Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH8_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch8Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH8_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch8Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH8_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(
+        batch8Calc(id).calculate(BATCH8_NEGATIVE_OVERRIDES[id]),
+        id,
+      );
+    },
+  );
+
+  it.each(BATCH8_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch8Calc(id).calculate(BATCH8_ZERO_OVERRIDES[id]), id);
+    },
+  );
+
+  it.each(BATCH8_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch8Calc(id).calculate(BATCH8_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it.each(BATCH8_BOUNDARY_CASES)(
+    "%s boundary inputs yield expected status and value",
+    (tc) => {
+      const result = batch8Calc(tc.id).calculate(tc.inputs);
+      expect(result.status, `${tc.id}: unexpected status`).toBe(tc.expectedStatus);
+      if (tc.expectedValue !== undefined) {
+        expect(Math.abs(Number(result.value) - tc.expectedValue)).toBeLessThan(0.01);
+      }
+    },
+  );
+
+  it("phq-9 returns critical for an invalid item selection", () => {
+    const result = batch8Calc("phq-9").calculate({
+      phq1: "9", phq2: "0", phq3: "0", phq4: "0", phq5: "0", phq6: "0", phq7: "0", phq8: "0", phq9: "0",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("gad-7 returns critical for an invalid item selection", () => {
+    const result = batch8Calc("gad-7").calculate({
+      gad1: "5", gad2: "0", gad3: "0", gad4: "0", gad5: "0", gad6: "0", gad7: "0",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("stop-bang returns critical for an invalid criterion value", () => {
+    const result = batch8Calc("stop-bang").calculate({
+      snoring: "maybe",
+      tired: "no",
+      observedApnea: "no",
+      bloodPressure: "no",
+      bmi: "no",
+      age: "no",
+      neck: "no",
+      gender: "no",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("centor returns critical for an invalid age-group selection", () => {
+    const result = batch8Calc("centor").calculate({
+      fever: "no",
+      absenceOfCough: "no",
+      tonsillarExudates: "no",
+      cervicalAdenopathy: "no",
+      ageGroup: "2",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("ecog returns critical for an invalid grade", () => {
+    const result = batch8Calc("ecog").calculate({ grade: "6" });
     expect(result.status).toBe("critical");
   });
 });

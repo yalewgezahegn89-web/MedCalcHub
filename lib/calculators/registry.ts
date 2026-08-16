@@ -136,6 +136,15 @@ import { foutScoreCalculator } from "./fout-score";
 import { raceScaleCalculator } from "./race-scale";
 import { esrsCalculator } from "./esrs";
 
+import { phq9Calculator } from "./phq-9";
+import { gad7Calculator } from "./gad-7";
+import { epworthCalculator } from "./epworth-sleepiness-scale";
+import { stopBangCalculator } from "./stop-bang";
+import { centorCalculator } from "./centor-score";
+import { charlsonCalculator } from "./charlson-comorbidity-index";
+import { barthelIndexCalculator } from "./barthel-index";
+import { ecogCalculator } from "./ecog-performance-status";
+
 import { percRuleCalculator } from "./perc-rule";
 import { wellsPeCalculator } from "./wells-pe";
 import { wellsDvtCalculator } from "./wells-dvt";
@@ -296,6 +305,15 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   foutScoreCalculator,
   raceScaleCalculator,
   esrsCalculator,
+
+  phq9Calculator,
+  gad7Calculator,
+  epworthCalculator,
+  stopBangCalculator,
+  centorCalculator,
+  charlsonCalculator,
+  barthelIndexCalculator,
+  ecogCalculator,
 
   percRuleCalculator,
   wellsPeCalculator,

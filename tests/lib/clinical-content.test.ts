@@ -155,6 +155,17 @@ const BATCH_16_SLUGS = [
   "esrs",
 ] as const;
 
+const BATCH_17_SLUGS = [
+  "phq-9",
+  "gad-7",
+  "epworth",
+  "stop-bang",
+  "centor",
+  "charlson",
+  "barthel",
+  "ecog",
+] as const;
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -1190,6 +1201,7 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
       ...BATCH_14_SLUGS,
       ...BATCH_15_SLUGS,
       ...BATCH_16_SLUGS,
+      ...BATCH_17_SLUGS,
     ]).size;
     expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
   });
@@ -1742,12 +1754,120 @@ describe("Clinical Content — Sprint 1.9 Batch 16 (Neurology)", () => {
   });
 });
 
+describe("Clinical Content — Sprint 1.9 Batch 17 (General Medicine)", () => {
+  const batch17VerifiedValues: Record<string, string | number> = {
+    "phq-9": 13,
+    "gad-7": 11,
+    epworth: 14,
+    "stop-bang": 5,
+    centor: 4,
+    charlson: 6,
+    barthel: 75,
+    ecog: 2,
+  };
+
+  it("every batch-17 calculator has clinical content", () => {
+    for (const slug of BATCH_17_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(getClinicalContent(slug)).toBe(content);
+    }
+  });
+
+  it("every batch-17 record has the full core field set", () => {
+    for (const slug of BATCH_17_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(content!.clinicalPurpose, `${slug}.clinicalPurpose`).toBeDefined();
+      expect(content!.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(content!.howToUse!.length).toBeGreaterThan(0);
+      expect(content!.interpretation, `${slug}.interpretation`).toBeDefined();
+      expect(
+        content!.interpretation!.guide,
+        `${slug}.interpretation.guide`,
+      ).toBeDefined();
+      expect(content!.whenToUse, `${slug}.whenToUse`).toBeDefined();
+      expect(content!.whenToUse!.length).toBeGreaterThan(0);
+      expect(content!.whenNotToUse, `${slug}.whenNotToUse`).toBeDefined();
+      expect(content!.whenNotToUse!.length).toBeGreaterThan(0);
+      expect(content!.limitations, `${slug}.limitations`).toBeDefined();
+      expect(content!.limitations!.length).toBeGreaterThan(0);
+      expect(content!.example, `${slug}.example`).toBeDefined();
+      expect(
+        content!.example!.description,
+        `${slug}.example.description`,
+      ).toBeDefined();
+      expect(content!.example!.inputs, `${slug}.example.inputs`).toBeDefined();
+      expect(
+        Object.keys(content!.example!.inputs!).length,
+        `${slug}.example.inputs keys`,
+      ).toBeGreaterThan(0);
+      expect(
+        content!.example!.expectedResult,
+        `${slug}.example.expectedResult`,
+      ).toBeDefined();
+      expect(
+        content!.clinicalSignificance,
+        `${slug}.clinicalSignificance`,
+      ).toBeDefined();
+      expect(content!.references, `${slug}.references`).toBeDefined();
+      expect(content!.references!.length).toBeGreaterThan(0);
+      expect(content!.disclaimer, `${slug}.disclaimer`).toBeDefined();
+    }
+  });
+
+  it("every batch-17 worked example executes without a missing-input error", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_17_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      const isMissingInput =
+        typeof result.value === "number" &&
+        result.value === 0 &&
+        result.status === "critical" &&
+        result.interpretation !== undefined &&
+        /required/i.test(result.interpretation);
+      expect(
+        isMissingInput,
+        `${slug} example produced a missing-input error: "${result.interpretation}"`,
+      ).toBe(false);
+    }
+  });
+
+  it("every batch-17 worked example matches verified output", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_17_SLUGS) {
+      const expected = batch17VerifiedValues[slug];
+      expect(expected, `${slug} has no verified example value`).toBeDefined();
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      expect(typeof expected, `${slug} expected value`).toBe("number");
+      expect(result.value as number, `${slug} numeric consistency`).toBeCloseTo(
+        expected as number,
+        1,
+      );
+    }
+  });
+
+  it("every batch-17 calculator is registered under the General Medicine specialty", () => {
+    for (const slug of BATCH_17_SLUGS) {
+      const calc = calculatorRegistry.find((c) => c.slug === slug);
+      expect(calc, `${slug} has no registered calculator`).toBeDefined();
+      expect(calc!.specialty, `${slug}.specialty`).toBe("General Medicine");
+    }
+  });
+});
+
 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 112 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(112);
+  it("all 120 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(120);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -1901,7 +2021,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     ]).size;
     expect(expected).toBe(86);
     expect(ALL_SLUGS.length).toBe(
-      expected + BATCH_14_SLUGS.length + BATCH_15_SLUGS.length + BATCH_16_SLUGS.length,
+      expected + BATCH_14_SLUGS.length + BATCH_15_SLUGS.length + BATCH_16_SLUGS.length + BATCH_17_SLUGS.length,
     );
     expect(getClinicalContent("anion-gap")).toBe(
       clinicalContentRegistry["anion-gap"],
@@ -2032,12 +2152,20 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     "fout-score": 12,
     "race-scale": 9,
     "esrs": 7,
+    "phq-9": 13,
+    "gad-7": 11,
+    epworth: 14,
+    "stop-bang": 5,
+    centor: 4,
+    charlson: 6,
+    barthel: 75,
+    ecog: 2,
   };
 
-  it("reports the final coverage totals (133 registered, 112 with content, 21 deferred)", () => {
+  it("reports the final coverage totals (141 registered, 120 with content, 21 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
-    expect(calculatorRegistry.length).toBe(133);
-    expect(contentSlugs.size).toBe(112);
+    expect(calculatorRegistry.length).toBe(141);
+    expect(contentSlugs.size).toBe(120);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,

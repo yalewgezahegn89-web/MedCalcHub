@@ -2330,3 +2330,93 @@ describe("Sprint 1.9 Batch 7 neurology discovery", () => {
     }
   });
 });
+
+/* ------------------------------------------------------------------
+   Sprint 1.9 Batch 8 — General Medicine discovery regression tests
+   ------------------------------------------------------------------ */
+
+describe("Sprint 1.9 Batch 8 general medicine discovery", () => {
+  const NEW_SLUGS = [
+    "phq-9",
+    "gad-7",
+    "epworth",
+    "stop-bang",
+    "centor",
+    "charlson",
+    "barthel",
+    "ecog",
+  ];
+
+  it("every new calculator is in the search index", () => {
+    const index = buildSearchIndex();
+    const slugs = new Set(index.map((d) => d.slug));
+    for (const slug of NEW_SLUGS) {
+      expect(slugs.has(slug), `${slug} missing from search index`).toBe(true);
+    }
+  });
+
+  it("discovers PHQ-9 via 'PHQ-9' and 'depression'", () => {
+    const byAbbr = searchCalculators("PHQ-9").map((r) => r.document.slug);
+    const byTerm = searchCalculators("depression").map((r) => r.document.slug);
+    expect(byAbbr).toContain("phq-9");
+    expect(byTerm).toContain("phq-9");
+  });
+
+  it("discovers GAD-7 via 'GAD-7' and 'anxiety'", () => {
+    const byAbbr = searchCalculators("GAD-7").map((r) => r.document.slug);
+    const byTerm = searchCalculators("anxiety").map((r) => r.document.slug);
+    expect(byAbbr).toContain("gad-7");
+    expect(byTerm).toContain("gad-7");
+  });
+
+  it("discovers Epworth scale via 'epworth' and 'sleepiness'", () => {
+    const byName = searchCalculators("epworth").map((r) => r.document.slug);
+    const byTerm = searchCalculators("sleepiness").map((r) => r.document.slug);
+    expect(byName).toContain("epworth");
+    expect(byTerm).toContain("epworth");
+  });
+
+  it("discovers STOP-BANG via 'stop bang' and 'obstructive sleep apnea'", () => {
+    const byName = searchCalculators("stop bang").map((r) => r.document.slug);
+    const byTerm = searchCalculators("obstructive sleep apnea").map((r) => r.document.slug);
+    expect(byName).toContain("stop-bang");
+    expect(byTerm).toContain("stop-bang");
+  });
+
+  it("discovers Modified Centor via 'centor' and 'strep throat'", () => {
+    const byName = searchCalculators("centor").map((r) => r.document.slug);
+    const byTerm = searchCalculators("strep throat").map((r) => r.document.slug);
+    expect(byName).toContain("centor");
+    expect(byTerm).toContain("centor");
+  });
+
+  it("discovers Charlson index via 'charlson' and 'comorbidity'", () => {
+    const byName = searchCalculators("charlson").map((r) => r.document.slug);
+    const byTerm = searchCalculators("comorbidity").map((r) => r.document.slug);
+    expect(byName).toContain("charlson");
+    expect(byTerm).toContain("charlson");
+  });
+
+  it("discovers Barthel index via 'barthel' and 'activities of daily living'", () => {
+    const byName = searchCalculators("barthel").map((r) => r.document.slug);
+    const byTerm = searchCalculators("activities of daily living").map((r) => r.document.slug);
+    expect(byName).toContain("barthel");
+    expect(byTerm).toContain("barthel");
+  });
+
+  it("discovers ECOG score via 'ecog' and 'performance status'", () => {
+    const byName = searchCalculators("ecog").map((r) => r.document.slug);
+    const byTerm = searchCalculators("performance status").map((r) => r.document.slug);
+    expect(byName).toContain("ecog");
+    expect(byTerm).toContain("ecog");
+  });
+
+  it("each new calculator appears at most once per query", () => {
+    for (const slug of NEW_SLUGS) {
+      const slugs = searchCalculators(slug).map((r) => r.document.slug);
+      expect(slugs.length, `${slug} duplicate in results`).toBe(
+        new Set(slugs).size,
+      );
+    }
+  });
+});
