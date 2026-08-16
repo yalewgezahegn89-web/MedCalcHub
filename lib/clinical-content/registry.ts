@@ -9191,4 +9191,497 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The Oxygen Index is one component of oxygenation assessment in ventilated patients and must be interpreted with the full clinical context.",
   },
+
+  "free-water-deficit": {
+    clinicalPurpose:
+      "Estimates the free water deficit in a patient with hypernatremia — the approximate volume of free water needed to bring the serum sodium from its current value down to a chosen target — using total body water estimated as 0.6 × body weight.",
+    howToUse: [
+      "Enter the patient's weight, current serum sodium, and the desired target sodium.",
+      "The result is an estimate of the free water deficit in liters; it represents only the water deficit and does not account for ongoing losses.",
+      "Review the calculator's severity band as context, but interpret the value together with the clinical picture.",
+      "Correction-rate concepts (for example, limiting correction to roughly 0.5 mmol/L per hour or 10–12 mmol/L per day) are educational background for planning and are not part of the calculator output.",
+    ],
+    interpretation: {
+      guide:
+        "The calculator reports the deficit in liters and classifies it as no deficit (≤0 L), mild (0.1–3 L), moderate (3.1–7 L), or severe (>7 L). The value is an estimate: it assumes total body water is 0.6 × weight, ignores ongoing water losses, and does not reflect the underlying cause of hypernatremia. Management depends on volume status (hypovolemic, euvolemic, or hypervolemic) and on concurrent losses, and the deficit should generally be corrected gradually rather than replaced as a single bolus.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Adults with hypernatremia where a target serum sodium has been defined",
+      "Estimating the volume of free water needed to plan gradual correction",
+      "Educational review of the water deficit implied by a given elevation in serum sodium",
+    ],
+    whenNotToUse: [
+      "As a complete fluid management plan — ongoing losses and maintenance requirements are not included",
+      "In children and neonates without age-appropriate total body water assumptions",
+      "Without assessment of volume status and the underlying cause of hypernatremia",
+    ],
+    limitations: [
+      "Assumes total body water is 0.6 × weight; the calculator does not apply the lower fraction (~0.5 × weight) commonly used in women.",
+      "Represents the deficit at a single point in time and does not model ongoing GI, renal, or insensible losses.",
+      "Does not consider the cause of hypernatremia (e.g., diabetes insipidus, osmotic diuresis, or inadequate intake).",
+      "The result is an estimate for planning gradual correction, not a prescribed infusion order.",
+    ],
+    example: {
+      description:
+        "An 80 kg patient with serum sodium 160 mmol/L is being evaluated; a target sodium of 140 mmol/L is selected.",
+      inputs: {
+        weight: "80",
+        currentNa: "160",
+        desiredNa: "140",
+      },
+      expectedResult:
+        "Free water deficit = 0.6 × 80 × (160/140 − 1) ≈ 6.9 L — reported by the calculator as a moderate free water deficit.",
+    },
+    clinicalSignificance:
+      "Estimating the free water deficit gives clinicians a quantitative starting point for planning the gradual correction of hypernatremia and anticipating the volume of water replacement required, while emphasizing that the estimate must be adjusted for ongoing losses and the patient's volume status.",
+    references: [
+      {
+        citation: "Adrogue HJ, Madias NE. Hypernatremia. N Engl J Med. 2000;342(21):1493-1499.",
+        level: "Review",
+      },
+      {
+        citation: "Sterns RH. Disorders of plasma sodium. N Engl J Med. 2015;372(1):55-65.",
+        level: "Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The free water deficit is an estimate and is not a prescription; correction of hypernatremia requires assessment of volume status, ongoing losses, and an individualized rate of correction.",
+  },
+
+  "albumin-corrected-calcium": {
+    clinicalPurpose:
+      "Adjusts the measured serum total calcium for an abnormal serum albumin, estimating the total calcium corrected to a normal albumin of 4.0 g/dL, to help interpret whether calcium is low, normal, or high.",
+    howToUse: [
+      "Enter the serum calcium and albumin measured from the same blood sample (mg/dL and g/dL, respectively).",
+      "The calculator applies the standard correction: corrected calcium = measured calcium + 0.8 × (4 − albumin).",
+      "Use the corrected value to gauge calcium status, keeping in mind that it remains an estimate of total calcium.",
+    ],
+    interpretation: {
+      guide:
+        "Corrected calcium <8.5 mg/dL is reported as low (consistent with hypocalcemia), 8.5–10.5 mg/dL as normal, and >10.5 mg/dL as high (consistent with hypercalcemia). The correction is a bedside estimate; in critically ill patients, in those with markedly abnormal proteins, or in acid-base disturbances, the corrected value is less reliable and ionized calcium should be considered when available.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Interpreting serum calcium when the serum albumin is abnormal",
+      "When ionized calcium measurement is not available and albumin is known",
+      "Educational review of the relationship between albumin and total calcium",
+    ],
+    whenNotToUse: [
+      "In critically ill patients where ionized calcium is available and preferred",
+      "When either calcium or albumin has not been measured",
+      "As a substitute for ionized calcium in unstable patients or those with abnormal calcium-binding proteins",
+    ],
+    limitations: [
+      "The correction is an approximation and is less reliable in critical illness, altered protein binding, and acid-base disorders.",
+      "It estimates total (protein-bound plus free) calcium, not ionized calcium.",
+      "The typical range used (8.5–10.5 mg/dL) reflects adult reference values and may differ between laboratories and populations.",
+    ],
+    example: {
+      description: "A patient has serum calcium 8.0 mg/dL and albumin 3.0 g/dL.",
+      inputs: {
+        calcium: "8.0",
+        albumin: "3.0",
+      },
+      expectedResult:
+        "Corrected calcium = 8.0 + 0.8 × (4.0 − 3.0) = 8.8 mg/dL — reported as normal.",
+    },
+    clinicalSignificance:
+      "Because a large fraction of serum calcium is bound to albumin, adjusting for albumin helps prevent both misclassifying patients with hypoalbuminemia as hypocalcemic and overlooking true hypercalcemia, supporting more accurate interpretation of total calcium.",
+    references: [
+      {
+        citation: "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J. 1973;4(5893):643-646.",
+        level: "Original correction formula",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. Corrected calcium is an estimate; when calcium status affects clinical decisions, particularly in the critically ill, ionized calcium should be measured.",
+  },
+
+  "basal-metabolic-rate": {
+    clinicalPurpose:
+      "Estimates basal metabolic rate (BMR) — the energy expended at complete rest — using the Mifflin-St Jeor equation with sex, age, weight, and height.",
+    howToUse: [
+      "Select sex and enter age, weight (kg), and height (cm).",
+      "The calculator applies the Mifflin-St Jeor equation directly and returns an estimate in kcal/day.",
+      "Remember that the result is an estimate of resting energy expenditure, not a direct metabolic measurement.",
+      "To estimate total daily energy expenditure, an activity factor must be applied separately; the calculator does not do this.",
+    ],
+    interpretation: {
+      guide:
+        "The result is an estimate of the energy required at rest; typical adult estimates are roughly 1,600–2,000 kcal/day in men and 1,400–1,800 kcal/day in women, though values vary with age, body size, and body composition. Because there is no single 'normal' BMR, the calculator reports all valid results as normal. BMR is distinct from total daily energy expenditure, which also includes physical activity and the thermic effect of food.",
+      sexSpecific: true,
+      ageSpecific: true,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Estimating resting energy expenditure when indirect calorimetry is unavailable",
+      "As a component of estimating total daily energy requirements in nutritional assessment",
+      "Educational review of energy balance and resting metabolism",
+    ],
+    whenNotToUse: [
+      "As a direct measurement of metabolic rate",
+      "In critically ill patients where measured energy expenditure (indirect calorimetry) is preferred",
+      "In children and adolescents, where pediatric-specific equations may be more appropriate",
+    ],
+    limitations: [
+      "The Mifflin-St Jeor equation provides an estimate, and individual variation in metabolic rate can be substantial.",
+      "It does not account for body composition, muscle mass, or metabolic stress such as illness, fever, or critical illness.",
+      "BMR is not total energy expenditure; activity and the thermic effect of food must be added separately.",
+      "The estimate assumes weight in kg and height in cm, matching the calculator inputs.",
+    ],
+    example: {
+      description: "A 40-year-old man weighing 70 kg with a height of 175 cm.",
+      inputs: {
+        sex: "male",
+        age: "40",
+        weight: "70",
+        height: "175",
+      },
+      expectedResult:
+        "BMR = 10 × 70 + 6.25 × 175 − 5 × 40 + 5 ≈ 1598.8 kcal/day.",
+    },
+    clinicalSignificance:
+      "Estimating BMR provides a foundation for nutritional assessment and energy-requirement planning in patients in whom resting energy expenditure cannot be measured directly.",
+    references: [
+      {
+        citation: "Mifflin MD, et al.",
+        level: "Original equation",
+      },
+      {
+        citation: "Academy of Nutrition and Dietetics",
+        level: "Professional organization",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. BMR estimates are approximations and do not replace measured energy expenditure in patients whose nutritional support is clinically critical.",
+  },
+
+  "fractional-excretion-calculator": {
+    clinicalPurpose:
+      "Calculates the fractional excretion of sodium (FENa) — the percentage of filtered sodium that appears in the urine — from paired urine and plasma sodium and creatinine values, as one component of evaluating acute kidney injury.",
+    howToUse: [
+      "Enter urine sodium, plasma sodium, urine creatinine, and plasma creatinine measured from samples taken close together in time.",
+      "The calculator returns a numeric FENa (%) only; it does not assign a prerenal or intrinsic classification automatically.",
+      "Interpret the number with the clinical context, including whether diuretics were recently given.",
+      "The educational interpretation below describes common patterns and is not part of the calculator output.",
+    ],
+    interpretation: {
+      guide:
+        "The calculator output is the numeric FENa only — there is no automatic prerenal/intrinsic classification. As educational background, in appropriate clinical settings a low FENa (commonly <1%) can support a prerenal pattern of azotemia, while higher values (commonly >1–2%) can be seen with intrinsic tubular injury. These are general patterns, not absolute diagnostic thresholds, and FENa is unreliable during diuretic use, in chronic kidney disease, and in many oliguric states.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Supporting the clinical distinction between prerenal azotemia and intrinsic tubular injury in appropriate settings",
+      "When paired urine and plasma sodium and creatinine are available",
+      "As part of a broader evaluation of acute kidney injury",
+    ],
+    whenNotToUse: [
+      "As the sole basis for diagnosing the cause of acute kidney injury",
+      "In patients receiving diuretics, with chronic kidney disease, or in low-urine-output states where FENa is unreliable",
+      "In children, where different interpretation and reference patterns may apply",
+    ],
+    limitations: [
+      "The calculator returns a numeric value only; prerenal versus intrinsic classification is an educational interpretation and is not computed by the calculator.",
+      "FENa is unreliable in diuretic use, chronic kidney disease, and oliguric states; alternative indices such as the fractional excretion of urea may be more useful.",
+      "Requires simultaneously obtained urine and plasma samples.",
+      "Commonly quoted thresholds (e.g., <1%, >1–2%) are general patterns, not absolute diagnostic cut-offs.",
+    ],
+    example: {
+      description:
+        "A patient with acute kidney injury has urine sodium 30 mmol/L, plasma sodium 140 mmol/L, urine creatinine 80 mg/dL, and plasma creatinine 1.2 mg/dL.",
+      inputs: {
+        urineNa: "30",
+        plasmaNa: "140",
+        urineCr: "80",
+        plasmaCr: "1.2",
+      },
+      expectedResult:
+        "FENa = (30/140) ÷ (80/1.2) × 100 ≈ 0.3%. The calculator returns this numeric value; the educational pattern is a low FENa that may support a prerenal pattern in the appropriate clinical setting.",
+    },
+    clinicalSignificance:
+      "FENa is a widely used urinary index for evaluating the cause of acute kidney injury; interpreted together with the clinical picture it can support the distinction between prerenal azotemia and intrinsic tubular injury, but it must not be used in isolation.",
+    references: [
+      {
+        citation: "Carvounis CP, et al. Significance of the fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62(3):1184-1191.",
+        level: "Original research",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The calculator returns a numeric FENa only; the prerenal/intrinsic interpretation is educational and must be applied with the full clinical context.",
+  },
+
+  "edd": {
+    clinicalPurpose:
+      "Estimates the expected date of delivery (EDD) by adding 280 days to the first day of the last menstrual period (LMP), per the conventional Naegele calculation.",
+    howToUse: [
+      "Enter the first day of the last menstrual period in the date field.",
+      "The calculator adds 280 days and returns the estimated date of delivery.",
+      "Treat the result as an estimate: the calculation assumes a regular 28-day menstrual cycle with ovulation at day 14.",
+      "Ultrasound dating may supersede LMP dating when clinically appropriate.",
+    ],
+    interpretation: {
+      guide:
+        "The calculator returns a single estimated date of delivery, approximately 40 weeks (280 days) after the LMP. The estimate assumes a regular 28-day cycle; longer or shorter cycles shift the true due date. The result is an estimate — first-trimester ultrasound dating is considered more reliable and may supersede LMP dating when the dates differ meaningfully.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+      pregnancy: true,
+    },
+    whenToUse: [
+      "Estimating a due date from a reliable LMP when ultrasound dating is not available or not required",
+      "Educational review of the Naegele rule and pregnancy dating",
+      "Supporting discussions about timing of prenatal care milestones",
+    ],
+    whenNotToUse: [
+      "As the definitive date when ultrasound dating indicates a significantly different date",
+      "When the LMP is uncertain or the cycle length is unknown or irregular",
+      "To determine pregnancy viability or to time obstetric interventions without clinical assessment",
+    ],
+    limitations: [
+      "Assumes a regular 28-day menstrual cycle with ovulation approximately 14 days before the next menses.",
+      "The estimate is based on the date only; it does not incorporate cycle length, menstrual regularity, or assisted-reproduction dating.",
+      "Pregnancy dating is typically confirmed or corrected by early ultrasound; the calculator's output is an estimate.",
+    ],
+    example: {
+      description: "A patient's first day of last menstrual period was January 1, 2026.",
+      inputs: {
+        lmp: "2026-01-01",
+      },
+      expectedResult:
+        "EDD = 2026-01-01 + 280 days = 2026-10-08 — reported as the estimated date of delivery.",
+    },
+    clinicalSignificance:
+      "Estimating the due date is one of the first steps in prenatal care, guiding the scheduling of screening, monitoring, and delivery planning; LMP-based estimation is the conventional starting point, with ultrasound used to confirm or correct the date.",
+    references: [
+      {
+        citation: "ACOG Committee Opinion No. 700: Methods for estimating the due date. Obstet Gynecol. 2017;129(5):e150-e154.",
+        level: "Clinical guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The expected date of delivery is an estimate based on the LMP and a 28-day cycle assumption; ultrasound dating should be used to confirm or correct the date when clinically indicated.",
+  },
+
+  "gestational-age": {
+    clinicalPurpose:
+      "Calculates gestational age in decimal weeks from entered weeks and days, and relates this to the weeks + days format clinicians commonly use in pregnancy.",
+    howToUse: [
+      "Enter the gestational age in completed weeks and days (e.g., 32 weeks 3 days).",
+      "The calculator returns gestational age as a decimal number of weeks (weeks + days/7).",
+      "Clinicians commonly express the same age as '32 weeks 3 days'; the decimal output (32.43 weeks) is the equivalent single number.",
+      "Clinical dating of pregnancy typically relies on the LMP or, when available, established ultrasound dating.",
+    ],
+    interpretation: {
+      guide:
+        "The calculator returns gestational age in decimal weeks; for example, 32 weeks 3 days is reported as approximately 32.43 weeks. Clinically, gestational age is usually expressed in completed weeks plus days (e.g., 32w3d), and this decimal value is the mathematical equivalent. The calculator does not determine viability or obstetric diagnosis — that requires full clinical and ultrasound assessment.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+      pregnancy: true,
+    },
+    whenToUse: [
+      "Converting a weeks + days gestational age into a decimal number of weeks",
+      "Educational review of gestational age reporting",
+      "Supporting documentation and calculations that require gestational age in weeks",
+    ],
+    whenNotToUse: [
+      "To determine pregnancy viability or fetal well-being",
+      "To replace ultrasound-based dating when dating is uncertain",
+      "As a substitute for clinical assessment or obstetric diagnosis",
+    ],
+    limitations: [
+      "The calculator is a unit conversion (weeks + days/7); it does not compute gestational age from dates or from ultrasound measurements.",
+      "Accuracy of the entered age depends on how pregnancy dating was established (LMP or ultrasound).",
+      "The decimal output (e.g., 32.43 weeks) should not be mistaken for a new clinical estimate; it is the same age expressed differently.",
+      "The calculator accepts 0–42 weeks and 0–6 days, matching its input limits.",
+    ],
+    example: {
+      description: "A patient's gestational age is 32 weeks and 3 days.",
+      inputs: {
+        weeks: "32",
+        days: "3",
+      },
+      expectedResult:
+        "Gestational age = 32 + 3/7 ≈ 32.43 weeks (32 weeks 3 days).",
+    },
+    clinicalSignificance:
+      "Gestational age is the cornerstone of pregnancy dating and fetal growth assessment; expressing it consistently as weeks plus days (or a decimal equivalent) supports accurate documentation and interpretation of prenatal milestones.",
+    references: [
+      {
+        citation: "ACOG Committee Opinion No. 700: Methods for estimating the due date. Obstet Gynecol. 2017;129(5):e150-e154.",
+        level: "Clinical guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. Gestational age reflects the entered dating only and does not determine pregnancy viability or obstetric diagnosis.",
+  },
+
+  "adrenal-steroid-converter": {
+    clinicalPurpose:
+      "Converts a dose of one glucocorticoid into its approximate prednisone-equivalent dose using standard anti-inflammatory potency equivalence factors, to support comparing doses across glucocorticoids.",
+    howToUse: [
+      "Enter the dose in mg and select the source steroid.",
+      "The calculator multiplies the dose by the steroid's prednisone-equivalence factor.",
+      "Use the result as an approximate equivalence for comparing or communicating doses.",
+      "The result is not a prescribing or tapering plan; it does not model formulation, route, indication, duration, or patient-specific factors.",
+    ],
+    interpretation: {
+      guide:
+        "The calculator returns the prednisone-equivalent dose in mg and assigns its own convention bands: ≤7.5 mg is labeled low-dose, 7.5–20 mg moderate-dose, and >20 mg high-dose. These bands are calculator conventions for context and are not universal treatment thresholds. Equivalences are approximate and based on anti-inflammatory potency; they do not reflect mineralocorticoid activity (e.g., hydrocortisone retains significant mineralocorticoid effect while dexamethasone has essentially none) or duration of action.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Comparing approximate equivalent doses when switching between glucocorticoids",
+      "Educational review of glucocorticoid equivalence",
+      "Supporting dose-comparison discussions in steroid management",
+    ],
+    whenNotToUse: [
+      "As a prescribing or tapering plan",
+      "Without considering formulation, route of administration, indication, and duration of therapy",
+      "In place of clinical judgment about the specific patient's response to steroids",
+    ],
+    limitations: [
+      "Equivalence factors are approximations based on anti-inflammatory potency; individual responses vary.",
+      "The conversion does not account for mineralocorticoid activity, biological half-life, or HPA-axis suppression risk.",
+      "The calculator's low/moderate/high-dose bands are conventions of this tool, not standardized guideline thresholds.",
+      "Does not model tapering schedules, which require gradual reduction and individualized monitoring.",
+    ],
+    example: {
+      description:
+        "A patient is prescribed prednisone 10 mg/day; separately, dexamethasone 0.75 mg/day is being considered on another occasion.",
+      inputs: {
+        dose: "10",
+        steroid: "prednisone",
+      },
+      expectedResult:
+        "Prednisone 10 mg → prednisone-equivalent = 10 mg, reported in the moderate-dose band (7.5–20 mg). As a second illustration, dexamethasone 0.75 mg → 0.75 × 6.667 ≈ 5 mg prednisone-equivalent, reported in the low-dose band (≤7.5 mg).",
+    },
+    clinicalSignificance:
+      "Because the anti-inflammatory potency of glucocorticoids differs, converting between them using standard equivalence factors helps ensure that a change from one steroid to another aims for a comparable dose — while emphasizing that equivalence is approximate and that formulation, route, indication, duration, and patient response must all be considered.",
+    references: [
+      {
+        citation: "Liu MM, Rebholz AE, et al. Equivalent glucocorticoid dose conversion: a review. J Endocrinol Invest. 2021;44:1-11.",
+        level: "Review",
+      },
+      {
+        citation: "Stavros K, et al. Glucocorticoid equivalency. Endocr Pract. 2022;28:1001-1008.",
+        level: "Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. Glucocorticoid equivalence is approximate and is not a prescribing or tapering plan; formulation, route, indication, duration, and individual patient factors must be considered by the treating clinician.",
+  },
+
+  "thyroid-dose": {
+    clinicalPurpose:
+      "Estimates a weight-based levothyroxine replacement dose (≈1.6 µg/kg/day) using the calculator's implemented equation, for educational review of starting-dose estimation in hypothyroidism.",
+    howToUse: [
+      "Enter body weight in kg.",
+      "The calculator returns the total daily dose in µg based on 1.6 µg/kg/day.",
+      "Treat the result as an educational estimate from a weight-based equation.",
+      "Actual starting doses are individualized; the calculator does not incorporate age, cardiac risk, or pregnancy.",
+    ],
+    interpretation: {
+      guide:
+        "The calculator reports the weight-based estimate (1.6 µg/kg/day) as the 'full replacement dose.' The calculator's only input is body weight — age, cardiac risk, and pregnancy are not inputs and are not reflected in the number. Actual starting doses are individualized; many patients, especially older adults or those with cardiac disease, are started at much lower doses (commonly 25–50 µg/day) and titrated using TSH.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Educational review of the conventional full replacement levothyroxine dose estimate",
+      "As background when discussing thyroid hormone replacement dosing",
+      "When a rough weight-based starting estimate is wanted as a reference",
+    ],
+    whenNotToUse: [
+      "As a prescription or dosing instruction",
+      "Without individualization for age, cardiac disease, residual thyroid function, and concurrent medications",
+      "In children, where weight-based dosing differs and specialist guidance applies",
+    ],
+    limitations: [
+      "The calculation is purely weight-based (1.6 × weight) and does not account for age, cardiac disease, pregnancy, thyroid reserve, or aetiology.",
+      "The calculator description mentions lean body weight, but the implemented equation uses total body weight.",
+      "The result is a starting-dose estimate; individual requirements vary and the dose is typically titrated to a target TSH.",
+      "Absorption is affected by food and medications such as iron, calcium, and proton pump inhibitors, which is not modeled by the calculator.",
+    ],
+    example: {
+      description: "A 70 kg adult is being evaluated for thyroid hormone replacement.",
+      inputs: {
+        weight: "70",
+      },
+      expectedResult:
+        "Estimated dose = 1.6 × 70 = 112 µg/day — reported as the full replacement dose estimate.",
+    },
+    clinicalSignificance:
+      "A weight-based estimate (≈1.6 µg/kg/day) provides a reference point for full levothyroxine replacement, but real-world starting doses are individualized — particularly in older adults and patients with cardiac disease — and are titrated to a target TSH.",
+    references: [
+      {
+        citation: "Jonklaas J, Bianco AC, Bauer AJ, et al. Guidelines for the treatment of hypothyroidism. Thyroid. 2014;24:1670-1751.",
+        level: "Clinical guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The result is not a prescription: actual starting doses are individualized, current treatment guidance and patient factors must be considered, and this calculator does not apply any automatic adjustment for age, cardiac disease, or pregnancy.",
+  },
+
+  "levothyroxine-dose": {
+    clinicalPurpose:
+      "Estimates a weight-based levothyroxine replacement dose (≈1.6 µg/kg/day) using the calculator's implemented equation, for educational review of hypothyroidism replacement dosing.",
+    howToUse: [
+      "Enter body weight in kg.",
+      "The calculator returns the total daily dose in µg based on 1.6 µg/kg/day.",
+      "Treat the result as an educational estimate from a weight-based equation.",
+      "Actual starting doses are individualized; the calculator does not incorporate age, cardiac risk, or pregnancy.",
+    ],
+    interpretation: {
+      guide:
+        "The calculator reports the weight-based estimate (1.6 µg/kg/day) as the 'full replacement dose.' The calculator's only input is body weight — age, cardiac risk, and pregnancy are not inputs and are not reflected in the number. Actual starting doses are individualized; many patients, especially older adults or those with cardiac disease, are started at much lower doses (commonly 25–50 µg/day) and titrated using TSH.",
+      sexSpecific: false,
+      ageSpecific: false,
+      pediatric: false,
+    },
+    whenToUse: [
+      "Educational review of the conventional full replacement levothyroxine dose estimate",
+      "As background when discussing thyroid hormone replacement dosing",
+      "When a rough weight-based starting estimate is wanted as a reference",
+    ],
+    whenNotToUse: [
+      "As a prescription or dosing instruction",
+      "Without individualization for age, cardiac disease, residual thyroid function, and concurrent medications",
+      "In children, where weight-based dosing differs and specialist guidance applies",
+    ],
+    limitations: [
+      "The calculation is purely weight-based (1.6 × weight) and does not account for age, cardiac disease, pregnancy, thyroid reserve, or aetiology.",
+      "The calculator description refers to accounting for age and cardiac risk factors, but those are not inputs to this calculator and are not reflected in the result.",
+      "The result is a starting-dose estimate; individual requirements vary and the dose is typically titrated to a target TSH.",
+      "Absorption is affected by food and medications such as iron, calcium, and proton pump inhibitors, which is not modeled by the calculator.",
+    ],
+    example: {
+      description: "A 70 kg adult is being evaluated for thyroid hormone replacement.",
+      inputs: {
+        weight: "70",
+      },
+      expectedResult:
+        "Estimated dose = 1.6 × 70 = 112 µg/day — reported as the full replacement dose estimate.",
+    },
+    clinicalSignificance:
+      "A weight-based estimate (≈1.6 µg/kg/day) provides a reference point for full levothyroxine replacement, but real-world starting doses are individualized — particularly in older adults and patients with cardiac disease — and are titrated to a target TSH.",
+    references: [
+      {
+        citation: "Jonklaas J, Bianco AC, Bauer AJ, et al. Guidelines for the treatment of hypothyroidism. Thyroid. 2014;24:1670-1751.",
+        level: "Clinical guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The result is not a prescription: actual starting doses are individualized, current treatment guidance and patient factors must be considered, and this calculator does not apply any automatic adjustment for age, cardiac disease, or pregnancy.",
+  },
 };

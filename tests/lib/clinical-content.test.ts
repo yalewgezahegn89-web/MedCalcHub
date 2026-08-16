@@ -184,6 +184,18 @@ const BATCH_19_SLUGS = [
   "rox-index",
 ] as const;
 
+const BATCH_20_SLUGS = [
+  "free-water-deficit",
+  "albumin-corrected-calcium",
+  "basal-metabolic-rate",
+  "fractional-excretion-calculator",
+  "edd",
+  "gestational-age",
+  "adrenal-steroid-converter",
+  "thyroid-dose",
+  "levothyroxine-dose",
+] as const;
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -1222,6 +1234,7 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
       ...BATCH_17_SLUGS,
       ...BATCH_18_SLUGS,
       ...BATCH_19_SLUGS,
+      ...BATCH_20_SLUGS,
     ]).size;
     expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
   });
@@ -2150,8 +2163,8 @@ describe("Clinical Content — Sprint 1.9 Batch 19 (Pulmonary/Respiratory)", () 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 132 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(132);
+  it("all 141 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(141);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -2305,7 +2318,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     ]).size;
     expect(expected).toBe(86);
     expect(ALL_SLUGS.length).toBe(
-      expected + BATCH_14_SLUGS.length + BATCH_15_SLUGS.length + BATCH_16_SLUGS.length + BATCH_17_SLUGS.length + BATCH_18_SLUGS.length + BATCH_19_SLUGS.length,
+      expected + BATCH_14_SLUGS.length + BATCH_15_SLUGS.length + BATCH_16_SLUGS.length + BATCH_17_SLUGS.length + BATCH_18_SLUGS.length + BATCH_19_SLUGS.length + BATCH_20_SLUGS.length,
     );
     expect(getClinicalContent("anion-gap")).toBe(
       clinicalContentRegistry["anion-gap"],
@@ -2317,17 +2330,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
 });
 
 describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
-  const DEFERRED_WITHOUT_CONTENT = [
-    "basal-metabolic-rate",
-    "free-water-deficit",
-    "albumin-corrected-calcium",
-    "fractional-excretion-calculator",
-    "thyroid-dose",
-    "levothyroxine-dose",
-    "adrenal-steroid-converter",
-    "edd",
-    "gestational-age",
-  ];
+  const DEFERRED_WITHOUT_CONTENT: string[] = [];
 
   const KNOWN_INPUT_DEFECTIVE = ["news2", "shock-index"];
   const KNOWN_NUMERIC_DEFECTIVE = ["news2", "shock-index", "ckd-epi-2021"];
@@ -2434,10 +2437,10 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     ecog: 2,
   };
 
-  it("reports the final coverage totals (141 registered, 132 with content, 9 deferred)", () => {
+  it("reports the final coverage totals (141 registered, 141 with content, 0 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
     expect(calculatorRegistry.length).toBe(141);
-    expect(contentSlugs.size).toBe(132);
+    expect(contentSlugs.size).toBe(141);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,
@@ -2649,5 +2652,164 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     for (const key of keys) {
       expect(calcSlugs.has(key)).toBe(true);
     }
+  });
+});
+
+describe("Clinical Content — Sprint 1.9 Batch 20 (Final Coverage)", () => {
+  const batch20VerifiedValues: Record<string, string | number> = {
+    "free-water-deficit": 6.9,
+    "albumin-corrected-calcium": 8.8,
+    "basal-metabolic-rate": 1598.8,
+    "fractional-excretion-calculator": 0.3,
+    edd: "2026-10-08",
+    "gestational-age": 32.4286,
+    "adrenal-steroid-converter": 10,
+    "thyroid-dose": 112,
+    "levothyroxine-dose": 112,
+  };
+
+  const batch20Categories: Record<string, string> = {
+    "free-water-deficit": "Internal Medicine",
+    "albumin-corrected-calcium": "Internal Medicine",
+    "basal-metabolic-rate": "Internal Medicine",
+    "fractional-excretion-calculator": "Internal Medicine",
+    edd: "Obstetrics & Gynecology",
+    "gestational-age": "Obstetrics & Gynecology",
+    "adrenal-steroid-converter": "Endocrinology",
+    "thyroid-dose": "Endocrinology",
+    "levothyroxine-dose": "Endocrinology",
+  };
+
+  it("every batch-20 calculator has clinical content", () => {
+    for (const slug of BATCH_20_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(getClinicalContent(slug)).toBe(content);
+    }
+  });
+
+  it("every batch-20 record has the full core field set", () => {
+    for (const slug of BATCH_20_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(content!.clinicalPurpose, `${slug}.clinicalPurpose`).toBeDefined();
+      expect(content!.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(content!.howToUse!.length).toBeGreaterThan(0);
+      expect(content!.interpretation, `${slug}.interpretation`).toBeDefined();
+      expect(
+        content!.interpretation!.guide,
+        `${slug}.interpretation.guide`,
+      ).toBeDefined();
+      expect(content!.whenToUse, `${slug}.whenToUse`).toBeDefined();
+      expect(content!.whenToUse!.length).toBeGreaterThan(0);
+      expect(content!.whenNotToUse, `${slug}.whenNotToUse`).toBeDefined();
+      expect(content!.whenNotToUse!.length).toBeGreaterThan(0);
+      expect(content!.limitations, `${slug}.limitations`).toBeDefined();
+      expect(content!.limitations!.length).toBeGreaterThan(0);
+      expect(content!.example, `${slug}.example`).toBeDefined();
+      expect(
+        content!.example!.description,
+        `${slug}.example.description`,
+      ).toBeDefined();
+      expect(content!.example!.inputs, `${slug}.example.inputs`).toBeDefined();
+      expect(
+        Object.keys(content!.example!.inputs!).length,
+        `${slug}.example.inputs keys`,
+      ).toBeGreaterThan(0);
+      expect(
+        content!.example!.expectedResult,
+        `${slug}.example.expectedResult`,
+      ).toBeDefined();
+      expect(
+        content!.clinicalSignificance,
+        `${slug}.clinicalSignificance`,
+      ).toBeDefined();
+      expect(content!.references, `${slug}.references`).toBeDefined();
+      expect(content!.references!.length).toBeGreaterThan(0);
+      expect(content!.disclaimer, `${slug}.disclaimer`).toBeDefined();
+      expect(content!.disclaimer!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("every batch-20 example input key matches a registered calculator input", () => {
+    for (const slug of BATCH_20_SLUGS) {
+      const calc = calculatorRegistry.find((c) => c.slug === slug);
+      expect(calc, `${slug} has no registered calculator`).toBeDefined();
+      const inputIds = new Set(calc!.inputs.map((i) => i.id));
+      const content = clinicalContentRegistry[slug];
+      for (const key of Object.keys(content!.example!.inputs!)) {
+        expect(
+          inputIds.has(key),
+          `${slug} example key "${key}" is not a calculator input`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("every batch-20 worked example executes without a missing-input error", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_20_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      const isMissingInput =
+        typeof result.value === "number" &&
+        result.value === 0 &&
+        result.status === "critical" &&
+        result.interpretation !== undefined &&
+        /required/i.test(result.interpretation);
+      expect(
+        isMissingInput,
+        `${slug} example produced a missing-input error: "${result.interpretation}"`,
+      ).toBe(false);
+    }
+  });
+
+  it("every batch-20 worked example matches verified output", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_20_SLUGS) {
+      const expected = batch20VerifiedValues[slug];
+      expect(expected, `${slug} has no verified example value`).toBeDefined();
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      if (typeof expected === "number") {
+        expect(typeof result.value, `${slug} result value`).toBe("number");
+        expect(result.value as number, `${slug} numeric consistency`).toBeCloseTo(
+          expected as number,
+          1,
+        );
+      } else {
+        expect(result.value, `${slug} string result`).toBe(expected);
+      }
+    }
+  });
+
+  it("every batch-20 calculator preserves its registered category", () => {
+    for (const slug of BATCH_20_SLUGS) {
+      const calc = calculatorRegistry.find((c) => c.slug === slug);
+      expect(calc, `${slug} has no registered calculator`).toBeDefined();
+      expect(calc!.category, `${slug}.category`).toBe(batch20Categories[slug]);
+    }
+  });
+
+  it("no duplicate keys and no orphan records across the 9 batch-20 records", () => {
+    const calcSlugs = new Set(calculatorRegistry.map((c) => c.slug));
+    expect(new Set(BATCH_20_SLUGS).size).toBe(BATCH_20_SLUGS.length);
+    for (const slug of BATCH_20_SLUGS) {
+      expect(calcSlugs.has(slug), `${slug} is not a registered calculator`).toBe(
+        true,
+      );
+    }
+  });
+
+  it("reports zero calculators deferred without clinical content", () => {
+    const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
+    const missing = calculatorRegistry.filter(
+      (c) => !contentSlugs.has(c.slug),
+    );
+    expect(missing).toEqual([]);
   });
 });
