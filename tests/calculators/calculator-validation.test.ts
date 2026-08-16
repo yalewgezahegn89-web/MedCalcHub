@@ -591,6 +591,72 @@ const testInputs: Record<string, Record<string, string>> = {
     item10: "0",
   },
 
+  // -- Sprint 1.9 Batch 6: Pediatrics --
+  "apgar-score": {
+    appearance: "2",
+    pulse: "2",
+    grimace: "1",
+    activity: "2",
+    respiration: "2",
+  },
+  "pediatric-gcs": {
+    eye: "4",
+    verbal: "4",
+    motor: "6",
+  },
+  "pediatric-trauma-score": {
+    weight: "2",
+    airway: "2",
+    sbp: "2",
+    cns: "1",
+    openWound: "2",
+    skeletal: "1",
+  },
+  "westley-croup-score": {
+    consciousness: "0",
+    cyanosis: "0",
+    stridor: "1",
+    airEntry: "1",
+    retractions: "2",
+  },
+  "pecarn-head-trauma": {
+    ageGroup: "under-2",
+    u2AlteredMentation: "no",
+    u2PalpableSkullFracture: "no",
+    u2ScalpHematoma: "no",
+    u2Loc5Seconds: "no",
+    u2NotActingNormal: "no",
+    dangerousMechanism: "no",
+  },
+  "rochester-criteria": {
+    ageDays: "45",
+    termGestation: "yes",
+    previouslyHealthy: "yes",
+    nontoxic: "yes",
+    focalInfection: "no",
+    wbc: "9000",
+    urinalysisWbc: "3",
+    diarrhea: "no",
+    stoolWbc: "0",
+  },
+  "gorelick-dehydration": {
+    capillaryRefill: "yes",
+    dryMucousMembranes: "yes",
+    absentTears: "no",
+    illAppearance: "no",
+  },
+  "pediatric-hypotension": {
+    ageGroup: "1-10yr",
+    ageYears: "4",
+    sbp: "85",
+  },
+  "peds-pews": {
+    behavior: "1",
+    cardiovascular: "1",
+    respiratory: "1",
+    concern: "no",
+  },
+
   // -- Sprint 1.9 Batch 4: Renal & Laboratory/Metabolic --
   "fractional-excretion-uric-acid": {
     urineUricAcid: "20",
@@ -919,6 +985,51 @@ const exactExpectations: Record<string, ExpectedExact> = {
     value: 0,
     tolerance: 0.01,
     status: "normal",
+  },
+  "apgar-score": {
+    value: 9,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "pediatric-gcs": {
+    value: 14,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "pediatric-trauma-score": {
+    value: 10,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "westley-croup-score": {
+    value: 4,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "pecarn-head-trauma": {
+    value: 0,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "rochester-criteria": {
+    value: 7,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "gorelick-dehydration": {
+    value: 2,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "pediatric-hypotension": {
+    value: 78,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "peds-pews": {
+    value: 3,
+    tolerance: 0.01,
+    status: "high",
   },
   timi: {
     value: 5,
@@ -2510,6 +2621,349 @@ describe("Batch 5 Direct-Call Validation Guards", () => {
       ast: "90",
       ldh: "400",
       hemolysis: "maybe",
+    });
+    expect(result.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Sprint 1.9 Batch 6 (Pediatrics) Direct-Call Validation Guards. Verifies
+// that guarded calculators return critical (never NaN) for missing, empty,
+// non-numeric, negative, and (where applicable) zero inputs, and that
+// clinically valid inputs remain non-critical and finite.
+//
+// Select-only calculators (all those whose numeric inputs are selects, i.e.
+// apgar-score, pediatric-gcs, pediatric-trauma-score, westley-croup-score,
+// pecarn-head-trauma, gorelick-dehydration, peds-pews) are excluded from the
+// zero-input guard because "0" is a valid option value for every select; their
+// missing / empty / non-numeric / negative guards still apply. Numeric-input
+// calculators (rochester-criteria, pediatric-hypotension) ARE zero-guarded
+// because a WBC of 0 / SBP of 0 mmHg is never clinically valid.
+//
+// Domain-specific boundary checks (Apgar bands, GCS severity bands, PTS
+// risk bands, Westley croup severity, PECARN predictor counting for both age
+// groups, Rochester criterion counting, Gorelick dehydration, PALS SBP
+// thresholds, and PEWS escalation thresholds) are also exercised.
+// ---------------------------------------------------------------------------
+
+const BATCH6_GUARDED_IDS = [
+  "apgar-score",
+  "pediatric-gcs",
+  "pediatric-trauma-score",
+  "westley-croup-score",
+  "pecarn-head-trauma",
+  "rochester-criteria",
+  "gorelick-dehydration",
+  "pediatric-hypotension",
+  "peds-pews",
+] as const;
+
+// "0" is a valid select option for these calculators, so they cannot be
+// required to turn a zero input into a critical result.
+const BATCH6_SELECT_ONLY_IDS = new Set([
+  "apgar-score",
+  "pediatric-gcs",
+  "pediatric-trauma-score",
+  "westley-croup-score",
+  "pecarn-head-trauma",
+  "gorelick-dehydration",
+  "peds-pews",
+]);
+
+const BATCH6_ZERO_GUARDED_IDS = BATCH6_GUARDED_IDS.filter(
+  (id) => !BATCH6_SELECT_ONLY_IDS.has(id),
+);
+
+const BATCH6_VALID_INPUTS: Record<string, Record<string, string>> = {
+  "apgar-score": { appearance: "2", pulse: "2", grimace: "1", activity: "2", respiration: "2" },
+  "pediatric-gcs": { eye: "4", verbal: "4", motor: "6" },
+  "pediatric-trauma-score": { weight: "2", airway: "2", sbp: "2", cns: "1", openWound: "2", skeletal: "1" },
+  "westley-croup-score": { consciousness: "0", cyanosis: "0", stridor: "1", airEntry: "1", retractions: "2" },
+  "pecarn-head-trauma": { ageGroup: "under-2", u2AlteredMentation: "no", u2PalpableSkullFracture: "no", u2ScalpHematoma: "no", u2Loc5Seconds: "no", u2NotActingNormal: "no", dangerousMechanism: "no" },
+  "rochester-criteria": { ageDays: "45", termGestation: "yes", previouslyHealthy: "yes", nontoxic: "yes", focalInfection: "no", wbc: "9000", urinalysisWbc: "3", diarrhea: "no", stoolWbc: "0" },
+  "gorelick-dehydration": { capillaryRefill: "yes", dryMucousMembranes: "yes", absentTears: "no", illAppearance: "no" },
+  "pediatric-hypotension": { ageGroup: "1-10yr", ageYears: "4", sbp: "85" },
+  "peds-pews": { behavior: "1", cardiovascular: "1", respiratory: "1", concern: "no" },
+};
+
+const BATCH6_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
+  "apgar-score": { appearance: "-1", pulse: "-1", grimace: "-1", activity: "-1", respiration: "-1" },
+  "pediatric-gcs": { eye: "-1", verbal: "-1", motor: "-1" },
+  "pediatric-trauma-score": { weight: "2", airway: "-2", sbp: "2", cns: "2", openWound: "2", skeletal: "2" },
+  "westley-croup-score": { consciousness: "-1", cyanosis: "-1", stridor: "-1", airEntry: "-1", retractions: "-1" },
+  "pecarn-head-trauma": { ageGroup: "under-2", u2AlteredMentation: "-1", u2PalpableSkullFracture: "-1", u2ScalpHematoma: "-1", u2Loc5Seconds: "-1", u2NotActingNormal: "-1", dangerousMechanism: "-1" },
+  "rochester-criteria": { ageDays: "-1", termGestation: "yes", previouslyHealthy: "yes", nontoxic: "yes", focalInfection: "no", wbc: "-1", urinalysisWbc: "-1", diarrhea: "no", stoolWbc: "-1" },
+  "gorelick-dehydration": { capillaryRefill: "-1", dryMucousMembranes: "-1", absentTears: "-1", illAppearance: "-1" },
+  "pediatric-hypotension": { ageGroup: "1-10yr", ageYears: "5", sbp: "-1" },
+  "peds-pews": { behavior: "-1", cardiovascular: "-1", respiratory: "-1", concern: "-1" },
+};
+
+const BATCH6_ZERO_OVERRIDES: Record<string, Record<string, string>> = {
+  "rochester-criteria": { ageDays: "45", termGestation: "yes", previouslyHealthy: "yes", nontoxic: "yes", focalInfection: "no", wbc: "0", urinalysisWbc: "3", diarrhea: "no", stoolWbc: "0" },
+  "pediatric-hypotension": { ageGroup: "1-10yr", ageYears: "5", sbp: "0" },
+};
+
+const BATCH6_BOUNDARY_CASES: BoundaryCase[] = [
+  // Apgar moderately depressed (score 4)
+  {
+    id: "apgar-score",
+    inputs: { appearance: "1", pulse: "1", grimace: "1", activity: "1", respiration: "0" },
+    expectedStatus: "high",
+    expectedValue: 4,
+  },
+  // Apgar severely depressed (score 3)
+  {
+    id: "apgar-score",
+    inputs: { appearance: "1", pulse: "1", grimace: "0", activity: "1", respiration: "0" },
+    expectedStatus: "critical",
+    expectedValue: 3,
+  },
+  // Pediatric GCS moderate impairment (11)
+  {
+    id: "pediatric-gcs",
+    inputs: { eye: "3", verbal: "4", motor: "4" },
+    expectedStatus: "high",
+    expectedValue: 11,
+  },
+  // Pediatric GCS severe impairment / coma (8)
+  {
+    id: "pediatric-gcs",
+    inputs: { eye: "2", verbal: "3", motor: "3" },
+    expectedStatus: "critical",
+    expectedValue: 8,
+  },
+  // PTS intermediate (4-7) — score 6
+  {
+    id: "pediatric-trauma-score",
+    inputs: { weight: "1", airway: "1", sbp: "1", cns: "1", openWound: "1", skeletal: "1" },
+    expectedStatus: "high",
+    expectedValue: 6,
+  },
+  // PTS severe (< 4) — score 3
+  {
+    id: "pediatric-trauma-score",
+    inputs: { weight: "2", airway: "1", sbp: "1", cns: "-1", openWound: "1", skeletal: "-1" },
+    expectedStatus: "critical",
+    expectedValue: 3,
+  },
+  // Westley mild (score 2)
+  {
+    id: "westley-croup-score",
+    inputs: { consciousness: "0", cyanosis: "0", stridor: "0", airEntry: "1", retractions: "1" },
+    expectedStatus: "normal",
+    expectedValue: 2,
+  },
+  // Westley severe (score 8)
+  {
+    id: "westley-croup-score",
+    inputs: { consciousness: "0", cyanosis: "4", stridor: "1", airEntry: "1", retractions: "2" },
+    expectedStatus: "critical",
+    expectedValue: 8,
+  },
+  // PECARN under 2 years — one predictor (scalp hematoma)
+  {
+    id: "pecarn-head-trauma",
+    inputs: { ageGroup: "under-2", u2AlteredMentation: "no", u2PalpableSkullFracture: "no", u2ScalpHematoma: "yes", u2Loc5Seconds: "no", u2NotActingNormal: "no", dangerousMechanism: "no" },
+    expectedStatus: "high",
+    expectedValue: 1,
+  },
+  // PECARN under 2 years — two predictors
+  {
+    id: "pecarn-head-trauma",
+    inputs: { ageGroup: "under-2", u2AlteredMentation: "yes", u2PalpableSkullFracture: "no", u2ScalpHematoma: "yes", u2Loc5Seconds: "no", u2NotActingNormal: "no", dangerousMechanism: "no" },
+    expectedStatus: "critical",
+    expectedValue: 2,
+  },
+  // PECARN 2 years and older — one predictor (vomiting)
+  {
+    id: "pecarn-head-trauma",
+    inputs: { ageGroup: "two-and-older", p2AlteredMentation: "no", p2BasilarSkullFracture: "no", p2Vomiting: "yes", p2SevereHeadache: "no", p2LossOfConsciousness: "no", dangerousMechanism: "no" },
+    expectedStatus: "high",
+    expectedValue: 1,
+  },
+  // Rochester not low risk (6/7 — previously healthy fails)
+  {
+    id: "rochester-criteria",
+    inputs: { ageDays: "45", termGestation: "yes", previouslyHealthy: "no", nontoxic: "yes", focalInfection: "no", wbc: "9000", urinalysisWbc: "3", diarrhea: "no", stoolWbc: "0" },
+    expectedStatus: "high",
+    expectedValue: 6,
+  },
+  // Rochester age out of range
+  {
+    id: "rochester-criteria",
+    inputs: { ageDays: "61", termGestation: "yes", previouslyHealthy: "yes", nontoxic: "yes", focalInfection: "no", wbc: "9000", urinalysisWbc: "3", diarrhea: "no", stoolWbc: "0" },
+    expectedStatus: "critical",
+    expectedValue: 0,
+  },
+  // Gorelick predicts ≥ 5% dehydration (3 of 4)
+  {
+    id: "gorelick-dehydration",
+    inputs: { capillaryRefill: "yes", dryMucousMembranes: "yes", absentTears: "yes", illAppearance: "no" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+  // PALS SBP threshold at 5 years (80 mmHg), SBP 79 -> hypotensive
+  {
+    id: "pediatric-hypotension",
+    inputs: { ageGroup: "1-10yr", ageYears: "5", sbp: "79" },
+    expectedStatus: "critical",
+    expectedValue: 80,
+  },
+  // PALS SBP threshold over 10 years (90 mmHg)
+  {
+    id: "pediatric-hypotension",
+    inputs: { ageGroup: "over-10yr", ageYears: "12", sbp: "90" },
+    expectedStatus: "normal",
+    expectedValue: 90,
+  },
+  // PEWS single-domain score 3 (behavior) -> escalate
+  {
+    id: "peds-pews",
+    inputs: { behavior: "3", cardiovascular: "0", respiratory: "0", concern: "no" },
+    expectedStatus: "high",
+    expectedValue: 3,
+  },
+  // PEWS high risk (score 5)
+  {
+    id: "peds-pews",
+    inputs: { behavior: "2", cardiovascular: "2", respiratory: "1", concern: "no" },
+    expectedStatus: "critical",
+    expectedValue: 5,
+  },
+];
+
+describe("Batch 6 Direct-Call Validation Guards", () => {
+  function batch6Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 6 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch6Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH6_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch6Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH6_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch6Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH6_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch6Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH6_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(
+        batch6Calc(id).calculate(BATCH6_NEGATIVE_OVERRIDES[id]),
+        id,
+      );
+    },
+  );
+
+  it.each(BATCH6_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch6Calc(id).calculate(BATCH6_ZERO_OVERRIDES[id]), id);
+    },
+  );
+
+  it.each(BATCH6_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch6Calc(id).calculate(BATCH6_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it.each(BATCH6_BOUNDARY_CASES)(
+    "%s boundary inputs yield expected status and value",
+    (tc) => {
+      const result = batch6Calc(tc.id).calculate(tc.inputs);
+      expect(result.status, `${tc.id}: unexpected status`).toBe(tc.expectedStatus);
+      if (tc.expectedValue !== undefined) {
+        expect(Math.abs(Number(result.value) - tc.expectedValue)).toBeLessThan(0.01);
+      }
+    },
+  );
+
+  it("pecarn-head-trauma returns critical for an invalid age group", () => {
+    const result = batch6Calc("pecarn-head-trauma").calculate({
+      ageGroup: "not-a-group",
+      u2AlteredMentation: "no",
+      u2PalpableSkullFracture: "no",
+      u2ScalpHematoma: "no",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      dangerousMechanism: "no",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("rochester-criteria returns critical for an invalid selection", () => {
+    const result = batch6Calc("rochester-criteria").calculate({
+      ageDays: "45",
+      termGestation: "maybe",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "9000",
+      urinalysisWbc: "3",
+      diarrhea: "no",
+      stoolWbc: "0",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("pediatric-hypotension returns critical for an invalid age group", () => {
+    const result = batch6Calc("pediatric-hypotension").calculate({
+      ageGroup: "not-a-group",
+      ageYears: "5",
+      sbp: "85",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("pediatric-hypotension returns critical for an out-of-range age", () => {
+    const result = batch6Calc("pediatric-hypotension").calculate({
+      ageGroup: "1-10yr",
+      ageYears: "11",
+      sbp: "85",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("pediatric-hypotension returns critical when ageYears is omitted for the 1-10yr group", () => {
+    const result = batch6Calc("pediatric-hypotension").calculate({
+      ageGroup: "1-10yr",
+      sbp: "85",
     });
     expect(result.status).toBe("critical");
   });

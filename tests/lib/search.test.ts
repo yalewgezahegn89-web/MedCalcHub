@@ -2142,3 +2142,101 @@ describe("Sprint 1.9 Batch 5 obstetrics discovery", () => {
     }
   });
 });
+
+/* ------------------------------------------------------------------
+   Sprint 1.9 Batch 6 — Pediatrics discovery regression tests
+   ------------------------------------------------------------------ */
+
+describe("Sprint 1.9 Batch 6 pediatrics discovery", () => {
+  const NEW_SLUGS = [
+    "apgar-score",
+    "pediatric-gcs",
+    "pediatric-trauma-score",
+    "westley-croup-score",
+    "pecarn-head-trauma",
+    "rochester-criteria",
+    "gorelick-dehydration",
+    "pediatric-hypotension",
+    "peds-pews",
+  ];
+
+  it("every new calculator is in the search index", () => {
+    const index = buildSearchIndex();
+    const slugs = new Set(index.map((d) => d.slug));
+    for (const slug of NEW_SLUGS) {
+      expect(slugs.has(slug), `${slug} missing from search index`).toBe(true);
+    }
+  });
+
+  it("discovers Apgar Score via 'apgar' and 'newborn'", () => {
+    const byTerm = searchCalculators("apgar").map((r) => r.document.slug);
+    const byNewborn = searchCalculators("newborn").map((r) => r.document.slug);
+    expect(byTerm).toContain("apgar-score");
+    expect(byNewborn).toContain("apgar-score");
+  });
+
+  it("discovers Pediatric GCS via 'pediatric glasgow coma' and 'GCS'", () => {
+    const byName = searchCalculators("pediatric glasgow coma").map((r) => r.document.slug);
+    const byAbbr = searchCalculators("GCS").map((r) => r.document.slug);
+    expect(byName).toContain("pediatric-gcs");
+    expect(byAbbr).toContain("pediatric-gcs");
+  });
+
+  it("discovers Pediatric Trauma Score via 'pediatric trauma'", () => {
+    const results = searchCalculators("pediatric trauma");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "pediatric-trauma-score",
+    );
+  });
+
+  it("discovers Westley score via 'westley croup'", () => {
+    const results = searchCalculators("westley croup");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "westley-croup-score",
+    );
+  });
+
+  it("discovers PECARN rule via 'PECARN' and 'head trauma'", () => {
+    const byAbbr = searchCalculators("PECARN").map((r) => r.document.slug);
+    const byTerm = searchCalculators("head trauma").map((r) => r.document.slug);
+    expect(byAbbr).toContain("pecarn-head-trauma");
+    expect(byTerm).toContain("pecarn-head-trauma");
+  });
+
+  it("discovers Rochester criteria via 'rochester' and 'febrile infant'", () => {
+    const byName = searchCalculators("rochester").map((r) => r.document.slug);
+    const byTerm = searchCalculators("febrile infant").map((r) => r.document.slug);
+    expect(byName).toContain("rochester-criteria");
+    expect(byTerm).toContain("rochester-criteria");
+  });
+
+  it("discovers Gorelick scale via 'gorelick' and 'dehydration'", () => {
+    const byName = searchCalculators("gorelick").map((r) => r.document.slug);
+    const byTerm = searchCalculators("dehydration").map((r) => r.document.slug);
+    expect(byName).toContain("gorelick-dehydration");
+    expect(byTerm).toContain("gorelick-dehydration");
+  });
+
+  it("discovers pediatric hypotension via 'hypotension'", () => {
+    const results = searchCalculators("hypotension");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "pediatric-hypotension",
+    );
+  });
+
+  it("discovers PEWS via 'PEWS' and 'early warning'", () => {
+    const byAbbr = searchCalculators("PEWS").map((r) => r.document.slug);
+    const byTerm = searchCalculators("early warning").map((r) => r.document.slug);
+    expect(byAbbr).toContain("peds-pews");
+    expect(byTerm).toContain("peds-pews");
+  });
+
+  it("each new calculator appears at most once per query", () => {
+    for (const slug of NEW_SLUGS) {
+      const slugs = searchCalculators(slug).map((r) => r.document.slug);
+      expect(slugs.length, `${slug} duplicate in results`).toBe(
+        new Set(slugs).size,
+      );
+    }
+  });
+});

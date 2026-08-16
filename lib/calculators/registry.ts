@@ -117,6 +117,16 @@ import { magnesiumSulfatePreeclampsiaCalculator } from "./magnesium-sulfate-pree
 import { eblObstetricCalculator } from "./ebl-obstetric";
 import { epdsCalculator } from "./epds";
 
+import { apgarScoreCalculator } from "./apgar-score";
+import { pediatricGcsCalculator } from "./pediatric-gcs";
+import { pediatricTraumaScoreCalculator } from "./pediatric-trauma-score";
+import { westleyCroupScoreCalculator } from "./westley-croup-score";
+import { pecarnHeadTraumaCalculator } from "./pecarn-head-trauma";
+import { rochesterCriteriaCalculator } from "./rochester-criteria";
+import { gorelickDehydrationCalculator } from "./gorelick-dehydration";
+import { pediatricHypotensionCalculator } from "./pediatric-hypotension";
+import { pedsPewsCalculator } from "./peds-pews";
+
 import { percRuleCalculator } from "./perc-rule";
 import { wellsPeCalculator } from "./wells-pe";
 import { wellsDvtCalculator } from "./wells-dvt";
@@ -258,6 +268,16 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   magnesiumSulfatePreeclampsiaCalculator,
   eblObstetricCalculator,
   epdsCalculator,
+
+  apgarScoreCalculator,
+  pediatricGcsCalculator,
+  pediatricTraumaScoreCalculator,
+  westleyCroupScoreCalculator,
+  pecarnHeadTraumaCalculator,
+  rochesterCriteriaCalculator,
+  gorelickDehydrationCalculator,
+  pediatricHypotensionCalculator,
+  pedsPewsCalculator,
 
   percRuleCalculator,
   wellsPeCalculator,

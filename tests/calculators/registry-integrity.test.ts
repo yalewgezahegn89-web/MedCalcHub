@@ -19,8 +19,29 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 116 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(116);
+  it("registry contains exactly 125 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(125);
+  });
+
+  it("the 9 Pediatrics Batch 6 (Sprint 1.9) calculators are registered and searchable", () => {
+    const batch6Ids = [
+      "apgar-score",
+      "pediatric-gcs",
+      "pediatric-trauma-score",
+      "westley-croup-score",
+      "pecarn-head-trauma",
+      "rochester-criteria",
+      "gorelick-dehydration",
+      "pediatric-hypotension",
+      "peds-pews",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const id of batch6Ids) {
+      const calc = getCalculatorById(id);
+      expect(calc, `batch-6 calculator "${id}" must resolve`).toBeDefined();
+      expect(slugs.has(calc!.slug)).toBe(true);
+      expect(searchCalculators(calc!.name).length).toBeGreaterThanOrEqual(1);
+    }
   });
 
   it("the 9 Obstetrics Batch 5 (Sprint 1.9) calculators are registered and searchable", () => {

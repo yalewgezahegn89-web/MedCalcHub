@@ -6536,4 +6536,549 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The EPDS is a screening tool; a positive screen requires full clinical assessment, and any item-10 positive response requires immediate safety evaluation.",
   },
+
+  "apgar-score": {
+    clinicalPurpose:
+      "Scores newborn condition immediately after birth using the five Apgar signs — Appearance (color), Pulse (heart rate), Grimace (reflex irritability), Activity (muscle tone), and Respiration — each scored 0–2 for a total of 0–10 (Apgar 1953).",
+    howToUse: [
+      "Assign a value of 0, 1, or 2 to each of the five signs at the moment of scoring, using a timer.",
+      "Score at 1 minute and 5 minutes of life; repeat every 5 minutes up to 20 minutes if the 5-minute score is below 7.",
+      "Sum the five components (0–10) and review the severity band.",
+    ],
+    interpretation: {
+      guide:
+        "Scores of 7–10 are reassuring; 4–6 indicate moderate depression of the newborn; 0–3 indicate severe depression requiring immediate resuscitation. Per AAP/AHA guidance, the score is used to report the newborn's condition and response to resuscitation, not alone to decide whether resuscitation is needed.",
+      sexSpecific: false,
+      ageSpecific: true,
+    },
+    whenToUse: [
+      "Standard assessment of every newborn at 1 and 5 minutes of life",
+      "Reporting the response to neonatal resuscitation",
+      "Documentation of newborn transition in the delivery room",
+    ],
+    whenNotToUse: [
+      "As the sole trigger for resuscitation decisions (respirations, heart rate, and color guide resuscitation)",
+      "As a predictor of long-term neurologic outcome",
+    ],
+    limitations: [
+      "Scores are lower in preterm, sedated, or congenitally abnormal infants without implying asphyxia.",
+      "Inter-observer variability exists among scorers.",
+      "The score is a crude index of transition, not a diagnostic test.",
+    ],
+    example: {
+      description:
+        "A term infant at 1 minute is pink all over, heart rate 130 bpm, grimaces to stimulation, has some flexion of extremities, and has a vigorous cry.",
+      inputs: {
+        appearance: "2",
+        pulse: "2",
+        grimace: "1",
+        activity: "2",
+        respiration: "2",
+      },
+      expectedResult:
+        "Apgar score 9/10 — reassuring; continue routine newborn care and reassess at 5 minutes.",
+    },
+    clinicalSignificance:
+      "The Apgar score provides a rapid, standardized, universally used snapshot of a newborn's immediate condition and response to resuscitation, facilitating communication between delivery-room teams and guiding the intensity of ongoing observation.",
+    references: [
+      {
+        citation:
+          "Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg. 1953;32(4):260-267.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "AAP Committee on Fetus and Newborn, ACOG Committee on Obstetric Practice. The Apgar score. Pediatrics. 2015;136(4):819-822.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The Apgar score is a reporting tool; resuscitation decisions should be guided by the newborn's respirations, heart rate, and color.",
+  },
+
+  "pediatric-gcs": {
+    clinicalPurpose:
+      "Quantifies the level of consciousness in infants and children using the Pediatric Glasgow Coma Scale, which modifies the verbal component for age while keeping the eye (1–4) and motor (1–6) components identical to the adult scale; total range 3–15.",
+    howToUse: [
+      "Score the best eye opening (1–4) using the standard descriptors.",
+      "Score the best age-appropriate verbal response (1–5): smiles/coos/follows = 5, consolable crying = 4, inconsolable crying = 3, moaning/restless = 2, none = 1.",
+      "Score the best motor response (1–6) and sum the three components.",
+    ],
+    interpretation: {
+      guide:
+        "Scores 13–15 indicate mild impairment; 9–12 moderate impairment requiring close monitoring; 8 or less indicates severe impairment (coma) with the need for airway protection, urgent neuroimaging, and neurosurgical/ICU referral. The pediatric scale differs from the adult scale only in the verbal component.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Assessment of depressed consciousness in infants and children",
+      "Serial neurologic monitoring after head trauma or critical illness",
+      "Preverbal children who cannot be scored with the adult verbal scale",
+    ],
+    whenNotToUse: [
+      "In fully verbal older children able to orient to person, place, and time (adult GCS applies)",
+      "As a substitute for pupillary and brainstem examination",
+    ],
+    limitations: [
+      "Age-appropriate verbal scoring is subjective and varies with developmental stage.",
+      "Sedation, intubation, paralysis, and intoxication confound the score.",
+      "A single score is less informative than serial change.",
+    ],
+    example: {
+      description:
+        "A 9-month-old after a fall opens eyes to voice (3), cries but is consolable (4), and withdraws to pain (4).",
+      inputs: {
+        eye: "3",
+        verbal: "4",
+        motor: "4",
+      },
+      expectedResult:
+        "Pediatric GCS 11/15 — moderate impairment; close neurologic monitoring and urgent evaluation of the underlying cause.",
+    },
+    clinicalSignificance:
+      "The Pediatric GCS standardizes the neurologic examination in children and is widely used to grade the severity of head injury and guide airway management, neuroimaging, and referral decisions.",
+    references: [
+      {
+        citation:
+          "James HE, Trauner D. The Glasgow Coma Scale. In: James HE, Anas NG, Perkin RM, eds. Brain Insults in Infants and Children. Orlando, FL: Grune & Stratton; 1985:179-182.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "American College of Surgeons. Advanced Trauma Life Support (ATLS) Student Course Manual. 10th ed. Chicago, IL: ACS; 2018.",
+        level: "Course Manual",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Neurologic assessment requires serial evaluation by trained clinicians, and clinical decisions should not rest on a single score.",
+  },
+
+  "pediatric-trauma-score": {
+    clinicalPurpose:
+      "Scores the severity of pediatric trauma across six components — weight, airway, systolic blood pressure, mental status, open wounds, and skeletal injury — each scored +2, +1, or −1, for a total of −6 to +12 (Tepas 1988). Lower scores predict higher mortality and the need for pediatric trauma center care.",
+    howToUse: [
+      "Score the best observed status in each of the six components.",
+      "Use pediatric blood-pressure criteria (not adult values) for the systolic component.",
+      "Sum the six component scores and review the risk category.",
+    ],
+    interpretation: {
+      guide:
+        "A score ≥ 8 predicts low mortality (< 1%) and allows routine care; 4–7 indicates significant injury with a strong consideration for transfer to a pediatric trauma center; scores below 4 carry a high mortality risk and warrant urgent transfer. The score should improve with resuscitation.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Emergency department triage of the injured child",
+      "Prehospital triage of pediatric trauma patients",
+      "Early identification of children needing pediatric trauma center resources",
+    ],
+    whenNotToUse: [
+      "As an outcome predictor independent of ongoing clinical reassessment",
+      "In place of anatomic scoring (e.g., ISS) once the full injury pattern is known",
+    ],
+    limitations: [
+      "Underestimates injury severity in the first minutes after injury.",
+      "Penetrating mechanisms are not as well captured as in anatomic scoring systems.",
+      "Component scoring requires simultaneous physiologic assessment.",
+    ],
+    example: {
+      description:
+        "A 25 kg child involved in a motor-vehicle crash has a maintainable airway, SBP 95 mmHg, is obtunded, has a minor laceration, and a closed femur fracture.",
+      inputs: {
+        weight: "2",
+        airway: "1",
+        sbp: "2",
+        cns: "1",
+        openWound: "1",
+        skeletal: "1",
+      },
+      expectedResult:
+        "Pediatric Trauma Score 8 (−6 to +12) — low risk; predicted mortality low, routine trauma care with continued reassessment.",
+    },
+    clinicalSignificance:
+      "The Pediatric Trauma Score provides a rapid, child-specific triage tool that identifies injured children who benefit from pediatric trauma center resources, supporting field and ED decisions that reduce preventable death in pediatric trauma.",
+    references: [
+      {
+        citation:
+          "Tepas JJ 3rd, Ramenofsky ML, Mollitt DL, et al. The Pediatric Trauma Score as a predictor of injury severity in the injured child. J Pediatr Surg. 1987;22(1):14-18.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "American College of Surgeons. Resources for Optimal Care of the Injured Patient. Chicago, IL: ACS; 2022.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Trauma triage requires continuous reassessment, and clinical judgment should always override any score-based triage recommendation.",
+  },
+
+  "westley-croup-score": {
+    clinicalPurpose:
+      "Scores the severity of viral croup (laryngotracheobronchitis) using the five-component Westley scale (1978): level of consciousness, cyanosis, stridor, air entry, and chest-wall retractions, for a total of 0–17. Higher scores indicate more severe upper-airway obstruction.",
+    howToUse: [
+      "Assess each component while keeping the child calm to avoid worsening stridor.",
+      "For stridor and cyanosis, score the worst finding seen both when calm and when agitated.",
+      "Sum the five components (0–17) and review the severity band.",
+    ],
+    interpretation: {
+      guide:
+        "Scores ≤ 2 indicate mild croup, usually managed as an outpatient with a single dose of dexamethasone. Scores 3–7 indicate moderate croup, adding nebulized epinephrine for stridor at rest. Scores ≥ 8 indicate severe croup with impending respiratory failure requiring urgent airway management and intensive care.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Emergency department assessment of a child with barking cough and stridor",
+      "Serial monitoring of croup severity during treatment",
+      "Deciding on admission, nebulized epinephrine, and ICU involvement",
+    ],
+    whenNotToUse: [
+      "When bacterial tracheitis, epiglottitis, foreign body, or angioedema is suspected (these progress differently and require different management)",
+      "As a replacement for continuous clinical observation of the airway",
+    ],
+    limitations: [
+      "Component scoring is somewhat subjective and inter-observer variability exists.",
+      "Agitation during assessment worsens stridor and can falsely elevate the score.",
+      "The score captures upper-airway obstruction but not hypoxemia from other causes.",
+    ],
+    example: {
+      description:
+        "A 2-year-old with croup has stridor only when agitated, decreased air entry, and moderate subcostal retractions, with normal consciousness, no cyanosis, and no retractions at rest.",
+      inputs: {
+        consciousness: "0",
+        cyanosis: "0",
+        stridor: "1",
+        airEntry: "1",
+        retractions: "2",
+      },
+      expectedResult:
+        "Westley croup score 4/17 — moderate croup; dexamethasone with nebulized epinephrine for stridor at rest, observation for rebound.",
+    },
+    clinicalSignificance:
+      "Croup is the most common cause of acute upper-airway obstruction in children; a standardized severity score guides dexamethasone and epinephrine use, admission decisions, and early recognition of impending respiratory failure.",
+    references: [
+      {
+        citation:
+          "Westley CR, Cotton EK, Brooks JG. Nebulized racemic epinephrine by IPPB for the treatment of croup: a double-blind study. Am J Dis Child. 1978;132(5):484-487.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Bjornson CL, Johnson DW. Croup. Lancet. 2008;371(9609):329-339.",
+        level: "Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. A child who is drowsy or cyanotic at rest has critical obstruction regardless of the score; continuous airway reassessment is mandatory.",
+  },
+
+  "pecarn-head-trauma": {
+    clinicalPurpose:
+      "Identifies children with minor blunt head trauma at very low risk of clinically important traumatic brain injury (ciTBI) using the age-specific PECARN decision rule (Kuppermann 2009) — separate predictor sets for children under 2 years and children 2 years and older.",
+    howToUse: [
+      "Confirm the child meets the rule's population: blunt head trauma within 24 hours, GCS 14–15, no more than brief (< 1 minute) loss of consciousness.",
+      "Select the child's age group (under 2 years or 2 years and older).",
+      "Answer the six predictors for that age group; the calculator counts how many are present.",
+    ],
+    interpretation: {
+      guide:
+        "If NONE of the predictors are present, the risk of ciTBI is < 0.02% (under 2 years) or < 0.05% (2 years and older) and CT is not indicated. If one predictor is present the risk is approximately 0.9% and observation is generally preferred over CT. If two or more predictors are present, the risk is substantially higher and CT is indicated.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Children with minor blunt head trauma in the emergency department",
+      "CT decision-making for head trauma in children under 18 years",
+      "Reducing unnecessary head CTs in children at very low risk",
+    ],
+    whenNotToUse: [
+      "When GCS < 14, high-energy mechanisms (e.g., polytrauma with ejection), penetrating injury, bleeding disorders, or ventriculoperitoneal shunts are present",
+      "In infants under 3 months, in whom any scalp hematoma generally warrants CT regardless of the rule",
+    ],
+    limitations: [
+      "The rule stratifies risk but does not eliminate the need for observation and return precautions.",
+      "Predictor assessment relies on accurate history (e.g., LOC, acting normally) from caregivers.",
+      "Validated for blunt head trauma in the specified population only.",
+    ],
+    example: {
+      description:
+        "A 14-month-old fell from a changing table (~2.5 feet) onto carpet. GCS 15, acting normally, no scalp hematoma, no LOC, no palpable fracture, no concerning mechanism.",
+      inputs: {
+        ageGroup: "under-2",
+        u2AlteredMentation: "no",
+        u2PalpableSkullFracture: "no",
+        u2ScalpHematoma: "no",
+        u2Loc5Seconds: "no",
+        u2NotActingNormal: "no",
+        dangerousMechanism: "no",
+      },
+      expectedResult:
+        "PECARN (under 2 years) — very low risk; risk of clinically important TBI < 0.02%; CT not indicated; provide return precautions.",
+    },
+    clinicalSignificance:
+      "The PECARN rule is one of the most extensively validated decision rules in pediatric emergency medicine, allowing clinicians to safely avoid head CT in a large proportion of children with minor head trauma while identifying those who need imaging.",
+    references: [
+      {
+        citation:
+          "Kuppermann N, Holmes JF, Dayan PS, et al. Identification of children at very low risk of clinically-important brain injuries after head trauma: a prospective cohort study. Lancet. 2009;374(9696):1160-1170.",
+        level: "Derivation and Validation Study",
+      },
+      {
+        citation:
+          "Schonfeld D, Fitz BM, Nigrovic LE. Effect of the duration of emergency department observation on computed tomography use in children with minor blunt head trauma. Ann Emerg Med. 2013;62(6):597-603.",
+        level: "Validation Study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The PECARN rule supports, but does not replace, clinical judgment; any child with clinical deterioration warrants CT regardless of the calculated risk.",
+  },
+
+  "rochester-criteria": {
+    clinicalPurpose:
+      "Risk-stratifies febrile infants aged 0–60 days for serious bacterial infection using the Rochester criteria (Jaskiewicz 1994): term gestation, previously healthy, non-toxic appearance, no focal bacterial infection, WBC 5,000–15,000/µL, urinalysis < 10 WBC/HPF, and stool < 5 WBC/HPF when diarrhea is present.",
+    howToUse: [
+      "Enter the infant's age in days (0–60) and answer each clinical criterion.",
+      "Enter the WBC count, urinalysis WBC per high-power field, and (if diarrhea) stool WBC per high-power field.",
+      "Review whether ALL seven criteria are met (low risk) or any criterion fails (not low risk).",
+    ],
+    interpretation: {
+      guide:
+        "An infant who meets all seven criteria is considered LOW RISK for serious bacterial infection and can be managed with cultures, close follow-up within 24 hours, and strict return precautions. Failing ANY criterion classifies the infant as NOT LOW RISK, warranting a full sepsis evaluation, empiric antibiotics, and admission.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Evaluation of a well-appearing febrile infant 0–60 days old (rectal temperature ≥ 38.0 °C)",
+      "Deciding between outpatient management with cultures and inpatient evaluation",
+      "Structured communication of febrile-infant risk factors",
+    ],
+    whenNotToUse: [
+      "In preterm (< 37 weeks), chronically ill, or toxic-appearing infants",
+      "As a substitute for blood, urine, and CSF cultures and clinical reassessment",
+    ],
+    limitations: [
+      "The criteria were validated in a specific population and should not be generalized beyond it.",
+      "They do not eliminate the risk of serious bacterial infection in the low-risk group (still < 1–2%).",
+      "Contemporary febrile-infant guidelines (e.g., AAP 2021) refine management and should be used alongside this tool.",
+    ],
+    example: {
+      description:
+        "A 45-day-old, term, previously healthy infant presents with fever to 38.3 °C and appears well. WBC 9,000/µL, urinalysis 3 WBC/HPF, no diarrhea, no focal infection.",
+      inputs: {
+        ageDays: "45",
+        termGestation: "yes",
+        previouslyHealthy: "yes",
+        nontoxic: "yes",
+        focalInfection: "no",
+        wbc: "9000",
+        urinalysisWbc: "3",
+        diarrhea: "no",
+        stoolWbc: "0",
+      },
+      expectedResult:
+        "Rochester criteria — LOW RISK (7/7 criteria met); obtain blood and urine cultures, arrange follow-up within 24 hours, and give strict return precautions.",
+    },
+    clinicalSignificance:
+      "The Rochester criteria were among the first validated tools to safely identify a subset of febrile young infants at low risk of serious bacterial infection, informing outpatient management strategies and reducing unnecessary admissions while emphasizing the need for cultures and follow-up.",
+    references: [
+      {
+        citation:
+          "Jaskiewicz JA, McCarthy CA, Richardson AC, et al. Febrile infants at low risk for serious bacterial infection — an appraisal of the Rochester criteria and implications for management. Pediatrics. 1994;94(3):390-396.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Dagan R, Powell KR, Hall CB, Menegus MA. Identification of infants unlikely to have serious bacterial infection although hospitalized for suspected sepsis. J Pediatr. 1985;107(6):855-860.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Pantell RH, Roberts KB, Adams WG, et al. Evaluation and management of well-appearing febrile infants 8 to 60 days old. Pediatrics. 2021;148(2):e2021052228.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Febrile infant management must follow current institutional and AAP guidelines; cultures and reassessment are essential regardless of the calculated risk.",
+  },
+
+  "gorelick-dehydration": {
+    clinicalPurpose:
+      "Predicts clinically important dehydration (≥ 5% of body weight) in children with gastroenteritis using the validated 4-item Gorelick scale (1997): capillary refill > 2 seconds, dry mucous membranes, absent tears, and ill/toxic appearance.",
+    howToUse: [
+      "Assess each of the four clinical signs in a calm child.",
+      "Indicate whether each finding is present.",
+      "Review the number of positive findings (0–4) and the predicted dehydration category.",
+    ],
+    interpretation: {
+      guide:
+        "With fewer than 3 of 4 findings, clinically important dehydration (≥ 5%) is unlikely and oral rehydration is generally appropriate. With 3 or more of 4 findings, dehydration of ≥ 5% is predicted and intravenous or aggressive rehydration is typically indicated.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Assessment of a child with gastroenteritis (diarrhea and/or vomiting) for dehydration",
+      "Deciding whether a child needs oral versus intravenous rehydration",
+      "Rapid bedside screening in the emergency department or clinic",
+    ],
+    whenNotToUse: [
+      "In a shocked or markedly lethargic child — begin resuscitation immediately rather than completing scoring",
+      "As the sole determinant of fluid management without weight and reassessment",
+    ],
+    limitations: [
+      "Clinical signs vary with fever, ambient temperature, and observer.",
+      "The scale is most accurate at the extremes; intermediate scores require clinical correlation.",
+      "Weight-based (pre-illness vs current) deficit remains the reference standard for confirming dehydration.",
+    ],
+    example: {
+      description:
+        "A 3-year-old with 2 days of diarrhea has capillary refill > 2 seconds and dry mucous membranes, but tears are present and the child appears well.",
+      inputs: {
+        capillaryRefill: "yes",
+        dryMucousMembranes: "yes",
+        absentTears: "no",
+        illAppearance: "no",
+      },
+      expectedResult:
+        "Gorelick dehydration scale — 2 of 4 findings; argues against ≥ 5% dehydration; oral rehydration and reassessment appropriate.",
+    },
+    clinicalSignificance:
+      "Rapid, accurate identification of children with significant dehydration guides the choice between oral and intravenous rehydration in gastroenteritis, reducing both under-resuscitation and unnecessary IV placement in a common pediatric emergency presentation.",
+    references: [
+      {
+        citation:
+          "Gorelick MH, Shaw KN, Murphy KO. Validity and reliability of clinical signs in the diagnosis of dehydration in children. Pediatrics. 1997;99(5):E6.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "World Health Organization. The Treatment of Diarrhoea: A Manual for Physicians and Other Senior Health Workers. 4th rev. Geneva: WHO; 2005.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Combine the score with weight change, urine output, and clinical judgment; never delay resuscitation of a shocked child to complete scoring.",
+  },
+
+  "pediatric-hypotension": {
+    clinicalPurpose:
+      "Provides the age-based PALS 5th-percentile systolic blood pressure threshold for pediatric hypotension (< 60 mmHg in term newborns to 1 month; < 70 mmHg in infants 1–12 months; < 70 + 2 × age in years in children 1–10 years; < 90 mmHg beyond 10 years) and compares a measured systolic blood pressure against it.",
+    howToUse: [
+      "Select the child's age group.",
+      "For the 1–10 year group, enter the age in completed years.",
+      "Enter the measured systolic blood pressure and review whether it falls below the threshold.",
+    ],
+    interpretation: {
+      guide:
+        "A measured systolic blood pressure at or above the age-specific 5th-percentile threshold is considered adequate for resuscitation purposes. A systolic blood pressure below the threshold defines hypotension by PALS criteria and warrants immediate intervention with the shock algorithm.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Recognition of hypotensive (decompensated) shock in a child",
+      "PALS resuscitation training and simulation",
+      "Teaching age-specific normal blood pressure values",
+    ],
+    whenNotToUse: [
+      "For diagnosing chronic or transient hypertension",
+      "As the sole marker of shock — compensated shock occurs with a normal blood pressure",
+    ],
+    limitations: [
+      "These are resuscitation thresholds, not population blood-pressure percentiles for screening.",
+      "The first-days-of-life alternative criterion (mean arterial pressure < gestational age in weeks) is not included.",
+      "Interpretation requires the full clinical picture of perfusion.",
+    ],
+    example: {
+      description:
+        "A 4-year-old in the emergency department has a measured systolic blood pressure of 85 mmHg.",
+      inputs: {
+        ageGroup: "1-10yr",
+        ageYears: "4",
+        sbp: "85",
+      },
+      expectedResult:
+        "NOT hypotensive — measured SBP 85 mmHg is at or above the PALS threshold for a 4-year-old (70 + 2 × 4 = 78 mmHg); assess for compensated shock.",
+    },
+    clinicalSignificance:
+      "Recognizing hypotension is a cornerstone of pediatric resuscitation; age-appropriate thresholds ensure that shock is identified early and treated before cardiovascular collapse, improving outcomes in pediatric emergency and critical care.",
+    references: [
+      {
+        citation:
+          "American Heart Association. Pediatric Advanced Life Support Provider Manual. Dallas, TX: AHA; 2020.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Kleinman ME, Chameides L, Schexnayder SM, et al. Pediatric advanced life support: 2010 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care. Pediatrics. 2010;126(5):e1361-e1399.",
+        level: "Guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. A normal blood pressure does not exclude shock; always assess perfusion, mental status, and urine output alongside blood pressure.",
+  },
+
+  "peds-pews": {
+    clinicalPurpose:
+      "Scores the risk of clinical deterioration on pediatric wards using the Brighton Pediatric Early Warning Score (Monaghan 2005): Behavior, Cardiovascular, and Respiratory domains (each 0–3) plus 1 point for persistent parent or staff concern, for a total of 0–10.",
+    howToUse: [
+      "Score each of the three domains using the age-appropriate descriptors.",
+      "Add 1 point if the parent/carer or a staff member has significant concern about deterioration.",
+      "Sum the total (0–10) and act on the escalation threshold.",
+    ],
+    interpretation: {
+      guide:
+        "A total of 0–2 indicates low risk and routine monitoring. A total of 3–4 indicates intermediate risk: increase the frequency of observations and inform senior staff. A total ≥ 5, or a score of 3 in any single domain, warrants urgent medical review and consideration of transfer to a higher level of care.",
+      sexSpecific: false,
+      ageSpecific: true,
+      pediatric: true,
+    },
+    whenToUse: [
+      "Routine ward monitoring of hospitalized children",
+      "Early detection of deterioration in respiratory, cardiovascular, or behavioral status",
+      "Escalation triggers for the rapid response team",
+    ],
+    whenNotToUse: [
+      "As a substitute for clinical judgment in a child who looks unwell",
+      "In the ICU setting where continuous monitoring is already in place",
+    ],
+    limitations: [
+      "Specific escalation protocols vary between institutions and PEWS chart versions.",
+      "Age-specific normal ranges are needed for accurate cardiovascular and respiratory scoring.",
+      "A low score does not exclude serious illness.",
+    ],
+    example: {
+      description:
+        "A ward child is sleeping but wakes to interact (behavior 1), is pale with a capillary refill of 1–2 seconds (cardiovascular 1), and has mild tachypnea on room air (respiratory 1), with no parent concern.",
+      inputs: {
+        behavior: "1",
+        cardiovascular: "1",
+        respiratory: "1",
+        concern: "no",
+      },
+      expectedResult:
+        "PEWS 3/10 — intermediate risk; increase observation frequency and inform senior staff.",
+    },
+    clinicalSignificance:
+      "Pediatric early warning scores such as the Brighton PEWS provide a structured, reproducible way to detect deterioration before critical decompensation, supporting timely escalation, rapid response team activation, and improved safety on pediatric wards.",
+    references: [
+      {
+        citation:
+          "Monaghan A. Detecting and managing deterioration in children. Paediatr Nurs. 2005;17(1):32-35.",
+        level: "Original Description",
+      },
+      {
+        citation:
+          "Lambert V, Matthews A, MacDonell R, Fitzsimons J. Paediatric early warning systems for detecting and responding to clinical deterioration in children: a systematic review. BMJ Open. 2017;7(3):e014497.",
+        level: "Systematic Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. PEWS complements, but does not replace, clinical assessment; escalate any child who looks unwell regardless of the score.",
+  },
 };
