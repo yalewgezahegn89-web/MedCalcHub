@@ -42,6 +42,9 @@ import {
   correctedQtCalculator,
 } from "../../lib/calculators/corrected-qt";
 import {
+  cha2ds2VascCalculator,
+} from "../../lib/calculators/cha2ds2-vasc";
+import {
   a1cEagConverterCalculator,
 } from "../../lib/calculators/a1c-eag-converter";
 import {
@@ -3550,6 +3553,81 @@ describe("Waist-to-Hip Ratio sex-specific regression", () => {
     });
     expect(r.status).toBe("critical");
     expect(r.interpretation).toContain("zero");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// CHA₂DS₂-VASc — Sprint 1.9 Batch 13A P1 remediation
+// Before fix: a woman with score 1 (sex category only) was classified HIGH.
+// Per 2019 AHA/ACC/HRS / 2020 ESC, anticoagulation thresholds key off
+// non-sex risk points, so a woman's sex-only score of 1 is LOW risk, the same
+// as a man with score 0.
+// ---------------------------------------------------------------------------
+describe("CHA₂DS₂-VASc sex-only score classification fix", () => {
+  const base = {
+    chf: "0",
+    hypertension: "0",
+    age: "0",
+    diabetes: "0",
+    stroke: "0",
+    "vascular-disease": "0",
+  };
+
+  it("man with score 0 → LOW, normal, no antithrombotic", () => {
+    const r = calc(cha2ds2VascCalculator, { ...base, sex: "0" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("LOW stroke risk");
+    expect(r.interpretation).toContain("No antithrombotic therapy");
+  });
+
+  it("woman with score 1 (sex category only) → LOW, not HIGH", () => {
+    const r = calc(cha2ds2VascCalculator, { ...base, sex: "1" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("LOW stroke risk");
+    expect(r.interpretation).toContain("No antithrombotic therapy");
+    expect(r.interpretation).not.toContain("Oral anticoagulation is recommended");
+  });
+
+  it("man with score 1 → INTERMEDIATE, high", () => {
+    const r = calc(cha2ds2VascCalculator, {
+      ...base,
+      hypertension: "1",
+      sex: "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("INTERMEDIATE stroke risk");
+  });
+
+  it("woman with score 2 (one clinical point + sex) → INTERMEDIATE, high", () => {
+    const r = calc(cha2ds2VascCalculator, {
+      ...base,
+      hypertension: "1",
+      sex: "1",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("INTERMEDIATE stroke risk");
+  });
+
+  it("woman with score 3 → HIGH, critical, OAC recommended", () => {
+    const r = calc(cha2ds2VascCalculator, {
+      ...base,
+      hypertension: "1",
+      diabetes: "1",
+      sex: "1",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("HIGH stroke risk");
+    expect(r.interpretation).toContain("Oral anticoagulation is recommended");
+  });
+
+  it("scoring is unchanged: sex counts 1 point toward the total", () => {
+    const r = calc(cha2ds2VascCalculator, { ...base, sex: "1" });
+    expect(r.value).toBe(1);
   });
 });
 

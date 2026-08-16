@@ -204,7 +204,7 @@ export const clinicalContentRegistry: Record<
       },
       {
         citation:
-          "ACHA ECG Guidelines for the Interpretation of the Resting 12-Lead ECG.",
+          "AHA ECG Guidelines for the Interpretation of the Resting 12-Lead ECG.",
         level: "Guideline",
       },
     ],
@@ -1894,7 +1894,7 @@ export const clinicalContentRegistry: Record<
     ],
     interpretation: {
       guide:
-        "A1c <6.1% is in the normal range, 6.0–6.5% is the pre-diabetes range, and ≥6.5% is diagnostic of diabetes. An A1c of 7% corresponds to an eAG of approximately 154 mg/dL.",
+        "A1c <6.0% is the normal band, 6.0–6.4% is the pre-diabetes band, and ≥6.5% is diagnostic of diabetes (ADA diagnostic threshold). The ADA defines pre-diabetes as A1c 5.7–6.4%; this calculator applies a conservative normal threshold of <6.0%. An A1c of 7% corresponds to an eAG of approximately 154 mg/dL.",
       sexSpecific: false,
       ageSpecific: false,
     },
@@ -5868,8 +5868,8 @@ export const clinicalContentRegistry: Record<
     references: [
       {
         citation:
-          "Jarolem FS, et al. Metabolic alkalosis: evaluation and treatment. UpToDate, Wolters Kluwer. 2024.",
-        level: "Expert Review",
+          "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
+        level: "Textbook chapter",
       },
       {
         citation:
@@ -9184,8 +9184,9 @@ export const clinicalContentRegistry: Record<
       "The Oxygen Index integrates the intensity of oxygen and pressure support with the resulting arterial oxygenation, making it a widely used severity metric for hypoxemic respiratory failure in critical care, including pediatric and neonatal intensive care.",
     references: [
       {
-        citation: "AAP Neonatal Guidelines.",
-        level: "Clinical guideline",
+        citation:
+          "Oxygen Index severity bands as implemented by this calculator. The citation previously supplied was not specific or verifiable and has been removed pending independent verification.",
+        level: "Repository reference",
       },
     ],
     disclaimer:
@@ -9569,12 +9570,9 @@ export const clinicalContentRegistry: Record<
       "Because the anti-inflammatory potency of glucocorticoids differs, converting between them using standard equivalence factors helps ensure that a change from one steroid to another aims for a comparable dose — while emphasizing that equivalence is approximate and that formulation, route, indication, duration, and patient response must all be considered.",
     references: [
       {
-        citation: "Liu MM, Rebholz AE, et al. Equivalent glucocorticoid dose conversion: a review. J Endocrinol Invest. 2021;44:1-11.",
-        level: "Review",
-      },
-      {
-        citation: "Stavros K, et al. Glucocorticoid equivalency. Endocr Pract. 2022;28:1001-1008.",
-        level: "Review",
+        citation:
+          "Glucocorticoid equivalence factors as implemented by this calculator (prednisone-equivalent conversion). Citations previously supplied could not be independently verified and have been removed pending review.",
+        level: "Repository reference",
       },
     ],
     disclaimer:

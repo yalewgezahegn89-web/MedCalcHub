@@ -106,13 +106,13 @@ export const metabolicAlkalosisCompensationCalculator: CalculatorDefinition = {
   evidence: {
     source: "Classic acid–base physiology / expert-derived rule",
     reference:
-      "Jarolem FS, et al. Metabolic alkalosis: evaluation and treatment. In: UpToDate, Post TW (Ed), Wolters Kluwer. 2024.",
+      "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
     reviewedBy: "MedCalcHub Clinical Team",
     version: "1.0",
     updatedAt: "2026-08",
     references: [
-      "Jarolem FS, et al. Metabolic alkalosis: evaluation and treatment. UpToDate. 2024.",
       "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
+      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
     ],
   },
 
@@ -132,7 +132,7 @@ export const metabolicAlkalosisCompensationCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "Jarolem FS, et al. Metabolic alkalosis: evaluation and treatment. UpToDate. 2024.",
+    "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
     "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
   ],
 

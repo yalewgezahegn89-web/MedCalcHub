@@ -180,8 +180,9 @@ export const cha2ds2VascCalculator: CalculatorDefinition = {
       return critical("Sex category is required.");
     }
     const isFemale = sex === 1;
+    const effectiveScore = score - (isFemale ? 1 : 0);
 
-    if (score <= 0) {
+    if (effectiveScore <= 0) {
       return {
         value: score,
         unit: "/9",
@@ -192,7 +193,7 @@ export const cha2ds2VascCalculator: CalculatorDefinition = {
       };
     }
 
-    if ((!isFemale && score === 1) || (isFemale && score === 2)) {
+    if (effectiveScore === 1) {
       return {
         value: score,
         unit: "/9",

@@ -2813,3 +2813,85 @@ describe("Clinical Content — Sprint 1.9 Batch 20 (Final Coverage)", () => {
     expect(missing).toEqual([]);
   });
 });
+
+describe("Clinical Content — Sprint 1.9 Batch 13A P1 Remediation", () => {
+  it("corrected-qt reference uses AHA, not the ACHA typo", () => {
+    const refs = clinicalContentRegistry["corrected-qt"]!.references ?? [];
+    const citations = refs.map((r) => r.citation);
+    for (const c of citations) {
+      expect(c).not.toContain("ACHA");
+    }
+    expect(citations.some((c) => c.includes("AHA ECG Guidelines"))).toBe(true);
+  });
+
+  it("a1c-eag-converter guide bands are non-overlapping and code-aligned", () => {
+    const guide =
+      clinicalContentRegistry["a1c-eag-converter"]!.interpretation!.guide!;
+    expect(guide).toContain("A1c <6.0%");
+    expect(guide).toContain("6.0–6.4%");
+    expect(guide).toContain("≥6.5%");
+    expect(guide).not.toContain("<6.1");
+    expect(guide).not.toContain("6.0–6.5%");
+  });
+
+  it("a1c-eag-converter guide is consistent with the calculator bands", () => {
+    const a1cEag = calculatorRegistry.find(
+      (c) => c.slug === "a1c-eag-converter",
+    )!;
+    expect(a1cEag.calculate({ a1c: "6.0" }).interpretation).toBe(
+      "Pre-diabetes range",
+    );
+    expect(a1cEag.calculate({ a1c: "6.4" }).interpretation).toBe(
+      "Pre-diabetes range",
+    );
+    expect(a1cEag.calculate({ a1c: "6.5" }).interpretation).toBe(
+      "Diabetes range",
+    );
+  });
+
+  it("oxygen-index no longer carries the vague AAP Neonatal reference", () => {
+    const refs = clinicalContentRegistry["oxygen-index"]!.references ?? [];
+    expect(refs.length).toBeGreaterThan(0);
+    for (const r of refs) {
+      expect(r.citation).not.toMatch(/AAP Neonatal|ATS Mechanical/i);
+    }
+  });
+
+  it("adrenal-steroid-converter references are conservative and flagged", () => {
+    const refs =
+      clinicalContentRegistry["adrenal-steroid-converter"]!.references ?? [];
+    expect(refs.length).toBeGreaterThan(0);
+    for (const r of refs) {
+      expect(r.citation).not.toMatch(/Liu MM|Stavros K/i);
+      expect(r.citation).not.toMatch(/\d{4};\d{1,2}:\d/);
+    }
+  });
+
+  it("metabolic-alkalosis-compensation references no longer cite Jarolem", () => {
+    const content =
+      clinicalContentRegistry["metabolic-alkalosis-compensation"]!;
+    for (const r of content.references ?? []) {
+      expect(r.citation).not.toContain("Jarolem");
+    }
+    expect(
+      (content.references ?? []).some((r) =>
+        r.citation.includes("Kraut JA, Madias NE"),
+      ),
+    ).toBe(true);
+
+    const calc = calculatorRegistry.find(
+      (c) => c.slug === "metabolic-alkalosis-compensation",
+    )!;
+    const texts = [
+      ...(calc.evidence?.reference ? [calc.evidence.reference] : []),
+      ...(calc.evidence?.references ?? []),
+      ...(calc.references ?? []),
+    ];
+    for (const t of texts) {
+      expect(t).not.toContain("Jarolem");
+    }
+    expect(
+      texts.some((t) => t.includes("Kraut JA, Madias NE")),
+    ).toBe(true);
+  });
+});
