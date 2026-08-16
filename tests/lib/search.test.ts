@@ -1767,3 +1767,120 @@ describe("Sprint 1.9 emergency / critical care discovery", () => {
     }
   });
 });
+
+/* ------------------------------------------------------------------
+   Sprint 1.9 Batch 3 — Laboratory & Metabolic discovery regression
+   ------------------------------------------------------------------ */
+
+describe("Sprint 1.9 Batch 3 laboratory / metabolic discovery", () => {
+  const NEW_SLUGS = [
+    "ldl-cholesterol",
+    "non-hdl-cholesterol",
+    "albumin-globulin-ratio",
+    "tyg-index",
+    "triglyceride-hdl-ratio",
+    "quicki",
+    "winters-formula",
+    "anion-gap-delta-ratio",
+    "urine-anion-gap",
+    "kt-v",
+  ];
+
+  it("every new calculator is in the search index", () => {
+    const index = buildSearchIndex();
+    const slugs = new Set(index.map((d) => d.slug));
+    for (const slug of NEW_SLUGS) {
+      expect(slugs.has(slug), `${slug} missing from search index`).toBe(true);
+    }
+  });
+
+  it("discovers calculated LDL via 'friedewald'", () => {
+    const results = searchCalculators("friedewald");
+    expect(results.map((r) => r.document.slug)).toContain("ldl-cholesterol");
+  });
+
+  it("discovers non-HDL cholesterol via 'non-HDL'", () => {
+    const results = searchCalculators("non-HDL");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "non-hdl-cholesterol",
+    );
+  });
+
+  it("discovers A/G ratio via 'albumin'", () => {
+    const results = searchCalculators("albumin");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "albumin-globulin-ratio",
+    );
+  });
+
+  it("discovers TyG index via 'TyG'", () => {
+    const results = searchCalculators("TyG");
+    expect(results.map((r) => r.document.slug)).toContain("tyg-index");
+  });
+
+  it("discovers TG/HDL ratio via 'triglyceride hdl'", () => {
+    const results = searchCalculators("triglyceride hdl");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "triglyceride-hdl-ratio",
+    );
+  });
+
+  it("discovers QUICKI via 'quicki'", () => {
+    const results = searchCalculators("quicki");
+    expect(results.map((r) => r.document.slug)).toContain("quicki");
+  });
+
+  it("discovers QUICKI via 'insulin sensitivity'", () => {
+    const results = searchCalculators("insulin sensitivity");
+    expect(results.map((r) => r.document.slug)).toContain("quicki");
+  });
+
+  it("discovers Winter's formula via 'winters'", () => {
+    const results = searchCalculators("winters");
+    expect(results.map((r) => r.document.slug)).toContain("winters-formula");
+  });
+
+  it("discovers Winter's formula via 'metabolic acidosis'", () => {
+    const results = searchCalculators("metabolic acidosis");
+    expect(results.map((r) => r.document.slug)).toContain("winters-formula");
+  });
+
+  it("discovers delta gap ratio via 'delta gap'", () => {
+    const results = searchCalculators("delta gap");
+    expect(results.map((r) => r.document.slug)).toContain(
+      "anion-gap-delta-ratio",
+    );
+  });
+
+  it("discovers urine anion gap via 'urine anion gap'", () => {
+    const results = searchCalculators("urine anion gap");
+    expect(results.map((r) => r.document.slug)).toContain("urine-anion-gap");
+  });
+
+  it("discovers Kt/V via 'daugirdas'", () => {
+    const results = searchCalculators("daugirdas");
+    expect(results.map((r) => r.document.slug)).toContain("kt-v");
+  });
+
+  it("discovers Kt/V via 'dialysis adequacy'", () => {
+    const results = searchCalculators("dialysis adequacy");
+    expect(results.map((r) => r.document.slug)).toContain("kt-v");
+  });
+
+  it("discovers insulin resistance markers via 'insulin resistance'", () => {
+    const results = searchCalculators("insulin resistance");
+    const slugs = results.map((r) => r.document.slug);
+    expect(slugs).toContain("tyg-index");
+    expect(slugs).toContain("triglyceride-hdl-ratio");
+    expect(slugs).toContain("quicki");
+  });
+
+  it("each new calculator appears at most once per query", () => {
+    for (const slug of NEW_SLUGS) {
+      const slugs = searchCalculators(slug).map((r) => r.document.slug);
+      expect(slugs.length, `${slug} duplicate in results`).toBe(
+        new Set(slugs).size,
+      );
+    }
+  });
+});

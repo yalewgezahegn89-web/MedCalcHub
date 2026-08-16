@@ -88,6 +88,19 @@ const BATCH_11_SLUGS = [
   "h2fpef",
 ] as const;
 
+const BATCH_12_SLUGS = [
+  "ldl-cholesterol",
+  "non-hdl-cholesterol",
+  "albumin-globulin-ratio",
+  "tyg-index",
+  "triglyceride-hdl-ratio",
+  "quicki",
+  "winters-formula",
+  "anion-gap-delta-ratio",
+  "urine-anion-gap",
+  "kt-v",
+] as const;
+
 describe("Clinical Content Registry", () => {
   it("is a non-null object", () => {
     expect(clinicalContentRegistry).toBeDefined();
@@ -1118,16 +1131,145 @@ describe("Clinical Content — Sprint 1.8 Batch 7 Final Clean Expansion", () => 
       ...BATCH_7_SLUGS,
       ...BATCH_10_SLUGS,
       ...BATCH_11_SLUGS,
+      ...BATCH_12_SLUGS,
     ]).size;
     expect(Object.keys(clinicalContentRegistry).length).toBe(expected);
+  });
+});
+
+describe("Clinical Content — Sprint 1.9 Batch 12 (Laboratory & Metabolic)", () => {
+  it("every batch-12 calculator has clinical content", () => {
+    for (const slug of BATCH_12_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(getClinicalContent(slug)).toBe(content);
+    }
+  });
+
+  it("every batch-12 record has the full core field set", () => {
+    for (const slug of BATCH_12_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      expect(content!.clinicalPurpose, `${slug}.clinicalPurpose`).toBeDefined();
+      expect(content!.howToUse, `${slug}.howToUse`).toBeDefined();
+      expect(content!.howToUse!.length).toBeGreaterThan(0);
+      expect(content!.interpretation, `${slug}.interpretation`).toBeDefined();
+      expect(
+        content!.interpretation!.guide,
+        `${slug}.interpretation.guide`,
+      ).toBeDefined();
+      expect(content!.whenToUse, `${slug}.whenToUse`).toBeDefined();
+      expect(content!.whenToUse!.length).toBeGreaterThan(0);
+      expect(content!.whenNotToUse, `${slug}.whenNotToUse`).toBeDefined();
+      expect(content!.whenNotToUse!.length).toBeGreaterThan(0);
+      expect(content!.limitations, `${slug}.limitations`).toBeDefined();
+      expect(content!.limitations!.length).toBeGreaterThan(0);
+      expect(content!.example, `${slug}.example`).toBeDefined();
+      expect(
+        content!.example!.description,
+        `${slug}.example.description`,
+      ).toBeDefined();
+      expect(content!.example!.inputs, `${slug}.example.inputs`).toBeDefined();
+      expect(
+        Object.keys(content!.example!.inputs!).length,
+        `${slug}.example.inputs keys`,
+      ).toBeGreaterThan(0);
+      expect(
+        content!.example!.expectedResult,
+        `${slug}.example.expectedResult`,
+      ).toBeDefined();
+      expect(
+        content!.clinicalSignificance,
+        `${slug}.clinicalSignificance`,
+      ).toBeDefined();
+      expect(content!.references, `${slug}.references`).toBeDefined();
+      expect(content!.references!.length).toBeGreaterThan(0);
+      expect(content!.disclaimer, `${slug}.disclaimer`).toBeDefined();
+    }
+  });
+
+  it("every batch-12 faq is valid when present", () => {
+    for (const slug of BATCH_12_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      if (content!.faq === undefined) continue;
+      expect(content!.faq!.length).toBeGreaterThan(0);
+      for (const item of content!.faq!) {
+        expect(item.question.length).toBeGreaterThan(0);
+        expect(item.answer.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every batch-12 comparison is valid when present", () => {
+    for (const slug of BATCH_12_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+      if (content!.comparison === undefined) continue;
+      const calculators = content!.comparison!.calculators ?? [];
+      expect(calculators.length).toBeGreaterThan(0);
+      for (const item of calculators) {
+        expect(item.name.length).toBeGreaterThan(0);
+        expect(item.href.startsWith("/")).toBe(true);
+      }
+    }
+  });
+
+  it("every batch-12 worked example executes without a missing-input error", () => {
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_12_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      const isMissingInput =
+        typeof result.value === "number" &&
+        result.value === 0 &&
+        result.status === "critical" &&
+        result.interpretation !== undefined &&
+        /required/i.test(result.interpretation);
+      expect(
+        isMissingInput,
+        `${slug} example produced a missing-input error: "${result.interpretation}"`,
+      ).toBe(false);
+    }
+  });
+
+  it("every batch-12 worked example matches verified output", () => {
+    const batch12VerifiedValues: Record<string, string | number> = {
+      "ldl-cholesterol": 160,
+      "non-hdl-cholesterol": 190,
+      "albumin-globulin-ratio": 1.33,
+      "tyg-index": 8.82,
+      "triglyceride-hdl-ratio": 3.75,
+      quicki: 0.34,
+      "winters-formula": 23,
+      "anion-gap-delta-ratio": 0.92,
+      "urine-anion-gap": -80,
+      "kt-v": 1.29,
+    };
+    const bySlug = new Map(calculatorRegistry.map((c) => [c.slug, c]));
+    for (const slug of BATCH_12_SLUGS) {
+      const expected = batch12VerifiedValues[slug];
+      expect(expected, `${slug} has no verified example value`).toBeDefined();
+      const content = clinicalContentRegistry[slug];
+      const calculator = bySlug.get(slug);
+      expect(calculator, `${slug} has no registered calculator`).toBeDefined();
+      const result = calculator!.calculate(content!.example!.inputs!);
+      expect(typeof expected, `${slug} expected value`).toBe("number");
+      expect(result.value as number, `${slug} numeric consistency`).toBeCloseTo(
+        expected as number,
+        1,
+      );
+    }
   });
 });
 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 60 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(60);
+  it("all 70 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(70);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -1268,7 +1410,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     }
   });
 
-  it("existing 60 records remain intact", () => {
+  it("existing 70 records remain intact", () => {
     const expected = new Set([
       ...PILOT_SLUGS,
       ...BATCH_5_SLUGS,
@@ -1276,6 +1418,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
       ...BATCH_7_SLUGS,
       ...BATCH_10_SLUGS,
       ...BATCH_11_SLUGS,
+      ...BATCH_12_SLUGS,
     ]).size;
     expect(ALL_SLUGS.length).toBe(expected);
     expect(getClinicalContent("anion-gap")).toBe(
@@ -1373,12 +1516,22 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     ascvd: 5.38,
     dapt: 4,
     h2fpef: 9,
+    "ldl-cholesterol": 160,
+    "non-hdl-cholesterol": 190,
+    "albumin-globulin-ratio": 1.33,
+    "tyg-index": 8.82,
+    "triglyceride-hdl-ratio": 3.75,
+    quicki: 0.34,
+    "winters-formula": 23,
+    "anion-gap-delta-ratio": 0.92,
+    "urine-anion-gap": -80,
+    "kt-v": 1.29,
   };
 
-  it("reports the final coverage totals (81 registered, 60 with content, 21 deferred)", () => {
+  it("reports the final coverage totals (91 registered, 70 with content, 21 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
-    expect(calculatorRegistry.length).toBe(81);
-    expect(contentSlugs.size).toBe(60);
+    expect(calculatorRegistry.length).toBe(91);
+    expect(contentSlugs.size).toBe(70);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,

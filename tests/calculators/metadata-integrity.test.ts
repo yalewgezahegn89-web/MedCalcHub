@@ -190,8 +190,8 @@ describe("Calculator Metadata Repository Integrity", () => {
     }
   });
 
-  it("registry integrity remains intact (81 unique calculators)", () => {
-    expect(registered).toHaveLength(81);
+  it("registry integrity remains intact (91 unique calculators)", () => {
+    expect(registered).toHaveLength(91);
     expect(new Set(registered.map((c) => c.id)).size).toBe(registered.length);
     expect(new Set(registered.map((c) => c.slug)).size).toBe(registered.length);
   });
@@ -206,7 +206,7 @@ describe("Calculator Metadata Repository Integrity", () => {
     }
   });
 
-  it("all 81 registered calculators remain resolvable by id and slug", () => {
+  it("all 91 registered calculators remain resolvable by id and slug", () => {
     for (const calc of registered) {
       const byId = registered.find((c) => c.id === calc.id);
       const bySlug = registered.find((c) => c.slug === calc.slug);

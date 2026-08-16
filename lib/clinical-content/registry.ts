@@ -4065,4 +4065,1000 @@ export const clinicalContentRegistry: Record<
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The diagnosis of HFpEF requires clinical judgment and may warrant further testing in intermediate-risk patients.",
   },
+
+  "ldl-cholesterol": {
+    clinicalPurpose:
+      "Estimates LDL cholesterol (LDL-C) from a fasting lipid panel using the Friedewald equation, supporting cardiovascular risk assessment and lipid-lowering treatment targets.",
+    howToUse: [
+      "Use a fasting sample — non-fasting triglycerides invalidate the estimate.",
+      "Enter total cholesterol, HDL, and triglycerides (all in mg/dL).",
+      "Calculate LDL as total cholesterol − HDL − (triglycerides ÷ 5).",
+      "Compare the result against the patient's risk-based treatment target.",
+    ],
+    interpretation: {
+      guide:
+        "LDL < 100 is optimal; 100–129 near optimal/above optimal; 130–159 borderline high; 160–189 high; ≥ 190 very high. Actual treatment targets depend on the patient's ASCVD risk category.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Routine cardiovascular risk assessment",
+      "Baseline and follow-up evaluation of dyslipidemia",
+      "Assessment before starting or titrating statin therapy",
+      "Evaluation of lipid goals in secondary prevention",
+    ],
+    whenNotToUse: [
+      "Triglycerides ≥ 400 mg/dL — Friedewald is invalid; use direct LDL measurement",
+      "Chylomicronemia or Type III hyperlipoproteinemia",
+      "Non-fasting samples for estimating LDL",
+      "When very precise LDL measurement is needed for decisions at borderline values",
+    ],
+    limitations: [
+      "Assumes VLDL cholesterol ≈ triglycerides ÷ 5, which breaks down at high triglycerides and low LDL levels.",
+      "Underestimates LDL at very high triglycerides and is unreliable in Type III dyslipidemia.",
+      "Less accurate in non-fasting samples.",
+      "Is an estimate, not a measured value; direct LDL or apolipoprotein B may be preferred when accuracy matters.",
+    ],
+    example: {
+      description:
+        "A 55-year-old man with hypertension has a fasting lipid panel: total cholesterol 240 mg/dL, HDL 50 mg/dL, triglycerides 150 mg/dL.",
+      inputs: {
+        totalCholesterol: "240",
+        hdl: "50",
+        triglycerides: "150",
+      },
+      expectedResult:
+        "LDL = 240 − 50 − (150 ÷ 5) = 160 mg/dL — high LDL cholesterol (160–189).",
+    },
+    clinicalSignificance:
+      "LDL cholesterol is the primary lipid target in ASCVD prevention. Accurate estimation with the Friedewald equation is central to risk stratification and to the initiation and monitoring of lipid-lowering therapy.",
+    references: [
+      {
+        citation:
+          "Friedewald WT, Levy RI, Fredrickson DS. Estimation of the concentration of low-density lipoprotein cholesterol in plasma, without use of the preparative ultracentrifuge. Clin Chem. 1972;18(6):499-502.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Grundy SM, et al. 2018 AHA/ACC guideline on the management of blood cholesterol. Circulation. 2019;139(25):e1082-e1143.",
+        level: "Guideline",
+      },
+    ],
+    faq: [
+      {
+        question: "When is the Friedewald equation invalid?",
+        answer:
+          "The equation is invalid when triglycerides are ≥ 400 mg/dL, in chylomicronemia, and in Type III hyperlipoproteinemia. Use direct LDL measurement instead.",
+      },
+      {
+        question: "Why is a fasting sample required?",
+        answer:
+          "The equation assumes fasting triglycerides. Non-fasting triglycerides are higher and can falsely lower the calculated LDL.",
+      },
+    ],
+    comparison: {
+      title: "LDL estimation approaches",
+      calculators: [
+        {
+          name: "Non-HDL Cholesterol",
+          href: "/calculators/non-hdl-cholesterol",
+          use: "Total atherogenic burden, including VLDL and remnants",
+          bestFor: "Patients with elevated triglycerides",
+        },
+        {
+          name: "Triglyceride to HDL Ratio",
+          href: "/calculators/triglyceride-hdl-ratio",
+          use: "Insulin resistance screening",
+          bestFor: "Metabolic syndrome evaluation",
+        },
+      ],
+    },
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Friedewald WT, et al. Clin Chem. 1972;18(6):499-502.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. LDL treatment decisions must be based on the patient's overall cardiovascular risk and clinical judgment.",
+  },
+
+  "non-hdl-cholesterol": {
+    clinicalPurpose:
+      "Calculates non-HDL cholesterol (total cholesterol minus HDL), a measure of total atherogenic (apolipoprotein B-containing) particle burden used as a secondary lipid target.",
+    howToUse: [
+      "Enter total cholesterol and HDL (mg/dL) from the lipid panel.",
+      "Subtract HDL from total cholesterol.",
+      "Compare the result with the non-HDL target, typically 30 mg/dL above the LDL goal.",
+    ],
+    interpretation: {
+      guide:
+        "Non-HDL < 130 is optimal; 130–159 near optimal; 160–189 borderline high; 190–219 high; ≥ 220 very high. Targets are set 30 mg/dL above the corresponding LDL goal.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Patients with elevated triglycerides where calculated LDL is unreliable",
+      "Secondary prevention where remnant cholesterol burden matters",
+      "Cardiovascular risk assessment when only a non-fasting sample is available",
+      "Monitoring response to lipid-lowering therapy",
+    ],
+    whenNotToUse: [
+      "As a replacement for LDL when the primary target is LDL itself",
+      "When apolipoprotein B quantification is specifically needed",
+      "To diagnose hyperlipidemia subtype without the full lipid panel context",
+    ],
+    limitations: [
+      "Non-HDL is an indirect estimate of atherogenic particle concentration, not a direct apolipoprotein B measurement.",
+      "Requires plausible HDL relative to total cholesterol to produce a positive result.",
+      "Population cut-points are not individual treatment targets.",
+    ],
+    example: {
+      description:
+        "A 60-year-old woman with diabetes has total cholesterol 240 mg/dL and HDL 50 mg/dL.",
+      inputs: {
+        totalCholesterol: "240",
+        hdl: "50",
+      },
+      expectedResult:
+        "Non-HDL cholesterol = 240 − 50 = 190 mg/dL — high (190–219).",
+    },
+    clinicalSignificance:
+      "Non-HDL cholesterol captures all atherogenic lipoproteins, including VLDL and remnant particles missed by LDL alone. It is a useful secondary target, particularly when triglycerides are elevated.",
+    references: [
+      {
+        citation:
+          "National Cholesterol Education Program (NCEP) Expert Panel. ATP III Executive Summary. JAMA. 2001;285(19):2486-2497.",
+        level: "Guideline",
+      },
+      {
+        citation:
+          "Grundy SM, et al. Implications of recent clinical trials for the NCEP ATP III guidelines. Circulation. 2004;110:227-239.",
+        level: "Guideline",
+      },
+    ],
+    faq: [
+      {
+        question: "Why is non-HDL used as a secondary target?",
+        answer:
+          "It reflects all apolipoprotein B-containing atherogenic particles and remains reliable when triglycerides are elevated, where calculated LDL becomes less accurate.",
+      },
+      {
+        question: "How do non-HDL and LDL targets compare?",
+        answer:
+          "ATP III sets non-HDL goals approximately 30 mg/dL above the corresponding LDL goal.",
+      },
+    ],
+    comparison: {
+      title: "Lipid targets",
+      calculators: [
+        {
+          name: "Calculated LDL (Friedewald Equation)",
+          href: "/calculators/ldl-cholesterol",
+          use: "Primary LDL-based risk assessment",
+          bestFor: "Fasting samples with normal triglycerides",
+        },
+        {
+          name: "Triglyceride to HDL Ratio",
+          href: "/calculators/triglyceride-hdl-ratio",
+          use: "Insulin resistance screening",
+          bestFor: "Metabolic syndrome evaluation",
+        },
+      ],
+    },
+    evidence: {
+      source: "National Cholesterol Education Program ATP III",
+      reference:
+        "NCEP ATP III Executive Summary. JAMA. 2001;285:2486-2497.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Lipid management should follow contemporary guidelines and individualized patient risk assessment.",
+  },
+
+  "albumin-globulin-ratio": {
+    clinicalPurpose:
+      "Calculates the albumin to globulin (A/G) ratio from serum albumin and total protein to aid in evaluating liver disease, nephrotic syndrome, and paraproteinemias.",
+    howToUse: [
+      "Enter serum albumin and total protein (g/dL) from the same blood draw.",
+      "Compute globulin as total protein − albumin.",
+      "Divide albumin by globulin for the A/G ratio.",
+      "Always interpret the ratio together with the absolute albumin and globulin values.",
+    ],
+    interpretation: {
+      guide:
+        "A typical adult A/G ratio is 1.0–2.0. A low ratio reflects either reduced albumin (liver disease, nephrotic syndrome, malnutrition) or elevated globulins (chronic inflammation, monoclonal gammopathy). Reference intervals vary by laboratory.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Routine interpretation of serum protein chemistry",
+      "Initial evaluation of unexplained hypoalbuminemia",
+      "Screening trigger for serum protein electrophoresis when globulins are elevated",
+      "Assessment of chronic liver or kidney disease with protein loss",
+    ],
+    whenNotToUse: [
+      "As a diagnostic test for a specific disease — it is a screening aid",
+      "In isolation without the absolute albumin and total protein values",
+      "With hemolyzed or improperly processed samples",
+    ],
+    limitations: [
+      "A normal ratio can mask concurrent low albumin and low globulin.",
+      "The ratio cannot distinguish among the many causes of hypoalbuminemia or hyperglobulinemia.",
+      "Normal ranges vary by laboratory method.",
+    ],
+    example: {
+      description:
+        "A 45-year-old man with suspected liver disease has serum albumin 4.0 g/dL and total protein 7.0 g/dL.",
+      inputs: {
+        albumin: "4",
+        totalProtein: "7",
+      },
+      expectedResult:
+        "Globulin = 7.0 − 4.0 = 3.0 g/dL; A/G ratio = 4.0 ÷ 3.0 = 1.33 — normal.",
+    },
+    clinicalSignificance:
+      "The A/G ratio is a simple derived parameter that flags globulin-predominant states, prompting the appropriate workup — liver and nutritional assessment for low albumin or serum protein electrophoresis for high globulins.",
+    references: [
+      {
+        citation:
+          "Busher JT. Serum albumin and globulin. In: Walker HK, Hall WD, Hurst JW, eds. Clinical Methods: The History, Physical, and Laboratory Examinations. 3rd ed. Boston: Butterworths; 1990.",
+        level: "Textbook",
+      },
+      {
+        citation:
+          "Rifai N, Horvath AR, Wittwer CT, eds. Tietz Textbook of Clinical Chemistry and Molecular Diagnostics. 6th ed. Elsevier; 2018.",
+        level: "Textbook",
+      },
+    ],
+    faq: [
+      {
+        question: "What causes a low A/G ratio?",
+        answer:
+          "A low ratio indicates globulin predominance — from reduced albumin (liver disease, nephrotic syndrome, malnutrition) or increased globulins (infection, autoimmune disease, multiple myeloma).",
+      },
+      {
+        question: "Can a normal ratio hide an abnormality?",
+        answer:
+          "Yes. Concurrent low albumin and low globulin can produce a normal ratio despite significant hypoproteinemia, which is why the absolute values must always be reviewed together.",
+      },
+    ],
+    comparison: {
+      title: "Related serum protein tools",
+      calculators: [
+        {
+          name: "Albumin-Corrected Calcium",
+          href: "/calculators/albumin-corrected-calcium",
+          use: "Calcium correction when albumin is abnormal",
+          bestFor: "Calcium interpretation in low albumin",
+        },
+        {
+          name: "Child-Pugh Score",
+          href: "/calculators/child-pugh",
+          use: "Liver disease severity and prognosis",
+          bestFor: "Cirrhosis staging",
+        },
+      ],
+    },
+    evidence: {
+      source: "Standard clinical chemistry reference",
+      reference:
+        "Busher JT. Serum albumin and globulin. Clinical Methods. 3rd ed. 1990.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Laboratory reference intervals vary; confirm with your local laboratory and interpret with clinical context.",
+  },
+
+  "tyg-index": {
+    clinicalPurpose:
+      "Calculates the triglyceride-glucose (TyG) index, a surrogate marker of insulin resistance derived from fasting triglycerides and fasting plasma glucose.",
+    howToUse: [
+      "Obtain fasting triglycerides and fasting plasma glucose (both in mg/dL).",
+      "Compute TyG = ln(triglycerides × glucose ÷ 2).",
+      "Compare the value with locally established population cut-points and prior results in the same patient.",
+    ],
+    interpretation: {
+      guide:
+        "There is no universally accepted TyG cut-point. Higher values indicate greater insulin resistance and higher cardiometabolic risk; published population thresholds vary widely.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Insulin resistance screening when an insulin assay is unavailable",
+      "Cardiometabolic risk assessment in metabolic syndrome",
+      "Population and epidemiological studies of insulin resistance",
+      "Monitoring the effect of lifestyle intervention on metabolic risk",
+    ],
+    whenNotToUse: [
+      "As a diagnostic test for diabetes — use standard glycemic criteria",
+      "To replace an oral glucose tolerance test or HbA1c",
+      "With non-fasting samples",
+      "As a substitute for formal insulin sensitivity measurement in research protocols",
+    ],
+    limitations: [
+      "No universal threshold — cut-points vary with population and outcome.",
+      "Formula is defined for mg/dL units; using mmol/L changes the numeric value.",
+      "Correlation with clamp-measured insulin sensitivity is moderate and population-dependent.",
+    ],
+    example: {
+      description:
+        "A 48-year-old man with metabolic syndrome has fasting triglycerides 150 mg/dL and fasting glucose 90 mg/dL.",
+      inputs: {
+        triglycerides: "150",
+        glucose: "90",
+      },
+      expectedResult:
+        "TyG index = ln((150 × 90) ÷ 2) = ln(6750) ≈ 8.82 — descriptive; compare with local population cut-points.",
+    },
+    clinicalSignificance:
+      "The TyG index converts two routine fasting labs into a practical surrogate of insulin resistance, enabling cardiometabolic risk screening without a specialized insulin assay.",
+    references: [
+      {
+        citation:
+          "Simental-Mendía LE, Rodríguez-Morán M, Guerrero-Romero F. The product of fasting glucose and triglycerides as surrogate for identifying insulin resistance in apparently healthy subjects. Metab Syndr Relat Disord. 2008;6(4):299-304.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Guerrero-Romero F, et al. The product of triglycerides and glucose, a simple measure of insulin sensitivity. J Clin Endocrinol Metab. 2010;95(7):3347-3351.",
+        level: "Level II",
+      },
+    ],
+    faq: [
+      {
+        question: "Why does the TyG formula divide by 2?",
+        answer:
+          "The constants were chosen empirically so that the index correlates with euglycemic-hyperinsulinemic clamp-derived insulin sensitivity in the derivation cohort.",
+      },
+      {
+        question: "Can TyG replace HOMA-IR?",
+        answer:
+          "TyG requires no insulin assay and correlates with HOMA-IR and clamp measures. Both are research-oriented surrogates; neither alone should drive clinical decisions.",
+      },
+    ],
+    comparison: {
+      title: "Insulin resistance surrogates",
+      calculators: [
+        {
+          name: "HOMA-IR",
+          href: "/calculators/homa-ir",
+          use: "Insulin resistance from fasting insulin and glucose",
+          bestFor: "When an insulin assay is available",
+        },
+        {
+          name: "QUICKI",
+          href: "/calculators/quicki",
+          use: "Log-transformed insulin sensitivity index",
+          bestFor: "When an insulin assay is available",
+        },
+        {
+          name: "Triglyceride to HDL Ratio",
+          href: "/calculators/triglyceride-hdl-ratio",
+          use: "Lipid-based insulin resistance marker",
+          bestFor: "Routine lipid panels",
+        },
+      ],
+    },
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Simental-Mendía LE, et al. Metab Syndr Relat Disord. 2008;6(4):299-304.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The TyG index is a screening surrogate and must not be used alone to diagnose diabetes or guide therapy.",
+  },
+
+  "triglyceride-hdl-ratio": {
+    clinicalPurpose:
+      "Calculates the triglyceride to HDL ratio (TG/HDL), a lipid-based marker of insulin resistance associated with cardiometabolic risk in overweight non-diabetic adults.",
+    howToUse: [
+      "Obtain fasting triglycerides and HDL cholesterol (mg/dL).",
+      "Divide triglycerides by HDL.",
+      "A ratio ≥ 3.0 has been associated with insulin resistance in overweight non-diabetic adults.",
+      "Interpret cautiously outside this population.",
+    ],
+    interpretation: {
+      guide:
+        "TG/HDL < 3.0 is considered low risk by this marker; ≥ 3.0 is associated with insulin resistance in overweight non-diabetic adults. The cut-point is not reliable in African American populations.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Insulin resistance screening from routine lipid panels",
+      "Cardiometabolic risk assessment in overweight non-diabetic adults",
+      "Monitoring metabolic response to lifestyle intervention",
+    ],
+    whenNotToUse: [
+      "As a diagnostic test for insulin resistance or diabetes",
+      "In African American populations — the relationship does not hold",
+      "In patients with severe hypertriglyceridemia where the ratio is dominated by triglycerides",
+      "To predict cardiovascular events in isolation",
+    ],
+    limitations: [
+      "Ethnicity-dependent validity — unreliable in African Americans (Sumner 2005).",
+      "Derived in overweight non-diabetic adults; performance in other populations is uncertain.",
+      "Uses mg/dL units; mmol/L inputs require conversion.",
+    ],
+    example: {
+      description:
+        "A 50-year-old overweight woman has triglycerides 150 mg/dL and HDL 40 mg/dL.",
+      inputs: {
+        triglycerides: "150",
+        hdl: "40",
+      },
+      expectedResult:
+        "TG/HDL ratio = 150 ÷ 40 = 3.75 — ≥ 3.0, associated with insulin resistance in overweight non-diabetic adults.",
+    },
+    clinicalSignificance:
+      "The TG/HDL ratio provides a simple, fasting lipid-based screening marker of insulin resistance, helping identify overweight adults who may benefit from metabolic risk reduction.",
+    references: [
+      {
+        citation:
+          "McLaughlin T, Abbasi F, Cheal K, et al. Use of metabolic markers to identify overweight individuals who are insulin resistant. Ann Intern Med. 2003;139(10):802-809.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Sumner AE, et al. The triglyceride/high-density lipoprotein cholesterol ratio fails to predict insulin resistance in African-American women. Diabetes Care. 2005;28(6):1433-1438.",
+        level: "Level II",
+      },
+    ],
+    faq: [
+      {
+        question: "Why is the ratio unreliable in African Americans?",
+        answer:
+          "Sumner and colleagues found the TG/HDL ratio did not predict clamp-measured insulin resistance in African American cohorts, so the 3.0 cut-point should not be applied in this population.",
+      },
+      {
+        question: "What units are required?",
+        answer:
+          "Both inputs must be in mg/dL. If values are in mmol/L, convert triglycerides (×88.57) and HDL (×38.67) to mg/dL first.",
+      },
+    ],
+    comparison: {
+      title: "Insulin resistance surrogates",
+      calculators: [
+        {
+          name: "TyG Index",
+          href: "/calculators/tyg-index",
+          use: "Glucose and triglyceride-based index",
+          bestFor: "When fasting glucose is available",
+        },
+        {
+          name: "HOMA-IR",
+          href: "/calculators/homa-ir",
+          use: "Insulin resistance from fasting insulin and glucose",
+          bestFor: "When an insulin assay is available",
+        },
+        {
+          name: "Non-HDL Cholesterol",
+          href: "/calculators/non-hdl-cholesterol",
+          use: "Atherogenic particle burden",
+          bestFor: "Lipid treatment targets",
+        },
+      ],
+    },
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "McLaughlin T, et al. Ann Intern Med. 2003;139(10):802-809.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The TG/HDL ratio is a screening marker with population limitations and must not be used alone for diagnosis.",
+  },
+
+  "quicki": {
+    clinicalPurpose:
+      "Calculates QUICKI, an insulin sensitivity index from fasting insulin and glucose: QUICKI = 1 / (log10 fasting insulin [µU/mL] + log10 fasting glucose [mg/dL]).",
+    howToUse: [
+      "Obtain fasting insulin (µU/mL) and fasting glucose (mg/dL).",
+      "Take the base-10 logarithm of each and add them.",
+      "Take the reciprocal of the sum.",
+      "Interpret descriptively and in the context of the patient's metabolic risk.",
+    ],
+    interpretation: {
+      guide:
+        "Lower QUICKI values indicate greater insulin resistance. Published means: nonobese ≈ 0.38, obese ≈ 0.33, diabetic ≈ 0.30. There is no universal diagnostic cut-point.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Research and screening assessment of insulin sensitivity",
+      "Metabolic risk evaluation when an insulin assay is available",
+      "Tracking insulin sensitivity changes over time",
+    ],
+    whenNotToUse: [
+      "As a diagnostic test for diabetes — use standard glycemic criteria",
+      "To compare patients across different insulin assay methods",
+      "As a replacement for clamp-based insulin sensitivity in research protocols",
+      "In patients with insulin therapy that interferes with the assay",
+    ],
+    limitations: [
+      "Insulin assays are not standardized across laboratories.",
+      "No validated clinical cut-point exists.",
+      "Fasting insulin is not a routine clinical test in most settings.",
+    ],
+    example: {
+      description:
+        "A 40-year-old woman with obesity has fasting insulin 10 µU/mL and fasting glucose 90 mg/dL.",
+      inputs: {
+        fastingInsulin: "10",
+        fastingGlucose: "90",
+      },
+      expectedResult:
+        "QUICKI = 1 / (log10(10) + log10(90)) = 1 / (1 + 1.9542) ≈ 0.34 — descriptive; compare with published means.",
+    },
+    clinicalSignificance:
+      "QUICKI correlates with euglycemic-hyperinsulinemic clamp measures of insulin sensitivity using only a single fasting blood sample, enabling practical insulin resistance assessment.",
+    references: [
+      {
+        citation:
+          "Katz A, Nambi SS, Mather K, et al. Quantitative insulin sensitivity check index: a simple, accurate method for assessing insulin sensitivity in humans. J Clin Endocrinol Metab. 2000;85(7):2402-2410.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Muniyappa R, et al. Current approaches for assessing insulin sensitivity and resistance in vivo. Am J Physiol Endocrinol Metab. 2008;294(1):E15-E26.",
+        level: "Expert Review",
+      },
+    ],
+    faq: [
+      {
+        question: "How does QUICKI differ from HOMA-IR?",
+        answer:
+          "QUICKI uses log-transformed values, making it more stable at high insulin concentrations, where HOMA-IR can become unstable. In practice the two agree closely in most patients.",
+      },
+      {
+        question: "What units are required?",
+        answer:
+          "Fasting insulin in µU/mL and glucose in mg/dL. If glucose is in mmol/L, multiply by 18.018 to convert to mg/dL.",
+      },
+    ],
+    comparison: {
+      title: "Insulin sensitivity indices",
+      calculators: [
+        {
+          name: "HOMA-IR",
+          href: "/calculators/homa-ir",
+          use: "Insulin resistance from fasting insulin and glucose",
+          bestFor: "Conventional resistance index",
+        },
+        {
+          name: "Insulin Sensitivity (1/HOMA-IR)",
+          href: "/calculators/insulin-sensitivity",
+          use: "Sensitivity expressed as reciprocal of HOMA-IR",
+          bestFor: "Sensitivity framing",
+        },
+        {
+          name: "TyG Index",
+          href: "/calculators/tyg-index",
+          use: "No insulin assay required",
+          bestFor: "When insulin is unavailable",
+        },
+      ],
+    },
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Katz A, et al. J Clin Endocrinol Metab. 2000;85(7):2402-2410.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. QUICKI is a research-oriented surrogate and must not be used alone to diagnose insulin resistance or diabetes.",
+  },
+
+  "winters-formula": {
+    clinicalPurpose:
+      "Calculates the expected compensatory PaCO2 in primary metabolic acidosis using Winter's formula (expected PaCO2 = 1.5 × HCO3 + 8 ± 2 mmHg), helping identify appropriate, inadequate, or excessive respiratory compensation.",
+    howToUse: [
+      "Confirm a primary metabolic acidosis (low HCO3 with low pH).",
+      "Enter the serum bicarbonate (mEq/L) and the measured arterial PaCO2 (mmHg).",
+      "Compare the measured PaCO2 with the expected range (expected value ± 2 mmHg).",
+    ],
+    interpretation: {
+      guide:
+        "If measured PaCO2 is within expected ± 2 mmHg, compensation is appropriate. Above the range: concurrent respiratory acidosis (inadequate compensation). Below the range: concurrent respiratory alkalosis (excessive compensation).",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluation of metabolic acidosis of any cause (DKA, lactic acidosis, renal tubular acidosis, intoxications)",
+      "Assessment of the respiratory response to a falling bicarbonate",
+      "Detection of mixed acid-base disorders in the ICU",
+    ],
+    whenNotToUse: [
+      "Metabolic alkalosis or normal bicarbonate — the formula requires acidosis",
+      "As a target to aim for — it predicts the physiologic response",
+      "When the chemistry panel and ABG are not drawn concurrently",
+    ],
+    limitations: [
+      "Applies only to primary metabolic acidosis (HCO3 < 24 mEq/L).",
+      "The ± 2 mmHg range is a guide; individual ventilatory responses vary.",
+      "Compensation develops over minutes to hours — an early ABG may underrepresent compensation.",
+    ],
+    example: {
+      description:
+        "A 32-year-old man with DKA has serum bicarbonate 10 mEq/L and arterial PaCO2 28 mmHg.",
+      inputs: {
+        bicarbonate: "10",
+        pco2: "28",
+      },
+      expectedResult:
+        "Expected PaCO2 = 1.5 × 10 + 8 = 23 mmHg (range 21–25). Measured 28 mmHg is above the range — compensation is inadequate, suggesting a concurrent respiratory acidosis.",
+    },
+    clinicalSignificance:
+      "Winter's formula quantifies the expected ventilatory compensation in metabolic acidosis, allowing clinicians to detect superimposed respiratory acid-base disorders that would otherwise be missed.",
+    references: [
+      {
+        citation:
+          "Albert MS, Dell RB, Winters RW. Quantitative displacement of acid-base equilibrium in metabolic acidosis. Ann Intern Med. 1967;66(2):312-322.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Bushinsky DA. Acid-base disorders. In: Brenner & Rector's The Kidney. Elsevier; 2020.",
+        level: "Textbook",
+      },
+    ],
+    faq: [
+      {
+        question: "What if the measured PaCO2 is higher than expected?",
+        answer:
+          "Compensation is inadequate — evaluate for a concurrent respiratory acidosis, such as hypoventilation from sedation, neuromuscular disease, or lung disease.",
+      },
+      {
+        question: "Does Winter's formula apply in metabolic alkalosis?",
+        answer:
+          "No. In metabolic alkalosis the expected compensation follows a different relationship (PaCO2 ≈ 0.7 × HCO3 + 20), capped near 55 mmHg.",
+      },
+    ],
+    comparison: {
+      title: "Acid-base interpretation tools",
+      calculators: [
+        {
+          name: "Anion Gap",
+          href: "/calculators/anion-gap",
+          use: "Differentiate high vs normal anion gap acidosis",
+          bestFor: "First-step acid-base classification",
+        },
+        {
+          name: "Anion Gap Delta Ratio",
+          href: "/calculators/anion-gap-delta-ratio",
+          use: "Detect mixed acid-base disorders",
+          bestFor: "High anion gap acidosis evaluation",
+        },
+      ],
+    },
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Albert MS, Dell RB, Winters RW. Ann Intern Med. 1967;66(2):312-322.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Acid-base interpretation requires correlation with pH, the clinical picture, and the timing of blood sampling.",
+  },
+
+  "anion-gap-delta-ratio": {
+    clinicalPurpose:
+      "Calculates the anion gap delta ratio (ΔAG/ΔHCO3) to evaluate mixed acid-base disorders in high anion gap metabolic acidosis: ΔAG/ΔHCO3 = (AG − 12) / (24 − HCO3).",
+    howToUse: [
+      "Confirm a high anion gap metabolic acidosis (AG > 12 with reduced bicarbonate).",
+      "Enter the anion gap and bicarbonate (mEq/L).",
+      "Compare the ratio with the 1.0–2.0 reference window.",
+    ],
+    interpretation: {
+      guide:
+        "Ratio < 1.0 suggests a concurrent non-anion gap (hyperchloremic) acidosis. Ratio 1.0–2.0 is consistent with a pure high anion gap acidosis. Ratio > 2.0 suggests a concurrent metabolic alkalosis or pre-existing high bicarbonate.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluation of high anion gap metabolic acidosis (DKA, lactic acidosis, uremia, toxin ingestion)",
+      "Detection of mixed acid-base disorders in critically ill patients",
+      "Assessment when bicarbonate falls more or less than expected for the gap",
+    ],
+    whenNotToUse: [
+      "Normal or low anion gap — the delta ratio is not applicable",
+      "When bicarbonate is normal or elevated (denominator not positive)",
+      "As a substitute for a complete acid-base assessment with pH",
+    ],
+    limitations: [
+      "Assumes a normal anion gap of 12 and normal bicarbonate of 24; local reference intervals differ.",
+      "In lactic acidosis, the gap may transiently lag behind the bicarbonate fall.",
+      "Values near the boundaries (0.9, 2.1) require clinical correlation.",
+    ],
+    example: {
+      description:
+        "A patient with diarrhea and a high anion gap acidosis has anion gap 23 mEq/L and bicarbonate 12 mEq/L.",
+      inputs: {
+        anionGap: "23",
+        bicarbonate: "12",
+      },
+      expectedResult:
+        "ΔAG/ΔHCO3 = (23 − 12) / (24 − 12) = 11/12 ≈ 0.92 — below 1, suggesting a mixed high anion gap plus non-anion gap acidosis.",
+    },
+    clinicalSignificance:
+      "The delta ratio reconciles the rise in the anion gap with the fall in bicarbonate, revealing hidden mixed acid-base disorders that a simple gap value would miss.",
+    references: [
+      {
+        citation:
+          "Rastegar A. Use of the delta gap ratio in mixed acid-base disorders. J Am Soc Nephrol. 2007;18(10):2631-2636.",
+        level: "Expert Review",
+      },
+      {
+        citation:
+          "Seifter JL. Acid-base disorders. In: Brenner & Rector's The Kidney. Elsevier; 2020.",
+        level: "Textbook",
+      },
+    ],
+    faq: [
+      {
+        question: "What does a delta ratio below 1 mean?",
+        answer:
+          "The bicarbonate fall exceeds the anion gap rise, indicating a concurrent non-anion gap (hyperchloremic) acidosis such as diarrhea or a renal tubular acidosis.",
+      },
+      {
+        question: "What does a delta ratio above 2 mean?",
+        answer:
+          "The bicarbonate is higher than expected for the gap elevation, suggesting a concurrent metabolic alkalosis or pre-existing high bicarbonate.",
+      },
+    ],
+    comparison: {
+      title: "Acid-base interpretation tools",
+      calculators: [
+        {
+          name: "Anion Gap",
+          href: "/calculators/anion-gap",
+          use: "First-step acid-base classification",
+          bestFor: "Confirming a high anion gap acidosis",
+        },
+        {
+          name: "Urine Anion Gap",
+          href: "/calculators/urine-anion-gap",
+          use: "Renal vs extrarenal causes of hyperchloremic acidosis",
+          bestFor: "Normal anion gap acidosis",
+        },
+        {
+          name: "Winter's Formula",
+          href: "/calculators/winters-formula",
+          use: "Expected respiratory compensation",
+          bestFor: "Evaluating the PaCO2 response",
+        },
+      ],
+    },
+    evidence: {
+      source: "Expert review and textbook standard",
+      reference:
+        "Rastegar A. J Am Soc Nephrol. 2007;18(10):2631-2636.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Mixed acid-base interpretation requires integration of the full chemistry panel, ABG, and clinical context.",
+  },
+
+  "urine-anion-gap": {
+    clinicalPurpose:
+      "Calculates the urine anion gap (UAG = [urine sodium + urine potassium] − urine chloride) to distinguish renal from extrarenal causes of a normal anion gap (hyperchloremic) metabolic acidosis.",
+    howToUse: [
+      "Confirm a normal anion gap (hyperchloremic) metabolic acidosis with hypokalemia and normal renal function.",
+      "Enter urine sodium, potassium, and chloride (mEq/L).",
+      "Compute UAG = (Na + K) − Cl.",
+    ],
+    interpretation: {
+      guide:
+        "A negative UAG (typically −20 to −50 mEq/L) indicates appropriate renal ammonium excretion, consistent with extrarenal (GI) bicarbonate loss. A positive or near-zero UAG suggests impaired renal acidification, as in distal renal tubular acidosis.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Evaluation of hyperchloremic metabolic acidosis",
+      "Distinguishing diarrhea (GI bicarbonate loss) from distal RTA",
+      "Assessment of renal ammonium excretion when direct measurement is unavailable",
+    ],
+    whenNotToUse: [
+      "High anion gap metabolic acidosis",
+      "Acute or chronic kidney disease — tubular function is already abnormal",
+      "When urine electrolytes are collected over an incomplete or non-steady-state period",
+      "As a substitute for direct urine ammonium measurement",
+    ],
+    limitations: [
+      "An indirect surrogate for urine ammonium; unreliable at extremes of urine sodium or chloride.",
+      "Does not distinguish type 1 from type 2 RTA.",
+      "Requires normal renal function and a hyperchloremic acidosis for meaningful interpretation.",
+    ],
+    example: {
+      description:
+        "A 30-year-old woman with severe diarrhea and hyperchloremic metabolic acidosis has urine sodium 10 mEq/L, potassium 20 mEq/L, and chloride 110 mEq/L.",
+      inputs: {
+        urineNa: "10",
+        urineK: "20",
+        urineCl: "110",
+      },
+      expectedResult:
+        "UAG = (10 + 20) − 110 = −80 mEq/L — negative, consistent with appropriate renal ammonium excretion and gastrointestinal bicarbonate loss.",
+    },
+    clinicalSignificance:
+      "The urine anion gap uses routine urine electrolytes to approximate ammonium excretion, helping localize the cause of hyperchloremic acidosis without specialized testing.",
+    references: [
+      {
+        citation:
+          "Battle DC, Hizon M, Cohen E, et al. The use of the urinary anion gap in the diagnosis of hyperchloremic metabolic acidosis. N Engl J Med. 1988;318(10):594-599.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "Rose BD, Post TW. Clinical Physiology of Acid-Base and Electrolyte Disorders. 6th ed. McGraw-Hill; 2013.",
+        level: "Textbook",
+      },
+    ],
+    faq: [
+      {
+        question: "What does a negative urine anion gap indicate?",
+        answer:
+          "A negative gap reflects unmeasured cations (mainly ammonium) in the urine, indicating the kidney is excreting acid appropriately — consistent with extrarenal bicarbonate loss such as diarrhea.",
+      },
+      {
+        question: "Why is the UAG unreliable in renal failure?",
+        answer:
+          "Kidney disease itself impairs ammonium excretion, so the urine anion gap can no longer distinguish renal from extrarenal causes of acidosis.",
+      },
+    ],
+    comparison: {
+      title: "Related renal assessment tools",
+      calculators: [
+        {
+          name: "Anion Gap Delta Ratio",
+          href: "/calculators/anion-gap-delta-ratio",
+          use: "Mixed acid-base detection in HAGMA",
+          bestFor: "High anion gap acidosis",
+        },
+        {
+          name: "FENa",
+          href: "/calculators/fena",
+          use: "Fractional excretion of sodium in AKI",
+          bestFor: "Acute kidney injury evaluation",
+        },
+        {
+          name: "Winter's Formula",
+          href: "/calculators/winters-formula",
+          use: "Expected respiratory compensation",
+          bestFor: "Evaluating the PaCO2 response",
+        },
+      ],
+    },
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Battle DC, et al. N Engl J Med. 1988;318(10):594-599.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. The urine anion gap is an indirect estimate of ammonium excretion and must be interpreted with renal function and clinical context.",
+  },
+
+  "kt-v": {
+    clinicalPurpose:
+      "Calculates single-pool Kt/V (spKt/V) for hemodialysis adequacy using the Daugirdas second-generation formula, supporting KDOQI dialysis dosing standards.",
+    howToUse: [
+      "Measure pre- and post-dialysis BUN (mg/dL) on the same treatment.",
+      "Record the treatment time (hours), ultrafiltration volume (L), and post-dialysis weight (kg).",
+      "Compute R = post/pre BUN; then spKt/V = −ln(R − 0.008t) + (4 − 3.5R) × UF/W.",
+    ],
+    interpretation: {
+      guide:
+        "KDOQI recommends a minimum delivered spKt/V of 1.2 per treatment (target 1.4) for three-times-weekly hemodialysis. Below 1.0 indicates inadequate dialysis.",
+      sexSpecific: false,
+      ageSpecific: false,
+    },
+    whenToUse: [
+      "Routine monthly hemodialysis adequacy monitoring",
+      "Evaluation after dialysis prescription changes",
+      "Assessment when urea reduction ratio (URR) is borderline",
+      "Pre- and post-access intervention adequacy assessment",
+    ],
+    whenNotToUse: [
+      "Peritoneal dialysis — uses weekly Kt/V targets",
+      "Twice-weekly or alternate hemodialysis schedules — different targets apply",
+      "In-center HD with incorrect post-BUN sampling (pump recirculation) without correction",
+    ],
+    limitations: [
+      "Single-pool estimates do not account for post-dialysis urea rebound (eKt/V does).",
+      "Requires accurate post-dialysis BUN sampling technique.",
+      "Assumes three-times-weekly dialysis; alternative schedules require different adequacy standards.",
+    ],
+    example: {
+      description:
+        "A 68-year-old man on thrice-weekly hemodialysis: pre-BUN 90 mg/dL, post-BUN 30 mg/dL, ultrafiltrate 2.5 L, treatment time 4 h, post-dialysis weight 75 kg.",
+      inputs: {
+        preBun: "90",
+        postBun: "30",
+        ultrafiltrate: "2.5",
+        treatmentTime: "4",
+        postWeight: "75",
+      },
+      expectedResult:
+        "R = 30/90 = 0.333; spKt/V = −ln(0.333 − 0.032) + (4 − 1.167) × 2.5/75 ≈ 1.29 — adequate (≥ 1.2).",
+    },
+    clinicalSignificance:
+      "Dialysis dose is directly linked to patient survival and quality of life. spKt/V is the KDOQI-recommended measure for verifying that patients receive an adequate minimum delivered dose.",
+    references: [
+      {
+        citation:
+          "Daugirdas JT. Second generation logarithmic estimates of single-pool variable volume Kt/V: an analysis of error. J Am Soc Nephrol. 1993;4(5):1205-1213.",
+        level: "Original Derivation",
+      },
+      {
+        citation:
+          "National Kidney Foundation. KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 update. Am J Kidney Dis. 2015;66(5):884-930.",
+        level: "Guideline",
+      },
+    ],
+    faq: [
+      {
+        question: "What is the difference between spKt/V and eKt/V?",
+        answer:
+          "spKt/V ignores post-dialysis urea rebound; eKt/V corrects for it. The difference is small at lower doses and grows at higher doses. spKt/V is the KDOQI standard for routine monitoring.",
+      },
+      {
+        question: "Can this formula be used for peritoneal dialysis?",
+        answer:
+          "No. Peritoneal dialysis adequacy uses weekly Kt/V targets (e.g., ≥ 1.7/week) with a different calculation.",
+      },
+    ],
+    comparison: {
+      title: "Kidney function assessment tools",
+      calculators: [
+        {
+          name: "CKD-EPI 2021 eGFR",
+          href: "/calculators/ckd-epi-2021",
+          use: "Estimated GFR for CKD staging",
+          bestFor: "Chronic kidney disease staging",
+        },
+        {
+          name: "MDRD eGFR",
+          href: "/calculators/mdrd",
+          use: "Alternative eGFR equation",
+          bestFor: "Laboratory-reported eGFR",
+        },
+        {
+          name: "Cockcroft-Gault CrCl",
+          href: "/calculators/cockcroft-gault",
+          use: "Creatinine clearance for drug dosing",
+          bestFor: "Medication dose adjustment",
+        },
+      ],
+    },
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Daugirdas JT. J Am Soc Nephrol. 1993;4(5):1205-1213.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+    },
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support purposes only. Dialysis adequacy decisions must incorporate the prescription, access function, patient status, and KDOQI guidelines.",
+  },
 };

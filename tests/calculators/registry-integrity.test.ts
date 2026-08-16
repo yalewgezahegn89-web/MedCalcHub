@@ -19,8 +19,30 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 81 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(81);
+  it("registry contains exactly 91 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(91);
+  });
+
+  it("the 10 Laboratory/Metabolic Batch 3 (Sprint 1.9) calculators are registered and searchable", () => {
+    const batch3Ids = [
+      "ldl-cholesterol",
+      "non-hdl-cholesterol",
+      "albumin-globulin-ratio",
+      "tyg-index",
+      "triglyceride-hdl-ratio",
+      "quicki",
+      "winters-formula",
+      "anion-gap-delta-ratio",
+      "urine-anion-gap",
+      "kt-v",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const id of batch3Ids) {
+      const calc = getCalculatorById(id);
+      expect(calc, `batch-3 calculator "${id}" must resolve`).toBeDefined();
+      expect(slugs.has(calc!.slug)).toBe(true);
+      expect(searchCalculators(calc!.name).length).toBeGreaterThanOrEqual(1);
+    }
   });
 
   it("the 14 Reliability Batch 5 calculators are registered and searchable", () => {

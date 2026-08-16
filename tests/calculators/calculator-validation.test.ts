@@ -1,7 +1,7 @@
 /**
  * Calculator Validation Tests
  *
- * Comprehensive validation tests for all 63 registered calculators.
+ * Comprehensive validation tests for all 91 registered calculators.
  * 
  * Verifies:
  * - Every calculator calculate() executes without throwing
@@ -21,7 +21,7 @@ import type {
 } from "../../lib/calculators/calculator.types";
 
 // ---------------------------------------------------------------------------
-// Test input data for all 63 calculators
+// Test input data for all 91 calculators
 // ---------------------------------------------------------------------------
 
 const testInputs: Record<string, Record<string, string>> = {
@@ -391,6 +391,53 @@ const testInputs: Record<string, Record<string, string>> = {
     height: "140",
   },
 
+  // -- Sprint 1.9 Batch 3 (Laboratory & Metabolic) --
+  "ldl-cholesterol": {
+    totalCholesterol: "240",
+    hdl: "50",
+    triglycerides: "150",
+  },
+  "non-hdl-cholesterol": {
+    totalCholesterol: "240",
+    hdl: "50",
+  },
+  "albumin-globulin-ratio": {
+    albumin: "4",
+    totalProtein: "7",
+  },
+  "tyg-index": {
+    triglycerides: "150",
+    glucose: "90",
+  },
+  "triglyceride-hdl-ratio": {
+    triglycerides: "150",
+    hdl: "40",
+  },
+  quicki: {
+    fastingInsulin: "10",
+    fastingGlucose: "90",
+  },
+  "winters-formula": {
+    bicarbonate: "10",
+    pco2: "28",
+  },
+  "anion-gap-delta-ratio": {
+    anionGap: "23",
+    bicarbonate: "12",
+  },
+  "urine-anion-gap": {
+    urineNa: "10",
+    urineK: "20",
+    urineCl: "110",
+  },
+  "kt-v": {
+    preBun: "90",
+    postBun: "30",
+    ultrafiltrate: "2.5",
+    treatmentTime: "4",
+    postWeight: "75",
+  },
+
   // -- Pulmonology --
   "a-a-gradient": {
     age: "40",
@@ -713,6 +760,58 @@ const exactExpectations: Record<string, ExpectedExact> = {
     value: 9,
     tolerance: 0.01,
     status: "critical",
+  },
+
+  // -- Sprint 1.9 Batch 3 (Laboratory & Metabolic) --
+  "ldl-cholesterol": {
+    value: 160,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "non-hdl-cholesterol": {
+    value: 190,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "albumin-globulin-ratio": {
+    value: 1.33,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "tyg-index": {
+    value: 8.82,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "triglyceride-hdl-ratio": {
+    value: 3.75,
+    tolerance: 0.01,
+    status: "high",
+  },
+  quicki: {
+    value: 0.34,
+    tolerance: 0.01,
+    status: "normal",
+  },
+  "winters-formula": {
+    value: 23,
+    tolerance: 0.01,
+    status: "high",
+  },
+  "anion-gap-delta-ratio": {
+    value: 0.92,
+    tolerance: 0.01,
+    status: "low",
+  },
+  "urine-anion-gap": {
+    value: -80,
+    tolerance: 0.01,
+    status: "low",
+  },
+  "kt-v": {
+    value: 1.29,
+    tolerance: 0.01,
+    status: "normal",
   },
 };
 
@@ -1103,4 +1202,324 @@ describe("Batch 7 Direct-Call Validation Guards", () => {
       expect(Number.isFinite(Number(result.value))).toBe(true);
     },
   );
+});
+
+// ---------------------------------------------------------------------------
+// Batch 3 (Sprint 1.9) — Laboratory & Metabolic calculator validation guards.
+//
+// Each new calculator must return critical and never emit NaN for missing,
+// non-numeric, negative, or zero numeric inputs, and must stay non-critical
+// for valid inputs. Logical guards (e.g., Friedewald TG limit, Winter's HCO3
+// limit, delta-ratio applicability, Kt/V BUN ordering) are also exercised.
+// ---------------------------------------------------------------------------
+
+const BATCH3_GUARDED_IDS = [
+  "ldl-cholesterol",
+  "non-hdl-cholesterol",
+  "albumin-globulin-ratio",
+  "tyg-index",
+  "triglyceride-hdl-ratio",
+  "quicki",
+  "winters-formula",
+  "anion-gap-delta-ratio",
+  "urine-anion-gap",
+  "kt-v",
+] as const;
+
+const BATCH3_VALID_INPUTS: Record<string, Record<string, string>> = {
+  "ldl-cholesterol": { totalCholesterol: "240", hdl: "50", triglycerides: "150" },
+  "non-hdl-cholesterol": { totalCholesterol: "240", hdl: "50" },
+  "albumin-globulin-ratio": { albumin: "4", totalProtein: "7" },
+  "tyg-index": { triglycerides: "150", glucose: "90" },
+  "triglyceride-hdl-ratio": { triglycerides: "150", hdl: "40" },
+  quicki: { fastingInsulin: "10", fastingGlucose: "90" },
+  "winters-formula": { bicarbonate: "10", pco2: "28" },
+  "anion-gap-delta-ratio": { anionGap: "23", bicarbonate: "12" },
+  "urine-anion-gap": { urineNa: "10", urineK: "20", urineCl: "110" },
+  "kt-v": { preBun: "90", postBun: "30", ultrafiltrate: "2.5", treatmentTime: "4", postWeight: "75" },
+};
+
+const BATCH3_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
+  "ldl-cholesterol": { totalCholesterol: "-240", hdl: "-50", triglycerides: "-150" },
+  "non-hdl-cholesterol": { totalCholesterol: "-240", hdl: "-50" },
+  "albumin-globulin-ratio": { albumin: "-4", totalProtein: "-7" },
+  "tyg-index": { triglycerides: "-150", glucose: "-90" },
+  "triglyceride-hdl-ratio": { triglycerides: "-150", hdl: "-40" },
+  quicki: { fastingInsulin: "-10", fastingGlucose: "-90" },
+  "winters-formula": { bicarbonate: "-10", pco2: "-28" },
+  "anion-gap-delta-ratio": { anionGap: "-23", bicarbonate: "-12" },
+  "urine-anion-gap": { urineNa: "-10", urineK: "-20", urineCl: "-110" },
+  "kt-v": { preBun: "-90", postBun: "-30", ultrafiltrate: "-2.5", treatmentTime: "-4", postWeight: "-75" },
+};
+
+const BATCH3_ZERO_OVERRIDES: Record<string, Record<string, string>> = {
+  "ldl-cholesterol": { totalCholesterol: "0", hdl: "50", triglycerides: "150" },
+  "non-hdl-cholesterol": { totalCholesterol: "0", hdl: "50" },
+  "albumin-globulin-ratio": { albumin: "0", totalProtein: "7" },
+  "tyg-index": { triglycerides: "0", glucose: "90" },
+  "triglyceride-hdl-ratio": { triglycerides: "0", hdl: "40" },
+  quicki: { fastingInsulin: "0", fastingGlucose: "90" },
+  "winters-formula": { bicarbonate: "10", pco2: "0" },
+  "anion-gap-delta-ratio": { anionGap: "0", bicarbonate: "12" },
+  "kt-v": { preBun: "0", postBun: "30", ultrafiltrate: "2.5", treatmentTime: "4", postWeight: "75" },
+};
+
+// Urine electrolytes can legitimately be zero, so urine-anion-gap is excluded
+// from the zero-input critical guard.
+const BATCH3_ZERO_GUARDED_IDS = BATCH3_GUARDED_IDS.filter(
+  (id) => id !== "urine-anion-gap",
+);
+
+type BoundaryCase = {
+  id: string;
+  inputs: Record<string, string>;
+  expectedStatus: string;
+  expectedValue?: number;
+};
+
+const BATCH3_BOUNDARY_CASES: BoundaryCase[] = [
+  // LDL ATP III cut-points
+  {
+    id: "ldl-cholesterol",
+    inputs: { totalCholesterol: "190", hdl: "60", triglycerides: "150" },
+    expectedStatus: "normal",
+    expectedValue: 100,
+  },
+  {
+    id: "ldl-cholesterol",
+    inputs: { totalCholesterol: "230", hdl: "70", triglycerides: "150" },
+    expectedStatus: "high",
+    expectedValue: 130,
+  },
+  // Non-HDL ATP III cut-points
+  {
+    id: "non-hdl-cholesterol",
+    inputs: { totalCholesterol: "180", hdl: "50" },
+    expectedStatus: "normal",
+    expectedValue: 130,
+  },
+  {
+    id: "non-hdl-cholesterol",
+    inputs: { totalCholesterol: "210", hdl: "50" },
+    expectedStatus: "high",
+    expectedValue: 160,
+  },
+  // A/G ratio boundaries
+  {
+    id: "albumin-globulin-ratio",
+    inputs: { albumin: "3", totalProtein: "7" },
+    expectedStatus: "low",
+    expectedValue: 0.75,
+  },
+  // Winter's formula compensation windows
+  {
+    id: "winters-formula",
+    inputs: { bicarbonate: "10", pco2: "22" },
+    expectedStatus: "normal",
+    expectedValue: 23,
+  },
+  {
+    id: "winters-formula",
+    inputs: { bicarbonate: "10", pco2: "18" },
+    expectedStatus: "low",
+    expectedValue: 23,
+  },
+  // Delta ratio windows
+  {
+    id: "anion-gap-delta-ratio",
+    inputs: { anionGap: "30", bicarbonate: "12" },
+    expectedStatus: "normal",
+    expectedValue: 1.5,
+  },
+  {
+    id: "anion-gap-delta-ratio",
+    inputs: { anionGap: "42", bicarbonate: "10" },
+    expectedStatus: "high",
+    expectedValue: 2.14,
+  },
+  // Urine anion gap positive (renal acidification defect)
+  {
+    id: "urine-anion-gap",
+    inputs: { urineNa: "50", urineK: "40", urineCl: "30" },
+    expectedStatus: "high",
+    expectedValue: 60,
+  },
+  // Kt/V dose bands
+  {
+    id: "kt-v",
+    inputs: { preBun: "90", postBun: "38", ultrafiltrate: "2.5", treatmentTime: "4", postWeight: "75" },
+    expectedStatus: "high",
+    expectedValue: 1.03,
+  },
+  {
+    id: "kt-v",
+    inputs: { preBun: "90", postBun: "45", ultrafiltrate: "2.5", treatmentTime: "4", postWeight: "75" },
+    expectedStatus: "critical",
+    expectedValue: 0.83,
+  },
+];
+
+describe("Batch 3 Direct-Call Validation Guards", () => {
+  function batch3Calc(id: string) {
+    const calc = getCalculatorById(id);
+    expect(calc, `Batch 3 guarded calculator "${id}" must be registered`).toBeDefined();
+    return calc!;
+  }
+
+  function fillEveryInput(id: string, value: string) {
+    const calc = batch3Calc(id);
+    const inputs: Record<string, string> = {};
+    for (const input of calc.inputs) {
+      inputs[input.id] = value;
+    }
+    return inputs;
+  }
+
+  function assertCritical(result: CalculatorResult, label: string) {
+    expect(result.status, `${label}: expected critical`).toBe("critical");
+    expect(
+      Number.isNaN(Number(result.value)),
+      `${label}: must not emit NaN`,
+    ).toBe(false);
+  }
+
+  it.each(BATCH3_GUARDED_IDS)(
+    "%s returns critical and no NaN for missing inputs",
+    (id) => {
+      assertCritical(batch3Calc(id).calculate({}), id);
+    },
+  );
+
+  it.each(BATCH3_GUARDED_IDS)(
+    "%s returns critical and no NaN for empty-string inputs",
+    (id) => {
+      assertCritical(batch3Calc(id).calculate(fillEveryInput(id, "")), id);
+    },
+  );
+
+  it.each(BATCH3_GUARDED_IDS)(
+    "%s returns critical and no NaN for non-numeric inputs",
+    (id) => {
+      assertCritical(batch3Calc(id).calculate(fillEveryInput(id, "abc")), id);
+    },
+  );
+
+  it.each(BATCH3_GUARDED_IDS)(
+    "%s returns critical and no NaN for negative numeric inputs",
+    (id) => {
+      assertCritical(
+        batch3Calc(id).calculate(BATCH3_NEGATIVE_OVERRIDES[id]),
+        id,
+      );
+    },
+  );
+
+  it.each(BATCH3_ZERO_GUARDED_IDS)(
+    "%s returns critical and no NaN for zero numeric inputs",
+    (id) => {
+      assertCritical(batch3Calc(id).calculate(BATCH3_ZERO_OVERRIDES[id]), id);
+    },
+  );
+
+  it("urine-anion-gap allows zero urine electrolytes (non-critical)", () => {
+    const result = batch3Calc("urine-anion-gap").calculate({
+      urineNa: "0",
+      urineK: "0",
+      urineCl: "0",
+    });
+    expect(result.status).not.toBe("critical");
+    expect(Number.isFinite(Number(result.value))).toBe(true);
+  });
+
+  it.each(BATCH3_GUARDED_IDS)(
+    "%s keeps producing valid results for valid inputs",
+    (id) => {
+      const result = batch3Calc(id).calculate(BATCH3_VALID_INPUTS[id]);
+      expect(result.status, `${id}: valid inputs must not be critical`).not.toBe("critical");
+      expect(Number.isFinite(Number(result.value))).toBe(true);
+    },
+  );
+
+  it.each(BATCH3_BOUNDARY_CASES)(
+    "%s boundary inputs yield expected status and value",
+    (tc) => {
+      const result = batch3Calc(tc.id).calculate(tc.inputs);
+      expect(result.status, `${tc.id}: unexpected status`).toBe(tc.expectedStatus);
+      if (tc.expectedValue !== undefined) {
+        expect(Math.abs(Number(result.value) - tc.expectedValue)).toBeLessThan(0.01);
+      }
+    },
+  );
+
+  it("ldl-cholesterol returns critical when triglycerides are ≥ 400 mg/dL", () => {
+    const result = batch3Calc("ldl-cholesterol").calculate({
+      totalCholesterol: "240",
+      hdl: "50",
+      triglycerides: "450",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("winters-formula returns critical when bicarbonate is ≥ 24 mEq/L", () => {
+    const result = batch3Calc("winters-formula").calculate({
+      bicarbonate: "26",
+      pco2: "40",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("anion-gap-delta-ratio returns critical when there is no high anion gap", () => {
+    const result = batch3Calc("anion-gap-delta-ratio").calculate({
+      anionGap: "10",
+      bicarbonate: "12",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("anion-gap-delta-ratio returns critical when bicarbonate is ≥ 24 mEq/L", () => {
+    const result = batch3Calc("anion-gap-delta-ratio").calculate({
+      anionGap: "23",
+      bicarbonate: "26",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("kt-v returns critical when post-dialysis BUN is not below pre-dialysis BUN", () => {
+    const result = batch3Calc("kt-v").calculate({
+      preBun: "60",
+      postBun: "90",
+      ultrafiltrate: "2.5",
+      treatmentTime: "4",
+      postWeight: "75",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("kt-v returns critical when the log term is not positive", () => {
+    const result = batch3Calc("kt-v").calculate({
+      preBun: "100",
+      postBun: "5",
+      ultrafiltrate: "0",
+      treatmentTime: "20",
+      postWeight: "75",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("albumin-globulin-ratio returns critical when globulin is not positive", () => {
+    const result = batch3Calc("albumin-globulin-ratio").calculate({
+      albumin: "6",
+      totalProtein: "5",
+    });
+    expect(result.status).toBe("critical");
+  });
+
+  it("ldl-cholesterol returns critical when the calculated LDL is not positive", () => {
+    const result = batch3Calc("ldl-cholesterol").calculate({
+      totalCholesterol: "100",
+      hdl: "90",
+      triglycerides: "100",
+    });
+    expect(result.status).toBe("critical");
+  });
 });

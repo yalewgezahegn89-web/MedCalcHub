@@ -51,6 +51,17 @@ import { insulinSensitivityCalculator } from "./insulin-sensitivity";
 import { estimatedAverageGlucoseCalculator } from "./estimated-average-glucose";
 import { a1cEagConverterCalculator } from "./a1c-eag-converter";
 
+import { ldlCholesterolCalculator } from "./ldl-cholesterol";
+import { nonHdlCholesterolCalculator } from "./non-hdl-cholesterol";
+import { albuminGlobulinRatioCalculator } from "./albumin-globulin-ratio";
+import { tygIndexCalculator } from "./tyg-index";
+import { triglycerideHdlRatioCalculator } from "./triglyceride-hdl-ratio";
+import { quickiCalculator } from "./quicki";
+import { wintersFormulaCalculator } from "./winters-formula";
+import { anionGapDeltaRatioCalculator } from "./anion-gap-delta-ratio";
+import { urineAnionGapCalculator } from "./urine-anion-gap";
+import { ktVCalculator } from "./kt-v";
+
 import { correctedQtCalculator } from "./corrected-qt";
 
 import { thyroidDoseCalculator } from "./thyroid-dose";
@@ -151,6 +162,17 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   insulinSensitivityCalculator,
   estimatedAverageGlucoseCalculator,
   a1cEagConverterCalculator,
+
+  ldlCholesterolCalculator,
+  nonHdlCholesterolCalculator,
+  albuminGlobulinRatioCalculator,
+  tygIndexCalculator,
+  triglycerideHdlRatioCalculator,
+  quickiCalculator,
+  wintersFormulaCalculator,
+  anionGapDeltaRatioCalculator,
+  urineAnionGapCalculator,
+  ktVCalculator,
 
   correctedQtCalculator,
 
