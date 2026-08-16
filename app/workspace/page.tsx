@@ -2,15 +2,15 @@
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
+import { Clock, Heart, X, Zap } from "lucide-react";
 
-import { getFavorites } from "@/lib/favorites";
+import { getFavorites, removeFavorite } from "@/lib/favorites";
 import {
   getCalculationHistory,
   type CalculationHistoryItem,
 } from "@/lib/history/history";
 import { getRecentCalculators } from "@/lib/recent";
-
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import { resolveWorkspaceCalculators } from "@/lib/workspace";
 
 /* ── subscribe helpers ── */
 
@@ -119,13 +119,11 @@ export default function WorkspacePage() {
   const calculationHistory: CalculationHistoryItem[] =
     JSON.parse(historyStr);
 
-  const favoriteCalculators = calculatorRegistry.filter(
-    (calc) => favorites.includes(calc.id),
-  );
+  const favoriteCalculators =
+    resolveWorkspaceCalculators(favorites);
 
-  const recentCalculators = calculatorRegistry.filter(
-    (calc) => recentIds.includes(calc.id),
-  );
+  const recentCalculators =
+    resolveWorkspaceCalculators(recentIds);
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10">
@@ -135,39 +133,68 @@ export default function WorkspacePage() {
         </h1>
 
         <p className="mt-3 text-slate-600">
-          Your personalized MedCalcHub dashboard.
+          Your personalized MedCalcHub dashboard. Save
+          calculators for quick access and pick up where
+          you left off.
         </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
 
-        {/* Favorites */}
+        {/* Saved Calculators */}
 
         <section className="rounded-2xl border p-6 shadow-sm">
-          <h2 className="mb-5 text-xl font-semibold">
-            ❤️ Favorites
+          <h2 className="mb-5 flex items-center gap-2 text-xl font-semibold">
+            <Heart className="h-5 w-5 fill-red-500 text-red-500" />
+            Saved Calculators
           </h2>
 
           {favoriteCalculators.length === 0 ? (
-            <p className="text-slate-500">
-              No favorite calculators yet.
-            </p>
+            <div className="flex flex-col items-center gap-3 py-10 text-center">
+              <Heart className="h-10 w-10 text-slate-300" />
+
+              <p className="text-slate-500">
+                No saved calculators yet.
+              </p>
+
+              <Link
+                href="/"
+                className="mt-1 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                Browse Calculators
+              </Link>
+            </div>
           ) : (
             <div className="space-y-3">
               {favoriteCalculators.map((calc) => (
-                <Link
+                <div
                   key={calc.id}
-                  href={`/calculators/${calc.slug}`}
-                  className="block rounded-lg border p-3 transition hover:bg-slate-50"
+                  className="flex items-center gap-2 rounded-lg border p-3"
                 >
-                  <div className="font-medium">
-                    {calc.name}
-                  </div>
+                  <Link
+                    href={`/calculators/${calc.slug}`}
+                    className="min-w-0 flex-1 transition hover:opacity-80"
+                  >
+                    <div className="truncate font-medium">
+                      {calc.name}
+                    </div>
 
-                  <div className="text-sm text-slate-500">
-                    {calc.category}
-                  </div>
-                </Link>
+                    <div className="text-sm text-slate-500">
+                      {calc.category}
+                    </div>
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      removeFavorite(calc.id)
+                    }
+                    aria-label={`Remove ${calc.name} from saved calculators`}
+                    className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
               ))}
             </div>
           )}
@@ -176,8 +203,9 @@ export default function WorkspacePage() {
         {/* Recent Calculations */}
 
         <section className="rounded-2xl border p-6 shadow-sm">
-          <h2 className="mb-5 text-xl font-semibold">
-            🕒 Recent Calculations
+          <h2 className="mb-5 flex items-center gap-2 text-xl font-semibold">
+            <Clock className="h-5 w-5 text-blue-600" />
+            Recent Calculations
           </h2>
 
           {calculationHistory.length === 0 ? (
@@ -215,8 +243,9 @@ export default function WorkspacePage() {
         {/* Recently Opened */}
 
         <section className="rounded-2xl border p-6 shadow-sm">
-          <h2 className="mb-5 text-xl font-semibold">
-            ⚡ Recently Opened
+          <h2 className="mb-5 flex items-center gap-2 text-xl font-semibold">
+            <Zap className="h-5 w-5 text-amber-500" />
+            Recently Opened
           </h2>
 
           {recentCalculators.length === 0 ? (
