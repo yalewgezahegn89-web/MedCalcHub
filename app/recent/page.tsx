@@ -2,9 +2,13 @@
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import { Clock, Trash2 } from "lucide-react";
+import { Clock, Trash2, X } from "lucide-react";
 
-import { getRecentCalculators, clearRecentCalculators } from "@/lib/recent";
+import {
+  getRecentCalculators,
+  clearRecentCalculators,
+  removeRecentCalculator,
+} from "@/lib/recent";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
@@ -57,7 +61,7 @@ export default function RecentPage() {
         calc !== undefined,
     );
 
-  function clearHistory() {
+  function clearAll() {
     clearRecentCalculators();
   }
 
@@ -79,7 +83,7 @@ export default function RecentPage() {
 
         {calculators.length > 0 && (
           <button
-            onClick={clearHistory}
+            onClick={clearAll}
             className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-100"
           >
             <Trash2 className="h-4 w-4" />
@@ -107,24 +111,39 @@ export default function RecentPage() {
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
 
           {calculators.map((calc) => (
-            <Link
+            <div
               key={calc.id}
-              href={`/calculators/${calc.slug}`}
-              className="rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+              className="flex items-stretch gap-2"
             >
-              <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                {calc.category}
-              </span>
+              <Link
+                href={`/calculators/${calc.slug}`}
+                className="min-w-0 flex-1 rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+              >
+                <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                  {calc.category}
+                </span>
 
-              <h3 className="mt-4 text-lg font-semibold">
-                {calc.name}
-              </h3>
+                <h3 className="mt-4 text-lg font-semibold">
+                  {calc.name}
+                </h3>
 
-              <p className="mt-2 text-sm text-slate-600">
-                {calc.description}
-              </p>
+                <p className="mt-2 line-clamp-3 text-sm text-slate-600">
+                  {calc.description}
+                </p>
 
-            </Link>
+              </Link>
+
+              <button
+                type="button"
+                onClick={() =>
+                  removeRecentCalculator(calc.id)
+                }
+                aria-label={`Remove ${calc.name} from recent calculators`}
+                className="shrink-0 self-start rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
           ))}
 
         </div>

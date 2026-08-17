@@ -90,7 +90,7 @@ export const CalculatorForm = forwardRef<
   const isFav = useSyncExternalStore(
     subscribeFavorites,
     () =>
-      isFavorite(calculator.slug) + ":" + favKey,
+      isFavorite(calculator.id) + ":" + favKey,
     () => "false",
   );
 
@@ -336,7 +336,7 @@ export const CalculatorForm = forwardRef<
         }}
         onFavorite={() => {
           const added = toggleFavorite(
-            calculator.slug,
+            calculator.id,
           );
           setFavKey((k) => k + 1);
           toast.info(

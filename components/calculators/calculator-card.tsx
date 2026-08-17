@@ -32,7 +32,7 @@ export function CalculatorCard({
           <Calculator className="h-6 w-6 text-blue-700 dark:text-blue-400" />
         </div>
 
-        <FavoriteIndicator slug={calculator.id} />
+        <FavoriteIndicator id={calculator.id} />
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">

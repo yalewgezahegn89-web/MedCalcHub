@@ -56,6 +56,30 @@ export function saveCalculation(
   }
 }
 
+export function deleteHistoryEntry(index: number) {
+  const history = getCalculationHistory();
+
+  if (index < 0 || index >= history.length) {
+    return;
+  }
+
+  const next = [
+    ...history.slice(0, index),
+    ...history.slice(index + 1),
+  ];
+
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(next),
+    );
+
+    window.dispatchEvent(new Event(CHANGE_EVENT));
+  } catch {
+    // Storage may be full or unavailable — fail gracefully
+  }
+}
+
 export function clearHistory() {
   try {
     localStorage.removeItem(STORAGE_KEY);

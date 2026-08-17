@@ -36,11 +36,11 @@ function getServerSnapshot() {
 }
 
 type FavoriteIndicatorProps = {
-  slug: string;
+  id: string;
 };
 
 export function FavoriteIndicator({
-  slug,
+  id,
 }: FavoriteIndicatorProps) {
   const favoritesStr = useSyncExternalStore(
     subscribe,
@@ -49,7 +49,7 @@ export function FavoriteIndicator({
   );
 
   const favorite = JSON.parse(favoritesStr).includes(
-    slug,
+    id,
   );
 
   if (!favorite) {

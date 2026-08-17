@@ -195,6 +195,23 @@ describe("favorites", () => {
       expect(result).toBe(false);
       expect(getFavorites()).toEqual(["crf"]);
     });
+
+    it("stores by calculator.id even when id differs from slug", async () => {
+      const { addFavorite, isFavorite, getFavorites } = await load();
+      addFavorite("ibw");
+
+      expect(isFavorite("ibw")).toBe(true);
+      expect(getFavorites()).toEqual(["ibw"]);
+    });
+
+    it("differentiates between id-based and slug-based keys", async () => {
+      const { addFavorite, isFavorite, getFavorites } = await load();
+      addFavorite("ideal-body-weight");
+
+      expect(isFavorite("ideal-body-weight")).toBe(true);
+      expect(isFavorite("ibw")).toBe(false);
+      expect(getFavorites()).toEqual(["ideal-body-weight"]);
+    });
   });
 
   // -------------------------------------------------------

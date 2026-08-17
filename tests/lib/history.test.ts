@@ -139,6 +139,81 @@ describe("history", () => {
   });
 
   // -------------------------------------------------------
+  // deleteHistoryEntry
+  // -------------------------------------------------------
+
+  describe("deleteHistoryEntry", () => {
+    it("deletes one history entry by index", async () => {
+      const { saveCalculation, deleteHistoryEntry, getCalculationHistory } = await load();
+      saveCalculation(makeItem({ calculatorId: "bmi", result: "24.9", timestamp: 1 }));
+      saveCalculation(makeItem({ calculatorId: "crf", result: "90", timestamp: 2 }));
+
+      deleteHistoryEntry(0);
+
+      const history = getCalculationHistory();
+      expect(history).toHaveLength(1);
+      expect(history[0].calculatorId).toBe("bmi");
+    });
+
+    it("is a safe no-op for negative index", async () => {
+      const { saveCalculation, deleteHistoryEntry, getCalculationHistory } = await load();
+      saveCalculation(makeItem());
+
+      deleteHistoryEntry(-1);
+
+      expect(getCalculationHistory()).toHaveLength(1);
+    });
+
+    it("is a safe no-op for out-of-range index", async () => {
+      const { saveCalculation, deleteHistoryEntry, getCalculationHistory } = await load();
+      saveCalculation(makeItem());
+
+      deleteHistoryEntry(5);
+
+      expect(getCalculationHistory()).toHaveLength(1);
+    });
+
+    it("is a safe no-op on empty history", async () => {
+      const { deleteHistoryEntry } = await load();
+      expect(() => deleteHistoryEntry(0)).not.toThrow();
+    });
+
+    it("preserves order of remaining entries", async () => {
+      const { saveCalculation, deleteHistoryEntry, getCalculationHistory } = await load();
+      saveCalculation(makeItem({ calculatorId: "a", result: "1", timestamp: 1 }));
+      saveCalculation(makeItem({ calculatorId: "b", result: "2", timestamp: 2 }));
+      saveCalculation(makeItem({ calculatorId: "c", result: "3", timestamp: 3 }));
+
+      deleteHistoryEntry(1);
+
+      const history = getCalculationHistory();
+      expect(history.map((h) => h.calculatorId)).toEqual(["c", "a"]);
+    });
+
+    it("dispatches change event after deletion", async () => {
+      const { saveCalculation, deleteHistoryEntry } = await load();
+      saveCalculation(makeItem());
+      dispatchEventSpy.mockClear();
+
+      deleteHistoryEntry(0);
+
+      expect(dispatchEventSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ type: CHANGE_EVENT }),
+      );
+    });
+
+    it("does not dispatch event for no-op deletion", async () => {
+      const { saveCalculation, deleteHistoryEntry } = await load();
+      saveCalculation(makeItem());
+      dispatchEventSpy.mockClear();
+
+      deleteHistoryEntry(99);
+
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  // -------------------------------------------------------
   // clearHistory
   // -------------------------------------------------------
 
@@ -168,6 +243,28 @@ describe("history", () => {
       });
       const { saveCalculation } = await load();
       expect(() => saveCalculation(makeItem())).not.toThrow();
+    });
+
+    it("deleteHistoryEntry does not throw on write failure", async () => {
+      const { saveCalculation } = await load();
+      saveCalculation(makeItem());
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+      const { deleteHistoryEntry } = await load();
+      expect(() => deleteHistoryEntry(0)).not.toThrow();
+    });
+
+    it("deleteHistoryEntry does not dispatch event when setItem fails", async () => {
+      const { saveCalculation } = await load();
+      saveCalculation(makeItem());
+      dispatchEventSpy.mockClear();
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+      const { deleteHistoryEntry } = await load();
+      deleteHistoryEntry(0);
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
     });
 
     it("clearHistory does not throw on remove failure", async () => {
