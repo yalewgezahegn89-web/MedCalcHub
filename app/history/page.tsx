@@ -1,6 +1,5 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Calculator, Trash2 } from "lucide-react";
 
@@ -11,35 +10,14 @@ import {
   type CalculationHistoryItem,
 } from "@/lib/history/history";
 import { calculatorRegistry } from "@/lib/calculators/registry";
+import {
+  createLocalStore,
+  useLocalStorageStore,
+} from "@/lib/use-sync-store";
 
-function subscribe(callback: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-
-  const handler = () => callback();
-  window.addEventListener("storage", handler);
-  window.addEventListener(
-    "medcalchub-history-changed",
-    handler,
-  );
-
-  return () => {
-    window.removeEventListener("storage", handler);
-    window.removeEventListener(
-      "medcalchub-history-changed",
-      handler,
-    );
-  };
-}
-
-function getSnapshot() {
-  return JSON.stringify(getCalculationHistory());
-}
-
-function getServerSnapshot() {
-  return "[]";
-}
+const historyStore = createLocalStore<
+  CalculationHistoryItem[]
+>("medcalchub-history-changed", getCalculationHistory);
 
 function resolveCalculatorSlug(
   calculatorId: string,
@@ -51,14 +29,7 @@ function resolveCalculatorSlug(
 }
 
 export default function HistoryPage() {
-  const historyStr = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
-
-  const history: CalculationHistoryItem[] =
-    JSON.parse(historyStr);
+  const history = useLocalStorageStore(historyStore);
 
   function handleClear() {
     clearHistory();
@@ -84,6 +55,11 @@ export default function HistoryPage() {
         )}
 
       </div>
+
+      <p className="mb-6 text-sm text-slate-500">
+        Your calculation history is stored locally in this
+        browser and is not synced to a server.
+      </p>
 
       {history.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-16 text-center">

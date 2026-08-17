@@ -1,6 +1,5 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Clock, Heart, X, Zap } from "lucide-react";
 
@@ -11,113 +10,36 @@ import {
 } from "@/lib/history/history";
 import { getRecentCalculators } from "@/lib/recent";
 import { resolveWorkspaceCalculators } from "@/lib/workspace";
+import {
+  createLocalStore,
+  useLocalStorageStore,
+} from "@/lib/use-sync-store";
 
-/* ── subscribe helpers ── */
+/* ── stores ── */
 
-function subscribeFavorites(callback: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-  const handler = () => callback();
-  window.addEventListener("storage", handler);
-  window.addEventListener(
-    "medcalchub-favorites-changed",
-    handler,
-  );
-  return () => {
-    window.removeEventListener("storage", handler);
-    window.removeEventListener(
-      "medcalchub-favorites-changed",
-      handler,
-    );
-  };
-}
+const favoritesStore = createLocalStore<string[]>(
+  "medcalchub-favorites-changed",
+  getFavorites,
+);
 
-function subscribeRecent(callback: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-  const handler = () => callback();
-  window.addEventListener("storage", handler);
-  window.addEventListener(
-    "medcalchub-recent-changed",
-    handler,
-  );
-  return () => {
-    window.removeEventListener("storage", handler);
-    window.removeEventListener(
-      "medcalchub-recent-changed",
-      handler,
-    );
-  };
-}
+const recentStore = createLocalStore<string[]>(
+  "medcalchub-recent-changed",
+  getRecentCalculators,
+);
 
-function subscribeHistory(callback: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-  const handler = () => callback();
-  window.addEventListener("storage", handler);
-  window.addEventListener(
-    "medcalchub-history-changed",
-    handler,
-  );
-  return () => {
-    window.removeEventListener("storage", handler);
-    window.removeEventListener(
-      "medcalchub-history-changed",
-      handler,
-    );
-  };
-}
-
-/* ── snapshots ── */
-
-function favSnapshot() {
-  return JSON.stringify(getFavorites());
-}
-function favServer() {
-  return "[]";
-}
-
-function recentSnapshot() {
-  return JSON.stringify(getRecentCalculators());
-}
-function recentServer() {
-  return "[]";
-}
-
-function historySnapshot() {
-  return JSON.stringify(getCalculationHistory());
-}
-function historyServer() {
-  return "[]";
-}
+const historyStore = createLocalStore<
+  CalculationHistoryItem[]
+>("medcalchub-history-changed", getCalculationHistory);
 
 /* ── page ── */
 
 export default function WorkspacePage() {
-  const favStr = useSyncExternalStore(
-    subscribeFavorites,
-    favSnapshot,
-    favServer,
-  );
-  const favorites: string[] = JSON.parse(favStr);
-
-  const recentStr = useSyncExternalStore(
-    subscribeRecent,
-    recentSnapshot,
-    recentServer,
-  );
-  const recentIds: string[] = JSON.parse(recentStr);
-
-  const historyStr = useSyncExternalStore(
-    subscribeHistory,
-    historySnapshot,
-    historyServer,
-  );
-  const calculationHistory: CalculationHistoryItem[] =
-    JSON.parse(historyStr);
+  const favorites =
+    useLocalStorageStore(favoritesStore);
+  const recentIds =
+    useLocalStorageStore(recentStore);
+  const calculationHistory =
+    useLocalStorageStore(historyStore);
 
   const favoriteCalculators =
     resolveWorkspaceCalculators(favorites);
@@ -144,10 +66,21 @@ export default function WorkspacePage() {
         {/* Saved Calculators */}
 
         <section className="rounded-2xl border p-6 shadow-sm">
-          <h2 className="mb-5 flex items-center gap-2 text-xl font-semibold">
-            <Heart className="h-5 w-5 fill-red-500 text-red-500" />
-            Saved Calculators
-          </h2>
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-xl font-semibold">
+              <Heart className="h-5 w-5 fill-red-500 text-red-500" />
+              Saved Calculators
+            </h2>
+
+            {favoriteCalculators.length > 0 && (
+              <Link
+                href="/favorites"
+                className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
+              >
+                View all
+              </Link>
+            )}
+          </div>
 
           {favoriteCalculators.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-10 text-center">
@@ -203,10 +136,21 @@ export default function WorkspacePage() {
         {/* Recent Calculations */}
 
         <section className="rounded-2xl border p-6 shadow-sm">
-          <h2 className="mb-5 flex items-center gap-2 text-xl font-semibold">
-            <Clock className="h-5 w-5 text-blue-600" />
-            Recent Calculations
-          </h2>
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-xl font-semibold">
+              <Clock className="h-5 w-5 text-blue-600" />
+              Recent Calculations
+            </h2>
+
+            {calculationHistory.length > 0 && (
+              <Link
+                href="/history"
+                className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
+              >
+                View all
+              </Link>
+            )}
+          </div>
 
           {calculationHistory.length === 0 ? (
             <p className="text-slate-500">
@@ -243,10 +187,21 @@ export default function WorkspacePage() {
         {/* Recently Opened */}
 
         <section className="rounded-2xl border p-6 shadow-sm">
-          <h2 className="mb-5 flex items-center gap-2 text-xl font-semibold">
-            <Zap className="h-5 w-5 text-amber-500" />
-            Recently Opened
-          </h2>
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-xl font-semibold">
+              <Zap className="h-5 w-5 text-amber-500" />
+              Recently Opened
+            </h2>
+
+            {recentCalculators.length > 0 && (
+              <Link
+                href="/recent"
+                className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
+              >
+                View all
+              </Link>
+            )}
+          </div>
 
           {recentCalculators.length === 0 ? (
             <p className="text-slate-500">

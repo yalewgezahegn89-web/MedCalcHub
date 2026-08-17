@@ -1,6 +1,5 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Clock, Trash2, X } from "lucide-react";
 
@@ -10,47 +9,20 @@ import {
   removeRecentCalculator,
 } from "@/lib/recent";
 import { calculatorRegistry } from "@/lib/calculators/registry";
+import {
+  createLocalStore,
+  useLocalStorageStore,
+} from "@/lib/use-sync-store";
 
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 
-function subscribe(callback: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-
-  const handler = () => callback();
-
-  window.addEventListener("storage", handler);
-  window.addEventListener(
-    "medcalchub-recent-changed",
-    handler,
-  );
-
-  return () => {
-    window.removeEventListener("storage", handler);
-    window.removeEventListener(
-      "medcalchub-recent-changed",
-      handler,
-    );
-  };
-}
-
-function getSnapshot() {
-  return JSON.stringify(getRecentCalculators());
-}
-
-function getServerSnapshot() {
-  return "[]";
-}
+const recentStore = createLocalStore<string[]>(
+  "medcalchub-recent-changed",
+  getRecentCalculators,
+);
 
 export default function RecentPage() {
-  const recentIdsStr = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
-
-  const recentIds: string[] = JSON.parse(recentIdsStr);
+  const recentIds = useLocalStorageStore(recentStore);
 
   const calculators: CalculatorDefinition[] = recentIds
     .map((id) =>
