@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Clock, Trash2, X } from "lucide-react";
+import { Clock, X } from "lucide-react";
 
 import {
   getRecentCalculators,
@@ -40,7 +40,7 @@ export default function RecentPage() {
   return (
     <main className="mx-auto max-w-7xl px-6 py-10">
 
-      <div className="mb-10 flex items-center justify-between">
+      <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
 
         <div>
           <h1 className="flex items-center gap-3 text-4xl font-bold">
@@ -56,14 +56,19 @@ export default function RecentPage() {
         {calculators.length > 0 && (
           <button
             onClick={clearAll}
-            className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-100"
+            className="flex min-h-[44px] items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-100"
           >
-            <Trash2 className="h-4 w-4" />
-            Clear
+            Clear all
           </button>
         )}
 
       </div>
+
+      <p className="mb-6 text-sm text-slate-500">
+        Your MedCalcHub data is stored locally in this
+        browser and is not synced to a server. Clearing
+        browser data will permanently delete it.
+      </p>
 
       {calculators.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
@@ -111,7 +116,7 @@ export default function RecentPage() {
                   removeRecentCalculator(calc.id)
                 }
                 aria-label={`Remove ${calc.name} from recent calculators`}
-                className="shrink-0 self-start rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                className="shrink-0 self-start rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
                 <X className="h-4 w-4" />
               </button>

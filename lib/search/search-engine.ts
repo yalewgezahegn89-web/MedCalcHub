@@ -12,6 +12,15 @@ const WEIGHTS: Record<string, number> = {
   description: 20,
 };
 
+let cachedIndex: SearchDocument[] | null = null;
+
+function getSearchIndex(): SearchDocument[] {
+  if (!cachedIndex) {
+    cachedIndex = buildSearchIndex();
+  }
+  return cachedIndex;
+}
+
 export function searchCalculators(
   query: string,
 ): SearchResult[] {
@@ -30,7 +39,7 @@ export function searchCalculators(
     return [];
   }
 
-  const index = buildSearchIndex();
+  const index = getSearchIndex();
 
   const results: SearchResult[] = [];
 

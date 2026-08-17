@@ -24,6 +24,10 @@ export const CalculatorToolbar = forwardRef<
       showFavorite = true,
       showSave = true,
       isFavorite = false,
+      disabledSave = false,
+      disabledCopy = false,
+      disabledPrint = false,
+      disabledShare = false,
       ...props
     },
   ref,
@@ -53,6 +57,7 @@ export const CalculatorToolbar = forwardRef<
           size="md"
           className="min-h-[44px]"
           onClick={onCopy}
+          disabled={disabledCopy}
         >
           📋 Copy
         </Button>
@@ -65,6 +70,7 @@ export const CalculatorToolbar = forwardRef<
           size="md"
           className="min-h-[44px]"
           onClick={onPrint}
+          disabled={disabledPrint}
         >
           🖨️ Print
         </Button>
@@ -77,6 +83,7 @@ export const CalculatorToolbar = forwardRef<
           size="md"
           className="min-h-[44px]"
           onClick={onShare}
+          disabled={disabledShare}
         >
           🔗 Share
         </Button>
@@ -102,6 +109,7 @@ export const CalculatorToolbar = forwardRef<
           size="md"
           className="min-h-[44px]"
           onClick={onSave}
+          disabled={disabledSave}
         >
           💾 Save
         </Button>

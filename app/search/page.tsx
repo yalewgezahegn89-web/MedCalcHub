@@ -12,6 +12,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { FeaturedCalculatorCard } from "@/components/calculators/featured-calculator-card";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
+import { searchCalculators } from "@/lib/search";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
@@ -24,35 +25,26 @@ export default function SearchPage() {
   }, []);
 
   const results = useMemo(() => {
-    let filtered = calculatorRegistry;
+    const trimmed = query.trim();
+
+    const matchedSlugs: string[] = trimmed
+      ? searchCalculators(trimmed).map((r) => r.document.slug)
+      : calculatorRegistry.map((c) => c.slug);
+
+    let filtered = matchedSlugs;
 
     if (category !== "All") {
-      filtered = filtered.filter(
-        (calculator) => calculator.category === category,
+      const categorySlugs = new Set(
+        calculatorRegistry
+          .filter((c) => c.category === category)
+          .map((c) => c.slug),
       );
+      filtered = matchedSlugs.filter((slug) => categorySlugs.has(slug));
     }
 
-    const trimmed = query.trim();
-    if (!trimmed) {
-      return filtered;
-    }
-
-    const search = trimmed.toLowerCase();
-
-    return filtered.filter((calculator) => {
-      return (
-        calculator.name.toLowerCase().includes(search) ||
-        calculator.description.toLowerCase().includes(search) ||
-        calculator.category.toLowerCase().includes(search) ||
-        calculator.specialty?.toLowerCase().includes(search) ||
-        calculator.tags?.some((tag) =>
-          tag.toLowerCase().includes(search),
-        ) ||
-        calculator.keywords?.some((keyword) =>
-          keyword.toLowerCase().includes(search),
-        )
-      );
-    });
+    return filtered
+      .map((slug) => calculatorRegistry.find((c) => c.slug === slug)!)
+      .filter(Boolean);
   }, [query, category]);
 
   const showCategorySuggestions =

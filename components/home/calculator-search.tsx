@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
@@ -43,15 +44,19 @@ export function CalculatorSearch() {
   return (
     <section className="space-y-5">
 
-      <input
-        type="text"
-        placeholder="Search calculators..."
-        value={query}
-        onChange={(e) =>
-          setQuery(e.target.value)
-        }
-        className="w-full rounded-xl border p-4"
-      />
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+        <input
+          type="text"
+          placeholder="Search calculators..."
+          value={query}
+          onChange={(e) =>
+            setQuery(e.target.value)
+          }
+          aria-label="Search calculators"
+          className="w-full rounded-xl border p-4 pl-12"
+        />
+      </div>
 
       {query && (
         <div className="space-y-3">

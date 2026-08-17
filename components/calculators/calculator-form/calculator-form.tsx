@@ -74,6 +74,8 @@ export const CalculatorForm = forwardRef<
   const [result, setResult] =
     useState<CalculatorResult | null>(null);
 
+  const [isStale, setIsStale] = useState(false);
+
   const [errors, setErrors] = useState<
     Record<string, string>
   >({});
@@ -104,8 +106,10 @@ export const CalculatorForm = forwardRef<
 
         return next;
       });
+
+      setIsStale((prev) => (result ? true : prev));
     },
-    [],
+    [result],
   );
 
   const validate = useCallback(() => {
@@ -181,6 +185,7 @@ export const CalculatorForm = forwardRef<
       }
 
       setResult(calculated);
+      setIsStale(false);
 
       try {
         saveCalculation({
@@ -210,10 +215,11 @@ export const CalculatorForm = forwardRef<
 
     setErrors({});
     setResult(null);
+    setIsStale(false);
   }, [calculator.inputs]);
 
   const handleSave = useCallback(() => {
-    if (!result) {
+    if (!result || isStale) {
       return;
     }
 
@@ -230,7 +236,7 @@ export const CalculatorForm = forwardRef<
     toast.success("Calculation saved", {
       description: `${calculator.name} saved to Saved Calculations.`,
     });
-  }, [calculator, values, result]);
+  }, [calculator, values, result, isStale]);
 
   const sections: ResultSections | undefined = result
     ? prepareResultSections(result)
@@ -277,6 +283,10 @@ export const CalculatorForm = forwardRef<
         isFavorite={isFav.startsWith("true")}
         onReset={handleReset}
         onSave={handleSave}
+        disabledSave={!result || isStale}
+        disabledCopy={!result || isStale}
+        disabledShare={!result || isStale}
+        disabledPrint={!result || isStale}
         onCopy={async () => {
           if (!result) return;
 
@@ -361,15 +371,27 @@ export const CalculatorForm = forwardRef<
 
       {result && (
         <>
-          <p
+          <div
             aria-live="polite"
             role="status"
             className="sr-only"
           >
-            {calculator.name}:{" "}
-            {result.interpretation ??
-              "Result calculated."}
-          </p>
+            {isStale
+              ? `${calculator.name}: result outdated.`
+              : `${calculator.name}: ${
+                  result.interpretation ??
+                  "Result calculated."
+                }`}
+          </div>
+
+          {isStale && (
+            <div
+              role="alert"
+              className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200"
+            >
+              Result outdated — recalculate
+            </div>
+          )}
 
           <ResultCard
             label={calculator.name}
@@ -385,6 +407,7 @@ export const CalculatorForm = forwardRef<
                 : undefined
             }
             sections={sections}
+            actionsDisabled={isStale}
           />
 
           <ClassificationCard

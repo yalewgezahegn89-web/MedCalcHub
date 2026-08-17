@@ -10,6 +10,13 @@ export function FormField({
   onChange,
 }: FormFieldProps) {
   const errorId = `${inputId}-error`;
+  const helpId = `${inputId}-help`;
+  const hasHelpText = !!input.helpText;
+
+  const describedBy =
+    [error ? errorId : null, hasHelpText ? helpId : null]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
   return (
     <div className="space-y-1.5">
@@ -31,7 +38,7 @@ export function FormField({
             onChange={onChange}
             required={input.required}
             error={!!error}
-            aria-describedby={error ? errorId : undefined}
+            aria-describedby={describedBy}
           >
             <option value="">
               {input.placeholder ?? "Select..."}
@@ -55,7 +62,7 @@ export function FormField({
             max={input.max}
             step={input.step}
             error={!!error}
-            aria-describedby={error ? errorId : undefined}
+            aria-describedby={describedBy}
           />
         )}
 
@@ -72,8 +79,8 @@ export function FormField({
         </p>
       )}
 
-      {!error && input.helpText && (
-        <p className="text-xs text-muted-foreground">
+      {input.helpText && (
+        <p id={helpId} className="text-xs text-muted-foreground">
           {input.helpText}
         </p>
       )}

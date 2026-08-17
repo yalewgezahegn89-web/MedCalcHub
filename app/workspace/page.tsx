@@ -88,17 +88,23 @@ export default function WorkspacePage() {
           calculators for quick access and pick up where
           you left off.
         </p>
+
+        <p className="mt-2 text-sm text-slate-500">
+          Your MedCalcHub data is stored locally in this
+          browser and is not synced to a server. Clearing
+          browser data will permanently delete it.
+        </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
 
-        {/* Saved Calculators */}
+        {/* Favorite Calculators */}
 
         <section className="rounded-2xl border p-6 shadow-sm">
           <div className="mb-5 flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-xl font-semibold">
               <Heart className="h-5 w-5 fill-red-500 text-red-500" />
-              Saved Calculators
+              Favorite Calculators
             </h2>
 
             {favoriteCalculators.length > 0 && (
@@ -116,7 +122,7 @@ export default function WorkspacePage() {
               <Heart className="h-10 w-10 text-slate-300" />
 
               <p className="text-slate-500">
-                No saved calculators yet.
+                No favorite calculators yet.
               </p>
 
               <Link
@@ -151,7 +157,7 @@ export default function WorkspacePage() {
                     onClick={() =>
                       removeFavorite(calc.id)
                     }
-                    aria-label={`Remove ${calc.name} from saved calculators`}
+                    aria-label={`Remove ${calc.name} from favorite calculators`}
                     className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                   >
                     <X className="h-4 w-4" />

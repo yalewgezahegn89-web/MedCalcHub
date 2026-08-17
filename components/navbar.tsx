@@ -2,7 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Clock, Heart, Menu, Bookmark, Scale, Search, X } from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+import { isActiveRoute } from "@/lib/nav/active-route";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -18,9 +21,14 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  function isActive(href: string): boolean {
+    return isActiveRoute(pathname, href);
+  }
 
   const closeMenu = useCallback(() => setMobileOpen(false), []);
 
@@ -100,16 +108,25 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="inline-flex items-center gap-2 text-sm font-medium transition hover:text-blue-600"
-            >
-              {Icon && <Icon className="h-4 w-4" />}
-              {label}
-            </Link>
-          ))}
+          {NAV_LINKS.map(({ href, label, icon: Icon }) => {
+            const active = isActive(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "inline-flex items-center gap-2 text-sm font-medium transition",
+                  active
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400",
+                )}
+              >
+                {Icon && <Icon className="h-4 w-4" />}
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right-side controls */}
@@ -156,17 +173,26 @@ export default function Navbar() {
           className="border-t border-slate-200 bg-white px-6 py-4 md:hidden dark:border-slate-800 dark:bg-slate-950"
         >
           <nav className="flex flex-col gap-1">
-            {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={closeMenu}
-                className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition hover:bg-slate-100 dark:hover:bg-slate-800"
-              >
-                {Icon && <Icon className="h-4 w-4" />}
-                {label}
-              </Link>
-            ))}
+            {NAV_LINKS.map(({ href, label, icon: Icon }) => {
+              const active = isActive(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={closeMenu}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition",
+                    active
+                      ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
+                      : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800",
+                  )}
+                >
+                  {Icon && <Icon className="h-4 w-4" />}
+                  {label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

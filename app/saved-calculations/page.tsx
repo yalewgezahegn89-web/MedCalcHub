@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calculator, Trash2 } from "lucide-react";
+import { Calculator, X } from "lucide-react";
 
 import {
   getSavedCalculations,
@@ -42,7 +42,7 @@ export default function SavedCalculationsPage() {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl font-bold">
           Saved Calculations
         </h1>
@@ -50,17 +50,17 @@ export default function SavedCalculationsPage() {
         {saved.length > 0 && (
           <button
             onClick={clearSavedCalculations}
-            className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition hover:bg-slate-100"
+            className="flex min-h-[44px] items-center gap-2 rounded-lg border px-4 py-2 text-sm transition hover:bg-slate-100"
           >
-            <Trash2 className="h-4 w-4" />
-            Delete All
+            Clear all saved
           </button>
         )}
       </div>
 
       <p className="mb-6 text-sm text-slate-500">
-        Saved calculations are stored locally in this
-        browser and are not synced to a server. Avoid
+        Your MedCalcHub data is stored locally in this
+        browser and is not synced to a server. Clearing
+        browser data will permanently delete it. Avoid
         entering personally identifying patient information.
       </p>
 
@@ -141,10 +141,10 @@ export default function SavedCalculationsPage() {
                   onClick={() =>
                     deleteSavedCalculation(item.id)
                   }
-                  aria-label={`Delete saved ${item.calculatorName} calculation`}
-                  className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  aria-label={`Remove saved ${item.calculatorName} calculation`}
+                  className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             );

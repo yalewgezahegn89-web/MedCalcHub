@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calculator, Trash2 } from "lucide-react";
+import { Calculator, X } from "lucide-react";
 
 import {
   getCalculationHistory,
@@ -38,7 +38,7 @@ export default function HistoryPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
 
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
 
         <h1 className="text-3xl font-bold">
           Calculation History
@@ -47,18 +47,18 @@ export default function HistoryPage() {
         {history.length > 0 && (
           <button
             onClick={handleClear}
-            className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition hover:bg-slate-100"
+            className="flex min-h-[44px] items-center gap-2 rounded-lg border px-4 py-2 text-sm transition hover:bg-slate-100"
           >
-            <Trash2 className="h-4 w-4" />
-            Clear History
+            Clear all history
           </button>
         )}
 
       </div>
 
       <p className="mb-6 text-sm text-slate-500">
-        Your calculation history is stored locally in this
-        browser and is not synced to a server.
+        Your MedCalcHub data is stored locally in this
+        browser and is not synced to a server. Clearing
+        browser data will permanently delete it.
       </p>
 
       {history.length === 0 ? (
@@ -127,10 +127,10 @@ export default function HistoryPage() {
                   onClick={() =>
                     deleteHistoryEntry(index)
                   }
-                  aria-label={`Delete ${item.calculatorName} result from history`}
-                  className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  aria-label={`Remove ${item.calculatorName} from history`}
+                  className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             );

@@ -16,4 +16,8 @@ export interface CalculatorToolbarProps
   showFavorite?: boolean;
   showSave?: boolean;
   isFavorite?: boolean;
+  disabledSave?: boolean;
+  disabledCopy?: boolean;
+  disabledPrint?: boolean;
+  disabledShare?: boolean;
 }
