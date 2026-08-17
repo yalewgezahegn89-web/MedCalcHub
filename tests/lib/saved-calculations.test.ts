@@ -401,36 +401,43 @@ describe("saved-calculations", () => {
   // -------------------------------------------------------
 
   describe("initialValues merging", () => {
-    function buildInitialValues(ids: string[]): Record<string, string> {
+    type TestInput = { id: string; defaultValue?: string };
+
+    function buildInitialValues(inputs: TestInput[]): Record<string, string> {
       const values: Record<string, string> = {};
-      for (const id of ids) {
-        values[id] = "";
+      for (const input of inputs) {
+        values[input.id] = input.defaultValue ?? "";
       }
       return values;
     }
 
     function mergeInitialValues(
-      ids: string[],
+      inputs: TestInput[],
       initialValues?: Record<string, string>,
     ): Record<string, string> {
-      const base = buildInitialValues(ids);
+      const base = buildInitialValues(inputs);
       if (!initialValues) return base;
-      for (const id of ids) {
-        if (id in initialValues) {
-          base[id] = initialValues[id];
+      for (const input of inputs) {
+        if (input.id in initialValues) {
+          base[input.id] = initialValues[input.id];
         }
       }
       return base;
     }
 
+    const bmiInputs: TestInput[] = [
+      { id: "weight" },
+      { id: "height" },
+    ];
+
     it("uses empty strings when no initialValues provided", () => {
-      const result = mergeInitialValues(["weight", "height"]);
+      const result = mergeInitialValues(bmiInputs);
       expect(result).toEqual({ weight: "", height: "" });
     });
 
     it("overrides matching keys from initialValues", () => {
       const result = mergeInitialValues(
-        ["weight", "height"],
+        bmiInputs,
         { weight: "80", height: "180" },
       );
       expect(result).toEqual({ weight: "80", height: "180" });
@@ -438,7 +445,7 @@ describe("saved-calculations", () => {
 
     it("ignores initialValues keys not in calculator inputs", () => {
       const result = mergeInitialValues(
-        ["weight", "height"],
+        bmiInputs,
         { weight: "80", height: "180", unknown: "value" },
       );
       expect(result).toEqual({ weight: "80", height: "180" });
@@ -447,26 +454,65 @@ describe("saved-calculations", () => {
 
     it("leaves unmatched input IDs as empty strings", () => {
       const result = mergeInitialValues(
-        ["weight", "height", "age"],
+        [...bmiInputs, { id: "age" }],
         { weight: "80" },
       );
       expect(result).toEqual({ weight: "80", height: "", age: "" });
     });
 
     it("empty initialValues object results in all empty strings", () => {
-      const result = mergeInitialValues(
-        ["weight", "height"],
-        {},
-      );
+      const result = mergeInitialValues(bmiInputs, {});
       expect(result).toEqual({ weight: "", height: "" });
     });
 
     it("handles initialValues with empty string values", () => {
       const result = mergeInitialValues(
-        ["weight", "height"],
+        bmiInputs,
         { weight: "", height: "" },
       );
       expect(result).toEqual({ weight: "", height: "" });
+    });
+
+    it("defaultValue populates input when defined", () => {
+      const inputs: TestInput[] = [
+        { id: "weight", defaultValue: "70" },
+        { id: "height", defaultValue: "175" },
+      ];
+      const result = buildInitialValues(inputs);
+      expect(result).toEqual({ weight: "70", height: "175" });
+    });
+
+    it("missing defaultValue stays empty", () => {
+      const inputs: TestInput[] = [
+        { id: "weight" },
+        { id: "height" },
+      ];
+      const result = buildInitialValues(inputs);
+      expect(result).toEqual({ weight: "", height: "" });
+    });
+
+    it("saved initialValues override defaultValue", () => {
+      const inputs: TestInput[] = [
+        { id: "weight", defaultValue: "70" },
+        { id: "height", defaultValue: "175" },
+      ];
+      const result = mergeInitialValues(
+        inputs,
+        { weight: "100" },
+      );
+      expect(result).toEqual({ weight: "100", height: "175" });
+    });
+
+    it("unknown keys remain excluded even with defaultValue", () => {
+      const inputs: TestInput[] = [
+        { id: "weight", defaultValue: "70" },
+      ];
+      const result = mergeInitialValues(
+        inputs,
+        { weight: "80", unknown: "value" },
+      );
+      expect(result).toEqual({ weight: "80" });
+      expect(result).not.toHaveProperty("unknown");
     });
   });
 

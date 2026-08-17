@@ -11,6 +11,16 @@ export interface SearchDialogProps {
   onClose: () => void;
 }
 
+function getFocusableElements(
+  container: HTMLElement,
+): HTMLElement[] {
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'input, button, [href], select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((el) => !el.hasAttribute("disabled") && el.tabIndex >= 0);
+}
+
 export function SearchDialog({
   open,
   onClose,
@@ -24,7 +34,6 @@ export function SearchDialog({
   // Focus input when dialog opens
   useEffect(() => {
     if (open) {
-      // Small delay to allow the DOM to render
       const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 50);
@@ -39,33 +48,47 @@ export function SearchDialog({
     }
   }, [open, setQuery]);
 
+  // Focus trap: Tab cycles within the dialog
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      // Ctrl+K / Cmd+K to open
-      if (
-        (e.ctrlKey || e.metaKey) &&
-        e.key.toLowerCase() === "k"
-      ) {
-        e.preventDefault();
-        if (!open) {
-          // The parent should handle opening
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusable = getFocusableElements(
+          dialogRef.current,
+        );
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (
+            document.activeElement === first ||
+            document.activeElement === dialogRef.current
+          ) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
         }
       }
-
-      // Escape to close
-      if (e.key === "Escape" && open) {
-        e.preventDefault();
-        onClose();
-      }
     },
-    [open, onClose],
+    [],
   );
 
   useEffect(() => {
+    if (!open) return;
+
     window.addEventListener("keydown", handleKeyDown);
     return () =>
       window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+  }, [open, handleKeyDown]);
 
   // Click outside to close
   const handleBackdropClick = useCallback(
@@ -86,9 +109,13 @@ export function SearchDialog({
     <div
       className="fixed inset-0 z-[9999] flex items-start justify-center bg-black/40 backdrop-blur-sm pt-[15vh]"
       onClick={handleBackdropClick}
+      role="presentation"
     >
       <div
         ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search calculators"
         className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900"
       >
         <div className="border-b p-4">

@@ -9,6 +9,8 @@ export function FormField({
   error,
   onChange,
 }: FormFieldProps) {
+  const errorId = `${inputId}-error`;
+
   return (
     <div className="space-y-1.5">
       <label
@@ -29,6 +31,7 @@ export function FormField({
             onChange={onChange}
             required={input.required}
             error={!!error}
+            aria-describedby={error ? errorId : undefined}
           >
             <option value="">
               {input.placeholder ?? "Select..."}
@@ -52,6 +55,7 @@ export function FormField({
             max={input.max}
             step={input.step}
             error={!!error}
+            aria-describedby={error ? errorId : undefined}
           />
         )}
 
@@ -63,8 +67,14 @@ export function FormField({
       </div>
 
       {error && (
-        <p className="text-sm text-destructive">
+        <p id={errorId} className="text-sm text-destructive">
           {error}
+        </p>
+      )}
+
+      {!error && input.helpText && (
+        <p className="text-xs text-muted-foreground">
+          {input.helpText}
         </p>
       )}
     </div>

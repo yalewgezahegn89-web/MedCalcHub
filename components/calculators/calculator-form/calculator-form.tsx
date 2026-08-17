@@ -32,6 +32,7 @@ import {
 } from "@/lib/result-presentation";
 import type { ResultSections } from "@/lib/result-presentation";
 
+import { buildInitialValues, mergeInitialValues } from "@/lib/calculators/form-helpers";
 import type { CalculatorFormProps } from "./calculator-form.types";
 import type { CalculatorResult } from "@/lib/calculators";
 
@@ -52,18 +53,6 @@ function subscribeFavorites(callback: () => void) {
   };
 }
 
-function buildInitialValues(
-  ids: string[],
-): Record<string, string> {
-  const values: Record<string, string> = {};
-
-  for (const id of ids) {
-    values[id] = "";
-  }
-
-  return values;
-}
-
 export const CalculatorForm = forwardRef<
   HTMLFormElement,
   CalculatorFormProps
@@ -74,22 +63,12 @@ export const CalculatorForm = forwardRef<
   const [values, setValues] = useState<
     Record<string, string>
   >(() => {
-    const ids = calculator.inputs.map(
-      (input) => input.id,
+    const base = buildInitialValues(calculator.inputs);
+    return mergeInitialValues(
+      base,
+      calculator.inputs.map((i) => i.id),
+      initialValues,
     );
-    const base = buildInitialValues(ids);
-
-    if (!initialValues) {
-      return base;
-    }
-
-    for (const id of ids) {
-      if (id in initialValues) {
-        base[id] = initialValues[id];
-      }
-    }
-
-    return base;
   });
 
   const [result, setResult] =
@@ -226,11 +205,7 @@ export const CalculatorForm = forwardRef<
 
   const handleReset = useCallback(() => {
     setValues(
-      buildInitialValues(
-        calculator.inputs.map(
-          (input) => input.id,
-        ),
-      ),
+      buildInitialValues(calculator.inputs),
     );
 
     setErrors({});
@@ -266,6 +241,7 @@ export const CalculatorForm = forwardRef<
       ref={ref}
       className={cn("space-y-6", className)}
       onSubmit={handleSubmit}
+      noValidate
       {...props}
     >
       {calculator.inputs.map((input) => {

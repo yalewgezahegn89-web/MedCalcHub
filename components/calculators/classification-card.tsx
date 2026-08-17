@@ -57,12 +57,12 @@ export function ClassificationCard({
                 : "border-border"
             }`}
           >
-            <div className="flex items-center justify-between">
-              <span className="font-medium">
+            <div className="flex items-center justify-between gap-2">
+              <span className="min-w-0 flex-1 truncate font-medium">
                 {item.label}
               </span>
 
-              <span className="text-muted-foreground">
+              <span className="shrink-0 whitespace-nowrap text-muted-foreground">
                 {item.range}
               </span>
             </div>

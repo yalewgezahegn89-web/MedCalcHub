@@ -83,6 +83,7 @@ export function ReferenceRanges({
 
       {referenceRanges &&
         referenceRanges.length > 0 && (
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b">
@@ -128,6 +129,7 @@ export function ReferenceRanges({
               })}
             </tbody>
           </table>
+          </div>
         )}
     </Card>
   );

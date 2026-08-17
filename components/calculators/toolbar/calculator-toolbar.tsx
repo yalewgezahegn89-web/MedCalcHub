@@ -38,7 +38,8 @@ export const CalculatorToolbar = forwardRef<
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="md"
+          className="min-h-[44px]"
           onClick={onReset}
         >
           🔄 Reset
@@ -49,7 +50,8 @@ export const CalculatorToolbar = forwardRef<
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="md"
+          className="min-h-[44px]"
           onClick={onCopy}
         >
           📋 Copy
@@ -60,7 +62,8 @@ export const CalculatorToolbar = forwardRef<
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="md"
+          className="min-h-[44px]"
           onClick={onPrint}
         >
           🖨️ Print
@@ -71,7 +74,8 @@ export const CalculatorToolbar = forwardRef<
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="md"
+          className="min-h-[44px]"
           onClick={onShare}
         >
           🔗 Share
@@ -82,7 +86,8 @@ export const CalculatorToolbar = forwardRef<
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="md"
+          className="min-h-[44px]"
           onClick={onFavorite}
         >
           {isFavorite ? "❤️" : "🤍"}{" "}
@@ -94,7 +99,8 @@ export const CalculatorToolbar = forwardRef<
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="md"
+          className="min-h-[44px]"
           onClick={onSave}
         >
           💾 Save

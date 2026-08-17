@@ -42,7 +42,7 @@ export default function RootLayout({
 
         <SearchProvider />
 
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
 
         <NotificationProvider />
       </body>
