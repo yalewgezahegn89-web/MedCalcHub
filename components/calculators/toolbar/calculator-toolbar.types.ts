@@ -7,11 +7,13 @@ export interface CalculatorToolbarProps
   onPrint?: () => void;
   onShare?: () => void;
   onFavorite?: () => void;
+  onSave?: () => void;
 
   showReset?: boolean;
   showCopy?: boolean;
   showPrint?: boolean;
   showShare?: boolean;
   showFavorite?: boolean;
+  showSave?: boolean;
   isFavorite?: boolean;
 }

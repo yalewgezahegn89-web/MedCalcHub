@@ -17,6 +17,7 @@ import { CalculatorToolbar } from "@/components/calculators/toolbar";
 
 import { copyToClipboard } from "@/lib/clipboard";
 import { saveCalculation } from "@/lib/history/history";
+import { saveSavedCalculation } from "@/lib/saved-calculations";
 import {
   isFavorite,
   toggleFavorite,
@@ -223,6 +224,26 @@ export const CalculatorForm = forwardRef<
     setResult(null);
   }, [calculator.inputs]);
 
+  const handleSave = useCallback(() => {
+    if (!result) {
+      return;
+    }
+
+    const snapshot = { ...values };
+
+    saveSavedCalculation({
+      calculatorId: calculator.id,
+      calculatorName: calculator.name,
+      values: snapshot,
+      result,
+      savedAt: Date.now(),
+    });
+
+    toast.success("Calculation saved", {
+      description: `${calculator.name} saved to Saved Calculations.`,
+    });
+  }, [calculator, values, result]);
+
   const sections: ResultSections | undefined = result
     ? prepareResultSections(result)
     : undefined;
@@ -266,6 +287,7 @@ export const CalculatorForm = forwardRef<
       <CalculatorToolbar
         isFavorite={isFav.startsWith("true")}
         onReset={handleReset}
+        onSave={handleSave}
         onCopy={async () => {
           if (!result) return;
 

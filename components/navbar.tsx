@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Clock, Heart, Menu, Scale, Search, X } from "lucide-react";
+import { Clock, Heart, Menu, Bookmark, Scale, Search, X } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/specialties", label: "Specialties" },
   { href: "/comparison", label: "Comparison", icon: Scale },
   { href: "/favorites", label: "Favorites", icon: Heart },
+  { href: "/saved-calculations", label: "Saved", icon: Bookmark },
   { href: "/history", label: "History" },
   { href: "/recent", label: "Recent", icon: Clock },
   { href: "/workspace", label: "Workspace" },

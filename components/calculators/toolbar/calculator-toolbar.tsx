@@ -16,11 +16,13 @@ export const CalculatorToolbar = forwardRef<
       onPrint,
       onShare,
       onFavorite,
+      onSave,
       showReset = true,
       showCopy = true,
       showPrint = true,
       showShare = true,
       showFavorite = true,
+      showSave = true,
       isFavorite = false,
       ...props
     },
@@ -85,6 +87,17 @@ export const CalculatorToolbar = forwardRef<
         >
           {isFavorite ? "❤️" : "🤍"}{" "}
           {isFavorite ? "Favorited" : "Favorite"}
+        </Button>
+      )}
+
+      {showSave && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={onSave}
+        >
+          💾 Save
         </Button>
       )}
     </div>
