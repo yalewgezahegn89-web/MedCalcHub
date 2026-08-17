@@ -68,16 +68,29 @@ export const CalculatorForm = forwardRef<
   HTMLFormElement,
   CalculatorFormProps
 >(function CalculatorForm(
-  { calculator, className, ...props },
+  { calculator, initialValues, className, ...props },
   ref,
 ) {
   const [values, setValues] = useState<
     Record<string, string>
-  >(() =>
-    buildInitialValues(
-      calculator.inputs.map((input) => input.id),
-    ),
-  );
+  >(() => {
+    const ids = calculator.inputs.map(
+      (input) => input.id,
+    );
+    const base = buildInitialValues(ids);
+
+    if (!initialValues) {
+      return base;
+    }
+
+    for (const id of ids) {
+      if (id in initialValues) {
+        base[id] = initialValues[id];
+      }
+    }
+
+    return base;
+  });
 
   const [result, setResult] =
     useState<CalculatorResult | null>(null);

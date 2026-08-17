@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Clock, Heart, X, Zap } from "lucide-react";
+import { Bookmark, Clock, Heart, X, Zap } from "lucide-react";
 
 import { getFavorites, removeFavorite } from "@/lib/favorites";
 import {
@@ -9,6 +9,11 @@ import {
   type CalculationHistoryItem,
 } from "@/lib/history/history";
 import { getRecentCalculators } from "@/lib/recent";
+import {
+  getSavedCalculations,
+  type SavedCalculation,
+} from "@/lib/saved-calculations";
+import { calculatorRegistry } from "@/lib/calculators/registry";
 import { resolveWorkspaceCalculators } from "@/lib/workspace";
 import {
   createLocalStore,
@@ -31,6 +36,28 @@ const historyStore = createLocalStore<
   CalculationHistoryItem[]
 >("medcalchub-history-changed", getCalculationHistory);
 
+const savedCalculationsStore = createLocalStore<
+  SavedCalculation[]
+>("medcalchub-saved-calculations-changed", getSavedCalculations);
+
+/* ── helpers ── */
+
+function resolveSavedCalculatorSlug(
+  calculatorId: string,
+): string | null {
+  const calc = calculatorRegistry.find(
+    (c) => c.id === calculatorId,
+  );
+  return calc?.slug ?? null;
+}
+
+function formatSavedResult(
+  result?: { value: string | number; unit?: string },
+): string | null {
+  if (!result) return null;
+  return `${result.value}${result.unit ? ` ${result.unit}` : ""}`;
+}
+
 /* ── page ── */
 
 export default function WorkspacePage() {
@@ -40,6 +67,8 @@ export default function WorkspacePage() {
     useLocalStorageStore(recentStore);
   const calculationHistory =
     useLocalStorageStore(historyStore);
+  const savedCalculations =
+    useLocalStorageStore(savedCalculationsStore);
 
   const favoriteCalculators =
     resolveWorkspaceCalculators(favorites);
@@ -61,7 +90,7 @@ export default function WorkspacePage() {
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-8 lg:grid-cols-2">
 
         {/* Saved Calculators */}
 
@@ -129,6 +158,103 @@ export default function WorkspacePage() {
                   </button>
                 </div>
               ))}
+            </div>
+          )}
+        </section>
+
+        {/* Saved Calculations */}
+
+        <section className="rounded-2xl border p-6 shadow-sm">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-xl font-semibold">
+              <Bookmark className="h-5 w-5 text-purple-600" />
+              Saved Calculations
+            </h2>
+
+            {savedCalculations.length > 0 && (
+              <Link
+                href="/saved-calculations"
+                className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
+              >
+                View all
+              </Link>
+            )}
+          </div>
+
+          {savedCalculations.length === 0 ? (
+            <div className="flex flex-col items-center gap-3 py-10 text-center">
+              <Bookmark className="h-10 w-10 text-slate-300" />
+
+              <p className="text-slate-500">
+                No saved calculations yet.
+              </p>
+
+              <Link
+                href="/"
+                className="mt-1 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                Browse Calculators
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {savedCalculations
+                .slice(0, 6)
+                .map((item) => {
+                  const slug =
+                    resolveSavedCalculatorSlug(
+                      item.calculatorId,
+                    );
+
+                  const resultText = formatSavedResult(
+                    item.result,
+                  );
+
+                  return slug ? (
+                    <Link
+                      key={item.id}
+                      href={`/calculators/${slug}?restore=${item.id}`}
+                      className="block rounded-lg border p-3 transition hover:bg-slate-50"
+                    >
+                      <div className="font-medium">
+                        {item.calculatorName}
+                      </div>
+
+                      {resultText && (
+                        <div className="font-semibold text-blue-600">
+                          {resultText}
+                        </div>
+                      )}
+
+                      <div className="mt-1 text-xs text-slate-500">
+                        {new Date(
+                          item.savedAt,
+                        ).toLocaleString()}
+                      </div>
+                    </Link>
+                  ) : (
+                    <div
+                      key={item.id}
+                      className="rounded-lg border p-3"
+                    >
+                      <div className="font-medium">
+                        {item.calculatorName}
+                      </div>
+
+                      {resultText && (
+                        <div className="font-semibold text-blue-600">
+                          {resultText}
+                        </div>
+                      )}
+
+                      <div className="mt-1 text-xs text-slate-500">
+                        {new Date(
+                          item.savedAt,
+                        ).toLocaleString()}
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           )}
         </section>

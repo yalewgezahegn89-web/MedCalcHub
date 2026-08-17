@@ -355,4 +355,145 @@ describe("saved-calculations", () => {
       expect(getSavedCalculations()[0].values).toEqual({});
     });
   });
+
+  // -------------------------------------------------------
+  // restore lookup
+  // -------------------------------------------------------
+
+  describe("restore lookup", () => {
+    it("returns values for matching restore ID", async () => {
+      const values = { weight: "80", height: "180" };
+      const { saveSavedCalculation, getSavedCalculation } = await load();
+      saveSavedCalculation(makeItem({ calculatorId: "bmi", values }));
+      const items = (await load()).getSavedCalculations();
+      const saved = getSavedCalculation(items[0].id);
+      expect(saved).toBeDefined();
+      expect(saved!.values).toEqual(values);
+      expect(saved!.calculatorId).toBe("bmi");
+    });
+
+    it("returns undefined for unknown restore ID", async () => {
+      const { getSavedCalculation } = await load();
+      expect(getSavedCalculation("nonexistent-uuid")).toBeUndefined();
+    });
+
+    it("returns undefined during SSR", async () => {
+      vi.unstubAllGlobals();
+      delete (globalThis as Record<string, unknown>).window;
+      const { getSavedCalculation } = await load();
+      expect(getSavedCalculation("any-id")).toBeUndefined();
+    });
+
+    it("mismatched calculator ID is detectable via saved entry", async () => {
+      const { saveSavedCalculation, getSavedCalculation } = await load();
+      saveSavedCalculation(makeItem({ calculatorId: "bmi" }));
+      const items = (await load()).getSavedCalculations();
+      const saved = getSavedCalculation(items[0].id);
+      expect(saved).toBeDefined();
+      expect(saved!.calculatorId).toBe("bmi");
+      // Caller compares saved.calculatorId !== calculator.id
+      expect(saved!.calculatorId).not.toBe("crf");
+    });
+  });
+
+  // -------------------------------------------------------
+  // initialValues merging
+  // -------------------------------------------------------
+
+  describe("initialValues merging", () => {
+    function buildInitialValues(ids: string[]): Record<string, string> {
+      const values: Record<string, string> = {};
+      for (const id of ids) {
+        values[id] = "";
+      }
+      return values;
+    }
+
+    function mergeInitialValues(
+      ids: string[],
+      initialValues?: Record<string, string>,
+    ): Record<string, string> {
+      const base = buildInitialValues(ids);
+      if (!initialValues) return base;
+      for (const id of ids) {
+        if (id in initialValues) {
+          base[id] = initialValues[id];
+        }
+      }
+      return base;
+    }
+
+    it("uses empty strings when no initialValues provided", () => {
+      const result = mergeInitialValues(["weight", "height"]);
+      expect(result).toEqual({ weight: "", height: "" });
+    });
+
+    it("overrides matching keys from initialValues", () => {
+      const result = mergeInitialValues(
+        ["weight", "height"],
+        { weight: "80", height: "180" },
+      );
+      expect(result).toEqual({ weight: "80", height: "180" });
+    });
+
+    it("ignores initialValues keys not in calculator inputs", () => {
+      const result = mergeInitialValues(
+        ["weight", "height"],
+        { weight: "80", height: "180", unknown: "value" },
+      );
+      expect(result).toEqual({ weight: "80", height: "180" });
+      expect(result).not.toHaveProperty("unknown");
+    });
+
+    it("leaves unmatched input IDs as empty strings", () => {
+      const result = mergeInitialValues(
+        ["weight", "height", "age"],
+        { weight: "80" },
+      );
+      expect(result).toEqual({ weight: "80", height: "", age: "" });
+    });
+
+    it("empty initialValues object results in all empty strings", () => {
+      const result = mergeInitialValues(
+        ["weight", "height"],
+        {},
+      );
+      expect(result).toEqual({ weight: "", height: "" });
+    });
+
+    it("handles initialValues with empty string values", () => {
+      const result = mergeInitialValues(
+        ["weight", "height"],
+        { weight: "", height: "" },
+      );
+      expect(result).toEqual({ weight: "", height: "" });
+    });
+  });
+
+  // -------------------------------------------------------
+  // workspace ordering
+  // -------------------------------------------------------
+
+  describe("workspace ordering", () => {
+    it("newest saved calculations appear first", async () => {
+      const { saveSavedCalculation, getSavedCalculations } = await load();
+      saveSavedCalculation(makeItem({ calculatorId: "bmi", savedAt: 100 }));
+      saveSavedCalculation(makeItem({ calculatorId: "crf", savedAt: 200 }));
+      saveSavedCalculation(makeItem({ calculatorId: "gcs", savedAt: 300 }));
+      const items = getSavedCalculations();
+      expect(items[0].calculatorId).toBe("gcs");
+      expect(items[1].calculatorId).toBe("crf");
+      expect(items[2].calculatorId).toBe("bmi");
+    });
+
+    it("slice(0, 6) returns at most 6 entries", async () => {
+      const { saveSavedCalculation, getSavedCalculations } = await load();
+      for (let i = 0; i < 10; i++) {
+        saveSavedCalculation(makeItem({ calculatorId: `calc-${i}`, savedAt: i }));
+      }
+      const items = getSavedCalculations();
+      expect(items.slice(0, 6)).toHaveLength(6);
+      expect(items.slice(0, 6)[0].calculatorId).toBe("calc-9");
+    });
+  });
 });

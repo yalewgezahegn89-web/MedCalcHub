@@ -101,7 +101,7 @@ export default function SavedCalculationsPage() {
                 <div className="min-w-0 flex-1">
                   {slug ? (
                     <Link
-                      href={`/calculators/${slug}`}
+                      href={`/calculators/${slug}?restore=${item.id}`}
                       className="font-semibold text-lg transition hover:text-blue-600"
                     >
                       {item.calculatorName}
