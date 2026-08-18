@@ -85,7 +85,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Knowledge base with 34 calculators
+- Knowledge base with 141 calculators
 - Calculator Intelligence engine
 - Input Intelligence engine
 - Clinical interpretation rules

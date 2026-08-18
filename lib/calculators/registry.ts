@@ -344,6 +344,15 @@ export function getCalculatorById(
   );
 }
 
+export function getCalculatorSlug(
+  calculatorId: string,
+): string | null {
+  const calc = calculatorRegistry.find(
+    (c) => c.id === calculatorId,
+  );
+  return calc?.slug ?? null;
+}
+
 export function getFeaturedCalculators() {
   return calculatorRegistry.filter(
     (calculator) => calculator.featured,

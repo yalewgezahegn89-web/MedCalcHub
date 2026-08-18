@@ -9,7 +9,7 @@ import {
   deleteSavedCalculation,
   type SavedCalculation,
 } from "@/lib/saved-calculations";
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import { calculatorRegistry, getCalculatorSlug } from "@/lib/calculators/registry";
 import {
   createLocalStore,
   useLocalStorageStore,
@@ -19,15 +19,6 @@ const savedStore = createLocalStore<SavedCalculation[]>(
   "medcalchub-saved-calculations-changed",
   getSavedCalculations,
 );
-
-function resolveCalculatorSlug(
-  calculatorId: string,
-): string | null {
-  const calc = calculatorRegistry.find(
-    (c) => c.id === calculatorId,
-  );
-  return calc?.slug ?? null;
-}
 
 function formatResult(
   result?: { value: string | number; unit?: string },
@@ -49,7 +40,15 @@ export default function SavedCalculationsPage() {
 
         {saved.length > 0 && (
           <button
-            onClick={clearSavedCalculations}
+            onClick={() => {
+              if (
+                window.confirm(
+                  "Clear all saved calculations? This cannot be undone.",
+                )
+              ) {
+                clearSavedCalculations();
+              }
+            }}
             className="flex min-h-[44px] items-center gap-2 rounded-lg border px-4 py-2 text-sm transition hover:bg-slate-100"
           >
             Clear all saved
@@ -87,7 +86,7 @@ export default function SavedCalculationsPage() {
       ) : (
         <div className="space-y-4">
           {saved.map((item) => {
-            const slug = resolveCalculatorSlug(
+            const slug = getCalculatorSlug(
               item.calculatorId,
             );
 

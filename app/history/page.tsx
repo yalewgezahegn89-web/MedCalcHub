@@ -9,7 +9,7 @@ import {
   deleteHistoryEntry,
   type CalculationHistoryItem,
 } from "@/lib/history/history";
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import { calculatorRegistry, getCalculatorSlug } from "@/lib/calculators/registry";
 import {
   createLocalStore,
   useLocalStorageStore,
@@ -19,20 +19,17 @@ const historyStore = createLocalStore<
   CalculationHistoryItem[]
 >("medcalchub-history-changed", getCalculationHistory);
 
-function resolveCalculatorSlug(
-  calculatorId: string,
-): string | null {
-  const calc = calculatorRegistry.find(
-    (c) => c.id === calculatorId,
-  );
-  return calc?.slug ?? null;
-}
-
 export default function HistoryPage() {
   const history = useLocalStorageStore(historyStore);
 
   function handleClear() {
-    clearHistory();
+    if (
+      window.confirm(
+        "Clear all calculation history? This cannot be undone.",
+      )
+    ) {
+      clearHistory();
+    }
   }
 
   return (
@@ -83,7 +80,7 @@ export default function HistoryPage() {
       ) : (
         <div className="space-y-4">
           {history.map((item, index) => {
-            const slug = resolveCalculatorSlug(
+            const slug = getCalculatorSlug(
               item.calculatorId,
             );
 

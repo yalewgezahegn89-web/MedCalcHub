@@ -5,7 +5,6 @@ export interface SearchDocument {
   category: string;
   specialty: string;
   keywords: string[];
-  score?: number;
 }
 
 export interface SearchResult {

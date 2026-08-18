@@ -4,41 +4,18 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import { searchCalculators } from "@/lib/search";
 
 export function CalculatorSearch() {
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => {
-    if (!query.trim()) {
+    const trimmed = query.trim();
+    if (!trimmed) {
       return [];
     }
 
-    const search = query.toLowerCase();
-
-    return calculatorRegistry
-      .filter((calculator) => {
-        return (
-          calculator.name
-            .toLowerCase()
-            .includes(search) ||
-          calculator.description
-            .toLowerCase()
-            .includes(search) ||
-          calculator.category
-            .toLowerCase()
-            .includes(search) ||
-          calculator.specialty
-            ?.toLowerCase()
-            .includes(search) ||
-          calculator.keywords?.some((keyword) =>
-            keyword
-              .toLowerCase()
-              .includes(search),
-          )
-        );
-      })
-      .slice(0, 8);
+    return searchCalculators(trimmed).slice(0, 8);
   }, [query]);
 
   return (
@@ -67,24 +44,24 @@ export function CalculatorSearch() {
             </p>
           )}
 
-          {results.map((calculator) => (
+          {results.map((result) => (
             <Link
-              key={calculator.id}
-              href={`/calculators/${calculator.slug}`}
+              key={result.document.slug}
+              href={`/calculators/${result.document.slug}`}
               className="block rounded-xl border p-4 transition hover:bg-muted"
             >
               <div className="font-semibold">
-                {calculator.name}
+                {result.document.title}
               </div>
 
               <div className="text-sm text-muted-foreground">
-                {calculator.description}
+                {result.document.description}
               </div>
 
               <div className="mt-1 text-xs text-primary">
-                {calculator.category}
-                {calculator.specialty &&
-                  ` • ${calculator.specialty}`}
+                {result.document.category}
+                {result.document.specialty &&
+                  ` • ${result.document.specialty}`}
               </div>
             </Link>
           ))}

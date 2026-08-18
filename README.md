@@ -18,7 +18,7 @@ MedCalcHub is a modern platform for medical calculators, clinical decision suppo
 
 ## Features
 
-- **34 Medical Calculators** — BMI, eGFR, CURB-65, NEWS2, Anion Gap, and more
+- **141 Medical Calculators** — BMI, eGFR, CURB-65, NEWS2, Anion Gap, and more
 - **15 Plugin Pipeline** — Coverage, validation, quality, navigation, SEO, and more
 - **10 Formula Engines** — Algebraic, score, conditional, converter, lookup, composite, BSA, clinical
 - **6 Languages** — English, Amharic, French, Spanish, Arabic, Portuguese
@@ -63,7 +63,7 @@ MedCalcHub/
 ├── scripts/
 │   └── generator/
 │       ├── core/                # Generator engines
-│       ├── knowledge/           # Knowledge definitions (34 calculators)
+│       ├── knowledge/           # Knowledge definitions (141 calculators)
 │       ├── plugins/             # 15 plugins
 │       └── cli/                 # CLI interface
 ├── tests/calculators/           # Generated test files

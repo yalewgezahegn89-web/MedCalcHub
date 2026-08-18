@@ -4,12 +4,9 @@ import { useState } from "react";
 import {
   AlertTriangle,
   CalendarClock,
-  Check,
   CheckCircle2,
-  Clipboard,
+  Download,
   Info,
-  Printer,
-  Share2,
 } from "lucide-react";
 
 import { generateCalculatorReport } from "@/lib/pdf/generate-report";
@@ -41,8 +38,6 @@ export default function ResultCard({
   sections,
   actionsDisabled = false,
 }: ResultCardProps) {
-  const [copied, setCopied] = useState(false);
-
   const badge = {
     low: {
       color:
@@ -76,28 +71,6 @@ export default function ResultCard({
       ? sections.score
       : undefined;
 
-  const resultForText: CalculatorResult = {
-    value,
-    unit,
-    score: sections?.score,
-    interpretation,
-    warnings: sections?.warnings,
-    advice: sections?.advice,
-    followUp: sections?.followUp,
-  };
-
-  async function copyResult() {
-    await navigator.clipboard.writeText(
-      buildResultText(label, resultForText),
-    );
-
-    setCopied(true);
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  }
-
   function exportPdf() {
     generateCalculatorReport({
       calculator: label,
@@ -105,28 +78,6 @@ export default function ResultCard({
       unit,
       interpretation,
     });
-  }
-
-  function printResult() {
-    window.print();
-  }
-
-  async function shareResult() {
-    const text = buildResultText(label, resultForText);
-
-    if (navigator.share) {
-      await navigator.share({
-        title: label,
-        text,
-      });
-    } else {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-
-      setTimeout(() => {
-        setCopied(false);
-      }, 2000);
-    }
   }
 
   return (
@@ -223,50 +174,11 @@ export default function ResultCard({
         <div className="flex flex-wrap gap-3 pt-4">
           <button
             disabled={actionsDisabled}
-            onClick={copyResult}
-            aria-label="Copy result"
-            className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
-          >
-            {copied ? (
-              <>
-                <Check className="h-4 w-4 text-green-600" />
-                Copied
-              </>
-            ) : (
-              <>
-                <Clipboard className="h-4 w-4" />
-                Copy
-              </>
-            )}
-          </button>
-
-          <button
-            disabled={actionsDisabled}
-            onClick={shareResult}
-            aria-label="Share result"
-            className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
-          >
-            <Share2 className="h-4 w-4" />
-            Share
-          </button>
-
-          <button
-            disabled={actionsDisabled}
-            onClick={printResult}
-            aria-label="Print result"
-            className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
-          >
-            <Printer className="h-4 w-4" />
-            Print
-          </button>
-
-          <button
-            disabled={actionsDisabled}
             onClick={exportPdf}
             aria-label="Download result as PDF"
             className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
           >
-            <Printer className="h-4 w-4" />
+            <Download className="h-4 w-4" />
             PDF
           </button>
         </div>

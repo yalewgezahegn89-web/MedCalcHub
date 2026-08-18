@@ -48,9 +48,26 @@ export function SearchDialog({
     }
   }, [open, setQuery]);
 
-  // Focus trap: Tab cycles within the dialog
+  // Lock body scroll when dialog is open
+  useEffect(() => {
+    if (!open) return;
+
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  // Focus trap + Escape handling
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
       if (e.key === "Tab" && dialogRef.current) {
         const focusable = getFocusableElements(
           dialogRef.current,
@@ -79,7 +96,7 @@ export function SearchDialog({
         }
       }
     },
-    [],
+    [onClose],
   );
 
   useEffect(() => {

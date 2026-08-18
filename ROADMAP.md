@@ -4,7 +4,7 @@
 
 - 15 plugins
 - 10 formula engines
-- 34 calculators
+- 141 calculators
 - 6 languages
 - FHIR/HL7/AI exports
 - Incremental generation

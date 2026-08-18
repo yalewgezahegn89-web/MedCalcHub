@@ -34,7 +34,13 @@ export default function RecentPage() {
     );
 
   function clearAll() {
-    clearRecentCalculators();
+    if (
+      window.confirm(
+        "Clear all recently used calculators? This cannot be undone.",
+      )
+    ) {
+      clearRecentCalculators();
+    }
   }
 
   return (

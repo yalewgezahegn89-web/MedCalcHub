@@ -52,7 +52,7 @@ Each with knowledge definitions, tests, documentation, locale files, FHIR resour
 ## Architecture
 
 ```
-Knowledge Base (34 calculators)
+Knowledge Base (141 calculators)
     ↓
 Plugin Pipeline (15 plugins)
     ↓

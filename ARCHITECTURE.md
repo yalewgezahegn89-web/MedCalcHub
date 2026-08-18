@@ -5,7 +5,7 @@
 The MedCalcHub Generator follows a pipeline architecture: **Knowledge → Validation → Plugins → Generation → Outputs**.
 
 ```
-Knowledge Definitions (34 calculators)
+Knowledge Definitions (141 calculators)
         ↓
    Validation Layer
         ↓

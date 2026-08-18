@@ -85,6 +85,9 @@ export function ReferenceRanges({
         referenceRanges.length > 0 && (
           <div className="overflow-x-auto">
           <table className="w-full">
+            <caption className="sr-only">
+              Reference ranges for this calculator
+            </caption>
             <thead>
               <tr className="border-b">
                 <th className="py-2 text-left">

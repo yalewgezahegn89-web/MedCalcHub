@@ -49,6 +49,7 @@ export const SearchBox = forwardRef<
           type="search"
           value={value}
           placeholder={placeholder}
+          aria-label="Search calculators"
           onChange={(e) =>
             onChange(e.target.value)
           }

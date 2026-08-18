@@ -13,7 +13,7 @@ import {
   getSavedCalculations,
   type SavedCalculation,
 } from "@/lib/saved-calculations";
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import { calculatorRegistry, getCalculatorSlug } from "@/lib/calculators/registry";
 import { resolveWorkspaceCalculators } from "@/lib/workspace";
 import {
   createLocalStore,
@@ -41,15 +41,6 @@ const savedCalculationsStore = createLocalStore<
 >("medcalchub-saved-calculations-changed", getSavedCalculations);
 
 /* ── helpers ── */
-
-function resolveSavedCalculatorSlug(
-  calculatorId: string,
-): string | null {
-  const calc = calculatorRegistry.find(
-    (c) => c.id === calculatorId,
-  );
-  return calc?.slug ?? null;
-}
 
 function formatSavedResult(
   result?: { value: string | number; unit?: string },
@@ -158,7 +149,7 @@ export default function WorkspacePage() {
                       removeFavorite(calc.id)
                     }
                     aria-label={`Remove ${calc.name} from favorite calculators`}
-                    className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                    className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] min-w-[44px] flex items-center justify-center"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -207,8 +198,8 @@ export default function WorkspacePage() {
               {savedCalculations
                 .slice(0, 6)
                 .map((item) => {
-                  const slug =
-                    resolveSavedCalculatorSlug(
+                    const slug =
+                      getCalculatorSlug(
                       item.calculatorId,
                     );
 

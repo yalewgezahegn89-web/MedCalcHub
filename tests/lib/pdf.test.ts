@@ -19,6 +19,9 @@ vi.mock("jspdf", () => ({
   jsPDF: vi.fn(function () { return mockDoc; }),
 }));
 
+// Import the module once — avoids per-test dynamic import overhead
+import { generateCalculatorReport } from "../../lib/pdf/generate-report";
+
 // ── tests ───────────────────────────────────────────────────
 
 describe("generateCalculatorReport", () => {
@@ -30,16 +33,11 @@ describe("generateCalculatorReport", () => {
     );
   });
 
-  async function load() {
-    return import("../../lib/pdf/generate-report");
-  }
-
   // ──────────────────────────────────────────────────────────
   // 1. Minimal report
   // ──────────────────────────────────────────────────────────
 
-  it("minimal report generates successfully", async () => {
-    const { generateCalculatorReport } = await load();
+  it("minimal report generates successfully", () => {
     generateCalculatorReport({
       calculator: "BMI",
       result: "24.9",
@@ -51,8 +49,7 @@ describe("generateCalculatorReport", () => {
   // 2. Normal report with all optional fields
   // ──────────────────────────────────────────────────────────
 
-  it("handles all optional report fields", async () => {
-    const { generateCalculatorReport } = await load();
+  it("handles all optional report fields", () => {
     generateCalculatorReport({
       calculator: "eGFR",
       result: "62",
@@ -73,7 +70,7 @@ describe("generateCalculatorReport", () => {
   // 3. Long interpretation causes page break
   // ──────────────────────────────────────────────────────────
 
-  it("long interpretation triggers addPage()", async () => {
+  it("long interpretation triggers addPage()", () => {
     mockDoc.splitTextToSize.mockImplementation(
       (text: string, _w: number) => {
         if (text.length <= 20) return [text];
@@ -85,7 +82,6 @@ describe("generateCalculatorReport", () => {
       },
     );
 
-    const { generateCalculatorReport } = await load();
     const longText = "A".repeat(600);
 
     generateCalculatorReport({
@@ -102,9 +98,7 @@ describe("generateCalculatorReport", () => {
   // 4. Many references cause page breaks
   // ──────────────────────────────────────────────────────────
 
-  it("many references trigger page breaks", async () => {
-    const { generateCalculatorReport } = await load();
-
+  it("many references trigger page breaks", () => {
     const references = Array.from(
       { length: 50 },
       (_, i) => `Reference ${i + 1}`,
@@ -124,7 +118,7 @@ describe("generateCalculatorReport", () => {
   // 5. Long clinical notes span pages
   // ──────────────────────────────────────────────────────────
 
-  it("long clinical notes trigger page breaks", async () => {
+  it("long clinical notes trigger page breaks", () => {
     mockDoc.splitTextToSize.mockImplementation(
       (text: string, _w: number) => {
         if (text.length <= 20) return [text];
@@ -136,7 +130,6 @@ describe("generateCalculatorReport", () => {
       },
     );
 
-    const { generateCalculatorReport } = await load();
     const longNotes = "N".repeat(600);
 
     generateCalculatorReport({
@@ -153,8 +146,7 @@ describe("generateCalculatorReport", () => {
   // 6. doc.save() filename format
   // ──────────────────────────────────────────────────────────
 
-  it("calls save with hyphenated lowercase filename", async () => {
-    const { generateCalculatorReport } = await load();
+  it("calls save with hyphenated lowercase filename", () => {
     generateCalculatorReport({
       calculator: "Body Mass Index",
       result: "24.9",
@@ -168,7 +160,7 @@ describe("generateCalculatorReport", () => {
   // 7. Multi-page report continues rendering
   // ──────────────────────────────────────────────────────────
 
-  it("continues rendering after addPage (footer present)", async () => {
+  it("continues rendering after addPage (footer present)", () => {
     mockDoc.splitTextToSize.mockImplementation(
       (text: string, _w: number) => {
         if (text.length <= 20) return [text];
@@ -179,8 +171,6 @@ describe("generateCalculatorReport", () => {
         return lines;
       },
     );
-
-    const { generateCalculatorReport } = await load();
 
     generateCalculatorReport({
       calculator: "BMI",
@@ -213,8 +203,7 @@ describe("generateCalculatorReport", () => {
   // 8. Header text is always present on first page
   // ──────────────────────────────────────────────────────────
 
-  it("writes MedCalcHub header on the first page", async () => {
-    const { generateCalculatorReport } = await load();
+  it("writes MedCalcHub header on the first page", () => {
     generateCalculatorReport({
       calculator: "BUN",
       result: "18",
@@ -233,8 +222,7 @@ describe("generateCalculatorReport", () => {
   // 9. Unit is appended to result when provided
   // ──────────────────────────────────────────────────────────
 
-  it("appends unit to result text", async () => {
-    const { generateCalculatorReport } = await load();
+  it("appends unit to result text", () => {
     generateCalculatorReport({
       calculator: "Creatinine",
       result: "1.2",
@@ -255,8 +243,7 @@ describe("generateCalculatorReport", () => {
   // 10. No page break when content fits
   // ──────────────────────────────────────────────────────────
 
-  it("does not add pages when content fits", async () => {
-    const { generateCalculatorReport } = await load();
+  it("does not add pages when content fits", () => {
     generateCalculatorReport({
       calculator: "BMI",
       result: "24.9",
@@ -269,7 +256,7 @@ describe("generateCalculatorReport", () => {
   // 11. Long normalRange wraps and triggers page breaks
   // ──────────────────────────────────────────────────────────
 
-  it("long normalRange wraps and triggers page breaks", async () => {
+  it("long normalRange wraps and triggers page breaks", () => {
     mockDoc.splitTextToSize.mockImplementation(
       (text: string, _w: number) => {
         if (text.length <= 20) return [text];
@@ -281,7 +268,6 @@ describe("generateCalculatorReport", () => {
       },
     );
 
-    const { generateCalculatorReport } = await load();
     const longRange = "R".repeat(600);
 
     generateCalculatorReport({
@@ -298,8 +284,7 @@ describe("generateCalculatorReport", () => {
   // 12. Short normalRange does not cause a page break
   // ──────────────────────────────────────────────────────────
 
-  it("short normalRange does not cause a page break", async () => {
-    const { generateCalculatorReport } = await load();
+  it("short normalRange does not cause a page break", () => {
     generateCalculatorReport({
       calculator: "BMI",
       result: "24.9",

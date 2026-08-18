@@ -23,6 +23,10 @@ function createLocalStorageMock() {
 
 const FAVORITES_KEY = "medcalchub-favorites";
 
+// Cache modules so we only pay the dynamic import cost once per test suite
+let workspaceModule: typeof import("../../lib/workspace");
+let favoritesModule: typeof import("../../lib/favorites");
+
 describe("workspace", () => {
   let ls: ReturnType<typeof createLocalStorageMock>;
   let dispatchEventSpy: ReturnType<typeof vi.fn>;
@@ -37,25 +41,21 @@ describe("workspace", () => {
     dispatchEventSpy = vi.fn();
     vi.stubGlobal("window", { dispatchEvent: dispatchEventSpy });
 
-    vi.resetModules();
+    // Import modules once (without resetModules) to avoid slow re-imports
+    workspaceModule = await import("../../lib/workspace");
+    favoritesModule = await import("../../lib/favorites");
   });
 
-  async function load() {
-    const workspace = await import("../../lib/workspace");
-    const favorites = await import("../../lib/favorites");
-    return { ...workspace, ...favorites };
-  }
-
-  it("resolves an empty workspace to an empty saved list", async () => {
-    const { resolveWorkspaceCalculators, getFavorites } =
-      await load();
+  it("resolves an empty workspace to an empty saved list", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
+    const { getFavorites } = favoritesModule;
     expect(getFavorites()).toEqual([]);
     expect(resolveWorkspaceCalculators(getFavorites())).toEqual([]);
   });
 
-  it("renders saved calculators from the favorites store", async () => {
-    const { resolveWorkspaceCalculators, addFavorite, getFavorites } =
-      await load();
+  it("renders saved calculators from the favorites store", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
+    const { addFavorite, getFavorites } = favoritesModule;
     addFavorite("bmi");
     addFavorite("gcs");
 
@@ -65,9 +65,9 @@ describe("workspace", () => {
     expect(saved[1]?.name).toBe("gcs");
   });
 
-  it("resolved saved calculators open valid calculator routes", async () => {
-    const { resolveWorkspaceCalculators, addFavorite, getFavorites } =
-      await load();
+  it("resolved saved calculators open valid calculator routes", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
+    const { addFavorite, getFavorites } = favoritesModule;
     addFavorite("bmi");
     addFavorite("gcs");
 
@@ -78,13 +78,9 @@ describe("workspace", () => {
     }
   });
 
-  it("removing a saved calculator updates storage and the workspace list", async () => {
-    const {
-      resolveWorkspaceCalculators,
-      addFavorite,
-      removeFavorite,
-      getFavorites,
-    } = await load();
+  it("removing a saved calculator updates storage and the workspace list", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
+    const { addFavorite, removeFavorite, getFavorites } = favoritesModule;
     addFavorite("bmi");
     addFavorite("gcs");
 
@@ -97,9 +93,9 @@ describe("workspace", () => {
     ).toEqual(["gcs"]);
   });
 
-  it("removing a non-existent id is a safe no-op", async () => {
-    const { resolveWorkspaceCalculators, addFavorite, removeFavorite } =
-      await load();
+  it("removing a non-existent id is a safe no-op", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
+    const { addFavorite, removeFavorite } = favoritesModule;
     addFavorite("bmi");
 
     expect(() => removeFavorite("unknown-id")).not.toThrow();
@@ -111,35 +107,38 @@ describe("workspace", () => {
   });
 
   it("preserves saved calculators across reload (state recreation)", async () => {
-    let loaded = await load();
-    loaded.addFavorite("bmi");
-    loaded.addFavorite("gcs");
+    const { addFavorite } = favoritesModule;
+    addFavorite("bmi");
+    addFavorite("gcs");
 
+    // Simulate a page reload by clearing module cache and re-importing
     vi.resetModules();
-    loaded = await load();
+    const reloadedWorkspace = await import("../../lib/workspace");
+    const reloadedFavorites = await import("../../lib/favorites");
 
-    expect(loaded.getFavorites()).toEqual(["bmi", "gcs"]);
+    expect(reloadedFavorites.getFavorites()).toEqual(["bmi", "gcs"]);
     expect(
-      loaded.resolveWorkspaceCalculators(loaded.getFavorites()).map(
+      reloadedWorkspace.resolveWorkspaceCalculators(reloadedFavorites.getFavorites()).map(
         (calc) => calc.id,
       ),
     ).toEqual(["bmi", "gcs"]);
   });
 
-  it("handles stale or invalid saved calculator ids safely", async () => {
+  it("handles stale or invalid saved calculator ids safely", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
+    const { getFavorites } = favoritesModule;
     ls.store.set(
       FAVORITES_KEY,
       JSON.stringify(["bmi", "not-a-real-calculator", "gcs"]),
     );
 
-    const { resolveWorkspaceCalculators, getFavorites } = await load();
     const saved = resolveWorkspaceCalculators(getFavorites());
     expect(saved.map((calc) => calc.id)).toEqual(["bmi", "gcs"]);
   });
 
-  it("preserves the stored order of saved calculators", async () => {
-    const { resolveWorkspaceCalculators, addFavorite, getFavorites } =
-      await load();
+  it("preserves the stored order of saved calculators", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
+    const { addFavorite, getFavorites } = favoritesModule;
     addFavorite("gcs");
     addFavorite("bmi");
 
@@ -147,12 +146,12 @@ describe("workspace", () => {
     expect(saved.map((calc) => calc.id)).toEqual(["gcs", "bmi"]);
   });
 
-  it("resolves calculators without a DOM (SSR-safe, mobile-safe)", async () => {
+  it("resolves calculators without a DOM (SSR-safe, mobile-safe)", () => {
+    const { resolveWorkspaceCalculators } = workspaceModule;
     vi.unstubAllGlobals();
     delete (globalThis as Record<string, unknown>).window;
     delete (globalThis as Record<string, unknown>).localStorage;
 
-    const { resolveWorkspaceCalculators } = await load();
     const saved = resolveWorkspaceCalculators(["bmi", "gcs"]);
     expect(saved.map((calc) => calc.id)).toEqual(["bmi", "gcs"]);
   });
