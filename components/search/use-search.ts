@@ -19,7 +19,7 @@ export function useSearch(): UseSearchReturn {
     if (!query.trim()) {
       return [];
     }
-    return searchCalculators(query);
+    return searchCalculators(query).slice(0, 8);
   }, [query]);
 
   return {

@@ -44,6 +44,15 @@ export default function RootLayout({
 
         <main id="main-content">{children}</main>
 
+        <footer className="border-t border-slate-200 bg-white py-8 dark:border-slate-800 dark:bg-slate-900">
+          <div className="mx-auto max-w-7xl px-6 text-center text-sm text-slate-500 dark:text-slate-400">
+            <p>MedCalcHub — Professional medical calculators for healthcare professionals.</p>
+            <p className="mt-2">
+              Data stored locally in your browser. Not synced to any server.
+            </p>
+          </div>
+        </footer>
+
         <NotificationProvider />
       </body>
     </html>

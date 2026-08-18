@@ -50,7 +50,7 @@ export default async function SpecialtyPage({
     getCalculatorsBySpecialty(specialty);
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
+    <div className="mx-auto max-w-6xl px-6 py-10">
 
       <div className="mb-10">
 
@@ -100,6 +100,6 @@ export default async function SpecialtyPage({
 
       </div>
 
-    </main>
+    </div>
   );
 }

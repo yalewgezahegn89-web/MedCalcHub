@@ -6,7 +6,7 @@ import { BrowseCategories } from "@/components/home/browse-categories";
 
 export default function HomePage() {
   return (
-    <main className="container mx-auto space-y-12 px-4 py-10">
+    <div className="container mx-auto space-y-12 px-4 py-10">
 
       <section className="space-y-4 text-center">
         <h1 className="text-4xl font-bold">
@@ -30,6 +30,6 @@ export default function HomePage() {
 
       <BrowseSpecialties />
 
-    </main>
+    </div>
   );
 }

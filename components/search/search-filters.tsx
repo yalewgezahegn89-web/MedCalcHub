@@ -14,14 +14,15 @@ export default function SearchFilters({
   onChange,
 }: SearchFiltersProps) {
   return (
-    <div className="mb-8 flex flex-wrap gap-3">
+    <div className="mb-8 flex flex-wrap gap-3" role="group" aria-label="Filter calculators by category">
       <button
         onClick={() => onChange("All")}
+        aria-pressed={active === "All"}
         className={cn(
-          "rounded-full border px-4 py-2 text-sm font-medium transition",
+          "rounded-full border px-4 py-2 text-sm font-medium transition min-h-[44px]",
           active === "All"
             ? "bg-blue-600 text-white border-blue-600"
-            : "bg-white hover:bg-slate-100",
+            : "bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-600",
         )}
       >
         All
@@ -31,11 +32,12 @@ export default function SearchFilters({
         <button
           key={category}
           onClick={() => onChange(category)}
+          aria-pressed={active === category}
           className={cn(
-            "rounded-full border px-4 py-2 text-sm font-medium transition",
+            "rounded-full border px-4 py-2 text-sm font-medium transition min-h-[44px]",
             active === category
               ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white hover:bg-slate-100",
+              : "bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-600",
           )}
         >
           {category}

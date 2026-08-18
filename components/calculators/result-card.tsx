@@ -42,25 +42,25 @@ export default function ResultCard({
     low: {
       color:
         "bg-blue-100 text-blue-700 border-blue-200",
-      icon: <AlertTriangle className="h-4 w-4" />,
+      icon: <AlertTriangle className="h-4 w-4" aria-hidden="true" />,
       label: "Low",
     },
     normal: {
       color:
         "bg-emerald-100 text-emerald-700 border-emerald-200",
-      icon: <CheckCircle2 className="h-4 w-4" />,
+      icon: <CheckCircle2 className="h-4 w-4" aria-hidden="true" />,
       label: "Normal",
     },
     high: {
       color:
         "bg-amber-100 text-amber-700 border-amber-200",
-      icon: <AlertTriangle className="h-4 w-4" />,
+      icon: <AlertTriangle className="h-4 w-4" aria-hidden="true" />,
       label: "High",
     },
     critical: {
       color:
         "bg-red-100 text-red-700 border-red-200",
-      icon: <AlertTriangle className="h-4 w-4" />,
+      icon: <AlertTriangle className="h-4 w-4" aria-hidden="true" />,
       label: "Critical",
     },
   }[status];
@@ -129,7 +129,7 @@ export default function ResultCard({
         {(sections?.warnings.length ?? 0) > 0 && (
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/60 dark:bg-amber-950/30">
             <h3 className="flex items-center gap-2 font-semibold text-amber-800 dark:text-amber-300">
-              <AlertTriangle className="h-4 w-4" />
+              <AlertTriangle className="h-4 w-4" aria-hidden="true" />
               Warnings
             </h3>
 
@@ -144,7 +144,7 @@ export default function ResultCard({
         {(sections?.advice.length ?? 0) > 0 && (
           <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-900/60 dark:bg-blue-950/30">
             <h3 className="flex items-center gap-2 font-semibold text-blue-800 dark:text-blue-300">
-              <Info className="h-4 w-4" />
+              <Info className="h-4 w-4" aria-hidden="true" />
               Advice
             </h3>
 
@@ -159,7 +159,7 @@ export default function ResultCard({
         {(sections?.followUp.length ?? 0) > 0 && (
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/40">
             <h3 className="flex items-center gap-2 font-semibold text-slate-700 dark:text-slate-200">
-              <CalendarClock className="h-4 w-4" />
+              <CalendarClock className="h-4 w-4" aria-hidden="true" />
               Follow-up
             </h3>
 
@@ -178,7 +178,7 @@ export default function ResultCard({
             aria-label="Download result as PDF"
             className="flex items-center gap-2 rounded-xl border px-4 py-2 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-4 w-4" aria-hidden="true" />
             PDF
           </button>
         </div>

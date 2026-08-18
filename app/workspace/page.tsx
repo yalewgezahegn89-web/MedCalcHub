@@ -19,6 +19,7 @@ import {
   createLocalStore,
   useLocalStorageStore,
 } from "@/lib/use-sync-store";
+import { formatResult } from "@/lib/utils/format-result";
 
 /* ── stores ── */
 
@@ -40,15 +41,6 @@ const savedCalculationsStore = createLocalStore<
   SavedCalculation[]
 >("medcalchub-saved-calculations-changed", getSavedCalculations);
 
-/* ── helpers ── */
-
-function formatSavedResult(
-  result?: { value: string | number; unit?: string },
-): string | null {
-  if (!result) return null;
-  return `${result.value}${result.unit ? ` ${result.unit}` : ""}`;
-}
-
 /* ── page ── */
 
 export default function WorkspacePage() {
@@ -68,7 +60,7 @@ export default function WorkspacePage() {
     resolveWorkspaceCalculators(recentIds);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
+    <div className="mx-auto max-w-7xl px-6 py-10">
       <div className="mb-10">
         <h1 className="text-4xl font-bold">
           Clinical Workspace
@@ -203,7 +195,7 @@ export default function WorkspacePage() {
                       item.calculatorId,
                     );
 
-                  const resultText = formatSavedResult(
+                  const resultText = formatResult(
                     item.result,
                   );
 
@@ -352,6 +344,6 @@ export default function WorkspacePage() {
         </section>
 
       </div>
-    </main>
+    </div>
   );
 }

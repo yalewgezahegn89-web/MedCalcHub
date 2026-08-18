@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { useSearch } from "./use-search";
 import { SearchInput } from "./search-input";
@@ -30,6 +30,8 @@ export function SearchDialog({
 
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const listboxId = useId();
 
   // Focus input when dialog opens
   useEffect(() => {
@@ -41,10 +43,11 @@ export function SearchDialog({
     }
   }, [open]);
 
-  // Reset query when dialog closes
+  // Reset query and active index when dialog closes
   useEffect(() => {
     if (!open) {
       setQuery("");
+      setActiveIndex(-1);
     }
   }, [open, setQuery]);
 
@@ -59,11 +62,42 @@ export function SearchDialog({
     };
   }, [open]);
 
-  // Focus trap + Escape handling
+  // Reset active index when results change
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [results]);
+
+  // Arrow key navigation + Focus trap + Escape handling
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setActiveIndex((prev) => {
+          const next = prev < results.length - 1 ? prev + 1 : 0;
+          return next;
+        });
+        return;
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setActiveIndex((prev) => {
+          const next = prev > 0 ? prev - 1 : results.length - 1;
+          return next;
+        });
+        return;
+      }
+
+      if (e.key === "Enter" && activeIndex >= 0 && activeIndex < results.length) {
+        e.preventDefault();
+        const slug = results[activeIndex].document.slug;
+        window.location.href = `/calculators/${slug}`;
         onClose();
         return;
       }
@@ -96,7 +130,7 @@ export function SearchDialog({
         }
       }
     },
-    [onClose],
+    [onClose, results, activeIndex],
   );
 
   useEffect(() => {
@@ -122,32 +156,40 @@ export function SearchDialog({
 
   if (!open) return null;
 
+  const hasResults = results.length > 0;
+  const activeDescendantId = activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined;
+
   return (
     <div
       className="fixed inset-0 z-[9999] flex items-start justify-center bg-black/40 backdrop-blur-sm pt-[15vh]"
       onClick={handleBackdropClick}
-      role="presentation"
     >
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-label="Search calculators"
-        className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900"
+        className="w-full max-w-lg max-h-[70vh] overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900 flex flex-col"
       >
-        <div className="border-b p-4">
+        <div className="border-b p-4 shrink-0">
           <SearchInput
             ref={inputRef}
             value={query}
             onChange={setQuery}
             placeholder="Search calculators..."
             loading={isSearching}
+            role="combobox"
+            aria-expanded={hasResults}
+            aria-controls={listboxId}
+            aria-activedescendant={activeDescendantId}
           />
         </div>
 
         <SearchResults
           results={results}
           onResultClick={onClose}
+          activeIndex={activeIndex}
+          listboxId={listboxId}
         />
       </div>
     </div>

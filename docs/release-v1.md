@@ -12,7 +12,7 @@
 - First stable release of the MedCalcHub Generator
 - 15 modular plugins in a deterministic pipeline
 - 10 formula engine types for medical calculations
-- 34 medical calculators generated
+- 141 medical calculators generated
 - 6-language internationalization support
 - FHIR R4 and HL7 interoperability exports
 - AI-ready structured context export
@@ -28,11 +28,11 @@
 | Plugins | 15 |
 | Formula Engines | 10 |
 | Supported Languages | 6 |
-| Generated Calculators | 34 |
-| Documentation Files | 34 |
+| Generated Calculators | 141 |
+| Documentation Files | 141 |
 | FHIR Resources | 34 |
-| AI Context Files | 34 |
-| Locale Files | 204 |
+| AI Context Files | 35 |
+| Locale Files | 846 |
 | Total Generated Files | ~400+ |
 
 ---

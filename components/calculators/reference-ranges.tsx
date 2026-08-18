@@ -90,11 +90,11 @@ export function ReferenceRanges({
             </caption>
             <thead>
               <tr className="border-b">
-                <th className="py-2 text-left">
+                <th scope="col" className="py-2 text-left">
                   Classification
                 </th>
 
-                <th className="py-2 text-left">
+                <th scope="col" className="py-2 text-left">
                   Range
                 </th>
               </tr>

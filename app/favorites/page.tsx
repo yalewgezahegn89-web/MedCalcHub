@@ -37,7 +37,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <main className="container mx-auto space-y-12 px-4 py-10">
+    <div className="container mx-auto space-y-12 px-4 py-10">
       <section className="space-y-4 text-center">
         <h1 className="text-4xl font-bold">
           Favorite Calculators
@@ -121,6 +121,6 @@ export default function FavoritesPage() {
           </div>
         </>
       )}
-    </main>
+    </div>
   );
 }

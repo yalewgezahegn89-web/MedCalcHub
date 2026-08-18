@@ -14,25 +14,18 @@ import {
   createLocalStore,
   useLocalStorageStore,
 } from "@/lib/use-sync-store";
+import { formatResult } from "@/lib/utils/format-result";
 
 const savedStore = createLocalStore<SavedCalculation[]>(
   "medcalchub-saved-calculations-changed",
   getSavedCalculations,
 );
 
-function formatResult(
-  result?: { value: string | number; unit?: string },
-): string | null {
-  if (!result) return null;
-
-  return `${result.value}${result.unit ? ` ${result.unit}` : ""}`;
-}
-
 export default function SavedCalculationsPage() {
   const saved = useLocalStorageStore(savedStore);
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
+    <div className="mx-auto max-w-5xl px-6 py-10">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl font-bold">
           Saved Calculations
@@ -150,6 +143,6 @@ export default function SavedCalculationsPage() {
           })}
         </div>
       )}
-    </main>
+    </div>
   );
 }

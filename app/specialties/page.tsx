@@ -8,7 +8,7 @@ export default function SpecialtiesPage() {
   const specialties = getSpecialties();
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
+    <div className="mx-auto max-w-6xl px-6 py-10">
 
       <div className="mb-10">
         <h1 className="text-4xl font-bold">
@@ -48,6 +48,6 @@ export default function SpecialtiesPage() {
 
       </div>
 
-    </main>
+    </div>
   );
 }

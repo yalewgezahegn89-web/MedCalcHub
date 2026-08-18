@@ -44,7 +44,7 @@ export default function RecentPage() {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
+    <div className="mx-auto max-w-7xl px-6 py-10">
 
       <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
 
@@ -132,6 +132,6 @@ export default function RecentPage() {
         </div>
       )}
 
-    </main>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ export default function CategoriesPage() {
   const categories = getCategories();
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
+    <div className="mx-auto max-w-5xl px-6 py-10">
 
       <div className="mb-10">
         <h1 className="text-4xl font-bold">
@@ -59,6 +59,6 @@ export default function CategoriesPage() {
 
       </div>
 
-    </main>
+    </div>
   );
 }

@@ -37,7 +37,7 @@ export default async function CategoryPage({
     getCalculatorsByCategory(category);
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
+    <div className="mx-auto max-w-5xl px-6 py-10">
 
       <div className="mb-10">
         <Link
@@ -83,6 +83,6 @@ export default async function CategoryPage({
 
       </div>
 
-    </main>
+    </div>
   );
 }

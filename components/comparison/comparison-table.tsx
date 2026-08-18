@@ -24,11 +24,12 @@ function Row({
 }) {
   return (
     <tr>
-      <td
-        className={`px-4 py-3 font-medium ${last ? "" : "border-b"}`}
+      <th
+        scope="row"
+        className={`px-4 py-3 text-left font-medium ${last ? "" : "border-b"}`}
       >
         {label}
-      </td>
+      </th>
 
       {cells.map((cell, index) => (
         <td
@@ -54,15 +55,19 @@ export function ComparisonTable({
   return (
     <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
       <table className="min-w-full border-collapse">
+        <caption className="sr-only">
+          Comparison of {calculators.map((c) => c.name).join(" and ")} calculators
+        </caption>
         <thead className="bg-slate-50 dark:bg-slate-900">
           <tr>
-            <th className="border-b px-4 py-3 text-left font-semibold">
+            <th scope="col" className="border-b px-4 py-3 text-left font-semibold">
               Feature
             </th>
 
             {rows.map((row) => (
               <th
                 key={row.id}
+                scope="col"
                 className="border-b px-4 py-3 text-left font-semibold"
               >
                 <Link

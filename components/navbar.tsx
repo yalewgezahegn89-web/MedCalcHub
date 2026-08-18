@@ -173,18 +173,18 @@ export default function Navbar() {
           {/* Search button */}
           <button
             onClick={openCommandPalette}
-            className="rounded-xl border border-slate-200 p-2 transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+            className="min-h-[44px] min-w-[44px] rounded-xl border border-slate-200 p-2 transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
             title="Search (Ctrl + K)"
             aria-label="Open Search"
           >
-            <Search className="h-5 w-5" />
+            <Search className="h-5 w-5" aria-hidden="true" />
           </button>
 
           {/* Mobile menu button */}
           <button
             ref={buttonRef}
             type="button"
-            className="rounded-xl border border-slate-200 p-2 transition hover:bg-slate-100 md:hidden dark:border-slate-700 dark:hover:bg-slate-800"
+            className="min-h-[44px] min-w-[44px] rounded-xl border border-slate-200 p-2 transition hover:bg-slate-100 md:hidden dark:border-slate-700 dark:hover:bg-slate-800"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -193,9 +193,9 @@ export default function Navbar() {
             }
           >
             {mobileOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5" aria-hidden="true" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5" aria-hidden="true" />
             )}
           </button>
         </div>

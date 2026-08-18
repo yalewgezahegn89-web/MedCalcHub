@@ -43,7 +43,7 @@ Algebraic, Score, Conditional, Converter, Lookup, Composite, Descriptive, BSA, C
 
 English, Amharic, French, Spanish, Arabic, Portuguese
 
-### 34 Generated Calculators
+### 141 Generated Calculators
 
 Each with knowledge definitions, tests, documentation, locale files, FHIR resources, and AI context.
 
@@ -116,13 +116,13 @@ Test Generator
 
 | Output | Location | Count |
 |--------|----------|-------|
-| Calculator TypeScript | `lib/calculators/` | 34 |
-| Calculator Tests | `tests/calculators/` | 34 |
-| Documentation | `docs/calculators/` | 34 |
-| Locale Files | `locales/<lang>/calculators/` | 204 |
+| Calculator TypeScript | `lib/calculators/` | 141 |
+| Calculator Tests | `tests/calculators/` | 9 |
+| Documentation | `docs/calculators/` | 141 |
+| Locale Files | `locales/<lang>/calculators/` | 846 |
 | FHIR Resources | `exports/fhir/` | 34 |
-| HL7 Resources | `exports/hl7/` | 34 |
-| AI Context | `exports/ai/` | 34 |
+| HL7 Resources | `exports/hl7/` | 35 |
+| AI Context | `exports/ai/` | 35 |
 | Performance Report | `performance/latest.json` | 1 |
 | Generation Cache | `.generator-cache.json` | 1 |
 

@@ -57,6 +57,6 @@ export function FavoriteIndicator({
   }
 
   return (
-    <Heart className="h-5 w-5 fill-red-500 text-red-500" />
+    <Heart className="h-5 w-5 fill-red-500 text-red-500" aria-hidden="true" />
   );
 }

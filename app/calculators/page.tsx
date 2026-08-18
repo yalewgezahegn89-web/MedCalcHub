@@ -8,7 +8,7 @@ export default function CalculatorsPage() {
   );
 
   return (
-    <main className="mx-auto max-w-6xl p-6">
+    <div className="mx-auto max-w-6xl p-6">
       <h1 className="mb-2 text-3xl font-bold">
         Medical Calculators
       </h1>
@@ -38,6 +38,6 @@ export default function CalculatorsPage() {
           </Link>
         ))}
       </div>
-    </main>
+    </div>
   );
 }

@@ -8,7 +8,7 @@ export default function RenalPage() {
   );
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="mb-8">
         <h1 className="text-4xl font-bold">
           <span aria-hidden="true">💧</span> Renal Calculators
@@ -48,6 +48,6 @@ export default function RenalPage() {
           </Link>
         ))}
       </div>
-    </main>
+    </div>
   );
 }

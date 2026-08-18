@@ -11,6 +11,10 @@ export interface SearchInputProps {
   placeholder?: string;
   loading?: boolean;
   className?: string;
+  "aria-expanded"?: boolean;
+  "aria-controls"?: string;
+  "aria-activedescendant"?: string;
+  role?: string;
 }
 
 export const SearchInput = forwardRef<
@@ -23,6 +27,10 @@ export const SearchInput = forwardRef<
     placeholder = "Search calculators...",
     loading = false,
     className,
+    "aria-expanded": ariaExpanded,
+    "aria-controls": ariaControls,
+    "aria-activedescendant": ariaActiveDescendant,
+    role,
   },
   ref,
 ) {
@@ -39,9 +47,9 @@ export const SearchInput = forwardRef<
       >
         <div className="pl-4 text-muted-foreground">
           {loading ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
+            <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
           ) : (
-            <Search className="h-5 w-5" />
+            <Search className="h-5 w-5" aria-hidden="true" />
           )}
         </div>
 
@@ -51,6 +59,10 @@ export const SearchInput = forwardRef<
           value={value}
           placeholder={placeholder}
           aria-label="Search calculators"
+          aria-expanded={ariaExpanded}
+          aria-controls={ariaControls}
+          aria-activedescendant={ariaActiveDescendant}
+          role={role}
           onChange={(e) => onChange(e.target.value)}
           className={cn(
             "flex-1 bg-transparent px-3 py-3 text-sm outline-none",
