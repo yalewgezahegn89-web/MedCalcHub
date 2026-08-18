@@ -51,7 +51,7 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
   },
   {
     label: "G5: Kidney failure",
-    range: "<14.1",
+    range: "<15",
   }
 ],
 
@@ -328,7 +328,7 @@ else {
     "critical";
 
   referenceRange =
-  "<14.1";
+  "<15";
 }
 
 

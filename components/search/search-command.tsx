@@ -57,7 +57,7 @@ export default function SearchCommand() {
           onKeyDown={handleKeyDown}
           aria-label="Quick search calculators"
           role="combobox"
-          aria-expanded={hasResults}
+          aria-expanded={query.trim().length > 0}
           aria-controls={listboxId}
           aria-activedescendant={activeDescendantId}
           className="w-full rounded-2xl border border-slate-200 bg-white py-4 pl-12 pr-4 text-base shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-400"

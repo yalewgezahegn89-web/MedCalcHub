@@ -279,6 +279,16 @@ export function generateCalculatorReport(
     y,
   );
 
+  y += 6;
+
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "italic");
+  doc.text(
+    "Estimates are for clinical reference only and do not constitute a diagnosis.",
+    20,
+    y,
+  );
+
   doc.save(
     `${report.calculator
       .replace(/\s+/g, "-")
