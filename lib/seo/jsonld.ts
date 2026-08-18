@@ -1,11 +1,17 @@
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 import { calculatorFaqs } from "@/lib/calculators/faqs";
+import { getClinicalContent } from "@/lib/clinical-content";
 import { SITE_URL } from "@/lib/site-url";
 
 export function buildCalculatorJsonLd(
   calculator: CalculatorDefinition,
 ) {
-  const faq = calculator.faq ?? calculatorFaqs[calculator.slug] ?? [];
+  const clinicalContent = getClinicalContent(calculator.slug);
+  const faq =
+    clinicalContent?.faq ??
+    calculator.faq ??
+    calculatorFaqs[calculator.slug] ??
+    [];
   const calculatorUrl = `${SITE_URL}/calculators/${calculator.slug}`;
 
   return {

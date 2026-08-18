@@ -13,6 +13,8 @@ import {
   taxonomyToSlug,
 } from "@/lib/seo/taxonomy-content";
 
+const OG_IMAGE = `${SITE_URL}/og-default.png`;
+
 type CategoryPageProps = {
   params: Promise<{
     category: string;
@@ -60,11 +62,20 @@ export async function generateMetadata({
       url: `${SITE_URL}/categories/${slug}`,
       type: "website",
       siteName: "MedCalcHub",
+      images: [
+        {
+          url: OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: "MedCalcHub — Professional Medical Calculators",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${category} Calculators | MedCalcHub`,
       description,
+      images: [OG_IMAGE],
     },
   };
 }

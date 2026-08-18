@@ -2,6 +2,8 @@ import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 
 import { SITE_URL } from "@/lib/site-url";
 
+const OG_IMAGE = `${SITE_URL}/og-default.png`;
+
 export function buildCalculatorSEO(
   calculator: CalculatorDefinition,
 ) {
@@ -40,12 +42,21 @@ export function buildCalculatorSEO(
       url: canonicalUrl,
       type: "website",
       siteName: "MedCalcHub",
+      images: [
+        {
+          url: OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: "MedCalcHub — Professional Medical Calculators",
+        },
+      ],
     },
 
     twitter: {
       card: "summary_large_image",
       title: `${displayName} | MedCalcHub`,
       description,
+      images: [OG_IMAGE],
     },
   };
 }

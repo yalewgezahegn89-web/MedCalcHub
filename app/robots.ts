@@ -13,6 +13,7 @@ export default function robots(): MetadataRoute.Robots {
           "/history",
           "/recent",
           "/workspace",
+          "/saved-calculations",
         ],
       },
     ],

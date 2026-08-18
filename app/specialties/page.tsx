@@ -1,8 +1,46 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   getSpecialties,
   getCalculatorsBySpecialty,
 } from "@/lib/calculators/registry";
+import { SITE_URL } from "@/lib/site-url";
+
+const OG_IMAGE = `${SITE_URL}/og-default.png`;
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Medical Specialties | MedCalcHub",
+  },
+  description:
+    "Browse medical calculators by specialty — cardiology, nephrology, oncology, emergency medicine, and more.",
+  alternates: {
+    canonical: `${SITE_URL}/specialties`,
+  },
+  openGraph: {
+    title: "Medical Specialties | MedCalcHub",
+    description:
+      "Browse medical calculators by clinical specialty.",
+    url: `${SITE_URL}/specialties`,
+    type: "website",
+    siteName: "MedCalcHub",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "MedCalcHub — Professional Medical Calculators",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Medical Specialties | MedCalcHub",
+    description:
+      "Browse medical calculators by clinical specialty.",
+    images: [OG_IMAGE],
+  },
+};
 
 export default function SpecialtiesPage() {
   const specialties = getSpecialties();

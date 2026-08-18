@@ -1,9 +1,47 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import {
   getCategories,
   getCalculatorsByCategory,
 } from "@/lib/calculators/registry";
+import { SITE_URL } from "@/lib/site-url";
+
+const OG_IMAGE = `${SITE_URL}/og-default.png`;
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Calculator Categories | MedCalcHub",
+  },
+  description:
+    "Browse medical calculator categories including cardiology, nephrology, oncology, and more. Evidence-based clinical tools organized by specialty.",
+  alternates: {
+    canonical: `${SITE_URL}/categories`,
+  },
+  openGraph: {
+    title: "Calculator Categories | MedCalcHub",
+    description:
+      "Browse medical calculator categories organized by clinical specialty.",
+    url: `${SITE_URL}/categories`,
+    type: "website",
+    siteName: "MedCalcHub",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "MedCalcHub — Professional Medical Calculators",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Calculator Categories | MedCalcHub",
+    description:
+      "Browse medical calculator categories organized by clinical specialty.",
+    images: [OG_IMAGE],
+  },
+};
 
 export default function CategoriesPage() {
   const categories = getCategories();

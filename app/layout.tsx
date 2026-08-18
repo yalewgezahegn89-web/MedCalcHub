@@ -25,6 +25,20 @@ export const metadata: Metadata = {
   },
   description:
     "Professional evidence-based clinical calculators for healthcare professionals.",
+  openGraph: {
+    images: [
+      {
+        url: "/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "MedCalcHub — Professional Medical Calculators",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-default.png"],
+  },
 };
 
 export default function RootLayout({
