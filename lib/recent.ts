@@ -18,7 +18,7 @@ export function getRecentCalculators(): string[] {
   }
 }
 
-export function addRecentCalculator(id: string) {
+export function addRecentCalculator(id: string): boolean {
   const recent = getRecentCalculators().filter(
     (item) => item !== id,
   );
@@ -32,12 +32,13 @@ export function addRecentCalculator(id: string) {
     );
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
-export function removeRecentCalculator(id: string) {
+export function removeRecentCalculator(id: string): boolean {
   const recent = getRecentCalculators().filter(
     (item) => item !== id,
   );
@@ -49,17 +50,19 @@ export function removeRecentCalculator(id: string) {
     );
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
-export function clearRecentCalculators() {
+export function clearRecentCalculators(): boolean {
   try {
     localStorage.removeItem(STORAGE_KEY);
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be unavailable — fail gracefully
+    return false;
   }
 }

@@ -53,7 +53,7 @@ export function getSavedCalculation(
 
 export function saveSavedCalculation(
   item: Omit<SavedCalculation, "id">,
-): void {
+): boolean {
   const existing = getSavedCalculations();
 
   const entry: SavedCalculation = {
@@ -72,19 +72,20 @@ export function saveSavedCalculation(
     window.dispatchEvent(
       new Event(SAVED_CALCULATIONS_CHANGED),
     );
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
 export function deleteSavedCalculation(
   id: string,
-): void {
+): boolean {
   const existing = getSavedCalculations();
   const next = existing.filter((s) => s.id !== id);
 
   if (next.length === existing.length) {
-    return;
+    return true;
   }
 
   try {
@@ -96,19 +97,21 @@ export function deleteSavedCalculation(
     window.dispatchEvent(
       new Event(SAVED_CALCULATIONS_CHANGED),
     );
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
-export function clearSavedCalculations(): void {
+export function clearSavedCalculations(): boolean {
   try {
     localStorage.removeItem(STORAGE_KEY);
 
     window.dispatchEvent(
       new Event(SAVED_CALCULATIONS_CHANGED),
     );
+    return true;
   } catch {
-    // Storage may be unavailable — fail gracefully
+    return false;
   }
 }

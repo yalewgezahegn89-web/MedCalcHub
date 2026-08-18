@@ -179,7 +179,7 @@ export function SearchDialog({
             placeholder="Search calculators..."
             loading={isSearching}
             role="combobox"
-            aria-expanded={hasResults}
+            aria-expanded={query.trim().length > 0}
             aria-controls={listboxId}
             aria-activedescendant={activeDescendantId}
           />

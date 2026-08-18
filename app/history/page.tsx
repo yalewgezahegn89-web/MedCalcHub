@@ -55,7 +55,9 @@ export default function HistoryPage() {
       <p className="mb-6 text-sm text-slate-500">
         Your MedCalcHub data is stored locally in this
         browser and is not synced to a server. Clearing
-        browser data will permanently delete it.
+        browser data will permanently delete it. Avoid
+        entering personally identifying patient
+        information.
       </p>
 
       {history.length === 0 ? (
@@ -86,7 +88,7 @@ export default function HistoryPage() {
 
             return (
               <div
-                key={index}
+                key={`${item.calculatorId}-${item.timestamp}`}
                 className="flex items-start gap-4 rounded-xl border p-5"
               >
                 <div className="min-w-0 flex-1">

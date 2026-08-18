@@ -146,7 +146,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
           {NAV_LINKS.map(({ href, label, icon: Icon }) => {
             const active = isActive(href);
             return (
@@ -184,7 +184,7 @@ export default function Navbar() {
           <button
             ref={buttonRef}
             type="button"
-            className="min-h-[44px] min-w-[44px] rounded-xl border border-slate-200 p-2 transition hover:bg-slate-100 md:hidden dark:border-slate-700 dark:hover:bg-slate-800"
+            className="min-h-[44px] min-w-[44px] rounded-xl border border-slate-200 p-2 transition hover:bg-slate-100 lg:hidden dark:border-slate-700 dark:hover:bg-slate-800"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -210,9 +210,9 @@ export default function Navbar() {
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
-          className="border-t border-slate-200 bg-white px-6 py-4 md:hidden dark:border-slate-800 dark:bg-slate-950"
+          className="border-t border-slate-200 bg-white px-6 py-4 lg:hidden dark:border-slate-800 dark:bg-slate-950"
         >
-          <nav className="flex flex-col gap-1">
+          <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
             {NAV_LINKS.map(({ href, label, icon: Icon }) => {
               const active = isActive(href);
               return (

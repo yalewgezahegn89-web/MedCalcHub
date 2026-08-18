@@ -24,6 +24,8 @@ export default function SearchPage() {
     ).sort();
   }, []);
 
+  const MAX_RENDERED = 50;
+
   const results = useMemo(() => {
     const trimmed = query.trim();
 
@@ -43,6 +45,7 @@ export default function SearchPage() {
     }
 
     return filtered
+      .slice(0, MAX_RENDERED)
       .map((slug) => calculatorRegistry.find((c) => c.slug === slug)!)
       .filter(Boolean);
   }, [query, category]);

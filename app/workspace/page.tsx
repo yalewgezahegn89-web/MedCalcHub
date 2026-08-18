@@ -75,7 +75,9 @@ export default function WorkspacePage() {
         <p className="mt-2 text-sm text-slate-500">
           Your MedCalcHub data is stored locally in this
           browser and is not synced to a server. Clearing
-          browser data will permanently delete it.
+          browser data will permanently delete it. Avoid
+          entering personally identifying patient
+          information.
         </p>
       </div>
 
@@ -254,7 +256,7 @@ export default function WorkspacePage() {
           <div className="mb-5 flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-xl font-semibold">
               <Clock className="h-5 w-5 text-blue-600" />
-              Recent Calculations
+              Calculation History
             </h2>
 
             {calculationHistory.length > 0 && (

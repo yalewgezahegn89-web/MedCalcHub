@@ -29,7 +29,7 @@ export function getCalculationHistory(): CalculationHistoryItem[] {
 
 export function saveCalculation(
   item: CalculationHistoryItem,
-) {
+): boolean {
   const history = getCalculationHistory();
 
   history.unshift(item);
@@ -51,16 +51,17 @@ export function saveCalculation(
     );
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
-export function deleteHistoryEntry(index: number) {
+export function deleteHistoryEntry(index: number): boolean {
   const history = getCalculationHistory();
 
   if (index < 0 || index >= history.length) {
-    return;
+    return true;
   }
 
   const next = [
@@ -75,17 +76,19 @@ export function deleteHistoryEntry(index: number) {
     );
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
-export function clearHistory() {
+export function clearHistory(): boolean {
   try {
     localStorage.removeItem(STORAGE_KEY);
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be unavailable — fail gracefully
+    return false;
   }
 }

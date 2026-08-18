@@ -58,7 +58,7 @@ export function CalculatorSearch() {
           onKeyDown={handleKeyDown}
           aria-label="Search calculators"
           role="combobox"
-          aria-expanded={hasResults && results.length > 0}
+          aria-expanded={query.trim().length > 0}
           aria-controls={listboxId}
           aria-activedescendant={activeDescendantId}
           className="w-full rounded-xl border p-4 pl-12"

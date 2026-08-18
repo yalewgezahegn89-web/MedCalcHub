@@ -130,9 +130,15 @@ export default function SavedCalculationsPage() {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    deleteSavedCalculation(item.id)
-                  }
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        `Remove "${item.calculatorName}" from saved calculations? This cannot be undone.`,
+                      )
+                    ) {
+                      deleteSavedCalculation(item.id);
+                    }
+                  }}
                   aria-label={`Remove saved ${item.calculatorName} calculation`}
                   className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 >

@@ -73,7 +73,9 @@ export default function RecentPage() {
       <p className="mb-6 text-sm text-slate-500">
         Your MedCalcHub data is stored locally in this
         browser and is not synced to a server. Clearing
-        browser data will permanently delete it.
+        browser data will permanently delete it. Avoid
+        entering personally identifying patient
+        information.
       </p>
 
       {calculators.length === 0 ? (

@@ -82,6 +82,10 @@ export const CalculatorForm = forwardRef<
 
   const [favKey, setFavKey] = useState(0);
 
+  const isValidationResult = result
+    ? isValidationStyleResult(result)
+    : false;
+
   const isFav = useSyncExternalStore(
     subscribeFavorites,
     () =>
@@ -219,7 +223,7 @@ export const CalculatorForm = forwardRef<
   }, [calculator.inputs]);
 
   const handleSave = useCallback(() => {
-    if (!result || isStale) {
+    if (!result || isStale || isValidationStyleResult(result)) {
       return;
     }
 
@@ -283,12 +287,12 @@ export const CalculatorForm = forwardRef<
         isFavorite={isFav.startsWith("true")}
         onReset={handleReset}
         onSave={handleSave}
-        disabledSave={!result || isStale}
-        disabledCopy={!result || isStale}
-        disabledShare={!result || isStale}
-        disabledPrint={!result || isStale}
+        disabledSave={!result || isStale || isValidationResult}
+        disabledCopy={!result || isStale || isValidationResult}
+        disabledShare={!result || isStale || isValidationResult}
+        disabledPrint={!result || isStale || isValidationResult}
         onCopy={async () => {
-          if (!result) return;
+          if (!result || isValidationStyleResult(result)) return;
 
           try {
             await copyToClipboard(
@@ -312,9 +316,12 @@ export const CalculatorForm = forwardRef<
           }
         }}
         onPrint={() => {
+          if (!result || isValidationStyleResult(result)) return;
           window.print();
         }}
         onShare={async () => {
+          if (!result || isValidationStyleResult(result)) return;
+
           const url = window.location.href;
 
           if (navigator.share) {
@@ -407,7 +414,7 @@ export const CalculatorForm = forwardRef<
                 : undefined
             }
             sections={sections}
-            actionsDisabled={isStale}
+            actionsDisabled={isStale || isValidationResult}
           />
 
           <ClassificationCard

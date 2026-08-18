@@ -20,7 +20,7 @@ export function isFavorite(id: string): boolean {
   return getFavorites().includes(id);
 }
 
-export function addFavorite(id: string) {
+export function addFavorite(id: string): boolean {
   const favorites = getFavorites();
 
   if (!favorites.includes(id)) {
@@ -33,17 +33,20 @@ export function addFavorite(id: string) {
       );
 
       window.dispatchEvent(new Event(CHANGE_EVENT));
+      return true;
     } catch {
-      // Storage may be full or unavailable — fail gracefully
+      return false;
     }
   }
+
+  return true;
 }
 
-export function removeFavorite(id: string) {
+export function removeFavorite(id: string): boolean {
   const favorites = getFavorites();
 
   if (!favorites.includes(id)) {
-    return;
+    return true;
   }
 
   const next = favorites.filter((item) => item !== id);
@@ -55,17 +58,19 @@ export function removeFavorite(id: string) {
     );
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
-export function clearFavorites() {
+export function clearFavorites(): boolean {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
     window.dispatchEvent(new Event(CHANGE_EVENT));
+    return true;
   } catch {
-    // Storage may be full or unavailable — fail gracefully
+    return false;
   }
 }
 
