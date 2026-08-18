@@ -7,6 +7,11 @@ import {
   getCalculatorsByCategory,
 } from "@/lib/calculators/registry";
 import { SITE_URL } from "@/lib/site-url";
+import {
+  categoryDescriptions,
+  getSpecialtiesForCategory,
+  taxonomyToSlug,
+} from "@/lib/seo/taxonomy-content";
 
 type CategoryPageProps = {
   params: Promise<{
@@ -78,53 +83,141 @@ export default async function CategoryPage({
   const calculators =
     getCalculatorsByCategory(category);
 
+  const description =
+    categoryDescriptions[category] ?? undefined;
+
+  const relatedSpecialties =
+    getSpecialtiesForCategory(category);
+
+  const categoryUrl =
+    `${SITE_URL}/categories/${slug}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: `${category} Calculators`,
+        description:
+          description ??
+          `${category} medical calculators for healthcare professionals.`,
+        url: categoryUrl,
+        isPartOf: {
+          "@type": "WebSite",
+          name: "MedCalcHub",
+          url: SITE_URL,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Categories",
+            item: `${SITE_URL}/categories`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: category,
+            item: categoryUrl,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
 
-      <div className="mb-10">
-        <Link
-          href="/categories"
-          className="text-blue-600 hover:underline"
-        >
-          ← Back to Categories
-        </Link>
+      <div className="mx-auto max-w-5xl px-6 py-10">
 
-        <h1 className="mt-4 text-4xl font-bold">
-          {category}
-        </h1>
-
-        <p className="mt-3 text-gray-600">
-          {calculators.length} calculator
-          {calculators.length !== 1 ? "s" : ""}
-        </p>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-
-        {calculators.map((calculator) => (
+        <div className="mb-10">
           <Link
-            key={calculator.id}
-            href={`/calculators/${calculator.slug}`}
-            className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
+            href="/categories"
+            className="text-blue-600 hover:underline"
           >
-            <h2 className="text-lg font-semibold">
-              {calculator.name}
-            </h2>
-
-            <p className="mt-2 text-sm text-gray-600">
-              {calculator.description}
-            </p>
-
-            {calculator.specialty && (
-              <p className="mt-4 text-sm text-blue-600">
-                {calculator.specialty}
-              </p>
-            )}
+            ← Back to Categories
           </Link>
-        ))}
+
+          <h1 className="mt-4 text-4xl font-bold">
+            {category}
+          </h1>
+
+          <p className="mt-3 text-gray-600">
+            {calculators.length} calculator
+            {calculators.length !== 1 ? "s" : ""}
+          </p>
+
+          {description && (
+            <p className="mt-4 text-gray-700 leading-relaxed">
+              {description}
+            </p>
+          )}
+        </div>
+
+        {relatedSpecialties.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold mb-2">
+              Related Specialties
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {relatedSpecialties.map((specialty) => (
+                <Link
+                  key={specialty}
+                  href={`/specialties/${taxonomyToSlug(specialty)}`}
+                  className="inline-block rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm text-blue-700 hover:bg-blue-100"
+                >
+                  {specialty}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="grid gap-4 md:grid-cols-2">
+
+          {calculators.map((calculator) => (
+            <Link
+              key={calculator.id}
+              href={`/calculators/${calculator.slug}`}
+              className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
+            >
+              <h2 className="text-lg font-semibold">
+                {calculator.name}
+              </h2>
+
+              <p className="mt-2 text-sm text-gray-600">
+                {calculator.description}
+              </p>
+
+              {calculator.specialty && (
+                <Link
+                  href={`/specialties/${taxonomyToSlug(calculator.specialty)}`}
+                  className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+                >
+                  {calculator.specialty}
+                </Link>
+              )}
+            </Link>
+          ))}
+
+        </div>
 
       </div>
-
-    </div>
+    </>
   );
 }

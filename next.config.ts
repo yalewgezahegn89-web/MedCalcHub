@@ -48,6 +48,13 @@ const nextConfig: NextConfig = {
       headers: securityHeaders,
     },
   ],
+  redirects: async () => [
+    {
+      source: "/renal",
+      destination: "/categories/renal",
+      permanent: true,
+    },
+  ],
 };
 
 export default nextConfig;

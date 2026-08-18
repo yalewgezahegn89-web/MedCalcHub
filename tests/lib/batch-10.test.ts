@@ -285,26 +285,9 @@ describe("decorative icon accessibility (Batch 10)", () => {
     expect(source).toContain('<span aria-hidden="true">{icon}</span>');
   });
 
-  it("renal page emoji is wrapped in aria-hidden span", () => {
-    const source = readFileSync(
-      join(__dirname, "../../app/renal/page.tsx"),
-      "utf-8",
-    );
-    expect(source).toContain('<span aria-hidden="true">💧</span>');
-  });
-
   it("specialties page uses unique link text with sr-only", () => {
     const source = readFileSync(
       join(__dirname, "../../app/specialties/[slug]/page.tsx"),
-      "utf-8",
-    );
-    expect(source).toContain("sr-only");
-    expect(source).toContain("Open ");
-  });
-
-  it("renal page uses unique link text with sr-only", () => {
-    const source = readFileSync(
-      join(__dirname, "../../app/renal/page.tsx"),
       "utf-8",
     );
     expect(source).toContain("sr-only");
