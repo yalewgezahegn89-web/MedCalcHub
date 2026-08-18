@@ -216,10 +216,20 @@ export default async function SpecialtyPage({
         <div className="grid gap-6 md:grid-cols-2">
 
           {calculators.map((calculator) => (
-            <Link
+            <div
               key={calculator.id}
-              href={`/calculators/${calculator.slug}`}
-              className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
+              role="link"
+              tabIndex={0}
+              onClick={() => {
+                window.location.href = `/calculators/${calculator.slug}`;
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  window.location.href = `/calculators/${calculator.slug}`;
+                }
+              }}
+              className="cursor-pointer rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
             >
 
               <h2 className="text-xl font-semibold">
@@ -231,12 +241,13 @@ export default async function SpecialtyPage({
               </p>
 
               {calculator.category && (
-                <Link
+                <a
                   href={`/categories/${taxonomyToSlug(calculator.category)}`}
                   className="mt-3 inline-block text-sm text-blue-600 hover:underline"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {calculator.category}
-                </Link>
+                </a>
               )}
 
               <div className="mt-4 font-medium text-blue-600">
@@ -245,7 +256,7 @@ export default async function SpecialtyPage({
                 <span aria-hidden="true"> →</span>
               </div>
 
-            </Link>
+            </div>
           ))}
 
         </div>

@@ -202,10 +202,20 @@ export default async function CategoryPage({
         <div className="grid gap-4 md:grid-cols-2">
 
           {calculators.map((calculator) => (
-            <Link
+            <div
               key={calculator.id}
-              href={`/calculators/${calculator.slug}`}
-              className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
+              role="link"
+              tabIndex={0}
+              onClick={() => {
+                window.location.href = `/calculators/${calculator.slug}`;
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  window.location.href = `/calculators/${calculator.slug}`;
+                }
+              }}
+              className="cursor-pointer rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
             >
               <h2 className="text-lg font-semibold">
                 {calculator.name}
@@ -216,14 +226,15 @@ export default async function CategoryPage({
               </p>
 
               {calculator.specialty && (
-                <Link
+                <a
                   href={`/specialties/${taxonomyToSlug(calculator.specialty)}`}
                   className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {calculator.specialty}
-                </Link>
+                </a>
               )}
-            </Link>
+            </div>
           ))}
 
         </div>

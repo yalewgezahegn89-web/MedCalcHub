@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import Link from "next/link";
 import {
   Heart,
   Brain,
@@ -76,6 +77,14 @@ export function BrowseSpecialties() {
       <SectionHeader
         title="Browse by Specialty"
         description="Choose your medical specialty to quickly find the most relevant calculators."
+        action={
+          <Link
+            href="/specialties"
+            className="text-sm font-medium text-blue-600 hover:underline"
+          >
+            See all specialties
+          </Link>
+        }
       />
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">

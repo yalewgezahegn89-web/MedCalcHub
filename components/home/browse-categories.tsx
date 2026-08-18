@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Calculator,
   Droplets,
@@ -57,6 +58,14 @@ export function BrowseCategories() {
       <SectionHeader
         title="Browse by Category"
         description="Explore clinical calculators organized by medical topic."
+        action={
+          <Link
+            href="/categories"
+            className="text-sm font-medium text-blue-600 hover:underline"
+          >
+            See all categories
+          </Link>
+        }
       />
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
