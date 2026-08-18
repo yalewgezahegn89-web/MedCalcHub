@@ -1,8 +1,18 @@
+import Link from "next/link";
+
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 
 type Props = {
   calculator: CalculatorDefinition;
 };
+
+function toCategorySlug(category: string) {
+  return `/categories/${category.toLowerCase().replace(/\s+/g, "-")}`;
+}
+
+function toSpecialtySlug(specialty: string) {
+  return `/specialties/${specialty.toLowerCase().replace(/\s+/g, "-")}`;
+}
 
 export function CalculatorMetadataCard({
   calculator,
@@ -20,9 +30,16 @@ export function CalculatorMetadataCard({
             Specialty
           </p>
 
-          <p className="font-medium">
-            {calculator.specialty ?? "General"}
-          </p>
+          {calculator.specialty ? (
+            <Link
+              href={toSpecialtySlug(calculator.specialty)}
+              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              {calculator.specialty}
+            </Link>
+          ) : (
+            <p className="font-medium">General</p>
+          )}
         </div>
 
         <div>
@@ -30,9 +47,12 @@ export function CalculatorMetadataCard({
             Category
           </p>
 
-          <p className="font-medium">
+          <Link
+            href={toCategorySlug(calculator.category)}
+            className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+          >
             {calculator.category}
-          </p>
+          </Link>
         </div>
 
         <div>

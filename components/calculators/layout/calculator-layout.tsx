@@ -17,6 +17,8 @@ export const CalculatorLayout = forwardRef<
     className,
     title,
     description,
+    specialty,
+    category,
     actions,
     children,
     ...props
@@ -36,6 +38,8 @@ export const CalculatorLayout = forwardRef<
         <CalculatorHeader
           title={title}
           description={description ?? ""}
+          specialty={specialty}
+          category={category}
           actions={actions}
           updatedAt={new Date().getFullYear().toString()}
         />

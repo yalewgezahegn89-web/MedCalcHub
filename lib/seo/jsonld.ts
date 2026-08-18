@@ -1,10 +1,12 @@
 import type { CalculatorDefinition } from "@/lib/calculators/calculator.types";
 import { calculatorFaqs } from "@/lib/calculators/faqs";
+import { SITE_URL } from "@/lib/site-url";
 
 export function buildCalculatorJsonLd(
   calculator: CalculatorDefinition,
 ) {
   const faq = calculator.faq ?? calculatorFaqs[calculator.slug] ?? [];
+  const calculatorUrl = `${SITE_URL}/calculators/${calculator.slug}`;
 
   return {
     "@context": "https://schema.org",
@@ -20,7 +22,7 @@ export function buildCalculatorJsonLd(
 
         specialty: calculator.specialty,
 
-        url: `https://medcalchub.com/calculators/${calculator.slug}`,
+        url: calculatorUrl,
       },
 
       {
@@ -34,7 +36,7 @@ export function buildCalculatorJsonLd(
 
         description: calculator.description,
 
-        url: `https://medcalchub.com/calculators/${calculator.slug}`,
+        url: calculatorUrl,
       },
 
       {
@@ -51,6 +53,31 @@ export function buildCalculatorJsonLd(
             text: item.answer,
           },
         })),
+      },
+
+      {
+        "@type": "BreadcrumbList",
+
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Calculators",
+            item: `${SITE_URL}/calculators`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: calculator.name,
+            item: calculatorUrl,
+          },
+        ],
       },
     ],
   };

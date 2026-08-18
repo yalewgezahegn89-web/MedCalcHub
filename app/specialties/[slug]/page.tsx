@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -5,6 +6,7 @@ import {
   calculatorRegistry,
   getCalculatorsBySpecialty,
 } from "@/lib/calculators/registry";
+import { SITE_URL } from "@/lib/site-url";
 
 type PageProps = {
   params: Promise<{
@@ -33,6 +35,46 @@ function slugToSpecialty(
         .replace(/\s+/g, "-") ===
       slug.toLowerCase(),
   );
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const specialty = slugToSpecialty(slug);
+
+  if (!specialty) {
+    return { title: "Specialty Not Found" };
+  }
+
+  const calculators = getCalculatorsBySpecialty(specialty);
+  const count = calculators.length;
+
+  const description =
+    `Browse ${count} medical calculator${count !== 1 ? "s" : ""} for ${specialty}. ` +
+    `Evidence-based clinical tools for healthcare professionals.`;
+
+  return {
+    title: {
+      absolute: `${specialty} Medical Calculators | MedCalcHub`,
+    },
+    description,
+    alternates: {
+      canonical: `${SITE_URL}/specialties/${slug}`,
+    },
+    openGraph: {
+      title: `${specialty} Medical Calculators | MedCalcHub`,
+      description,
+      url: `${SITE_URL}/specialties/${slug}`,
+      type: "website",
+      siteName: "MedCalcHub",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${specialty} Medical Calculators | MedCalcHub`,
+      description,
+    },
+  };
 }
 
 export default async function SpecialtyPage({

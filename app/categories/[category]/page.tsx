@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -5,6 +6,7 @@ import {
   getCategories,
   getCalculatorsByCategory,
 } from "@/lib/calculators/registry";
+import { SITE_URL } from "@/lib/site-url";
 
 type CategoryPageProps = {
   params: Promise<{
@@ -20,6 +22,46 @@ function slugToCategory(slug: string) {
         .replace(/\s+/g, "-") ===
       slug.toLowerCase(),
   );
+}
+
+export async function generateMetadata({
+  params,
+}: CategoryPageProps): Promise<Metadata> {
+  const { category: slug } = await params;
+  const category = slugToCategory(slug);
+
+  if (!category) {
+    return { title: "Category Not Found" };
+  }
+
+  const calculators = getCalculatorsByCategory(category);
+  const count = calculators.length;
+
+  const description =
+    `Browse ${count} medical calculator${count !== 1 ? "s" : ""} in the ${category} category. ` +
+    `Evidence-based clinical tools for healthcare professionals.`;
+
+  return {
+    title: {
+      absolute: `${category} Calculators | MedCalcHub`,
+    },
+    description,
+    alternates: {
+      canonical: `${SITE_URL}/categories/${slug}`,
+    },
+    openGraph: {
+      title: `${category} Calculators | MedCalcHub`,
+      description,
+      url: `${SITE_URL}/categories/${slug}`,
+      type: "website",
+      siteName: "MedCalcHub",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category} Calculators | MedCalcHub`,
+      description,
+    },
+  };
 }
 
 export default async function CategoryPage({

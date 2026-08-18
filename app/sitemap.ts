@@ -1,6 +1,10 @@
 import type { MetadataRoute } from "next";
 
-import { calculatorRegistry } from "@/lib/calculators/registry";
+import {
+  calculatorRegistry,
+  getCategories,
+  getSpecialties,
+} from "@/lib/calculators/registry";
 import { SITE_URL } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -59,5 +63,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     }));
 
-  return [...publicPages, ...calculatorPages];
+  const categoryPages: MetadataRoute.Sitemap =
+    getCategories().map((category) => ({
+      url: `${SITE_URL}/categories/${category.toLowerCase().replace(/\s+/g, "-")}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+
+  const specialtyPages: MetadataRoute.Sitemap =
+    getSpecialties().map((specialty) => ({
+      url: `${SITE_URL}/specialties/${specialty.toLowerCase().replace(/\s+/g, "-")}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+
+  return [...publicPages, ...calculatorPages, ...categoryPages, ...specialtyPages];
 }

@@ -7,6 +7,7 @@ export interface CalculatorHeaderProps
   updatedAt?: string;
 
   specialty?: string;
+  category?: string;
   featured?: boolean;
   actions?: ReactNode;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
+import Link from "next/link";
 import { CalendarDays, ShieldCheck, Star } from "lucide-react";
 
 import { cn } from "@/lib/utils/cn";
@@ -18,12 +19,21 @@ export const CalculatorHeader = forwardRef<
     description,
     updatedAt,
     specialty,
+    category,
     featured,
     actions,
     ...props
   },
   ref,
 ) {
+  const specialtySlug = specialty
+    ? `/specialties/${specialty.toLowerCase().replace(/\s+/g, "-")}`
+    : undefined;
+
+  const categorySlug = category
+    ? `/categories/${category.toLowerCase().replace(/\s+/g, "-")}`
+    : undefined;
+
   return (
     <Card
       ref={ref}
@@ -44,10 +54,22 @@ export const CalculatorHeader = forwardRef<
           </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-3">
-            {specialty && (
-              <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+            {category && categorySlug && (
+              <Link
+                href={categorySlug}
+                className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+              >
+                {category}
+              </Link>
+            )}
+
+            {specialty && specialtySlug && (
+              <Link
+                href={specialtySlug}
+                className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 transition hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
+              >
                 {specialty}
-              </span>
+              </Link>
             )}
 
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">

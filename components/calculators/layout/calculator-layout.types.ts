@@ -6,6 +6,9 @@ export type CalculatorLayoutProps =
     description?: string;
     children: ReactNode;
 
+    specialty?: string;
+    category?: string;
+
     // NEW
     actions?: ReactNode;
   };
