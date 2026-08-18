@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Heart, X } from "lucide-react";
 
-import { getFavorites } from "@/lib/favorites";
+import {
+  getFavorites,
+  removeFavorite,
+  clearFavorites,
+} from "@/lib/favorites";
 import { calculatorRegistry } from "@/lib/calculators/registry";
 import {
   createLocalStore,
@@ -21,6 +25,16 @@ export default function FavoritesPage() {
   const calculators = calculatorRegistry.filter(
     (calculator) => favorites.includes(calculator.id),
   );
+
+  function handleClearAll() {
+    if (
+      window.confirm(
+        "Clear all favorite calculators? This cannot be undone.",
+      )
+    ) {
+      clearFavorites();
+    }
+  }
 
   return (
     <main className="container mx-auto space-y-12 px-4 py-10">
@@ -56,31 +70,56 @@ export default function FavoritesPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {calculators.map((calculator) => (
-            <Link
-              key={calculator.id}
-              href={`/calculators/${calculator.slug}`}
-              className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
+        <>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={handleClearAll}
+              className="min-h-[44px] rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
             >
-              <div className="flex items-center gap-2">
-                <Heart className="h-4 w-4 fill-red-500 text-red-500" />
+              Clear all
+            </button>
+          </div>
 
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                  {calculator.category}
-                </span>
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {calculators.map((calculator) => (
+              <div
+                key={calculator.id}
+                className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
+              >
+                <button
+                  type="button"
+                  onClick={() => removeFavorite(calculator.id)}
+                  aria-label={`Remove ${calculator.name} from favorites`}
+                  className="absolute right-3 top-3 min-h-[44px] min-w-[44px] rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+
+                <Link
+                  href={`/calculators/${calculator.slug}`}
+                  className="flex flex-1 flex-col"
+                >
+                  <div className="flex items-center gap-2">
+                    <Heart className="h-4 w-4 fill-red-500 text-red-500" />
+
+                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                      {calculator.category}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-4 text-lg font-bold transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                    {calculator.name}
+                  </h3>
+
+                  <p className="mt-2 flex-1 text-sm text-slate-600 line-clamp-3 dark:text-slate-400">
+                    {calculator.description}
+                  </p>
+                </Link>
               </div>
-
-              <h3 className="mt-4 text-lg font-bold transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                {calculator.name}
-              </h3>
-
-              <p className="mt-2 flex-1 text-sm text-slate-600 line-clamp-3 dark:text-slate-400">
-                {calculator.description}
-              </p>
-            </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
     </main>
   );

@@ -251,6 +251,61 @@ describe("favorites", () => {
   });
 
   // -------------------------------------------------------
+  // clearFavorites
+  // -------------------------------------------------------
+
+  describe("clearFavorites", () => {
+    it("empties the favorites list", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi", "crf"]));
+
+      const { clearFavorites, getFavorites } = await load();
+      clearFavorites();
+
+      expect(getFavorites()).toEqual([]);
+    });
+
+    it("dispatches change event", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi"]));
+
+      const { clearFavorites } = await load();
+      clearFavorites();
+
+      expect(dispatchEventSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ type: CHANGE_EVENT }),
+      );
+    });
+
+    it("is a no-op on empty list", async () => {
+      const { clearFavorites, getFavorites } = await load();
+      clearFavorites();
+
+      expect(getFavorites()).toEqual([]);
+      expect(ls.mock.setItem).toHaveBeenCalled();
+    });
+
+    it("does not throw when localStorage.setItem fails", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi"]));
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+
+      const { clearFavorites } = await load();
+      expect(() => clearFavorites()).not.toThrow();
+    });
+
+    it("does not dispatch event when setItem fails", async () => {
+      ls.store.set(STORAGE_KEY, JSON.stringify(["bmi"]));
+      ls.mock.setItem.mockImplementation(() => {
+        throw new DOMException("Quota exceeded", "QuotaExceededError");
+      });
+
+      const { clearFavorites } = await load();
+      clearFavorites();
+      expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  // -------------------------------------------------------
   // Storage failure resilience
   // -------------------------------------------------------
 

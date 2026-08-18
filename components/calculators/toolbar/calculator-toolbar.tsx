@@ -45,8 +45,9 @@ export const CalculatorToolbar = forwardRef<
           size="md"
           className="min-h-[44px]"
           onClick={onReset}
+          aria-label="Reset calculator"
         >
-          🔄 Reset
+          <span aria-hidden="true">🔄</span> Reset
         </Button>
       )}
 
@@ -58,8 +59,9 @@ export const CalculatorToolbar = forwardRef<
           className="min-h-[44px]"
           onClick={onCopy}
           disabled={disabledCopy}
+          aria-label="Copy result"
         >
-          📋 Copy
+          <span aria-hidden="true">📋</span> Copy
         </Button>
       )}
 
@@ -71,8 +73,9 @@ export const CalculatorToolbar = forwardRef<
           className="min-h-[44px]"
           onClick={onPrint}
           disabled={disabledPrint}
+          aria-label="Print result"
         >
-          🖨️ Print
+          <span aria-hidden="true">🖨️</span> Print
         </Button>
       )}
 
@@ -84,8 +87,9 @@ export const CalculatorToolbar = forwardRef<
           className="min-h-[44px]"
           onClick={onShare}
           disabled={disabledShare}
+          aria-label="Share calculator"
         >
-          🔗 Share
+          <span aria-hidden="true">🔗</span> Share
         </Button>
       )}
 
@@ -96,8 +100,9 @@ export const CalculatorToolbar = forwardRef<
           size="md"
           className="min-h-[44px]"
           onClick={onFavorite}
+          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
-          {isFavorite ? "❤️" : "🤍"}{" "}
+          <span aria-hidden="true">{isFavorite ? "❤️" : "🤍"}</span>{" "}
           {isFavorite ? "Favorited" : "Favorite"}
         </Button>
       )}
@@ -110,8 +115,9 @@ export const CalculatorToolbar = forwardRef<
           className="min-h-[44px]"
           onClick={onSave}
           disabled={disabledSave}
+          aria-label="Save calculation"
         >
-          💾 Save
+          <span aria-hidden="true">💾</span> Save
         </Button>
       )}
     </div>

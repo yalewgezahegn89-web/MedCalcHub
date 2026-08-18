@@ -370,34 +370,6 @@ export function getCalculatorsBySpecialty(
   );
 }
 
-export function searchCalculators(
-  query: string,
-) {
-  const search = query.toLowerCase();
-
-  return calculatorRegistry.filter(
-    (calculator) =>
-      calculator.name
-        .toLowerCase()
-        .includes(search) ||
-      calculator.description
-        .toLowerCase()
-        .includes(search) ||
-      calculator.category
-        .toLowerCase()
-        .includes(search) ||
-      calculator.specialty
-        ?.toLowerCase()
-        .includes(search) ||
-      calculator.tags?.some((tag) =>
-        tag.toLowerCase().includes(search),
-      ) ||
-      calculator.keywords?.some((keyword) =>
-        keyword.toLowerCase().includes(search),
-      ),
-  );
-}
-
 export function getSpecialties() {
   const specialties = calculatorRegistry
     .map((calculator) => calculator.specialty)

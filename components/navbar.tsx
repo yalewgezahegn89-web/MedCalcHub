@@ -20,6 +20,16 @@ const NAV_LINKS = [
   { href: "/workspace", label: "Workspace" },
 ];
 
+function getMobileFocusableElements(
+  container: HTMLElement,
+): HTMLElement[] {
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -41,7 +51,7 @@ export default function Navbar() {
     );
   }
 
-  /* Close on Escape */
+  /* Close on Escape + focus trap for mobile nav */
   useEffect(() => {
     if (!mobileOpen) return;
 
@@ -49,6 +59,35 @@ export default function Navbar() {
       if (e.key === "Escape") {
         closeMenu();
         buttonRef.current?.focus();
+        return;
+      }
+
+      if (e.key === "Tab" && menuRef.current) {
+        const focusable = getMobileFocusableElements(
+          menuRef.current,
+        );
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (
+            document.activeElement === first ||
+            document.activeElement === menuRef.current
+          ) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     }
 
@@ -122,7 +161,7 @@ export default function Navbar() {
                     : "text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400",
                 )}
               >
-                {Icon && <Icon className="h-4 w-4" />}
+                {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
                 {label}
               </Link>
             );
@@ -169,6 +208,7 @@ export default function Navbar() {
           ref={menuRef}
           id="mobile-nav"
           role="dialog"
+          aria-modal="true"
           aria-label="Navigation menu"
           className="border-t border-slate-200 bg-white px-6 py-4 md:hidden dark:border-slate-800 dark:bg-slate-950"
         >
@@ -188,7 +228,7 @@ export default function Navbar() {
                       : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800",
                   )}
                 >
-                  {Icon && <Icon className="h-4 w-4" />}
+                  {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
                   {label}
                 </Link>
               );

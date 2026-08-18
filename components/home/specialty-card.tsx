@@ -27,7 +27,7 @@ export function SpecialtyCard({
       <div
         className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${color}`}
       >
-        {icon}
+        <span aria-hidden="true">{icon}</span>
       </div>
 
       <h3 className="text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">

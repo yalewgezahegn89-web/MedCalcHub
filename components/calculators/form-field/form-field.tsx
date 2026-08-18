@@ -37,6 +37,7 @@ export function FormField({
             value={value}
             onChange={onChange}
             required={input.required}
+            aria-required={input.required || undefined}
             error={!!error}
             aria-describedby={describedBy}
           >
@@ -58,6 +59,7 @@ export function FormField({
             onChange={onChange}
             placeholder={input.placeholder}
             required={input.required}
+            aria-required={input.required || undefined}
             min={input.min}
             max={input.max}
             step={input.step}

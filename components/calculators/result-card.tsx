@@ -136,7 +136,7 @@ export default function ResultCard({
           {label}
         </h2>
 
-        <div className="mt-4 break-words text-4xl font-bold sm:text-5xl">
+        <div className="mt-4 break-words text-4xl font-bold sm:text-5xl" aria-live="polite">
           {value}
 
           {unit && (
@@ -271,7 +271,7 @@ export default function ResultCard({
           </button>
         </div>
 
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-slate-600 dark:text-slate-300">
           Estimates are for clinical reference only and do
           not constitute a diagnosis.
         </p>

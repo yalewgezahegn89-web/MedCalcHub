@@ -60,6 +60,15 @@ export function removeFavorite(id: string) {
   }
 }
 
+export function clearFavorites() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+    window.dispatchEvent(new Event(CHANGE_EVENT));
+  } catch {
+    // Storage may be full or unavailable — fail gracefully
+  }
+}
+
 export function toggleFavorite(id: string): boolean {
   if (isFavorite(id)) {
     removeFavorite(id);

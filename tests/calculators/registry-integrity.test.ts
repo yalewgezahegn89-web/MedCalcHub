@@ -11,8 +11,8 @@ import {
   getCalculatorById,
   getCalculatorsByCategory,
   getFeaturedCalculators,
-  searchCalculators,
 } from "../../lib/calculators/registry";
+import { searchCalculators } from "../../lib/search";
 
 describe("Calculator Registry Integrity", () => {
   it("registry is non-empty", () => {

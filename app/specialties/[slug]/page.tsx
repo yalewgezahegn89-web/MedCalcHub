@@ -90,7 +90,9 @@ export default async function SpecialtyPage({
             </p>
 
             <div className="mt-4 font-medium text-blue-600">
-              Open Calculator →
+              <span className="sr-only">Open </span>
+              {calculator.name}
+              <span aria-hidden="true"> →</span>
             </div>
 
           </Link>
