@@ -6,6 +6,7 @@ import { RecentCalculatorsWidget } from "@/components/home/recent-calculators-wi
 import { BrowseSpecialties } from "@/components/home/browse-specialties";
 import { BrowseCategories } from "@/components/home/browse-categories";
 import { SITE_URL } from "@/lib/site-url";
+import { AdSlot } from "@/components/ads";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
 
@@ -103,6 +104,11 @@ export default function HomePage() {
       <BrowseCategories />
 
       <BrowseSpecialties />
+
+      <AdSlot
+        size="banner"
+        slotId="placeholder-homepage-below-fold"
+      />
 
       </div>
     </>

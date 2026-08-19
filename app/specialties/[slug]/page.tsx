@@ -12,6 +12,7 @@ import {
   getCategoriesForSpecialty,
   taxonomyToSlug,
 } from "@/lib/seo/taxonomy-content";
+import { AdSlot } from "@/components/ads";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
 
@@ -215,7 +216,59 @@ export default async function SpecialtyPage({
 
         <div className="grid gap-6 md:grid-cols-2">
 
-          {calculators.map((calculator) => (
+          {calculators.slice(0, 4).map((calculator) => (
+            <div
+              key={calculator.id}
+              role="link"
+              tabIndex={0}
+              onClick={() => {
+                window.location.href = `/calculators/${calculator.slug}`;
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  window.location.href = `/calculators/${calculator.slug}`;
+                }
+              }}
+              className="cursor-pointer rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
+            >
+
+              <h2 className="text-xl font-semibold">
+                {calculator.name}
+              </h2>
+
+              <p className="mt-3 text-gray-600">
+                {calculator.description}
+              </p>
+
+              {calculator.category && (
+                <a
+                  href={`/categories/${taxonomyToSlug(calculator.category)}`}
+                  className="mt-3 inline-block text-sm text-blue-600 hover:underline"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {calculator.category}
+                </a>
+              )}
+
+              <div className="mt-4 font-medium text-blue-600">
+                <span className="sr-only">Open </span>
+                {calculator.name}
+                <span aria-hidden="true"> →</span>
+              </div>
+
+            </div>
+          ))}
+
+          {calculators.length >= 6 && (
+            <AdSlot
+              size="rectangle"
+              slotId="placeholder-specialty-feed"
+              className="col-span-1 md:col-span-2"
+            />
+          )}
+
+          {calculators.slice(4).map((calculator) => (
             <div
               key={calculator.id}
               role="link"

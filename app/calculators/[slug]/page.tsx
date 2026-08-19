@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CalculatorLayout } from "@/components/calculators/layout/calculator-layout";
 import { CalculatorClient } from "@/components/calculators/calculator-client";
 import { CalculatorMetadataCard } from "@/components/calculators/calculator-metadata-card";
+import { AdSlot } from "@/components/ads";
 import { ClinicalGuidancePanel } from "@/components/calculators/clinical-guidance-panel";
 import { EvidenceCard } from "@/components/calculators/evidence-card";
 import { CalculatorComparison } from "@/components/calculators/calculator-comparison";
@@ -73,6 +74,11 @@ export default async function CalculatorPage({
         category={calculator.category}
       >
         <CalculatorClient slug={calculator.slug} />
+
+        <AdSlot
+          size="banner"
+          slotId="placeholder-calc-primary"
+        />
 
         <CalculatorMetadataCard
           calculator={calculator}

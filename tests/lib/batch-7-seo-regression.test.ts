@@ -546,7 +546,7 @@ describe("G — Nested Link protection", () => {
     );
 
     const cardSection = source.slice(
-      source.indexOf("calculators.map"),
+      source.indexOf('role="link"'),
     );
 
     expect(cardSection).not.toMatch(
@@ -563,7 +563,7 @@ describe("G — Nested Link protection", () => {
     );
 
     const cardSection = source.slice(
-      source.indexOf("calculators.map"),
+      source.indexOf('role="link"'),
     );
 
     expect(cardSection).not.toMatch(
@@ -580,7 +580,7 @@ describe("G — Nested Link protection", () => {
     );
 
     const cardSection = source.slice(
-      source.indexOf("calculators.map"),
+      source.indexOf('role="link"'),
     );
 
     expect(cardSection).toContain("<a");
@@ -593,7 +593,7 @@ describe("G — Nested Link protection", () => {
     );
 
     const cardSection = source.slice(
-      source.indexOf("calculators.map"),
+      source.indexOf('role="link"'),
     );
 
     expect(cardSection).toContain("<a");

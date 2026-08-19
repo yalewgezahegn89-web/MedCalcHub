@@ -18,10 +18,10 @@ type AdSlotProps = {
 };
 
 const sizeStyles: Record<AdSlotSize, string> = {
-  banner: "min-h-[100px] max-w-[728px]",
-  leaderboard: "min-h-[100px] max-w-[970px]",
-  rectangle: "min-h-[260px] max-w-[336px]",
-  "mobile-banner": "min-h-[100px] max-w-[320px]",
+  banner: "min-h-[100px] max-w-[728px] w-full",
+  leaderboard: "min-h-[100px] max-w-[970px] w-full",
+  rectangle: "min-h-[260px] max-w-[336px] w-full",
+  "mobile-banner": "min-h-[100px] max-w-[320px] w-full",
 };
 
 export function AdSlot({
@@ -41,11 +41,13 @@ export function AdSlot({
   }
 
   return (
-    <aside
-      role="complementary"
-      aria-label={label}
-      className={`mx-auto my-6 overflow-hidden rounded-lg ${sizeStyles[size]} ${className ?? ""}`}
-    >
+          <aside
+        role="complementary"
+        aria-label={label}
+        data-testid="ad-slot"
+        data-slot-id={slotId}
+        className={`mx-auto my-6 flex items-center justify-center overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800 ${sizeStyles[size]} ${className ?? ""}`}
+      >
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
