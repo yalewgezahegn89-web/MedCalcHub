@@ -1,8 +1,8 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
-import { adsConfig } from "@/lib/ads/config";
+import { adsConfig, isValidSlotId } from "@/lib/ads/config";
 import {
   hasConsent,
   subscribeConsent,
@@ -12,6 +12,7 @@ type AdSlotSize = "banner" | "leaderboard" | "rectangle" | "mobile-banner";
 
 type AdSlotProps = {
   size?: AdSlotSize;
+  slotId?: string;
   label?: string;
   className?: string;
 };
@@ -25,6 +26,7 @@ const sizeStyles: Record<AdSlotSize, string> = {
 
 export function AdSlot({
   size = "banner",
+  slotId,
   label = "Advertisement",
   className,
 }: AdSlotProps) {
@@ -34,7 +36,7 @@ export function AdSlot({
     () => false,
   );
 
-  if (!adsConfig.adsenseReady || !consent) {
+  if (!adsConfig.adsenseReady || !consent || !isValidSlotId(slotId)) {
     return null;
   }
 
@@ -42,11 +44,29 @@ export function AdSlot({
     <aside
       role="complementary"
       aria-label={label}
-      className={`mx-auto my-6 flex items-center justify-center overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800 ${sizeStyles[size]} ${className ?? ""}`}
+      className={`mx-auto my-6 overflow-hidden rounded-lg ${sizeStyles[size]} ${className ?? ""}`}
     >
-      <span className="text-xs text-slate-400 dark:text-slate-500">
-        {label}
-      </span>
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client={adsConfig.adsensePubId}
+        data-ad-slot={slotId}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <AdSlotInit />
     </aside>
   );
+}
+
+function AdSlotInit() {
+  useEffect(() => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch {
+      // AdSense initialization error — silently ignored
+    }
+  }, []);
+
+  return null;
 }

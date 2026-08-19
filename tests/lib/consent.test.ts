@@ -148,6 +148,22 @@ describe("consent", () => {
       const result = clearConsent();
       expect(result).toBe(false);
     });
+
+    it("causes getConsent to return null after clearing", async () => {
+      ls.store.set(STORAGE_KEY, "true");
+      const { clearConsent, getConsent } = await load();
+      expect(getConsent()).toBe(true);
+      clearConsent();
+      expect(getConsent()).toBeNull();
+    });
+
+    it("causes hasConsent to return false after clearing", async () => {
+      ls.store.set(STORAGE_KEY, "true");
+      const { clearConsent, hasConsent } = await load();
+      expect(hasConsent()).toBe(true);
+      clearConsent();
+      expect(hasConsent()).toBe(false);
+    });
   });
 
   describe("hasConsent", () => {

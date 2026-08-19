@@ -1,5 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
+vi.mock("react", async () => {
+  const actual = await vi.importActual<typeof import("react")>("react");
+  return {
+    ...actual,
+    useSyncExternalStore: (
+      _subscribe: unknown,
+      getSnapshot: () => unknown,
+    ) => getSnapshot(),
+    useCallback: <T extends (...args: unknown[]) => unknown>(cb: T) => cb,
+    useEffect: () => {},
+  };
+});
+
 const CONSENT_KEY = "medcalchub-consent";
 
 function createLocalStorageMock() {
@@ -25,6 +38,7 @@ describe("AdSlot", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
     vi.resetModules();
 
     ls = createLocalStorageMock();
@@ -38,7 +52,7 @@ describe("AdSlot", () => {
 
   it("returns null when ads are disabled (default)", async () => {
     const { AdSlot } = await import("../../components/ads/ad-slot");
-    const result = AdSlot({ size: "banner" });
+    const result = AdSlot({ size: "banner", slotId: "1234567890" });
     expect(result).toBeNull();
   });
 
@@ -48,7 +62,7 @@ describe("AdSlot", () => {
     vi.resetModules();
 
     const { AdSlot } = await import("../../components/ads/ad-slot");
-    const result = AdSlot({ size: "banner" });
+    const result = AdSlot({ size: "banner", slotId: "1234567890" });
     expect(result).toBeNull();
   });
 
@@ -59,11 +73,11 @@ describe("AdSlot", () => {
     vi.resetModules();
 
     const { AdSlot } = await import("../../components/ads/ad-slot");
-    const result = AdSlot({ size: "banner" });
+    const result = AdSlot({ size: "banner", slotId: "1234567890" });
     expect(result).toBeNull();
   });
 
-  it("returns element when ads enabled + consent true", async () => {
+  it("returns null when slot ID is missing", async () => {
     ls.store.set(CONSENT_KEY, "true");
     vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
     vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-test123");
@@ -71,6 +85,40 @@ describe("AdSlot", () => {
 
     const { AdSlot } = await import("../../components/ads/ad-slot");
     const result = AdSlot({ size: "banner" });
+    expect(result).toBeNull();
+  });
+
+  it("returns null when slot ID is placeholder", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-test123");
+    vi.resetModules();
+
+    const { AdSlot } = await import("../../components/ads/ad-slot");
+    const result = AdSlot({ size: "banner", slotId: "XXXXXXXXXX" });
+    expect(result).toBeNull();
+  });
+
+  it("returns null when publisher ID is placeholder", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-XXXXXXXXXXXXXXXX");
+    vi.resetModules();
+
+    const { AdSlot } = await import("../../components/ads/ad-slot");
+    const result = AdSlot({ size: "banner", slotId: "1234567890" });
+    expect(result).toBeNull();
+  });
+
+  it("renders aside with ins element when all gates pass", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-1234567890");
+    vi.resetModules();
+
+    const { AdSlot } = await import("../../components/ads/ad-slot");
+    const result = AdSlot({ size: "banner", slotId: "1234567890" });
     expect(result).not.toBeNull();
+    expect(result).toHaveProperty("type", "aside");
   });
 });

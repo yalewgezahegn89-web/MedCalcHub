@@ -4,10 +4,6 @@ vi.mock("react", async () => {
   const actual = await vi.importActual<typeof import("react")>("react");
   return {
     ...actual,
-    useSyncExternalStore: (
-      _subscribe: unknown,
-      getSnapshot: () => unknown,
-    ) => getSnapshot(),
     useCallback: <T extends (...args: unknown[]) => unknown>(cb: T) => cb,
   };
 });
@@ -31,7 +27,7 @@ function createLocalStorageMock() {
   };
 }
 
-describe("CookieBanner", () => {
+describe("ConsentPreferencesButton", () => {
   let ls: ReturnType<typeof createLocalStorageMock>;
   let dispatchEventSpy: ReturnType<typeof vi.fn>;
 
@@ -52,44 +48,40 @@ describe("CookieBanner", () => {
     });
   });
 
-  it("returns element when consent is undecided", async () => {
-    const { CookieBanner } = await import(
-      "../../components/consent/cookie-banner"
+  it("returns a button element", async () => {
+    const { ConsentPreferencesButton } = await import(
+      "../../components/consent/consent-preferences-button"
     );
-    const result = CookieBanner();
+    const result = ConsentPreferencesButton();
     expect(result).not.toBeNull();
+    expect(result).toHaveProperty("type", "button");
   });
 
-  it("returns null when consent is accepted", async () => {
+  it("clears consent when clicked", async () => {
     ls.store.set(CONSENT_KEY, "true");
-    const { CookieBanner } = await import(
-      "../../components/consent/cookie-banner"
+    const { ConsentPreferencesButton } = await import(
+      "../../components/consent/consent-preferences-button"
     );
-    const result = CookieBanner();
-    expect(result).toBeNull();
+    const result = ConsentPreferencesButton();
+
+    expect(result.props.onClick).toBeDefined();
+    result.props.onClick();
+    expect(ls.mock.removeItem).toHaveBeenCalledWith(CONSENT_KEY);
+    expect(dispatchEventSpy).toHaveBeenCalled();
   });
 
-  it("returns null when consent is rejected", async () => {
-    ls.store.set(CONSENT_KEY, "false");
-    const { CookieBanner } = await import(
-      "../../components/consent/cookie-banner"
-    );
-    const result = CookieBanner();
-    expect(result).toBeNull();
-  });
-
-  it("reappears after consent is cleared (revocation)", async () => {
+  it("causes getConsent to return null after click", async () => {
     ls.store.set(CONSENT_KEY, "true");
-    const { CookieBanner } = await import(
-      "../../components/consent/cookie-banner"
-    );
-    expect(CookieBanner()).toBeNull();
+    const mod1 = await import("../../lib/consent/consent");
+    expect(mod1.getConsent()).toBe(true);
 
-    vi.resetModules();
-    ls.store.delete(CONSENT_KEY);
-    const { CookieBanner: Banner2 } = await import(
-      "../../components/consent/cookie-banner"
+    const { ConsentPreferencesButton } = await import(
+      "../../components/consent/consent-preferences-button"
     );
-    expect(Banner2()).not.toBeNull();
+    const result = ConsentPreferencesButton();
+    result.props.onClick();
+
+    const mod2 = await import("../../lib/consent/consent");
+    expect(mod2.getConsent()).toBeNull();
   });
 });

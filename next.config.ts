@@ -23,15 +23,21 @@ const securityHeaders = [
   // correctly in production. If third-party scripts are introduced later, the
   // policy should be tightened by replacing 'unsafe-inline' with per-request
   // nonces or hashes.
+  //
+  // AdSense domains are included even when ads are disabled by default.
+  // They only take effect when a real publisher ID and NEXT_PUBLIC_ADS_ENABLED=true
+  // are set in the production environment. Keeping them in the static CSP avoids
+  // runtime header mutation complexity.
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://adservice.google.de",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob:",
+      "img-src 'self' data: blob: https://pagead2.googlesyndication.com https://www.google.com https://googleads.g.doubleclick.net",
       "font-src 'self' data:",
-      "connect-src 'self'",
+      "connect-src 'self' https://pagead2.googlesyndication.com https://adservice.google.com https://googleads.g.doubleclick.net https://www.google.com",
+      "frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://adservice.google.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

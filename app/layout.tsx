@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { AdScripts } from "@/components/ads/ad-scripts";
+import { ConsentPreferencesButton } from "@/components/consent/consent-preferences-button";
 import { CookieBanner } from "@/components/consent/cookie-banner";
 import Navbar from "@/components/navbar";
 import { SearchProvider } from "@/components/search/search-provider";
@@ -72,6 +73,8 @@ export default function RootLayout({
               <a href="/privacy" className="underline hover:text-slate-700 dark:hover:text-slate-200">Privacy Policy</a>
               {" · "}
               <a href="/cookie" className="underline hover:text-slate-700 dark:hover:text-slate-200">Cookie Policy</a>
+              {" · "}
+              <ConsentPreferencesButton />
             </p>
           </div>
         </footer>
