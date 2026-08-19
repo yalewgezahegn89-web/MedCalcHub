@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { AdScripts } from "@/components/ads/ad-scripts";
+import { CookieBanner } from "@/components/consent/cookie-banner";
 import Navbar from "@/components/navbar";
 import { SearchProvider } from "@/components/search/search-provider";
 import { NotificationProvider } from "@/components/ui/notification/notification-provider";
@@ -67,10 +68,17 @@ export default function RootLayout({
             <p className="mt-2">
               Data stored locally in your browser. Not synced to any server.
             </p>
+            <p className="mt-3">
+              <a href="/privacy" className="underline hover:text-slate-700 dark:hover:text-slate-200">Privacy Policy</a>
+              {" · "}
+              <a href="/cookie" className="underline hover:text-slate-700 dark:hover:text-slate-200">Cookie Policy</a>
+            </p>
           </div>
         </footer>
 
         <NotificationProvider />
+
+        <CookieBanner />
 
         <AdScripts />
       </body>

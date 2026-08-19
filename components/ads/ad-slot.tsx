@@ -1,4 +1,12 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+
 import { adsConfig } from "@/lib/ads/config";
+import {
+  hasConsent,
+  subscribeConsent,
+} from "@/lib/consent/consent";
 
 type AdSlotSize = "banner" | "leaderboard" | "rectangle" | "mobile-banner";
 
@@ -20,7 +28,13 @@ export function AdSlot({
   label = "Advertisement",
   className,
 }: AdSlotProps) {
-  if (!adsConfig.adsenseReady) {
+  const consent = useSyncExternalStore(
+    subscribeConsent,
+    hasConsent,
+    () => false,
+  );
+
+  if (!adsConfig.adsenseReady || !consent) {
     return null;
   }
 

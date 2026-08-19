@@ -1,11 +1,22 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Script from "next/script";
 
 import { adsConfig } from "@/lib/ads/config";
+import {
+  hasConsent,
+  subscribeConsent,
+} from "@/lib/consent/consent";
 
 export function AdScripts() {
-  if (!adsConfig.adsenseReady) {
+  const consent = useSyncExternalStore(
+    subscribeConsent,
+    hasConsent,
+    () => false,
+  );
+
+  if (!adsConfig.adsenseReady || !consent) {
     return null;
   }
 
