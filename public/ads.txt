@@ -1,0 +1,8 @@
+# ads.txt
+#
+# This file is a placeholder. Replace the entries below with your
+# actual advertising provider details before going live.
+#
+# https://iabtechlab.com/ads.txt/
+#
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

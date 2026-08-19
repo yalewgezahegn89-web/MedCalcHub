@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 
+import { AdScripts } from "@/components/ads/ad-scripts";
 import Navbar from "@/components/navbar";
 import { SearchProvider } from "@/components/search/search-provider";
 import { NotificationProvider } from "@/components/ui/notification/notification-provider";
@@ -70,6 +71,8 @@ export default function RootLayout({
         </footer>
 
         <NotificationProvider />
+
+        <AdScripts />
       </body>
     </html>
   );
