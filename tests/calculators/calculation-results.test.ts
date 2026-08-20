@@ -133,6 +133,53 @@ import {
   metabolicAlkalosisCompensationCalculator,
 } from "../../lib/calculators/metabolic-alkalosis-compensation";
 
+import { ktVCalculator } from "../../lib/calculators/kt-v";
+import {
+  atherogenicIndexPlasmaCalculator,
+} from "../../lib/calculators/atherogenic-index-of-plasma";
+import {
+  pecarnHeadTraumaCalculator,
+} from "../../lib/calculators/pecarn-head-trauma";
+import {
+  rochesterCriteriaCalculator,
+} from "../../lib/calculators/rochester-criteria";
+import {
+  apobApoa1RatioCalculator,
+} from "../../lib/calculators/apob-apoa1-ratio";
+import {
+  creatinineClearance24hCalculator,
+} from "../../lib/calculators/creatinine-clearance-24h";
+import { feuaCalculator } from "../../lib/calculators/fractional-excretion-uric-acid";
+import { fepCalculator } from "../../lib/calculators/fractional-excretion-phosphate";
+import { fecaCalculator } from "../../lib/calculators/fractional-excretion-calcium";
+import { rfiCalculator } from "../../lib/calculators/renal-failure-index";
+import {
+  wintersFormulaCalculator,
+} from "../../lib/calculators/winters-formula";
+import {
+  anionGapDeltaRatioCalculator,
+} from "../../lib/calculators/anion-gap-delta-ratio";
+import {
+  freeWaterClearanceCalculator,
+} from "../../lib/calculators/free-water-clearance";
+import {
+  electrolyteFreeWaterClearanceCalculator,
+} from "../../lib/calculators/electrolyte-free-water-clearance";
+import {
+  totalCholesterolHdlRatioCalculator,
+} from "../../lib/calculators/total-cholesterol-hdl-ratio";
+import { crb65Calculator } from "../../lib/calculators/crb-65";
+import { pedsPewsCalculator } from "../../lib/calculators/peds-pews";
+import {
+  hadlockEfwCalculator,
+} from "../../lib/calculators/hadlock-efw";
+import {
+  eblObstetricCalculator,
+} from "../../lib/calculators/ebl-obstetric";
+import {
+  pediatricHypotensionCalculator,
+} from "../../lib/calculators/pediatric-hypotension";
+
 import type {
   CalculatorDefinition,
 } from "../../lib/calculators/calculator.types";
@@ -6914,5 +6961,1701 @@ describe("Metabolic Alkalosis Compensation calculate() output", () => {
     expect(r.value).toBe(42.4);
     expect(r.status).toBe("normal");
     expect(r.interpretation).toContain("within ±5");
+  });
+});
+
+// KT/V — Daugirdas Second Generation spKt/V
+// Formula: r = postBun/preBun; arg = r − 0.008 × t; ktv = −ln(arg) + (4 − 3.5r) × (uf/w)
+// Classification: ≥1.2 adequate; 1.0–1.19 below target; <1.0 inadequate
+describe("KT/V calculate() output", () => {
+  it("adequate dialysis: preBUN=100, postBUN=30, UF=2.0L, time=4h, weight=70kg", () => {
+    // r = 30/100 = 0.3; arg = 0.3 − 0.032 = 0.268
+    // ktv = −ln(0.268) + (4 − 3.5×0.3) × (2/70) = 1.317 + 0.084 = 1.40
+    const r = calc(ktVCalculator, {
+      preBun: "100",
+      postBun: "30",
+      ultrafiltrate: "2.0",
+      treatmentTime: "4",
+      postWeight: "70",
+    });
+    expect(r.value).toBeCloseTo(1.4, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("below target: preBUN=150, postBUN=60, UF=1.5L, time=4h, weight=80kg", () => {
+    // r = 60/150 = 0.4; arg = 0.4 − 0.032 = 0.368
+    // ktv = 1.0001 + (4 − 1.4) × (1.5/80) = 1.0001 + 0.0488 = 1.05
+    const r = calc(ktVCalculator, {
+      preBun: "150",
+      postBun: "60",
+      ultrafiltrate: "1.5",
+      treatmentTime: "4",
+      postWeight: "80",
+    });
+    expect(r.value).toBeCloseTo(1.05, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("inadequate: preBUN=90, postBUN=55, UF=1.0L, time=3h, weight=75kg", () => {
+    // r = 55/90 = 0.6111; arg = 0.6111 − 0.024 = 0.5871
+    // ktv = −ln(0.5871) + (4 − 3.5×0.6111) × (1/75) = 0.5325 + 0.0284 = 0.56
+    const r = calc(ktVCalculator, {
+      preBun: "90",
+      postBun: "55",
+      ultrafiltrate: "1.0",
+      treatmentTime: "3",
+      postWeight: "75",
+    });
+    expect(r.value).toBeCloseTo(0.56, 2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("high pre-BUN: preBUN=200, postBUN=80, UF=3.0L, time=4h, weight=70kg", () => {
+    // r = 80/200 = 0.4; arg = 0.4 − 0.032 = 0.368
+    // ktv = 1.0001 + 2.6 × (3/70) = 1.0001 + 0.1114 = 1.11
+    const r = calc(ktVCalculator, {
+      preBun: "200",
+      postBun: "80",
+      ultrafiltrate: "3.0",
+      treatmentTime: "4",
+      postWeight: "70",
+    });
+    expect(r.value).toBeCloseTo(1.11, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("post-BUN ≥ pre-BUN returns critical", () => {
+    const r = calc(ktVCalculator, {
+      preBun: "60",
+      postBun: "60",
+      ultrafiltrate: "1.0",
+      treatmentTime: "4",
+      postWeight: "70",
+    });
+    expect(r.status).toBe("critical");
+  });
+
+  it("zero ultrafiltration: preBUN=100, postBUN=30, UF=0, time=4h, weight=70kg", () => {
+    // r = 0.3; arg = 0.268; ktv = −ln(0.268) + 0 = 1.32
+    const r = calc(ktVCalculator, {
+      preBun: "100",
+      postBun: "30",
+      ultrafiltrate: "0",
+      treatmentTime: "4",
+      postWeight: "70",
+    });
+    expect(r.value).toBeCloseTo(1.32, 2);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// Atherogenic Index of Plasma — log10(TG / HDL)
+// Classification: <0.11 low risk; 0.11–0.21 intermediate; >0.21 high risk
+describe("Atherogenic Index of Plasma calculate() output", () => {
+  it("low risk: TG=80, HDL=60", () => {
+    const r = calc(atherogenicIndexPlasmaCalculator, {
+      triglycerides: "80",
+      hdlCholesterol: "60",
+    });
+    expect(r.value).toBeCloseTo(0.12, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("very low risk: TG=60, HDL=60", () => {
+    const r = calc(atherogenicIndexPlasmaCalculator, {
+      triglycerides: "60",
+      hdlCholesterol: "60",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("high risk: TG=200, HDL=40", () => {
+    const r = calc(atherogenicIndexPlasmaCalculator, {
+      triglycerides: "200",
+      hdlCholesterol: "40",
+    });
+    expect(r.value).toBeCloseTo(0.7, 2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("intermediate: TG=150, HDL=50", () => {
+    const r = calc(atherogenicIndexPlasmaCalculator, {
+      triglycerides: "150",
+      hdlCholesterol: "50",
+    });
+    expect(r.value).toBeCloseTo(0.48, 2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("borderline at 0.11: TG≈73.6, HDL=56 → ratio≈1.314 → log10≈0.1186", () => {
+    const r = calc(atherogenicIndexPlasmaCalculator, {
+      triglycerides: "132",
+      hdlCholesterol: "100",
+    });
+    expect(r.value).toBeCloseTo(0.12, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("very high risk: TG=400, HDL=30", () => {
+    const r = calc(atherogenicIndexPlasmaCalculator, {
+      triglycerides: "400",
+      hdlCholesterol: "30",
+    });
+    expect(r.value).toBeCloseTo(1.12, 2);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// PECARN Head Trauma — count of yes predictors (0–6)
+// Classification: 0 very low risk; 1 not very low; ≥2 higher risk
+describe("PECARN Head Trauma calculate() output", () => {
+  it("under-2: all negative → 0 predictors → normal", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "under-2",
+      u2AlteredMentation: "no",
+      u2PalpableSkullFracture: "no",
+      u2ScalpHematoma: "no",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      p2AlteredMentation: "no",
+      p2BasilarSkullFracture: "no",
+      p2Vomiting: "no",
+      p2SevereHeadache: "no",
+      p2LossOfConsciousness: "no",
+      dangerousMechanism: "no",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("under-2: altered mentalization → 1 predictor → high", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "under-2",
+      u2AlteredMentation: "yes",
+      u2PalpableSkullFracture: "no",
+      u2ScalpHematoma: "no",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      p2AlteredMentation: "no",
+      p2BasilarSkullFracture: "no",
+      p2Vomiting: "no",
+      p2SevereHeadache: "no",
+      p2LossOfConsciousness: "no",
+      dangerousMechanism: "no",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("under-2: skull fracture + scalp hematoma → 2 predictors → critical", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "under-2",
+      u2AlteredMentation: "no",
+      u2PalpableSkullFracture: "yes",
+      u2ScalpHematoma: "yes",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      p2AlteredMentation: "no",
+      p2BasilarSkullFracture: "no",
+      p2Vomiting: "no",
+      p2SevereHeadache: "no",
+      p2LossOfConsciousness: "no",
+      dangerousMechanism: "no",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("under-2: all positive → 6 predictors → critical", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "under-2",
+      u2AlteredMentation: "yes",
+      u2PalpableSkullFracture: "yes",
+      u2ScalpHematoma: "yes",
+      u2Loc5Seconds: "yes",
+      u2NotActingNormal: "yes",
+      p2AlteredMentation: "no",
+      p2BasilarSkullFracture: "no",
+      p2Vomiting: "no",
+      p2SevereHeadache: "no",
+      p2LossOfConsciousness: "no",
+      dangerousMechanism: "yes",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("two-and-older: all negative → 0 predictors → normal", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "two-and-older",
+      u2AlteredMentation: "no",
+      u2PalpableSkullFracture: "no",
+      u2ScalpHematoma: "no",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      p2AlteredMentation: "no",
+      p2BasilarSkullFracture: "no",
+      p2Vomiting: "no",
+      p2SevereHeadache: "no",
+      p2LossOfConsciousness: "no",
+      dangerousMechanism: "no",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("two-and-older: altered mentation + LOC → 2 predictors → critical", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "two-and-older",
+      u2AlteredMentation: "no",
+      u2PalpableSkullFracture: "no",
+      u2ScalpHematoma: "no",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      p2AlteredMentation: "yes",
+      p2BasilarSkullFracture: "no",
+      p2Vomiting: "no",
+      p2SevereHeadache: "no",
+      p2LossOfConsciousness: "yes",
+      dangerousMechanism: "no",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("two-and-older: vomiting + headache + dangerous mechanism → 3 → critical", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "two-and-older",
+      u2AlteredMentation: "no",
+      u2PalpableSkullFracture: "no",
+      u2ScalpHematoma: "no",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      p2AlteredMentation: "no",
+      p2BasilarSkullFracture: "no",
+      p2Vomiting: "yes",
+      p2SevereHeadache: "yes",
+      p2LossOfConsciousness: "no",
+      dangerousMechanism: "yes",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("two-and-older: only basilar skull fracture → 1 predictor → high", () => {
+    const r = calc(pecarnHeadTraumaCalculator, {
+      ageGroup: "two-and-older",
+      u2AlteredMentation: "no",
+      u2PalpableSkullFracture: "no",
+      u2ScalpHematoma: "no",
+      u2Loc5Seconds: "no",
+      u2NotActingNormal: "no",
+      p2AlteredMentation: "no",
+      p2BasilarSkullFracture: "yes",
+      p2Vomiting: "no",
+      p2SevereHeadache: "no",
+      p2LossOfConsciousness: "no",
+      dangerousMechanism: "no",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+});
+
+// Rochester Criteria — febrile infant 0–60 days, 7 criteria
+// Classification: 7/7 low risk; <7 not low risk
+describe("Rochester Criteria calculate() output", () => {
+  it("all criteria met → 7/7 → normal", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "14",
+      termGestation: "yes",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "10000",
+      urinalysisWbc: "2",
+      diarrhea: "no",
+      stoolWbc: "0",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("normal");
+  });
+
+  it("WBC too low → 6/7 → high", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "14",
+      termGestation: "yes",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "4000",
+      urinalysisWbc: "2",
+      diarrhea: "no",
+      stoolWbc: "0",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("WBC too high → 6/7 → high", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "21",
+      termGestation: "yes",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "20000",
+      urinalysisWbc: "2",
+      diarrhea: "no",
+      stoolWbc: "0",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("preterm + high WBC → 5/7 → high", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "7",
+      termGestation: "no",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "20000",
+      urinalysisWbc: "2",
+      diarrhea: "no",
+      stoolWbc: "0",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+  });
+
+  it("diarrhea with stool WBC < 5 → still met → 7/7 → normal", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "21",
+      termGestation: "yes",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "10000",
+      urinalysisWbc: "2",
+      diarrhea: "yes",
+      stoolWbc: "3",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("normal");
+  });
+
+  it("diarrhea with stool WBC ≥ 5 → unmet → 6/7 → high", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "21",
+      termGestation: "yes",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "10000",
+      urinalysisWbc: "2",
+      diarrhea: "yes",
+      stoolWbc: "8",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("focal infection present → 6/7 → high", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "30",
+      termGestation: "yes",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "yes",
+      wbc: "10000",
+      urinalysisWbc: "2",
+      diarrhea: "no",
+      stoolWbc: "0",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("age boundary: 0 days → eligible", () => {
+    const r = calc(rochesterCriteriaCalculator, {
+      ageDays: "0",
+      termGestation: "yes",
+      previouslyHealthy: "yes",
+      nontoxic: "yes",
+      focalInfection: "no",
+      wbc: "10000",
+      urinalysisWbc: "2",
+      diarrhea: "no",
+      stoolWbc: "0",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ApoB/ApoA1 Ratio — ApoB / ApoA1
+// Sex-specific threshold: male ≤1.0 normal; female ≤0.8 normal; above → critical
+describe("ApoB/ApoA1 Ratio calculate() output", () => {
+  it("male, low risk: ApoB=0.8, ApoA1=1.2 → ratio 0.67", () => {
+    const r = calc(apobApoa1RatioCalculator, {
+      apoB: "0.8",
+      apoA1: "1.2",
+      sex: "male",
+    });
+    expect(r.value).toBeCloseTo(0.67, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male, high risk: ApoB=1.5, ApoA1=1.0 → ratio 1.5", () => {
+    const r = calc(apobApoa1RatioCalculator, {
+      apoB: "1.5",
+      apoA1: "1.0",
+      sex: "male",
+    });
+    expect(r.value).toBe(1.5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("male, at threshold: ApoB=1.0, ApoA1=1.0 → ratio 1.0", () => {
+    const r = calc(apobApoa1RatioCalculator, {
+      apoB: "1.0",
+      apoA1: "1.0",
+      sex: "male",
+    });
+    expect(r.value).toBe(1.0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female, normal: ApoB=0.6, ApoA1=1.0 → ratio 0.6", () => {
+    const r = calc(apobApoa1RatioCalculator, {
+      apoB: "0.6",
+      apoA1: "1.0",
+      sex: "female",
+    });
+    expect(r.value).toBe(0.6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female, high risk: ApoB=1.2, ApoA1=1.0 → ratio 1.2 > 0.8", () => {
+    const r = calc(apobApoa1RatioCalculator, {
+      apoB: "1.2",
+      apoA1: "1.0",
+      sex: "female",
+    });
+    expect(r.value).toBe(1.2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("female, at threshold: ApoB=0.8, ApoA1=1.0 → ratio 0.8", () => {
+    const r = calc(apobApoa1RatioCalculator, {
+      apoB: "0.8",
+      apoA1: "1.0",
+      sex: "female",
+    });
+    expect(r.value).toBe(0.8);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// 24-hour Creatinine Clearance — (Ucr × Vol) / (Scr × 1440)
+// Classification: ≥90 normal; ≥60 high; ≥30 high; ≥15 critical; <15 critical
+describe("24-hour Creatinine Clearance calculate() output", () => {
+  it("normal: Ucr=120, Vol=1440, Scr=1.0 → 120 mL/min", () => {
+    const r = calc(creatinineClearance24hCalculator, {
+      urineCreatinine: "120",
+      urineVolume: "1440",
+      serumCreatinine: "1.0",
+    });
+    expect(r.value).toBe(120);
+    expect(r.status).toBe("normal");
+  });
+
+  it("reduced: Ucr=60, Vol=1000, Scr=1.5 → 27.8 mL/min", () => {
+    const r = calc(creatinineClearance24hCalculator, {
+      urineCreatinine: "60",
+      urineVolume: "1000",
+      serumCreatinine: "1.5",
+    });
+    expect(r.value).toBeCloseTo(27.8, 1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("severe: Ucr=30, Vol=500, Scr=2.0 → 5.2 mL/min", () => {
+    const r = calc(creatinineClearance24hCalculator, {
+      urineCreatinine: "30",
+      urineVolume: "500",
+      serumCreatinine: "2.0",
+    });
+    expect(r.value).toBeCloseTo(5.2, 1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("high: Ucr=150, Vol=2000, Scr=0.8 → 260.4 mL/min", () => {
+    const r = calc(creatinineClearance24hCalculator, {
+      urineCreatinine: "150",
+      urineVolume: "2000",
+      serumCreatinine: "0.8",
+    });
+    expect(r.value).toBeCloseTo(260.4, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 90: Ucr=90, Vol=1440, Scr=1.0 → 90 mL/min", () => {
+    const r = calc(creatinineClearance24hCalculator, {
+      urineCreatinine: "90",
+      urineVolume: "1440",
+      serumCreatinine: "1.0",
+    });
+    expect(r.value).toBe(90);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 60: Ucr=60, Vol=1440, Scr=1.0 → 60 mL/min", () => {
+    const r = calc(creatinineClearance24hCalculator, {
+      urineCreatinine: "60",
+      urineVolume: "1440",
+      serumCreatinine: "1.0",
+    });
+    expect(r.value).toBe(60);
+    expect(r.status).toBe("high");
+  });
+});
+
+// FEUA — (Uua × Scr) / (Sua × Ucr) × 100
+// Classification: <12 prerenal; 12–20 indeterminate; >20 ATN
+describe("Fractional Excretion of Uric Acid calculate() output", () => {
+  it("prerenal: Uua=8, Scr=1.0, Sua=6, Ucr=50 → 2.67%", () => {
+    const r = calc(feuaCalculator, {
+      urineUricAcid: "8",
+      serumUricAcid: "6",
+      urineCr: "50",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(2.67, 2);
+    expect(r.status).toBe("low");
+  });
+
+  it("indeterminate: Uua=40, Scr=1.5, Sua=6, Ucr=50 → 20%", () => {
+    const r = calc(feuaCalculator, {
+      urineUricAcid: "40",
+      serumUricAcid: "6",
+      urineCr: "50",
+      plasmaCr: "1.5",
+    });
+    expect(r.value).toBeCloseTo(20, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("ATN: Uua=60, Scr=1.5, Sua=5, Ucr=30 → 60%", () => {
+    const r = calc(feuaCalculator, {
+      urineUricAcid: "60",
+      serumUricAcid: "5",
+      urineCr: "30",
+      plasmaCr: "1.5",
+    });
+    expect(r.value).toBeCloseTo(60, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("low end: Uua=5, Scr=1.0, Sua=8, Ucr=80 → 0.78%", () => {
+    const r = calc(feuaCalculator, {
+      urineUricAcid: "5",
+      serumUricAcid: "8",
+      urineCr: "80",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(0.78, 2);
+    expect(r.status).toBe("low");
+  });
+
+  it("high end: Uua=100, Scr=2.0, Sua=4, Ucr=20 → 250%", () => {
+    const r = calc(feuaCalculator, {
+      urineUricAcid: "100",
+      serumUricAcid: "4",
+      urineCr: "20",
+      plasmaCr: "2.0",
+    });
+    expect(r.value).toBeCloseTo(250, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary at 12%: Uua=24, Scr=1.0, Sua=5, Ucr=40 → 12%", () => {
+    const r = calc(feuaCalculator, {
+      urineUricAcid: "24",
+      serumUricAcid: "5",
+      urineCr: "40",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(12, 2);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// FEP — (Up × Scr) / (Sp × Ucr) × 100
+// Classification: <5 non-renal; 5–20 renal wasting; >20 markedly elevated
+describe("Fractional Excretion of Phosphate calculate() output", () => {
+  it("low (non-renal): Up=1, Scr=1.0, Sp=4, Ucr=50 → 0.5%", () => {
+    const r = calc(fepCalculator, {
+      urinePhosphate: "1",
+      serumPhosphate: "4",
+      urineCr: "50",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(0.5, 2);
+    expect(r.status).toBe("low");
+  });
+
+  it("normal (renal wasting): Up=10, Scr=1.5, Sp=4, Ucr=50 → 7.5%", () => {
+    const r = calc(fepCalculator, {
+      urinePhosphate: "10",
+      serumPhosphate: "4",
+      urineCr: "50",
+      plasmaCr: "1.5",
+    });
+    expect(r.value).toBeCloseTo(7.5, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("high: Up=30, Scr=1.5, Sp=3, Ucr=40 → 37.5%", () => {
+    const r = calc(fepCalculator, {
+      urinePhosphate: "30",
+      serumPhosphate: "3",
+      urineCr: "40",
+      plasmaCr: "1.5",
+    });
+    expect(r.value).toBeCloseTo(37.5, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary at 5%: Up=4, Scr=1.0, Sp=4, Ucr=20 → 5%", () => {
+    const r = calc(fepCalculator, {
+      urinePhosphate: "4",
+      serumPhosphate: "4",
+      urineCr: "20",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(5, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary at 20%: Up=16, Scr=1.0, Sp=4, Ucr=20 → 20%", () => {
+    const r = calc(fepCalculator, {
+      urinePhosphate: "16",
+      serumPhosphate: "4",
+      urineCr: "20",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(20, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("very high: Up=50, Scr=2.0, Sp=3, Ucr=30 → 111.11%", () => {
+    const r = calc(fepCalculator, {
+      urinePhosphate: "50",
+      serumPhosphate: "3",
+      urineCr: "30",
+      plasmaCr: "2.0",
+    });
+    expect(r.value).toBeCloseTo(111.11, 2);
+    expect(r.status).toBe("high");
+  });
+});
+
+// FECa — (Uca × Scr) / (Sca × Ucr) × 100
+// Classification: <1% FHH likely; 1–2% gray zone; >2% PHPT
+describe("Fractional Excretion of Calcium calculate() output", () => {
+  it("low (FHH likely): Uca=0.5, Scr=1.0, Sca=10, Ucr=50 → 0.1%", () => {
+    const r = calc(fecaCalculator, {
+      urineCalcium: "0.5",
+      serumCalcium: "10",
+      urineCr: "50",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(0.1, 2);
+    expect(r.status).toBe("low");
+  });
+
+  it("normal (gray zone): Uca=2, Scr=1.0, Sca=10, Ucr=20 → 1%", () => {
+    const r = calc(fecaCalculator, {
+      urineCalcium: "2",
+      serumCalcium: "10",
+      urineCr: "20",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(1, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("high (PHPT): Uca=6, Scr=1.5, Sca=11, Ucr=50 → 1.64%", () => {
+    const r = calc(fecaCalculator, {
+      urineCalcium: "6",
+      serumCalcium: "11",
+      urineCr: "50",
+      plasmaCr: "1.5",
+    });
+    expect(r.value).toBeCloseTo(1.64, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("very high: Uca=10, Scr=1.0, Sca=9, Ucr=20 → 5.56%", () => {
+    const r = calc(fecaCalculator, {
+      urineCalcium: "10",
+      serumCalcium: "9",
+      urineCr: "20",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(5.56, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary at 1%: Uca=1, Scr=1.0, Sca=10, Ucr=10 → 1%", () => {
+    const r = calc(fecaCalculator, {
+      urineCalcium: "1",
+      serumCalcium: "10",
+      urineCr: "10",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(1, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary at 2%: Uca=4, Scr=1.0, Sca=10, Ucr=20 → 2%", () => {
+    const r = calc(fecaCalculator, {
+      urineCalcium: "4",
+      serumCalcium: "10",
+      urineCr: "20",
+      plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(2, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score field returns CCCR (feca/100)", () => {
+    const r = calc(fecaCalculator, {
+      urineCalcium: "10",
+      serumCalcium: "9",
+      urineCr: "20",
+      plasmaCr: "1.0",
+    });
+    expect(r.score).toBeCloseTo(0.0556, 4);
+  });
+});
+
+// Renal Failure Index — (Una × Scr) / Ucr
+// Classification: <1 prerenal; 1–2 indeterminate; >2 ATN
+describe("Renal Failure Index calculate() output", () => {
+  it("prerenal: Una=10, Scr=1.0, Ucr=100 → 0.1", () => {
+    const r = calc(rfiCalculator, {
+      urineSodium: "10",
+      plasmaCr: "1.0",
+      urineCr: "100",
+    });
+    expect(r.value).toBeCloseTo(0.1, 2);
+    expect(r.status).toBe("low");
+  });
+
+  it("indeterminate: Una=40, Scr=1.5, Ucr=40 → 1.5", () => {
+    const r = calc(rfiCalculator, {
+      urineSodium: "40",
+      plasmaCr: "1.5",
+      urineCr: "40",
+    });
+    expect(r.value).toBeCloseTo(1.5, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("ATN: Una=60, Scr=2.0, Ucr=15 → 8", () => {
+    const r = calc(rfiCalculator, {
+      urineSodium: "60",
+      plasmaCr: "2.0",
+      urineCr: "15",
+    });
+    expect(r.value).toBeCloseTo(8, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary at 1: Una=20, Scr=1.0, Ucr=20 → 1", () => {
+    const r = calc(rfiCalculator, {
+      urineSodium: "20",
+      plasmaCr: "1.0",
+      urineCr: "20",
+    });
+    expect(r.value).toBeCloseTo(1, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary at 2: Una=40, Scr=1.0, Ucr=20 → 2", () => {
+    const r = calc(rfiCalculator, {
+      urineSodium: "40",
+      plasmaCr: "1.0",
+      urineCr: "20",
+    });
+    expect(r.value).toBeCloseTo(2, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("high prerenal: Una=5, Scr=1.0, Ucr=200 → 0.03", () => {
+    const r = calc(rfiCalculator, {
+      urineSodium: "5",
+      plasmaCr: "1.0",
+      urineCr: "200",
+    });
+    expect(r.value).toBeCloseTo(0.03, 2);
+    expect(r.status).toBe("low");
+  });
+});
+
+// Winters Formula — Expected PaCO₂ = 1.5 × HCO₃ + 8 ± 2
+// Classification: within range appropriate; above inadequate; below excessive
+// Guard: HCO₃ ≥ 24 → critical (not applicable)
+describe("Winters Formula calculate() output", () => {
+  it("adequate compensation: HCO₃=18, PCO₂=35 → expected 35", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "18",
+      pco2: "35",
+    });
+    expect(r.value).toBe(35);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("within the expected range");
+  });
+
+  it("inadequate: HCO₃=16, PCO₂=38 → expected 32, above range", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "16",
+      pco2: "38",
+    });
+    expect(r.value).toBe(32);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("above the expected range");
+  });
+
+  it("excessive: HCO₃=14, PCO₂=22 → expected 29, below range", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "14",
+      pco2: "22",
+    });
+    expect(r.value).toBe(29);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("below the expected range");
+  });
+
+  it("HCO₃=24 rejected (no metabolic acidosis)", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "24",
+      pco2: "40",
+    });
+    expect(r.status).toBe("critical");
+  });
+
+  it("lower tolerance boundary: HCO₃=12, expected=26, PCO₂=24 → at boundary", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "12",
+      pco2: "24",
+    });
+    expect(r.value).toBe(26);
+    expect(r.status).toBe("normal");
+  });
+
+  it("upper tolerance boundary: HCO₃=12, expected=26, PCO₂=28 → at boundary", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "12",
+      pco2: "28",
+    });
+    expect(r.value).toBe(26);
+    expect(r.status).toBe("normal");
+  });
+
+  it("severe acidosis: HCO₃=10, PCO₂=23 → expected 23, within range", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "10",
+      pco2: "23",
+    });
+    expect(r.value).toBe(23);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mixed disorder: HCO₃=15, PCO₂=45 → expected 30.5, above", () => {
+    const r = calc(wintersFormulaCalculator, {
+      bicarbonate: "15",
+      pco2: "45",
+    });
+    expect(r.value).toBe(30.5);
+    expect(r.status).toBe("high");
+  });
+});
+
+// Anion Gap Delta Ratio — (AG − 12) / (24 − HCO₃)
+// Guard: AG < 12 → critical; HCO₃ ≥ 24 → critical
+// Classification: <1 mixed; 1–2 pure HAGMA; >2 concurrent alkalosis
+describe("Anion Gap Delta Ratio calculate() output", () => {
+  it("pure HAGMA: AG=24, HCO₃=12 → ratio 1.0", () => {
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "24",
+      bicarbonate: "12",
+    });
+    expect(r.value).toBe(1.0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mixed: AG=16, HCO₃=16 → ratio 1.0", () => {
+    // (16−12)/(24−16) = 4/8 = 0.5 → mixed
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "16",
+      bicarbonate: "16",
+    });
+    expect(r.value).toBeCloseTo(0.5, 2);
+    expect(r.status).toBe("low");
+  });
+
+  it("concurrent alkalosis: AG=30, HCO₃=18 → ratio 3.0", () => {
+    // (30−12)/(24−18) = 18/6 = 3.0
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "30",
+      bicarbonate: "18",
+    });
+    expect(r.value).toBeCloseTo(3.0, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("AG < 12 → critical (no HAGMA)", () => {
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "10",
+      bicarbonate: "18",
+    });
+    expect(r.status).toBe("critical");
+  });
+
+  it("HCO₃ ≥ 24 → critical (denominator not positive)", () => {
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "20",
+      bicarbonate: "24",
+    });
+    expect(r.status).toBe("critical");
+  });
+
+  it("extreme HAGMA: AG=44, HCO₃=8 → ratio 2.0", () => {
+    // (44−12)/(24−8) = 32/16 = 2.0
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "44",
+      bicarbonate: "8",
+    });
+    expect(r.value).toBeCloseTo(2.0, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary ratio at 1: AG=14, HCO₃=22 → ratio 1.0", () => {
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "14",
+      bicarbonate: "22",
+    });
+    expect(r.value).toBe(1.0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary ratio at 2: AG=24, HCO₃=18 → ratio 2.0", () => {
+    // (24−12)/(24−18) = 12/6 = 2.0
+    const r = calc(anionGapDeltaRatioCalculator, {
+      anionGap: "24",
+      bicarbonate: "18",
+    });
+    expect(r.value).toBe(2.0);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// Free Water Clearance — CH₂O = V × (1 − Uosm / Posm)
+// Classification: >0 normal (dilute); =0 normal (iso-osmolar); <0 high (concentrated)
+describe("Free Water Clearance calculate() output", () => {
+  it("positive (dilute): V=2, Uosm=100, Posm=300 → 1.33", () => {
+    const r = calc(freeWaterClearanceCalculator, {
+      urineVolume: "2",
+      urineOsmolality: "100",
+      plasmaOsmolality: "300",
+    });
+    expect(r.value).toBeCloseTo(1.33, 2);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("positive free water clearance");
+  });
+
+  it("negative (concentrated): V=1, Uosm=600, Posm=300 → −1.0", () => {
+    const r = calc(freeWaterClearanceCalculator, {
+      urineVolume: "1",
+      urineOsmolality: "600",
+      plasmaOsmolality: "300",
+    });
+    expect(r.value).toBe(-1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("negative free water clearance");
+  });
+
+  it("iso-osmolar: V=1, Uosm=300, Posm=300 → 0", () => {
+    const r = calc(freeWaterClearanceCalculator, {
+      urineVolume: "1",
+      urineOsmolality: "300",
+      plasmaOsmolality: "300",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("iso-osmolar");
+  });
+
+  it("mildly negative: V=1.5, Uosm=400, Posm=300 → −0.5", () => {
+    const r = calc(freeWaterClearanceCalculator, {
+      urineVolume: "1.5",
+      urineOsmolality: "400",
+      plasmaOsmolality: "300",
+    });
+    expect(r.value).toBe(-0.5);
+    expect(r.status).toBe("high");
+  });
+
+  it("highly positive: V=3, Uosm=50, Posm=300 → 2.5", () => {
+    const r = calc(freeWaterClearanceCalculator, {
+      urineVolume: "3",
+      urineOsmolality: "50",
+      plasmaOsmolality: "300",
+    });
+    expect(r.value).toBeCloseTo(2.5, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("slightly positive: V=1, Uosm=250, Posm=300 → 0.17", () => {
+    const r = calc(freeWaterClearanceCalculator, {
+      urineVolume: "1",
+      urineOsmolality: "250",
+      plasmaOsmolality: "300",
+    });
+    expect(r.value).toBeCloseTo(0.17, 2);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// Electrolyte-Free Water Clearance — EFWC = V × (1 − (Una + UK) / PNa)
+// Classification: >0 high (renal loss); =0 normal; <0 normal (extrarenal)
+describe("Electrolyte-Free Water Clearance calculate() output", () => {
+  it("positive: V=2, Una=10, UK=10, PNa=140 → 1.71", () => {
+    const r = calc(electrolyteFreeWaterClearanceCalculator, {
+      urineVolume: "2",
+      urineSodium: "10",
+      urinePotassium: "10",
+      plasmaSodium: "140",
+    });
+    expect(r.value).toBeCloseTo(1.71, 2);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("renal electrolyte-free water loss");
+  });
+
+  it("negative: V=1, Una=60, UK=30, PNa=140 → 0.36", () => {
+    const r = calc(electrolyteFreeWaterClearanceCalculator, {
+      urineVolume: "1",
+      urineSodium: "60",
+      urinePotassium: "30",
+      plasmaSodium: "140",
+    });
+    expect(r.value).toBeCloseTo(0.36, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("iso-tonic: V=1, Una=70, UK=20, PNa=140 → 0.36", () => {
+    const r = calc(electrolyteFreeWaterClearanceCalculator, {
+      urineVolume: "1",
+      urineSodium: "70",
+      urinePotassium: "20",
+      plasmaSodium: "140",
+    });
+    expect(r.value).toBeCloseTo(0.36, 2);
+    expect(r.status).toBe("high");
+  });
+
+  it("zero: V=1, Una=100, UK=40, PNa=140 → 0", () => {
+    const r = calc(electrolyteFreeWaterClearanceCalculator, {
+      urineVolume: "1",
+      urineSodium: "100",
+      urinePotassium: "40",
+      plasmaSodium: "140",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("highly negative: V=2, Una=100, UK=50, PNa=140 → −0.14", () => {
+    const r = calc(electrolyteFreeWaterClearanceCalculator, {
+      urineVolume: "2",
+      urineSodium: "100",
+      urinePotassium: "50",
+      plasmaSodium: "140",
+    });
+    expect(r.value).toBeCloseTo(-0.14, 2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("low urine electrolytes: V=3, Una=5, UK=5, PNa=140 → 2.79", () => {
+    const r = calc(electrolyteFreeWaterClearanceCalculator, {
+      urineVolume: "3",
+      urineSodium: "5",
+      urinePotassium: "5",
+      plasmaSodium: "140",
+    });
+    expect(r.value).toBeCloseTo(2.79, 2);
+    expect(r.status).toBe("high");
+  });
+});
+
+// Total Cholesterol / HDL Ratio
+// Classification: <4 desirable; 4–5 moderate; >5 elevated
+describe("Total Cholesterol/HDL Ratio calculate() output", () => {
+  it("desirable: TC=180, HDL=50 → 3.6", () => {
+    const r = calc(totalCholesterolHdlRatioCalculator, {
+      totalCholesterol: "180",
+      hdlCholesterol: "50",
+    });
+    expect(r.value).toBe(3.6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("moderate: TC=220, HDL=50 → 4.4", () => {
+    const r = calc(totalCholesterolHdlRatioCalculator, {
+      totalCholesterol: "220",
+      hdlCholesterol: "50",
+    });
+    expect(r.value).toBe(4.4);
+    expect(r.status).toBe("high");
+  });
+
+  it("elevated: TC=300, HDL=50 → 6.0", () => {
+    const r = calc(totalCholesterolHdlRatioCalculator, {
+      totalCholesterol: "300",
+      hdlCholesterol: "50",
+    });
+    expect(r.value).toBe(6.0);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary at 4: TC=200, HDL=50 → 4.0", () => {
+    const r = calc(totalCholesterolHdlRatioCalculator, {
+      totalCholesterol: "200",
+      hdlCholesterol: "50",
+    });
+    expect(r.value).toBe(4.0);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary at 5: TC=250, HDL=50 → 5.0", () => {
+    const r = calc(totalCholesterolHdlRatioCalculator, {
+      totalCholesterol: "250",
+      hdlCholesterol: "50",
+    });
+    expect(r.value).toBe(5.0);
+    expect(r.status).toBe("high");
+  });
+
+  it("low HDL driving high ratio: TC=200, HDL=30 → 6.67", () => {
+    const r = calc(totalCholesterolHdlRatioCalculator, {
+      totalCholesterol: "200",
+      hdlCholesterol: "30",
+    });
+    expect(r.value).toBeCloseTo(6.67, 2);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// CRB-65 — confusion + RR≥30 + SBP<90/DBP≤60 + age≥65
+// Classification: 0 low; 1–2 intermediate; 3–4 high
+describe("CRB-65 calculate() output", () => {
+  it("score 0: no confusion, RR=20, SBP=120, DBP=80, age=50", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "0",
+      "respiratory-rate": "20",
+      sbp: "120",
+      dbp: "80",
+      age: "50",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 1: confusion only", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "1",
+      "respiratory-rate": "20",
+      sbp: "120",
+      dbp: "80",
+      age: "50",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 2: RR≥30 + age≥65", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "0",
+      "respiratory-rate": "30",
+      sbp: "120",
+      dbp: "80",
+      age: "65",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 3: confusion + SBP<90 + age≥65", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "1",
+      "respiratory-rate": "20",
+      sbp: "80",
+      dbp: "80",
+      age: "70",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 4: all criteria positive", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "1",
+      "respiratory-rate": "32",
+      sbp: "85",
+      dbp: "50",
+      age: "80",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("critical");
+  });
+
+  it("DBP≤60 counts even if SBP≥90: DBP=60 → hypotension criterion met", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "0",
+      "respiratory-rate": "20",
+      sbp: "130",
+      dbp: "60",
+      age: "50",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("RR exactly 29 does NOT meet threshold → score 0", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "0",
+      "respiratory-rate": "29",
+      sbp: "120",
+      dbp: "80",
+      age: "50",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("age exactly 64 does NOT meet threshold", () => {
+    const r = calc(crb65Calculator, {
+      confusion: "0",
+      "respiratory-rate": "20",
+      sbp: "120",
+      dbp: "80",
+      age: "64",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// Pediatric PEWS — behavior(0–3) + cardiovascular(0–3) + respiratory(0–3) + concern(0–1)
+// Classification: ≤2 low; 3–4 intermediate; ≥5 high
+describe("Pediatric PEWS calculate() output", () => {
+  it("low risk: all 0, no concern → 0", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "0",
+      cardiovascular: "0",
+      respiratory: "0",
+      concern: "no",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("moderate: behavior=1, cardio=1, resp=0, no concern → 2", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "1",
+      cardiovascular: "1",
+      respiratory: "0",
+      concern: "no",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("intermediate: behavior=1, cardio=1, resp=1, no concern → 3", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "1",
+      cardiovascular: "1",
+      respiratory: "1",
+      concern: "no",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("intermediate: behavior=1, cardio=0, resp=0, yes concern → 2", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "1",
+      cardiovascular: "0",
+      respiratory: "0",
+      concern: "yes",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("high: behavior=2, cardio=2, resp=1, no concern → 5", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "2",
+      cardiovascular: "2",
+      respiratory: "1",
+      concern: "no",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("max score: behavior=3, cardio=3, resp=3, yes concern → 10", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "3",
+      cardiovascular: "3",
+      respiratory: "3",
+      concern: "yes",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary at 4: behavior=1, cardio=1, resp=1, yes concern → 4", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "1",
+      cardiovascular: "1",
+      respiratory: "1",
+      concern: "yes",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary at 5: behavior=2, cardio=1, resp=1, yes concern → 5", () => {
+    const r = calc(pedsPewsCalculator, {
+      behavior: "2",
+      cardiovascular: "1",
+      respiratory: "1",
+      concern: "yes",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// Hadlock EFW — log₁₀(EFW) = 1.3596 − 0.00386×AC×FL + 0.0064×HC + 0.00061×BPD×AC + 0.0424×AC + 0.174×FL
+// Status always normal; value in grams
+describe("Hadlock EFW calculate() output", () => {
+  it("typical 36-week: BPD=9.0, HC=33, AC=34, FL=7.0", () => {
+    const r = calc(hadlockEfwCalculator, {
+      bpd: "9.0",
+      hc: "33",
+      ac: "34",
+      fl: "7.0",
+    });
+    const logEfw =
+      1.3596 -
+      0.00386 * 34 * 7.0 +
+      0.0064 * 33 +
+      0.00061 * 9.0 * 34 +
+      0.0424 * 34 +
+      0.174 * 7.0;
+    const expected = Math.round(Math.pow(10, logEfw));
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+    expect(r.unit).toBe("g");
+  });
+
+  it("small fetus: BPD=7.0, HC=26, AC=24, FL=5.0", () => {
+    const r = calc(hadlockEfwCalculator, {
+      bpd: "7.0",
+      hc: "26",
+      ac: "24",
+      fl: "5.0",
+    });
+    const logEfw =
+      1.3596 -
+      0.00386 * 24 * 5.0 +
+      0.0064 * 26 +
+      0.00061 * 7.0 * 24 +
+      0.0424 * 24 +
+      0.174 * 5.0;
+    const expected = Math.round(Math.pow(10, logEfw));
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("large fetus: BPD=10.0, HC=36, AC=38, FL=7.5", () => {
+    const r = calc(hadlockEfwCalculator, {
+      bpd: "10.0",
+      hc: "36",
+      ac: "38",
+      fl: "7.5",
+    });
+    const logEfw =
+      1.3596 -
+      0.00386 * 38 * 7.5 +
+      0.0064 * 36 +
+      0.00061 * 10.0 * 38 +
+      0.0424 * 38 +
+      0.174 * 7.5;
+    const expected = Math.round(Math.pow(10, logEfw));
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mid-range: BPD=8.5, HC=30, AC=30, FL=6.0", () => {
+    const r = calc(hadlockEfwCalculator, {
+      bpd: "8.5",
+      hc: "30",
+      ac: "30",
+      fl: "6.0",
+    });
+    const logEfw =
+      1.3596 -
+      0.00386 * 30 * 6.0 +
+      0.0064 * 30 +
+      0.00061 * 8.5 * 30 +
+      0.0424 * 30 +
+      0.174 * 6.0;
+    const expected = Math.round(Math.pow(10, logEfw));
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("SD is 7.5% of weight", () => {
+    const r = calc(hadlockEfwCalculator, {
+      bpd: "9.0",
+      hc: "33",
+      ac: "34",
+      fl: "7.0",
+    });
+    expect(r.interpretation).toContain("7.5%");
+  });
+
+  it("output unit is grams", () => {
+    const r = calc(hadlockEfwCalculator, {
+      bpd: "9.0",
+      hc: "33",
+      ac: "34",
+      fl: "7.0",
+    });
+    expect(r.unit).toBe("g");
+  });
+});
+
+// EBL Obstetric — gravimetric: wet−dry; hct: BV × (pre−post) / pre
+// Classification: ≥1000 PPH; ≥500 concern; <500 expected
+describe("EBL Obstetric calculate() output", () => {
+  it("gravimetric low: wet=500, dry=300 → 200 mL", () => {
+    const r = calc(eblObstetricCalculator, {
+      method: "gravimetric",
+      wetWeight: "500",
+      dryWeight: "300",
+      weightKg: "70",
+      preHct: "35",
+      postHct: "32",
+    });
+    expect(r.value).toBe(200);
+    expect(r.status).toBe("normal");
+  });
+
+  it("gravimetric high: wet=1800, dry=500 → 1300 mL", () => {
+    const r = calc(eblObstetricCalculator, {
+      method: "gravimetric",
+      wetWeight: "1800",
+      dryWeight: "500",
+      weightKg: "70",
+      preHct: "35",
+      postHct: "32",
+    });
+    expect(r.value).toBe(1300);
+    expect(r.status).toBe("critical");
+  });
+
+  it("gravimetric concern: wet=1200, dry=500 → 700 mL", () => {
+    const r = calc(eblObstetricCalculator, {
+      method: "gravimetric",
+      wetWeight: "1200",
+      dryWeight: "500",
+      weightKg: "70",
+      preHct: "35",
+      postHct: "32",
+    });
+    expect(r.value).toBe(700);
+    expect(r.status).toBe("high");
+  });
+
+  it("hct method: 70kg, pre=35%, post=30% → 850 mL", () => {
+    // BV = 70×85 = 5950; EBL = 5950×(35−30)/35 = 5950×5/35 = 850
+    const r = calc(eblObstetricCalculator, {
+      method: "hct",
+      wetWeight: "500",
+      dryWeight: "300",
+      weightKg: "70",
+      preHct: "35",
+      postHct: "30",
+    });
+    expect(r.value).toBe(850);
+    expect(r.status).toBe("high");
+  });
+
+  it("hct method: 60kg, pre=34%, post=31% → 450 mL", () => {
+    // BV = 60×85 = 5100; EBL = 5100×(34−31)/34 = 5100×3/34 = 450
+    const r = calc(eblObstetricCalculator, {
+      method: "hct",
+      wetWeight: "500",
+      dryWeight: "300",
+      weightKg: "60",
+      preHct: "34",
+      postHct: "31",
+    });
+    expect(r.value).toBe(450);
+    expect(r.status).toBe("normal");
+  });
+
+  it("gravimetric normal: wet=400, dry=300 → 100 mL", () => {
+    const r = calc(eblObstetricCalculator, {
+      method: "gravimetric",
+      wetWeight: "400",
+      dryWeight: "300",
+      weightKg: "70",
+      preHct: "35",
+      postHct: "32",
+    });
+    expect(r.value).toBe(100);
+    expect(r.status).toBe("normal");
+  });
+
+  it("hct: post > pre → critical (guard)", () => {
+    const r = calc(eblObstetricCalculator, {
+      method: "hct",
+      wetWeight: "500",
+      dryWeight: "300",
+      weightKg: "70",
+      preHct: "30",
+      postHct: "35",
+    });
+    expect(r.status).toBe("critical");
+  });
+
+  it("gravimetric: wet < dry → critical (guard)", () => {
+    const r = calc(eblObstetricCalculator, {
+      method: "gravimetric",
+      wetWeight: "200",
+      dryWeight: "300",
+      weightKg: "70",
+      preHct: "35",
+      postHct: "32",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// Pediatric Hypotension — PALS threshold by age group
+// 0–1mo: 60; 1–12mo: 70; 1–10yr: 70+2×age; >10yr: 90
+describe("Pediatric Hypotension calculate() output", () => {
+  it("0-1mo: SBP=55 < 60 → critical", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "0-1mo",
+      sbp: "55",
+    });
+    expect(r.value).toBe(60);
+    expect(r.status).toBe("critical");
+  });
+
+  it("0-1mo: SBP=65 ≥ 60 → normal", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "0-1mo",
+      sbp: "65",
+    });
+    expect(r.value).toBe(60);
+    expect(r.status).toBe("normal");
+  });
+
+  it("1-12mo: SBP=65 < 70 → critical", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "1-12mo",
+      sbp: "65",
+    });
+    expect(r.value).toBe(70);
+    expect(r.status).toBe("critical");
+  });
+
+  it("1-12mo: SBP=75 ≥ 70 → normal", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "1-12mo",
+      sbp: "75",
+    });
+    expect(r.value).toBe(70);
+    expect(r.status).toBe("normal");
+  });
+
+  it("1-10yr, age=5: threshold=80, SBP=75 → critical", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "1-10yr",
+      ageYears: "5",
+      sbp: "75",
+    });
+    expect(r.value).toBe(80);
+    expect(r.status).toBe("critical");
+  });
+
+  it("1-10yr, age=10: threshold=90, SBP=85 → critical", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "1-10yr",
+      ageYears: "10",
+      sbp: "85",
+    });
+    expect(r.value).toBe(90);
+    expect(r.status).toBe("critical");
+  });
+
+  it("1-10yr, age=5: SBP=85 ≥ 80 → normal", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "1-10yr",
+      ageYears: "5",
+      sbp: "85",
+    });
+    expect(r.value).toBe(80);
+    expect(r.status).toBe("normal");
+  });
+
+  it("over-10yr: SBP=85 < 90 → critical", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "over-10yr",
+      sbp: "85",
+    });
+    expect(r.value).toBe(90);
+    expect(r.status).toBe("critical");
+  });
+
+  it("over-10yr: SBP=95 ≥ 90 → normal", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "over-10yr",
+      sbp: "95",
+    });
+    expect(r.value).toBe(90);
+    expect(r.status).toBe("normal");
+  });
+
+  it("1-10yr, age=1: threshold=72, SBP=71 → critical", () => {
+    const r = calc(pediatricHypotensionCalculator, {
+      ageGroup: "1-10yr",
+      ageYears: "1",
+      sbp: "71",
+    });
+    expect(r.value).toBe(72);
+    expect(r.status).toBe("critical");
   });
 });
