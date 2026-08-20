@@ -247,6 +247,16 @@ import { gestationalWeightGainCalculator } from "../../lib/calculators/gestation
 import { acrCalculator } from "../../lib/calculators/acr";
 import { eddCalculator } from "../../lib/calculators/edd";
 import { gestationalAgeCalculator } from "../../lib/calculators/gestational-age";
+import { heartRateCalculator } from "../../lib/calculators/heart-rate";
+import { bsaCalculator } from "../../lib/calculators/bsa";
+import { ibwCalculator } from "../../lib/calculators/ibw";
+import { adjbwCalculator } from "../../lib/calculators/adjbw";
+import { lbmCalculator } from "../../lib/calculators/lbm";
+import { basalMetabolicRateCalculator } from "../../lib/calculators/basal-metabolic-rate";
+import { mifflinStJeorCalculator } from "../../lib/calculators/mifflin-st-jeor";
+import { harrisBenedictCalculator } from "../../lib/calculators/harris-benedict";
+import { calorieRequirementCalculator } from "../../lib/calculators/calorie-requirement";
+import { fluidRequirementCalculator } from "../../lib/calculators/fluid-requirement";
 
 import type {
   CalculatorDefinition,
@@ -3606,6 +3616,56 @@ describe("Free Water Deficit calculate() regression", () => {
     expect(r.interpretation).toBe("No deficit");
     expect(r.status).toBe("normal");
   });
+
+  it("severe deficit: 80 kg, Na 170 → 140", () => {
+    // TBW = 80 × 0.6 = 48; deficit = 48 × (170/140 − 1) = 48 × 0.21428 = 10.2857 → 10.3
+    const r = calc(freeWaterDeficitCalculator, {
+      weight: "80",
+      currentNa: "170",
+      desiredNa: "140",
+    });
+    expect(r.value).toBe(10.3);
+    expect(r.interpretation).toBe("Severe free water deficit");
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary: 3.0 L → mild (upper boundary of mild)", () => {
+    // Need deficit = 3.0 exactly: TBW * (ratio − 1) = 3
+    // 70 × 0.6 × (currentNa/140 − 1) = 3 → 42 × (currentNa/140 − 1) = 3
+    // currentNa/140 − 1 = 3/42 = 0.07143 → currentNa = 140 × 1.07143 = 150
+    const r = calc(freeWaterDeficitCalculator, {
+      weight: "70",
+      currentNa: "150",
+      desiredNa: "140",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("low");
+  });
+
+  it("boundary: 3.1 L → moderate (just above mild)", () => {
+    // Need deficit ≈ 3.1: 50 × 0.6 × (currentNa/140 − 1) = 3.1
+    // 30 × (ratio − 1) = 3.1 → ratio = 1.10333 → currentNa = 154.47
+    // 50 × 0.6 × (154.47/140 − 1) = 30 × 0.10336 = 3.10 → 3.1
+    const r = calc(freeWaterDeficitCalculator, {
+      weight: "50",
+      currentNa: "154.47",
+      desiredNa: "140",
+    });
+    expect(r.value).toBeCloseTo(3.1, 0);
+    expect(r.status).toBe("high");
+  });
+
+  it("extreme hypernatremia: 70 kg, Na 190 → 140", () => {
+    // TBW = 42; deficit = 42 × (190/140 − 1) = 42 × 0.35714 = 15 → 15.0
+    const r = calc(freeWaterDeficitCalculator, {
+      weight: "70",
+      currentNa: "190",
+      desiredNa: "140",
+    });
+    expect(r.value).toBe(15);
+    expect(r.interpretation).toBe("Severe free water deficit");
+    expect(r.status).toBe("critical");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -3633,6 +3693,32 @@ describe("Thyroid Dose calculate() regression", () => {
     expect(r.value).toBe(144);
     expect(r.status).toBe("normal");
   });
+
+  it("pediatric weight 20 kg → 32 µg", () => {
+    const r = calc(thyroidDoseCalculator, { weight: "20" });
+    expect(r.value).toBe(32);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Full replacement dose");
+  });
+
+  it("elderly/low weight 45 kg → 72 µg", () => {
+    const r = calc(thyroidDoseCalculator, { weight: "45" });
+    expect(r.value).toBe(72);
+    expect(r.status).toBe("normal");
+  });
+
+  it("heavy weight 120 kg → 192 µg", () => {
+    const r = calc(thyroidDoseCalculator, { weight: "120" });
+    expect(r.value).toBe(192);
+    expect(r.status).toBe("normal");
+  });
+
+  it("zero weight → critical validation error", () => {
+    const r = calc(thyroidDoseCalculator, { weight: "0" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Body Weight cannot be zero.");
+  });
 });
 
 describe("Levothyroxine Dose calculate() regression", () => {
@@ -3645,6 +3731,38 @@ describe("Levothyroxine Dose calculate() regression", () => {
       "Full replacement dose",
     );
     expect(r.status).toBe("normal");
+  });
+
+  it("pediatric weight 25 kg → 40 µg", () => {
+    const r = calc(levothyroxineDoseCalculator, { weight: "25" });
+    expect(r.value).toBe(40);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Full replacement dose");
+  });
+
+  it("elderly/low weight 50 kg → 80 µg", () => {
+    const r = calc(levothyroxineDoseCalculator, { weight: "50" });
+    expect(r.value).toBe(80);
+    expect(r.status).toBe("normal");
+  });
+
+  it("heavy weight 100 kg → 160 µg", () => {
+    const r = calc(levothyroxineDoseCalculator, { weight: "100" });
+    expect(r.value).toBe(160);
+    expect(r.status).toBe("normal");
+  });
+
+  it("edge weight 10 kg → 16 µg", () => {
+    const r = calc(levothyroxineDoseCalculator, { weight: "10" });
+    expect(r.value).toBe(16);
+    expect(r.status).toBe("normal");
+  });
+
+  it("zero weight → critical validation error", () => {
+    const r = calc(levothyroxineDoseCalculator, { weight: "0" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Body Weight cannot be zero.");
   });
 });
 
@@ -11085,5 +11203,510 @@ describe("Gestational Age calculate() output", () => {
     const r = calc(gestationalAgeCalculator, { weeks: "42", days: "0" });
     expect(r.value).toBe(42);
     expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Heart Rate — beats / time (minutes)
+// Result = Number(result.toFixed(2))
+// Status is always "normal" (no classification in the implementation).
+// ---------------------------------------------------------------------------
+describe("Heart Rate calculate() output", () => {
+  it("representative resting rate: 70 bpm", () => {
+    const r = calc(heartRateCalculator, { beats: "70", time: "1" });
+    expect(r.value).toBe(70);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Heart rate 70 bpm.");
+  });
+
+  it("bradycardia: 45 bpm", () => {
+    const r = calc(heartRateCalculator, { beats: "45", time: "1" });
+    expect(r.value).toBe(45);
+    expect(r.status).toBe("normal");
+  });
+
+  it("tachycardia: 120 bpm", () => {
+    const r = calc(heartRateCalculator, { beats: "120", time: "1" });
+    expect(r.value).toBe(120);
+    expect(r.status).toBe("normal");
+  });
+
+  it("extreme tachycardia: 180 bpm", () => {
+    const r = calc(heartRateCalculator, { beats: "180", time: "1" });
+    expect(r.value).toBe(180);
+    expect(r.status).toBe("normal");
+  });
+
+  it("measured over 2 minutes: 150 beats / 2 min = 75 bpm", () => {
+    const r = calc(heartRateCalculator, { beats: "150", time: "2" });
+    expect(r.value).toBe(75);
+    expect(r.status).toBe("normal");
+  });
+
+  it("zero beats → critical validation error", () => {
+    const r = calc(heartRateCalculator, { beats: "0", time: "1" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Number of Beats cannot be zero.");
+  });
+
+  it("missing time → critical validation error", () => {
+    const r = calc(heartRateCalculator, { beats: "70", time: "" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Time is required.");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// BSA — Mosteller: sqrt((height_cm × weight_kg) / 3600)
+// Result = Number(result.toFixed(2))
+// Status is always "normal".
+// ---------------------------------------------------------------------------
+describe("BSA calculate() output", () => {
+  it("standard adult: 70 kg, 170 cm", () => {
+    // sqrt((170 × 70) / 3600) = sqrt(11900 / 3600) = sqrt(3.3056) = 1.8181… → 1.82
+    const r = calc(bsaCalculator, { weight: "70", height: "170" });
+    expect(r.value).toBe(1.82);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Body surface area 1.82 m².");
+  });
+
+  it("obese patient: 120 kg, 170 cm", () => {
+    // sqrt((170 × 120) / 3600) = sqrt(20400 / 3600) = sqrt(5.6667) = 2.3805… → 2.38
+    const r = calc(bsaCalculator, { weight: "120", height: "170" });
+    expect(r.value).toBeCloseTo(2.38, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("thin patient: 45 kg, 160 cm", () => {
+    // sqrt((160 × 45) / 3600) = sqrt(7200 / 3600) = sqrt(2) = 1.4142… → 1.41
+    const r = calc(bsaCalculator, { weight: "45", height: "160" });
+    expect(r.value).toBeCloseTo(1.41, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("tall patient: 80 kg, 195 cm", () => {
+    // sqrt((195 × 80) / 3600) = sqrt(15600 / 3600) = sqrt(4.3333) = 2.0817… → 2.08
+    const r = calc(bsaCalculator, { weight: "80", height: "195" });
+    expect(r.value).toBeCloseTo(2.08, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("zero weight → critical validation error", () => {
+    const r = calc(bsaCalculator, { weight: "0", height: "170" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Weight cannot be zero.");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Ideal Body Weight — Devine formula
+// Male:   50 + 2.3 × (height_in − 60)
+// Female: 45.5 + 2.3 × (height_in − 60)
+// height_in = height_cm / 2.54
+// Rounding: Math.round(ibw × 10) / 10
+// Slug: ideal-body-weight
+// ---------------------------------------------------------------------------
+describe("Ideal Body Weight calculate() output", () => {
+  it("male 175 cm: 50 + 2.3 × (68.898 − 60) = 70.46… → 70.5", () => {
+    const inches = 175 / 2.54; // 68.8976
+    const ibw = 50 + 2.3 * (inches - 60); // 70.4624
+    const expected = Math.round(ibw * 10) / 10; // 70.5
+    const r = calc(ibwCalculator, { sex: "male", height: "175" });
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female 165 cm: 45.5 + 2.3 × (64.961 − 60) = 56.92… → 56.9", () => {
+    const inches = 165 / 2.54; // 64.9606
+    const ibw = 45.5 + 2.3 * (inches - 60); // 56.922
+    const expected = Math.round(ibw * 10) / 10; // 56.9
+    const r = calc(ibwCalculator, { sex: "female", height: "165" });
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male 190 cm: tall patient", () => {
+    const inches = 190 / 2.54; // 74.8031
+    const ibw = 50 + 2.3 * (inches - 60); // 84.0472
+    const expected = Math.round(ibw * 10) / 10; // 84
+    const r = calc(ibwCalculator, { sex: "male", height: "190" });
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female 150 cm: short patient", () => {
+    const inches = 150 / 2.54; // 59.0551
+    const ibw = 45.5 + 2.3 * (inches - 60); // 43.323
+    const rounded = Math.round(ibw * 10) / 10; // 43.3
+    const expected = Math.max(0, rounded); // 43.3
+    const r = calc(ibwCalculator, { sex: "female", height: "150" });
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("edge: exactly 60 inches (152.4 cm) → male base = 50.0", () => {
+    // inches = 152.4 / 2.54 = 60 exactly → 50 + 2.3 × 0 = 50
+    const r = calc(ibwCalculator, { sex: "male", height: "152.4" });
+    expect(r.value).toBe(50);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Adjusted Body Weight — IBW + 0.4 × (actual − IBW)
+// Devine IBW first, then adjustment. Rounding: Math.round(adj × 10) / 10
+// Slug: adjusted-body-weight
+// ---------------------------------------------------------------------------
+describe("Adjusted Body Weight calculate() output", () => {
+  it("overweight male: 175 cm, 90 kg", () => {
+    // IBW = 70.5 (from ibw test above)
+    // adjbw = 70.5 + 0.4 × (90 − 70.5) = 70.5 + 7.8 = 78.3
+    const r = calc(adjbwCalculator, { sex: "male", height: "175", weight: "90" });
+    expect(r.value).toBe(78.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("obese female: 165 cm, 110 kg", () => {
+    // IBW female 165 = 56.9 (from ibw test)
+    // adjbw = 56.9 + 0.4 × (110 − 56.9) = 56.9 + 21.24 = 78.14 → 78.1
+    const ibwInches = 165 / 2.54;
+    const ibw = 45.5 + 2.3 * (ibwInches - 60);
+    const adjbw = ibw + 0.4 * (110 - ibw);
+    const expected = Math.round(adjbw * 10) / 10;
+    const r = calc(adjbwCalculator, { sex: "female", height: "165", weight: "110" });
+    expect(r.value).toBe(expected);
+    expect(r.status).toBe("normal");
+  });
+
+  it("near-IBW male: 175 cm, 70.5 kg → adjbw ≈ IBW", () => {
+    // IBW = 70.5 → adjbw = 70.5 + 0.4 × (70.5 − 70.5) = 70.5
+    const r = calc(adjbwCalculator, { sex: "male", height: "175", weight: "70.5" });
+    expect(r.value).toBe(70.5);
+    expect(r.status).toBe("normal");
+  });
+
+  it("underweight male: 175 cm, 55 kg", () => {
+    // IBW = 70.5 → adjbw = 70.5 + 0.4 × (55 − 70.5) = 70.5 − 6.2 = 64.3
+    const r = calc(adjbwCalculator, { sex: "male", height: "175", weight: "55" });
+    expect(r.value).toBe(64.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("exact IBW female: 165 cm, 56.9 kg → adjbw = 56.9", () => {
+    const ibwInches = 165 / 2.54;
+    const ibw = Math.round((45.5 + 2.3 * (ibwInches - 60)) * 10) / 10; // 56.9
+    // adjbw = 56.9 + 0.4 × (56.9 − 56.9) = 56.9
+    const r = calc(adjbwCalculator, { sex: "female", height: "165", weight: String(ibw) });
+    expect(r.value).toBe(ibw);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Lean Body Mass — Boer formula
+// Male:   0.407 × weight + 0.267 × height − 19.2
+// Female: 0.252 × weight + 0.473 × height − 48.3
+// Rounding: Math.round(lbm × 10) / 10, clamped ≥ 0
+// Slug: lean-body-weight
+// ---------------------------------------------------------------------------
+describe("Lean Body Mass calculate() output", () => {
+  it("male: 80 kg, 180 cm", () => {
+    // 0.407 × 80 + 0.267 × 180 − 19.2 = 32.56 + 48.06 − 19.2 = 61.42 → 61.4
+    const r = calc(lbmCalculator, { sex: "male", weight: "80", height: "180" });
+    expect(r.value).toBe(61.4);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female: 60 kg, 165 cm", () => {
+    // 0.252 × 60 + 0.473 × 165 − 48.3 = 15.12 + 78.045 − 48.3 = 44.865 → 44.9
+    const r = calc(lbmCalculator, { sex: "female", weight: "60", height: "165" });
+    expect(r.value).toBe(44.9);
+    expect(r.status).toBe("normal");
+  });
+
+  it("obese male: 130 kg, 175 cm", () => {
+    // 0.407 × 130 + 0.267 × 175 − 19.2 = 52.91 + 46.725 − 19.2 = 80.435 → 80.4
+    const r = calc(lbmCalculator, { sex: "male", weight: "130", height: "175" });
+    expect(r.value).toBe(80.4);
+    expect(r.status).toBe("normal");
+  });
+
+  it("lean/thin male: 55 kg, 175 cm", () => {
+    // 0.407 × 55 + 0.267 × 175 − 19.2 = 22.385 + 46.725 − 19.2 = 49.91 → 49.9
+    const r = calc(lbmCalculator, { sex: "male", weight: "55", height: "175" });
+    expect(r.value).toBe(49.9);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female: 45 kg, 150 cm", () => {
+    // 0.252 × 45 + 0.473 × 150 − 48.3 = 11.34 + 70.95 − 48.3 = 33.99 → 34
+    const r = calc(lbmCalculator, { sex: "female", weight: "45", height: "150" });
+    expect(r.value).toBe(34);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Basal Metabolic Rate — Mifflin-St Jeor (same utility as Mifflin-St Jeor calc)
+// Male:   10 × weight + 6.25 × height − 5 × age + 5
+// Female: 10 × weight + 6.25 × height − 5 × age − 161
+// Rounding: Math.round(bmr × 10) / 10
+// ---------------------------------------------------------------------------
+describe("Basal Metabolic Rate calculate() output", () => {
+  it("male 30y, 80 kg, 180 cm", () => {
+    // 10×80 + 6.25×180 − 5×30 + 5 = 800 + 1125 − 150 + 5 = 1780
+    const r = calc(basalMetabolicRateCalculator, {
+      sex: "male", age: "30", weight: "80", height: "180",
+    });
+    expect(r.value).toBe(1780);
+    expect(r.status).toBe("normal");
+    expect(r.unit).toBe("kcal/day");
+    expect(r.interpretation).toBe("Estimated basal metabolic rate");
+  });
+
+  it("female 25y, 60 kg, 165 cm", () => {
+    // 10×60 + 6.25×165 − 5×25 − 161 = 600 + 1031.25 − 125 − 161 = 1345.25 → 1345.3
+    const r = calc(basalMetabolicRateCalculator, {
+      sex: "female", age: "25", weight: "60", height: "165",
+    });
+    expect(r.value).toBe(1345.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male 20y, 75 kg, 175 cm (younger adult)", () => {
+    // 10×75 + 6.25×175 − 5×20 + 5 = 750 + 1093.75 − 100 + 5 = 1748.75 → 1748.8
+    const r = calc(basalMetabolicRateCalculator, {
+      sex: "male", age: "20", weight: "75", height: "175",
+    });
+    expect(r.value).toBe(1748.8);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female 70y, 55 kg, 155 cm (older adult)", () => {
+    // 10×55 + 6.25×155 − 5×70 − 161 = 550 + 968.75 − 350 − 161 = 1007.75 → 1007.8
+    const r = calc(basalMetabolicRateCalculator, {
+      sex: "female", age: "70", weight: "55", height: "155",
+    });
+    expect(r.value).toBe(1007.8);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male 40y, 100 kg, 185 cm (larger body)", () => {
+    // 10×100 + 6.25×185 − 5×40 + 5 = 1000 + 1156.25 − 200 + 5 = 1961.25 → 1961.3
+    const r = calc(basalMetabolicRateCalculator, {
+      sex: "male", age: "40", weight: "100", height: "185",
+    });
+    expect(r.value).toBe(1961.3);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Mifflin-St Jeor — same utility as BMR calculator
+// Identical formula, different interpretation string
+// ---------------------------------------------------------------------------
+describe("Mifflin-St Jeor calculate() output", () => {
+  it("male 30y, 80 kg, 180 cm", () => {
+    // Same as BMR: 1780
+    const r = calc(mifflinStJeorCalculator, {
+      sex: "male", age: "30", weight: "80", height: "180",
+    });
+    expect(r.value).toBe(1780);
+    expect(r.status).toBe("normal");
+    expect(r.unit).toBe("kcal/day");
+    expect(r.interpretation).toBe("Estimated resting energy expenditure");
+  });
+
+  it("female 25y, 60 kg, 165 cm", () => {
+    // 1345.3 (same as BMR calc)
+    const r = calc(mifflinStJeorCalculator, {
+      sex: "female", age: "25", weight: "60", height: "165",
+    });
+    expect(r.value).toBe(1345.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male 50y, 90 kg, 178 cm (middle-aged)", () => {
+    // 10×90 + 6.25×178 − 5×50 + 5 = 900 + 1112.5 − 250 + 5 = 1767.5 → 1767.5
+    const r = calc(mifflinStJeorCalculator, {
+      sex: "male", age: "50", weight: "90", height: "178",
+    });
+    expect(r.value).toBe(1767.5);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female 65y, 70 kg, 160 cm (older adult)", () => {
+    // 10×70 + 6.25×160 − 5×65 − 161 = 700 + 1000 − 325 − 161 = 1214
+    const r = calc(mifflinStJeorCalculator, {
+      sex: "female", age: "65", weight: "70", height: "160",
+    });
+    expect(r.value).toBe(1214);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male 25y, 65 kg, 170 cm (smaller body)", () => {
+    // 10×65 + 6.25×170 − 5×25 + 5 = 650 + 1062.5 − 125 + 5 = 1592.5 → 1592.5
+    const r = calc(mifflinStJeorCalculator, {
+      sex: "male", age: "25", weight: "65", height: "170",
+    });
+    expect(r.value).toBe(1592.5);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Harris-Benedict — sex-specific constants
+// Male:   88.362 + 13.397 × weight + 4.799 × height − 5.677 × age
+// Female: 447.593 + 9.247 × weight + 3.098 × height − 4.33 × age
+// Rounding: Math.round(bmr × 10) / 10
+// ---------------------------------------------------------------------------
+describe("Harris-Benedict calculate() output", () => {
+  it("male 30y, 80 kg, 180 cm", () => {
+    // 88.362 + 13.397×80 + 4.799×180 − 5.677×30
+    // = 88.362 + 1071.76 + 863.82 − 170.31 = 1853.632 → 1853.6
+    const r = calc(harrisBenedictCalculator, {
+      sex: "male", age: "30", weight: "80", height: "180",
+    });
+    expect(r.value).toBe(1853.6);
+    expect(r.status).toBe("normal");
+    expect(r.unit).toBe("kcal/day");
+    expect(r.interpretation).toBe("Estimated basal metabolic rate");
+  });
+
+  it("female 25y, 60 kg, 165 cm", () => {
+    // 447.593 + 9.247×60 + 3.098×165 − 4.33×25
+    // = 447.593 + 554.82 + 511.17 − 108.25 = 1405.333 → 1405.3
+    const r = calc(harrisBenedictCalculator, {
+      sex: "female", age: "25", weight: "60", height: "165",
+    });
+    expect(r.value).toBe(1405.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male 20y, 75 kg, 175 cm (younger adult)", () => {
+    // 88.362 + 13.397×75 + 4.799×175 − 5.677×20
+    // = 88.362 + 1004.775 + 839.825 − 113.54 = 1819.422 → 1819.4
+    const r = calc(harrisBenedictCalculator, {
+      sex: "male", age: "20", weight: "75", height: "175",
+    });
+    expect(r.value).toBe(1819.4);
+    expect(r.status).toBe("normal");
+  });
+
+  it("female 70y, 55 kg, 155 cm (older adult)", () => {
+    // 447.593 + 9.247×55 + 3.098×155 − 4.33×70
+    // = 447.593 + 508.585 + 480.19 − 303.1 = 1133.268 → 1133.3
+    const r = calc(harrisBenedictCalculator, {
+      sex: "female", age: "70", weight: "55", height: "155",
+    });
+    expect(r.value).toBe(1133.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("male 40y, 100 kg, 185 cm (larger body)", () => {
+    // 88.362 + 13.397×100 + 4.799×185 − 5.677×40
+    // = 88.362 + 1339.7 + 887.815 − 227.08 = 2088.797 → 2088.8
+    const r = calc(harrisBenedictCalculator, {
+      sex: "male", age: "40", weight: "100", height: "185",
+    });
+    expect(r.value).toBe(2088.8);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Calorie Requirement — BMR × activity factor
+// Rounding: Math.round(bmr × activity) (integer)
+// Activity factors: 1.2 sedentary, 1.375 light, 1.55 moderate, 1.725 active, 1.9 very active
+// ---------------------------------------------------------------------------
+describe("Calorie Requirement calculate() output", () => {
+  it("sedentary: BMR 1780 × 1.2 = 2136", () => {
+    const r = calc(calorieRequirementCalculator, {
+      bmr: "1780", activity: "1.2",
+    });
+    expect(r.value).toBe(2136);
+    expect(r.status).toBe("normal");
+    expect(r.unit).toBe("kcal/day");
+    expect(r.interpretation).toBe("Estimated daily calorie requirement");
+  });
+
+  it("lightly active: BMR 1500 × 1.375 = 2062.5 → 2063", () => {
+    const r = calc(calorieRequirementCalculator, {
+      bmr: "1500", activity: "1.375",
+    });
+    expect(r.value).toBe(2063);
+    expect(r.status).toBe("normal");
+  });
+
+  it("moderately active: BMR 1800 × 1.55 = 2790", () => {
+    const r = calc(calorieRequirementCalculator, {
+      bmr: "1800", activity: "1.55",
+    });
+    expect(r.value).toBe(2790);
+    expect(r.status).toBe("normal");
+  });
+
+  it("active: BMR 2000 × 1.725 = 3450", () => {
+    const r = calc(calorieRequirementCalculator, {
+      bmr: "2000", activity: "1.725",
+    });
+    expect(r.value).toBe(3450);
+    expect(r.status).toBe("normal");
+  });
+
+  it("very active: BMR 1780 × 1.9 = 3382", () => {
+    const r = calc(calorieRequirementCalculator, {
+      bmr: "1780", activity: "1.9",
+    });
+    expect(r.value).toBe(3382);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Fluid Requirement — weight × 35 mL/kg/day
+// Rounding: Math.round(weight × 35) (integer)
+// ---------------------------------------------------------------------------
+describe("Fluid Requirement calculate() output", () => {
+  it("standard adult: 70 kg → 2450 mL/day", () => {
+    const r = calc(fluidRequirementCalculator, { weight: "70" });
+    expect(r.value).toBe(2450);
+    expect(r.status).toBe("normal");
+    expect(r.unit).toBe("mL/day");
+    expect(r.interpretation).toBe("Estimated maintenance fluid requirement");
+  });
+
+  it("lower weight: 50 kg → 1750 mL/day", () => {
+    const r = calc(fluidRequirementCalculator, { weight: "50" });
+    expect(r.value).toBe(1750);
+    expect(r.status).toBe("normal");
+  });
+
+  it("higher weight: 100 kg → 3500 mL/day", () => {
+    const r = calc(fluidRequirementCalculator, { weight: "100" });
+    expect(r.value).toBe(3500);
+    expect(r.status).toBe("normal");
+  });
+
+  it("small adult: 45 kg → 1575 mL/day", () => {
+    const r = calc(fluidRequirementCalculator, { weight: "45" });
+    expect(r.value).toBe(1575);
+    expect(r.status).toBe("normal");
+  });
+
+  it("heavy adult: 120 kg → 4200 mL/day", () => {
+    const r = calc(fluidRequirementCalculator, { weight: "120" });
+    expect(r.value).toBe(4200);
+    expect(r.status).toBe("normal");
+  });
+
+  it("zero weight → critical validation error", () => {
+    const r = calc(fluidRequirementCalculator, { weight: "0" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Weight is required.");
   });
 });
