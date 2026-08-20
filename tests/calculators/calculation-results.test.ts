@@ -89,6 +89,50 @@ import { parklandFormulaCalculator } from "../../lib/calculators/parkland-formul
 import { apriCalculator } from "../../lib/calculators/apri";
 import { fib4Calculator } from "../../lib/calculators/fib-4";
 
+import { homaIrCalculator } from "../../lib/calculators/homa-ir";
+import { homaBCalculator } from "../../lib/calculators/homa-b";
+import {
+  insulinSensitivityCalculator,
+} from "../../lib/calculators/insulin-sensitivity";
+import {
+  freeThyroxineIndexCalculator,
+} from "../../lib/calculators/free-thyroxine-index";
+import {
+  metabolicSyndromeAtp3Calculator,
+} from "../../lib/calculators/metabolic-syndrome-atp3";
+import { tygIndexCalculator } from "../../lib/calculators/tyg-index";
+import { quickiCalculator } from "../../lib/calculators/quicki";
+import {
+  triglycerideHdlRatioCalculator,
+} from "../../lib/calculators/triglyceride-hdl-ratio";
+import {
+  ldlCholesterolCalculator,
+} from "../../lib/calculators/ldl-cholesterol";
+import {
+  nonHdlCholesterolCalculator,
+} from "../../lib/calculators/non-hdl-cholesterol";
+import {
+  albuminGlobulinRatioCalculator,
+} from "../../lib/calculators/albumin-globulin-ratio";
+import {
+  glasgowBlatchfordCalculator,
+} from "../../lib/calculators/glasgow-blatchford-score";
+import { maddreyCalculator } from "../../lib/calculators/maddrey-discriminant-function";
+import {
+  nafldFibrosisCalculator,
+} from "../../lib/calculators/nafld-fibrosis-score";
+import { rockallCalculator } from "../../lib/calculators/rockall-score";
+import { aaGradientCalculator } from "../../lib/calculators/a-a-gradient";
+import { oxygenIndexCalculator } from "../../lib/calculators/oxygen-index";
+import { pfRatioCalculator } from "../../lib/calculators/pf-ratio";
+import { roxIndexCalculator } from "../../lib/calculators/rox-index";
+import {
+  respiratoryCompensationCalculator,
+} from "../../lib/calculators/respiratory-compensation";
+import {
+  metabolicAlkalosisCompensationCalculator,
+} from "../../lib/calculators/metabolic-alkalosis-compensation";
+
 import type {
   CalculatorDefinition,
 } from "../../lib/calculators/calculator.types";
@@ -5003,5 +5047,1872 @@ describe("FIB-4 Index calculate() output", () => {
     });
     expect(r.value).toBeCloseTo(0.98, 1);
     expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// HOMA-IR — (glucose mg/dL × insulin μU/mL) / 405
+// Classification:
+//   ≤ 2.5  → Normal insulin sensitivity
+//   2.5–5  → Mild insulin resistance
+//   ≥ 5    → Severe insulin resistance
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("HOMA-IR calculate() output", () => {
+  it("normal insulin sensitivity: glucose=95, insulin=10", () => {
+    // (95 × 10) / 405 = 950 / 405 = 2.3457… → 2.35
+    const r = calc(homaIrCalculator, {
+      glucose: "95",
+      insulin: "10",
+    });
+    expect(r.value).toBe(2.35);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal insulin sensitivity");
+  });
+
+  it("mild insulin resistance boundary: glucose=101, insulin=10", () => {
+    // (101 × 10) / 405 = 1010 / 405 = 2.4938… → 2.49
+    // result = 2.4938… ≤ 2.5 → still normal
+    const r = calc(homaIrCalculator, {
+      glucose: "101",
+      insulin: "10",
+    });
+    expect(r.value).toBe(2.49);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal insulin sensitivity");
+  });
+
+  it("mild insulin resistance: glucose=120, insulin=15", () => {
+    // (120 × 15) / 405 = 1800 / 405 = 4.4444… → 4.44
+    const r = calc(homaIrCalculator, {
+      glucose: "120",
+      insulin: "15",
+    });
+    expect(r.value).toBe(4.44);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Mild insulin resistance");
+  });
+
+  it("severe insulin resistance: glucose=140, insulin=25", () => {
+    // (140 × 25) / 405 = 3500 / 405 = 8.6420… → 8.64
+    const r = calc(homaIrCalculator, {
+      glucose: "140",
+      insulin: "25",
+    });
+    expect(r.value).toBe(8.64);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Severe insulin resistance");
+  });
+
+  it("rounding: glucose=88, insulin=14", () => {
+    // (88 × 14) / 405 = 1232 / 405 = 3.0420… → 3.04
+    const r = calc(homaIrCalculator, {
+      glucose: "88",
+      insulin: "14",
+    });
+    expect(r.value).toBe(3.04);
+    expect(r.status).toBe("high");
+  });
+
+  it("minimal positive inputs: glucose=1, insulin=1", () => {
+    // (1 × 1) / 405 = 0.0025… → 0.00
+    const r = calc(homaIrCalculator, {
+      glucose: "1",
+      insulin: "1",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("glucose=0 is rejected", () => {
+    const r = calc(homaIrCalculator, {
+      glucose: "0",
+      insulin: "10",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("cannot be zero");
+  });
+
+  it("insulin=0 is rejected", () => {
+    const r = calc(homaIrCalculator, {
+      glucose: "95",
+      insulin: "0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("cannot be zero");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// HOMA-B — (20 × insulin) / (glucose mmol/L − 3.5)
+// Classification:
+//   ≤ 50    → Severe beta-cell dysfunction
+//   50–100  → Reduced beta-cell function
+//   100–200 → Normal beta-cell function
+//   ≥ 200   → Hyperinsulinemia
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("HOMA-B calculate() output", () => {
+  it("normal beta-cell function: insulin=8, glucose=5.0", () => {
+    // (20 × 8) / (5.0 − 3.5) = 160 / 1.5 = 106.6667… → 106.67
+    const r = calc(homaBCalculator, {
+      insulin: "8",
+      glucose: "5.0",
+    });
+    expect(r.value).toBe(106.67);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal beta-cell function");
+  });
+
+  it("reduced beta-cell function: insulin=10, glucose=6.0", () => {
+    // (20 × 10) / (6.0 − 3.5) = 200 / 2.5 = 80.00
+    const r = calc(homaBCalculator, {
+      insulin: "10",
+      glucose: "6.0",
+    });
+    expect(r.value).toBe(80);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe("Reduced beta-cell function");
+  });
+
+  it("severe beta-cell dysfunction: insulin=5, glucose=7.0", () => {
+    // (20 × 5) / (7.0 − 3.5) = 100 / 3.5 = 28.5714… → 28.57
+    const r = calc(homaBCalculator, {
+      insulin: "5",
+      glucose: "7.0",
+    });
+    expect(r.value).toBe(28.57);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Severe beta-cell dysfunction");
+  });
+
+  it("reduced boundary: insulin=6, glucose=4.7", () => {
+    // (20 × 6) / (4.7 − 3.5) = 120 / 1.2 = 100.00
+    // result=100 → 50 ≤ 100 ≤ 100 matches the reduced condition first
+    const r = calc(homaBCalculator, {
+      insulin: "6",
+      glucose: "4.7",
+    });
+    expect(r.value).toBe(100);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe("Reduced beta-cell function");
+  });
+
+  it("glucose=3.5 is rejected (division by zero guard)", () => {
+    const r = calc(homaBCalculator, {
+      insulin: "10",
+      glucose: "3.5",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Glucose must be greater than 3.5");
+  });
+
+  it("glucose<3.5 is rejected", () => {
+    const r = calc(homaBCalculator, {
+      insulin: "10",
+      glucose: "2.0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Glucose must be greater than 3.5");
+  });
+
+  it("glucose=3.6 calculates normally (just above guard)", () => {
+    // (20 × 10) / (3.6 − 3.5) = 200 / 0.1 = 2000.00
+    // result ≥ 200 → hyperinsulinemia
+    const r = calc(homaBCalculator, {
+      insulin: "10",
+      glucose: "3.6",
+    });
+    expect(r.value).toBe(2000);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Hyperinsulinemia");
+  });
+
+  it("insulin=0 is rejected by validation", () => {
+    const r = calc(homaBCalculator, {
+      insulin: "0",
+      glucose: "5.0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("cannot be zero");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Insulin Sensitivity — 1 / HOMA-IR = 405 / (glucose × insulin)
+// Classification:
+//   ≤ 0.2  → Severe insulin resistance
+//   0.2–0.4 → Reduced insulin sensitivity
+//   ≥ 0.4  → Normal insulin sensitivity
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Insulin Sensitivity calculate() output", () => {
+  it("normal: homaIr=2.0", () => {
+    // 1 / 2.0 = 0.50
+    const r = calc(insulinSensitivityCalculator, {
+      homaIr: "2.0",
+    });
+    expect(r.value).toBe(0.5);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal insulin sensitivity");
+  });
+
+  it("reduced: homaIr=3.5", () => {
+    // 1 / 3.5 = 0.2857… → 0.29
+    const r = calc(insulinSensitivityCalculator, {
+      homaIr: "3.5",
+    });
+    expect(r.value).toBe(0.29);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe("Reduced insulin sensitivity");
+  });
+
+  it("severe insulin resistance: homaIr=6.0", () => {
+    // 1 / 6.0 = 0.1667… → 0.17
+    const r = calc(insulinSensitivityCalculator, {
+      homaIr: "6.0",
+    });
+    expect(r.value).toBe(0.17);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Severe insulin resistance");
+  });
+
+  it("boundary: homaIr=5.0 gives exactly 0.20 → severe", () => {
+    // 1 / 5.0 = 0.20 → 0.20
+    const r = calc(insulinSensitivityCalculator, {
+      homaIr: "5.0",
+    });
+    expect(r.value).toBe(0.2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary: homaIr=2.5 gives 0.40 → reduced", () => {
+    // 1 / 2.5 = 0.40 → 0.40
+    const r = calc(insulinSensitivityCalculator, {
+      homaIr: "2.5",
+    });
+    expect(r.value).toBe(0.4);
+    expect(r.status).toBe("low");
+  });
+
+  it("homaIr=0 is rejected", () => {
+    const r = calc(insulinSensitivityCalculator, {
+      homaIr: "0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("cannot be zero");
+  });
+
+  it("homaIr=1 gives perfect sensitivity", () => {
+    // 1 / 1.0 = 1.00
+    const r = calc(insulinSensitivityCalculator, {
+      homaIr: "1.0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Free Thyroxine Index — (Total T4 × T3 Uptake) / 100
+// Classification:
+//   < 1.0   → Low (hypothyroidism)
+//   1.0–4.5 → Normal
+//   > 4.5   → High (hyperthyroidism)
+// Result = Number(fti.toFixed(1))
+// ---------------------------------------------------------------------------
+describe("Free Thyroxine Index calculate() output", () => {
+  it("normal: T4=7.5, uptake=30", () => {
+    // (7.5 × 30) / 100 = 2.250 → 2.3
+    const r = calc(freeThyroxineIndexCalculator, {
+      totalT4: "7.5",
+      t3Uptake: "30",
+    });
+    expect(r.value).toBe(2.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("hyperthyroid: T4=12, uptake=45", () => {
+    // (12 × 45) / 100 = 5.400 → 5.4
+    const r = calc(freeThyroxineIndexCalculator, {
+      totalT4: "12",
+      t3Uptake: "45",
+    });
+    expect(r.value).toBe(5.4);
+    expect(r.status).toBe("high");
+  });
+
+  it("hypothyroid: T4=2, uptake=20", () => {
+    // (2 × 20) / 100 = 0.400 → 0.4
+    const r = calc(freeThyroxineIndexCalculator, {
+      totalT4: "2",
+      t3Uptake: "20",
+    });
+    expect(r.value).toBe(0.4);
+    expect(r.status).toBe("low");
+  });
+
+  it("low-normal: T4=4, uptake=22", () => {
+    // (4 × 22) / 100 = 0.880 → 0.9
+    const r = calc(freeThyroxineIndexCalculator, {
+      totalT4: "4",
+      t3Uptake: "22",
+    });
+    expect(r.value).toBe(0.9);
+    expect(r.status).toBe("low");
+  });
+
+  it("borderline high: T4=8, uptake=57", () => {
+    // (8 × 57) / 100 = 4.560 → 4.6
+    const r = calc(freeThyroxineIndexCalculator, {
+      totalT4: "8",
+      t3Uptake: "57",
+    });
+    expect(r.value).toBe(4.6);
+    expect(r.status).toBe("high");
+  });
+
+  it("negative T4 is rejected", () => {
+    const r = calc(freeThyroxineIndexCalculator, {
+      totalT4: "-1",
+      t3Uptake: "30",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("positive");
+  });
+
+  it("rounding: T4=6.3, uptake=28", () => {
+    // (6.3 × 28) / 100 = 1.764 → 1.8
+    const r = calc(freeThyroxineIndexCalculator, {
+      totalT4: "6.3",
+      t3Uptake: "28",
+    });
+    expect(r.value).toBe(1.8);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Metabolic Syndrome ATP III — ≥ 3 of 5 criteria
+// Criteria: waist (male≥102/female≥88), TG≥150, HDL (male<40/female<50),
+//           BP≥130/85, glucose≥100 (each with drug-treatment exemption)
+// ---------------------------------------------------------------------------
+describe("Metabolic Syndrome ATP III calculate() output", () => {
+  it("no syndrome: male, all normal", () => {
+    const r = calc(metabolicSyndromeAtp3Calculator, {
+      sex: "male",
+      waist: "85",
+      triglycerides: "100",
+      hdl: "55",
+      sbp: "120",
+      dbp: "80",
+      fastingGlucose: "85",
+      lipidRx: "no",
+      bpRx: "no",
+      glucoseRx: "no",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("No metabolic syndrome");
+  });
+
+  it("2/5 criteria: male, borderline", () => {
+    // waist=104 (≥102) + glucose=102 (≥100) → 2/5
+    const r = calc(metabolicSyndromeAtp3Calculator, {
+      sex: "male",
+      waist: "104",
+      triglycerides: "120",
+      hdl: "45",
+      sbp: "125",
+      dbp: "80",
+      fastingGlucose: "102",
+      lipidRx: "no",
+      bpRx: "no",
+      glucoseRx: "no",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("exactly 3/5: male, threshold", () => {
+    // waist=102 (≥102) + TG=150 (≥150) + HDL=40 (not <40 → no)
+    // SBP=130 (≥130) → 3/5
+    const r = calc(metabolicSyndromeAtp3Calculator, {
+      sex: "male",
+      waist: "102",
+      triglycerides: "150",
+      hdl: "45",
+      sbp: "130",
+      dbp: "80",
+      fastingGlucose: "90",
+      lipidRx: "no",
+      bpRx: "no",
+      glucoseRx: "no",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Metabolic syndrome present");
+  });
+
+  it("5/5: male, all criteria", () => {
+    const r = calc(metabolicSyndromeAtp3Calculator, {
+      sex: "male",
+      waist: "110",
+      triglycerides: "200",
+      hdl: "30",
+      sbp: "150",
+      dbp: "95",
+      fastingGlucose: "130",
+      lipidRx: "no",
+      bpRx: "no",
+      glucoseRx: "no",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Metabolic syndrome present");
+  });
+
+  it("1/5: female, only elevated glucose", () => {
+    // waist=80 (<88), TG=100, HDL=55 (≥50), BP=115/70, glucose=105 (≥100)
+    const r = calc(metabolicSyndromeAtp3Calculator, {
+      sex: "female",
+      waist: "80",
+      triglycerides: "100",
+      hdl: "55",
+      sbp: "115",
+      dbp: "70",
+      fastingGlucose: "105",
+      lipidRx: "no",
+      bpRx: "no",
+      glucoseRx: "no",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("drug treatment exemption counts for criteria", () => {
+    // lipidRx=yes counts as TG and HDL criteria
+    // glucoseRx=yes counts as glucose criterion
+    const r = calc(metabolicSyndromeAtp3Calculator, {
+      sex: "male",
+      waist: "90",
+      triglycerides: "100",
+      hdl: "50",
+      sbp: "120",
+      dbp: "78",
+      fastingGlucose: "90",
+      lipidRx: "yes",
+      bpRx: "no",
+      glucoseRx: "yes",
+    });
+    // lipidRx → TG + HDL = 2; glucoseRx → 1; total = 3
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("female borderline waist threshold: 88 cm", () => {
+    // waist=88 (≥88 for female) → 1 criterion
+    const r = calc(metabolicSyndromeAtp3Calculator, {
+      sex: "female",
+      waist: "88",
+      triglycerides: "100",
+      hdl: "55",
+      sbp: "120",
+      dbp: "78",
+      fastingGlucose: "90",
+      lipidRx: "no",
+      bpRx: "no",
+      glucoseRx: "no",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TyG Index — ln(TG × FPG / 2)
+// Result = Number(tyg.toFixed(2))
+// Descriptive — no universal cut-point
+// ---------------------------------------------------------------------------
+describe("TyG Index calculate() output", () => {
+  it("representative: TG=100, FPG=90", () => {
+    // ln(100 × 90 / 2) = ln(4500) = 8.4118… → 8.41
+    const r = calc(tygIndexCalculator, {
+      triglycerides: "100",
+      glucose: "90",
+    });
+    expect(r.value).toBeCloseTo(8.41, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("borderline: TG=150, FPG=100", () => {
+    // ln(150 × 100 / 2) = ln(7500) = 8.9227… → 8.92
+    const r = calc(tygIndexCalculator, {
+      triglycerides: "150",
+      glucose: "100",
+    });
+    expect(r.value).toBeCloseTo(8.92, 1);
+  });
+
+  it("high risk: TG=200, FPG=120", () => {
+    // ln(200 × 120 / 2) = ln(12000) = 9.3928… → 9.39
+    const r = calc(tygIndexCalculator, {
+      triglycerides: "200",
+      glucose: "120",
+    });
+    expect(r.value).toBeCloseTo(9.39, 1);
+  });
+
+  it("low: TG=50, FPG=85", () => {
+    // ln(50 × 85 / 2) = ln(2125) = 7.6615… → 7.66
+    const r = calc(tygIndexCalculator, {
+      triglycerides: "50",
+      glucose: "85",
+    });
+    expect(r.value).toBeCloseTo(7.66, 1);
+  });
+
+  it("TG=0 is rejected", () => {
+    const r = calc(tygIndexCalculator, {
+      triglycerides: "0",
+      glucose: "90",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("positive");
+  });
+
+  it("FPG=0 is rejected", () => {
+    const r = calc(tygIndexCalculator, {
+      triglycerides: "100",
+      glucose: "0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("positive");
+  });
+
+  it("minimal positive: TG=1, FPG=1", () => {
+    // ln(1 × 1 / 2) = ln(0.5) = −0.6931… → −0.69
+    const r = calc(tygIndexCalculator, {
+      triglycerides: "1",
+      glucose: "1",
+    });
+    expect(r.value).toBeCloseTo(-0.69, 1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// QUICKI — 1 / (log10(insulin) + log10(glucose))
+// Result = Number(quicki.toFixed(2))
+// Descriptive — lower values = greater insulin resistance
+// ---------------------------------------------------------------------------
+describe("QUICKI calculate() output", () => {
+  it("representative: insulin=10, glucose=95", () => {
+    // 1 / (log10(10) + log10(95)) = 1 / (1 + 1.9777) = 1 / 2.9777 = 0.3358… → 0.34
+    const r = calc(quickiCalculator, {
+      fastingInsulin: "10",
+      fastingGlucose: "95",
+    });
+    expect(r.value).toBeCloseTo(0.34, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("insulin resistant: insulin=15, glucose=110", () => {
+    // 1 / (log10(15) + log10(110)) = 1 / (1.1761 + 2.0414) = 1 / 3.2175 = 0.3108… → 0.31
+    const r = calc(quickiCalculator, {
+      fastingInsulin: "15",
+      fastingGlucose: "110",
+    });
+    expect(r.value).toBeCloseTo(0.31, 1);
+  });
+
+  it("low insulin: insulin=5, glucose=80", () => {
+    // 1 / (log10(5) + log10(80)) = 1 / (0.6990 + 1.9031) = 1 / 2.6021 = 0.3843… → 0.38
+    const r = calc(quickiCalculator, {
+      fastingInsulin: "5",
+      fastingGlucose: "80",
+    });
+    expect(r.value).toBeCloseTo(0.38, 1);
+  });
+
+  it("insulin=1: insulin=1, glucose=100", () => {
+    // 1 / (log10(1) + log10(100)) = 1 / (0 + 2) = 0.5000 → 0.50
+    const r = calc(quickiCalculator, {
+      fastingInsulin: "1",
+      fastingGlucose: "100",
+    });
+    expect(r.value).toBe(0.5);
+    expect(r.status).toBe("normal");
+  });
+
+  it("insulin=0 is rejected", () => {
+    const r = calc(quickiCalculator, {
+      fastingInsulin: "0",
+      fastingGlucose: "90",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("positive");
+  });
+
+  it("glucose=0 is rejected", () => {
+    const r = calc(quickiCalculator, {
+      fastingInsulin: "10",
+      fastingGlucose: "0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("positive");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Triglyceride-HDL Ratio — TG / HDL
+// Classification:
+//   < 3.0  → Low (favorable)
+//   ≥ 3.0  → High (insulin resistance marker)
+// Result = Number(ratio.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Triglyceride-HDL Ratio calculate() output", () => {
+  it("normal: TG=100, HDL=50", () => {
+    // 100 / 50 = 2.00
+    const r = calc(triglycerideHdlRatioCalculator, {
+      triglycerides: "100",
+      hdl: "50",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("borderline at threshold: TG=150, HDL=50", () => {
+    // 150 / 50 = 3.00 → ≥ 3.0 → high
+    const r = calc(triglycerideHdlRatioCalculator, {
+      triglycerides: "150",
+      hdl: "50",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("insulin resistance: TG=200, HDL=40", () => {
+    // 200 / 40 = 5.00
+    const r = calc(triglycerideHdlRatioCalculator, {
+      triglycerides: "200",
+      hdl: "40",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+  });
+
+  it("very high: TG=300, HDL=30", () => {
+    // 300 / 30 = 10.00
+    const r = calc(triglycerideHdlRatioCalculator, {
+      triglycerides: "300",
+      hdl: "30",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("high");
+  });
+
+  it("HDL=0 is rejected", () => {
+    const r = calc(triglycerideHdlRatioCalculator, {
+      triglycerides: "100",
+      hdl: "0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("positive");
+  });
+
+  it("rounding: TG=119, HDL=43", () => {
+    // 119 / 43 = 2.7674… → 2.77
+    const r = calc(triglycerideHdlRatioCalculator, {
+      triglycerides: "119",
+      hdl: "43",
+    });
+    expect(r.value).toBe(2.77);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// LDL Cholesterol (Friedewald) — TC − HDL − (TG / 5)
+// Classification:
+//   < 100  → Optimal
+//   100–129 → Near optimal
+//   130–159 → Borderline high
+//   160–189 → High
+//   ≥ 190  → Very high
+// Not valid when TG ≥ 400
+// Result = Number(ldl.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("LDL Cholesterol calculate() output", () => {
+  it("optimal: TC=200, HDL=50, TG=150", () => {
+    // 200 − 50 − (150/5) = 200 − 50 − 30 = 120.00
+    const r = calc(ldlCholesterolCalculator, {
+      totalCholesterol: "200",
+      hdl: "50",
+      triglycerides: "150",
+    });
+    expect(r.value).toBe(120);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Near optimal / above optimal LDL cholesterol.");
+  });
+
+  it("high LDL: TC=260, HDL=40, TG=200", () => {
+    // 260 − 40 − (200/5) = 260 − 40 − 40 = 180.00
+    const r = calc(ldlCholesterolCalculator, {
+      totalCholesterol: "260",
+      hdl: "40",
+      triglycerides: "200",
+    });
+    expect(r.value).toBe(180);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("High LDL cholesterol.");
+  });
+
+  it("borderline: TC=210, HDL=55, TG=100", () => {
+    // 210 − 55 − (100/5) = 210 − 55 − 20 = 135.00
+    const r = calc(ldlCholesterolCalculator, {
+      totalCholesterol: "210",
+      hdl: "55",
+      triglycerides: "100",
+    });
+    expect(r.value).toBe(135);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Borderline high LDL cholesterol.");
+  });
+
+  it("TG ≥ 400 is rejected", () => {
+    const r = calc(ldlCholesterolCalculator, {
+      totalCholesterol: "300",
+      hdl: "40",
+      triglycerides: "400",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Friedewald equation is not valid");
+  });
+
+  it("very high: TC=300, HDL=35, TG=250", () => {
+    // 300 − 35 − (250/5) = 300 − 35 − 50 = 215.00
+    const r = calc(ldlCholesterolCalculator, {
+      totalCholesterol: "300",
+      hdl: "35",
+      triglycerides: "250",
+    });
+    expect(r.value).toBe(215);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Very high LDL cholesterol.");
+  });
+
+  it("rounding: TC=195, HDL=52, TG=130", () => {
+    // 195 − 52 − (130/5) = 195 − 52 − 26 = 117.00
+    const r = calc(ldlCholesterolCalculator, {
+      totalCholesterol: "195",
+      hdl: "52",
+      triglycerides: "130",
+    });
+    expect(r.value).toBe(117);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Non-HDL Cholesterol — TC − HDL
+// Classification:
+//   < 130  → Optimal
+//   130–159 → Near optimal
+//   160–189 → Borderline high
+//   190–219 → High
+//   ≥ 220  → Very high
+// Result = Number(nonHdl.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Non-HDL Cholesterol calculate() output", () => {
+  it("optimal: TC=200, HDL=80", () => {
+    // 200 − 80 = 120.00
+    const r = calc(nonHdlCholesterolCalculator, {
+      totalCholesterol: "200",
+      hdl: "80",
+    });
+    expect(r.value).toBe(120);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Optimal non-HDL cholesterol.");
+  });
+
+  it("near optimal: TC=200, HDL=55", () => {
+    // 200 − 55 = 145.00
+    const r = calc(nonHdlCholesterolCalculator, {
+      totalCholesterol: "200",
+      hdl: "55",
+    });
+    expect(r.value).toBe(145);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Near optimal / above optimal non-HDL cholesterol.");
+  });
+
+  it("borderline high: TC=260, HDL=70", () => {
+    // 260 − 70 = 190.00 → wait, that's ≥190 → high
+    // Try TC=240, HDL=70 → 170
+    const r = calc(nonHdlCholesterolCalculator, {
+      totalCholesterol: "240",
+      hdl: "70",
+    });
+    expect(r.value).toBe(170);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Borderline high non-HDL cholesterol.");
+  });
+
+  it("high: TC=290, HDL=60", () => {
+    // 290 − 60 = 230.00 → ≥220 → very high
+    // Try TC=280, HDL=70 → 210
+    const r = calc(nonHdlCholesterolCalculator, {
+      totalCholesterol: "280",
+      hdl: "70",
+    });
+    expect(r.value).toBe(210);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("High non-HDL cholesterol.");
+  });
+
+  it("very high: TC=310, HDL=50", () => {
+    // 310 − 50 = 260.00
+    const r = calc(nonHdlCholesterolCalculator, {
+      totalCholesterol: "310",
+      hdl: "50",
+    });
+    expect(r.value).toBe(260);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Very high non-HDL cholesterol.");
+  });
+
+  it("precision: TC=193, HDL=47", () => {
+    // 193 − 47 = 146.00
+    const r = calc(nonHdlCholesterolCalculator, {
+      totalCholesterol: "193",
+      hdl: "47",
+    });
+    expect(r.value).toBe(146);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Albumin-Globulin Ratio — albumin / (total protein − albumin)
+// Classification:
+//   < 1.0  → Low
+//   1.0–2.0 → Normal
+//   > 2.0  → High
+// Result = Number(ratio.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Albumin-Globulin Ratio calculate() output", () => {
+  it("normal: albumin=4.0, TP=7.0", () => {
+    // globulin = 7.0 − 4.0 = 3.0; ratio = 4.0 / 3.0 = 1.3333… → 1.33
+    const r = calc(albuminGlobulinRatioCalculator, {
+      albumin: "4.0",
+      totalProtein: "7.0",
+    });
+    expect(r.value).toBeCloseTo(1.33, 1);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal albumin to globulin ratio.");
+  });
+
+  it("high ratio: albumin=4.5, TP=6.5", () => {
+    // globulin = 6.5 − 4.5 = 2.0; ratio = 4.5 / 2.0 = 2.2500 → 2.25
+    const r = calc(albuminGlobulinRatioCalculator, {
+      albumin: "4.5",
+      totalProtein: "6.5",
+    });
+    expect(r.value).toBeCloseTo(2.25, 1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("High albumin to globulin ratio");
+  });
+
+  it("low ratio: albumin=2.5, TP=8.0", () => {
+    // globulin = 8.0 − 2.5 = 5.5; ratio = 2.5 / 5.5 = 0.4545… → 0.45
+    const r = calc(albuminGlobulinRatioCalculator, {
+      albumin: "2.5",
+      totalProtein: "8.0",
+    });
+    expect(r.value).toBeCloseTo(0.45, 1);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("Low albumin to globulin ratio");
+  });
+
+  it("borderline high: albumin=4.2, TP=7.0", () => {
+    // globulin = 7.0 − 4.2 = 2.8; ratio = 4.2 / 2.8 = 1.5000 → 1.50
+    const r = calc(albuminGlobulinRatioCalculator, {
+      albumin: "4.2",
+      totalProtein: "7.0",
+    });
+    expect(r.value).toBeCloseTo(1.5, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("TP = albumin → globulin ≤ 0, rejected", () => {
+    const r = calc(albuminGlobulinRatioCalculator, {
+      albumin: "4.0",
+      totalProtein: "4.0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("must be positive");
+  });
+
+  it("rounding: albumin=3.8, TP=7.2", () => {
+    // globulin = 7.2 − 3.8 = 3.4; ratio = 3.8 / 3.4 = 1.1176… → 1.12
+    const r = calc(albuminGlobulinRatioCalculator, {
+      albumin: "3.8",
+      totalProtein: "7.2",
+    });
+    expect(r.value).toBeCloseTo(1.12, 1);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Glasgow-Blatchford Score — composite score
+// Risk: 0 = very low, 1–5 low, 6–12 moderate, ≥13 high
+// ---------------------------------------------------------------------------
+describe("Glasgow-Blatchford Score calculate() output", () => {
+  it("zero risk: all normal, no clinical indicators", () => {
+    // BUN=15 (<18.2), Hb=14 (male ≥13), SBP=120, pulse=70, all no
+    const r = calc(glasgowBlatchfordCalculator, {
+      bun: "15",
+      hemoglobin: "14",
+      sex: "male",
+      sbp: "120",
+      pulse: "70",
+      melena: "no",
+      syncope: "no",
+      hepatic: "no",
+      cardiac: "no",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Very low risk");
+  });
+
+  it("low risk: BUN=20, male Hb=11, SBP=105, pulse=105", () => {
+    // BUN=20 → 18.2 ≤ 20 < 22.4 → +2
+    // Hb=11 male → 10 ≤ 11 < 12 → +3
+    // SBP=105 → 100 ≤ 105 < 110 → +1
+    // pulse=105 ≥100 → +1
+    // Total = 2+3+1+1 = 7 → moderate risk
+    const r = calc(glasgowBlatchfordCalculator, {
+      bun: "20",
+      hemoglobin: "11",
+      sex: "male",
+      sbp: "105",
+      pulse: "105",
+      melena: "no",
+      syncope: "no",
+      hepatic: "no",
+      cardiac: "no",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Moderate risk");
+  });
+
+  it("high risk: BUN=80, Hb=7, SBP=85, syncope+hepatic+cardiac", () => {
+    // BUN=80 ≥70 → +6
+    // Hb=7 male <10 → +6
+    // SBP=85 <90 → +3
+    // pulse=70 → 0
+    // syncope=yes → +2
+    // hepatic=yes → +2
+    // cardiac=yes → +2
+    // melena=yes → +1
+    // Total = 6+6+3+2+2+2+1 = 22 → high risk
+    const r = calc(glasgowBlatchfordCalculator, {
+      bun: "80",
+      hemoglobin: "7",
+      sex: "male",
+      sbp: "85",
+      pulse: "70",
+      melena: "yes",
+      syncope: "yes",
+      hepatic: "yes",
+      cardiac: "yes",
+    });
+    expect(r.value).toBe(22);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("High risk");
+  });
+
+  it("female Hb thresholds differ from male", () => {
+    // female Hb=11 → 10 ≤ 11 < 12 → +1 (not +3 as male)
+    const rM = calc(glasgowBlatchfordCalculator, {
+      bun: "15",
+      hemoglobin: "11",
+      sex: "male",
+      sbp: "120",
+      pulse: "70",
+      melena: "no",
+      syncope: "no",
+      hepatic: "no",
+      cardiac: "no",
+    });
+    const rF = calc(glasgowBlatchfordCalculator, {
+      bun: "15",
+      hemoglobin: "11",
+      sex: "female",
+      sbp: "120",
+      pulse: "70",
+      melena: "no",
+      syncope: "no",
+      hepatic: "no",
+      cardiac: "no",
+    });
+    // male: Hb=11 → +3; female: Hb=11 → +1
+    expect(rM.value).toBe(3);
+    expect(rF.value).toBe(1);
+  });
+
+  it("low risk: SBP=95, pulse=105, melena=yes", () => {
+    // BUN=15 → 0; Hb=14 male → 0; SBP=95 <100 → +2; pulse≥100 → +1; melena=yes → +1
+    // Total = 2+1+1 = 4 → low risk
+    const r = calc(glasgowBlatchfordCalculator, {
+      bun: "15",
+      hemoglobin: "14",
+      sex: "male",
+      sbp: "95",
+      pulse: "105",
+      melena: "yes",
+      syncope: "no",
+      hepatic: "no",
+      cardiac: "no",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Low risk");
+  });
+
+  it("max BUN contribution: BUN=70 → +6", () => {
+    // BUN=70 → +6; rest normal
+    const r = calc(glasgowBlatchfordCalculator, {
+      bun: "70",
+      hemoglobin: "14",
+      sex: "male",
+      sbp: "120",
+      pulse: "70",
+      melena: "no",
+      syncope: "no",
+      hepatic: "no",
+      cardiac: "no",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Moderate risk");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Maddrey Discriminant Function — 4.6 × (Patient PT − Control PT) + Bilirubin
+// Classification:
+//   < 32 → Mild alcoholic hepatitis
+//   ≥ 32 → Severe alcoholic hepatitis
+// Result = Math.round(mdf * 10) / 10
+// ---------------------------------------------------------------------------
+describe("Maddrey Discriminant Function calculate() output", () => {
+  it("mild: patientPT=14, controlPT=12, bilirubin=5", () => {
+    // 4.6 × (14 − 12) + 5 = 4.6 × 2 + 5 = 9.2 + 5 = 14.2
+    const r = calc(maddreyCalculator, {
+      patient_pt: "14",
+      control_pt: "12",
+      bilirubin: "5",
+    });
+    expect(r.value).toBe(14.2);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Mild alcoholic hepatitis");
+  });
+
+  it("exactly 32: patientPT=15, controlPT=12, bilirubin=18.2", () => {
+    // 4.6 × (15 − 12) + 18.2 = 4.6 × 3 + 18.2 = 13.8 + 18.2 = 32.0
+    const r = calc(maddreyCalculator, {
+      patient_pt: "15",
+      control_pt: "12",
+      bilirubin: "18.2",
+    });
+    expect(r.value).toBe(32);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Severe alcoholic hepatitis");
+  });
+
+  it("severe: patientPT=18, controlPT=12, bilirubin=15", () => {
+    // 4.6 × (18 − 12) + 15 = 4.6 × 6 + 15 = 27.6 + 15 = 42.6
+    const r = calc(maddreyCalculator, {
+      patient_pt: "18",
+      control_pt: "12",
+      bilirubin: "15",
+    });
+    expect(r.value).toBe(42.6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("very severe: patientPT=25, controlPT=12, bilirubin=30", () => {
+    // 4.6 × (25 − 12) + 30 = 4.6 × 13 + 30 = 59.8 + 30 = 89.8
+    const r = calc(maddreyCalculator, {
+      patient_pt: "25",
+      control_pt: "12",
+      bilirubin: "30",
+    });
+    expect(r.value).toBe(89.8);
+    expect(r.status).toBe("critical");
+  });
+
+  it("negative result (unusual): patientPT=10, controlPT=14, bilirubin=1", () => {
+    // 4.6 × (10 − 14) + 1 = 4.6 × (−4) + 1 = −18.4 + 1 = −17.4
+    const r = calc(maddreyCalculator, {
+      patient_pt: "10",
+      control_pt: "14",
+      bilirubin: "1",
+    });
+    expect(r.value).toBe(-17.4);
+    expect(r.status).toBe("normal");
+  });
+
+  it("decimal: patientPT=16, controlPT=11.8, bilirubin=12.4", () => {
+    // 4.6 × (16 − 11.8) + 12.4 = 4.6 × 4.2 + 12.4 = 19.32 + 12.4 = 31.72
+    // round(31.72 × 10) / 10 = 31.7
+    const r = calc(maddreyCalculator, {
+      patient_pt: "16",
+      control_pt: "11.8",
+      bilirubin: "12.4",
+    });
+    expect(r.value).toBe(31.7);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// NAFLD Fibrosis Score
+// -1.675 + 0.037×age + 0.094×BMI + 1.13×diabetes + 0.99×(AST/ALT)
+//   − 0.013×platelets − 0.66×albumin
+// Classification:
+//   < −1.455 → Low probability
+//   −1.455 to 0.676 → Indeterminate
+//   > 0.676 → High probability
+// Result = Math.round(nfs * 1000) / 1000
+// ---------------------------------------------------------------------------
+describe("NAFLD Fibrosis Score calculate() output", () => {
+  it("low fibrosis: young, no DM, favorable labs", () => {
+    // age=35, BMI=25, DM=0, AST=25, ALT=50, platelets=250, alb=4.5
+    // ratio = 25/50 = 0.5
+    // −1.675 + 0.037×35 + 0.094×25 + 1.13×0 + 0.99×0.5
+    //   − 0.013×250 − 0.66×4.5
+    // = −1.675 + 1.295 + 2.35 + 0 + 0.495 − 3.25 − 2.97
+    // = −3.755
+    const r = calc(nafldFibrosisCalculator, {
+      age: "35",
+      bmi: "25",
+      diabetes: "0",
+      ast: "25",
+      alt: "50",
+      platelets: "250",
+      albumin: "4.5",
+    });
+    expect(r.value).toBeCloseTo(-3.755, 2);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Low probability");
+  });
+
+  it("indeterminate: moderate risk factors", () => {
+    // age=55, BMI=32, DM=1, AST=50, ALT=40, platelets=180, alb=3.8
+    // ratio = 50/40 = 1.25
+    // −1.675 + 0.037×55 + 0.094×32 + 1.13×1 + 0.99×1.25
+    //   − 0.013×180 − 0.66×3.8
+    // = −1.675 + 2.035 + 3.008 + 1.13 + 1.2375 − 2.34 − 2.508
+    // = 0.8875
+    const r = calc(nafldFibrosisCalculator, {
+      age: "55",
+      bmi: "32",
+      diabetes: "1",
+      ast: "50",
+      alt: "40",
+      platelets: "180",
+      albumin: "3.8",
+    });
+    expect(r.value).toBeCloseTo(0.888, 2);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("High probability");
+  });
+
+  it("high fibrosis: older, diabetic, high AST/ALT, low platelets", () => {
+    // age=65, BMI=35, DM=1, AST=90, ALT=45, platelets=100, alb=3.0
+    // ratio = 90/45 = 2.0
+    // −1.675 + 0.037×65 + 0.094×35 + 1.13×1 + 0.99×2.0
+    //   − 0.013×100 − 0.66×3.0
+    // = −1.675 + 2.405 + 3.29 + 1.13 + 1.98 − 1.3 − 1.98
+    // = 3.85
+    const r = calc(nafldFibrosisCalculator, {
+      age: "65",
+      bmi: "35",
+      diabetes: "1",
+      ast: "90",
+      alt: "45",
+      platelets: "100",
+      albumin: "3.0",
+    });
+    expect(r.value).toBeCloseTo(3.85, 2);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("High probability");
+  });
+
+  it("near −1.455 boundary: age=50, BMI=28, DM=0, AST/ALT=1.0, platelets=200, alb=4.0", () => {
+    // −1.675 + 0.037×50 + 0.094×28 + 0 + 0.99×1.0
+    //   − 0.013×200 − 0.66×4.0
+    // = −1.675 + 1.85 + 2.632 + 0.99 − 2.6 − 2.64
+    // = −1.443
+    const r = calc(nafldFibrosisCalculator, {
+      age: "50",
+      bmi: "28",
+      diabetes: "0",
+      ast: "50",
+      alt: "50",
+      platelets: "200",
+      albumin: "4.0",
+    });
+    expect(r.value).toBeCloseTo(-1.443, 2);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Indeterminate");
+  });
+
+  it("near +0.676 boundary: age=50, BMI=30, DM=1, AST/ALT=1.0, platelets=180, alb=3.8", () => {
+    // −1.675 + 0.037×50 + 0.094×30 + 1.13×1 + 0.99×1.0
+    //   − 0.013×180 − 0.66×3.8
+    // = −1.675 + 1.85 + 2.82 + 1.13 + 0.99 − 2.34 − 2.508
+    // = 0.267
+    const r = calc(nafldFibrosisCalculator, {
+      age: "50",
+      bmi: "30",
+      diabetes: "1",
+      ast: "40",
+      alt: "40",
+      platelets: "180",
+      albumin: "3.8",
+    });
+    expect(r.value).toBeCloseTo(0.267, 2);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Indeterminate");
+  });
+
+  it("young no-DM low-risk: age=25, BMI=22, DM=0, AST/ALT=0.5, platelets=300, alb=5.0", () => {
+    // −1.675 + 0.037×25 + 0.094×22 + 0 + 0.99×0.5
+    //   − 0.013×300 − 0.66×5.0
+    // = −1.675 + 0.925 + 2.068 + 0.495 − 3.9 − 3.3
+    // = −5.387
+    const r = calc(nafldFibrosisCalculator, {
+      age: "25",
+      bmi: "22",
+      diabetes: "0",
+      ast: "20",
+      alt: "40",
+      platelets: "300",
+      albumin: "5.0",
+    });
+    expect(r.value).toBeCloseTo(-5.387, 2);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Low probability");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Rockall Score — composite: age + shock + comorbidity + diagnosis + stigmata
+// Risk: 0–2 low, 3–4 moderate, ≥5 high
+// ---------------------------------------------------------------------------
+describe("Rockall Score calculate() output", () => {
+  it("zero risk: all minimal", () => {
+    // age=0, shock=0, comorbidity=0, diagnosis=0, stigmata=0
+    const r = calc(rockallCalculator, {
+      age: "0",
+      shock: "0",
+      comorbidity: "0",
+      diagnosis: "0",
+      stigmata: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Low risk");
+  });
+
+  it("moderate: age=1, shock=0, comorbidity=2, diagnosis=1, stigmata=0", () => {
+    // 1 + 0 + 2 + 1 + 0 = 4 → moderate
+    const r = calc(rockallCalculator, {
+      age: "1",
+      shock: "0",
+      comorbidity: "2",
+      diagnosis: "1",
+      stigmata: "0",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Moderate risk");
+  });
+
+  it("high risk: age=2, shock=2, comorbidity=3, diagnosis=2, stigmata=2", () => {
+    // 2 + 2 + 3 + 2 + 2 = 11 → high
+    const r = calc(rockallCalculator, {
+      age: "2",
+      shock: "2",
+      comorbidity: "3",
+      diagnosis: "2",
+      stigmata: "2",
+    });
+    expect(r.value).toBe(11);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("High risk");
+  });
+
+  it("boundary: score = 5 → high", () => {
+    // age=2, shock=1, comorbidity=0, diagnosis=1, stigmata=1
+    // 2 + 1 + 0 + 1 + 1 = 5
+    const r = calc(rockallCalculator, {
+      age: "2",
+      shock: "1",
+      comorbidity: "0",
+      diagnosis: "1",
+      stigmata: "1",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("High risk");
+  });
+
+  it("low risk boundary: score = 2", () => {
+    // age=0, shock=0, comorbidity=0, diagnosis=0, stigmata=0
+    // age=1, shock=0, comorbidity=0, diagnosis=1, stigmata=0 = 2
+    const r = calc(rockallCalculator, {
+      age: "1",
+      shock: "0",
+      comorbidity: "0",
+      diagnosis: "1",
+      stigmata: "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Low risk");
+  });
+
+  it("isolated comorbidity: score = 3", () => {
+    // age=0, shock=0, comorbidity=3, diagnosis=0, stigmata=0 = 3
+    const r = calc(rockallCalculator, {
+      age: "0",
+      shock: "0",
+      comorbidity: "3",
+      diagnosis: "0",
+      stigmata: "0",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Moderate risk");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// A-a Gradient — PAO₂ = FiO₂ × (760 − 47) − PaCO₂ / 0.8
+//             A-a = PAO₂ − PaO₂
+// Expected normal = age/4 + 4
+// Result = Math.round(gradient * 10) / 10
+// ---------------------------------------------------------------------------
+describe("A-a Gradient calculate() output", () => {
+  it("young normal: age=25, FiO₂=0.21, PaCO₂=40, PaO₂=100", () => {
+    // PAO₂ = 0.21 × 713 − 40/0.8 = 149.73 − 50 = 99.73
+    // A-a = 99.73 − 100 = −0.27 → round to −0.3
+    // expected = 25/4 + 4 = 10.25
+    const r = calc(aaGradientCalculator, {
+      age: "25",
+      fio2: "0.21",
+      pao2: "100",
+      paco2: "40",
+    });
+    expect(r.value).toBe(-0.3);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Normal A–a oxygen gradient");
+  });
+
+  it("older normal: age=70, FiO₂=0.21, PaCO₂=40, PaO₂=80", () => {
+    // PAO₂ = 0.21 × 713 − 40/0.8 = 149.73 − 50 = 99.73
+    // A-a = 99.73 − 80 = 19.73 → round to 19.7
+    // expected = 70/4 + 4 = 21.5
+    const r = calc(aaGradientCalculator, {
+      age: "70",
+      fio2: "0.21",
+      pao2: "80",
+      paco2: "40",
+    });
+    expect(r.value).toBe(19.7);
+    expect(r.status).toBe("normal");
+  });
+
+  it("elevated: age=50, FiO₂=0.50, PaCO₂=40, PaO₂=100", () => {
+    // PAO₂ = 0.50 × 713 − 40/0.8 = 356.5 − 50 = 306.5
+    // A-a = 306.5 − 100 = 206.5
+    // expected = 50/4 + 4 = 16.5; 206.5 > 16.5 + 50 → critical
+    const r = calc(aaGradientCalculator, {
+      age: "50",
+      fio2: "0.50",
+      pao2: "100",
+      paco2: "40",
+    });
+    expect(r.value).toBe(206.5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("high FiO₂: age=50, FiO₂=1.0, PaCO₂=35, PaO₂=200", () => {
+    // PAO₂ = 1.0 × 713 − 35/0.8 = 713 − 43.75 = 669.25
+    // A-a = 669.25 − 200 = 469.25 → round to 469.3
+    const r = calc(aaGradientCalculator, {
+      age: "50",
+      fio2: "1",
+      pao2: "200",
+      paco2: "35",
+    });
+    expect(r.value).toBe(469.3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("low PaO₂: age=35, FiO₂=0.21, PaCO₂=30, PaO₂=60", () => {
+    // PAO₂ = 0.21 × 713 − 30/0.8 = 149.73 − 37.5 = 112.23
+    // A-a = 112.23 − 60 = 52.23 → round to 52.2
+    // expected = 35/4 + 4 = 12.75; 52.2 > 12.75 + 20 = 32.75 → high
+    const r = calc(aaGradientCalculator, {
+      age: "35",
+      fio2: "0.21",
+      pao2: "60",
+      paco2: "30",
+    });
+    expect(r.value).toBe(52.2);
+    expect(r.status).toBe("high");
+  });
+
+  it("standard sea-level: age=40, FiO₂=0.21, PaCO₂=40, PaO₂=95", () => {
+    // PAO₂ = 0.21 × 713 − 40/0.8 = 149.73 − 50 = 99.73
+    // A-a = 99.73 − 95 = 4.73 → round to 4.7
+    const r = calc(aaGradientCalculator, {
+      age: "40",
+      fio2: "0.21",
+      pao2: "95",
+      paco2: "40",
+    });
+    expect(r.value).toBe(4.7);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Oxygen Index — (FiO₂ × MAP × 100) / PaO₂
+// Classification:
+//   < 5   → Mild
+//   5–15  → Moderate
+//   16–25 → Severe
+//   > 25  → Very severe
+// Result = Math.round(oi * 100) / 100
+// ---------------------------------------------------------------------------
+describe("Oxygen Index calculate() output", () => {
+  it("mild: FiO₂=0.21, MAP=10, PaO₂=100", () => {
+    // (0.21 × 10 × 100) / 100 = 210 / 100 = 2.10
+    const r = calc(oxygenIndexCalculator, {
+      fio2: "0.21",
+      map: "10",
+      pao2: "100",
+    });
+    expect(r.value).toBe(2.1);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Mild oxygenation impairment.");
+  });
+
+  it("moderate: FiO₂=0.50, MAP=15, PaO₂=80", () => {
+    // (0.50 × 15 × 100) / 80 = 750 / 80 = 9.375 → 9.38
+    const r = calc(oxygenIndexCalculator, {
+      fio2: "0.50",
+      map: "15",
+      pao2: "80",
+    });
+    expect(r.value).toBeCloseTo(9.38, 1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Moderate oxygenation impairment.");
+  });
+
+  it("severe: FiO₂=0.80, MAP=20, PaO₂=65", () => {
+    // (0.80 × 20 × 100) / 65 = 1600 / 65 = 24.6154… → 24.62
+    const r = calc(oxygenIndexCalculator, {
+      fio2: "0.80",
+      map: "20",
+      pao2: "65",
+    });
+    expect(r.value).toBeCloseTo(24.62, 1);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Severe oxygenation impairment.");
+  });
+
+  it("very severe: FiO₂=1.0, MAP=25, PaO₂=60", () => {
+    // (1.0 × 25 × 100) / 60 = 2500 / 60 = 41.6667… → 41.67
+    const r = calc(oxygenIndexCalculator, {
+      fio2: "1",
+      map: "25",
+      pao2: "60",
+    });
+    expect(r.value).toBeCloseTo(41.67, 1);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Very severe");
+  });
+
+  it("boundary: OI = 15.0 → moderate", () => {
+    // (0.30 × 20 × 100) / 40 = 600 / 40 = 15.0
+    const r = calc(oxygenIndexCalculator, {
+      fio2: "0.30",
+      map: "20",
+      pao2: "40",
+    });
+    expect(r.value).toBe(15);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Moderate oxygenation impairment.");
+  });
+
+  it("rounding: FiO₂=0.60, MAP=12, PaO₂=55", () => {
+    // (0.60 × 12 × 100) / 55 = 720 / 55 = 13.0909… → 13.09
+    const r = calc(oxygenIndexCalculator, {
+      fio2: "0.60",
+      map: "12",
+      pao2: "55",
+    });
+    expect(r.value).toBeCloseTo(13.09, 1);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// P/F Ratio — PaO₂ / FiO₂
+// Classification (Berlin):
+//   > 400 → Normal
+//   301–400 → Mild impairment
+//   201–300 → Mild ARDS
+//   101–200 → Moderate ARDS
+//   ≤ 100 → Severe ARDS
+// Result = Math.round(ratio)
+// ---------------------------------------------------------------------------
+describe("P/F Ratio calculate() output", () => {
+  it("normal: PaO₂=100, FiO₂=0.21", () => {
+    // 100 / 0.21 = 476.1905… → round to 476
+    const r = calc(pfRatioCalculator, {
+      pao2: "100",
+      fio2: "0.21",
+    });
+    expect(r.value).toBe(476);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal oxygenation.");
+  });
+
+  it("mild impairment: PaO₂=120, FiO₂=0.40", () => {
+    // 120 / 0.40 = 300.00 → 300
+    // score=300 → > 200 → mild ARDS
+    const r = calc(pfRatioCalculator, {
+      pao2: "120",
+      fio2: "0.40",
+    });
+    expect(r.value).toBe(300);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Mild ARDS");
+  });
+
+  it("moderate ARDS: PaO₂=80, FiO₂=0.60", () => {
+    // 80 / 0.60 = 133.333… → round to 133
+    const r = calc(pfRatioCalculator, {
+      pao2: "80",
+      fio2: "0.60",
+    });
+    expect(r.value).toBe(133);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Moderate ARDS");
+  });
+
+  it("severe ARDS: PaO₂=50, FiO₂=0.80", () => {
+    // 50 / 0.80 = 62.5 → round to 63
+    const r = calc(pfRatioCalculator, {
+      pao2: "50",
+      fio2: "0.80",
+    });
+    expect(r.value).toBe(63);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Severe ARDS");
+  });
+
+  it("exact boundary 300: PaO₂=90, FiO₂=0.30", () => {
+    // 90 / 0.30 = 300
+    const r = calc(pfRatioCalculator, {
+      pao2: "90",
+      fio2: "0.30",
+    });
+    expect(r.value).toBe(300);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Mild ARDS");
+  });
+
+  it("mild impairment boundary 401: PaO₂=120, FiO₂=0.29", () => {
+    // 120 / 0.29 = 413.79… → round to 414
+    const r = calc(pfRatioCalculator, {
+      pao2: "120",
+      fio2: "0.29",
+    });
+    expect(r.value).toBe(414);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal oxygenation.");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ROX Index — (SpO₂ / FiO₂) / RR
+// Classification:
+//   ≥ 4.88 → Likely HFNC success
+//   3.85–4.87 → Intermediate
+//   < 3.85 → High risk of failure
+// Result = Math.round(rox * 100) / 100
+// ---------------------------------------------------------------------------
+describe("ROX Index calculate() output", () => {
+  it("likely success: SpO₂=98, FiO₂=0.30, RR=12", () => {
+    // (98 / 0.30) / 12 = 326.6667 / 12 = 27.2222 → 27.22
+    const r = calc(roxIndexCalculator, {
+      spo2: "98",
+      fio2: "0.30",
+      rr: "12",
+    });
+    expect(r.value).toBeCloseTo(27.22, 1);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Likely HFNC success");
+  });
+
+  it("low ROX: SpO₂=88, FiO₂=1.0, RR=30", () => {
+    // (88 / 1.0) / 30 = 88 / 30 = 2.9333… → 2.93
+    const r = calc(roxIndexCalculator, {
+      spo2: "88",
+      fio2: "1",
+      rr: "30",
+    });
+    expect(r.value).toBeCloseTo(2.93, 1);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("High risk of HFNC failure");
+  });
+
+  it("boundary near 4.88: SpO₂=96, FiO₂=0.40, RR=50", () => {
+    // (96 / 0.40) / 50 = 240 / 50 = 4.80
+    const r = calc(roxIndexCalculator, {
+      spo2: "96",
+      fio2: "0.40",
+      rr: "50",
+    });
+    expect(r.value).toBeCloseTo(4.8, 1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Intermediate");
+  });
+
+  it("boundary near 3.85: SpO₂=95, FiO₂=0.50, RR=49", () => {
+    // (95 / 0.50) / 49 = 190 / 49 = 3.8776… → 3.88
+    const r = calc(roxIndexCalculator, {
+      spo2: "95",
+      fio2: "0.50",
+      rr: "49",
+    });
+    expect(r.value).toBeCloseTo(3.88, 1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("Intermediate");
+  });
+
+  it("exactly 4.88: SpO₂=97.6, FiO₂=0.40, RR=50", () => {
+    // (97.6 / 0.40) / 50 = 244 / 50 = 4.88
+    const r = calc(roxIndexCalculator, {
+      spo2: "97.6",
+      fio2: "0.40",
+      rr: "50",
+    });
+    expect(r.value).toBeCloseTo(4.88, 1);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Likely HFNC success");
+  });
+
+  it("representative: SpO₂=95, FiO₂=0.60, RR=25", () => {
+    // (95 / 0.60) / 25 = 158.3333 / 25 = 6.3333 → 6.33
+    const r = calc(roxIndexCalculator, {
+      spo2: "95",
+      fio2: "0.60",
+      rr: "25",
+    });
+    expect(r.value).toBeCloseTo(6.33, 1);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Respiratory Compensation — Expected HCO₃ = 24 + k × ((PaCO₂ − 40) / 10)
+// k = 1 (acuteRespAcidosis), 4 (chronicRespAcidosis),
+//     −2 (acuteRespAlkalosis), −5 (chronicRespAlkalosis)
+// Classification: within ±2 → appropriate; outside ±2 → mixed disorder
+// Result = Number(expectedHco3.toFixed(1))
+// score = Number(deviation.toFixed(1))
+// ---------------------------------------------------------------------------
+describe("Respiratory Compensation calculate() output", () => {
+  it("acute respiratory acidosis: PaCO₂=60, measured HCO₃=25", () => {
+    // expected = 24 + 1 × (60 − 40) / 10 = 24 + 2 = 26.0
+    // deviation = 25 − 26 = −1.0 → within ±2
+    const r = calc(respiratoryCompensationCalculator, {
+      disorderType: "acuteRespAcidosis",
+      paCO2: "60",
+      measuredBicarbonate: "25",
+    });
+    expect(r.value).toBe(26);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("within ±2");
+  });
+
+  it("chronic respiratory acidosis: PaCO₂=60, measured HCO₃=28", () => {
+    // expected = 24 + 4 × (60 − 40) / 10 = 24 + 8 = 32.0
+    // deviation = 28 − 32 = −4.0 → outside ±2 (below)
+    const r = calc(respiratoryCompensationCalculator, {
+      disorderType: "chronicRespAcidosis",
+      paCO2: "60",
+      measuredBicarbonate: "28",
+    });
+    expect(r.value).toBe(32);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("more than 2 mEq/L below expected");
+  });
+
+  it("acute respiratory alkalosis: PaCO₂=25, measured HCO₃=22", () => {
+    // expected = 24 + (−2) × (25 − 40) / 10 = 24 + (−2) × (−1.5) = 24 + 3 = 27.0
+    // deviation = 22 − 27 = −5.0 → outside ±2 (below)
+    const r = calc(respiratoryCompensationCalculator, {
+      disorderType: "acuteRespAlkalosis",
+      paCO2: "25",
+      measuredBicarbonate: "22",
+    });
+    expect(r.value).toBe(27);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("more than 2 mEq/L below expected");
+  });
+
+  it("chronic respiratory alkalosis: PaCO₂=30, measured HCO₃=17", () => {
+    // expected = 24 + (−5) × (30 − 40) / 10 = 24 + (−5) × (−1) = 24 + 5 = 29.0
+    // deviation = 17 − 29 = −12.0 → outside ±2
+    const r = calc(respiratoryCompensationCalculator, {
+      disorderType: "chronicRespAlkalosis",
+      paCO2: "30",
+      measuredBicarbonate: "17",
+    });
+    expect(r.value).toBe(29);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("more than 2 mEq/L below expected");
+  });
+
+  it("appropriate chronic compensation: PaCO₂=50, measured HCO₃=27", () => {
+    // expected = 24 + 4 × (50 − 40) / 10 = 24 + 4 = 28.0
+    // deviation = 27 − 28 = −1.0 → within ±2
+    const r = calc(respiratoryCompensationCalculator, {
+      disorderType: "chronicRespAcidosis",
+      paCO2: "50",
+      measuredBicarbonate: "27",
+    });
+    expect(r.value).toBe(28);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("within ±2");
+  });
+
+  it("appropriate acute acidosis: PaCO₂=50, measured HCO₃=25", () => {
+    // expected = 24 + 1 × (50 − 40) / 10 = 24 + 1 = 25.0
+    // deviation = 25 − 25 = 0.0 → within ±2
+    const r = calc(respiratoryCompensationCalculator, {
+      disorderType: "acuteRespAcidosis",
+      paCO2: "50",
+      measuredBicarbonate: "25",
+    });
+    expect(r.value).toBe(25);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("within ±2");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Metabolic Alkalosis Compensation — Expected PaCO₂ = 40 + 0.6 × (HCO₃ − 24)
+// Capped at 55 mmHg
+// Classification: within ±5 → appropriate; outside ±5 → concurrent disorder
+// Result = Number(expected.toFixed(1))
+// score = Number(deviation.toFixed(1))
+// HCO₃ must be > 24
+// ---------------------------------------------------------------------------
+describe("Metabolic Alkalosis Compensation calculate() output", () => {
+  it("mild: HCO₃=30, measured PaCO₂=42", () => {
+    // expected = 40 + 0.6 × (30 − 24) = 40 + 3.6 = 43.6
+    // deviation = 42 − 43.6 = −1.6 → within ±5
+    const r = calc(metabolicAlkalosisCompensationCalculator, {
+      bicarbonate: "30",
+      measuredPaCO2: "42",
+    });
+    expect(r.value).toBe(43.6);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("within ±5");
+  });
+
+  it("moderate: HCO₃=36, measured PaCO₂=50", () => {
+    // expected = 40 + 0.6 × (36 − 24) = 40 + 7.2 = 47.2
+    // deviation = 50 − 47.2 = 2.8 → within ±5
+    const r = calc(metabolicAlkalosisCompensationCalculator, {
+      bicarbonate: "36",
+      measuredPaCO2: "50",
+    });
+    expect(r.value).toBe(47.2);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("within ±5");
+  });
+
+  it("severe/capped: HCO₃=55, measured PaCO₂=55", () => {
+    // expected = min(40 + 0.6 × (55 − 24), 55) = min(40 + 18.6, 55) = min(58.6, 55) = 55
+    // deviation = 55 − 55 = 0 → within ±5
+    const r = calc(metabolicAlkalosisCompensationCalculator, {
+      bicarbonate: "55",
+      measuredPaCO2: "55",
+    });
+    expect(r.value).toBe(55);
+    expect(r.status).toBe("normal");
+  });
+
+  it("HCO₃=24 is rejected (not alkalosis)", () => {
+    const r = calc(metabolicAlkalosisCompensationCalculator, {
+      bicarbonate: "24",
+      measuredPaCO2: "40",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("not consistent with metabolic alkalosis");
+  });
+
+  it("below normal: HCO₃=25, measured PaCO₂=30", () => {
+    // expected = 40 + 0.6 × (25 − 24) = 40 + 0.6 = 40.6
+    // deviation = 30 − 40.6 = −10.6 → outside ±5 (below)
+    const r = calc(metabolicAlkalosisCompensationCalculator, {
+      bicarbonate: "25",
+      measuredPaCO2: "30",
+    });
+    expect(r.value).toBe(40.6);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("more than 5 mmHg below expected");
+  });
+
+  it("above expected: HCO₃=32, measured PaCO₂=60", () => {
+    // expected = 40 + 0.6 × (32 − 24) = 40 + 4.8 = 44.8
+    // deviation = 60 − 44.8 = 15.2 → outside ±5 (above)
+    const r = calc(metabolicAlkalosisCompensationCalculator, {
+      bicarbonate: "32",
+      measuredPaCO2: "60",
+    });
+    expect(r.value).toBe(44.8);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("more than 5 mmHg above expected");
+  });
+
+  it("within boundary: HCO₃=28, measured PaCO₂=46", () => {
+    // expected = 40 + 0.6 × (28 − 24) = 40 + 2.4 = 42.4
+    // deviation = 46 − 42.4 = 3.6 → within ±5
+    const r = calc(metabolicAlkalosisCompensationCalculator, {
+      bicarbonate: "28",
+      measuredPaCO2: "46",
+    });
+    expect(r.value).toBe(42.4);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("within ±5");
   });
 });

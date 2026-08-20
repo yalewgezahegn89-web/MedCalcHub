@@ -177,6 +177,13 @@ if (Number(values.insulin) === 0) {
 const glucose = Number(values.glucose);
 const insulin = Number(values.insulin);
 
+if (glucose <= 3.5) {
+  return {
+    value: 0,
+    interpretation: "Glucose must be greater than 3.5 mmol/L for HOMA-B calculation.",
+    status: "critical" as const,
+  };
+}
 
   const result =
     (20 * insulin) / (glucose - 3.5);
