@@ -193,10 +193,7 @@ let status:
 let referenceRange =
   "";
 
-if (false) {}
-
-
-else if (result <= 55) {
+if (result < 55) {
 
   interpretation =
     "Acceptable";
@@ -209,7 +206,7 @@ else if (result <= 55) {
 }
 
 
-else if (result >= 55 && result <= 70) {
+else if (result <= 70) {
 
   interpretation =
     "Elevated — increased calcification risk";
@@ -222,7 +219,7 @@ else if (result >= 55 && result <= 70) {
 }
 
 
-else if (result >= 70) {
+else {
 
   interpretation =
     "Critically elevated — high calcification risk";

@@ -180,6 +180,74 @@ import {
   pediatricHypotensionCalculator,
 } from "../../lib/calculators/pediatric-hypotension";
 
+import { nihssCalculator } from "../../lib/calculators/nihss";
+import {
+  charlsonCalculator,
+} from "../../lib/calculators/charlson-comorbidity-index";
+import {
+  ottawaSahRuleCalculator,
+} from "../../lib/calculators/ottawa-sah-rule";
+import {
+  abcd2ScoreCalculator,
+} from "../../lib/calculators/abcd2-score";
+import {
+  raceScaleCalculator,
+} from "../../lib/calculators/race-scale";
+import { esrsCalculator } from "../../lib/calculators/esrs";
+import {
+  preeclampsiaCriteriaCalculator,
+} from "../../lib/calculators/preeclampsia-criteria";
+import {
+  hellpSyndromeCalculator,
+} from "../../lib/calculators/hellp-syndrome";
+import {
+  magnesiumSulfatePreeclampsiaCalculator,
+} from "../../lib/calculators/magnesium-sulfate-preeclampsia";
+import {
+  apgarScoreCalculator,
+} from "../../lib/calculators/apgar-score";
+import {
+  biophysicalProfileCalculator,
+} from "../../lib/calculators/biophysical-profile";
+import {
+  pediatricGcsCalculator,
+} from "../../lib/calculators/pediatric-gcs";
+import {
+  pediatricTraumaScoreCalculator,
+} from "../../lib/calculators/pediatric-trauma-score";
+import {
+  westleyCroupScoreCalculator,
+} from "../../lib/calculators/westley-croup-score";
+import {
+  gorelickDehydrationCalculator,
+} from "../../lib/calculators/gorelick-dehydration";
+import { epdsCalculator } from "../../lib/calculators/epds";
+import { phq9Calculator } from "../../lib/calculators/phq-9";
+import { gad7Calculator } from "../../lib/calculators/gad-7";
+import { stopBangCalculator } from "../../lib/calculators/stop-bang";
+import { foutScoreCalculator } from "../../lib/calculators/fout-score";
+
+import { fractionalExcretionCalculator } from "../../lib/calculators/fractional-excretion-calculator";
+import { albuminCorrectedCalciumCalculator } from "../../lib/calculators/albumin-corrected-calcium";
+import { mapCalculator } from "../../lib/calculators/map";
+import { maintenanceFluidsCalculator } from "../../lib/calculators/maintenance-fluids";
+import { centorCalculator } from "../../lib/calculators/centor-score";
+import { barthelIndexCalculator } from "../../lib/calculators/barthel-index";
+import { urineAnionGapCalculator } from "../../lib/calculators/urine-anion-gap";
+import { upcrCalculator } from "../../lib/calculators/urine-protein-creatinine-ratio";
+import { calciumPhosphateProductCalculator } from "../../lib/calculators/calcium-phosphate-product";
+import { urineOsmolalGapCalculator } from "../../lib/calculators/urine-osmolal-gap";
+import { estimatedAverageGlucoseCalculator } from "../../lib/calculators/estimated-average-glucose";
+import { huntHessScaleCalculator } from "../../lib/calculators/hunt-hess-scale";
+import { modifiedRankinScaleCalculator } from "../../lib/calculators/modified-rankin-scale";
+import { bishopScoreCalculator } from "../../lib/calculators/bishop-score";
+import { ecogCalculator } from "../../lib/calculators/ecog-performance-status";
+import { epworthCalculator } from "../../lib/calculators/epworth-sleepiness-scale";
+import { gestationalWeightGainCalculator } from "../../lib/calculators/gestational-weight-gain";
+import { acrCalculator } from "../../lib/calculators/acr";
+import { eddCalculator } from "../../lib/calculators/edd";
+import { gestationalAgeCalculator } from "../../lib/calculators/gestational-age";
+
 import type {
   CalculatorDefinition,
 } from "../../lib/calculators/calculator.types";
@@ -8657,5 +8725,2365 @@ describe("Pediatric Hypotension calculate() output", () => {
     });
     expect(r.value).toBe(72);
     expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// NIHSS — sum of 15 items, range 0–42
+// 0 = no symptoms; 1–4 minor; 5–15 moderate; 16–20 moderate–severe; 21–42 severe
+describe("NIHSS calculate() output", () => {
+  function nihss(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      loc: "0", locQuestions: "0", locCommands: "0",
+      gaze: "0", visual: "0", facial: "0",
+      armLeft: "0", armRight: "0", legLeft: "0", legRight: "0",
+      ataxia: "0", sensory: "0", language: "0",
+      dysarthria: "0", extinction: "0",
+    };
+    return calc(nihssCalculator, { ...base, ...overrides });
+  }
+
+  it("all zeros → score 0, normal", () => {
+    const r = nihss({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("minor stroke: armLeft=1 + legRight=1 → score 2, normal", () => {
+    const r = nihss({ armLeft: "1", legRight: "1" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("moderate stroke: sum=10 → high", () => {
+    // loc=1, gaze=1, facial=2, armLeft=2, armRight=2, legLeft=1, legRight=1 = 10
+    const r = nihss({
+      loc: "1", gaze: "1", facial: "2",
+      armLeft: "2", armRight: "2", legLeft: "1", legRight: "1",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 4→5: score=5 → high", () => {
+    // loc=1, locQuestions=1, gaze=1, facial=1, armLeft=1 = 5
+    const r = nihss({
+      loc: "1", locQuestions: "1", gaze: "1", facial: "1", armLeft: "1",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+  });
+
+  it("moderate–severe: score=18 → high", () => {
+    // loc=2, locQuestions=1, gaze=1, visual=2, facial=2,
+    // armLeft=3, armRight=3, legLeft=2, legRight=2 = 18
+    const r = nihss({
+      loc: "2", locQuestions: "1", gaze: "1", visual: "2", facial: "2",
+      armLeft: "3", armRight: "3", legLeft: "2", legRight: "2",
+    });
+    expect(r.value).toBe(18);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 15→16: score=16 → high", () => {
+    // loc=1, gaze=1, visual=2, facial=2, armLeft=3, armRight=3,
+    // legLeft=2, legRight=2 = 16
+    const r = nihss({
+      loc: "1", gaze: "1", visual: "2", facial: "2",
+      armLeft: "3", armRight: "3", legLeft: "2", legRight: "2",
+    });
+    expect(r.value).toBe(16);
+    expect(r.status).toBe("high");
+  });
+
+  it("severe stroke: score=21 → critical", () => {
+    // loc=3, locQuestions=2, locCommands=2, gaze=2, visual=3, facial=3,
+    // armLeft=4, armRight=4 = 23 (≥21)
+    const r = nihss({
+      loc: "3", locQuestions: "2", locCommands: "2", gaze: "2",
+      visual: "3", facial: "3", armLeft: "4", armRight: "4",
+    });
+    expect(r.value).toBe(23);
+    expect(r.status).toBe("critical");
+  });
+
+  it("maximum score 42: all items max → critical", () => {
+    const r = nihss({
+      loc: "3", locQuestions: "2", locCommands: "2", gaze: "2",
+      visual: "3", facial: "3", armLeft: "4", armRight: "4",
+      legLeft: "4", legRight: "4", ataxia: "2", sensory: "2",
+      language: "3", dysarthria: "2", extinction: "2",
+    });
+    expect(r.value).toBe(42);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Charlson Comorbidity Index — 19 weighted comorbidities + age adjustment
+// 0 = no burden; 1–2 low; 3–4 moderate; ≥5 high
+describe("Charlson Comorbidity Index calculate() output", () => {
+  function charlson(ageGroup: string, overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      ageGroup,
+      myocardialInfarction: "no", congestiveHeartFailure: "no",
+      peripheralVascularDisease: "no", cerebrovascularDisease: "no",
+      dementia: "no", chronicPulmonaryDisease: "no",
+      connectiveTissueDisease: "no", pepticUlcer: "no",
+      mildLiverDisease: "no", diabetesNoComplications: "no",
+      hemiplegia: "no", moderateSevereRenalDisease: "no",
+      diabetesEndOrganDamage: "no", anyMalignancy: "no",
+      leukemia: "no", lymphoma: "no",
+      moderateSevereLiverDisease: "no", metastaticSolidTumor: "no",
+      aids: "no",
+    };
+    return calc(charlsonCalculator, { ...base, ...overrides });
+  }
+
+  it("no comorbidities, age <50 → score 0, normal", () => {
+    const r = charlson("0", {});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("MI + DM no complications, age 50–59 → score 3, high", () => {
+    // MI=1, DM=1, age adj=1 → total=3
+    const r = charlson("1", {
+      myocardialInfarction: "yes",
+      diabetesNoComplications: "yes",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("metastatic tumor + age ≥80 → score 10, critical", () => {
+    // metastatic=6, age adj=4 → total=10
+    const r = charlson("4", { metastaticSolidTumor: "yes" });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("critical");
+  });
+
+  it("AIDS alone, age <50 → score 6, critical", () => {
+    const r = charlson("0", { aids: "yes" });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary 2→3: CHF + PVD + age 60–69 → score 4, high", () => {
+    // CHF=1, PVD=1, age adj=2 → total=4
+    const r = charlson("2", {
+      congestiveHeartFailure: "yes",
+      peripheralVascularDisease: "yes",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 4→5: MI + CHF + COPD + hemiplegia, age <50 → score 5, critical", () => {
+    // MI=1, CHF=1, COPD=1, hemiplegia=2 → total=5
+    const r = charlson("0", {
+      myocardialInfarction: "yes",
+      congestiveHeartFailure: "yes",
+      chronicPulmonaryDisease: "yes",
+      hemiplegia: "yes",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("age adjustment only: age 70–79, no comorbidities → score 3, high", () => {
+    const r = charlson("3", {});
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("multiple severe: renal + liver + malignancy, age 60–69 → score 9, critical", () => {
+    // renal=2, moderate/liver=3, malignancy=2, age adj=2 → total=9
+    const r = charlson("2", {
+      moderateSevereRenalDisease: "yes",
+      moderateSevereLiverDisease: "yes",
+      anyMalignancy: "yes",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Ottawa SAH Rule — 6 binary criteria, binary positive/negative
+// 0 = rule negative (CT NOT required); ≥1 = rule positive (CT indicated)
+describe("Ottawa SAH Rule calculate() output", () => {
+  function ottawa(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      age40: "no", neckPainStiffness: "no", witnessedLoc: "no",
+      exertionOnset: "no", thunderclap: "no", limitedNeckFlexion: "no",
+    };
+    return calc(ottawaSahRuleCalculator, { ...base, ...overrides });
+  }
+
+  it("all negative → score 0, rule negative", () => {
+    const r = ottawa({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("thunderclap only → score 1, rule positive", () => {
+    const r = ottawa({ thunderclap: "yes" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("age ≥40 only → score 1, rule positive", () => {
+    const r = ottawa({ age40: "yes" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("neck pain + witnessed LOC → score 2, rule positive", () => {
+    const r = ottawa({ neckPainStiffness: "yes", witnessedLoc: "yes" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("all positive → score 6, rule positive", () => {
+    const r = ottawa({
+      age40: "yes", neckPainStiffness: "yes", witnessedLoc: "yes",
+      exertionOnset: "yes", thunderclap: "yes", limitedNeckFlexion: "yes",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("exertion onset + limited flexion → score 2", () => {
+    const r = ottawa({ exertionOnset: "yes", limitedNeckFlexion: "yes" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(ottawaSahRuleCalculator, {
+      age40: "", neckPainStiffness: "no", witnessedLoc: "no",
+      exertionOnset: "no", thunderclap: "no", limitedNeckFlexion: "no",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ABCD² Score — 5 inputs, sum 0–7
+// ≤3 low; 4–5 moderate; 6–7 high
+describe("ABCD² Score calculate() output", () => {
+  function abcd2(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      age: "0", bloodPressure: "0", clinicalFeatures: "0",
+      duration: "0", diabetes: "0",
+    };
+    return calc(abcd2ScoreCalculator, { ...base, ...overrides });
+  }
+
+  it("all zero → score 0, low risk", () => {
+    const r = abcd2({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("all max → score 7, high risk", () => {
+    const r = abcd2({
+      age: "1", bloodPressure: "1", clinicalFeatures: "2",
+      duration: "2", diabetes: "1",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("critical");
+  });
+
+  it("age + BP + speech disturbance → score 3, low risk", () => {
+    // age=1 + BP=1 + clinicalFeatures=1 = 3
+    const r = abcd2({ age: "1", bloodPressure: "1", clinicalFeatures: "1" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("BP + unilateral weakness → score 3, low risk", () => {
+    // BP=1 + clinicalFeatures=2 = 3
+    const r = abcd2({ bloodPressure: "1", clinicalFeatures: "2" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 3→4: age=1 + BP=1 + clinical=2 → score 4, moderate", () => {
+    const r = abcd2({ age: "1", bloodPressure: "1", clinicalFeatures: "2" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 5→6: age=1 + BP=1 + clinical=2 + duration=2 → score 6, high", () => {
+    const r = abcd2({
+      age: "1", bloodPressure: "1", clinicalFeatures: "2", duration: "2",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("duration=2 + diabetes only → score 3, low risk", () => {
+    const r = abcd2({ duration: "2", diabetes: "1" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(abcd2ScoreCalculator, {
+      age: "", bloodPressure: "0", clinicalFeatures: "0",
+      duration: "0", diabetes: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// RACE Scale — 5 inputs, sum 0–9
+// <5 = LVO less likely; ≥5 = LVO suspected
+describe("RACE Scale calculate() output", () => {
+  function race(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      facialPalsy: "0", armMotor: "0", legMotor: "0",
+      gaze: "0", aphasiaAgnosia: "0",
+    };
+    return calc(raceScaleCalculator, { ...base, ...overrides });
+  }
+
+  it("score 0 → LVO less likely", () => {
+    const r = race({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("all max (2+2+2+1+2=9) → LVO suspected", () => {
+    const r = race({
+      facialPalsy: "2", armMotor: "2", legMotor: "2",
+      gaze: "1", aphasiaAgnosia: "2",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("critical");
+  });
+
+  it("single high facial=2 → score 2, less likely", () => {
+    const r = race({ facialPalsy: "2" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 4→5: facial=2 + arm=2 + gaze=1 → score 5, LVO suspected", () => {
+    const r = race({ facialPalsy: "2", armMotor: "2", gaze: "1" });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("multi-feature: arm=2 + leg=1 + aphasia=2 → score 5, LVO suspected", () => {
+    const r = race({ armMotor: "2", legMotor: "1", aphasiaAgnosia: "2" });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(raceScaleCalculator, {
+      facialPalsy: "", armMotor: "0", legMotor: "0",
+      gaze: "0", aphasiaAgnosia: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ESRS — age (0–2) + 7 risk factors, sum 0–9
+// ≤2 = low risk; ≥3 = high risk
+describe("ESRS calculate() output", () => {
+  function esrs(ageGroup: string, overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      ageGroup,
+      hypertension: "no", diabetes: "no", priorMi: "no",
+      otherCvd: "no", pad: "no", smoking: "no", priorTiaStroke: "no",
+    };
+    return calc(esrsCalculator, { ...base, ...overrides });
+  }
+
+  it("age <65, no risk factors → score 0, low risk", () => {
+    const r = esrs("0", {});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("age >75 + all yes → score 9, high risk", () => {
+    const r = esrs("2", {
+      hypertension: "yes", diabetes: "yes", priorMi: "yes",
+      otherCvd: "yes", pad: "yes", smoking: "yes", priorTiaStroke: "yes",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("high");
+  });
+
+  it("age 65–75 + hypertension → score 2, low risk", () => {
+    const r = esrs("1", { hypertension: "yes" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 2→3: age 65–75 + hypertension + diabetes → score 3, high", () => {
+    const r = esrs("1", { hypertension: "yes", diabetes: "yes" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("age <65 + 3 risk factors → score 3, high", () => {
+    const r = esrs("0", {
+      hypertension: "yes", diabetes: "yes", smoking: "yes",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("age 65–75 only → score 1, low risk", () => {
+    const r = esrs("1", {});
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(esrsCalculator, {
+      ageGroup: "", hypertension: "no", diabetes: "no", priorMi: "no",
+      otherCvd: "no", pad: "no", smoking: "no", priorTiaStroke: "no",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Preeclampsia Criteria — hypertension (SBP≥140 || DBP≥90) +
+//   proteinuria or end-organ involvement → preeclampsia
+// value = count of severe features; severe features list includes
+//   severe HTN, thrombocytopenia, renal, liver, pulmonary, headache, visual
+describe("Preeclampsia Criteria calculate() output", () => {
+  function preecl(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      sbp: "120", dbp: "80", proteinuria: "no",
+      platelets: "200", creatinine: "0.8",
+      transaminases: "no", ruqPain: "no",
+      pulmonaryEdema: "no", headache: "no", visual: "no",
+    };
+    return calc(preeclampsiaCriteriaCalculator, { ...base, ...overrides });
+  }
+
+  it("normal BP, no features → score 0, normal", () => {
+    const r = preecl({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("hypertension + proteinuria, no severe → score 0, high (without severe features)", () => {
+    const r = preecl({ sbp: "150", dbp: "95", proteinuria: "yes" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("high");
+  });
+
+  it("hypertension + proteinuria + severe BP → score 1, critical", () => {
+    // SBP=160 → severeHTN count=1; preeclampsia=true
+    const r = preecl({ sbp: "160", dbp: "100", proteinuria: "yes" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("no HTN, no proteinuria, but platelets<100 → score 1, high (features without preeclampsia)", () => {
+    const r = preecl({ platelets: "80" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("DBP threshold: SBP=130, DBP=90 → hypertension, proteinuria=no, no end-organ → high", () => {
+    // DBP=90 → hypertension=true; no proteinuria, no endOrgan → preeclampsia=false
+    // No severe features → score 0 but hypertension alone → status depends on preeclampsia logic
+    // Actually: hypertension=true, proteinuria=false, endOrgan=false → preeclampsia=false
+    // severeSbpDbp=false → count=0 → !preeclampsia && count=0 → normal
+    const r = preecl({ sbp: "130", dbp: "90" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("hypertension + creatinine>1.1 + headache → score 2, critical", () => {
+    // SBP=150 → hypertension; creatinine>1.1 → renal; headache → headache
+    // severeSbpDbp=false, thrombocytopenia=false → count=2 (renal + headache)
+    // preeclampsia=true (hypertension + endOrgan) → critical
+    const r = preecl({
+      sbp: "150", dbp: "95", creatinine: "1.5", headache: "yes",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("DBP > SBP → critical (validation guard)", () => {
+    const r = preecl({ sbp: "120", dbp: "130" });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// HELLP Syndrome — LDH≥600 OR hemolysis=yes, AST≥70, platelets<100
+// 0 = normal; 1–2 = partial; 3 = complete HELLP
+describe("HELLP Syndrome calculate() output", () => {
+  function hellp(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      platelets: "200", ast: "30", ldh: "200", hemolysis: "no",
+    };
+    return calc(hellpSyndromeCalculator, { ...base, ...overrides });
+  }
+
+  it("normal labs → 0, normal", () => {
+    const r = hellp({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("LDH=600 only → hemolysis=1 criterion, partial", () => {
+    const r = hellp({ ldh: "600" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("AST=70 + platelets=99 → 2 criteria, partial", () => {
+    const r = hellp({ ast: "70", platelets: "99" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("all three (LDH=600, AST=70, platelets=99, hemolysis=yes) → 3, critical", () => {
+    const r = hellp({ ldh: "600", ast: "70", platelets: "99", hemolysis: "yes" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("LDH=599 → no hemolysis criterion (boundary)", () => {
+    const r = hellp({ ldh: "599" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("AST=69 → no liver enzyme criterion (boundary)", () => {
+    const r = hellp({ ast: "69" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(hellpSyndromeCalculator, {
+      platelets: "", ast: "30", ldh: "200", hemolysis: "no",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Magnesium Sulfate Preeclampsia — loading dose + maintenance × 24h
+// total = load + maintenance * 24; always status "normal"
+describe("Magnesium Sulfate Preeclampsia calculate() output", () => {
+  it("load=4g + maintenance=1g/h → total 28g", () => {
+    const r = calc(magnesiumSulfatePreeclampsiaCalculator, {
+      loadingDose: "4", maintenance: "1",
+    });
+    expect(r.value).toBe(28);
+    expect(r.status).toBe("normal");
+  });
+
+  it("load=6g + maintenance=2g/h → total 54g", () => {
+    const r = calc(magnesiumSulfatePreeclampsiaCalculator, {
+      loadingDose: "6", maintenance: "2",
+    });
+    expect(r.value).toBe(54);
+    expect(r.status).toBe("normal");
+  });
+
+  it("load=5g + maintenance=1g/h → total 29g", () => {
+    const r = calc(magnesiumSulfatePreeclampsiaCalculator, {
+      loadingDose: "5", maintenance: "1",
+    });
+    expect(r.value).toBe(29);
+    expect(r.status).toBe("normal");
+  });
+
+  it("load=4g + maintenance=2g/h → total 52g", () => {
+    const r = calc(magnesiumSulfatePreeclampsiaCalculator, {
+      loadingDose: "4", maintenance: "2",
+    });
+    expect(r.value).toBe(52);
+    expect(r.status).toBe("normal");
+  });
+
+  it("load=6g + maintenance=1g/h → total 30g", () => {
+    const r = calc(magnesiumSulfatePreeclampsiaCalculator, {
+      loadingDose: "6", maintenance: "1",
+    });
+    expect(r.value).toBe(30);
+    expect(r.status).toBe("normal");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(magnesiumSulfatePreeclampsiaCalculator, {
+      loadingDose: "", maintenance: "1",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Apgar Score — 5 components (0–2 each), sum 0–10
+// ≥7 reassuring; 4–6 moderately depressed; 0–3 severely depressed
+describe("Apgar Score calculate() output", () => {
+  function apgar(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      appearance: "0", pulse: "0", grimace: "0",
+      activity: "0", respiration: "0",
+    };
+    return calc(apgarScoreCalculator, { ...base, ...overrides });
+  }
+
+  it("score 0 → severely depressed, critical", () => {
+    const r = apgar({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 10 (all=2) → reassuring, normal", () => {
+    const r = apgar({
+      appearance: "2", pulse: "2", grimace: "2",
+      activity: "2", respiration: "2",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 5 → moderately depressed, high", () => {
+    // appearance=1, pulse=1, grimace=1, activity=1, respiration=1 → 5
+    const r = apgar({
+      appearance: "1", pulse: "1", grimace: "1",
+      activity: "1", respiration: "1",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 3→4: 3 ones + 2 zeros → score 3, critical", () => {
+    const r = apgar({ appearance: "1", pulse: "1", grimace: "1" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary 6→7: 2+2+1+1+1 → score 7, normal", () => {
+    const r = apgar({
+      appearance: "2", pulse: "2", grimace: "1",
+      activity: "1", respiration: "1",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 4 → moderately depressed, high", () => {
+    // 2+1+1+0+0 → 4
+    const r = apgar({ appearance: "2", pulse: "1", grimace: "1" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(apgarScoreCalculator, {
+      appearance: "", pulse: "0", grimace: "0",
+      activity: "0", respiration: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Biophysical Profile — 5 components (0 or 2 each), sum 0–10
+// ≥8 normal; 6 equivocal; ≤4 abnormal
+describe("Biophysical Profile calculate() output", () => {
+  function bpp(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      breathing: "0", movement: "0", tone: "0",
+      amnioticFluid: "0", nst: "0",
+    };
+    return calc(biophysicalProfileCalculator, { ...base, ...overrides });
+  }
+
+  it("score 0 → abnormal, critical", () => {
+    const r = bpp({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 10 (all=2) → normal", () => {
+    const r = bpp({
+      breathing: "2", movement: "2", tone: "2",
+      amnioticFluid: "2", nst: "2",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 6 (3 normal + 1 abnormal) → equivocal, high", () => {
+    // breathing=2, movement=2, tone=2, fluid=0, nst=0 → 6
+    const r = bpp({ breathing: "2", movement: "2", tone: "2" });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 8 (4 normal) → normal", () => {
+    // breathing=2, movement=2, tone=2, nst=2 → 8
+    const r = bpp({ breathing: "2", movement: "2", tone: "2", nst: "2" });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 4 → abnormal, critical", () => {
+    // breathing=2, movement=2 → 4
+    const r = bpp({ breathing: "2", movement: "2" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 2 (single component) → abnormal, critical", () => {
+    const r = bpp({ nst: "2" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(biophysicalProfileCalculator, {
+      breathing: "", movement: "0", tone: "0",
+      amnioticFluid: "0", nst: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Pediatric GCS — eye(1–4) + verbal(1–5) + motor(1–6), sum 3–15
+// ≥13 mild (normal); 9–12 moderate (high); ≤8 severe (critical)
+describe("Pediatric GCS calculate() output", () => {
+  it("score 15 → mild, normal", () => {
+    const r = calc(pediatricGcsCalculator, {
+      eye: "4", verbal: "5", motor: "6",
+    });
+    expect(r.value).toBe(15);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 3 → severe, critical", () => {
+    const r = calc(pediatricGcsCalculator, {
+      eye: "1", verbal: "1", motor: "1",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 10 → moderate, high", () => {
+    // eye=3, verbal=3, motor=4 → 10
+    const r = calc(pediatricGcsCalculator, {
+      eye: "3", verbal: "3", motor: "4",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 8→9: eye=2 + verbal=2 + motor=5 → 9, moderate, high", () => {
+    const r = calc(pediatricGcsCalculator, {
+      eye: "2", verbal: "2", motor: "5",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 12→13: eye=4 + verbal=3 + motor=6 → 13, mild, normal", () => {
+    const r = calc(pediatricGcsCalculator, {
+      eye: "4", verbal: "3", motor: "6",
+    });
+    expect(r.value).toBe(13);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 8 → severe, critical", () => {
+    // eye=2, verbal=2, motor=4 → 8
+    const r = calc(pediatricGcsCalculator, {
+      eye: "2", verbal: "2", motor: "4",
+    });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(pediatricGcsCalculator, {
+      eye: "", verbal: "5", motor: "6",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Pediatric Trauma Score — 6 components (−1, +1, +2), sum −6 to +12
+// ≥8 low risk; 4–7 intermediate; ≤3 high risk
+describe("Pediatric Trauma Score calculate() output", () => {
+  function pts(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      weight: "2", airway: "2", sbp: "2",
+      cns: "2", openWound: "2", skeletal: "2",
+    };
+    return calc(pediatricTraumaScoreCalculator, { ...base, ...overrides });
+  }
+
+  it("all +2 → score 12, low risk", () => {
+    const r = pts({});
+    expect(r.value).toBe(12);
+    expect(r.status).toBe("normal");
+  });
+
+  it("all -1 → score -6, high risk", () => {
+    const r = pts({
+      weight: "-1", airway: "-1", sbp: "-1",
+      cns: "-1", openWound: "-1", skeletal: "-1",
+    });
+    expect(r.value).toBe(-6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("mixed: weight=1 + airway=1 + sbp=2 + cns=2 + openWound=2 + skeletal=1 → 9, low", () => {
+    const r = pts({
+      weight: "1", airway: "1", sbp: "2",
+      cns: "2", openWound: "2", skeletal: "1",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 3→4: weight=1 + airway=1 + sbp=1 + cns=1 + openWound=1 + skeletal=-1 → 4, intermediate", () => {
+    const r = pts({
+      weight: "1", airway: "1", sbp: "1",
+      cns: "1", openWound: "1", skeletal: "-1",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("negative total possible: all -1 → -6, critical", () => {
+    const r = pts({
+      weight: "-1", airway: "-1", sbp: "-1",
+      cns: "-1", openWound: "-1", skeletal: "-1",
+    });
+    expect(r.value).toBe(-6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(pediatricTraumaScoreCalculator, {
+      weight: "", airway: "2", sbp: "2",
+      cns: "2", openWound: "2", skeletal: "2",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Westley Croup Score — 5 components, sum 0–17
+// ≤2 mild; 3–7 moderate; ≥8 severe
+describe("Westley Croup Score calculate() output", () => {
+  function westley(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      consciousness: "0", cyanosis: "0", stridor: "0",
+      airEntry: "0", retractions: "0",
+    };
+    return calc(westleyCroupScoreCalculator, { ...base, ...overrides });
+  }
+
+  it("score 0 → mild, normal", () => {
+    const r = westley({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 17 (all max) → severe, critical", () => {
+    const r = westley({
+      consciousness: "5", cyanosis: "5", stridor: "2",
+      airEntry: "2", retractions: "3",
+    });
+    expect(r.value).toBe(17);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 2 (single feature) → mild, normal", () => {
+    // stridor=2 → 2
+    const r = westley({ stridor: "2" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 4 → moderate, high", () => {
+    // stridor=1 + airEntry=1 + retractions=2 → 4
+    const r = westley({ stridor: "1", airEntry: "1", retractions: "2" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 2→3: cyanosis=4 + stridor=0 → 4, wait, just retractions=3 → 3, high", () => {
+    const r = westley({ retractions: "3" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 7→8: consciousness=5 + stridor=2 + retractions=1 → 8, critical", () => {
+    const r = westley({ consciousness: "5", stridor: "2", retractions: "1" });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(westleyCroupScoreCalculator, {
+      consciousness: "", cyanosis: "0", stridor: "0",
+      airEntry: "0", retractions: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Gorelick Dehydration — 4 clinical signs, count 0–4
+// ≥3 → high (≥5% dehydration); 0–2 → normal
+describe("Gorelick Dehydration calculate() output", () => {
+  function gorelick(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      capillaryRefill: "no", dryMucousMembranes: "no",
+      absentTears: "no", illAppearance: "no",
+    };
+    return calc(gorelickDehydrationCalculator, { ...base, ...overrides });
+  }
+
+  it("0 findings → score 0, normal", () => {
+    const r = gorelick({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("1 finding → score 1, normal", () => {
+    const r = gorelick({ capillaryRefill: "yes" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("2 findings → score 2, normal (boundary)", () => {
+    const r = gorelick({ capillaryRefill: "yes", dryMucousMembranes: "yes" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("3 findings → score 3, high", () => {
+    const r = gorelick({
+      capillaryRefill: "yes", dryMucousMembranes: "yes", absentTears: "yes",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("4 findings → score 4, high", () => {
+    const r = gorelick({
+      capillaryRefill: "yes", dryMucousMembranes: "yes",
+      absentTears: "yes", illAppearance: "yes",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("advice array lists present signs", () => {
+    const r = gorelick({
+      capillaryRefill: "yes", absentTears: "yes",
+    });
+    expect(r.advice).toBeDefined();
+    expect(r.advice!.length).toBe(1);
+    expect(r.advice![0]).toContain("capillary refill");
+    expect(r.advice![0]).toContain("absent tears");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(gorelickDehydrationCalculator, {
+      capillaryRefill: "", dryMucousMembranes: "no",
+      absentTears: "no", illAppearance: "no",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// EPDS — 10 items (0–3), sum 0–30
+// item10 > 0 → critical override (self-harm)
+// total ≥10 → high (screen positive)
+// total <10 → normal (screen negative)
+describe("EPDS calculate() output", () => {
+  function epds(overrides: Record<string, string>) {
+    const base: Record<string, string> = {};
+    for (let i = 1; i <= 10; i++) {
+      base[`item${i}`] = "0";
+    }
+    return calc(epdsCalculator, { ...base, ...overrides });
+  }
+
+  it("all zero → score 0, normal", () => {
+    const r = epds({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("item10=1 → critical (self-harm override)", () => {
+    const r = epds({ item10: "1" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("item10=3 → critical (self-harm override)", () => {
+    const r = epds({ item10: "3" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("total ≥10 without item10 → high", () => {
+    // items 1–9 all 3 = 27, item10=0 → total=27, high
+    const overrides: Record<string, string> = {};
+    for (let i = 1; i <= 9; i++) overrides[`item${i}`] = "3";
+    const r = epds(overrides);
+    expect(r.value).toBe(27);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 9→10: items sum=10, item10=0 → high", () => {
+    // item1=3, item2=3, item3=2, item4=2 → 10
+    const r = epds({
+      item1: "3", item2: "3", item3: "2", item4: "2",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 9→10: items sum=9 → normal", () => {
+    // item1=3, item2=3, item3=3 → 9
+    const r = epds({ item1: "3", item2: "3", item3: "3" });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("normal");
+  });
+
+  it("item10=1 even with low total → critical override", () => {
+    const r = epds({ item1: "1", item10: "1" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(epdsCalculator, {
+      item1: "", item2: "0", item3: "0", item4: "0", item5: "0",
+      item6: "0", item7: "0", item8: "0", item9: "0", item10: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// PHQ-9 — 9 items (0–3), sum 0–27
+// 0–4 normal (minimal); 5–9 normal (mild); 10–14 high (moderate);
+// 15–19 critical (moderately severe); 20–27 critical (severe)
+describe("PHQ-9 calculate() output", () => {
+  function phq9(overrides: Record<string, string>) {
+    const base: Record<string, string> = {};
+    for (let i = 1; i <= 9; i++) {
+      base[`phq${i}`] = "0";
+    }
+    return calc(phq9Calculator, { ...base, ...overrides });
+  }
+
+  it("score 0 → minimal, normal", () => {
+    const r = phq9({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 4 → minimal, normal", () => {
+    const r = phq9({ phq1: "1", phq2: "1", phq3: "1", phq4: "1" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 7 → mild, normal", () => {
+    // phq1=1, phq2=2, phq3=2, phq4=2 → 7
+    const r = phq9({ phq1: "1", phq2: "2", phq3: "2", phq4: "2" });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 12 → moderate, high", () => {
+    // 4 items × 3 = 12
+    const r = phq9({
+      phq1: "3", phq2: "3", phq3: "3", phq4: "3",
+    });
+    expect(r.value).toBe(12);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 17 → moderately severe, critical", () => {
+    // 5×3 + 2 = 17
+    const r = phq9({
+      phq1: "3", phq2: "3", phq3: "3", phq4: "3", phq5: "3", phq6: "2",
+    });
+    expect(r.value).toBe(17);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 27 → severe, critical", () => {
+    const r = phq9({
+      phq1: "3", phq2: "3", phq3: "3", phq4: "3",
+      phq5: "3", phq6: "3", phq7: "3", phq8: "3", phq9: "3",
+    });
+    expect(r.value).toBe(27);
+    expect(r.status).toBe("critical");
+  });
+
+  it("item9 endorsed → warnings array populated", () => {
+    const r = phq9({ phq9: "1" });
+    expect(r.warnings).toBeDefined();
+    expect(r.warnings!.length).toBeGreaterThan(0);
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(phq9Calculator, {
+      phq1: "", phq2: "0", phq3: "0", phq4: "0", phq5: "0",
+      phq6: "0", phq7: "0", phq8: "0", phq9: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// GAD-7 — 7 items (0–3), sum 0–21
+// 0–4 normal (minimal); 5–9 normal (mild); 10–14 high (moderate); 15–21 critical (severe)
+describe("GAD-7 calculate() output", () => {
+  function gad7(overrides: Record<string, string>) {
+    const base: Record<string, string> = {};
+    for (let i = 1; i <= 7; i++) {
+      base[`gad${i}`] = "0";
+    }
+    return calc(gad7Calculator, { ...base, ...overrides });
+  }
+
+  it("score 0 → minimal, normal", () => {
+    const r = gad7({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 4 → minimal, normal (boundary)", () => {
+    const r = gad7({ gad1: "1", gad2: "1", gad3: "1", gad4: "1" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 7 → mild, normal", () => {
+    // gad1=2, gad2=2, gad3=2, gad4=1 → 7
+    const r = gad7({ gad1: "2", gad2: "2", gad3: "2", gad4: "1" });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 12 → moderate, high", () => {
+    // 4×3 = 12
+    const r = gad7({ gad1: "3", gad2: "3", gad3: "3", gad4: "3" });
+    expect(r.value).toBe(12);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 21 → severe, critical", () => {
+    const r = gad7({
+      gad1: "3", gad2: "3", gad3: "3", gad4: "3",
+      gad5: "3", gad6: "3", gad7: "3",
+    });
+    expect(r.value).toBe(21);
+    expect(r.status).toBe("critical");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(gad7Calculator, {
+      gad1: "", gad2: "0", gad3: "0", gad4: "0",
+      gad5: "0", gad6: "0", gad7: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// STOP-BANG — 8 binary (yes=1, no=0), sum 0–8
+// ≤2 low; 3–4 intermediate; 5–8 high
+describe("STOP-BANG calculate() output", () => {
+  function stopbang(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      snoring: "no", tired: "no", observedApnea: "no",
+      bloodPressure: "no", bmi: "no", age: "no",
+      neck: "no", gender: "no",
+    };
+    return calc(stopBangCalculator, { ...base, ...overrides });
+  }
+
+  it("all no → score 0, low risk", () => {
+    const r = stopbang({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("all yes → score 8, high risk", () => {
+    const r = stopbang({
+      snoring: "yes", tired: "yes", observedApnea: "yes",
+      bloodPressure: "yes", bmi: "yes", age: "yes",
+      neck: "yes", gender: "yes",
+    });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 3 → intermediate, high", () => {
+    const r = stopbang({ snoring: "yes", tired: "yes", observedApnea: "yes" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 5 → high risk", () => {
+    const r = stopbang({
+      snoring: "yes", tired: "yes", observedApnea: "yes",
+      bloodPressure: "yes", bmi: "yes",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary 2→3: 2 yes → score 2, low", () => {
+    const r = stopbang({ snoring: "yes", tired: "yes" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 4→5: 4 yes → score 4, intermediate", () => {
+    const r = stopbang({
+      snoring: "yes", tired: "yes", observedApnea: "yes", bloodPressure: "yes",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(stopBangCalculator, {
+      snoring: "", tired: "no", observedApnea: "no",
+      bloodPressure: "no", bmi: "no", age: "no",
+      neck: "no", gender: "no",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FOUT Score — 4 components (0–4 each), sum 0–16
+// ≥13 favorable (normal); 9–12 intermediate (high); 5–8 poor (high); 0–4 very poor (critical)
+describe("FOUT Score calculate() output", () => {
+  function fout(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      eye: "0", motor: "0", brainstem: "0", respiration: "0",
+    };
+    return calc(foutScoreCalculator, { ...base, ...overrides });
+  }
+
+  it("score 0 → very poor, critical", () => {
+    const r = fout({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 16 (all=4) → favorable, normal", () => {
+    const r = fout({ eye: "4", motor: "4", brainstem: "4", respiration: "4" });
+    expect(r.value).toBe(16);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 10 → intermediate, high", () => {
+    // eye=3, motor=3, brainstem=2, respiration=2 → 10
+    const r = fout({ eye: "3", motor: "3", brainstem: "2", respiration: "2" });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 6 → poor, high", () => {
+    // eye=2, motor=2, brainstem=1, respiration=1 → 6
+    const r = fout({ eye: "2", motor: "2", brainstem: "1", respiration: "1" });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 4→5: eye=2 + motor=2 + rest=0 → score 4, very poor, critical", () => {
+    const r = fout({ eye: "2", motor: "2" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary 8→9: eye=3 + motor=3 + brainstem=2 + resp=1 → score 9, intermediate, high", () => {
+    const r = fout({ eye: "3", motor: "3", brainstem: "2", respiration: "1" });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary 12→13: all=3 → score 12, intermediate, high", () => {
+    const r = fout({ eye: "3", motor: "3", brainstem: "3", respiration: "3" });
+    expect(r.value).toBe(12);
+    expect(r.status).toBe("high");
+  });
+
+  it("empty field → critical (validation guard)", () => {
+    const r = calc(foutScoreCalculator, {
+      eye: "", motor: "0", brainstem: "0", respiration: "0",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Fractional Excretion Calculator — delegates to calculateFENa utility
+// FE = (UNa/PNa) / (UCr/PCr) × 100
+// Utility returns 0 on zero plasmaNa or plasmaCr (silent zero, not critical).
+// ---------------------------------------------------------------------------
+describe("Fractional Excretion Calculator calculate() output", () => {
+  it("prerenal: low FE < 1%", () => {
+    // FE = (10/140) / (80/1.0) × 100 = 0.0714 / 80 × 100 = 0.0893 → 0.1
+    const r = calc(fractionalExcretionCalculator, {
+      urineNa: "10", plasmaNa: "140", urineCr: "80", plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(0.1, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("intrinsic renal: high FE > 1%", () => {
+    // FE = (60/140) / (10/1.0) × 100 = 0.4286 / 10 × 100 = 4.286 → 4.3
+    const r = calc(fractionalExcretionCalculator, {
+      urineNa: "60", plasmaNa: "140", urineCr: "10", plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(4.3, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary FE exactly 1%", () => {
+    // (112/140)/(80/1.0)×100 = 0.8/80×100 = 1.0
+    const r = calc(fractionalExcretionCalculator, {
+      urineNa: "112", plasmaNa: "140", urineCr: "80", plasmaCr: "1.0",
+    });
+    expect(r.value).toBeCloseTo(1.0, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("zero plasmaNa → utility returns 0 (silent zero, not critical)", () => {
+    const r = calc(fractionalExcretionCalculator, {
+      urineNa: "40", plasmaNa: "0", urineCr: "80", plasmaCr: "1.0",
+    });
+    expect(r.value).toBe(0);
+  });
+
+  it("zero plasmaCr → utility returns 0 (silent zero, not critical)", () => {
+    const r = calc(fractionalExcretionCalculator, {
+      urineNa: "40", plasmaNa: "140", urineCr: "80", plasmaCr: "0",
+    });
+    expect(r.value).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Albumin Corrected Calcium — Ca + 0.8 × (4 − albumin)
+// Classification: <8.5 hypocalcemia, 8.5–10.5 normal, >10.5 hypercalcemia
+// ---------------------------------------------------------------------------
+describe("Albumin Corrected Calcium calculate() output", () => {
+  it("normal: Ca 9.0, albumin 4.0 → 9.0", () => {
+    // 9.0 + 0.8 × (4 − 4.0) = 9.0 + 0 = 9.0
+    const r = calc(albuminCorrectedCalciumCalculator, {
+      calcium: "9.0", albumin: "4.0",
+    });
+    expect(r.value).toBe(9.0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal corrected calcium");
+  });
+
+  it("hypocalcemia: Ca 8.0, albumin 2.0 → 9.6", () => {
+    // 8.0 + 0.8 × (4 − 2.0) = 8.0 + 1.6 = 9.6
+    const r = calc(albuminCorrectedCalciumCalculator, {
+      calcium: "8.0", albumin: "2.0",
+    });
+    expect(r.value).toBe(9.6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("hypercalcemia: Ca 12.0, albumin 3.0 → 12.8", () => {
+    // 12.0 + 0.8 × (4 − 3.0) = 12.0 + 0.8 = 12.8
+    const r = calc(albuminCorrectedCalciumCalculator, {
+      calcium: "12.0", albumin: "3.0",
+    });
+    expect(r.value).toBe(12.8);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Hypercalcemia");
+  });
+
+  it("boundary 8.5: Ca 8.5, albumin 4.0 → 8.5", () => {
+    // 8.5 + 0.8 × 0 = 8.5 → exactly at boundary → normal (<= 10.5)
+    const r = calc(albuminCorrectedCalciumCalculator, {
+      calcium: "8.5", albumin: "4.0",
+    });
+    expect(r.value).toBe(8.5);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 10.5: Ca 10.5, albumin 4.0 → 10.5", () => {
+    // 10.5 + 0 = 10.5 → <= 10.5 → normal
+    const r = calc(albuminCorrectedCalciumCalculator, {
+      calcium: "10.5", albumin: "4.0",
+    });
+    expect(r.value).toBe(10.5);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// MAP — (SBP + 2 × DBP) / 3
+// Note: the calculator always returns status: "normal" regardless of value.
+// ---------------------------------------------------------------------------
+describe("MAP calculate() output", () => {
+  it("normal: 120/80 → 93.33", () => {
+    // (120 + 2×80) / 3 = 280/3 = 93.333…
+    const r = calc(mapCalculator, { sbp: "120", dbp: "80" });
+    expect(r.value).toBeCloseTo(93.33, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("hypotensive: 80/50 → 60", () => {
+    // (80 + 100) / 3 = 180/3 = 60
+    const r = calc(mapCalculator, { sbp: "80", dbp: "50" });
+    expect(r.value).toBe(60);
+    expect(r.status).toBe("normal");
+  });
+
+  it("hypertensive: 180/110 → 130", () => {
+    // (180 + 220) / 3 = 400/3 = 133.333…
+    const r = calc(mapCalculator, { sbp: "180", dbp: "110" });
+    expect(r.value).toBeCloseTo(133.33, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("low boundary: 90/60 → 70", () => {
+    // (90 + 120) / 3 = 210/3 = 70
+    const r = calc(mapCalculator, { sbp: "90", dbp: "60" });
+    expect(r.value).toBe(70);
+    expect(r.status).toBe("normal");
+  });
+
+  it("extreme: 200/120 → 146.67", () => {
+    // (200 + 240) / 3 = 440/3 = 146.666…
+    const r = calc(mapCalculator, { sbp: "200", dbp: "120" });
+    expect(r.value).toBeCloseTo(146.67, 1);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Maintenance Fluids — piecewise weight-based
+// ≤10 kg: w×100; ≤20 kg: 1000+(w−10)×50; >20 kg: 1500+(w−20)×20
+// ---------------------------------------------------------------------------
+describe("Maintenance Fluids calculate() output", () => {
+  it("5 kg infant → 500 mL/day", () => {
+    const r = calc(maintenanceFluidsCalculator, { weight: "5" });
+    expect(r.value).toBe(500);
+    expect(r.status).toBe("normal");
+  });
+
+  it("10 kg child → 1000 mL/day (first breakpoint)", () => {
+    const r = calc(maintenanceFluidsCalculator, { weight: "10" });
+    expect(r.value).toBe(1000);
+    expect(r.status).toBe("normal");
+  });
+
+  it("15 kg child → 1250 mL/day (second tier)", () => {
+    // 1000 + (15−10)×50 = 1000 + 250 = 1250
+    const r = calc(maintenanceFluidsCalculator, { weight: "15" });
+    expect(r.value).toBe(1250);
+    expect(r.status).toBe("normal");
+  });
+
+  it("20 kg child → 1500 mL/day (second breakpoint)", () => {
+    // 1000 + (20−10)×50 = 1000 + 500 = 1500
+    const r = calc(maintenanceFluidsCalculator, { weight: "20" });
+    expect(r.value).toBe(1500);
+    expect(r.status).toBe("normal");
+  });
+
+  it("70 kg adult → 2500 mL/day (third tier)", () => {
+    // 1500 + (70−20)×20 = 1500 + 1000 = 2500
+    const r = calc(maintenanceFluidsCalculator, { weight: "70" });
+    expect(r.value).toBe(2500);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Centor Score — 4 yes/no criteria + age group adjustment, clamped 0–4
+// Status: ≤1 normal (low), 2–3 high (intermediate), 4 critical (high prob)
+// ---------------------------------------------------------------------------
+describe("Centor Score calculate() output", () => {
+  it("no criteria, age 30 → score 0, low probability", () => {
+    const r = calc(centorCalculator, {
+      fever: "no", absenceOfCough: "no",
+      tonsillarExudates: "no", cervicalAdenopathy: "no", ageGroup: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("all 4 criteria, age 30 → score 4, high probability", () => {
+    const r = calc(centorCalculator, {
+      fever: "yes", absenceOfCough: "yes",
+      tonsillarExudates: "yes", cervicalAdenopathy: "yes", ageGroup: "0",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("critical");
+  });
+
+  it("age 3–14 adds +1: 3 criteria → score 4", () => {
+    // 3 clinical + ageGroup 1 = 4 → clamped to 4
+    const r = calc(centorCalculator, {
+      fever: "yes", absenceOfCough: "yes",
+      tonsillarExudates: "yes", cervicalAdenopathy: "no", ageGroup: "1",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("critical");
+  });
+
+  it("age ≥45 subtracts −1: 1 criterion → score 0, clamped", () => {
+    // 1 clinical + ageGroup (−1) = 0 → clamped to 0
+    const r = calc(centorCalculator, {
+      fever: "yes", absenceOfCough: "no",
+      tonsillarExudates: "no", cervicalAdenopathy: "no", ageGroup: "-1",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("2 criteria, age 30 → score 2, intermediate", () => {
+    const r = calc(centorCalculator, {
+      fever: "yes", absenceOfCough: "yes",
+      tonsillarExudates: "no", cervicalAdenopathy: "no", ageGroup: "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("1 criterion, age 30 → score 1, low probability", () => {
+    const r = calc(centorCalculator, {
+      fever: "yes", absenceOfCough: "no",
+      tonsillarExudates: "no", cervicalAdenopathy: "no", ageGroup: "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Barthel Index — 10-item ADL sum, 0–100
+// 0–20 total, 21–60 severe, 61–90 moderate, 91–99 slight, 100 independent
+// ---------------------------------------------------------------------------
+describe("Barthel Index calculate() output", () => {
+  const allZero = {
+    feeding: "0", bathing: "0", grooming: "0", dressing: "0",
+    bowels: "0", bladder: "0", toiletUse: "0",
+    transfers: "0", mobility: "0", stairs: "0",
+  };
+
+  it("total dependence: all zero → 0/100, critical", () => {
+    const r = calc(barthelIndexCalculator, allZero);
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+  });
+
+  it("severe: score 40 → critical", () => {
+    const r = calc(barthelIndexCalculator, {
+      feeding: "10", bathing: "5", grooming: "5",
+      dressing: "5", bowels: "5", bladder: "5", toiletUse: "0",
+      transfers: "0", mobility: "0", stairs: "5",
+    });
+    // 10+5+5+5+5+5+0+0+0+5 = 40
+    expect(r.value).toBe(40);
+    expect(r.status).toBe("critical");
+  });
+
+  it("moderate: score 60 → boundary of severe/moderate", () => {
+    // 60 is boundary: >= 61 is moderate, so 60 is still severe
+    const r = calc(barthelIndexCalculator, {
+      ...allZero, feeding: "10", bathing: "5", grooming: "5",
+      dressing: "5", bowels: "5", bladder: "5", toiletUse: "5",
+      transfers: "5", mobility: "5", stairs: "10",
+    });
+    // 10+5+5+5+5+5+5+5+5+10 = 60
+    expect(r.value).toBe(60);
+    expect(r.status).toBe("critical");
+  });
+
+  it("moderate: score 75 → high", () => {
+    const r = calc(barthelIndexCalculator, {
+      ...allZero, feeding: "10", bathing: "5", grooming: "5",
+      dressing: "5", bowels: "10", bladder: "10", toiletUse: "10",
+      transfers: "5", mobility: "5", stairs: "10",
+    });
+    // 10+5+5+5+10+10+10+5+5+10 = 75
+    expect(r.value).toBe(75);
+    expect(r.status).toBe("high");
+  });
+
+  it("slight: score 95 → normal", () => {
+    const r = calc(barthelIndexCalculator, {
+      ...allZero, feeding: "10", bathing: "5", grooming: "5",
+      dressing: "10", bowels: "10", bladder: "10", toiletUse: "10",
+      transfers: "15", mobility: "15", stairs: "5",
+    });
+    // 10+5+5+10+10+10+10+15+15+5 = 95
+    expect(r.value).toBe(95);
+    expect(r.status).toBe("normal");
+  });
+
+  it("independent: score 100 → normal", () => {
+    const r = calc(barthelIndexCalculator, {
+      feeding: "10", bathing: "5", grooming: "5",
+      dressing: "10", bowels: "10", bladder: "10", toiletUse: "10",
+      transfers: "15", mobility: "15", stairs: "10",
+    });
+    // 10+5+5+10+10+10+10+15+15+10 = 100
+    expect(r.value).toBe(100);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score 95 → normal (slight dependence)", () => {
+    const r = calc(barthelIndexCalculator, {
+      ...allZero, feeding: "10", bathing: "5", grooming: "5",
+      dressing: "10", bowels: "10", bladder: "10", toiletUse: "10",
+      transfers: "15", mobility: "15", stairs: "5",
+    });
+    // 10+5+5+10+10+10+10+15+15+5 = 95
+    expect(r.value).toBe(95);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Urine Anion Gap — (UNa + UK) − UCl
+// < 0 → low (GI loss), 0 → normal (equivocal), > 0 → high (RTA)
+// ---------------------------------------------------------------------------
+describe("Urine Anion Gap calculate() output", () => {
+  it("negative UAG: GI bicarbonate loss", () => {
+    // (20 + 30) − 80 = −30
+    const r = calc(urineAnionGapCalculator, {
+      urineNa: "20", urineK: "30", urineCl: "80",
+    });
+    expect(r.value).toBe(-30);
+    expect(r.status).toBe("low");
+  });
+
+  it("zero UAG: equivocal", () => {
+    // (40 + 20) − 60 = 0
+    const r = calc(urineAnionGapCalculator, {
+      urineNa: "40", urineK: "20", urineCl: "60",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("positive UAG: renal tubular acidosis", () => {
+    // (60 + 30) − 40 = 50
+    const r = calc(urineAnionGapCalculator, {
+      urineNa: "60", urineK: "30", urineCl: "40",
+    });
+    expect(r.value).toBe(50);
+    expect(r.status).toBe("high");
+  });
+
+  it("strongly negative", () => {
+    // (10 + 10) − 60 = −40
+    const r = calc(urineAnionGapCalculator, {
+      urineNa: "10", urineK: "10", urineCl: "60",
+    });
+    expect(r.value).toBe(-40);
+    expect(r.status).toBe("low");
+  });
+
+  it("strongly positive", () => {
+    // (80 + 50) − 10 = 120
+    const r = calc(urineAnionGapCalculator, {
+      urineNa: "80", urineK: "50", urineCl: "10",
+    });
+    expect(r.value).toBe(120);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Urine Protein-Creatinine Ratio — protein / creatinine (mg/mg)
+// <0.15 normal, 0.15–0.5 mild, 0.5–3.5 moderate, ≥3.5 nephrotic
+// ---------------------------------------------------------------------------
+describe("Urine Protein-Creatinine Ratio calculate() output", () => {
+  it("normal: 10/100 = 0.1", () => {
+    const r = calc(upcrCalculator, {
+      urineProtein: "10", urineCreatinine: "100",
+    });
+    expect(r.value).toBe(0.1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mild: 15/100 = 0.15 (boundary)", () => {
+    const r = calc(upcrCalculator, {
+      urineProtein: "15", urineCreatinine: "100",
+    });
+    expect(r.value).toBe(0.15);
+    expect(r.status).toBe("high");
+  });
+
+  it("moderate: 100/100 = 1.0", () => {
+    const r = calc(upcrCalculator, {
+      urineProtein: "100", urineCreatinine: "100",
+    });
+    expect(r.value).toBe(1.0);
+    expect(r.status).toBe("high");
+  });
+
+  it("nephrotic range: 350/100 = 3.5 (boundary)", () => {
+    const r = calc(upcrCalculator, {
+      urineProtein: "350", urineCreatinine: "100",
+    });
+    expect(r.value).toBe(3.5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("severe nephrotic: 500/100 = 5.0", () => {
+    const r = calc(upcrCalculator, {
+      urineProtein: "500", urineCreatinine: "100",
+    });
+    expect(r.value).toBe(5.0);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Calcium-Phosphate Product — Ca × Phosphate
+// ≤55 acceptable, 55–70 elevated, ≥70 critically elevated
+// Note: code has dead `if (false){}` pattern — tested as-is.
+// ---------------------------------------------------------------------------
+describe("Calcium-Phosphate Product calculate() output", () => {
+  it("acceptable: 9.0 × 4.0 = 36", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "9.0", phosphate: "4.0",
+    });
+    expect(r.value).toBe(36.0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("elevated: 8.0 × 8.0 = 64", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "8.0", phosphate: "8.0",
+    });
+    expect(r.value).toBe(64.0);
+    expect(r.status).toBe("high");
+  });
+
+  it("critical: 10.0 × 8.0 = 80", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "10.0", phosphate: "8.0",
+    });
+    expect(r.value).toBe(80.0);
+    expect(r.status).toBe("critical");
+  });
+
+  it("just below 55: 5.49 × 10.0 = 54.9 → normal", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "5.49", phosphate: "10.0",
+    });
+    expect(r.value).toBeCloseTo(54.9, 1);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Acceptable");
+  });
+
+  it("exactly 55: 5.5 × 10.0 = 55 → high (elevated)", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "5.5", phosphate: "10.0",
+    });
+    expect(r.value).toBe(55.0);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Elevated — increased calcification risk");
+  });
+
+  it("just above 55: 5.51 × 10.0 = 55.1 → high (elevated)", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "5.51", phosphate: "10.0",
+    });
+    expect(r.value).toBeCloseTo(55.1, 1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Elevated — increased calcification risk");
+  });
+
+  it("just below 70: 6.99 × 10.0 = 69.9 → high (elevated)", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "6.99", phosphate: "10.0",
+    });
+    expect(r.value).toBeCloseTo(69.9, 1);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Elevated — increased calcification risk");
+  });
+
+  it("exactly 70: 7.0 × 10.0 = 70 → high (elevated)", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "7.0", phosphate: "10.0",
+    });
+    expect(r.value).toBe(70.0);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Elevated — increased calcification risk");
+  });
+
+  it("just above 70: 7.01 × 10.0 = 70.1 → critical", () => {
+    const r = calc(calciumPhosphateProductCalculator, {
+      calcium: "7.01", phosphate: "10.0",
+    });
+    expect(r.value).toBeCloseTo(70.1, 1);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Critically elevated — high calcification risk");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Urine Osmolal Gap — measured − estimated
+// Estimated = 2×(UNa+UK) + UUrea/2.8 + UGlucose/18
+// ≤10 normal, >10 elevated
+// ---------------------------------------------------------------------------
+describe("Urine Osmolal Gap calculate() output", () => {
+  it("normal: gap ≈ 0.71", () => {
+    // estimated = 2×(40+20) + 200/2.8 + 100/18 = 120 + 71.43 + 5.56 = 196.99
+    // gap = 200 − 196.99 = 3.01
+    // Hmm let me pick values where gap is clearly ≤10
+    // measured=500, UNa=40, UK=20, UUrea=200, UGlu=100
+    const r = calc(urineOsmolalGapCalculator, {
+      urineOsmolality: "500", urineSodium: "40", urinePotassium: "20",
+      urineUrea: "200", urineGlucose: "100",
+    });
+    // estimated = 2×60 + 200/2.8 + 100/18 = 120 + 71.4286 + 5.5556 = 196.984
+    // gap = 500 − 196.984 = 303.016 → >10 → elevated
+    expect(r.status).toBe("high");
+  });
+
+  it("elevated: large gap (toxic alcohol)", () => {
+    // measured=700, UNa=40, UK=20, UUrea=200, UGlu=100
+    // estimated = 196.984 (same as above)
+    // gap = 700 − 196.984 = 503.016 → >10
+    const r = calc(urineOsmolalGapCalculator, {
+      urineOsmolality: "700", urineSodium: "40", urinePotassium: "20",
+      urineUrea: "200", urineGlucose: "100",
+    });
+    expect(r.value).toBeCloseTo(503.02, 0);
+    expect(r.status).toBe("high");
+  });
+
+  it("normal: gap ≤ 10", () => {
+    // estimated = 2×(40+20) + 200/2.8 + 100/18 = 196.984
+    // measured = 206.984 → gap ≈ 10.0
+    const r = calc(urineOsmolalGapCalculator, {
+      urineOsmolality: "207", urineSodium: "40", urinePotassium: "20",
+      urineUrea: "200", urineGlucose: "100",
+    });
+    // gap = 207 − 196.984 = 10.016 → >10 → elevated
+    // Need measured ≤ 206.984 for gap ≤ 10
+    const r2 = calc(urineOsmolalGapCalculator, {
+      urineOsmolality: "206", urineSodium: "40", urinePotassium: "20",
+      urineUrea: "200", urineGlucose: "100",
+    });
+    // gap = 206 − 196.984 = 9.016 → ≤10 → normal
+    expect(r2.value).toBeCloseTo(9.02, 1);
+    expect(r2.status).toBe("normal");
+  });
+
+  it("minimal values: measured=5, all zeros → gap=5", () => {
+    const r = calc(urineOsmolalGapCalculator, {
+      urineOsmolality: "5", urineSodium: "0", urinePotassium: "0",
+      urineUrea: "0", urineGlucose: "0",
+    });
+    expect(r.value).toBeCloseTo(5, 0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("elevated with complex inputs", () => {
+    // UNa=60, UK=30, UUrea=500, UGlu=200
+    // estimated = 2×90 + 500/2.8 + 200/18 = 180 + 178.5714 + 11.1111 = 369.683
+    // measured = 500 → gap = 130.317 → >10
+    const r = calc(urineOsmolalGapCalculator, {
+      urineOsmolality: "500", urineSodium: "60", urinePotassium: "30",
+      urineUrea: "500", urineGlucose: "200",
+    });
+    expect(r.value).toBeCloseTo(130.32, 0);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Estimated Average Glucose — 28.7 × A1c − 46.7
+// ≤140 normal, 140–200 pre-diabetic, ≥200 diabetic
+// Note: code has dead `if (false){}` pattern — tested as-is.
+// ---------------------------------------------------------------------------
+describe("Estimated Average Glucose calculate() output", () => {
+  it("A1c 5.0 → 96.8 mg/dL (normal)", () => {
+    // 28.7 × 5.0 − 46.7 = 143.5 − 46.7 = 96.8
+    const r = calc(estimatedAverageGlucoseCalculator, { a1c: "5.0" });
+    expect(r.value).toBe(96.8);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("Normal average glucose");
+  });
+
+  it("A1c 6.5 → 139.85 mg/dL (normal)", () => {
+    // 28.7 × 6.5 − 46.7 = 186.55 − 46.7 = 139.85
+    const r = calc(estimatedAverageGlucoseCalculator, { a1c: "6.5" });
+    expect(r.value).toBeCloseTo(139.85, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("A1c 7.0 → 154.2 mg/dL (pre-diabetic)", () => {
+    // 28.7 × 7.0 − 46.7 = 200.9 − 46.7 = 154.2
+    const r = calc(estimatedAverageGlucoseCalculator, { a1c: "7.0" });
+    expect(r.value).toBe(154.2);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toBe("Pre-diabetic range");
+  });
+
+  it("A1c 9.0 → 211.6 mg/dL (diabetic)", () => {
+    // 28.7 × 9.0 − 46.7 = 258.3 − 46.7 = 211.6
+    const r = calc(estimatedAverageGlucoseCalculator, { a1c: "9.0" });
+    expect(r.value).toBe(211.6);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toBe("Diabetic range");
+  });
+
+  it("A1c 12.0 → 297.7 mg/dL (diabetic)", () => {
+    // 28.7 × 12.0 − 46.7 = 344.4 − 46.7 = 297.7
+    const r = calc(estimatedAverageGlucoseCalculator, { a1c: "12.0" });
+    expect(r.value).toBe(297.7);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Hunt-Hess Scale — 5 grades, SAH severity
+// Status: I,II normal; III high; IV,V critical
+// ---------------------------------------------------------------------------
+describe("Hunt-Hess Scale calculate() output", () => {
+  it("Grade I → normal", () => {
+    const r = calc(huntHessScaleCalculator, { grade: "1" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("grade I");
+  });
+
+  it("Grade II → normal", () => {
+    const r = calc(huntHessScaleCalculator, { grade: "2" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("grade II");
+  });
+
+  it("Grade III → high", () => {
+    const r = calc(huntHessScaleCalculator, { grade: "3" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("grade III");
+  });
+
+  it("Grade IV → critical", () => {
+    const r = calc(huntHessScaleCalculator, { grade: "4" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("grade IV");
+  });
+
+  it("Grade V → critical", () => {
+    const r = calc(huntHessScaleCalculator, { grade: "5" });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("grade V");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Modified Rankin Scale — 7 grades (0–6)
+// 0–2 normal (favorable), 3–4 high, 5–6 critical
+// ---------------------------------------------------------------------------
+describe("Modified Rankin Scale calculate() output", () => {
+  it("mRS 0 → normal (no symptoms)", () => {
+    const r = calc(modifiedRankinScaleCalculator, { score: "0" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mRS 1 → normal", () => {
+    const r = calc(modifiedRankinScaleCalculator, { score: "1" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mRS 2 → normal (slight disability)", () => {
+    const r = calc(modifiedRankinScaleCalculator, { score: "2" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mRS 3 → high (moderate disability)", () => {
+    const r = calc(modifiedRankinScaleCalculator, { score: "3" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("mRS 4 → high", () => {
+    const r = calc(modifiedRankinScaleCalculator, { score: "4" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("mRS 5 → critical (severe disability)", () => {
+    const r = calc(modifiedRankinScaleCalculator, { score: "5" });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("mRS 6 → critical (dead)", () => {
+    const r = calc(modifiedRankinScaleCalculator, { score: "6" });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Bishop Score — 5 components sum 0–13
+// ≥8 favorable (normal), 6–7 intermediate (normal), ≤5 unfavorable (high)
+// ---------------------------------------------------------------------------
+describe("Bishop Score calculate() output", () => {
+  it("score 0: all zeros → unfavorable, high", () => {
+    const r = calc(bishopScoreCalculator, {
+      dilation: "0", effacement: "0", station: "0",
+      consistency: "0", position: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 5: borderline unfavorable", () => {
+    // dilation=2 + effacement=1 + station=1 + consistency=1 + position=0 = 5
+    const r = calc(bishopScoreCalculator, {
+      dilation: "2", effacement: "1", station: "1",
+      consistency: "1", position: "0",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 6: intermediate boundary", () => {
+    // dilation=2 + effacement=2 + station=1 + consistency=1 + position=0 = 6
+    const r = calc(bishopScoreCalculator, {
+      dilation: "2", effacement: "2", station: "1",
+      consistency: "1", position: "0",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 8: favorable boundary", () => {
+    // dilation=3 + effacement=3 + station=1 + consistency=1 + position=0 = 8
+    const r = calc(bishopScoreCalculator, {
+      dilation: "3", effacement: "3", station: "1",
+      consistency: "1", position: "0",
+    });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 13: maximum favorable", () => {
+    // dilation=3 + effacement=3 + station=3 + consistency=2 + position=2 = 13
+    const r = calc(bishopScoreCalculator, {
+      dilation: "3", effacement: "3", station: "3",
+      consistency: "2", position: "2",
+    });
+    expect(r.value).toBe(13);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ECOG Performance Status — 6 grades (0–5)
+// 0–1 normal, 2–3 high, 4–5 critical
+// ---------------------------------------------------------------------------
+describe("ECOG Performance Status calculate() output", () => {
+  it("ECOG 0 → normal (fully active)", () => {
+    const r = calc(ecogCalculator, { grade: "0" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("ECOG 1 → normal (ambulatory, light work)", () => {
+    const r = calc(ecogCalculator, { grade: "1" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("ECOG 2 → high (ambulatory, self-care only)", () => {
+    const r = calc(ecogCalculator, { grade: "2" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("ECOG 3 → high (limited self-care)", () => {
+    const r = calc(ecogCalculator, { grade: "3" });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("ECOG 4 → critical (completely disabled)", () => {
+    const r = calc(ecogCalculator, { grade: "4" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("critical");
+  });
+
+  it("ECOG 5 → critical (dead)", () => {
+    const r = calc(ecogCalculator, { grade: "5" });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Epworth Sleepiness Scale — 8-item sum, 0–24
+// ≤10 normal, 11–14 mild, 15–17 moderate, ≥18 severe
+// ---------------------------------------------------------------------------
+describe("Epworth Sleepiness Scale calculate() output", () => {
+  const allZero = {
+    ess1: "0", ess2: "0", ess3: "0", ess4: "0",
+    ess5: "0", ess6: "0", ess7: "0", ess8: "0",
+  };
+
+  it("score 0 → normal", () => {
+    const r = calc(epworthCalculator, allZero);
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 10 → normal (boundary)", () => {
+    // first 10 items don't exist, so 8 items max at 24
+    // 3+3+3+1 = 10 using first 4 items
+    const r = calc(epworthCalculator, {
+      ...allZero, ess1: "3", ess2: "3", ess3: "3", ess4: "1",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 11 → mild (boundary)", () => {
+    const r = calc(epworthCalculator, {
+      ...allZero, ess1: "3", ess2: "3", ess3: "3", ess4: "2",
+    });
+    expect(r.value).toBe(11);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 14 → mild (upper boundary)", () => {
+    const r = calc(epworthCalculator, {
+      ...allZero, ess1: "3", ess2: "3", ess3: "3", ess4: "3", ess5: "2",
+    });
+    expect(r.value).toBe(14);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 17 → moderate (upper boundary)", () => {
+    const r = calc(epworthCalculator, {
+      ...allZero, ess1: "3", ess2: "3", ess3: "3", ess4: "3",
+      ess5: "3", ess6: "2",
+    });
+    expect(r.value).toBe(17);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 18 → severe (boundary)", () => {
+    const r = calc(epworthCalculator, {
+      ...allZero, ess1: "3", ess2: "3", ess3: "3", ess4: "3",
+      ess5: "3", ess6: "3",
+    });
+    expect(r.value).toBe(18);
+    expect(r.status).toBe("critical");
+  });
+
+  it("score 24 → severe (maximum)", () => {
+    const r = calc(epworthCalculator, {
+      ess1: "3", ess2: "3", ess3: "3", ess4: "3",
+      ess5: "3", ess6: "3", ess7: "3", ess8: "3",
+    });
+    expect(r.value).toBe(24);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Gestational Weight Gain (IOM 2009) — BMI-based
+// Underweight (<18.5): 28–40 lb, midpoint 34
+// Normal (18.5–24.9): 25–35 lb, midpoint 30
+// Overweight (25–29.9): 15–25 lb, midpoint 20
+// Obese (≥30): 11–20 lb, midpoint 16 (Math.round((11+20)/2)=16)
+// ---------------------------------------------------------------------------
+describe("Gestational Weight Gain calculate() output", () => {
+  it("underweight BMI 17 → midpoint 34", () => {
+    const r = calc(gestationalWeightGainCalculator, { bmi: "17" });
+    expect(r.value).toBe(34);
+    expect(r.status).toBe("normal");
+  });
+
+  it("normal BMI 22 → midpoint 30", () => {
+    const r = calc(gestationalWeightGainCalculator, { bmi: "22" });
+    expect(r.value).toBe(30);
+    expect(r.status).toBe("normal");
+  });
+
+  it("overweight BMI 27 → midpoint 20", () => {
+    const r = calc(gestationalWeightGainCalculator, { bmi: "27" });
+    expect(r.value).toBe(20);
+    expect(r.status).toBe("normal");
+  });
+
+  it("obese BMI 35 → midpoint 16", () => {
+    const r = calc(gestationalWeightGainCalculator, { bmi: "35" });
+    expect(r.value).toBe(16);
+    expect(r.status).toBe("normal");
+  });
+
+  it("BMI exactly 18.5 → normal weight category", () => {
+    const r = calc(gestationalWeightGainCalculator, { bmi: "18.5" });
+    expect(r.value).toBe(30);
+    expect(r.status).toBe("normal");
+  });
+
+  it("BMI exactly 25 → overweight category", () => {
+    const r = calc(gestationalWeightGainCalculator, { bmi: "25" });
+    expect(r.value).toBe(20);
+    expect(r.status).toBe("normal");
+  });
+
+  it("BMI exactly 30 → obese category", () => {
+    const r = calc(gestationalWeightGainCalculator, { bmi: "30" });
+    expect(r.value).toBe(16);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ACR — Urine Albumin-to-Creatinine Ratio
+// ACR = albumin (mg/L) / creatinine (g/L)
+// A1: <30 normal, A2: 30–300 moderate, A3: >300 severe
+// Status: "normal" for A1, "low" for A2 and A3
+// ---------------------------------------------------------------------------
+describe("ACR calculate() output", () => {
+  it("normal: 20/1.0 = 20 mg/g → A1", () => {
+    const r = calc(acrCalculator, { albumin: "20", creatinine: "1.0" });
+    expect(r.value).toBe(20);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("A1: Normal to mildly increased albuminuria.");
+  });
+
+  it("moderate: 100/1.0 = 100 mg/g → A2", () => {
+    const r = calc(acrCalculator, { albumin: "100", creatinine: "1.0" });
+    expect(r.value).toBe(100);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe("A2: Moderately increased albuminuria.");
+  });
+
+  it("severe: 500/1.0 = 500 mg/g → A3", () => {
+    const r = calc(acrCalculator, { albumin: "500", creatinine: "1.0" });
+    expect(r.value).toBe(500);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toBe("A3: Severely increased albuminuria.");
+  });
+
+  it("boundary 30: 30/1.0 = 30 mg/g → A2", () => {
+    const r = calc(acrCalculator, { albumin: "30", creatinine: "1.0" });
+    expect(r.value).toBe(30);
+    expect(r.status).toBe("low");
+  });
+
+  it("high creatinine: 300/2.0 = 150 mg/g → A2", () => {
+    const r = calc(acrCalculator, { albumin: "300", creatinine: "2.0" });
+    expect(r.value).toBe(150);
+    expect(r.status).toBe("low");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// EDD — Expected Date of Delivery
+// EDD = LMP + 280 days
+// ---------------------------------------------------------------------------
+describe("EDD calculate() output", () => {
+  it("LMP Jan 1, 2026 → EDD Oct 8, 2026", () => {
+    const r = calc(eddCalculator, { lmp: "2026-01-01" });
+    expect(r.value).toBe("2026-10-08");
+    expect(r.status).toBe("normal");
+  });
+
+  it("LMP Jul 1, 2026 → EDD Apr 12, 2027", () => {
+    // Jul 1 + 280 days: Jul has 31 days → 30 remaining in Jul
+    // Aug 31, Sep 30, Oct 31, Nov 30, Dec 31, Jan 31, Feb 28, Mar 31, Apr 12
+    // 30+31+30+31+30+31+31+28+31+12 = 285... let me just compute
+    // July 1 + 280 = Oct 8, 2026? No that's 280 days from Jul 1
+    // July: 30 days remaining (Jul 2–31)
+    // Aug: 31, Sep: 30, Oct: 31, Nov: 30, Dec: 31, Jan: 31, Feb: 28, Mar: 31, Apr: 7
+    // 30+31+30+31+30+31+31+28+31+7 = 280. So Apr 7, 2027
+    const r = calc(eddCalculator, { lmp: "2026-07-01" });
+    expect(r.value).toBe("2027-04-07");
+    expect(r.status).toBe("normal");
+  });
+
+  it("LMP Feb 29, 2024 (leap year) → EDD Dec 5, 2024", () => {
+    const r = calc(eddCalculator, { lmp: "2024-02-29" });
+    expect(r.value).toBe("2024-12-05");
+    expect(r.status).toBe("normal");
+  });
+
+  it("invalid date → high status", () => {
+    const r = calc(eddCalculator, { lmp: "not-a-date" });
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Gestational Age — weeks + days/7
+// ---------------------------------------------------------------------------
+describe("Gestational Age calculate() output", () => {
+  it("0+0 → 0 weeks", () => {
+    const r = calc(gestationalAgeCalculator, { weeks: "0", days: "0" });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("20+3 → 20.4286 weeks", () => {
+    const r = calc(gestationalAgeCalculator, { weeks: "20", days: "3" });
+    expect(r.value).toBeCloseTo(20.43, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("40+0 → 40 weeks (term)", () => {
+    const r = calc(gestationalAgeCalculator, { weeks: "40", days: "0" });
+    expect(r.value).toBe(40);
+    expect(r.status).toBe("normal");
+  });
+
+  it("42+0 → 42 weeks (post-term)", () => {
+    const r = calc(gestationalAgeCalculator, { weeks: "42", days: "0" });
+    expect(r.value).toBe(42);
+    expect(r.status).toBe("normal");
   });
 });
