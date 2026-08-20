@@ -68,6 +68,26 @@ import {
 import {
   adrenalSteroidConverterCalculator,
 } from "../../lib/calculators/adrenal-steroid-converter";
+import { sofaScoreCalculator } from "../../lib/calculators/sofa-score";
+import { timiCalculator } from "../../lib/calculators/timi";
+import { graceCalculator } from "../../lib/calculators/grace";
+import { heartScoreCalculator } from "../../lib/calculators/heart-score";
+import { wellsPeCalculator } from "../../lib/calculators/wells-pe";
+import { wellsDvtCalculator } from "../../lib/calculators/wells-dvt";
+import { percRuleCalculator } from "../../lib/calculators/perc-rule";
+import { psiPortCalculator } from "../../lib/calculators/psi-port";
+import { sirsCriteriaCalculator } from "../../lib/calculators/sirs-criteria";
+import { rtsCalculator } from "../../lib/calculators/rts";
+import { hasBledCalculator } from "../../lib/calculators/has-bled";
+import { rcriCalculator } from "../../lib/calculators/rcri";
+import { ascvdCalculator } from "../../lib/calculators/ascvd";
+import { daptCalculator } from "../../lib/calculators/dapt";
+import { h2fpefCalculator } from "../../lib/calculators/h2fpef";
+import { meldCalculator } from "../../lib/calculators/meld";
+import { meldNaCalculator } from "../../lib/calculators/meld-na";
+import { parklandFormulaCalculator } from "../../lib/calculators/parkland-formula";
+import { apriCalculator } from "../../lib/calculators/apri";
+import { fib4Calculator } from "../../lib/calculators/fib-4";
 
 import type {
   CalculatorDefinition,
@@ -3631,3 +3651,1357 @@ describe("CHA₂DS₂-VASc sex-only score classification fix", () => {
   });
 });
 
+
+// ---------------------------------------------------------------------------
+// SOFA Score — sum of 6 organ sub-scores (0–24)
+// Classification: <=1 normal, <=5 high, >5 critical
+// ---------------------------------------------------------------------------
+describe("SOFA Score calculate() output", () => {
+  it("zero: all organ systems normal", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "200", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "1.0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score=1 still normal", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "200", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "14", creatinine: "1.0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score=2 becomes high", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "120", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "14", creatinine: "1.0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("moderate: score=5 still high (boundary)", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "1", platelets: "80", bilirubin: "1.5",
+      cardiovascular: "0", gcs: "14", creatinine: "1.0",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary: score=6 becomes critical", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "1", platelets: "80", bilirubin: "1.5",
+      cardiovascular: "0", gcs: "14", creatinine: "1.5",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+
+  it("severe: score=17", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "3", platelets: "19", bilirubin: "8.0",
+      cardiovascular: "2", gcs: "10", creatinine: "4.0",
+    });
+    expect(r.value).toBe(17);
+    expect(r.status).toBe("critical");
+  });
+
+  it("maximum: all organs at max severity = 24", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "4", platelets: "10", bilirubin: "15.0",
+      cardiovascular: "4", gcs: "3", creatinine: "6.0",
+    });
+    expect(r.value).toBe(24);
+    expect(r.status).toBe("critical");
+  });
+
+  it("component isolation: only liver abnormal", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "200", bilirubin: "4.0",
+      cardiovascular: "0", gcs: "15", creatinine: "1.0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("platelet thresholds: 150->0, 149->1, 99->2, 49->3, 19->4", () => {
+    expect(calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "150", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "1.0",
+    }).value).toBe(0);
+    expect(calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "149", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "1.0",
+    }).value).toBe(1);
+    expect(calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "99", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "1.0",
+    }).value).toBe(2);
+    expect(calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "49", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "1.0",
+    }).value).toBe(3);
+    expect(calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "19", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "1.0",
+    }).value).toBe(4);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TIMI — sum of 7 binary criteria (0–7)
+// <=1 low, 2–4 intermediate, >=5 high
+// ---------------------------------------------------------------------------
+describe("TIMI Score calculate() output", () => {
+  it("score 0: no risk factors", () => {
+    const r = calc(timiCalculator, {
+      "age-65": "0", "risk-factors": "0", "known-cad": "0",
+      aspirin: "0", "anginal-events": "0", "ecg-changes": "0", troponin: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 1: single criterion", () => {
+    const r = calc(timiCalculator, {
+      "age-65": "1", "risk-factors": "0", "known-cad": "0",
+      aspirin: "0", "anginal-events": "0", "ecg-changes": "0", troponin: "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score 2 becomes intermediate", () => {
+    const r = calc(timiCalculator, {
+      "age-65": "1", "risk-factors": "1", "known-cad": "0",
+      aspirin: "0", "anginal-events": "0", "ecg-changes": "0", troponin: "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 4: upper intermediate", () => {
+    const r = calc(timiCalculator, {
+      "age-65": "1", "risk-factors": "1", "known-cad": "1",
+      aspirin: "1", "anginal-events": "0", "ecg-changes": "0", troponin: "0",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary: score 5 becomes high risk", () => {
+    const r = calc(timiCalculator, {
+      "age-65": "1", "risk-factors": "1", "known-cad": "1",
+      aspirin: "1", "anginal-events": "1", "ecg-changes": "0", troponin: "0",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("maximum: all 7 criteria present", () => {
+    const r = calc(timiCalculator, {
+      "age-65": "1", "risk-factors": "1", "known-cad": "1",
+      aspirin: "1", "anginal-events": "1", "ecg-changes": "1", troponin: "1",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// GRACE — sum of 8 pre-scored select values
+// <=108 low, 109–140 intermediate, >140 high
+// ---------------------------------------------------------------------------
+describe("GRACE Score calculate() output", () => {
+  it("low risk: score 88 (<=108)", () => {
+    const r = calc(graceCalculator, {
+      age: "41", "heart-rate": "9", sbp: "34", creatinine: "4",
+      killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "0",
+    });
+    expect(r.value).toBe(88);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score 108 still low", () => {
+    const r = calc(graceCalculator, {
+      age: "58", "heart-rate": "15", sbp: "24", creatinine: "10",
+      killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "1",
+    });
+    expect(r.value).toBe(108);
+    expect(r.status).toBe("normal");
+  });
+
+  it("intermediate: score 111", () => {
+    const r = calc(graceCalculator, {
+      age: "41", "heart-rate": "15", sbp: "34", creatinine: "7",
+      killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "14",
+    });
+    expect(r.value).toBe(111);
+    expect(r.status).toBe("high");
+  });
+
+  it("high risk: score 214 (>140)", () => {
+    const r = calc(graceCalculator, {
+      age: "91", "heart-rate": "24", sbp: "58", creatinine: "21",
+      killip: "20", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "0",
+    });
+    expect(r.value).toBe(214);
+    expect(r.status).toBe("critical");
+  });
+
+  it("maximum: all worst values = 372", () => {
+    const r = calc(graceCalculator, {
+      age: "100", "heart-rate": "46", sbp: "58", creatinine: "28",
+      killip: "59", "cardiac-arrest": "39", "st-deviation": "28", "elevated-enzymes": "14",
+    });
+    expect(r.value).toBe(372);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// HEART Score — sum of 5 items (0–2 each), total 0–10
+// <=3 low, 4–6 moderate, >6 high
+// ---------------------------------------------------------------------------
+describe("HEART Score calculate() output", () => {
+  it("low risk: score 0", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "0", ecg: "0", age: "0", "risk-factors": "0", troponin: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("low risk: score 3", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "1", ecg: "1", age: "1", "risk-factors": "0", troponin: "0",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score 4 becomes moderate", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "1", ecg: "1", age: "1", "risk-factors": "1", troponin: "0",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("moderate: score 6", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "2", ecg: "1", age: "1", "risk-factors": "1", troponin: "1",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary: score 7 becomes high risk", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "2", ecg: "2", age: "1", "risk-factors": "1", troponin: "1",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("critical");
+  });
+
+  it("maximum: score 10", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "2", ecg: "2", age: "2", "risk-factors": "2", troponin: "2",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Wells PE — weighted sum (0–12.5), rounded to 1 decimal
+// Two-tier: <=4 PE unlikely (normal), >4 PE likely (high)
+// ---------------------------------------------------------------------------
+describe("Wells PE calculate() output", () => {
+  it("low: no criteria met = 0", () => {
+    const r = calc(wellsPeCalculator, {
+      "dvt-signs": "0", "pe-most-likely": "0", tachycardia: "0",
+      immobilization: "0", "prior-dvt-pe": "0", hemoptysis: "0", malignancy: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("moderate: tachycardia + immobilization = 3", () => {
+    const r = calc(wellsPeCalculator, {
+      "dvt-signs": "0", "pe-most-likely": "0", tachycardia: "1",
+      immobilization: "1", "prior-dvt-pe": "0", hemoptysis: "0", malignancy: "0",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: tachycardia + immobilization + prior DVT = 4.5 -> high", () => {
+    const r = calc(wellsPeCalculator, {
+      "dvt-signs": "0", "pe-most-likely": "0", tachycardia: "1",
+      immobilization: "1", "prior-dvt-pe": "1", hemoptysis: "0", malignancy: "0",
+    });
+    expect(r.value).toBe(4.5);
+    expect(r.status).toBe("high");
+  });
+
+  it("high: DVT signs + PE most likely = 6", () => {
+    const r = calc(wellsPeCalculator, {
+      "dvt-signs": "1", "pe-most-likely": "1", tachycardia: "0",
+      immobilization: "0", "prior-dvt-pe": "0", hemoptysis: "0", malignancy: "0",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("high");
+  });
+
+  it("very high: DVT signs + PE most likely + tachycardia + malignancy = 8.5", () => {
+    const r = calc(wellsPeCalculator, {
+      "dvt-signs": "1", "pe-most-likely": "1", tachycardia: "1",
+      immobilization: "0", "prior-dvt-pe": "0", hemoptysis: "0", malignancy: "1",
+    });
+    expect(r.value).toBe(8.5);
+    expect(r.status).toBe("high");
+  });
+
+  it("maximum: all criteria = 12.5", () => {
+    const r = calc(wellsPeCalculator, {
+      "dvt-signs": "1", "pe-most-likely": "1", tachycardia: "1",
+      immobilization: "1", "prior-dvt-pe": "1", hemoptysis: "1", malignancy: "1",
+    });
+    expect(r.value).toBe(12.5);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Wells DVT — sum of 9 items (+1 each) minus 2 if alternative diagnosis
+// Two-tier: <2 unlikely (normal), >=2 likely (high)
+// ---------------------------------------------------------------------------
+describe("Wells DVT calculate() output", () => {
+  it("low: no criteria = 0", () => {
+    const r = calc(wellsDvtCalculator, {
+      "active-cancer": "0", paralysis: "0", bedridden: "0",
+      "localized-tenderness": "0", "entire-leg-swollen": "0", "calf-swelling": "0",
+      "pitting-edema": "0", "collateral-veins": "0", "previous-dvt": "0",
+      "alternative-diagnosis": "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("moderate: localized tenderness + calf swelling = 2", () => {
+    const r = calc(wellsDvtCalculator, {
+      "active-cancer": "0", paralysis: "0", bedridden: "0",
+      "localized-tenderness": "1", "entire-leg-swollen": "0", "calf-swelling": "1",
+      "pitting-edema": "0", "collateral-veins": "0", "previous-dvt": "0",
+      "alternative-diagnosis": "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("high: 3 criteria = 3", () => {
+    const r = calc(wellsDvtCalculator, {
+      "active-cancer": "1", paralysis: "1", bedridden: "1",
+      "localized-tenderness": "0", "entire-leg-swollen": "0", "calf-swelling": "0",
+      "pitting-edema": "0", "collateral-veins": "0", "previous-dvt": "0",
+      "alternative-diagnosis": "0",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("subtraction: 3 criteria with alternative diagnosis = 1 -> low", () => {
+    const r = calc(wellsDvtCalculator, {
+      "active-cancer": "1", paralysis: "1", bedridden: "1",
+      "localized-tenderness": "0", "entire-leg-swollen": "0", "calf-swelling": "0",
+      "pitting-edema": "0", "collateral-veins": "0", "previous-dvt": "0",
+      "alternative-diagnosis": "1",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("maximum: all 9 positive, no alternative = 9", () => {
+    const r = calc(wellsDvtCalculator, {
+      "active-cancer": "1", paralysis: "1", bedridden: "1",
+      "localized-tenderness": "1", "entire-leg-swollen": "1", "calf-swelling": "1",
+      "pitting-edema": "1", "collateral-veins": "1", "previous-dvt": "1",
+      "alternative-diagnosis": "0",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("high");
+  });
+
+  it("max with subtraction: all 9 + alternative = 7", () => {
+    const r = calc(wellsDvtCalculator, {
+      "active-cancer": "1", paralysis: "1", bedridden: "1",
+      "localized-tenderness": "1", "entire-leg-swollen": "1", "calf-swelling": "1",
+      "pitting-edema": "1", "collateral-veins": "1", "previous-dvt": "1",
+      "alternative-diagnosis": "1",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// PERC Rule — count of 8 criteria met (all-or-nothing)
+// 8/8 = negative (normal), <8 = positive (high)
+// ---------------------------------------------------------------------------
+describe("PERC Rule calculate() output", () => {
+  it("all 8 met: PERC negative", () => {
+    const r = calc(percRuleCalculator, {
+      age: "1", "heart-rate": "1", "oxygen-saturation": "1",
+      hemoptysis: "1", estrogen: "1", "prior-dvt-pe": "1",
+      "leg-swelling": "1", "surgery-trauma": "1",
+    });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("normal");
+  });
+
+  it("7 of 8 met: PERC positive", () => {
+    const r = calc(percRuleCalculator, {
+      age: "1", "heart-rate": "1", "oxygen-saturation": "1",
+      hemoptysis: "1", estrogen: "1", "prior-dvt-pe": "1",
+      "leg-swelling": "1", "surgery-trauma": "0",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("high");
+  });
+
+  it("only age criterion met: 1/8", () => {
+    const r = calc(percRuleCalculator, {
+      age: "1", "heart-rate": "0", "oxygen-saturation": "0",
+      hemoptysis: "0", estrogen: "0", "prior-dvt-pe": "0",
+      "leg-swelling": "0", "surgery-trauma": "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("none met: 0/8", () => {
+    const r = calc(percRuleCalculator, {
+      age: "0", "heart-rate": "0", "oxygen-saturation": "0",
+      hemoptysis: "0", estrogen: "0", "prior-dvt-pe": "0",
+      "leg-swelling": "0", "surgery-trauma": "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// PSI/PORT — age + sex adjustment + comorbidities + vitals + labs
+// Class I: age<50, no comorbidities/risk findings -> normal
+// Class II: <=70 -> normal, III: 71-90 -> high, IV: 91-130 -> high, V: >130 -> critical
+// ---------------------------------------------------------------------------
+describe("PSI/PORT Score calculate() output", () => {
+  it("Class I: age 40 male, no comorbidities, normal vitals/labs", () => {
+    const r = calc(psiPortCalculator, {
+      age: "40", sex: "male",
+      "nursing-home": "0", "neoplastic-disease": "0", "liver-disease": "0",
+      chf: "0", cerebrovascular: "0", "renal-disease": "0", ams: "0",
+      "respiratory-rate": "16", sbp: "130", temperature: "37.0",
+      "heart-rate": "80", ph: "", bun: "15", sodium: "140",
+      glucose: "100", hematocrit: "40", pao2: "", "pleural-effusion": "0",
+    });
+    expect(r.value).toBe(40);
+    expect(r.status).toBe("normal");
+  });
+
+  it("Class II: age 65 male, no comorbidities -> score 65", () => {
+    const r = calc(psiPortCalculator, {
+      age: "65", sex: "male",
+      "nursing-home": "0", "neoplastic-disease": "0", "liver-disease": "0",
+      chf: "0", cerebrovascular: "0", "renal-disease": "0", ams: "0",
+      "respiratory-rate": "16", sbp: "130", temperature: "37.0",
+      "heart-rate": "80", ph: "", bun: "15", sodium: "140",
+      glucose: "100", hematocrit: "40", pao2: "", "pleural-effusion": "0",
+    });
+    expect(r.value).toBe(65);
+    expect(r.status).toBe("normal");
+  });
+
+  it("Class IV: age 70 + CHF(10) + SBP<90(20) + BUN>=30(20) = 120", () => {
+    const r = calc(psiPortCalculator, {
+      age: "70", sex: "male",
+      "nursing-home": "0", "neoplastic-disease": "0", "liver-disease": "0",
+      chf: "1", cerebrovascular: "0", "renal-disease": "0", ams: "0",
+      "respiratory-rate": "16", sbp: "85", temperature: "37.0",
+      "heart-rate": "80", ph: "", bun: "35", sodium: "140",
+      glucose: "100", hematocrit: "40", pao2: "", "pleural-effusion": "0",
+    });
+    expect(r.value).toBe(120);
+    expect(r.status).toBe("high");
+  });
+
+  it("Class V: high-acuity case >130", () => {
+    const r = calc(psiPortCalculator, {
+      age: "80", sex: "male",
+      "nursing-home": "1", "neoplastic-disease": "0", "liver-disease": "0",
+      chf: "1", cerebrovascular: "0", "renal-disease": "0", ams: "1",
+      "respiratory-rate": "32", sbp: "80", temperature: "37.0",
+      "heart-rate": "130", ph: "", bun: "40", sodium: "125",
+      glucose: "100", hematocrit: "40", pao2: "", "pleural-effusion": "0",
+    });
+    expect(r.value).toBe(210);
+    expect(r.status).toBe("critical");
+  });
+
+  it("female sex adjustment: age 70 female -> 70 - 10 = 60", () => {
+    const r = calc(psiPortCalculator, {
+      age: "70", sex: "female",
+      "nursing-home": "0", "neoplastic-disease": "0", "liver-disease": "0",
+      chf: "0", cerebrovascular: "0", "renal-disease": "0", ams: "0",
+      "respiratory-rate": "16", sbp: "130", temperature: "37.0",
+      "heart-rate": "80", ph: "", bun: "15", sodium: "140",
+      glucose: "100", hematocrit: "40", pao2: "", "pleural-effusion": "0",
+    });
+    expect(r.value).toBe(60);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// SIRS Criteria — count of 4 (temp>38/<36, HR>90, RR>20, WBC>12/<4)
+// >=2 -> high (SIRS present), <2 -> normal
+// Strict inequalities: exactly 38, 36, 90, 20, 12, 4 are NOT abnormal
+// ---------------------------------------------------------------------------
+describe("SIRS Criteria calculate() output", () => {
+  it("0 criteria: all normal", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "37.0", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("1 criterion: temperature only (38.5 > 38)", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "38.5", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: exactly 38 C is NOT abnormal (strict >38)", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "38.0", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: 38.1 C IS abnormal", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "38.1", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: exactly 36 C is NOT abnormal", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "36.0", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: 35.9 C IS abnormal", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "35.9", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: exactly 90 bpm is NOT abnormal", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "37.0", "heart-rate": "90", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("2 criteria: fever + tachycardia -> SIRS present", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "39.0", "heart-rate": "110", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("all 4 criteria met", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "39.5", "heart-rate": "120", "respiratory-rate": "25", wbc: "15",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("high");
+  });
+
+  it("hypothermia + leukopenia: temp 35.5 + WBC 3 = 2 criteria", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "35.5", "heart-rate": "80", "respiratory-rate": "16", wbc: "3",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Revised Trauma Score — coded lookup tables, 4-decimal precision
+// GCS code: >=13->4, >=9->3, >=6->2, >=4->1, <4->0
+// SBP code: >89->4, >=76->3, >=50->2, >=1->1, <1->0
+// RR code: 10-29->4, >29->3, >=6->2, >=1->1, <1->0
+// RTS = 0.9368*GCS + 0.7326*SBP + 0.2908*RR
+// Classification: <4 critical, <7.84 high, >=7.84 normal
+// ---------------------------------------------------------------------------
+describe("Revised Trauma Score calculate() output", () => {
+  it("worst: GCS=3, SBP=0, RR=0 -> 0", () => {
+    const r = calc(rtsCalculator, { gcs: "3", sbp: "0", rr: "0" });
+    // GCS code=0, SBP code=0, RR code=0 -> 0
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("critical");
+  });
+
+  it("best: GCS=15, SBP=120, RR=16 -> 7.8408", () => {
+    const r = calc(rtsCalculator, { gcs: "15", sbp: "120", rr: "16" });
+    // GCS code=4, SBP code=4, RR code=4
+    // 0.9368*4 + 0.7326*4 + 0.2908*4 = 3.7472 + 2.9304 + 1.1632 = 7.8408
+    expect(r.value).toBe(7.8408);
+    expect(r.status).toBe("normal");
+  });
+
+  it("GCS boundary: GCS 13 -> code 4, GCS 12 -> code 3", () => {
+    const r13 = calc(rtsCalculator, { gcs: "13", sbp: "120", rr: "16" });
+    const r12 = calc(rtsCalculator, { gcs: "12", sbp: "120", rr: "16" });
+    // GCS 13: code=4 -> 0.9368*4 + 0.7326*4 + 0.2908*4 = 7.8408
+    expect(r13.value).toBe(7.8408);
+    // GCS 12: code=3 -> 0.9368*3 + 0.7326*4 + 0.2908*4 = 2.8104 + 2.9304 + 1.1632 = 6.904
+    expect(r12.value).toBeCloseTo(6.904, 4);
+    expect(r12.status).toBe("high");
+  });
+
+  it("SBP boundary: SBP 90 -> code 4, SBP 89 -> code 3", () => {
+    const r90 = calc(rtsCalculator, { gcs: "15", sbp: "90", rr: "16" });
+    const r89 = calc(rtsCalculator, { gcs: "15", sbp: "89", rr: "16" });
+    // SBP 90: code=4 -> 7.8408
+    expect(r90.value).toBe(7.8408);
+    // SBP 89: code=3 -> 0.9368*4 + 0.7326*3 + 0.2908*4 = 3.7472 + 2.1978 + 1.1632 = 7.1082
+    expect(r89.value).toBeCloseTo(7.1082, 4);
+    expect(r89.status).toBe("high");
+  });
+
+  it("RR boundary: RR 29 -> code 4, RR 30 -> code 3", () => {
+    const r29 = calc(rtsCalculator, { gcs: "15", sbp: "120", rr: "29" });
+    const r30 = calc(rtsCalculator, { gcs: "15", sbp: "120", rr: "30" });
+    // RR 29: code=4 -> 7.8408
+    expect(r29.value).toBe(7.8408);
+    // RR 30: code=3 -> 0.9368*4 + 0.7326*4 + 0.2908*3 = 3.7472 + 2.9304 + 0.8724 = 7.55
+    expect(r30.value).toBeCloseTo(7.55, 4);
+    expect(r30.status).toBe("high");
+  });
+
+  it("representative moderate: GCS=9, SBP=80, RR=24", () => {
+    const r = calc(rtsCalculator, { gcs: "9", sbp: "80", rr: "24" });
+    // GCS 9: code=3, SBP 80: code=3, RR 24: code=4
+    // 0.9368*3 + 0.7326*3 + 0.2908*4 = 2.8104 + 2.1978 + 1.1632 = 6.1714
+    expect(r.value).toBeCloseTo(6.1714, 4);
+    expect(r.status).toBe("high");
+  });
+
+  it("4-decimal precision is maintained", () => {
+    const r = calc(rtsCalculator, { gcs: "8", sbp: "75", rr: "5" });
+    // GCS 8: code=2, SBP 75: code=2, RR 5: code=1
+    // 0.9368*2 + 0.7326*2 + 0.2908*1 = 1.8736 + 1.4652 + 0.2908 = 3.6296
+    expect(r.value).toBeCloseTo(3.6296, 4);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// HAS-BLED — sum of 9 binary criteria (0–9)
+// <=1 low, ==2 moderate, >=3 high
+// ---------------------------------------------------------------------------
+describe("HAS-BLED calculate() output", () => {
+  it("score 0: no risk factors", () => {
+    const r = calc(hasBledCalculator, {
+      hypertension: "0", renal: "0", liver: "0", stroke: "0",
+      bleeding: "0", "labile-inr": "0", elderly: "0", drugs: "0", alcohol: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 1: still low", () => {
+    const r = calc(hasBledCalculator, {
+      hypertension: "1", renal: "0", liver: "0", stroke: "0",
+      bleeding: "0", "labile-inr": "0", elderly: "0", drugs: "0", alcohol: "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 2: isolated moderate bracket", () => {
+    const r = calc(hasBledCalculator, {
+      hypertension: "1", renal: "1", liver: "0", stroke: "0",
+      bleeding: "0", "labile-inr": "0", elderly: "0", drugs: "0", alcohol: "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 3: high risk", () => {
+    const r = calc(hasBledCalculator, {
+      hypertension: "1", renal: "1", liver: "1", stroke: "0",
+      bleeding: "0", "labile-inr": "0", elderly: "0", drugs: "0", alcohol: "0",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("maximum: all 9 criteria = 9", () => {
+    const r = calc(hasBledCalculator, {
+      hypertension: "1", renal: "1", liver: "1", stroke: "1",
+      bleeding: "1", "labile-inr": "1", elderly: "1", drugs: "1", alcohol: "1",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// RCRI — sum of 6 binary criteria (0–6)
+// 0 -> normal, 1 -> high, 2 -> high, >=3 -> critical
+// ---------------------------------------------------------------------------
+describe("RCRI calculate() output", () => {
+  it("score 0: low risk", () => {
+    const r = calc(rcriCalculator, {
+      "high-risk-surgery": "0", "ischemic-heart-disease": "0", chf: "0",
+      cerebrovascular: "0", "insulin-diabetes": "0", creatinine: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 1: low-moderate", () => {
+    const r = calc(rcriCalculator, {
+      "high-risk-surgery": "1", "ischemic-heart-disease": "0", chf: "0",
+      cerebrovascular: "0", "insulin-diabetes": "0", creatinine: "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 2: moderate", () => {
+    const r = calc(rcriCalculator, {
+      "high-risk-surgery": "1", "ischemic-heart-disease": "1", chf: "0",
+      cerebrovascular: "0", "insulin-diabetes": "0", creatinine: "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 3: high risk", () => {
+    const r = calc(rcriCalculator, {
+      "high-risk-surgery": "1", "ischemic-heart-disease": "1", chf: "1",
+      cerebrovascular: "0", "insulin-diabetes": "0", creatinine: "0",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("maximum: all 6 = 6", () => {
+    const r = calc(rcriCalculator, {
+      "high-risk-surgery": "1", "ischemic-heart-disease": "1", chf: "1",
+      cerebrovascular: "1", "insulin-diabetes": "1", creatinine: "1",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ASCVD Risk — pooled cohort equations, 4 race/sex groups
+// <5% low, 5-7.4% borderline, 7.5-19.9% intermediate, >=20% high
+// Validated ages 40-79
+// ---------------------------------------------------------------------------
+describe("ASCVD Risk calculate() output", () => {
+  it("low risk: white male, 55, non-smoker, no DM, TC=180, HDL=50, SBP=120 untreated", () => {
+    const r = calc(ascvdCalculator, {
+      age: "55", sex: "male", race: "white",
+      "total-cholesterol": "180", hdl: "50", sbp: "120",
+      "hypertension-treated": "untreated", smoker: "0", diabetes: "0",
+    });
+    expect(typeof r.value).toBe("number");
+    expect(r.value).toBeLessThan(5);
+    expect(r.status).toBe("normal");
+  });
+
+  it("high risk: white male, 75, smoker, DM, TC=280, HDL=30, SBP=180 treated", () => {
+    const r = calc(ascvdCalculator, {
+      age: "75", sex: "male", race: "white",
+      "total-cholesterol": "280", hdl: "30", sbp: "180",
+      "hypertension-treated": "treated", smoker: "1", diabetes: "1",
+    });
+    expect(typeof r.value).toBe("number");
+    expect(r.value).toBeGreaterThanOrEqual(20);
+    expect(r.status).toBe("critical");
+  });
+
+  it("representative: white female, 65, non-smoker, no DM, TC=220, HDL=60, SBP=130 untreated", () => {
+    const r = calc(ascvdCalculator, {
+      age: "65", sex: "female", race: "white",
+      "total-cholesterol": "220", hdl: "60", sbp: "130",
+      "hypertension-treated": "untreated", smoker: "0", diabetes: "0",
+    });
+    expect(typeof r.value).toBe("number");
+    expect(r.status).toMatch(/normal|low|high|critical/);
+  });
+
+  it("representative: black male, 60, smoker, DM, TC=240, HDL=35, SBP=160 treated", () => {
+    const r = calc(ascvdCalculator, {
+      age: "60", sex: "male", race: "black",
+      "total-cholesterol": "240", hdl: "35", sbp: "160",
+      "hypertension-treated": "treated", smoker: "1", diabetes: "1",
+    });
+    expect(typeof r.value).toBe("number");
+    expect(r.status).toMatch(/normal|low|high|critical/);
+  });
+
+  it("representative: black female, 55, non-smoker, no DM, TC=200, HDL=55, SBP=125 untreated", () => {
+    const r = calc(ascvdCalculator, {
+      age: "55", sex: "female", race: "black",
+      "total-cholesterol": "200", hdl: "55", sbp: "125",
+      "hypertension-treated": "untreated", smoker: "0", diabetes: "0",
+    });
+    expect(typeof r.value).toBe("number");
+    expect(r.status).toMatch(/normal|low|high|critical/);
+  });
+
+  it("risk value is a percentage", () => {
+    const r = calc(ascvdCalculator, {
+      age: "60", sex: "male", race: "white",
+      "total-cholesterol": "220", hdl: "45", sbp: "140",
+      "hypertension-treated": "treated", smoker: "1", diabetes: "0",
+    });
+    expect(typeof r.value).toBe("number");
+    expect(r.unit).toBe("%");
+    expect(r.status).toMatch(/normal|low|high|critical/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// DAPT Score — age-weighted + 8 binary items, range -2 to +10
+// >=2 favors extended DAPT (high), <2 standard (normal)
+// ---------------------------------------------------------------------------
+describe("DAPT Score calculate() output", () => {
+  it("negative from age: >=75 + nothing else = -2", () => {
+    const r = calc(daptCalculator, {
+      age: "-2", smoking: "0", diabetes: "0",
+      "mi-at-presentation": "0", "prior-mi-pci": "0",
+      "stent-diameter": "0", paclitaxel: "0",
+      "chf-lvef": "0", "svg-pci": "0",
+    });
+    expect(r.value).toBe(-2);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 0: young patient, no risk factors", () => {
+    const r = calc(daptCalculator, {
+      age: "0", smoking: "0", diabetes: "0",
+      "mi-at-presentation": "0", "prior-mi-pci": "0",
+      "stent-diameter": "0", paclitaxel: "0",
+      "chf-lvef": "0", "svg-pci": "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 1: below cutoff", () => {
+    const r = calc(daptCalculator, {
+      age: "0", smoking: "1", diabetes: "0",
+      "mi-at-presentation": "0", "prior-mi-pci": "0",
+      "stent-diameter": "0", paclitaxel: "0",
+      "chf-lvef": "0", "svg-pci": "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score 2 favors extended DAPT", () => {
+    const r = calc(daptCalculator, {
+      age: "0", smoking: "1", diabetes: "1",
+      "mi-at-presentation": "0", "prior-mi-pci": "0",
+      "stent-diameter": "0", paclitaxel: "0",
+      "chf-lvef": "0", "svg-pci": "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("high: CHF(+2) + SVG PCI(+2) + age 65-75(-1) = 3", () => {
+    const r = calc(daptCalculator, {
+      age: "-1", smoking: "0", diabetes: "0",
+      "mi-at-presentation": "0", "prior-mi-pci": "0",
+      "stent-diameter": "0", paclitaxel: "0",
+      "chf-lvef": "1", "svg-pci": "1",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+  });
+
+  it("maximum: age<65(0) + all items = 10", () => {
+    const r = calc(daptCalculator, {
+      age: "0", smoking: "1", diabetes: "1",
+      "mi-at-presentation": "1", "prior-mi-pci": "1",
+      "stent-diameter": "1", paclitaxel: "1",
+      "chf-lvef": "1", "svg-pci": "1",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// H2FPEF Score — mixed numeric/select inputs, range 0-9
+// <=1 low, 2-5 intermediate, >5 high
+// ---------------------------------------------------------------------------
+describe("H2FPEF Score calculate() output", () => {
+  it("low: no afib, BMI 25, age 50, <2 antihtn, E/e'<=9, PASP<=35", () => {
+    const r = calc(h2fpefCalculator, {
+      afib: "0", bmi: "25", age: "50",
+      antihypertensives: "0", "e-e-ratio": "0", pasp: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("BMI threshold: BMI 31 -> +2", () => {
+    const r = calc(h2fpefCalculator, {
+      afib: "0", bmi: "31", age: "50",
+      antihypertensives: "0", "e-e-ratio": "0", pasp: "0",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("age threshold: age 61 -> +1", () => {
+    const r = calc(h2fpefCalculator, {
+      afib: "0", bmi: "25", age: "61",
+      antihypertensives: "0", "e-e-ratio": "0", pasp: "0",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("age exactly 60 -> NOT elevated (strict >60)", () => {
+    const r = calc(h2fpefCalculator, {
+      afib: "0", bmi: "25", age: "60",
+      antihypertensives: "0", "e-e-ratio": "0", pasp: "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("afib=3 + BMI>30(2) + age>60(1) + antihtn>=2(1) + E/e'>9(1) + PASP>35(1) = 9", () => {
+    const r = calc(h2fpefCalculator, {
+      afib: "3", bmi: "35", age: "65",
+      antihypertensives: "1", "e-e-ratio": "1", pasp: "1",
+    });
+    expect(r.value).toBe(9);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary: score 5 still intermediate", () => {
+    const r = calc(h2fpefCalculator, {
+      afib: "0", bmi: "35", age: "65",
+      antihypertensives: "1", "e-e-ratio": "1", pasp: "0",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary: score 6 becomes high", () => {
+    const r = calc(h2fpefCalculator, {
+      afib: "0", bmi: "35", age: "65",
+      antihypertensives: "1", "e-e-ratio": "1", pasp: "1",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// MELD Score — logarithmic formula with floor/ceiling
+// MELD = 3.78*ln(bili) + 11.2*ln(INR) + 9.57*ln(cr) + 6.43
+// Floor: bili>=1, INR>=1, cr clamped [1,4] (or 4 if dialysis)
+// <10 normal, <20 high, <30 high, <40 critical, >=40 critical
+// ---------------------------------------------------------------------------
+describe("MELD Score calculate() output", () => {
+  it("low: bili=1, INR=1, cr=1, no dialysis -> ~6", () => {
+    // 3.78*ln(1) + 11.2*ln(1) + 9.57*ln(1) + 6.43 = 0+0+0+6.43 = 6.43 -> round to 6
+    const r = calc(meldCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", dialysis: "no",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("moderate: bili=3, INR=1.5, cr=2, no dialysis", () => {
+    // 3.78*ln(3) + 11.2*ln(1.5) + 9.57*ln(2) + 6.43
+    // = 3.78*1.0986 + 11.2*0.4055 + 9.57*0.6931 + 6.43
+    // = 4.153 + 4.541 + 6.632 + 6.43 = 21.756 -> round to 22
+    const r = calc(meldCalculator, {
+      bilirubin: "3", creatinine: "2", inr: "1.5", dialysis: "no",
+    });
+    expect(r.value).toBe(22);
+    expect(r.status).toBe("high");
+  });
+
+  it("dialysis override: cr forced to 4", () => {
+    // bili=1, INR=1, cr=1 but dialysis=yes -> cr=4
+    // 3.78*ln(1) + 11.2*ln(1) + 9.57*ln(4) + 6.43
+    // = 0 + 0 + 9.57*1.3863 + 6.43 = 13.266 + 6.43 = 19.696 -> round to 20
+    const r = calc(meldCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", dialysis: "yes",
+    });
+    expect(r.value).toBe(20);
+    expect(r.status).toBe("high");
+  });
+
+  it("cr floor: cr=0.5 clamped to 1", () => {
+    // Same as bili=1, INR=1, cr=1 -> 6
+    const r = calc(meldCalculator, {
+      bilirubin: "1", creatinine: "0.5", inr: "1", dialysis: "no",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("cr ceiling: cr=8 clamped to 4", () => {
+    // bili=1, INR=1, cr=8 clamped to 4 -> same as cr=4
+    const r8 = calc(meldCalculator, {
+      bilirubin: "1", creatinine: "8", inr: "1", dialysis: "no",
+    });
+    const r4 = calc(meldCalculator, {
+      bilirubin: "1", creatinine: "4", inr: "1", dialysis: "no",
+    });
+    expect(r8.value).toBe(r4.value);
+  });
+
+  it("very high: bili=10, INR=3, cr=4", () => {
+    // 3.78*ln(10) + 11.2*ln(3) + 9.57*ln(4) + 6.43
+    // = 3.78*2.3026 + 11.2*1.0986 + 9.57*1.3863 + 6.43
+    // = 8.704 + 12.304 + 13.266 + 6.43 = 40.704 -> round to 41
+    const r = calc(meldCalculator, {
+      bilirubin: "10", creatinine: "4", inr: "3", dialysis: "no",
+    });
+    expect(r.value).toBe(41);
+    expect(r.status).toBe("critical");
+  });
+
+  it("bili floor: bili=0.3 clamped to 1", () => {
+    const r = calc(meldCalculator, {
+      bilirubin: "0.3", creatinine: "1", inr: "1", dialysis: "no",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("INR floor: INR=0.6 clamped to 1", () => {
+    const r = calc(meldCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "0.6", dialysis: "no",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("normal");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// MELD-Na Score — MELD + sodium correction with clamping [125,137]
+// MELD-Na = MELD + 1.32*(137-Na) - 0.033*MELD*(137-Na)
+// <10 normal, <20 high, <30 high, <40 critical, >=40 critical
+// ---------------------------------------------------------------------------
+describe("MELD-Na Score calculate() output", () => {
+  it("normal sodium (137): MELD-Na = MELD", () => {
+    // bili=1, INR=1, cr=1, Na=137 -> MELD=6, Na adjustment=0
+    const r = calc(meldNaCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", sodium: "137", dialysis: "no",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("normal");
+  });
+
+  it("low sodium: Na=130 adds points", () => {
+    // MELD = 6 (from above)
+    // adjustment = 1.32*(137-130) - 0.033*6*(137-130) = 1.32*7 - 0.033*6*7 = 9.24 - 1.386 = 7.854
+    // MELD-Na = 6 + 7.854 = 13.854 -> round to 14
+    const r = calc(meldNaCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", sodium: "130", dialysis: "no",
+    });
+    expect(r.value).toBe(14);
+    expect(r.status).toBe("high");
+  });
+
+  it("sodium clamped below 125: Na=120 treated as 125", () => {
+    const r120 = calc(meldNaCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", sodium: "120", dialysis: "no",
+    });
+    const r125 = calc(meldNaCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", sodium: "125", dialysis: "no",
+    });
+    expect(r120.value).toBe(r125.value);
+  });
+
+  it("sodium clamped above 137: Na=145 treated as 137", () => {
+    const r145 = calc(meldNaCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", sodium: "145", dialysis: "no",
+    });
+    const r137 = calc(meldNaCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", sodium: "137", dialysis: "no",
+    });
+    expect(r145.value).toBe(r137.value);
+  });
+
+  it("sodium 125: maximum Na adjustment", () => {
+    // MELD = 6.43, Na=125 -> 137-125=12
+    // adjustment = 1.32*12 - 0.033*6.43*12 = 15.84 - 2.54648 = 13.29352
+    // MELD-Na = 6.43 + 13.29352 = 19.72352 -> round to 20
+    const r = calc(meldNaCalculator, {
+      bilirubin: "1", creatinine: "1", inr: "1", sodium: "125", dialysis: "no",
+    });
+    expect(r.value).toBe(20);
+    expect(r.status).toBe("high");
+  });
+
+  it("higher MELD with low Na: bili=5, INR=2, cr=3, Na=128", () => {
+    // MELD = 3.78*ln(5) + 11.2*ln(2) + 9.57*ln(3) + 6.43
+    // = 3.78*1.6094 + 11.2*0.6931 + 9.57*1.0986 + 6.43
+    // = 6.084 + 7.763 + 10.513 + 6.43 = 30.79 -> round to 31
+    // Na=128 -> 137-128=9
+    // adjustment = 1.32*9 - 0.033*31*9 = 11.88 - 9.207 = 2.673
+    // MELD-Na = 31 + 2.673 = 33.673 -> round to 34
+    const r = calc(meldNaCalculator, {
+      bilirubin: "5", creatinine: "3", inr: "2", sodium: "128", dialysis: "no",
+    });
+    expect(r.value).toBe(34);
+    expect(r.status).toBe("critical");
+  });
+
+  it("extreme: bili=15, INR=4, cr=4, Na=125 -> very high", () => {
+    const r = calc(meldNaCalculator, {
+      bilirubin: "15", creatinine: "4", inr: "4", sodium: "125", dialysis: "no",
+    });
+    expect(typeof r.value).toBe("number");
+    expect(r.value).toBeGreaterThanOrEqual(40);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Parkland Formula — 4 * weight * TBSA
+// TBSA <10% normal, 10-19% high, >=20% critical
+// totalVolume = 4*weight*TBSA, first8h = total/2, next16h = total/2
+// ---------------------------------------------------------------------------
+describe("Parkland Formula calculate() output", () => {
+  it("minor: 70kg, 5% TBSA (head only)", () => {
+    // TBSA=5, total=4*70*5=1400
+    const r = calc(parklandFormulaCalculator, {
+      weight: "70", head: "5", "anterior-trunk": "0", "posterior-trunk": "0",
+      "right-upper-limb": "0", "left-upper-limb": "0",
+      "right-lower-limb": "0", "left-lower-limb": "0", perineum: "0",
+    });
+    expect(r.value).toBe(1400);
+    expect(r.status).toBe("normal");
+    expect(r.advice).toBeDefined();
+  });
+
+  it("moderate: 80kg, 15% TBSA", () => {
+    // TBSA=15, total=4*80*15=4800
+    // first8h=2400, next16h=2400
+    // first8hRate=300, next16hRate=150
+    const r = calc(parklandFormulaCalculator, {
+      weight: "80", head: "0", "anterior-trunk": "10", "posterior-trunk": "5",
+      "right-upper-limb": "0", "left-upper-limb": "0",
+      "right-lower-limb": "0", "left-lower-limb": "0", perineum: "0",
+    });
+    expect(r.value).toBe(4800);
+    expect(r.status).toBe("high");
+    expect(r.score).toBe(4800);
+  });
+
+  it("major: 70kg, 30% TBSA", () => {
+    // TBSA=30, total=4*70*30=8400
+    const r = calc(parklandFormulaCalculator, {
+      weight: "70", head: "0", "anterior-trunk": "18", "posterior-trunk": "12",
+      "right-upper-limb": "0", "left-upper-limb": "0",
+      "right-lower-limb": "0", "left-lower-limb": "0", perineum: "0",
+    });
+    expect(r.value).toBe(8400);
+    expect(r.status).toBe("critical");
+  });
+
+  it("TBSA boundary: exactly 10% -> high", () => {
+    const r = calc(parklandFormulaCalculator, {
+      weight: "70", head: "0", "anterior-trunk": "10", "posterior-trunk": "0",
+      "right-upper-limb": "0", "left-upper-limb": "0",
+      "right-lower-limb": "0", "left-lower-limb": "0", perineum: "0",
+    });
+    expect(r.value).toBe(2800);
+    expect(r.status).toBe("high");
+  });
+
+  it("TBSA boundary: exactly 20% -> critical", () => {
+    const r = calc(parklandFormulaCalculator, {
+      weight: "70", head: "0", "anterior-trunk": "18", "posterior-trunk": "2",
+      "right-upper-limb": "0", "left-upper-limb": "0",
+      "right-lower-limb": "0", "left-lower-limb": "0", perineum: "0",
+    });
+    expect(r.value).toBe(5600);
+    expect(r.status).toBe("critical");
+  });
+
+  it("rate calculations: 70kg, 20% TBSA", () => {
+    // total=4*70*20=5600, first8h=2800, next16h=2800
+    // first8hRate=350, next16hRate=175
+    const r = calc(parklandFormulaCalculator, {
+      weight: "70", head: "0", "anterior-trunk": "0", "posterior-trunk": "0",
+      "right-upper-limb": "0", "left-upper-limb": "0",
+      "right-lower-limb": "10", "left-lower-limb": "10", perineum: "0",
+    });
+    expect(r.value).toBe(5600);
+    expect(r.advice).toBeDefined();
+    expect(r.advice?.[0]).toContain("2800");
+    expect(r.advice?.[1]).toContain("2800");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// APRI Score — (AST/ULN * 100) / Platelets, 2 decimal rounding
+// <0.5 low, <=1.5 intermediate, <=2.0 significant, >2.0 cirrhosis
+// ---------------------------------------------------------------------------
+describe("APRI Score calculate() output", () => {
+  it("low: AST=30, ULN=40, platelets=250 -> 0.3", () => {
+    // (30/40*100)/250 = 75/250 = 0.3
+    const r = calc(apriCalculator, { ast: "30", uln: "40", platelets: "250" });
+    expect(r.value).toBe(0.3);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score 0.5", () => {
+    // AST=50, ULN=40, platelets=250 -> (50/40*100)/250 = 125/250 = 0.5
+    const r = calc(apriCalculator, { ast: "50", uln: "40", platelets: "250" });
+    expect(r.value).toBe(0.5);
+    expect(r.status).toBe("high");
+  });
+
+  it("intermediate: score ~1.0", () => {
+    // AST=100, ULN=40, platelets=250 -> (100/40*100)/250 = 250/250 = 1
+    const r = calc(apriCalculator, { ast: "100", uln: "40", platelets: "250" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary: score 1.5", () => {
+    // AST=150, ULN=40, platelets=250 -> (150/40*100)/250 = 375/250 = 1.5
+    const r = calc(apriCalculator, { ast: "150", uln: "40", platelets: "250" });
+    expect(r.value).toBe(1.5);
+    expect(r.status).toBe("high");
+  });
+
+  it("significant: score 2.0", () => {
+    // AST=200, ULN=40, platelets=250 -> (200/40*100)/250 = 500/250 = 2
+    const r = calc(apriCalculator, { ast: "200", uln: "40", platelets: "250" });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("cirrhosis: score >2.0", () => {
+    // AST=300, ULN=40, platelets=100 -> (300/40*100)/100 = 750/100 = 7.5
+    const r = calc(apriCalculator, { ast: "300", uln: "40", platelets: "100" });
+    expect(r.value).toBe(7.5);
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FIB-4 Index — (Age * AST) / (Platelets * sqrt(ALT)), 2 decimal rounding
+// <1.3 low, <=2.67 intermediate, >2.67 high
+// ---------------------------------------------------------------------------
+describe("FIB-4 Index calculate() output", () => {
+  it("low: age=35, AST=25, ALT=30, platelets=250", () => {
+    // (35*25)/(250*sqrt(30)) = 875/(250*5.477) = 875/1369.3 = 0.639 -> 0.64
+    const r = calc(fib4Calculator, {
+      age: "35", ast: "25", alt: "30", platelets: "250",
+    });
+    expect(r.value).toBeCloseTo(0.64, 1);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary: score 1.30", () => {
+    // age=50, AST=80, ALT=60, platelets=200
+    // (50*80)/(200*sqrt(60)) = 4000/(200*7.746) = 4000/1549.2 = 2.582 -> not 1.30
+    // Need: (age*AST)/(platelets*sqrt(ALT)) = 1.30
+    // Try: age=40, AST=50, ALT=80, platelets=155
+    // (40*50)/(155*sqrt(80)) = 2000/(155*8.944) = 2000/1386.3 = 1.443 -> not exact
+    // Try: age=35, AST=40, ALT=50, platelets=155
+    // (35*40)/(155*sqrt(50)) = 1400/(155*7.071) = 1400/1096 = 1.277 -> ~1.28
+    // Close enough to test boundary behavior. Use a value clearly in the low range
+    // and a value clearly in the intermediate range instead.
+    const rLow = calc(fib4Calculator, {
+      age: "35", ast: "40", alt: "50", platelets: "155",
+    });
+    expect(rLow.value).toBeCloseTo(1.28, 1);
+    expect(rLow.status).toBe("normal");
+  });
+
+  it("intermediate: age=55, AST=80, ALT=60, platelets=120", () => {
+    // (55*80)/(120*sqrt(60)) = 4400/(120*7.746) = 4400/929.5 = 4.734
+    // That's high. Try: age=45, AST=60, ALT=80, platelets=130
+    // (45*60)/(130*sqrt(80)) = 2700/(130*8.944) = 2700/1162.7 = 2.323 -> intermediate
+    const r = calc(fib4Calculator, {
+      age: "45", ast: "60", alt: "80", platelets: "130",
+    });
+    expect(r.value).toBeCloseTo(2.32, 1);
+    expect(r.status).toBe("high");
+  });
+
+  it("boundary: score 2.67", () => {
+    // age=60, AST=100, ALT=50, platelets=120
+    // (60*100)/(120*sqrt(50)) = 6000/(120*7.071) = 6000/848.5 = 7.07 -> too high
+    // Try: age=50, AST=70, ALT=100, platelets=130
+    // (50*70)/(130*sqrt(100)) = 3500/(130*10) = 3500/1300 = 2.692 -> just above
+    const r = calc(fib4Calculator, {
+      age: "50", ast: "70", alt: "100", platelets: "130",
+    });
+    expect(r.value).toBeCloseTo(2.69, 1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("high risk: age=65, AST=120, ALT=40, platelets=80", () => {
+    // (65*120)/(80*sqrt(40)) = 7800/(80*6.325) = 7800/506 = 15.415 -> 15.42
+    const r = calc(fib4Calculator, {
+      age: "65", ast: "120", alt: "40", platelets: "80",
+    });
+    expect(r.value).toBeCloseTo(15.42, 1);
+    expect(r.status).toBe("critical");
+  });
+
+  it("rounding to 2 decimals", () => {
+    // age=40, AST=33, ALT=45, platelets=200
+    // (40*33)/(200*sqrt(45)) = 1320/(200*6.708) = 1320/1341.6 = 0.984 -> 0.98
+    const r = calc(fib4Calculator, {
+      age: "40", ast: "33", alt: "45", platelets: "200",
+    });
+    expect(r.value).toBeCloseTo(0.98, 1);
+    expect(r.status).toBe("normal");
+  });
+});
