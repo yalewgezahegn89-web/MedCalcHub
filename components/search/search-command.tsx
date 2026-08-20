@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useId, useCallback, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, ArrowRight, Calculator } from "lucide-react";
 
@@ -20,9 +20,8 @@ export default function SearchCommand() {
     return searchCalculators(trimmed).slice(0, 8);
   }, [query]);
 
-  useEffect(() => {
-    setActiveIndex(-1);
-  }, [results]);
+  const effectiveActiveIndex =
+    activeIndex >= results.length ? -1 : activeIndex;
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -41,7 +40,7 @@ export default function SearchCommand() {
   );
 
   const hasResults = results.length > 0;
-  const activeDescendantId = activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined;
+  const activeDescendantId = effectiveActiveIndex >= 0 ? `${listboxId}-option-${effectiveActiveIndex}` : undefined;
 
   return (
     <div className="relative w-full max-w-full md:max-w-2xl">
@@ -82,9 +81,9 @@ export default function SearchCommand() {
                 href={`/calculators/${result.document.slug}`}
                 id={`${listboxId}-option-${index}`}
                 role="option"
-                aria-selected={index === activeIndex}
+                aria-selected={index === effectiveActiveIndex}
                 className={`flex items-center justify-between border-b border-slate-100 px-5 py-4 transition last:border-b-0 dark:border-slate-800 ${
-                  index === activeIndex
+                  index === effectiveActiveIndex
                     ? "bg-slate-50 dark:bg-slate-800"
                     : "hover:bg-slate-50 dark:hover:bg-slate-800"
                 }`}

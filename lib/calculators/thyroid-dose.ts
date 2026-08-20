@@ -133,17 +133,17 @@ const wt = weight;
   // The formula always yields the full replacement rate (1.6 µg/kg/day),
   // which is within the normal range of 1.0–2.0 µg/kg/day. The result is
   // the total daily dose in µg (rate × weight).
-  let interpretation =
+  const interpretation =
     "Full replacement dose";
 
-  let status:
+  const status:
     "normal" |
     "low" |
     "high" |
     "critical" =
     "normal";
 
-  let referenceRange =
+  const referenceRange =
     "≥1.6";
 
 

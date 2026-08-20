@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
@@ -21,9 +21,8 @@ export function CalculatorSearch() {
     return searchCalculators(trimmed).slice(0, 8);
   }, [query]);
 
-  useEffect(() => {
-    setActiveIndex(-1);
-  }, [results]);
+  const effectiveActiveIndex =
+    activeIndex >= results.length ? -1 : activeIndex;
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -42,7 +41,7 @@ export function CalculatorSearch() {
   );
 
   const hasResults = query.trim().length > 0;
-  const activeDescendantId = activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined;
+  const activeDescendantId = effectiveActiveIndex >= 0 ? `${listboxId}-option-${effectiveActiveIndex}` : undefined;
 
   return (
     <section className="space-y-5">
@@ -85,9 +84,9 @@ export function CalculatorSearch() {
               href={`/calculators/${result.document.slug}`}
               id={`${listboxId}-option-${index}`}
               role="option"
-              aria-selected={index === activeIndex}
+              aria-selected={index === effectiveActiveIndex}
               className={`block rounded-xl border p-4 transition ${
-                index === activeIndex
+                index === effectiveActiveIndex
                   ? "bg-muted border-primary/30"
                   : "hover:bg-muted"
               }`}

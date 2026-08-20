@@ -188,8 +188,8 @@ export const sofaScoreCalculator: CalculatorDefinition = {
     const gcs = gcsRaw;
     const creatinine = creatinineRaw;
 
-    let respScore = Number(resp);
-    let cvScore = Number(cv);
+    const respScore = Number(resp);
+    const cvScore = Number(cv);
 
     let coagulationScore: number;
     if (platelets >= 150) coagulationScore = 0;

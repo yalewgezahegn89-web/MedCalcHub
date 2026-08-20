@@ -33,6 +33,14 @@ export function SearchDialog({
   const [activeIndex, setActiveIndex] = useState(-1);
   const listboxId = useId();
 
+  const effectiveActiveIndex =
+    activeIndex >= results.length ? -1 : activeIndex;
+
+  const resetState = useCallback(() => {
+    setQuery("");
+    setActiveIndex(-1);
+  }, [setQuery]);
+
   // Focus input when dialog opens
   useEffect(() => {
     if (open) {
@@ -42,14 +50,6 @@ export function SearchDialog({
       return () => clearTimeout(timer);
     }
   }, [open]);
-
-  // Reset query and active index when dialog closes
-  useEffect(() => {
-    if (!open) {
-      setQuery("");
-      setActiveIndex(-1);
-    }
-  }, [open, setQuery]);
 
   // Lock body scroll when dialog is open
   useEffect(() => {
@@ -62,16 +62,12 @@ export function SearchDialog({
     };
   }, [open]);
 
-  // Reset active index when results change
-  useEffect(() => {
-    setActiveIndex(-1);
-  }, [results]);
-
   // Arrow key navigation + Focus trap + Escape handling
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
+        resetState();
         onClose();
         return;
       }
@@ -130,7 +126,7 @@ export function SearchDialog({
         }
       }
     },
-    [onClose, results, activeIndex],
+    [onClose, results, activeIndex, resetState],
   );
 
   useEffect(() => {
@@ -148,16 +144,17 @@ export function SearchDialog({
         dialogRef.current &&
         !dialogRef.current.contains(e.target as Node)
       ) {
+        resetState();
         onClose();
       }
     },
-    [onClose],
+    [onClose, resetState],
   );
 
   if (!open) return null;
 
   const hasResults = results.length > 0;
-  const activeDescendantId = activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined;
+  const activeDescendantId = effectiveActiveIndex >= 0 ? `${listboxId}-option-${effectiveActiveIndex}` : undefined;
 
   return (
     <div
@@ -188,7 +185,7 @@ export function SearchDialog({
         <SearchResults
           results={results}
           onResultClick={onClose}
-          activeIndex={activeIndex}
+          activeIndex={effectiveActiveIndex}
           listboxId={listboxId}
         />
       </div>
