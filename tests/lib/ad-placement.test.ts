@@ -32,14 +32,15 @@ function readFile(relPath: string): string {
 describe("AdSlot placement gating", () => {
   it("AdSlot returns null when adsConfig.adsenseReady is false", () => {
     const src = readFile("../../components/ads/ad-slot.tsx");
-    expect(src).toContain("if (!adsConfig.adsenseReady || !consent)");
+    expect(src).toContain("if (!adsConfig.adsenseReady || !consent || !isValidSlotId(slotId))");
     expect(src).toContain("return null;");
   });
 
-  it("AdSlot gates on both adsenseReady and consent", () => {
+  it("AdSlot gates on adsenseReady, consent, and valid slot ID", () => {
     const src = readFile("../../components/ads/ad-slot.tsx");
     expect(src).toContain("adsConfig.adsenseReady");
     expect(src).toContain("consent");
+    expect(src).toContain("isValidSlotId(slotId)");
   });
 
   it("AdSlot accepts slotId prop", () => {
