@@ -14,6 +14,10 @@ const securityHeaders = [
     value: "strict-origin-when-cross-origin",
   },
   {
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000",
+  },
+  {
     key: "Permissions-Policy",
     value:
       "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
@@ -48,6 +52,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   headers: async () => [
     {
       source: "/(.*)",

@@ -9,6 +9,7 @@ import { CookieBanner } from "@/components/consent/cookie-banner";
 import Navbar from "@/components/navbar";
 import { SearchProvider } from "@/components/search/search-provider";
 import { NotificationProvider } from "@/components/ui/notification/notification-provider";
+import { SITE_URL } from "@/lib/site-url";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff2",
@@ -23,7 +24,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://medcalchub.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "MedCalcHub",
     template: "%s | MedCalcHub",

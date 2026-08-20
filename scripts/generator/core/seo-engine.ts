@@ -29,6 +29,7 @@ import type {
 import type {
   CalculatorSuggestion,
 } from "./calculator-intelligence";
+import { SITE_URL } from "@/lib/site-url";
 
 // ─────────────────────────────────────────────────
 // Interfaces
@@ -68,7 +69,7 @@ export interface SeoMap {
 // Constants
 // ─────────────────────────────────────────────────
 
-const BASE_URL = "https://medcalchub.com";
+const BASE_URL = SITE_URL;
 const DEFAULT_IMAGE = `${BASE_URL}/og/default.png`;
 const DESCRIPTION_MAX = 160;
 
