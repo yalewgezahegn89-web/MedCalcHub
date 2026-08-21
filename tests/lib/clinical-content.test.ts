@@ -3068,3 +3068,164 @@ describe("Clinical Content — Sprint 1.9 Batch 13B P2 Editorial Remediation", (
     }
   });
 });
+
+const E1_EVIDENCE_SLUGS = [
+  "sofa-score",
+  "wells-pe",
+  "wells-dvt",
+  "heart-score",
+  "timi",
+  "grace",
+  "cha2ds2-vasc",
+  "has-bled",
+  "meld-score",
+  "meld-na-score",
+  "perc-rule",
+  "corrected-qt",
+  "sirs-criteria",
+  "curb-65",
+  "gcs",
+  "news2",
+  "qsofa",
+  "map",
+  "rcri",
+  "glasgow-blatchford-score",
+] as const;
+
+describe("Clinical Content — Evidence Batch E1 (Structured Evidence Metadata)", () => {
+  it("every E1 calculator has clinical content", () => {
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("every E1 calculator has a non-undefined evidence object", () => {
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug}.evidence`).toBeDefined();
+    }
+  });
+
+  it("every E1 evidence has a non-empty source string", () => {
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("every E1 evidence has a non-empty reference string", () => {
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("every E1 evidence has reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBe(
+        "MedCalcHub Clinical Team",
+      );
+    }
+  });
+
+  it("every E1 evidence has a non-empty references array with at least one citation", () => {
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThan(0);
+      for (const ref of evidence.references!) {
+        expect(ref.length, `${slug} evidence reference string`).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every E1 slug corresponds to a registered calculator", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E1 slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("no duplicate slugs in E1_EVIDENCE_SLUGS", () => {
+    expect(new Set(E1_EVIDENCE_SLUGS).size).toBe(E1_EVIDENCE_SLUGS.length);
+  });
+
+  it("no E1 evidence text contains placeholder patterns", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E1_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("E1 evidence count matches expected 20 calculators", () => {
+    expect(E1_EVIDENCE_SLUGS.length).toBe(20);
+    let count = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (content.evidence !== undefined) count++;
+    }
+    expect(count).toBeGreaterThanOrEqual(20);
+  });
+
+  it("E1 accounts for 20 additional evidence blocks (total >= 48)", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(48);
+  });
+});

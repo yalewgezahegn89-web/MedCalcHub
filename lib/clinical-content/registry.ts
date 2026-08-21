@@ -196,6 +196,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "QT prolongation is a risk factor for Torsades de Pointes, a potentially fatal ventricular arrhythmia. Identifying prolonged QTc allows clinicians to address modifiable risk factors such as electrolyte abnormalities and QT-prolonging medications.",
+    evidence: {
+      source: "Original Bazett Description / AHA ECG Guidelines",
+      reference:
+        "Bazett HC. An analysis of the time-relations of electrocardiograms. Heart. 1920;7:353-370.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Bazett HC. Heart. 1920;7:353-370.",
+        "AHA ECG Guidelines for the Interpretation of the Resting 12-Lead ECG.",
+      ],
+    },
     references: [
       {
         citation:
@@ -476,6 +488,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "NEWS2 provides a standardized, evidence-based approach to detecting clinical deterioration. It has been shown to improve patient outcomes by enabling early intervention before critical deterioration occurs.",
+    evidence: {
+      source: "Royal College of Physicians",
+      reference:
+        "Royal College of Physicians. National Early Warning Score (NEWS) 2: Standardising the assessment of acute-illness severity in the NHS. RCP, 2017.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Royal College of Physicians. NEWS2. RCP, 2017.",
+      ],
+    },
     references: [
       {
         citation:
@@ -664,6 +687,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "CURB-65 is a validated, widely used tool that predicts 30-day mortality in community-acquired pneumonia and helps avoid both unnecessary admission of low-risk patients and unsafe discharge of high-risk patients.",
+    evidence: {
+      source: "CURB-65 Derivation/Validation",
+      reference:
+        "Lim WS, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003;58(5):377-382.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Lim WS, et al. Thorax. 2003;58(5):377-382.",
+      ],
+    },
     references: [
       {
         citation:
@@ -741,6 +775,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "qSOFA provides a rapid bedside screen that, in the setting of suspected infection, flags patients at elevated risk of poor outcomes and enables earlier recognition and treatment of sepsis.",
+    evidence: {
+      source: "Sepsis-3 / qSOFA Derivation",
+      reference:
+        "Seymour CW, et al. Assessment of Clinical Criteria for Sepsis: For the Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):762-774.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Seymour CW, et al. JAMA. 2016;315(8):762-774.",
+      ],
+    },
     references: [
       {
         citation:
@@ -819,6 +864,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "The Glasgow Coma Scale is one of the most widely used clinical scales; it standardizes communication about the level of consciousness and correlates with outcome after traumatic brain injury.",
+    evidence: {
+      source: "Original GCS Description",
+      reference:
+        "Teasdale G, Jennett B. Assessment of coma and impaired consciousness: a practical scale. Lancet. 1974;304(7872):81-84.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Teasdale G, Jennett B. Lancet. 1974;304(7872):81-84.",
+      ],
+    },
     references: [
       {
         citation:
@@ -950,6 +1006,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "MAP reflects the driving pressure for organ perfusion more closely than systolic or diastolic pressure alone and is a central parameter in resuscitation and vasopressor management.",
+    evidence: {
+      source: "Original MAP Formula / SSC Guidelines",
+      reference:
+        "Meaney E, Alva F, Moguel R, et al. Formula and nomogram for the sphygmomanometric calculation of the mean arterial pressure. Heart. 2000;84(1):64.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Meaney E, et al. Heart. 2000;84(1):64.",
+        "Evans L, et al. Crit Care Med. 2021;49(11):e1063-e1143.",
+      ],
+    },
     references: [
       {
         citation:
@@ -3155,6 +3223,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "The PERC rule safely reduces unnecessary D-dimer testing and CT pulmonary angiography in low-risk patients, lowering cost and radiation exposure without missing clinically significant PE.",
+    evidence: {
+      source: "PERC Rule Derivation / Validation",
+      reference:
+        "Kline JA, et al. Clinical criteria to prevent unnecessary diagnostic testing in emergency department patients with suspected pulmonary embolism. J Thromb Haemost. 2004;2(8):1247-1255.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Kline JA, et al. J Thromb Haemost. 2004;2(8):1247-1255.",
+        "Kline JA, et al. Ann Emerg Med. 2004;44(5):490-502.",
+      ],
+    },
     references: [
       {
         citation:
@@ -3238,6 +3318,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "The Wells criteria enable risk-stratified testing for PE, reducing unnecessary CT angiography while maintaining diagnostic safety when paired with a high-sensitivity D-dimer.",
+    evidence: {
+      source: "Wells PE Criteria",
+      reference:
+        "Wells PS, et al. Excluding pulmonary embolism at the bedside without diagnostic imaging: management of patients with suspected pulmonary embolism presenting to the emergency department by using a simple clinical model and D-dimer. Ann Intern Med. 2001;135(2):98-107.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Wells PS, et al. Ann Intern Med. 2001;135(2):98-107.",
+        "Wells PS, et al. Thromb Haemost. 2000;83(3):416-420.",
+      ],
+    },
     references: [
       {
         citation:
@@ -3324,6 +3416,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "Wells DVT criteria allow clinicians to stratify pre-test probability, safely using D-dimer to avoid unnecessary ultrasound while not missing clinically significant thrombosis.",
+    evidence: {
+      source: "Wells DVT Criteria",
+      reference:
+        "Wells PS, et al. Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. N Engl J Med. 2003;349(13):1227-1235.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Wells PS, et al. N Engl J Med. 2003;349(13):1227-1235.",
+        "Wells PS, et al. Lancet. 1995;345(8960):1326-1330.",
+      ],
+    },
     references: [
       {
         citation:
@@ -3385,6 +3489,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "The HEART score is one of the most widely validated tools for chest pain risk stratification, helping emergency clinicians avoid both missed MACE and unnecessary admissions.",
+    evidence: {
+      source: "HEART Score Validation",
+      reference:
+        "Backus BE, et al. A prospective validation of the HEART score for chest pain patients at the emergency department. Int J Cardiol. 2013;168(3):2153-2158.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Six AJ, et al. Neth Heart J. 2008;16(6):191-196.",
+        "Backus BE, et al. Int J Cardiol. 2013;168(3):2153-2158.",
+      ],
+    },
     references: [
       {
         citation:
@@ -3467,6 +3583,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "SOFA provides a validated, reproducible measure of organ failure in critical illness and is central to the Sepsis-3 consensus definition of sepsis.",
+    evidence: {
+      source: "Sepsis-3 / Original SOFA Description",
+      reference:
+        "Vincent JL, et al. The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure. Intensive Care Med. 1996;22(7):707-710.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Vincent JL, et al. Intensive Care Med. 1996;22(7):707-710.",
+        "Singer M, et al. JAMA. 2016;315(8):801-810.",
+      ],
+    },
     references: [
       {
         citation:
@@ -3548,6 +3676,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "SIRS criteria have historically underpinned the early recognition and management of sepsis and remain a useful bedside screening framework.",
+    evidence: {
+      source: "SCCM/ESICM Consensus Definitions",
+      reference:
+        "Bone RC, et al. Definitions for sepsis and organ failure and guidelines for the use of innovative therapies in sepsis. Chest. 1992;101(6):1644-1655.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Bone RC, et al. Chest. 1992;101(6):1644-1655.",
+        "Singer M, et al. JAMA. 2016;315(8):801-810.",
+      ],
+    },
     references: [
       {
         citation:
@@ -3925,6 +4065,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "The TIMI risk score is a widely used, validated bedside tool that rapidly identifies high-risk UA/NSTEMI patients who benefit most from early invasive management.",
+    evidence: {
+      source: "TIMI Study Group",
+      reference:
+        "Antman EM, et al. The TIMI risk score for unstable angina/non-ST elevation MI: A method for prognostication and therapeutic decision making. JAMA. 2000;284(7):835-842.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Antman EM, et al. JAMA. 2000;284(7):835-842.",
+      ],
+    },
     references: [
       {
         citation:
@@ -4003,6 +4154,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "GRACE is the most extensively validated ACS risk model, using continuous physiological variables to estimate in-hospital mortality more accurately than point-score-only tools.",
+    evidence: {
+      source: "GRACE Registry",
+      reference:
+        "Granger CB, et al. Predictors of hospital mortality in the global registry of acute coronary events. Arch Intern Med. 2003;163(19):2345-2353.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Granger CB, et al. Arch Intern Med. 2003;163(19):2345-2353.",
+      ],
+    },
     references: [
       {
         citation:
@@ -4080,6 +4242,18 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "CHA₂DS₂-VASc refined the older CHADS₂ score by better differentiating truly low-risk patients, reducing unnecessary anticoagulation while capturing more risk factors.",
+    evidence: {
+      source: "Euro Heart Survey / AHA/ACC/HRS Guideline",
+      reference:
+        "Lip GYH, et al. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation using a novel risk factor-based approach: the Euro Heart Survey on atrial fibrillation. Chest. 2010;137(2):263-272.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Lip GYH, et al. Chest. 2010;137(2):263-272.",
+        "January CT, et al. Circulation. 2019;140(2):e125-e151.",
+      ],
+    },
     references: [
       {
         citation:
@@ -4164,6 +4338,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "HAS-BLED is the recommended bleeding risk tool in AF guidelines; its clinical value lies in prompting correction of modifiable risk factors rather than denying anticoagulation.",
+    evidence: {
+      source: "Euro Heart Survey",
+      reference:
+        "Pisters R, et al. A novel user-friendly score (HAS-BLED) to assess 1-year risk of major bleeding in patients with atrial fibrillation: the Euro Heart Survey. Chest. 2010;138(5):1093-1100.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Pisters R, et al. Chest. 2010;138(5):1093-1100.",
+      ],
+    },
     references: [
       {
         citation:
@@ -4240,6 +4425,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "RCRI remains the most widely validated and guideline-endorsed index for perioperative cardiac risk in non-cardiac surgery, framing the preoperative risk assessment.",
+    evidence: {
+      source: "Original RCRI Description",
+      reference:
+        "Lee TH, et al. Derivation and prospective validation of a simple index for prediction of cardiac risk of major noncardiac surgery. Circulation. 1999;100(10):1043-1049.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Lee TH, et al. Circulation. 1999;100(10):1043-1049.",
+      ],
+    },
     references: [
       {
         citation:
@@ -8976,6 +9172,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "MELD is a well-validated mortality-risk score that estimates 3-month survival in chronic liver disease and historically underpinned liver transplant prioritization in the United States. Current U.S. liver allocation uses the MELD 3.0 model (adopted July 2023), which incorporates albumin, sex, and updated coefficients rather than the classic MELD formula.",
+    evidence: {
+      source: "Original MELD Description / UNOS",
+      reference:
+        "Kamath PS, et al. A model to predict survival in patients with end-stage liver disease. Hepatology. 2001.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Kamath PS, et al. Hepatology. 2001.",
+      ],
+    },
     references: [
       {
         citation: "Kamath PS, et al. A model to predict survival in patients with end-stage liver disease. Hepatology. 2001.",
@@ -9033,6 +9240,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "MELD-Na was adopted by UNOS for liver allocation because adding serum sodium improves mortality prediction compared with MELD alone, particularly in patients with hyponatremia. U.S. liver allocation transitioned to the MELD 3.0 model in July 2023.",
+    evidence: {
+      source: "Original MELD-Na Description / UNOS",
+      reference:
+        "Kim WR, et al. Hyponatremia and mortality among patients on the liver-transplant waiting list. N Engl J Med. 2008;359:1018-1026.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Kim WR, et al. N Engl J Med. 2008;359:1018-1026.",
+      ],
+    },
     references: [
       {
         citation: "Kim WR, et al. Hyponatremia and mortality among patients on the liver-transplant waiting list. N Engl J Med. 2008;359:1018-1026.",
@@ -9258,6 +9476,17 @@ export const clinicalContentRegistry: Record<
     },
     clinicalSignificance:
       "A Glasgow-Blatchford score of 0 is supported by NICE guidance as identifying patients safe for outpatient management, helping avoid unnecessary admissions in low-risk upper GI bleeding.",
+    evidence: {
+      source: "Original GBS Description / NICE Guideline",
+      reference:
+        "Blatchford O, et al. A risk score to predict need for treatment for upper-gastrointestinal haemorrhage. Lancet. 2000;356:1318-1321.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Blatchford O, et al. Lancet. 2000;356:1318-1321.",
+      ],
+    },
     references: [
       {
         citation: "Blatchford O, et al. A risk score to predict need for treatment for upper-gastrointestinal haemorrhage. Lancet. 2000;356:1318-1321.",
