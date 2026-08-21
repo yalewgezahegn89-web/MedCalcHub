@@ -52,12 +52,16 @@ describe("favorites", () => {
 
   describe("getFavorites", () => {
     it("returns [] during SSR (no window)", async () => {
+      const savedWindow = globalThis.window;
       vi.unstubAllGlobals();
-      // Make sure window is undefined
       delete (globalThis as Record<string, unknown>).window;
 
-      const { getFavorites } = await load();
-      expect(getFavorites()).toEqual([]);
+      try {
+        const { getFavorites } = await load();
+        expect(getFavorites()).toEqual([]);
+      } finally {
+        globalThis.window = savedWindow;
+      }
     });
 
     it("returns [] when localStorage is empty", async () => {

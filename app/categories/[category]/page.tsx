@@ -203,19 +203,9 @@ export default async function CategoryPage({
         <div className="grid gap-4 md:grid-cols-2">
 
           {calculators.slice(0, 4).map((calculator) => (
-            <div
+            <Link
               key={calculator.id}
-              role="link"
-              tabIndex={0}
-              onClick={() => {
-                window.location.href = `/calculators/${calculator.slug}`;
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  window.location.href = `/calculators/${calculator.slug}`;
-                }
-              }}
+              href={`/calculators/${calculator.slug}`}
               className="cursor-pointer rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
             >
               <h2 className="text-lg font-semibold">
@@ -227,15 +217,13 @@ export default async function CategoryPage({
               </p>
 
               {calculator.specialty && (
-                <a
-                  href={`/specialties/${taxonomyToSlug(calculator.specialty)}`}
-                  className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-                  onClick={(e) => e.stopPropagation()}
+                <span
+                  className="mt-4 inline-block text-sm text-blue-600"
                 >
                   {calculator.specialty}
-                </a>
+                </span>
               )}
-            </div>
+            </Link>
           ))}
 
           {calculators.length >= 6 && (
@@ -247,19 +235,9 @@ export default async function CategoryPage({
           )}
 
           {calculators.slice(4).map((calculator) => (
-            <div
+            <Link
               key={calculator.id}
-              role="link"
-              tabIndex={0}
-              onClick={() => {
-                window.location.href = `/calculators/${calculator.slug}`;
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  window.location.href = `/calculators/${calculator.slug}`;
-                }
-              }}
+              href={`/calculators/${calculator.slug}`}
               className="cursor-pointer rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
             >
               <h2 className="text-lg font-semibold">
@@ -271,15 +249,13 @@ export default async function CategoryPage({
               </p>
 
               {calculator.specialty && (
-                <a
-                  href={`/specialties/${taxonomyToSlug(calculator.specialty)}`}
-                  className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-                  onClick={(e) => e.stopPropagation()}
+                <span
+                  className="mt-4 inline-block text-sm text-blue-600"
                 >
                   {calculator.specialty}
-                </a>
+                </span>
               )}
-            </div>
+            </Link>
           ))}
 
         </div>

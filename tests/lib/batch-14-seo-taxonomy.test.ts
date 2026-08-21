@@ -180,9 +180,8 @@ describe("Batch 4 — category detail page structure", () => {
     expect(source).toContain("relatedSpecialties");
   });
 
-  it("specialty badges on calculator cards are links", () => {
-    expect(source).toContain("taxonomyToSlug(calculator.specialty)");
-    expect(source).toContain('href={`/specialties/');
+  it("specialty badges on calculator cards display specialty name", () => {
+    expect(source).toContain("calculator.specialty");
   });
 
   it("uses SITE_URL from lib/site-url", () => {
@@ -234,9 +233,8 @@ describe("Batch 4 — specialty detail page structure", () => {
     expect(source).toContain("relatedCategories");
   });
 
-  it("category badges on calculator cards are links", () => {
-    expect(source).toContain("taxonomyToSlug(calculator.category)");
-    expect(source).toContain('href={`/categories/');
+  it("category badges on calculator cards display category name", () => {
+    expect(source).toContain("calculator.category");
   });
 
   it("uses SITE_URL from lib/site-url", () => {

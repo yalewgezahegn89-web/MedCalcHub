@@ -57,10 +57,16 @@ describe("history", () => {
 
   describe("getCalculationHistory", () => {
     it("returns [] during SSR", async () => {
+      const savedWindow = globalThis.window;
       vi.unstubAllGlobals();
       delete (globalThis as Record<string, unknown>).window;
-      const { getCalculationHistory } = await load();
-      expect(getCalculationHistory()).toEqual([]);
+
+      try {
+        const { getCalculationHistory } = await load();
+        expect(getCalculationHistory()).toEqual([]);
+      } finally {
+        globalThis.window = savedWindow;
+      }
     });
 
     it("returns [] when storage is empty", async () => {
@@ -126,6 +132,24 @@ describe("history", () => {
       expect(history).toHaveLength(1);
       // The second save should be the one kept (most recent)
       expect(history[0].timestamp).toBe(2);
+    });
+
+    it("preserves entries with same calculator but different results", async () => {
+      const { saveCalculation, getCalculationHistory } = await load();
+      saveCalculation(makeItem({ calculatorId: "bmi", result: "24.9", timestamp: 1 }));
+      saveCalculation(makeItem({ calculatorId: "bmi", result: "28.3", timestamp: 2 }));
+      const history = getCalculationHistory();
+      expect(history).toHaveLength(2);
+      expect(history[0].result).toBe("28.3");
+      expect(history[1].result).toBe("24.9");
+    });
+
+    it("preserves entries with same result but different calculators", async () => {
+      const { saveCalculation, getCalculationHistory } = await load();
+      saveCalculation(makeItem({ calculatorId: "bmi", result: "24.9", timestamp: 1 }));
+      saveCalculation(makeItem({ calculatorId: "bsa", result: "24.9", timestamp: 2 }));
+      const history = getCalculationHistory();
+      expect(history).toHaveLength(2);
     });
 
     it("multiple saves preserve expected order", async () => {

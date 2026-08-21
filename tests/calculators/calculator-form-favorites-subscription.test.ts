@@ -96,6 +96,7 @@ describe(
 
     afterEach(() => {
       vi.restoreAllMocks();
+      vi.unstubAllGlobals();
     });
 
     it(
@@ -143,20 +144,19 @@ describe(
     it(
       "returns a no-op cleanup when window is undefined (SSR)",
       () => {
-        // Simulate SSR: delete window
-        const saved = globalThis.window;
-        // @ts-expect-error -- intentionally simulating SSR
-        delete globalThis.window;
+        const savedWindow = globalThis.window;
+        vi.unstubAllGlobals();
+        delete (globalThis as Record<string, unknown>).window;
 
-        const cb = vi.fn();
-        const unsub = subscribeFavorites(cb);
+        try {
+          const cb = vi.fn();
+          const unsub = subscribeFavorites(cb);
 
-        // Restore window before assertions
-        globalThis.window = saved;
-
-        expect(typeof unsub).toBe("function");
-        // Cleanup should not throw
-        expect(() => unsub()).not.toThrow();
+          expect(typeof unsub).toBe("function");
+          expect(() => unsub()).not.toThrow();
+        } finally {
+          globalThis.window = savedWindow;
+        }
       },
     );
 

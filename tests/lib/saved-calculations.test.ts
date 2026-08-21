@@ -61,10 +61,16 @@ describe("saved-calculations", () => {
 
   describe("getSavedCalculations", () => {
     it("returns [] during SSR", async () => {
+      const savedWindow = globalThis.window;
       vi.unstubAllGlobals();
       delete (globalThis as Record<string, unknown>).window;
-      const { getSavedCalculations } = await load();
-      expect(getSavedCalculations()).toEqual([]);
+
+      try {
+        const { getSavedCalculations } = await load();
+        expect(getSavedCalculations()).toEqual([]);
+      } finally {
+        globalThis.window = savedWindow;
+      }
     });
 
     it("returns [] when storage is empty", async () => {
@@ -378,10 +384,16 @@ describe("saved-calculations", () => {
     });
 
     it("returns undefined during SSR", async () => {
+      const savedWindow = globalThis.window;
       vi.unstubAllGlobals();
       delete (globalThis as Record<string, unknown>).window;
-      const { getSavedCalculation } = await load();
-      expect(getSavedCalculation("any-id")).toBeUndefined();
+
+      try {
+        const { getSavedCalculation } = await load();
+        expect(getSavedCalculation("any-id")).toBeUndefined();
+      } finally {
+        globalThis.window = savedWindow;
+      }
     });
 
     it("mismatched calculator ID is detectable via saved entry", async () => {

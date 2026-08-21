@@ -148,11 +148,18 @@ describe("workspace", () => {
 
   it("resolves calculators without a DOM (SSR-safe, mobile-safe)", () => {
     const { resolveWorkspaceCalculators } = workspaceModule;
+    const savedWindow = globalThis.window;
+    const savedLS = globalThis.localStorage;
     vi.unstubAllGlobals();
     delete (globalThis as Record<string, unknown>).window;
     delete (globalThis as Record<string, unknown>).localStorage;
 
-    const saved = resolveWorkspaceCalculators(["bmi", "gcs"]);
-    expect(saved.map((calc) => calc.id)).toEqual(["bmi", "gcs"]);
+    try {
+      const saved = resolveWorkspaceCalculators(["bmi", "gcs"]);
+      expect(saved.map((calc) => calc.id)).toEqual(["bmi", "gcs"]);
+    } finally {
+      globalThis.window = savedWindow;
+      globalThis.localStorage = savedLS;
+    }
   });
 });

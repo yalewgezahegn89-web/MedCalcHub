@@ -21,12 +21,15 @@ vi.mock("jspdf", () => ({
 
 // Import the module once — avoids per-test dynamic import overhead
 import { generateCalculatorReport } from "../../lib/pdf/generate-report";
+import { jsPDF } from "jspdf";
 
 // ── tests ───────────────────────────────────────────────────
 
 describe("generateCalculatorReport", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
+    // Re-establish the jsPDF constructor mock (resetAllMocks clears implementations)
+    vi.mocked(jsPDF).mockImplementation(function () { return mockDoc; } as unknown as () => never);
     // Default: splitTextToSize returns one line (short text)
     mockDoc.splitTextToSize.mockImplementation(
       (text: string, _w: number) => [text],
@@ -293,5 +296,155 @@ describe("generateCalculatorReport", () => {
 
     expect(mockDoc.addPage).not.toHaveBeenCalled();
     expect(mockDoc.save).toHaveBeenCalledOnce();
+  });
+
+  // ──────────────────────────────────────────────────────────
+  // 13. Long reference text wraps within page width
+  // ──────────────────────────────────────────────────────────
+
+  it("long reference text is wrapped via splitTextToSize", () => {
+    const longRef =
+      "This is a very long reference that should be wrapped within the page width and not overflow the margins of the PDF document";
+
+    generateCalculatorReport({
+      calculator: "BMI",
+      result: "24.9",
+      references: [longRef],
+    });
+
+    expect(mockDoc.splitTextToSize).toHaveBeenCalledWith(
+      expect.stringContaining(longRef),
+      165,
+    );
+    expect(mockDoc.save).toHaveBeenCalledOnce();
+  });
+
+  // ──────────────────────────────────────────────────────────
+  // 14. Filename with illegal characters is sanitized
+  // ──────────────────────────────────────────────────────────
+
+  it("sanitizes illegal filesystem characters from filename", () => {
+    generateCalculatorReport({
+      calculator: 'Test\\/:*?"<>|Calculator',
+      result: "10",
+    });
+    expect(mockDoc.save).toHaveBeenCalledWith(
+      "testcalculator-report.pdf",
+    );
+  });
+
+  it("sanitizes control characters from filename", () => {
+    generateCalculatorReport({
+      calculator: "Test\x00\x1fCalculator",
+      result: "10",
+    });
+    expect(mockDoc.save).toHaveBeenCalledWith(
+      "testcalculator-report.pdf",
+    );
+  });
+
+  // ──────────────────────────────────────────────────────────
+  // 15. Empty calculator name produces fallback filename
+  // ──────────────────────────────────────────────────────────
+
+  it("uses fallback filename for empty calculator name", () => {
+    generateCalculatorReport({
+      calculator: "",
+      result: "10",
+    });
+    expect(mockDoc.save).toHaveBeenCalledWith("report.pdf");
+  });
+
+  it("uses fallback filename for whitespace-only calculator name", () => {
+    generateCalculatorReport({
+      calculator: "   ",
+      result: "10",
+    });
+    expect(mockDoc.save).toHaveBeenCalledWith("report.pdf");
+  });
+
+  // ──────────────────────────────────────────────────────────
+  // 16. Page boundary behavior with many sections
+  // ──────────────────────────────────────────────────────────
+
+  it("handles content spanning multiple pages", () => {
+    mockDoc.splitTextToSize.mockImplementation(
+      (text: string, _w: number) => {
+        if (text.length <= 20) return [text];
+        const lines: string[] = [];
+        for (let i = 0; i < text.length; i += 20) {
+          lines.push(text.slice(i, i + 20));
+        }
+        return lines;
+      },
+    );
+
+    generateCalculatorReport({
+      calculator: "Multi-Page Test",
+      result: "42",
+      interpretation: "A".repeat(200),
+      formula: "B".repeat(200),
+      normalRange: "C".repeat(200),
+      notes: "D".repeat(200),
+      references: Array.from(
+        { length: 20 },
+        (_, i) => `Reference number ${i + 1} with some extra text`,
+      ),
+    });
+
+    expect(mockDoc.addPage).toHaveBeenCalled();
+    expect(mockDoc.save).toHaveBeenCalledOnce();
+  });
+
+  // ──────────────────────────────────────────────────────────
+  // 17. Generation failure returns false
+  // ──────────────────────────────────────────────────────────
+
+  it("returns false when jsPDF constructor throws", () => {
+    const mockConstructor = vi.mocked(jsPDF);
+    const original = mockConstructor.getMockImplementation();
+    mockConstructor.mockImplementation(() => {
+      throw new Error("jsPDF init failed");
+    });
+
+    const result = generateCalculatorReport({
+      calculator: "BMI",
+      result: "24.9",
+    });
+
+    expect(result).toBe(false);
+
+    if (original) {
+      mockConstructor.mockImplementation(original);
+    } else {
+      mockConstructor.mockImplementation(function () {
+        return mockDoc;
+      });
+    }
+  });
+
+  it("returns false when save throws", () => {
+    mockDoc.save.mockImplementation(() => {
+      throw new Error("save failed");
+    });
+
+    const result = generateCalculatorReport({
+      calculator: "BMI",
+      result: "24.9",
+    });
+
+    expect(result).toBe(false);
+  });
+
+  // ──────────────────────────────────────────────────────────
+  // 18. generateCalculatorReport returns true on success
+  // ──────────────────────────────────────────────────────────
+
+  it("returns true on successful generation", () => {
+    const result = generateCalculatorReport({
+      calculator: "BMI",
+      result: "24.9",
+    });
+    expect(result).toBe(true);
   });
 });

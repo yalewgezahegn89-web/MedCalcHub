@@ -217,20 +217,10 @@ export default async function SpecialtyPage({
         <div className="grid gap-6 md:grid-cols-2">
 
           {calculators.slice(0, 4).map((calculator) => (
-            <div
+            <Link
               key={calculator.id}
-              role="link"
-              tabIndex={0}
-              onClick={() => {
-                window.location.href = `/calculators/${calculator.slug}`;
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  window.location.href = `/calculators/${calculator.slug}`;
-                }
-              }}
-              className="cursor-pointer rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
+              href={`/calculators/${calculator.slug}`}
+              className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
             >
 
               <h2 className="text-xl font-semibold">
@@ -242,13 +232,11 @@ export default async function SpecialtyPage({
               </p>
 
               {calculator.category && (
-                <a
-                  href={`/categories/${taxonomyToSlug(calculator.category)}`}
-                  className="mt-3 inline-block text-sm text-blue-600 hover:underline"
-                  onClick={(e) => e.stopPropagation()}
+                <span
+                  className="mt-3 inline-block text-sm text-blue-600"
                 >
                   {calculator.category}
-                </a>
+                </span>
               )}
 
               <div className="mt-4 font-medium text-blue-600">
@@ -257,7 +245,7 @@ export default async function SpecialtyPage({
                 <span aria-hidden="true"> →</span>
               </div>
 
-            </div>
+            </Link>
           ))}
 
           {calculators.length >= 6 && (
@@ -269,20 +257,10 @@ export default async function SpecialtyPage({
           )}
 
           {calculators.slice(4).map((calculator) => (
-            <div
+            <Link
               key={calculator.id}
-              role="link"
-              tabIndex={0}
-              onClick={() => {
-                window.location.href = `/calculators/${calculator.slug}`;
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  window.location.href = `/calculators/${calculator.slug}`;
-                }
-              }}
-              className="cursor-pointer rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
+              href={`/calculators/${calculator.slug}`}
+              className="rounded-xl border bg-white p-6 shadow-sm transition hover:border-blue-500 hover:shadow-lg"
             >
 
               <h2 className="text-xl font-semibold">
@@ -294,13 +272,11 @@ export default async function SpecialtyPage({
               </p>
 
               {calculator.category && (
-                <a
-                  href={`/categories/${taxonomyToSlug(calculator.category)}`}
-                  className="mt-3 inline-block text-sm text-blue-600 hover:underline"
-                  onClick={(e) => e.stopPropagation()}
+                <span
+                  className="mt-3 inline-block text-sm text-blue-600"
                 >
                   {calculator.category}
-                </a>
+                </span>
               )}
 
               <div className="mt-4 font-medium text-blue-600">
@@ -309,7 +285,7 @@ export default async function SpecialtyPage({
                 <span aria-hidden="true"> →</span>
               </div>
 
-            </div>
+            </Link>
           ))}
 
         </div>

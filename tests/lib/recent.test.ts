@@ -36,10 +36,16 @@ describe("recent", () => {
 
   describe("getRecentCalculators", () => {
     it("returns [] during SSR", async () => {
+      const savedWindow = globalThis.window;
       vi.unstubAllGlobals();
       delete (globalThis as Record<string, unknown>).window;
-      const { getRecentCalculators } = await load();
-      expect(getRecentCalculators()).toEqual([]);
+
+      try {
+        const { getRecentCalculators } = await load();
+        expect(getRecentCalculators()).toEqual([]);
+      } finally {
+        globalThis.window = savedWindow;
+      }
     });
 
     it("returns [] when storage is empty", async () => {

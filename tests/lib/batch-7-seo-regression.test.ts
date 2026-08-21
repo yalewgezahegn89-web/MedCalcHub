@@ -540,64 +540,40 @@ describe("F — Internal-link integrity", () => {
 /* ================================================================== */
 
 describe("G — Nested Link protection", () => {
-  it("category detail page calculator cards do not use nested <Link>", () => {
+  it("category detail page uses <Link> for calculator cards (no window.location.href)", () => {
     const source = readFile(
       "app/categories/[category]/page.tsx",
     );
 
-    const cardSection = source.slice(
-      source.indexOf('role="link"'),
-    );
-
-    expect(cardSection).not.toMatch(
-      /<Link[^>]*>[\s\S]*?<Link/,
-    );
-
-    expect(cardSection).toContain('role="link"');
-    expect(cardSection).toContain("tabIndex={0}");
+    expect(source).toContain("<Link");
+    expect(source).not.toContain("window.location.href");
   });
 
-  it("specialty detail page calculator cards do not use nested <Link>", () => {
+  it("specialty detail page uses <Link> for calculator cards (no window.location.href)", () => {
     const source = readFile(
       "app/specialties/[slug]/page.tsx",
     );
 
-    const cardSection = source.slice(
-      source.indexOf('role="link"'),
-    );
-
-    expect(cardSection).not.toMatch(
-      /<Link[^>]*>[\s\S]*?<Link/,
-    );
-
-    expect(cardSection).toContain('role="link"');
-    expect(cardSection).toContain("tabIndex={0}");
+    expect(source).toContain("<Link");
+    expect(source).not.toContain("window.location.href");
   });
 
-  it("category detail page taxonomy badge uses <a> not <Link> inside card", () => {
+  it("category detail page taxonomy badges are not <Link> inside calculator cards", () => {
     const source = readFile(
       "app/categories/[category]/page.tsx",
     );
 
-    const cardSection = source.slice(
-      source.indexOf('role="link"'),
-    );
-
-    expect(cardSection).toContain("<a");
-    expect(cardSection).toContain("onClick={(e) => e.stopPropagation()}");
+    expect(source).not.toContain('role="link"');
+    expect(source).not.toContain("tabIndex={0}");
   });
 
-  it("specialty detail page taxonomy badge uses <a> not <Link> inside card", () => {
+  it("specialty detail page taxonomy badges are not <Link> inside calculator cards", () => {
     const source = readFile(
       "app/specialties/[slug]/page.tsx",
     );
 
-    const cardSection = source.slice(
-      source.indexOf('role="link"'),
-    );
-
-    expect(cardSection).toContain("<a");
-    expect(cardSection).toContain("onClick={(e) => e.stopPropagation()}");
+    expect(source).not.toContain('role="link"');
+    expect(source).not.toContain("tabIndex={0}");
   });
 });
 

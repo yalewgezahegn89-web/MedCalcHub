@@ -7,6 +7,36 @@ type LocalStore<T> = {
   parse: () => T;
 };
 
+function safeStringify(value: unknown): string {
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return "[]";
+  }
+}
+
+function safeParse(snapshot: string, fallback: unknown): unknown {
+  try {
+    return JSON.parse(snapshot);
+  } catch {
+    return fallback;
+  }
+}
+
+function defaultServerValue(read: () => unknown): string {
+  try {
+    const sample = read();
+    if (Array.isArray(sample)) return "[]";
+    if (sample === null) return "null";
+    if (typeof sample === "object") return "{}";
+    if (typeof sample === "boolean") return "false";
+    if (typeof sample === "number") return "0";
+    return "[]";
+  } catch {
+    return "[]";
+  }
+}
+
 export function createLocalStore<T>(
   eventName: string,
   read: () => T,
@@ -28,15 +58,24 @@ export function createLocalStore<T>(
   }
 
   function getSnapshot() {
-    return JSON.stringify(read());
+    try {
+      return safeStringify(read());
+    } catch {
+      return "[]";
+    }
   }
 
   function getServerSnapshot() {
-    return "[]";
+    return defaultServerValue(read);
   }
 
   function parse() {
-    return JSON.parse(getSnapshot()) as T;
+    try {
+      const snapshot = getSnapshot();
+      return safeParse(snapshot, safeStringify(read())) as T;
+    } catch {
+      return "[]" as unknown as T;
+    }
   }
 
   return { subscribe, getSnapshot, getServerSnapshot, parse };
@@ -51,5 +90,5 @@ export function useLocalStorageStore<T>(
     store.getServerSnapshot,
   );
 
-  return JSON.parse(snapshot) as T;
+  return safeParse(snapshot, safeParse(store.getServerSnapshot(), [])) as T;
 }

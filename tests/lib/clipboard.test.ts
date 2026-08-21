@@ -12,6 +12,7 @@ describe("clipboard", () => {
 
   describe("copyToClipboard", () => {
     it("returns true when writeText succeeds", async () => {
+      vi.stubGlobal("window", {});
       vi.stubGlobal("navigator", {
         clipboard: {
           writeText: vi.fn().mockResolvedValue(undefined),
@@ -25,6 +26,7 @@ describe("clipboard", () => {
 
     it("passes the exact text to writeText", async () => {
       const writeText = vi.fn().mockResolvedValue(undefined);
+      vi.stubGlobal("window", {});
       vi.stubGlobal("navigator", {
         clipboard: { writeText },
       });
@@ -35,6 +37,7 @@ describe("clipboard", () => {
     });
 
     it("returns false when writeText rejects", async () => {
+      vi.stubGlobal("window", {});
       vi.stubGlobal("navigator", {
         clipboard: {
           writeText: vi.fn().mockRejectedValue(new Error("Permission denied")),
@@ -47,6 +50,7 @@ describe("clipboard", () => {
     });
 
     it("returns false when navigator.clipboard is unavailable", async () => {
+      vi.stubGlobal("window", {});
       vi.stubGlobal("navigator", {});
 
       const { copyToClipboard } = await load();
@@ -54,7 +58,24 @@ describe("clipboard", () => {
       expect(result).toBe(false);
     });
 
+    it("returns false during SSR (window undefined)", async () => {
+      const savedWindow = globalThis.window;
+      // @ts-expect-error testing SSR guard
+      delete globalThis.window;
+
+      try {
+        const { copyToClipboard } = await load();
+        const result = await copyToClipboard("hello");
+        expect(result).toBe(false);
+      } finally {
+        if (savedWindow !== undefined) {
+          globalThis.window = savedWindow;
+        }
+      }
+    });
+
     it("handles empty string without throwing", async () => {
+      vi.stubGlobal("window", {});
       vi.stubGlobal("navigator", {
         clipboard: {
           writeText: vi.fn().mockResolvedValue(undefined),
@@ -67,6 +88,7 @@ describe("clipboard", () => {
     });
 
     it("no exception escapes the function", async () => {
+      vi.stubGlobal("window", {});
       vi.stubGlobal("navigator", {
         clipboard: {
           writeText: vi.fn().mockRejectedValue(new DOMException("Abort", "AbortError")),
