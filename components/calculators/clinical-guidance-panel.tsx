@@ -22,9 +22,11 @@ export function ClinicalGuidancePanel({
         />
       )}
 
-      <CommonMistakesCard
-        mistakes={mistakes}
-      />
+      {mistakes.length > 0 && (
+        <CommonMistakesCard
+          mistakes={mistakes}
+        />
+      )}
     </section>
   );
 }

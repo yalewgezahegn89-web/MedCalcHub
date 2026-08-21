@@ -483,6 +483,26 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    faq: [
+      {
+        question:
+          "What does a NEWS2 score mean?",
+        answer:
+          "Score 0: low clinical risk. 1-4: low-to-moderate risk, assess by registered nurse. 5-6 or any single parameter of 3: high risk, urgent clinician assessment. 7 or more: very high risk, emergency assessment, likely ICU admission.",
+      },
+      {
+        question:
+          "How do I use NEWS2 for patients with chronic lung disease?",
+        answer:
+          "Patients on long-term oxygen may have persistently low SpO2. Use the target SpO2 scoring scale (88-92% or 94-98% as clinically appropriate) rather than the standard SpO2 scale.",
+      },
+      {
+        question:
+          "Can NEWS2 be used for pediatric patients?",
+        answer:
+          "No. NEWS2 is validated for adult inpatients. Use the Pediatric Early Warning Score (PEWS) for children.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. NEWS2 should be used as part of a comprehensive clinical assessment and does not replace clinical judgment.",
   },
@@ -651,6 +671,26 @@ export const clinicalContentRegistry: Record<
         level: "Derivation/Validation Study",
       },
     ],
+    faq: [
+      {
+        question:
+          "What does a CURB-65 score mean?",
+        answer:
+          "Each criterion scores 1 point: Confusion, Urea >7 mmol/L, Respiratory rate >=30, Blood pressure <90 systolic or <60 diastolic, age >=65. 0-1: low risk, consider outpatient. 2: consider admission. 3 or more: severe, consider ICU.",
+      },
+      {
+        question:
+          "When should I use CURB-65 vs PSI/PORT?",
+        answer:
+          "CURB-65 is faster to calculate at the bedside (no lab values required beyond urea). PSI/PORT is more detailed but requires more data. Both are validated for community-acquired pneumonia in adults.",
+      },
+      {
+        question:
+          "Does CURB-65 account for oxygen levels?",
+        answer:
+          "No. CURB-65 does not include hypoxia or oxygen requirements. Supplemental clinical assessment of oxygenation is essential alongside the score.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Severity scores inform but do not replace clinical judgment, especially in patients with hypoxia, sepsis, or significant comorbidity.",
   },
@@ -706,6 +746,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "Seymour CW, et al. Assessment of Clinical Criteria for Sepsis: For the Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):762-774.",
         level: "Derivation/Validation Study",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "What does a qSOFA score mean?",
+        answer:
+          "Score 0: low concern. 1: moderate concern. 2 or more: high risk of sepsis-related organ dysfunction and mortality, prompting escalation of care, full SOFA assessment, and source evaluation.",
+      },
+      {
+        question:
+          "How does qSOFA differ from SIRS?",
+        answer:
+          "qSOFA uses 3 bedside criteria (altered mentation, fast breathing, low blood pressure) without lab values. SIRS uses 4 criteria including temperature and white cell count. qSOFA is more specific for sepsis-related mortality.",
+      },
+      {
+        question:
+          "Is qSOFA validated for emergency department use?",
+        answer:
+          "qSOFA was derived and validated primarily in non-ICU settings. It is intended as a bedside screening tool, not a diagnostic test. A low qSOFA does not exclude sepsis.",
       },
     ],
     disclaimer:
@@ -764,6 +824,28 @@ export const clinicalContentRegistry: Record<
         citation:
           "Teasdale G, Jennett B. Assessment of coma and impaired consciousness: a practical scale. Lancet. 1974;304(7872):81-84.",
         level: "Original Description",
+      },
+    ],
+    faq: [
+      {
+        question: "What does a GCS score mean?",
+        answer:
+          "GCS 13–15 indicates mild impairment, 9–12 moderate, and 8 or below severe. A GCS of 8 or less is commonly used as a threshold to consider airway protection (intubation).",
+      },
+      {
+        question: "How is pediatric GCS different?",
+        answer:
+          "For pre-verbal children, the verbal component is replaced with an age-appropriate scale (e.g., crying, inconsolable, irritable, cooing, oriented). The eye and motor components remain the same as the adult scale.",
+      },
+      {
+        question: "Why should I record trends instead of a single score?",
+        answer:
+          "A single GCS score is a snapshot. A fall of 2 or more points over time indicates neurologic deterioration and is clinically significant. Serial assessments are more informative than any single measurement.",
+      },
+      {
+        question: "Can sedation or intubation affect the GCS?",
+        answer:
+          "Yes. Sedation, paralysis, and intubation confound the verbal and sometimes motor components. In these cases, document a modified GCS with the specific components scored, and note the confounding factor.",
       },
     ],
     disclaimer:
@@ -878,6 +960,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "Evans L, et al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Crit Care Med. 2021;49(11):e1063-e1143.",
         level: "Guideline",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "What is a normal MAP?",
+        answer:
+          "Normal resting MAP is approximately 70-100 mmHg. In sepsis and septic shock, a MAP of 65 mmHg or more is a commonly cited target to support organ perfusion.",
+      },
+      {
+        question:
+          "How is MAP calculated?",
+        answer:
+          "MAP = Diastolic BP + 1/3 x (Systolic BP - Diastolic BP). This is an approximation; direct arterial measurement provides a more accurate value.",
+      },
+      {
+        question:
+          "Is MAP the same as perfusion pressure?",
+        answer:
+          "No. MAP is the average arterial pressure. Perfusion pressure also depends on venous pressure and cardiac output. A normal MAP does not guarantee adequate tissue perfusion.",
       },
     ],
     disclaimer:
@@ -1332,6 +1434,26 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    faq: [
+      {
+        question:
+          "What is BSA used for?",
+        answer:
+          "BSA is used to index physiological parameters (e.g., cardiac output) and to dose certain medications that are normalized to body surface area, particularly in oncology.",
+      },
+      {
+        question:
+          "Which BSA formula should I use?",
+        answer:
+          "The Mosteller formula is most commonly used. Different formulas (DuBois, Haycock) give slightly different results. Use the same formula consistently within your institution.",
+      },
+      {
+        question:
+          "Is BSA the same as BMI?",
+        answer:
+          "No. BSA measures total body surface area in m2. BMI measures weight relative to height squared. BSA is used for dosing and physiological indexing; BMI is a screening tool for body fatness.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Dosing decisions must always follow drug-specific labeling and institutional protocols.",
   },
@@ -1519,6 +1641,26 @@ export const clinicalContentRegistry: Record<
         "AASLD Practice Guidance on cirrhosis.",
       ],
     },
+    faq: [
+      {
+        question:
+          "What does a Child-Pugh score mean?",
+        answer:
+          "Class A (5-6 points): well-compensated, about 95% 1-year survival. Class B (7-9 points): significant compromise, about 80% 1-year survival. Class C (10-15 points): decompensated, about 45% 1-year survival.",
+      },
+      {
+        question:
+          "What does Child-Pugh assess?",
+        answer:
+          "It evaluates five parameters: bilirubin, albumin, INR, ascites, and hepatic encephalopathy. Each scores 1-3 points. The total classifies cirrhosis severity and estimates prognosis.",
+      },
+      {
+        question:
+          "Can Child-Pugh replace MELD for transplant listing?",
+        answer:
+          "No. MELD (and MELD-Na) is the preferred tool for liver transplant allocation in most regions. Child-Pugh remains useful for surgical risk assessment and general prognosis.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The Child-Pugh score is one component of a full prognostic assessment and does not replace specialist evaluation.",
   },
@@ -3025,6 +3167,26 @@ export const clinicalContentRegistry: Record<
         level: "Validation Study",
       },
     ],
+    faq: [
+      {
+        question:
+          "What does a PERC-negative result mean?",
+        answer:
+          "All 8 criteria met (PERC negative): PE can be safely ruled out without D-dimer or imaging. Fewer than 8 met (PERC positive): proceed with D-dimer and/or CT pulmonary angiography.",
+      },
+      {
+        question:
+          "When should I apply the PERC rule?",
+        answer:
+          "Only in adult emergency patients with low pre-test probability of PE (typically Wells 4 or less or gestalt low). Do not use in patients with intermediate or high pre-test probability.",
+      },
+      {
+        question:
+          "Can PERC be used in pregnancy?",
+        answer:
+          "No. The original PERC derivation excluded pregnant patients. Use pregnancy-specific PE assessment pathways instead.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The PERC rule applies only to patients with a low pre-test probability of PE and does not replace clinical judgment.",
   },
@@ -3086,6 +3248,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "Wells PS, et al. Derivation of a simple clinical model to categorize patients probability of pulmonary embolism: increasing the models utility with the SimpliRED D-dimer. Thromb Haemost. 2000;83(3):416-420.",
         level: "Original Derivation",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "What does a Wells score for PE mean?",
+        answer:
+          "Two-tier: 4 or less = PE unlikely (D-dimer can rule out). More than 4 = PE likely (proceed to CT pulmonary angiography). Three-tier: 0-1 low, 2-6 moderate, more than 6 high probability.",
+      },
+      {
+        question:
+          "Is Wells PE likely still valid with age-adjusted D-dimer?",
+        answer:
+          "Yes. The Wells score determines pre-test probability. If PE is unlikely (Wells 4 or less), age-adjusted D-dimer can further reduce unnecessary CT scans in patients over 50 years.",
+      },
+      {
+        question:
+          "Can Wells be used for inpatients?",
+        answer:
+          "Wells was derived primarily in emergency department and outpatient settings. Performance differs in inpatients, where pre-test probability tools may overestimate risk. Clinical judgment is essential.",
       },
     ],
     disclaimer:
@@ -3215,6 +3397,26 @@ export const clinicalContentRegistry: Record<
         level: "Prospective Validation",
       },
     ],
+    faq: [
+      {
+        question:
+          "What does a HEART score mean?",
+        answer:
+          "0-3: low risk (MACE about 1-2%), candidate for early discharge. 4-6: moderate risk (MACE about 12-17%), observation with serial troponins. 7-10: high risk (MACE about 50-65%), early invasive strategy and cardiology consultation.",
+      },
+      {
+        question:
+          "Is the HEART score better than TIMI or GRACE for chest pain?",
+        answer:
+          "HEART is specifically designed for emergency department chest pain evaluation and has been prospectively validated in that setting. TIMI and GRACE are more commonly used for ACS risk stratification once acute coronary syndrome is confirmed.",
+      },
+      {
+        question:
+          "Can the HEART score be used for stable chest pain?",
+        answer:
+          "No. HEART is designed for acute chest pain evaluation in the emergency department. For stable chest pain assessment, use appropriate outpatient evaluation pathways.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The HEART score supports, but does not replace, clinical judgment in acute coronary syndrome evaluation.",
   },
@@ -3277,6 +3479,28 @@ export const clinicalContentRegistry: Record<
         level: "Consensus Definition",
       },
     ],
+    faq: [
+      {
+        question: "What does the SOFA score measure?",
+        answer:
+          "SOFA quantifies organ dysfunction across six systems (respiration, coagulation, liver, cardiovascular, CNS, renal). Each system scores 0–4. Higher total scores correlate with higher ICU mortality.",
+      },
+      {
+        question: "How is SOFA used to diagnose sepsis?",
+        answer:
+          "Per the Sepsis-3 consensus, sepsis is defined as a suspected or confirmed infection with an acute SOFA increase of ≥2 points from baseline. This indicates organ dysfunction caused by infection.",
+      },
+      {
+        question: "Can SOFA be calculated at the bedside?",
+        answer:
+          "Not entirely. SOFA requires laboratory values (platelets, bilirubin, creatinine) and PaO₂/FiO₂ ratio, which are not available at the bedside. For rapid bedside screening, use qSOFA instead.",
+      },
+      {
+        question: "What if I don't know the patient's baseline SOFA?",
+        answer:
+          "A baseline SOFA of 0 is assumed if no prior organ dysfunction is documented. If the patient has known chronic organ dysfunction, the acute increase may be underestimated.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. SOFA describes, but does not diagnose, sepsis; clinical judgment and serial assessment remain essential.",
   },
@@ -3334,6 +3558,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "Singer M, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810.",
         level: "Consensus Definition",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "What are the SIRS criteria?",
+        answer:
+          "Two or more of: temperature >38 C or <36 C, heart rate >90 bpm, respiratory rate >20 breaths/min, and white blood cell count >12,000 or <4,000 cells per uL. Two or more criteria indicate SIRS is present.",
+      },
+      {
+        question:
+          "Is SIRS still used to define sepsis?",
+        answer:
+          "The Sepsis-3 consensus (2016) removed SIRS from the formal sepsis definition. Sepsis is now defined as infection with an acute SOFA increase of 2 or more. However, SIRS criteria remain useful for early bedside screening.",
+      },
+      {
+        question:
+          "Can SIRS be triggered by non-infectious conditions?",
+        answer:
+          "Yes. SIRS is non-specific and can be met in trauma, pancreatitis, surgery, burns, and other inflammatory states. Always assess for an infectious source before attributing SIRS to sepsis.",
       },
     ],
     disclaimer:
@@ -3472,11 +3716,31 @@ export const clinicalContentRegistry: Record<
         level: "Meta-Analysis",
       },
     ],
+    faq: [
+      {
+        question:
+          "What does the PSI/PORT score mean?",
+        answer:
+          "Classes I-II (70 or fewer points): low mortality (about 0.1-0.6%), consider outpatient. Class III (71-90): consider observation. Class IV (91-130): moderate risk (about 8-9%), admit. Class V (more than 130): high risk (about 27-31%), admit and consider ICU.",
+      },
+      {
+        question:
+          "How is PSI different from CURB-65?",
+        answer:
+          "PSI uses 20 variables including demographics, comorbidities, and lab findings, making it more comprehensive but slower to calculate. CURB-65 uses 5 bedside variables and is faster but less granular.",
+      },
+      {
+        question:
+          "Does PSI apply to all pneumonia patients?",
+        answer:
+          "PSI is validated for community-acquired pneumonia in adults. It is not validated for hospital-acquired pneumonia, pediatric patients, or immunocompromised populations outside the original cohort.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Site-of-care decisions must integrate comorbidities, social factors, and clinical judgment.",
   },
 
-  rts: {
+  "rts": {
     clinicalPurpose:
       "Provides an objective, coded measure of physiologic derangement in trauma patients for triage and outcome prediction.",
     howToUse: [
@@ -3591,6 +3855,26 @@ export const clinicalContentRegistry: Record<
         level: "Review",
       },
     ],
+    faq: [
+      {
+        question:
+          "How is the Parkland formula calculated?",
+        answer:
+          "Total volume = 4 mL x weight (kg) x %TBSA burned of Ringers lactate over 24 hours. Give half in the first 8 hours from time of burn, half over the next 16 hours.",
+      },
+      {
+        question:
+          "Is the Parkland formula a fixed prescription?",
+        answer:
+          "No. It is a starting estimate. Titrate to urine output of 0.5-1.0 mL/kg/h. Actual fluid needs vary with burn depth, inhalation injury, delay in treatment, and patient comorbidities.",
+      },
+      {
+        question:
+          "Can I use the Parkland formula for pediatric burns?",
+        answer:
+          "The 4 mL/kg/%TBSA formula is for adults. Children under 30 kg require pediatric-specific formulas that account for larger surface area-to-mass ratios and maintenance fluid needs.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Burn resuscitation must be titrated continuously to urine output, hemodynamics, and clinical response.",
   },
@@ -3646,6 +3930,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "Antman EM, et al. The TIMI risk score for unstable angina/non-ST elevation MI: A method for prognostication and therapeutic decision making. JAMA. 2000;284(7):835-842.",
         level: "Level I",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "What does a TIMI score mean?",
+        answer:
+          "0-1: low risk (about 4.7% 14-day composite event rate). 2-4: intermediate risk (about 8.3-19.9%). 5-7: high risk (about 26.2-40.9%). Higher scores support earlier invasive strategy.",
+      },
+      {
+        question:
+          "Can TIMI be used for STEMI?",
+        answer:
+          "No. TIMI risk scoring is designed for unstable angina and NSTEMI. For STEMI, use STEMI-specific tools such as the Killip class or TIMI flow grade for perfusion assessment.",
+      },
+      {
+        question:
+          "How does TIMI compare to GRACE?",
+        answer:
+          "TIMI is simpler to calculate but considers fewer prognostic factors. GRACE is more comprehensive and is generally preferred by current guidelines. Both remain widely used in clinical practice.",
       },
     ],
     disclaimer:
@@ -3704,6 +4008,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "Granger CB, et al. Predictors of hospital mortality in the global registry of acute coronary events. Arch Intern Med. 2003;163(19):2345-2353.",
         level: "Level I",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "What does a GRACE score mean?",
+        answer:
+          "108 or less: low risk (less than 1% in-hospital mortality). 109-140: intermediate risk (1-3%). More than 140: high risk (more than 3%). GRACE is the preferred ACS risk tool per European and US guidelines.",
+      },
+      {
+        question:
+          "When should I use GRACE vs TIMI?",
+        answer:
+          "GRACE is more comprehensive and is the guideline-recommended tool for ACS risk stratification. TIMI is simpler but considers fewer variables. GRACE is generally preferred for both in-hospital and 6-month prognosis.",
+      },
+      {
+        question:
+          "Does GRACE apply to all ACS types?",
+        answer:
+          "Yes. GRACE is validated for STEMI, NSTEMI, and unstable angina. It estimates in-hospital mortality. Separate GRACE models exist for 6-month and discharge risk.",
       },
     ],
     disclaimer:
@@ -3768,6 +4092,26 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    faq: [
+      {
+        question:
+          "What does a CHA2DS2-VASc score mean?",
+        answer:
+          "Score 0 (men) or 1 (women): low stroke risk, no antithrombotic therapy. Men 1 or women 2: consider oral anticoagulation. Men 2 or more / women 3 or more: oral anticoagulation is recommended.",
+      },
+      {
+        question:
+          "Why are the thresholds different for men and women?",
+        answer:
+          "Women receive 1 point for sex alone, which is a risk modifier rather than an independent risk factor. The threshold for recommending anticoagulation is 1 point higher in women to avoid over-treatment based on sex alone.",
+      },
+      {
+        question:
+          "Does CHA2DS2-VASc account for bleeding risk?",
+        answer:
+          "No. CHA2DS2-VASc estimates stroke risk only. Bleeding risk should be assessed separately using HAS-BLED or a similar tool before starting anticoagulation.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Anticoagulation decisions require assessment of both stroke and bleeding risk together with patient values and preferences.",
   },
@@ -3825,6 +4169,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "Pisters R, et al. A novel user-friendly score (HAS-BLED) to assess 1-year risk of major bleeding in patients with atrial fibrillation: the Euro Heart Survey. Chest. 2010;138(5):1093-1100.",
         level: "Level II",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "What does a HAS-BLED score mean?",
+        answer:
+          "0-1: low risk (about 1% major bleeding per year). 2: moderate risk (about 2% per year). 3 or more: high risk (about 4% per year). A high score flags the need to correct modifiable bleeding risk factors.",
+      },
+      {
+        question:
+          "Should I stop anticoagulation if HAS-BLED is high?",
+        answer:
+          "No. A high HAS-BLED score should prompt correction of modifiable risk factors (poor INR control, concomitant drugs, alcohol) and closer monitoring, not automatic discontinuation of anticoagulation.",
+      },
+      {
+        question:
+          "Is HAS-BLED validated for DOACs?",
+        answer:
+          "HAS-BLED was calibrated in warfarin-era cohorts. DOACs generally have lower bleeding rates. The score remains useful for identifying modifiable bleeding risk factors regardless of anticoagulant type.",
       },
     ],
     disclaimer:
@@ -6593,6 +6957,26 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    faq: [
+      {
+        question:
+          "What does an Apgar score mean?",
+        answer:
+          "7-10: reassuring. 4-6: moderate depression, may need stimulation. 0-3: severe depression, immediate resuscitation required. The score assesses heart rate, respiration, muscle tone, reflex irritability, and color.",
+      },
+      {
+        question:
+          "When is the Apgar score assessed?",
+        answer:
+          "At 1 minute and 5 minutes after birth. If the 5-minute score is less than 7, continue scoring every 5 minutes up to 20 minutes. The score reports the newborn condition and response to resuscitation.",
+      },
+      {
+        question:
+          "Can Apgar predict long-term outcomes?",
+        answer:
+          "No. Apgar is a snapshot of transition at birth. Low scores in preterm or sedated infants do not imply asphyxia. It should not be used to predict long-term neurologic outcomes.",
+      },
+    ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The Apgar score is a reporting tool; resuscitation decisions should be guided by the newborn's respirations, heart rate, and color.",
   },
@@ -6649,6 +7033,26 @@ export const clinicalContentRegistry: Record<
         citation:
           "American College of Surgeons. Advanced Trauma Life Support (ATLS) Student Course Manual. 10th ed. Chicago, IL: ACS; 2018.",
         level: "Course Manual",
+      },
+    ],
+    faq: [
+      {
+        question:
+          "How is pediatric GCS different from adult GCS?",
+        answer:
+          "Only the verbal component differs for pre-verbal children. Eye and motor components are the same. The pediatric verbal scale uses age-appropriate responses (e.g., crying, consolable, irritable, coos, oriented).",
+      },
+      {
+        question:
+          "At what age does adult GCS apply?",
+        answer:
+          "Adult GCS applies when the child can reliably orient to person, place, and time. Typically this is around age 2-3, though it depends on developmental milestones.",
+      },
+      {
+        question:
+          "What does a pediatric GCS of 8 or less mean?",
+        answer:
+          "A GCS of 8 or less indicates severe impairment (coma) and warrants consideration of airway protection, urgent neuroimaging, and neurosurgical or ICU referral.",
       },
     ],
     disclaimer:

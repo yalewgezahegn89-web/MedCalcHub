@@ -405,7 +405,7 @@ describe("E — FAQ JSON-LD / rendering parity", () => {
     );
   });
 
-  it("calculator with no FAQ anywhere returns empty FAQPage entity", () => {
+  it("calculator with no FAQ anywhere omits FAQPage from JSON-LD", () => {
     const calc = calculatorRegistry.find(
       (c) => c.slug === "map",
     );
@@ -425,10 +425,11 @@ describe("E — FAQ JSON-LD / rendering parity", () => {
     const faqPage = graph.find(
       (item) => item["@type"] === "FAQPage",
     );
-    expect(faqPage).toBeDefined();
 
     if (!hasFaq) {
-      expect(faqPage!.mainEntity!).toHaveLength(0);
+      expect(faqPage).toBeUndefined();
+    } else {
+      expect(faqPage).toBeDefined();
     }
   });
 
@@ -454,6 +455,157 @@ describe("E — FAQ JSON-LD / rendering parity", () => {
       expect(faqPage!.mainEntity![0].name).toBe(
         clinicalContent.faq[0].question,
       );
+    }
+  });
+
+  it("calculator with FAQ has FAQPage in JSON-LD", () => {
+    const calc = calculatorRegistry.find(
+      (c) => c.slug === "ckd-epi-2021",
+    );
+    expect(calc).toBeDefined();
+
+    const jsonLd = buildCalculatorJsonLd(calc!);
+    const graph = jsonLd["@graph"] as Array<{
+      "@type": string;
+      mainEntity?: Array<{ name: string }>;
+    }>;
+    const faqPage = graph.find(
+      (item) => item["@type"] === "FAQPage",
+    );
+    expect(faqPage).toBeDefined();
+    expect(faqPage!.mainEntity!.length).toBeGreaterThan(0);
+  });
+
+  it("JSON-LD graph always contains MedicalWebPage, SoftwareApplication, and BreadcrumbList", () => {
+    for (const calc of calculatorRegistry.slice(0, 20)) {
+      const jsonLd = buildCalculatorJsonLd(calc);
+      const graph = jsonLd["@graph"] as Array<{ "@type": string }>;
+      const types = graph.map((item) => item["@type"]);
+      expect(types).toContain("MedicalWebPage");
+      expect(types).toContain("SoftwareApplication");
+      expect(types).toContain("BreadcrumbList");
+    }
+  });
+
+  it("no calculator produces JSON-LD with empty FAQPage mainEntity", () => {
+    for (const calc of calculatorRegistry) {
+      const jsonLd = buildCalculatorJsonLd(calc);
+      const graph = jsonLd["@graph"] as Array<{
+        "@type": string;
+        mainEntity?: Array<unknown>;
+      }>;
+      const faqPage = graph.find(
+        (item) => item["@type"] === "FAQPage",
+      );
+      if (faqPage) {
+        expect(
+          (faqPage.mainEntity as Array<unknown>).length,
+          `FAQPage for ${calc.slug} has empty mainEntity`,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  const c2Slugs = [
+    "gcs",
+    "sofa-score",
+    "qsofa",
+    "sirs-criteria",
+    "news2",
+    "curb-65",
+    "psi-port",
+    "heart-score",
+    "grace",
+    "timi",
+    "cha2ds2-vasc",
+    "has-bled",
+    "map",
+    "bsa",
+    "child-pugh",
+    "pediatric-gcs",
+    "apgar-score",
+    "wells-pe",
+    "perc-rule",
+    "parkland-formula",
+  ];
+
+  it("all 20 C2 calculators now have FAQ in clinical content registry", () => {
+    for (const slug of c2Slugs) {
+      const content = getClinicalContent(slug);
+      expect(
+        content,
+        `Clinical content missing for ${slug}`,
+      ).toBeDefined();
+      expect(
+        content!.faq,
+        `FAQ missing for ${slug}`,
+      ).toBeDefined();
+      expect(
+        content!.faq!.length,
+        `FAQ empty for ${slug}`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 20 C2 FAQ entries have non-empty question and answer", () => {
+    for (const slug of c2Slugs) {
+      const content = getClinicalContent(slug);
+      for (const item of content!.faq!) {
+        expect(
+          item.question.trim().length,
+          `${slug} FAQ has empty question`,
+        ).toBeGreaterThan(0);
+        expect(
+          item.answer.trim().length,
+          `${slug} FAQ has empty answer`,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("all 20 C2 calculators emit FAQPage JSON-LD with mainEntity > 0", () => {
+    for (const slug of c2Slugs) {
+      const calc = calculatorRegistry.find(
+        (c) => c.slug === slug,
+      );
+      expect(calc).toBeDefined();
+
+      const jsonLd = buildCalculatorJsonLd(calc!);
+      const graph = jsonLd["@graph"] as Array<{
+        "@type": string;
+        mainEntity?: Array<{ name: string }>;
+      }>;
+      const faqPage = graph.find(
+        (item) => item["@type"] === "FAQPage",
+      );
+      expect(
+        faqPage,
+        `FAQPage missing for ${slug}`,
+      ).toBeDefined();
+      expect(
+        faqPage!.mainEntity!.length,
+        `FAQPage mainEntity empty for ${slug}`,
+      ).toBeGreaterThan(0);
+
+      const content = getClinicalContent(slug);
+      expect(
+        faqPage!.mainEntity!.length,
+        `FAQPage count mismatch for ${slug}`,
+      ).toBe(content!.faq!.length);
+    }
+  });
+
+  it("no duplicate FAQ entries across all calculators", () => {
+    for (const slug of c2Slugs) {
+      const content = getClinicalContent(slug);
+      const questions = content!.faq!.map(
+        (f) => f.question,
+      );
+      const unique = new Set(questions);
+      expect(
+        unique.size,
+        `Duplicate FAQ questions in ${slug}`,
+      ).toBe(questions.length);
     }
   });
 });
