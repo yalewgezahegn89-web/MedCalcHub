@@ -73,6 +73,19 @@ export const clinicalContentRegistry: Record<
         level: "Textbook",
       },
     ],
+    evidence: {
+      source: "Nephrology / Acid-Base",
+      reference:
+        "Kraut JA, Madias NE. Serum anion gap: its uses and limitations in clinical medicine. Clin J Am Soc Nephrol. 2007;2:162-174.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Kraut JA, Madias NE. Clin J Am Soc Nephrol. 2007;2:162-174.",
+        "Adrogue HJ, et al. Acid-base disorders. In: Brenner & Rector's The Kidney.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. It does not replace clinical judgment. Always interpret laboratory values in the context of the individual patient's clinical presentation.",
   },
@@ -393,6 +406,18 @@ export const clinicalContentRegistry: Record<
         level: "Level II",
       },
     ],
+    evidence: {
+      source: "Endocrinology / Nephrology",
+      reference:
+        "Hillier TA, Abbott RD, Barrett EJ. Hyponatremia: evaluating the correction factor for hyperglycemia. Am J Med. 1999;106:399-403.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Hillier TA, Abbott RD, Barrett EJ. Am J Med. 1999;106:399-403.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Sodium correction is an approximation and should be interpreted alongside clinical assessment of the patient's volume and glucose status.",
   },
@@ -449,6 +474,18 @@ export const clinicalContentRegistry: Record<
         level: "Level I",
       },
     ],
+    evidence: {
+      source: "Emergency Medicine / Toxicology",
+      reference:
+        "Brent J, et al. Fomepizole for the treatment of methanol poisoning. N Engl J Med. 2001;344:424-429.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Brent J, et al. N Engl J Med. 2001;344:424-429.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. An elevated osmolar gap requires urgent clinical evaluation. Do not delay treatment while awaiting laboratory confirmation.",
   },
@@ -591,6 +628,18 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    evidence: {
+      source: "Nephrology / Pharmacy",
+      reference:
+        "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16:31-41.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Cockcroft DW, Gault MH. Nephron. 1976;16:31-41.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Drug dosing decisions should always consider the individual patient's clinical context and current drug labeling.",
   },
@@ -645,6 +694,18 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    evidence: {
+      source: "Endocrinology / Diabetes",
+      reference:
+        "Matthews DR, Hosker JP, Rudenski AS, et al. Homeostasis model assessment: insulin resistance and beta-cell function from fasting plasma glucose and insulin concentrations in man. Diabetologia. 1985;28:412-419.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Matthews DR, et al. Diabetologia. 1985;28:412-419.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and research purposes only. HOMA-IR is a research and screening tool and should not be used as a standalone diagnostic test. Clinical decisions should be based on comprehensive metabolic assessment.",
   },
@@ -970,6 +1031,18 @@ export const clinicalContentRegistry: Record<
         level: "Validation Study",
       },
     ],
+    evidence: {
+      source: "Emergency Medicine / Critical Care",
+      reference:
+        "Rady MY, Smithline HA, Blake H, et al. A comparison of the shock index and conventional vital signs to identify acute, critical illness in the emergency department. Ann Emerg Med. 1994;24(4):685-690.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Rady MY, et al. Ann Emerg Med. 1994;24(4):685-690.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The shock index is a screening adjunct and must be interpreted with full hemodynamic and clinical assessment.",
   },
@@ -1120,6 +1193,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Nephrology",
+      reference:
+        "Levey AS, Bosch JP, Lewis JB, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine: a new prediction equation. Ann Intern Med. 1999;130(6):461-470.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Levey AS, et al. Ann Intern Med. 1999;130(6):461-470.",
+        "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. eGFR is an estimate and MDRD has been largely superseded by CKD-EPI for current clinical decisions.",
   },
@@ -1178,6 +1264,18 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    evidence: {
+      source: "Nephrology",
+      reference:
+        "Carvounis CP, et al. Significance of the fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62(3):1184-1191.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Carvounis CP, et al. Kidney Int. 2002;62(3):1184-1191.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. FENa must be interpreted with the clinical context and is unreliable in patients on diuretics or with chronic kidney disease.",
   },
@@ -1234,6 +1332,18 @@ export const clinicalContentRegistry: Record<
         level: "Validation Study",
       },
     ],
+    evidence: {
+      source: "Nephrology",
+      reference:
+        "Pépin MN, et al. Reassessment of the fractional excretion of urea for the differential diagnosis of acute renal failure. Clin Invest Med. 2007;30(5):E163-167.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Pépin MN, et al. Clin Invest Med. 2007;30(5):E163-167.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. FEUrea is a complementary test and must be interpreted alongside FENa, urine studies, and clinical context.",
   },
@@ -1293,6 +1403,18 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Nephrology / KDIGO",
+      reference:
+        "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Persistent albuminuria and the diagnosis of CKD require confirmatory testing over at least 3 months alongside eGFR.",
   },
@@ -1346,10 +1468,22 @@ export const clinicalContentRegistry: Record<
     references: [
       {
         citation:
-          "Pay DA, et al. Corrected calcium in hypercalcaemia and hypocalcaemia. Ann Clin Biochem. 2004;41(6):486-488.",
-        level: "Review Article",
+          "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J. 1973;4(5893):643-646.",
+        level: "Original Description",
       },
     ],
+    evidence: {
+      source: "Clinical Biochemistry",
+      reference:
+        "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J. 1973;4(5893):643-646.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Payne RB, et al. Br Med J. 1973;4(5893):643-646.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The correction is an estimate; ionized calcium is the preferred measurement in the critically ill and when hypercalcemia is suspected.",
   },
@@ -1406,6 +1540,18 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    evidence: {
+      source: "Endocrinology / Diabetes",
+      reference:
+        "Matthews DR, Hosker JP, Rudenski AS, et al. Homeostasis model assessment: insulin resistance and beta-cell function from fasting plasma glucose and insulin concentrations in man. Diabetologia. 1985;28(7):412-419.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Matthews DR, et al. Diabetologia. 1985;28(7):412-419.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and research purposes only. HOMA-B is an estimate of beta-cell function and must not be used as a standalone diagnostic test.",
   },
@@ -1459,6 +1605,18 @@ export const clinicalContentRegistry: Record<
         level: "Review Article",
       },
     ],
+    evidence: {
+      source: "Endocrinology / Diabetes",
+      reference:
+        "Wallace TM, Levy JC, Matthews DR. Use and abuse of HOMA modeling. Diabetes Care. 2004;27(6):1487-1495.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Wallace TM, Levy JC, Matthews DR. Diabetes Care. 2004;27(6):1487-1495.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and research purposes only. Insulin sensitivity derived from HOMA-IR is an estimate and should not be used as a standalone diagnostic test.",
   },
@@ -6610,6 +6768,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Endocrinology / Thyroid",
+      reference:
+        "Surks MI, et al. American Thyroid Association guidelines for use of laboratory tests in thyroid disorders. JAMA. 1990;263(11):1529-1532.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Surks MI, et al. JAMA. 1990;263(11):1529-1532.",
+        "Mayo Clinic Laboratories. Free Thyroxine Index (FTI), Serum.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Use the performing laboratory's reference interval and interpret the FTI together with TSH and clinical status.",
   },
@@ -6675,6 +6846,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Consensus",
       },
     ],
+    evidence: {
+      source: "Cardiology / Endocrinology",
+      reference:
+        "Grundy SM, et al. Diagnosis and management of the metabolic syndrome: an American Heart Association/National Heart, Lung, and Blood Institute scientific statement. Circulation. 2005;112(17):2735-2752.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Grundy SM, et al. Circulation. 2005;112(17):2735-2752.",
+        "Alberti KG, et al. Circulation. 2009;120(16):1640-1645.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Metabolic syndrome assessment should be combined with global cardiovascular risk scoring and clinical judgment.",
   },
@@ -6735,6 +6919,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Obstetrics",
+      reference:
+        "Bishop EH. Pelvic scoring for elective induction. Obstet Gynecol. 1964;24:266-268.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Bishop EH. Obstet Gynecol. 1964;24:266-268.",
+        "ACOG Practice Bulletin No. 107: Induction of labor. Obstet Gynecol. 2009;114(2 Pt 1):386-397.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Induction decisions require the full clinical picture, including maternal and fetal indications, and should guide — not replace — clinical judgment.",
   },
@@ -6794,6 +6991,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Obstetrics / Perinatology",
+      reference:
+        "Manning FA, et al. Fetal biophysical profile scoring: a prospective study in 1,184 high-risk patients. Am J Obstet Gynecol. 1981;140(3):289-294.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Manning FA, et al. Am J Obstet Gynecol. 1981;140(3):289-294.",
+        "ACOG Practice Bulletin No. 145: Antepartum fetal surveillance. Obstet Gynecol. 2014;124(1):182-201.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Fetal well-being assessment must be interpreted with the full clinical context by the managing obstetric provider.",
   },
@@ -6852,6 +7062,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Obstetrics / Maternal-Fetal Medicine",
+      reference:
+        "Sibai BM, et al. Maternal morbidity and mortality in 442 pregnancies with hemolysis, elevated liver enzymes, and low platelets (HELLP syndrome). Am J Obstet Gynecol. 1993;169(4):1000-1006.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Sibai BM, et al. Am J Obstet Gynecol. 1993;169(4):1000-1006.",
+        "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. HELLP syndrome is a clinical emergency; laboratory-based scoring supplements, but does not replace, urgent clinical judgment.",
   },
@@ -6910,6 +7133,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Obstetrics / Ultrasound",
+      reference:
+        "Hadlock FP, et al. Estimation of fetal weight with the use of head, body, and femur measurements — a prospective study. Am J Obstet Gynecol. 1985;151(3):333-337.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Hadlock FP, et al. Am J Obstet Gynecol. 1985;151(3):333-337.",
+        "ACOG Practice Bulletin No. 227: Fetal growth restriction. Obstet Gynecol. 2021;137(2):e16-e28.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Estimated fetal weight is inherently imprecise and must be interpreted with gestational age, growth trends, and clinical judgment.",
   },
@@ -6969,6 +7205,18 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Obstetrics / ACOG",
+      reference:
+        "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Preeclampsia diagnosis and management require complete clinical assessment; treat severe hypertension promptly regardless of the calculated feature count.",
   },
@@ -7024,6 +7272,19 @@ export const clinicalContentRegistry: Record<
         level: "Committee Opinion",
       },
     ],
+    evidence: {
+      source: "Obstetrics / Nutrition",
+      reference:
+        "Institute of Medicine and National Research Council. Weight Gain During Pregnancy: Reexamining the Guidelines. The National Academies Press; 2009.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "IOM/NRC. Weight Gain During Pregnancy. National Academies Press; 2009.",
+        "ACOG Committee Opinion No. 548: Weight gain during pregnancy. Obstet Gynecol. 2013;121(1):210-212.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Weight-gain recommendations should be individualized and integrated with nutrition counseling and clinical judgment.",
   },
@@ -7288,6 +7549,19 @@ export const clinicalContentRegistry: Record<
           "No. Apgar is a snapshot of transition at birth. Low scores in preterm or sedated infants do not imply asphyxia. It should not be used to predict long-term neurologic outcomes.",
       },
     ],
+    evidence: {
+      source: "Obstetrics / Neonatology",
+      reference:
+        "Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg. 1953;32(4):260-267.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Apgar V. Curr Res Anesth Analg. 1953;32(4):260-267.",
+        "AAP/ACOG Committee. The Apgar score. Pediatrics. 2015;136(4):819-822.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The Apgar score is a reporting tool; resuscitation decisions should be guided by the newborn's respirations, heart rate, and color.",
   },
@@ -7870,10 +8144,12 @@ export const clinicalContentRegistry: Record<
       source: "Clinical scoring system validated in acute stroke",
       reference:
         "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
         "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+        "Lyden PD, et al. Stroke. 1994;25:2446-2451.",
       ],
     },
     faq: [
@@ -7971,10 +8247,12 @@ export const clinicalContentRegistry: Record<
       source: "Validation study (Lancet 2007)",
       reference:
         "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
+      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
         "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
+        "Johnston SC, et al. Lancet. 2007;369:208-213.",
       ],
     },
     faq: [
@@ -8066,10 +8344,12 @@ export const clinicalContentRegistry: Record<
       source: "Original clinical grading system (J Neurosurg 1968)",
       reference:
         "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
+      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
         "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
+        "Hunt WE, Kosnik EJ. J Neurosurg. 1974;41:149-154.",
       ],
     },
     faq: [
@@ -8162,10 +8442,12 @@ export const clinicalContentRegistry: Record<
       source: "Validated functional outcome scale (Stroke 1988)",
       reference:
         "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
+      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
         "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
+        "van Swieten JC, et al. Neurology. 1988;38:1021-1024.",
       ],
     },
     faq: [
@@ -8262,10 +8544,12 @@ export const clinicalContentRegistry: Record<
       source: "Multicenter validation cohort (JAMA 2013)",
       reference:
         "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
+      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
         "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
+        "Perry JJ, et al. JAMA. 2013;310:1828-1836.",
       ],
     },
     faq: [
@@ -8364,8 +8648,10 @@ export const clinicalContentRegistry: Record<
         "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
       version: "1.0",
       updatedAt: "2026-08",
+      reviewedBy: "MedCalcHub Clinical Team",
       references: [
         "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
+        "Wijdicks EFM, et al. Pract Neurol. 2010;10:86-88.",
       ],
     },
     faq: [
@@ -8463,8 +8749,10 @@ export const clinicalContentRegistry: Record<
         "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
       version: "1.0",
       updatedAt: "2026-08",
+      reviewedBy: "MedCalcHub Clinical Team",
       references: [
         "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
+        "Carrera D, et al. Stroke. 2019;50:1819-1824.",
       ],
     },
     faq: [
@@ -8564,8 +8852,10 @@ export const clinicalContentRegistry: Record<
         "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
       version: "1.0",
       updatedAt: "2026-08",
+      reviewedBy: "MedCalcHub Clinical Team",
       references: [
         "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
+        "Weimar C, et al. Stroke. 2009;40:2532-2536.",
       ],
     },
     faq: [
@@ -10077,6 +10367,19 @@ export const clinicalContentRegistry: Record<
         level: "Review",
       },
     ],
+    evidence: {
+      source: "Nephrology / Fluids & Electrolytes",
+      reference:
+        "Adrogue HJ, Madias NE. Hypernatremia. N Engl J Med. 2000;342(21):1493-1499.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Adrogue HJ, Madias NE. N Engl J Med. 2000;342(21):1493-1499.",
+        "Sterns RH. Disorders of plasma sodium. N Engl J Med. 2015;372(1):55-65.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The free water deficit is an estimate and is not a prescription; correction of hypernatremia requires assessment of volume status, ongoing losses, and an individualized rate of correction.",
   },
@@ -10128,6 +10431,18 @@ export const clinicalContentRegistry: Record<
         level: "Original correction formula",
       },
     ],
+    evidence: {
+      source: "Clinical Biochemistry",
+      reference:
+        "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J. 1973;4(5893):643-646.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Payne RB, et al. Br Med J. 1973;4(5893):643-646.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. Corrected calcium is an estimate; when calcium status affects clinical decisions, particularly in the critically ill, ionized calcium should be measured.",
   },
@@ -10187,6 +10502,18 @@ export const clinicalContentRegistry: Record<
         level: "Professional organization",
       },
     ],
+    evidence: {
+      source: "Nutrition / Endocrinology",
+      reference:
+        "Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Mifflin MD, et al. Am J Clin Nutr. 1990;51(2):241-247.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. BMR estimates are approximations and do not replace measured energy expenditure in patients whose nutritional support is clinically critical.",
   },

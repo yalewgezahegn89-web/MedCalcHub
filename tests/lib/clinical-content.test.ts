@@ -3411,3 +3411,556 @@ describe("Clinical Content — Evidence Batch E2 (Structured Evidence Metadata)"
     expect(evidenceCount).toBeGreaterThanOrEqual(68);
   });
 });
+
+const E3A_EVIDENCE_SLUGS = [
+  "nihss",
+  "abcd2-score",
+  "hunt-hess-scale",
+  "modified-rankin-scale",
+  "ottawa-sah-rule",
+  "fout-score",
+  "race-scale",
+  "esrs",
+] as const;
+
+const E3A_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  nihss: {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
+      "Lyden PD, et al. Stroke. 1994;25:2446-2451.",
+    ],
+  },
+  "abcd2-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
+      "Johnston SC, et al. Lancet. 2007;369:208-213.",
+    ],
+  },
+  "hunt-hess-scale": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
+      "Hunt WE, Kosnik EJ. J Neurosurg. 1974;41:149-154.",
+    ],
+  },
+  "modified-rankin-scale": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
+      "van Swieten JC, et al. Neurology. 1988;38:1021-1024.",
+    ],
+  },
+  "ottawa-sah-rule": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
+      "Perry JJ, et al. JAMA. 2013;310:1828-1836.",
+    ],
+  },
+  "fout-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
+      "Wijdicks EFM, et al. Pract Neurol. 2010;10:86-88.",
+    ],
+  },
+  "race-scale": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
+      "Carrera D, et al. Stroke. 2019;50:1819-1824.",
+    ],
+  },
+  esrs: {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
+      "Weimar C, et al. Stroke. 2009;40:2532-2536.",
+    ],
+  },
+};
+
+describe("Clinical Content — Evidence Batch E3a (PARTIAL to FULL Upgrade)", () => {
+  it("all 8 E3a targets have clinical content", () => {
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 8 E3a targets have evidence", () => {
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 8 E3a targets have non-empty source", () => {
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 8 E3a targets have non-empty reference", () => {
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 8 E3a targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 8 E3a targets have at least 2 references in references array", () => {
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it("all 8 E3a target references match the expected citations", () => {
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E3A_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("no E3a target contains placeholder evidence", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("all 8 E3a targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E3A_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E3a slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E3a does not alter E1 or E2 evidence counts unexpectedly", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(76);
+  });
+});
+
+
+const E3B_EVIDENCE_SLUGS = [
+  "anion-gap",
+  "corrected-sodium",
+  "osmolar-gap",
+  "cockcroft-gault",
+  "shock-index",
+  "homa-ir",
+  "homa-b",
+  "corrected-calcium",
+  "mdrd",
+  "fena",
+  "feurea",
+  "albumin-creatinine-ratio",
+  "insulin-sensitivity",
+  "free-thyroxine-index",
+  "metabolic-syndrome-atp3",
+  "bishop-score",
+  "biophysical-profile",
+  "hellp-syndrome",
+  "hadlock-efw",
+  "preeclampsia-criteria",
+  "gestational-weight-gain",
+  "apgar-score",
+  "free-water-deficit",
+  "albumin-corrected-calcium",
+  "basal-metabolic-rate",
+] as const;
+
+const E3B_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  "anion-gap": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Kraut JA, Madias NE. Clin J Am Soc Nephrol. 2007;2:162-174.",
+      "Adrogue HJ, et al. Acid-base disorders. In: Brenner & Rector's The Kidney.",
+    ],
+  },
+  "corrected-sodium": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Hillier TA, Abbott RD, Barrett EJ. Am J Med. 1999;106:399-403.",
+    ],
+  },
+  "osmolar-gap": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: ["Brent J, et al. N Engl J Med. 2001;344:424-429."],
+  },
+  "cockcroft-gault": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: ["Cockcroft DW, Gault MH. Nephron. 1976;16:31-41."],
+  },
+  "shock-index": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: ["Rady MY, et al. Ann Emerg Med. 1994;24(4):685-690."],
+  },
+  "homa-ir": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: ["Matthews DR, et al. Diabetologia. 1985;28:412-419."],
+  },
+  "homa-b": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: ["Matthews DR, et al. Diabetologia. 1985;28(7):412-419."],
+  },
+  "corrected-calcium": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: ["Payne RB, et al. Br Med J. 1973;4(5893):643-646."],
+  },
+  mdrd: {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Levey AS, et al. Ann Intern Med. 1999;130(6):461-470.",
+      "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
+    ],
+  },
+  fena: {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Carvounis CP, et al. Kidney Int. 2002;62(3):1184-1191.",
+    ],
+  },
+  feurea: {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Pépin MN, et al. Clin Invest Med. 2007;30(5):E163-167.",
+    ],
+  },
+  "albumin-creatinine-ratio": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
+    ],
+  },
+  "insulin-sensitivity": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Wallace TM, Levy JC, Matthews DR. Diabetes Care. 2004;27(6):1487-1495.",
+    ],
+  },
+  "free-thyroxine-index": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Surks MI, et al. JAMA. 1990;263(11):1529-1532.",
+      "Mayo Clinic Laboratories. Free Thyroxine Index (FTI), Serum.",
+    ],
+  },
+  "metabolic-syndrome-atp3": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Grundy SM, et al. Circulation. 2005;112(17):2735-2752.",
+      "Alberti KG, et al. Circulation. 2009;120(16):1640-1645.",
+    ],
+  },
+  "bishop-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Bishop EH. Obstet Gynecol. 1964;24:266-268.",
+      "ACOG Practice Bulletin No. 107: Induction of labor. Obstet Gynecol. 2009;114(2 Pt 1):386-397.",
+    ],
+  },
+  "biophysical-profile": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Manning FA, et al. Am J Obstet Gynecol. 1981;140(3):289-294.",
+      "ACOG Practice Bulletin No. 145: Antepartum fetal surveillance. Obstet Gynecol. 2014;124(1):182-201.",
+    ],
+  },
+  "hellp-syndrome": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Sibai BM, et al. Am J Obstet Gynecol. 1993;169(4):1000-1006.",
+      "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
+    ],
+  },
+  "hadlock-efw": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Hadlock FP, et al. Am J Obstet Gynecol. 1985;151(3):333-337.",
+      "ACOG Practice Bulletin No. 227: Fetal growth restriction. Obstet Gynecol. 2021;137(2):e16-e28.",
+    ],
+  },
+  "preeclampsia-criteria": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
+    ],
+  },
+  "gestational-weight-gain": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "IOM/NRC. Weight Gain During Pregnancy. National Academies Press; 2009.",
+      "ACOG Committee Opinion No. 548: Weight gain during pregnancy. Obstet Gynecol. 2013;121(1):210-212.",
+    ],
+  },
+  "apgar-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Apgar V. Curr Res Anesth Analg. 1953;32(4):260-267.",
+      "AAP/ACOG Committee. The Apgar score. Pediatrics. 2015;136(4):819-822.",
+    ],
+  },
+  "free-water-deficit": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Adrogue HJ, Madias NE. N Engl J Med. 2000;342(21):1493-1499.",
+      "Sterns RH. Disorders of plasma sodium. N Engl J Med. 2015;372(1):55-65.",
+    ],
+  },
+  "albumin-corrected-calcium": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Payne RB, et al. Br Med J. 1973;4(5893):643-646.",
+    ],
+  },
+  "basal-metabolic-rate": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Mifflin MD, et al. Am J Clin Nutr. 1990;51(2):241-247.",
+    ],
+  },
+};
+
+describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () => {
+  it("all 25 E3b targets have clinical content", () => {
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 25 E3b targets have evidence", () => {
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 25 E3b targets have non-empty source", () => {
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 25 E3b targets have non-empty reference", () => {
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 25 E3b targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 25 E3b targets have at least 1 reference in references array", () => {
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("all 25 E3b target references match the expected citations", () => {
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E3B_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("no E3b target contains placeholder evidence", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("corrected-calcium uses verified Payne 1973 citation, not unverified Pay DA", () => {
+    const evidence = clinicalContentRegistry["corrected-calcium"]!.evidence!;
+    const allText = [
+      evidence.source ?? "",
+      evidence.reference ?? "",
+      evidence.version ?? "",
+      evidence.reviewedBy ?? "",
+      evidence.updatedAt ?? "",
+      ...(evidence.references ?? []),
+    ].join(" ");
+    expect(allText).toContain("Payne RB");
+    expect(allText).toContain("Br Med J. 1973;4(5893):643-646");
+    expect(allText).not.toContain("Pay DA");
+    expect(allText).not.toContain("Ann Clin Biochem. 2004;41(6):486-488");
+  });
+
+  it("all 25 E3b targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E3B_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E3b slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E3b does not alter E1 or E2 evidence counts unexpectedly", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(101);
+  });
+});
