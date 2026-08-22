@@ -278,6 +278,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical screening purposes only. BMI is a screening tool and does not diagnose body fatness or health. Clinical decisions should be based on comprehensive patient assessment.",
+    evidence: {
+      source: "Anthropometry / WHO",
+      reference: "WHO. Body Mass Index — BMI. World Health Organization.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2000",
+      updatedAt: "2026-08",
+      references: [
+        "WHO. Body Mass Index — BMI.",
+      ],
+    },
   },
 
   "bun-creatinine-ratio": {
@@ -1524,6 +1534,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Dosing decisions must always follow drug-specific labeling and institutional protocols.",
+    evidence: {
+      source: "Anthropometry / Oncology",
+      reference: "Mosteller RD. N Engl J Med. 1987;317(17):1098.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1987",
+      updatedAt: "2026-08",
+      references: [
+        "Mosteller RD. N Engl J Med. 1987;317(17):1098.",
+      ],
+    },
   },
 
   "ideal-body-weight": {
@@ -1578,6 +1598,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Ideal body weight is an estimate and dosing decisions must follow drug-specific guidance.",
+    evidence: {
+      source: "Internal Medicine / Pharmacy",
+      reference: "Devine BJ. Drug Intell Clin Pharm. 1974;8(11):650-655.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1974",
+      updatedAt: "2026-08",
+      references: [
+        "Devine BJ. Drug Intell Clin Pharm. 1974;8(11):650-655.",
+      ],
+    },
   },
 
   "adjusted-body-weight": {
@@ -1638,6 +1668,17 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Medication dosing must follow drug-specific labeling, pharmacokinetics, and institutional protocols.",
+    evidence: {
+      source: "Internal Medicine / Pharmacy",
+      reference: "ClinCalc Drug Dosing Reference. Adjusted Body Weight.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "ClinCalc Drug Dosing Reference. Adjusted Body Weight.",
+        "ASHP Clinical Guidelines on medication dosing in obese patients.",
+      ],
+    },
   },
 
   "child-pugh": {
@@ -3782,6 +3823,17 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Site-of-care decisions must integrate comorbidities, social factors, and clinical judgment.",
+    evidence: {
+      source: "Emergency Medicine / Pulmonology",
+      reference: "Lim WS, et al. Thorax. 2003;58(5):377-382.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2003",
+      updatedAt: "2026-08",
+      references: [
+        "Lim WS, et al. Thorax. 2003;58(5):377-382.",
+        "NICE CG191. Pneumonia in adults. 2014.",
+      ],
+    },
   },
 
   "psi-port": {
@@ -3878,6 +3930,17 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Site-of-care decisions must integrate comorbidities, social factors, and clinical judgment.",
+    evidence: {
+      source: "Emergency Medicine / Pulmonology",
+      reference: "Fine MJ, et al. N Engl J Med. 1997;336(4):243-250.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1997",
+      updatedAt: "2026-08",
+      references: [
+        "Fine MJ, et al. N Engl J Med. 1997;336(4):243-250.",
+        "Fine MJ, et al. JAMA. 1996;275(2):134-141.",
+      ],
+    },
   },
 
   "rts": {
@@ -3931,6 +3994,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Trauma triage must integrate anatomic injury, mechanism, physiology, and institutional protocols.",
+    evidence: {
+      source: "Trauma / Emergency Medicine",
+      reference: "Champion HR, et al. J Trauma. 1989;29(5):623-629.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1989",
+      updatedAt: "2026-08",
+      references: [
+        "Champion HR, et al. J Trauma. 1989;29(5):623-629.",
+      ],
+    },
   },
 
   "parkland-formula": {
@@ -4017,6 +4090,17 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Burn resuscitation must be titrated continuously to urine output, hemodynamics, and clinical response.",
+    evidence: {
+      source: "Emergency Medicine / Burns",
+      reference: "Baxter CR. Clin Plast Surg. 1974;1(4):693-709.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1974",
+      updatedAt: "2026-08",
+      references: [
+        "Baxter CR. Clin Plast Surg. 1974;1(4):693-709.",
+        "Alvarado R, et al. Burns. 2009;35(1):4-14.",
+      ],
+    },
   },
 
   "timi": {
@@ -4510,6 +4594,17 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. ASCVD risk estimates are population-based and must be interpreted in the context of the individual patient.",
+    evidence: {
+      source: "AHA / ACC",
+      reference: "Goff DC Jr, et al. J Am Coll Cardiol. 2014;63(25 Pt B):2935-2959.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2018",
+      updatedAt: "2026-08",
+      references: [
+        "Goff DC Jr, et al. J Am Coll Cardiol. 2014;63(25 Pt B):2935-2959.",
+        "Grundy SM, et al. Circulation. 2019;139(25):e1082-e1143.",
+      ],
+    },
   },
 
   "dapt": {
@@ -4569,6 +4664,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. DAPT duration decisions must incorporate stent type, ischemic risk, bleeding risk, and patient preferences.",
+    evidence: {
+      source: "Cardiology Literature",
+      reference: "Yeh RW, et al. JAMA. 2016;315(16):1735-1749.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2016",
+      updatedAt: "2026-08",
+      references: [
+        "Yeh RW, et al. JAMA. 2016;315(16):1735-1749.",
+      ],
+    },
   },
 
   "h2fpef": {
@@ -4625,6 +4730,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The diagnosis of HFpEF requires clinical judgment and may warrant further testing in intermediate-risk patients.",
+    evidence: {
+      source: "Cardiology Literature",
+      reference: "Reddy YNV, et al. Circulation. 2018;138(9):861-870.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2018",
+      updatedAt: "2026-08",
+      references: [
+        "Reddy YNV, et al. Circulation. 2018;138(9):861-870.",
+      ],
+    },
   },
 
   "ldl-cholesterol": {
@@ -8563,6 +8678,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The PHQ-9 is a screening instrument, not a substitute for a clinical diagnostic assessment; any concern for self-harm requires immediate evaluation.",
+    evidence: {
+      source: "Psychiatry / Primary Care",
+      reference: "Kroenke K, Spitzer RL, Williams JB. J Gen Intern Med. 2001;16(9):606-613.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2001",
+      updatedAt: "2026-08",
+      references: [
+        "Kroenke K, Spitzer RL, Williams JB. J Gen Intern Med. 2001;16(9):606-613.",
+      ],
+    },
   },
 
   "gad-7": {
@@ -8640,6 +8765,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The GAD-7 is a screening tool and does not replace clinical assessment or exclude other anxiety disorders.",
+    evidence: {
+      source: "Psychiatry / Primary Care",
+      reference: "Spitzer RL, Kroenke K, Williams JB, Löwe B. Arch Intern Med. 2006;166(10):1092-1097.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2006",
+      updatedAt: "2026-08",
+      references: [
+        "Spitzer RL, Kroenke K, Williams JB, Löwe B. Arch Intern Med. 2006;166(10):1092-1097.",
+      ],
+    },
   },
 
   "epworth": {
@@ -8718,6 +8853,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The ESS is a screening measure of sleep propensity; a diagnosis of sleep apnea requires objective sleep testing, and driving safety must always be addressed.",
+    evidence: {
+      source: "Sleep Medicine",
+      reference: "Johns MW. Sleep. 1991;14(6):540-545.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1991",
+      updatedAt: "2026-08",
+      references: [
+        "Johns MW. Sleep. 1991;14(6):540-545.",
+      ],
+    },
   },
 
   "stop-bang": {
@@ -8796,6 +8941,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. A positive STOP-BANG screen requires objective confirmation with polysomnography or home sleep apnea testing before OSA is diagnosed or treated.",
+    evidence: {
+      source: "Sleep Medicine / Anesthesiology",
+      reference: "Chung F, et al. Anesthesiology. 2008;108(5):812-821.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2008",
+      updatedAt: "2026-08",
+      references: [
+        "Chung F, et al. Anesthesiology. 2008;108(5):812-821.",
+      ],
+    },
   },
 
   "centor": {
@@ -8875,6 +9030,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The Modified Centor score estimates GAS probability and must be combined with clinical assessment and local testing/treatment policies; it is not a substitute for the IDSA pharyngitis guideline.",
+    evidence: {
+      source: "Infectious Disease / Primary Care",
+      reference: "Centor RM, et al. Med Decis Making. 1992;12(1):3-11.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1992",
+      updatedAt: "2026-08",
+      references: [
+        "Centor RM, et al. Med Decis Making. 1992;12(1):3-11.",
+      ],
+    },
   },
 
   "charlson": {
@@ -8965,6 +9130,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The CCI predicts population-level mortality risk and must not be used to forecast an individual patient's outcome or to make treatment decisions in isolation.",
+    evidence: {
+      source: "Internal Medicine / Epidemiology",
+      reference: "Charlson ME, et al. J Chronic Dis. 1987;40(5):373-383.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1987",
+      updatedAt: "2026-08",
+      references: [
+        "Charlson ME, et al. J Chronic Dis. 1987;40(5):373-383.",
+      ],
+    },
   },
 
   "barthel": {
@@ -9425,6 +9600,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support. Risk scores inform but do not replace clinical judgment in the management of upper GI bleeding.",
+    evidence: {
+      source: "Gastroenterology / Emergency Medicine",
+      reference: "Rockall TA, et al. Gut. 1996;38(3):316-321.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1996",
+      updatedAt: "2026-08",
+      references: [
+        "Rockall TA, et al. Gut. 1996;38(3):316-321.",
+      ],
+    },
   },
 
   "glasgow-blatchford-score": {
@@ -9549,6 +9734,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The diagnosis of alcoholic hepatitis and treatment decisions must be individualized with clinical judgment.",
+    evidence: {
+      source: "Hepatology / Gastroenterology",
+      reference: "Madrey WC, et al. Hepatology. 1998;28(6):1561-1563.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1998",
+      updatedAt: "2026-08",
+      references: [
+        "Madrey WC, et al. Hepatology. 1998;28(6):1561-1563.",
+      ],
+    },
   },
 
   "nafld-fibrosis-score": {
@@ -10263,6 +10458,16 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The result is not a prescription: actual starting doses are individualized, current treatment guidance and patient factors must be considered, and this calculator does not apply any automatic adjustment for age, cardiac disease, or pregnancy.",
+    evidence: {
+      source: "Endocrinology",
+      reference: "Jonklaas J, et al. Thyroid. 2014;24(12):1670-1751.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2014",
+      updatedAt: "2026-08",
+      references: [
+        "Jonklaas J, et al. Thyroid. 2014;24(12):1670-1751.",
+      ],
+    },
   },
 
   "levothyroxine-dose": {
@@ -10315,5 +10520,15 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The result is not a prescription: actual starting doses are individualized, current treatment guidance and patient factors must be considered, and this calculator does not apply any automatic adjustment for age, cardiac disease, or pregnancy.",
+    evidence: {
+      source: "Endocrinology",
+      reference: "Jonklaas J, et al. Thyroid. 2014;24(12):1670-1751.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2014",
+      updatedAt: "2026-08",
+      references: [
+        "Jonklaas J, et al. Thyroid. 2014;24(12):1670-1751.",
+      ],
+    },
   },
 };
