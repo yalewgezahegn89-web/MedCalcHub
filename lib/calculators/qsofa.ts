@@ -241,8 +241,24 @@ switch (result) {
 const referenceRange =
   "0–3";
 
+let guidanceAdvice: string[];
+let guidanceFollowUp: string[];
 
-
+if (result >= 2) {
+  guidanceAdvice = [
+    "Treat an elevated qSOFA as a prompt for closer assessment and escalation according to the clinical context, not as a standalone diagnosis; evaluate for infection and organ dysfunction alongside the full clinical picture.",
+  ];
+  guidanceFollowUp = [
+    "Reassess qSOFA frequently in any patient with suspected infection, obtain laboratory and physiologic data to characterize organ dysfunction, and escalate monitoring while the score remains elevated.",
+  ];
+} else {
+  guidanceAdvice = [
+    "Continue standard monitoring and interpret the score alongside the overall clinical assessment and appropriate investigations.",
+  ];
+  guidanceFollowUp = [
+    "Repeat qSOFA if the clinical condition changes or new abnormalities develop in mentation, blood pressure, or respiratory rate.",
+  ];
+}
 
 return {
   value:
@@ -253,6 +269,16 @@ return {
   status,
 
   referenceRange,
+
+  warnings: [
+    "qSOFA is a bedside risk and prognostic tool; it does not diagnose sepsis by itself.",
+    "A low qSOFA does not exclude sepsis — patients can deteriorate despite an initial score of 0 or 1.",
+    "Use qSOFA alongside overall clinical assessment and appropriate investigations rather than as a screening gatekeeper.",
+  ],
+
+  advice: guidanceAdvice,
+
+  followUp: guidanceFollowUp,
 };
 },
 

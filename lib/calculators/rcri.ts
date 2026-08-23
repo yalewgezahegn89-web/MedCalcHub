@@ -144,6 +144,41 @@ export const rcriCalculator: CalculatorDefinition = {
       score += value;
     }
 
+    const rcriWarnings = [
+      "The RCRI estimates perioperative cardiac risk for non-cardiac surgery; it does not replace individualized preoperative assessment.",
+      "Overall risk also depends on the specific surgical procedure, functional capacity, and patient context beyond the six predictors.",
+      "Risk estimates reflect major cardiac events within 30 days of surgery, not intraoperative or long-term risk alone.",
+    ];
+
+    let bandAdvice: string;
+    let bandFollowUp: string[];
+
+    if (score === 0) {
+      bandAdvice =
+        "Low predicted event rate supports proceeding with standard perioperative care; continue routine clinical assessment.";
+      bandFollowUp = [
+        "Reassess if the surgical plan changes to a higher-risk procedure or new cardiac findings emerge.",
+      ];
+    } else if (score === 1) {
+      bandAdvice =
+        "A single predictor warrants attention but is compatible with standard care in most contexts; combine with functional-capacity assessment and procedural risk.";
+      bandFollowUp = [
+        "Document the risk assessment and reassess if the patient's status or operative plan changes.",
+      ];
+    } else if (score === 2) {
+      bandAdvice =
+        "Moderate predicted event rate supports careful perioperative planning; integrate this estimate with functional capacity and the invasiveness of the planned procedure.";
+      bandFollowUp = [
+        "Plan appropriate perioperative monitoring and reassess after any change in cardiac status before surgery.",
+      ];
+    } else {
+      bandAdvice =
+        "Elevated predicted event rate supports multidisciplinary planning; consider cardiology input as part of individualized preoperative management rather than applying a fixed clearance rule.";
+      bandFollowUp = [
+        "Arrange perioperative review consistent with institutional practice and reassess after any preoperative intervention.",
+      ];
+    }
+
     if (score === 0) {
       return {
         value: score,
@@ -151,6 +186,9 @@ export const rcriCalculator: CalculatorDefinition = {
         interpretation:
           `RCRI score ${score} — LOW risk. Predicted rate of major perioperative cardiac events approximately 0.4%.`,
         status: "normal",
+        warnings: rcriWarnings,
+        advice: [bandAdvice],
+        followUp: bandFollowUp,
       };
     }
 
@@ -161,6 +199,9 @@ export const rcriCalculator: CalculatorDefinition = {
         interpretation:
           `RCRI score ${score} — LOW-MODERATE risk. Predicted rate of major perioperative cardiac events approximately 0.9%.`,
         status: "high",
+        warnings: rcriWarnings,
+        advice: [bandAdvice],
+        followUp: bandFollowUp,
       };
     }
 
@@ -171,6 +212,9 @@ export const rcriCalculator: CalculatorDefinition = {
         interpretation:
           `RCRI score ${score} — MODERATE risk. Predicted rate of major perioperative cardiac events approximately 7%.`,
         status: "high",
+        warnings: rcriWarnings,
+        advice: [bandAdvice],
+        followUp: bandFollowUp,
       };
     }
 
@@ -181,6 +225,12 @@ export const rcriCalculator: CalculatorDefinition = {
         `RCRI score ${score} — HIGH risk. Predicted rate of major perioperative cardiac events approximately 11%. ` +
         "Consider perioperative cardiology input and individualized management of cardiac risk factors.",
       status: "critical",
+      warnings: [
+        ...rcriWarnings,
+        "The RCRI does not define surgical clearance thresholds; decisions should be individualized.",
+      ],
+      advice: [bandAdvice],
+      followUp: bandFollowUp,
     };
   },
 };

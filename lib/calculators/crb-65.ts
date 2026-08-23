@@ -180,6 +180,12 @@ export const crb65Calculator: CalculatorDefinition = {
       met.push(`Age ${age} ≥65 years`);
     }
 
+    const crbWarnings = [
+      "CRB-65 is a clinical severity tool for community-acquired pneumonia; it does not replace assessment of oxygenation or systemic illness.",
+      "The score omits laboratory and imaging data (unlike CURB-65) and should be combined with clinical judgment and available investigations.",
+      "It can be applied in community or office settings where urea is unavailable, but results should be interpreted conservatively.",
+    ];
+
     if (score === 0) {
       return {
         value: score,
@@ -188,6 +194,13 @@ export const crb65Calculator: CalculatorDefinition = {
         interpretation:
           "CRB-65 score 0 — LOW risk (mortality ~1%). Consider management as an outpatient.",
         status: "normal",
+        warnings: crbWarnings,
+        advice: [
+          "Outpatient suitability still depends on oxygen saturation, oral intake, comorbidity, and reliable follow-up.",
+        ],
+        followUp: [
+          "Arrange clinical review within an appropriate interval and advise return precautions for deterioration.",
+        ],
       };
     }
 
@@ -200,6 +213,13 @@ export const crb65Calculator: CalculatorDefinition = {
           `CRB-65 score ${score} — INTERMEDIATE risk (mortality ~8%). Consider hospital admission. ` +
           (met.length > 0 ? `Findings: ${met.join("; ")}.` : ""),
         status: "high",
+        warnings: crbWarnings,
+        advice: [
+          "Hospital assessment is generally advised at this band; where observation at home is considered, confirm adequate oxygenation and safe follow-up.",
+        ],
+        followUp: [
+          "Reassess promptly if respiratory status, confusion, or blood pressure changes after the initial decision.",
+        ],
       };
     }
 
@@ -211,6 +231,13 @@ export const crb65Calculator: CalculatorDefinition = {
         `CRB-65 score ${score} — HIGH risk (mortality ~30%). Urgent hospital admission; assess for ICU level of care. ` +
         (met.length > 0 ? `Findings: ${met.join("; ")}.` : ""),
       status: "critical",
+      warnings: crbWarnings,
+      advice: [
+        "Urgent hospital assessment is indicated; evaluate severity fully on arrival, including oxygenation and sepsis physiology.",
+      ],
+      followUp: [
+        "Monitor closely during transfer/arrival and reassess severity with full investigations in hospital.",
+      ],
     };
   },
 };

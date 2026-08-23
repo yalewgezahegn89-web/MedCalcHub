@@ -193,6 +193,11 @@ export const graceCalculator: CalculatorDefinition = {
       score += Number(value);
     }
 
+    const graceWarnings = [
+      "GRACE estimates in-hospital mortality risk in ACS populations; it does not establish a diagnosis by itself.",
+      "Risk estimates depend on accurate admission data and clinical context — recheck inputs if the estimate conflicts with the clinical picture.",
+    ];
+
     if (score <= 108) {
       return {
         value: score,
@@ -200,6 +205,13 @@ export const graceCalculator: CalculatorDefinition = {
         interpretation:
           `GRACE in-hospital score ${score} — LOW risk. Predicted in-hospital mortality < 1%.`,
         status: "normal",
+        warnings: graceWarnings,
+        advice: [
+          "Low predicted mortality does not preclude ischemic events; continue guideline-based ACS care and monitoring.",
+        ],
+        followUp: [
+          "Reassess risk if the clinical course changes, including new ECG findings, hemodynamic instability, or biomarker trends.",
+        ],
       };
     }
 
@@ -209,7 +221,14 @@ export const graceCalculator: CalculatorDefinition = {
         unit: "points",
         interpretation:
           `GRACE in-hospital score ${score} — INTERMEDIATE risk. Predicted in-hospital mortality 1–3%.`,
-        status: "high",
+        status: "low",
+        warnings: graceWarnings,
+        advice: [
+          "Intermediate-risk patients benefit from structured observation and timely decision-making on further management.",
+        ],
+        followUp: [
+          "Repeat the assessment as the clinical course evolves and before major management decisions.",
+        ],
       };
     }
 
@@ -220,6 +239,16 @@ export const graceCalculator: CalculatorDefinition = {
         `GRACE in-hospital score ${score} — HIGH risk. Predicted in-hospital mortality > 3%. ` +
         "Urgent risk-directed therapy, including possible early invasive strategy.",
       status: "critical",
+      warnings: [
+        ...graceWarnings,
+        "A high GRACE score reflects elevated event probability but the choice of invasive strategy should integrate the full clinical context and current guidelines.",
+      ],
+      advice: [
+        "Urgent risk-directed management is appropriate at this level, coordinated with cardiology according to local pathways.",
+      ],
+      followUp: [
+        "Monitor closely and reassess after each intervention or clinical change while inpatient.",
+      ],
     };
   },
 };

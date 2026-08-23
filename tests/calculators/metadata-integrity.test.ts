@@ -214,4 +214,36 @@ describe("Calculator Metadata Repository Integrity", () => {
       expect(bySlug).toBe(calc);
     }
   });
+
+  it("every relatedCalculators entry in calculator definitions resolves to a registered id", () => {
+    for (const calc of registered) {
+      if (!calc.relatedCalculators) continue;
+      for (const ref of calc.relatedCalculators) {
+        expect(
+          registeredIds.has(ref),
+          `${calc.slug}.relatedCalculators contains "${ref}" which is not a registered calculator id`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("no calculator has itself in its relatedCalculators", () => {
+    for (const calc of registered) {
+      if (!calc.relatedCalculators) continue;
+      expect(
+        calc.relatedCalculators,
+      ).not.toContain(calc.slug);
+    }
+  });
+
+  it("no duplicate entries in any relatedCalculators array", () => {
+    for (const calc of registered) {
+      if (!calc.relatedCalculators) continue;
+      const unique = new Set(calc.relatedCalculators);
+      expect(
+        unique.size,
+        `${calc.slug}.relatedCalculators contains duplicates`,
+      ).toBe(calc.relatedCalculators.length);
+    }
+  });
 });

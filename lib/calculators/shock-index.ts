@@ -174,6 +174,14 @@ let status:
   "critical";
 let referenceRange = "";
 
+const shockWarnings = [
+  "The Shock Index is a screening hemodynamic indicator, not a diagnosis — it does not identify the cause of hemodynamic abnormality.",
+  "Heart rate and systolic blood pressure can be affected by medications (beta-blockers, vasopressors), rhythm, and other conditions, which may mask or mimic an abnormal index.",
+];
+
+let bandAdvice: string;
+let bandFollowUp: string[];
+
 if (result < 0.5) {
 
   interpretation =
@@ -184,6 +192,12 @@ if (result < 0.5) {
 
   referenceRange =
   "<0.5";
+
+  bandAdvice =
+    "Interpret in context: a low index with bradycardia, medication effect, or raised intracranial pressure requires clinical correlation rather than reassurance.";
+  bandFollowUp = [
+    "Repeat assessment when vitals or clinical status change.",
+  ];
 }
 
 else if (result <= 0.7) {
@@ -195,31 +209,49 @@ else if (result <= 0.7) {
     "normal";
 
   referenceRange =
-  "0.5–0.7";
+    "0.5\u20130.7";
+
+  bandAdvice =
+    "A normal index does not exclude evolving blood loss or sepsis — correlate with the full clinical picture and trends over time.";
+  bandFollowUp = [
+    "Reassess when hemodynamics evolve or after any intervention.",
+  ];
 }
 
 else if (result < 1) {
 
   interpretation =
-    "Elevated shock index – investigate for hypoperfusion.";
+    "Elevated shock index \u2013 investigate for hypoperfusion.";
 
   status =
     "high";
 
   referenceRange =
-  "0.7–0.9";
+    "0.7\u20130.9";
+
+  bandAdvice =
+    "An elevated index should prompt clinical reassessment for causes of hypoperfusion in the appropriate context, including hemorrhage and sepsis.";
+  bandFollowUp = [
+    "Repeat the index as part of ongoing monitoring; a rising trend is more concerning than any single value.",
+  ];
 }
 
 else {
 
   interpretation =
-    "High shock index – significant hemodynamic compromise.";
+    "High shock index \u2013 significant hemodynamic compromise.";
 
   status =
     "critical";
 
   referenceRange =
-  "≥1.0";
+    "\u22651.0";
+
+  bandAdvice =
+    "This level suggests significant hemodynamic compromise and warrants immediate clinical evaluation of perfusion and its cause.";
+  bandFollowUp = [
+    "Reassess frequently during resuscitation to track response.",
+  ];
 }
 
 
@@ -234,6 +266,12 @@ return {
   status,
 
   referenceRange,
+
+  warnings: shockWarnings,
+
+  advice: [bandAdvice],
+
+  followUp: bandFollowUp,
 };
 },
 

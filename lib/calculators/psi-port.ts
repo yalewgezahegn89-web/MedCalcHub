@@ -460,12 +460,62 @@ export const psiPortCalculator: CalculatorDefinition = {
       status = "critical";
     }
 
+    const psiWarnings = [
+      "The PSI estimates 30-day mortality/severity for community-acquired pneumonia and should support disposition decisions rather than replace clinical judgment.",
+      "Social factors, oxygen requirements, ability to take oral intake, reliability of follow-up, and other acute considerations may legitimately modify disposition.",
+      "Arterial blood gas values (pH, PaO2) are optional inputs; when omitted the score may underestimate severity.",
+    ];
+
+    if (isClassI) {
+      return {
+        value: score,
+        unit: "points",
+        score,
+        interpretation,
+        status,
+        warnings: psiWarnings,
+        advice: [
+          "Class I patients are candidates for outpatient care when oxygenation, oral intake, and social circumstances are favorable.",
+        ],
+        followUp: [
+          "Arrange appropriate outpatient review and advise return precautions for worsening dyspnea, fever, or confusion.",
+        ],
+      };
+    }
+
+    if (score <= 70) {
+      return {
+        value: score,
+        unit: "points",
+        score,
+        interpretation,
+        status,
+        warnings: psiWarnings,
+        advice: [
+          "Low-risk class supports outpatient management in suitable patients; verify oxygenation and social safety before discharge.",
+        ],
+        followUp: [
+          "Provide clear follow-up and return precautions; reassess if the clinical course deviates from expectations.",
+        ],
+      };
+    }
+
+    const bandAdvice =
+      status === "critical"
+        ? "High-mortality class warrants hospital admission with assessment for critical-care involvement."
+        : "This class generally merits inpatient care or structured observation depending on the class band and clinical trajectory.";
+
     return {
       value: score,
       unit: "points",
       score,
       interpretation,
       status,
+      warnings: psiWarnings,
+      advice: [bandAdvice],
+      followUp: [
+        "Reassess frequently during the first hours after presentation; deterioration despite a moderate initial class should trigger escalation.",
+      ],
     };
   },
 };

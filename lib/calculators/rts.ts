@@ -148,6 +148,11 @@ export const rtsCalculator: CalculatorDefinition = {
 
     const rounded = Math.round(rts * 10000) / 10000;
 
+    const rtsWarnings = [
+      "The Revised Trauma Score is a physiologic severity and triage tool, not a definitive diagnostic assessment.",
+      "Scoring must not delay immediate trauma stabilization — airway, breathing, hemorrhage control, and circulation come first.",
+    ];
+
     if (rts < 4) {
       return {
         value: rounded,
@@ -157,6 +162,13 @@ export const rtsCalculator: CalculatorDefinition = {
           `RTS ${rounded} — high likelihood of poor outcome (predicted survival <70%). ` +
           "Strongly consider transfer to a trauma center.",
         status: "critical",
+        warnings: rtsWarnings,
+        advice: [
+          "Use this as an adjunct to the primary survey; initiate stabilization and arrange trauma-center transfer in parallel rather than sequentially.",
+        ],
+        followUp: [
+          "Reassess serially — physiologic improvement or deterioration after resuscitation changes both the score and triage implications.",
+        ],
       };
     }
 
@@ -169,6 +181,13 @@ export const rtsCalculator: CalculatorDefinition = {
           `RTS ${rounded} — moderate physiologic derangement. ` +
           "Evaluate for trauma center transfer per local protocols.",
         status: "high",
+        warnings: rtsWarnings,
+        advice: [
+          "Interpret alongside injury mechanism, anatomic findings, and local triage criteria rather than the score alone.",
+        ],
+        followUp: [
+          "Repeat the assessment after initial resuscitation and whenever physiology changes.",
+        ],
       };
     }
 
@@ -179,6 +198,16 @@ export const rtsCalculator: CalculatorDefinition = {
       interpretation:
         `RTS ${rounded} — minor physiologic derangement; standard trauma care.`,
       status: "normal",
+      warnings: [
+        ...rtsWarnings,
+        "A normal RTS does not exclude significant anatomic injury — mechanism and examination findings still drive evaluation.",
+      ],
+      advice: [
+        "Continue standard trauma assessment including appropriate imaging based on mechanism and examination.",
+      ],
+      followUp: [
+        "Reassess if hemodynamics or consciousness change at any point during evaluation.",
+      ],
     };
   },
 };

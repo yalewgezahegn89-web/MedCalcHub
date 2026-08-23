@@ -82,6 +82,7 @@ const testInputs: Record<string, Record<string, string>> = {
   gcs: { eye: "4", verbal: "5", motor: "6" },
   "shock-index": { "heart-rate": "120", sbp: "80" },
   news2: {
+    "spo2-scale": "standard",
     "respiratory-rate": "20",
     spo2: "94",
     temperature: "38",
@@ -3255,7 +3256,7 @@ const BATCH7_NEURO_BOUNDARY_CASES: BoundaryCase[] = [
   {
     id: "nihss",
     inputs: { loc: "1", locQuestions: "0", locCommands: "0", gaze: "0", visual: "0", facial: "0", armLeft: "0", armRight: "0", legLeft: "0", legRight: "0", ataxia: "0", sensory: "0", language: "0", dysarthria: "0", extinction: "0" },
-    expectedStatus: "normal",
+    expectedStatus: "low",
     expectedValue: 1,
   },
   // NIHSS moderate (score 15)

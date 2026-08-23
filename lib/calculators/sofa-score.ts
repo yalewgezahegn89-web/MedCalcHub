@@ -239,12 +239,42 @@ export const sofaScoreCalculator: CalculatorDefinition = {
       status = "critical";
     }
 
+    let guidanceAdvice: string;
+    let guidanceFollowUp: string[];
+    if (total <= 1) {
+      guidanceAdvice =
+        "No significant organ dysfunction is identified on this assessment; continue routine critical-care monitoring appropriate to the patient's condition.";
+      guidanceFollowUp = [
+        "Repeat the SOFA score as organ function evolves and whenever new physiologic or laboratory data become available.",
+      ];
+    } else if (total <= 5) {
+      guidanceAdvice =
+        "Higher scores indicate greater organ dysfunction; this level of abnormality should prompt closer monitoring, review of each organ component, and clinical reassessment.";
+      guidanceFollowUp = [
+        "Reassess SOFA serially — a worsening score indicates evolving organ dysfunction and warrants urgent review.",
+      ];
+    } else {
+      guidanceAdvice =
+        "Severe multi-organ dysfunction is present; ensure each contributing organ component has been reviewed and that organ-support measures match the degree of dysfunction.";
+      guidanceFollowUp = [
+        "Reassess SOFA frequently during the evolving phase of illness and after any change in organ support.",
+      ];
+    }
+
     return {
       value: total,
       unit: "/24",
       score: total,
       interpretation,
       status,
+      warnings: [
+        "SOFA is a severity-of-organ-dysfunction score, not a diagnostic test for any single condition.",
+        "An acute increase of \u22652 points in the setting of suspected infection is part of Sepsis-3 assessment, but a SOFA score alone does not establish infection.",
+        "Baseline SOFA is often unknown in patients without prior measurements, which can make an acute change difficult to quantify.",
+        "Score interpretation depends on clinical context, including pre-existing chronic organ dysfunction.",
+      ],
+      advice: [guidanceAdvice],
+      followUp: guidanceFollowUp,
     };
   },
 };

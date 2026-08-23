@@ -183,7 +183,7 @@ export const rochesterCriteriaCalculator: CalculatorDefinition = {
     "Pantell RH, Roberts KB, Adams WG, et al. Evaluation and management of well-appearing febrile infants 8 to 60 days old. Pediatrics. 2021;148(2):e2021052228.",
   ],
 
-  relatedCalculators: ["sirs-criteria", "rochester-criteria", "peds-pews"],
+  relatedCalculators: ["sirs-criteria", "peds-pews"],
 
   inputs: [
     {

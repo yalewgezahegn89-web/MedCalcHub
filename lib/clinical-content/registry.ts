@@ -529,6 +529,7 @@ export const clinicalContentRegistry: Record<
     ],
     limitations: [
       "Patients with chronic respiratory disease may have persistently low SpO₂ on air; consider using target SpO₂ ranges in the supplemental oxygen scoring.",
+      "A deterioration-monitoring score rather than a diagnostic tool — it does not identify the underlying cause of acute illness.",
       "Does not replace comprehensive clinical assessment.",
       "A low score does not guarantee clinical stability.",
       "Patients on long-term oxygen therapy require individualized assessment.",
@@ -537,6 +538,7 @@ export const clinicalContentRegistry: Record<
       description:
         "A 72-year-old woman on the surgical ward has respiratory rate 24/min, SpO₂ 93% on air, temperature 38.2°C, systolic BP 100 mmHg, and pulse 110 bpm, and is alert.",
       inputs: {
+        "spo2-scale": "standard",
         "respiratory-rate": "24",
         spo2: "93",
         temperature: "38.2",
@@ -3300,6 +3302,7 @@ export const clinicalContentRegistry: Record<
       "Several items ('PE most likely diagnosis') are subjective and operator-dependent.",
       "Pre-test probability tools perform differently in inpatient versus outpatient populations.",
       "The score does not replace diagnostic testing in intermediate or high probability patients.",
+      "A low score does not by itself exclude PE — persistent clinical suspicion warrants continued evaluation.",
     ],
     example: {
       description:
@@ -3471,6 +3474,7 @@ export const clinicalContentRegistry: Record<
     ],
     limitations: [
       "Component scoring has some subjectivity (history and risk factors).",
+      "A risk-stratification tool rather than a standalone diagnostic test — clinical assessment, ECG, and serial biomarkers remain necessary.",
       "MACE estimates vary between validation cohorts.",
       "The score should not delay emergent management in clinically unstable patients.",
     ],
@@ -3565,6 +3569,7 @@ export const clinicalContentRegistry: Record<
     limitations: [
       "Requires laboratory values, so it cannot be computed at the bedside without results.",
       "Baseline SOFA is frequently unknown, complicating the 'increase of 2' criterion.",
+      "A SOFA score alone does not establish infection; organ dysfunction must be interpreted with the overall clinical picture.",
       "Component thresholds were derived for adults and are not validated in children.",
     ],
     example: {
@@ -3752,6 +3757,7 @@ export const clinicalContentRegistry: Record<
       "CRB-65 omits the urea component of CURB-65, slightly reducing discrimination.",
       "Age alone drives a point in all patients over 65, which can over-score otherwise stable patients.",
       "Mortality estimates come from specific cohorts and may not generalize.",
+      "Does not account for oxygenation or systemic illness — combine with clinical judgment and assessment of oxygen requirements in all patients, not only young adults.",
     ],
     example: {
       description:
@@ -3824,6 +3830,7 @@ export const clinicalContentRegistry: Record<
       "Requires several laboratory values, making it less practical than CRB-65 at the bedside.",
       "Class I designation requires absence of all comorbidities and risk findings.",
       "The rule was derived in adults with CAP and may not generalize to all populations.",
+      "The score supports but does not dictate site-of-care decisions — social factors, oxygen requirements, and other acute considerations can justify a different disposition.",
     ],
     example: {
       description:
@@ -3930,6 +3937,7 @@ export const clinicalContentRegistry: Record<
       "RTS captures physiologic state at a single time point; patients can deteriorate.",
       "Normal vital signs can mask severe internal injury.",
       "The score is adult-derived and requires adult thresholds.",
+      "Scoring must not delay immediate trauma stabilization — resuscitation takes priority over triage calculation.",
     ],
     example: {
       description:

@@ -183,9 +183,6 @@ const status:
 const referenceRange =
   "";
 
-
-
-
 return {
   value:
     Number(result.toFixed(2)),
@@ -195,6 +192,20 @@ return {
   status,
 
   referenceRange,
+
+  warnings: [
+    "MAP is a hemodynamic estimate derived from SBP and DBP; it does not by itself diagnose shock or guarantee adequate organ perfusion.",
+    "Clinical context and end-organ findings (urine output, mentation, lactate, skin perfusion) remain essential to interpretation.",
+    "The calculation assumes a normal heart rate and central pressure measurement conditions; accuracy is reduced with arrhythmia or marked tachycardia.",
+  ],
+
+  advice: [
+    "Interpret the MAP alongside blood-pressure trend and overall patient condition rather than as an isolated number.",
+  ],
+
+  followUp: [
+    "Reassess whenever blood pressure, medications, or clinical status change.",
+  ],
 };
 },
 

@@ -173,6 +173,16 @@ export const wellsPeCalculator: CalculatorDefinition = {
           `Wells score ${rounded} (${threeTier} probability, three-tier) — PE LIKELY (two-tier). ` +
           "Proceed directly to CT pulmonary angiography; D-dimer is not recommended.",
         status: "high",
+        warnings: [
+          "The Wells PE score is a pretest-probability tool, not a diagnostic test — it neither confirms nor excludes PE by itself.",
+          "PE may still be present even when the score suggests lower probability; clinical suspicion should drive the pathway if discordant.",
+        ],
+        advice: [
+          "With PE-likely status, proceed along established diagnostic pathways (imaging-first) rather than relying on D-dimer exclusion.",
+        ],
+        followUp: [
+          "If imaging is delayed or the patient deteriorates while awaiting investigation, escalate care immediately.",
+        ],
       };
     }
 
@@ -183,6 +193,16 @@ export const wellsPeCalculator: CalculatorDefinition = {
         `Wells score ${rounded} (${threeTier} probability, three-tier) — PE UNLIKELY (two-tier). ` +
         "A negative high-sensitivity D-dimer safely excludes PE without imaging.",
       status: "normal",
+      warnings: [
+        "The Wells PE score is a pretest-probability tool, not a diagnostic test; it must be combined with an appropriate D-dimer or imaging pathway for the clinical setting.",
+        "A low score does not independently exclude PE in every patient — persistent clinical suspicion warrants continued evaluation regardless of the score.",
+      ],
+      advice: [
+        "Use this result within an established PE assessment pathway; a positive D-dimer returns the patient to full diagnostic evaluation.",
+      ],
+      followUp: [
+        "If symptoms persist or evolve after a negative D-dimer, reassess and consider further evaluation rather than closing the workup on the score alone.",
+      ],
     };
   },
 };

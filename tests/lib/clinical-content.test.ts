@@ -2334,8 +2334,8 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
 describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
   const DEFERRED_WITHOUT_CONTENT: string[] = [];
 
-  const KNOWN_INPUT_DEFECTIVE = ["news2", "shock-index"];
-  const KNOWN_NUMERIC_DEFECTIVE = ["news2", "shock-index", "ckd-epi-2021"];
+  const KNOWN_INPUT_DEFECTIVE = ["shock-index"];
+  const KNOWN_NUMERIC_DEFECTIVE = ["shock-index", "ckd-epi-2021"];
 
   const VERIFIED_EXAMPLE_VALUES: Record<string, string | number> = {
     "anion-gap": 23,

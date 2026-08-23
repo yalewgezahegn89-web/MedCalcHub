@@ -447,7 +447,7 @@ export const nihssCalculator: CalculatorDefinition = {
       extinction.n;
 
     let interpretation: string;
-    let status: "normal" | "high" | "critical";
+    let status: "normal" | "low" | "high" | "critical";
     let referenceRange: string;
 
     if (score === 0) {
@@ -459,7 +459,7 @@ export const nihssCalculator: CalculatorDefinition = {
       interpretation =
         `NIHSS ${score}/42 — MINOR stroke. ` +
         "Deficit is mild; determine eligibility for reperfusion therapy and complete the diagnostic workup.";
-      status = "normal";
+      status = "low";
       referenceRange = "1–4";
     } else if (score <= 15) {
       interpretation =

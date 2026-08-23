@@ -173,8 +173,22 @@ export const percRuleCalculator: CalculatorDefinition = {
         interpretation:
           "PERC negative — all 8 criteria met. PE can be considered ruled out without D-dimer or imaging when pre-test probability is low.",
         status: "normal",
+        warnings: [
+          "PERC applies only to patients already judged to have a low pretest probability by an accepted risk tool — it is not a universal exclusion rule.",
+          "Do not apply PERC without first establishing appropriately low pretest probability; in higher-prevalence settings a PERC-negative result does not exclude PE.",
+        ],
+        advice: [
+          "PERC-negative status supports deferring D-dimer and imaging only when the gestalt/clinical probability is genuinely low; document the pretest assessment.",
+        ],
+        followUp: [
+          "Advise the patient to return promptly if symptoms worsen, as the assessment reflects this encounter only.",
+        ],
       };
     }
+
+    const failed = criteria
+      .filter((c) => values[c.id] === "0")
+      .map((c) => c.label);
 
     return {
       value: criteriaMet,
@@ -182,6 +196,16 @@ export const percRuleCalculator: CalculatorDefinition = {
       interpretation:
         "PERC positive — not all 8 criteria met. PE cannot be ruled out by the PERC rule; proceed with D-dimer and/or imaging as indicated.",
       status: "high",
+      warnings: [
+        "A positive PERC result means exclusion status is not met — each unmet criterion represents a feature that keeps PE possible.",
+        "PERC was designed for low-risk populations; it should never override clinical suspicion of PE.",
+      ],
+      advice: [
+        `Continue diagnostic evaluation with D-dimer and/or imaging per your local pathway. Unmet criteria: ${failed.join("; ") || "none identified"}.`,
+      ],
+      followUp: [
+        "Complete the diagnostic pathway; do not discharge on the basis of a PERC-positive screen without further evaluation when PE remains suspected.",
+      ],
     };
   },
 };

@@ -285,6 +285,29 @@ else {
 
 
 
+let guidanceAdvice: string;
+let guidanceFollowUp: string[];
+
+if (result >= 13) {
+  guidanceAdvice =
+    "A mild reduction in consciousness warrants attention to any fall from the patient's baseline; a declining trend can be more significant than the absolute score.";
+  guidanceFollowUp = [
+    "Repeat the GCS if the level of consciousness changes and reassess serially in any patient under observation after head injury.",
+  ];
+} else if (result >= 9) {
+  guidanceAdvice =
+    "Serial assessment is important: a falling GCS indicates deterioration and should prompt urgent re-evaluation of the underlying cause.";
+  guidanceFollowUp = [
+    "Reassess the GCS at regular intervals and immediately after any neurologic change; document each score to track trends.",
+  ];
+} else {
+  guidanceAdvice =
+    "Worsening scores indicate progressive impairment of consciousness and demand urgent reassessment; a GCS \u2264 8 is commonly used as a threshold for considering airway protection.";
+  guidanceFollowUp = [
+    "Monitor continuously with repeat GCS assessments, and reassess immediately after any intervention or change in neurologic status.",
+  ];
+}
+
 return {
   value:
     Number(result.toFixed(2)),
@@ -294,6 +317,18 @@ return {
   status,
 
   referenceRange,
+
+  warnings: [
+    "The GCS assesses the level of consciousness only; it does not by itself identify the underlying cause.",
+    "Sedation, paralysis, intoxication, intubation, aphasia, language barriers, and other factors can confound scoring and lower the achievable score.",
+    result < 9
+      ? "A severely reduced GCS is an emergency finding and should prompt urgent clinical assessment."
+      : "Interpret the score against the patient's baseline and clinical context rather than in isolation.",
+  ],
+
+  advice: [guidanceAdvice],
+
+  followUp: guidanceFollowUp,
 };
 },
 

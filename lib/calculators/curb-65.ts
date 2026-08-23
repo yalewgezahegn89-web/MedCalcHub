@@ -347,8 +347,33 @@ switch (result) {
 const referenceRange =
   "0–5";
 
+const curbWarnings = [
+  "CURB-65 estimates pneumonia severity and mortality risk; it does not replace assessment of oxygenation, sepsis physiology, comorbidities, or social circumstances.",
+  "Hypoxemia or clinical instability warrants a higher level of care regardless of the score.",
+];
 
+let bandAdvice: string;
+let bandFollowUp: string[];
 
+if (result <= 1) {
+  bandAdvice =
+    "Outpatient management may be appropriate when oxygen saturation is acceptable, oral intake is maintained, and follow-up is reliable.";
+  bandFollowUp = [
+    "Provide clear return precautions for worsening breathlessness, fever, confusion, or inability to maintain intake.",
+  ];
+} else if (result === 2) {
+  bandAdvice =
+    "Hospital admission should be strongly considered; weigh oxygenation, comorbidity burden, and social support in the final disposition.";
+  bandFollowUp = [
+    "Reassess within hours of any treatment decision — failure to improve or new hypoxemia warrants escalation.",
+  ];
+} else {
+  bandAdvice =
+    "Severe-pneumonia band: arrange urgent hospital assessment and evaluate for critical-care need alongside standard treatment measures.";
+  bandFollowUp = [
+    "Monitor respiratory status and systemic signs closely and reassess severity after initial treatment.",
+  ];
+}
 
 return {
   value:
@@ -359,6 +384,12 @@ return {
   status,
 
   referenceRange,
+
+  warnings: curbWarnings,
+
+  advice: [bandAdvice],
+
+  followUp: bandFollowUp,
 };
 },
 

@@ -211,26 +211,66 @@ export const parklandFormulaCalculator: CalculatorDefinition = {
     let interpretation: string;
     let status: "normal" | "high" | "critical";
 
+    const parklandWarnings = [
+      "The Parkland formula provides an initial fluid estimate, not a fixed final prescription — resuscitation must be titrated to clinical endpoints.",
+      "Both excess and inadequate fluid administration are harmful; the formula is a starting point for titration, not a target to be met exactly.",
+    ];
+
     if (tbsa < 10) {
       interpretation =
         `${tbsa}% TBSA — minor burn. Formal fluid resuscitation is typically not required; ` +
         "the Parkland estimate is provided for reference only.";
       status = "normal";
-    } else if (tbsa < 20) {
+      return {
+        value: totalVolume,
+        unit: "mL/24h",
+        score: roundedTotal,
+        interpretation,
+        status,
+        advice: [
+          `First 8 hours: ${roundedFirst8h} mL (≈ ${roundedFirst8hRate} mL/h)`,
+          `Next 16 hours: ${roundedNext16h} mL (≈ ${roundedNext16hRate} mL/h)`,
+        ],
+        warnings: [
+          ...parklandWarnings,
+          "At this burn size oral rehydration and standard care are usually sufficient; apply the formula only if clinical assessment indicates otherwise.",
+        ],
+        followUp: [
+          "Reassess fluid needs if the burn extent is reassessed upward or the patient shows signs of hypoperfusion.",
+        ],
+      };
+    }
+
+    if (tbsa < 20) {
       interpretation =
         `${tbsa}% TBSA — moderate burn. Total 24-hour volume ${roundedTotal} mL. ` +
         `Give ${roundedFirst8h} mL over the first 8 hours (${roundedFirst8hRate} mL/h), ` +
         `then ${roundedNext16h} mL over 16 hours (${roundedNext16hRate} mL/h) of Ringer's lactate.`;
       status = "high";
-    } else {
-      interpretation =
-        `${tbsa}% TBSA — major burn. Total 24-hour volume ${roundedTotal} mL. ` +
-        `Give ${roundedFirst8h} mL over the first 8 hours (${roundedFirst8hRate} mL/h), ` +
-        `then ${roundedNext16h} mL over 16 hours (${roundedNext16hRate} mL/h) of Ringer's lactate. ` +
-        "Titrate to urine output 0.5–1.0 mL/kg/h.";
-      status = "critical";
+      return {
+        value: totalVolume,
+        unit: "mL/24h",
+        score: roundedTotal,
+        interpretation,
+        status,
+        advice: [
+          `First 8 hours: ${roundedFirst8h} mL (≈ ${roundedFirst8hRate} mL/h)`,
+          `Next 16 hours: ${roundedNext16h} mL (≈ ${roundedNext16hRate} mL/h)`,
+          "Treat these volumes as an initial estimate and adjust based on ongoing assessment of perfusion and response.",
+        ],
+        warnings: parklandWarnings,
+        followUp: [
+          "Titrate infusion to clinical endpoints (urine output, hemodynamics) rather than completing the calculated volume regardless of response.",
+        ],
+      };
     }
 
+    interpretation =
+      `${tbsa}% TBSA — major burn. Total 24-hour volume ${roundedTotal} mL. ` +
+      `Give ${roundedFirst8h} mL over the first 8 hours (${roundedFirst8hRate} mL/h), ` +
+      `then ${roundedNext16h} mL over 16 hours (${roundedNext16hRate} mL/h) of Ringer's lactate. ` +
+      "Titrate to urine output 0.5–1.0 mL/kg/h.";
+    status = "critical";
     return {
       value: totalVolume,
       unit: "mL/24h",
@@ -240,6 +280,14 @@ export const parklandFormulaCalculator: CalculatorDefinition = {
       advice: [
         `First 8 hours: ${roundedFirst8h} mL (≈ ${roundedFirst8hRate} mL/h)`,
         `Next 16 hours: ${roundedNext16h} mL (≈ ${roundedNext16hRate} mL/h)`,
+        "Adjust the rate based on ongoing reassessment — the formula is an initial estimate for a resuscitation that must be individually titrated.",
+      ],
+      warnings: [
+        ...parklandWarnings,
+        "Clock time matters: half the calculated volume is given in the first 8 hours from the time of the burn, not from the time of calculation.",
+      ],
+      followUp: [
+        "Monitor urine output and hemodynamic endpoints serially and adjust the infusion accordingly throughout resuscitation.",
       ],
     };
   },

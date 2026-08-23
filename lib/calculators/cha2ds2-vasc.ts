@@ -182,14 +182,27 @@ export const cha2ds2VascCalculator: CalculatorDefinition = {
     const isFemale = sex === 1;
     const effectiveScore = score - (isFemale ? 1 : 0);
 
+    const chaWarnings = [
+      "CHA\u2082DS\u2082-VASc estimates thromboembolic/stroke risk in atrial fibrillation or flutter contexts and does not by itself determine whether anticoagulation is appropriate.",
+      "Bleeding risk, contraindications, patient preferences, and current guidelines must also be considered in anticoagulation decisions.",
+      "The score is derived for non-valvular AF; valvular disease and other special situations require separate assessment.",
+    ];
+
     if (effectiveScore <= 0) {
       return {
         value: score,
         unit: "/9",
         interpretation:
-          `CHA₂DS₂-VASc score ${score} — LOW stroke risk. Annual ischemic stroke risk approximately 0.2%. ` +
+          `CHA\u2082DS\u2082-VASc score ${score} — LOW stroke risk. Annual ischemic stroke risk approximately 0.2%. ` +
           "No antithrombotic therapy is generally recommended.",
         status: "normal",
+        warnings: chaWarnings,
+        advice: [
+          "Even low-risk scores should be revisited as risk factors accumulate with age and comorbidity.",
+        ],
+        followUp: [
+          "Reassess periodically and whenever new risk factors develop or the rhythm pattern changes.",
+        ],
       };
     }
 
@@ -198,9 +211,16 @@ export const cha2ds2VascCalculator: CalculatorDefinition = {
         value: score,
         unit: "/9",
         interpretation:
-          `CHA₂DS₂-VASc score ${score} — INTERMEDIATE stroke risk. Annual ischemic stroke risk approximately 1.3–2.2%. ` +
+          `CHA\u2082DS\u2082-VASc score ${score} — INTERMEDIATE stroke risk. Annual ischemic stroke risk approximately 1.3–2.2%. ` +
           "Consider oral anticoagulation based on net clinical benefit and patient preference.",
         status: "high",
+        warnings: chaWarnings,
+        advice: [
+          "This is an intermediate band where stroke-risk burden is real but treatment is individualized — weigh against bleeding risk using a tool such as HAS-BLED and document shared decision-making.",
+        ],
+        followUp: [
+          "Reassess when risk factors change, including age transition across thresholds and new vascular or cardiac diagnoses.",
+        ],
       };
     }
 
@@ -208,9 +228,19 @@ export const cha2ds2VascCalculator: CalculatorDefinition = {
       value: score,
       unit: "/9",
       interpretation:
-        `CHA₂DS₂-VASc score ${score} — HIGH stroke risk. Annual ischemic stroke risk approximately 2.2–15.2%. ` +
+        `CHA\u2082DS\u2082-VASc score ${score} — HIGH stroke risk. Annual ischemic stroke risk approximately 2.2–15.2%. ` +
         "Oral anticoagulation is recommended.",
       status: "critical",
+      warnings: [
+        ...chaWarnings,
+        "Increasing scores indicate greater cumulative stroke-risk burden; a high score supports treatment consideration but does not remove the need to assess contraindications first.",
+      ],
+      advice: [
+        "Review modifiable bleeding-risk factors alongside this score before finalizing the anticoagulation plan.",
+      ],
+      followUp: [
+        "Reassess at regular intervals and whenever risk factors, renal function, or medications change.",
+      ],
     };
   },
 };

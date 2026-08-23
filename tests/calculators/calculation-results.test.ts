@@ -663,6 +663,7 @@ describe("GCS calculate() output", () => {
 describe("NEWS2 calculate() boundary audit", () => {
   it("normal vitals produce score 0 (low clinical risk)", () => {
     const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "14",
       spo2: "98",
       temperature: "37",
@@ -672,13 +673,14 @@ describe("NEWS2 calculate() boundary audit", () => {
     expect(r.value).toBe(0);
     expect(r.status).toBe("normal");
     expect(r.interpretation).toBe(
-      "NEWS2 0 – Low clinical risk.",
+      "NEWS2 0 \u2013 Low clinical risk.",
     );
   });
 
-  it("scores each parameter per NEWS2 bands (RR 24, SpO2 93, temp 38.2, SBP 100, pulse 110 → 8)", () => {
-    // Sub-scores: RR 2, SpO₂ 2, temperature 1, SBP 2, pulse 1 → 8
+  it("scores each parameter per NEWS2 bands (RR 24, SpO2 93, temp 38.2, SBP 100, pulse 110 \u2192 8)", () => {
+    // Sub-scores: RR 2, SpO\u2082 2, temperature 1, SBP 2, pulse 1 \u2192 8
     const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "24",
       spo2: "93",
       temperature: "38.2",
@@ -688,13 +690,14 @@ describe("NEWS2 calculate() boundary audit", () => {
     expect(r.value).toBe(8);
     expect(r.status).toBe("critical");
     expect(r.interpretation).toBe(
-      "NEWS2 8 – Very high risk.",
+      "NEWS2 8 \u2013 Very high risk.",
     );
   });
 
   it("mixed mild inputs produce a low-to-moderate score", () => {
-    // RR 20 → 0, SpO2 94 → 1, temp 38 → 0, SBP 110 → 1, pulse 110 → 1 → 3
+    // RR 20 \u2192 0, SpO2 94 \u2192 1, temp 38 \u2192 0, SBP 110 \u2192 1, pulse 110 \u2192 1 \u2192 3
     const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "20",
       spo2: "94",
       temperature: "38",
@@ -704,13 +707,14 @@ describe("NEWS2 calculate() boundary audit", () => {
     expect(r.value).toBe(3);
     expect(r.status).toBe("low");
     expect(r.interpretation).toBe(
-      "NEWS2 3 – Low-to-moderate risk.",
+      "NEWS2 3 \u2013 Low-to-moderate risk.",
     );
   });
 
   it("any single parameter scoring 3 triggers high risk", () => {
-    // RR 8 → 3, all others normal → aggregate 3 but high-risk response
+    // RR 8 \u2192 3, all others normal \u2192 aggregate 3 but high-risk response
     const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "8",
       spo2: "98",
       temperature: "37",
@@ -720,13 +724,14 @@ describe("NEWS2 calculate() boundary audit", () => {
     expect(r.value).toBe(3);
     expect(r.status).toBe("high");
     expect(r.interpretation).toBe(
-      "NEWS2 3 – High risk.",
+      "NEWS2 3 \u2013 High risk.",
     );
   });
 
-  it("aggregate 5–6 is high risk", () => {
-    // RR 25 → 3, SpO2 92 → 2 → 5
+  it("aggregate 5\u20136 is high risk", () => {
+    // RR 25 \u2192 3, SpO2 92 \u2192 2 \u2192 5
     const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "25",
       spo2: "92",
       temperature: "37",
@@ -736,12 +741,13 @@ describe("NEWS2 calculate() boundary audit", () => {
     expect(r.value).toBe(5);
     expect(r.status).toBe("high");
     expect(r.interpretation).toBe(
-      "NEWS2 5 – High risk.",
+      "NEWS2 5 \u2013 High risk.",
     );
   });
 
-  it("boundary: RR 20 vs 21 changes sub-score 0 → 2", () => {
+  it("boundary: RR 20 vs 21 changes sub-score 0 \u2192 2", () => {
     const r20 = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "20",
       spo2: "98",
       temperature: "37",
@@ -749,6 +755,7 @@ describe("NEWS2 calculate() boundary audit", () => {
       pulse: "75",
     });
     const r21 = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "21",
       spo2: "98",
       temperature: "37",
@@ -761,6 +768,7 @@ describe("NEWS2 calculate() boundary audit", () => {
 
   it("returns critical status for missing input", () => {
     const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
       "respiratory-rate": "",
       spo2: "94",
       temperature: "38",
@@ -773,7 +781,127 @@ describe("NEWS2 calculate() boundary audit", () => {
 });
 
 // ---------------------------------------------------------------------------
-// CURB-65 — Severity score for community-acquired pneumonia
+// NEWS2 P1 regression — SpO2 scale selection and alternative scale
+// ---------------------------------------------------------------------------
+describe("NEWS2 P1 regression — SpO2 scale selection", () => {
+  const baseVitals = {
+    "respiratory-rate": "14",
+    spo2: "98",
+    temperature: "37",
+    sbp: "120",
+    pulse: "75",
+  };
+
+  it("standard scale: SpO2 98% scores 0", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      ...baseVitals,
+      spo2: "98",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).not.toContain("Scale 2");
+  });
+
+  it("standard scale: SpO2 91% scores 3 (single parameter trigger)", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      ...baseVitals,
+      spo2: "91",
+    });
+    expect(r.status).toBe("high");
+  });
+
+  it("standard scale: SpO2 93% scores 2", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      ...baseVitals,
+      spo2: "93",
+    });
+    expect(r.status).toBe("low");
+  });
+
+  it("standard scale: SpO2 95% scores 1", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      ...baseVitals,
+      spo2: "95",
+    });
+    expect(r.status).toBe("low");
+  });
+
+  it("alternative scale: SpO2 90% scores 0 (in target range 88\u201392%)", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "alternative",
+      ...baseVitals,
+      spo2: "90",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Scale 2");
+  });
+
+  it("alternative scale: SpO2 87% scores 1", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "alternative",
+      ...baseVitals,
+      spo2: "87",
+    });
+    expect(r.status).toBe("low");
+  });
+
+  it("alternative scale: SpO2 83% scores 3 (single parameter trigger)", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "alternative",
+      ...baseVitals,
+      spo2: "83",
+    });
+    expect(r.status).toBe("high");
+  });
+
+  it("alternative scale: SpO2 95% scores 2 (above target range)", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "alternative",
+      ...baseVitals,
+      spo2: "95",
+    });
+    expect(r.status).toBe("low");
+  });
+
+  it("alternative scale: SpO2 97% scores 3 (above target range, single parameter trigger)", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "alternative",
+      ...baseVitals,
+      spo2: "97",
+    });
+    expect(r.status).toBe("high");
+  });
+
+  it("returns critical for missing spo2-scale", () => {
+    const r = calc(news2Calculator, {
+      "respiratory-rate": "14",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Scale");
+  });
+
+  it("returns critical for invalid spo2-scale", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "invalid",
+      "respiratory-rate": "14",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Invalid");
+  });
+});
 // One point each: new-onset confusion, urea > 7 mmol/L, RR ≥ 30/min,
 // SBP < 90 mmHg, age ≥ 65. Score 0–5.
 // 0–1 → low; 2 → moderate; ≥ 3 → severe.
@@ -4126,7 +4254,7 @@ describe("GRACE Score calculate() output", () => {
       killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "14",
     });
     expect(r.value).toBe(111);
-    expect(r.status).toBe("high");
+    expect(r.status).toBe("low");
   });
 
   it("high risk: score 214 (>140)", () => {
@@ -4145,6 +4273,41 @@ describe("GRACE Score calculate() output", () => {
     });
     expect(r.value).toBe(372);
     expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// GRACE P1 regression — status semantics for intermediate risk
+// ---------------------------------------------------------------------------
+describe("GRACE P1 regression — intermediate risk status", () => {
+  it("score 88 is low risk", () => {
+    const r = calc(graceCalculator, {
+      age: "41", "heart-rate": "9", sbp: "34", creatinine: "4",
+      killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "0",
+    });
+    expect(r.value).toBe(88);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("LOW risk");
+  });
+
+  it("score 111 is intermediate risk (uses status low, not high)", () => {
+    const r = calc(graceCalculator, {
+      age: "41", "heart-rate": "15", sbp: "34", creatinine: "7",
+      killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "14",
+    });
+    expect(r.value).toBe(111);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("INTERMEDIATE risk");
+  });
+
+  it("score 214 is high risk (uses status critical)", () => {
+    const r = calc(graceCalculator, {
+      age: "91", "heart-rate": "24", sbp: "58", creatinine: "21",
+      killip: "20", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "0",
+    });
+    expect(r.value).toBe(214);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("HIGH risk");
   });
 });
 
@@ -4174,7 +4337,7 @@ describe("HEART Score calculate() output", () => {
       history: "1", ecg: "1", age: "1", "risk-factors": "1", troponin: "0",
     });
     expect(r.value).toBe(4);
-    expect(r.status).toBe("high");
+    expect(r.status).toBe("low");
   });
 
   it("moderate: score 6", () => {
@@ -4182,7 +4345,7 @@ describe("HEART Score calculate() output", () => {
       history: "2", ecg: "1", age: "1", "risk-factors": "1", troponin: "1",
     });
     expect(r.value).toBe(6);
-    expect(r.status).toBe("high");
+    expect(r.status).toBe("low");
   });
 
   it("boundary: score 7 becomes high risk", () => {
@@ -4199,6 +4362,54 @@ describe("HEART Score calculate() output", () => {
     });
     expect(r.value).toBe(10);
     expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// HEART P1 regression — status semantics for moderate risk
+// ---------------------------------------------------------------------------
+describe("HEART P1 regression — moderate risk status", () => {
+  it("score 0–3 is low risk", () => {
+    const r0 = calc(heartScoreCalculator, {
+      history: "0", ecg: "0", age: "0", "risk-factors": "0", troponin: "0",
+    });
+    expect(r0.value).toBe(0);
+    expect(r0.status).toBe("normal");
+    expect(r0.interpretation).toContain("LOW risk");
+
+    const r3 = calc(heartScoreCalculator, {
+      history: "1", ecg: "1", age: "1", "risk-factors": "0", troponin: "0",
+    });
+    expect(r3.value).toBe(3);
+    expect(r3.status).toBe("normal");
+    expect(r3.interpretation).toContain("LOW risk");
+  });
+
+  it("score 4 is moderate risk (boundary)", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "1", ecg: "1", age: "1", "risk-factors": "1", troponin: "0",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("MODERATE risk");
+  });
+
+  it("score 6 is moderate risk (boundary)", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "2", ecg: "1", age: "1", "risk-factors": "1", troponin: "1",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("MODERATE risk");
+  });
+
+  it("score 7 is high risk (boundary)", () => {
+    const r = calc(heartScoreCalculator, {
+      history: "2", ecg: "2", age: "1", "risk-factors": "1", troponin: "1",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("HIGH risk");
   });
 });
 
@@ -8874,10 +9085,10 @@ describe("NIHSS calculate() output", () => {
     expect(r.status).toBe("normal");
   });
 
-  it("minor stroke: armLeft=1 + legRight=1 → score 2, normal", () => {
+  it("minor stroke: armLeft=1 + legRight=1 → score 2, low", () => {
     const r = nihss({ armLeft: "1", legRight: "1" });
     expect(r.value).toBe(2);
-    expect(r.status).toBe("normal");
+    expect(r.status).toBe("low");
   });
 
   it("moderate stroke: sum=10 → high", () => {
@@ -8941,6 +9152,83 @@ describe("NIHSS calculate() output", () => {
     });
     expect(r.value).toBe(42);
     expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// NIHSS P1 regression — minor stroke no longer labeled "normal"
+// ---------------------------------------------------------------------------
+describe("NIHSS P1 regression — minor stroke status", () => {
+  function nihss(overrides: Record<string, string>) {
+    const base: Record<string, string> = {
+      loc: "0", locQuestions: "0", locCommands: "0",
+      gaze: "0", visual: "0", facial: "0",
+      armLeft: "0", armRight: "0", legLeft: "0", legRight: "0",
+      ataxia: "0", sensory: "0", language: "0",
+      dysarthria: "0", extinction: "0",
+    };
+    return calc(nihssCalculator, { ...base, ...overrides });
+  }
+
+  it("score 0 is normal (no stroke symptoms)", () => {
+    const r = nihss({});
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("NO stroke symptoms");
+  });
+
+  it("score 1 is low (minor stroke)", () => {
+    const r = nihss({ armLeft: "1" });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("MINOR stroke");
+  });
+
+  it("score 4 is low (minor stroke boundary)", () => {
+    const r = nihss({ armLeft: "1", armRight: "1", legLeft: "1", legRight: "1" });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("MINOR stroke");
+  });
+
+  it("score 5 is high (moderate stroke boundary)", () => {
+    const r = nihss({
+      loc: "1", locQuestions: "1", gaze: "1", facial: "1", armLeft: "1",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("MODERATE stroke");
+  });
+
+  it("score 15 is high (moderate stroke upper bound)", () => {
+    const r = nihss({
+      loc: "1", gaze: "1", facial: "2",
+      armLeft: "2", armRight: "2", legLeft: "1", legRight: "1",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 16 is high (moderate-severe boundary)", () => {
+    const r = nihss({
+      loc: "1", gaze: "1", visual: "2", facial: "2",
+      armLeft: "3", armRight: "3", legLeft: "2", legRight: "2",
+    });
+    expect(r.value).toBe(16);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("MODERATE\u2013SEVERE stroke");
+  });
+
+  it("score 42 is critical (severe stroke maximum)", () => {
+    const r = nihss({
+      loc: "3", locQuestions: "2", locCommands: "2", gaze: "2",
+      visual: "3", facial: "3", armLeft: "4", armRight: "4",
+      legLeft: "4", legRight: "4", ataxia: "2", sensory: "2",
+      language: "3", dysarthria: "2", extinction: "2",
+    });
+    expect(r.value).toBe(42);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("SEVERE stroke");
   });
 });
 
@@ -12366,5 +12654,630 @@ describe("ALBI Score calculate() output", () => {
     });
     expect(r.status).toBe("critical");
     expect(r.interpretation).toContain("greater than zero");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// P2-B1 regression — result-level guidance for sepsis & deterioration scores
+// ---------------------------------------------------------------------------
+describe("P2-B1 result-level guidance", () => {
+  it("every calculator returns non-empty warnings, advice, and followUp arrays of meaningful strings", () => {
+    const cases: Array<{
+      label: string;
+      result: ReturnType<typeof calc>;
+    }> = [
+      {
+        label: "news2",
+        result: calc(news2Calculator, {
+          "spo2-scale": "standard",
+          "respiratory-rate": "14",
+          spo2: "98",
+          temperature: "37",
+          sbp: "120",
+          pulse: "75",
+        }),
+      },
+      {
+        label: "qsofa",
+        result: calc(qsofaCalculator, {
+          sbp: "120",
+          "respiratory-rate": "16",
+          "mental-status": "0",
+        }),
+      },
+      {
+        label: "sofa-score",
+        result: calc(sofaScoreCalculator, {
+          "pao2-fio2": "0", platelets: "150", bilirubin: "1.0",
+          cardiovascular: "0", gcs: "15", creatinine: "0.9",
+        }),
+      },
+      {
+        label: "sirs-criteria",
+        result: calc(sirsCriteriaCalculator, {
+          temperature: "37", "heart-rate": "80",
+          "respiratory-rate": "16", wbc: "8",
+        }),
+      },
+      {
+        label: "gcs",
+        result: calc(gcsCalculator, { eye: "4", verbal: "5", motor: "6" }),
+      },
+    ];
+
+    for (const { label, result } of cases) {
+      expect(result.warnings?.length ?? 0, `${label}.warnings`).toBeGreaterThan(0);
+      expect(result.advice?.length ?? 0, `${label}.advice`).toBeGreaterThan(0);
+      expect(result.followUp?.length ?? 0, `${label}.followUp`).toBeGreaterThan(0);
+      for (const arr of [result.warnings, result.advice, result.followUp]) {
+        for (const item of arr ?? []) {
+          expect(typeof item, `${label} guidance item type`).toBe("string");
+          expect(item.trim().length, `${label} guidance item length`).toBeGreaterThan(15);
+        }
+      }
+    }
+  });
+
+  // --- NEWS2 ---------------------------------------------------------------
+  it("news2 Scale 1 behavior and classification unchanged", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      "respiratory-rate": "14",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe("NEWS2 0 \u2013 Low clinical risk.");
+  });
+
+  it("news2 Scale 2 behavior and classification unchanged", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "alternative",
+      "respiratory-rate": "14",
+      spo2: "90",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Scale 2");
+  });
+
+  it("news2 includes alternative-scale population warning when Scale 2 selected", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "alternative",
+      "respiratory-rate": "14",
+      spo2: "90",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    const joined = (r.warnings ?? []).join(" ");
+    expect(joined).toContain("chronic hypercapnic respiratory failure");
+    expect(joined).toContain("do not apply Scale 2 routinely");
+  });
+
+  it("news2 standard mode directs eligible patients to Scale 2 selection", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      "respiratory-rate": "14",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    const joined = (r.warnings ?? []).join(" ");
+    expect(joined).toContain("Scale 1 (standard)");
+    expect(joined).toContain("SpO\u2082 Scale 2 instead");
+  });
+
+  it("news2 single-parameter-3 escalation warning present on modest aggregate", () => {
+    const r = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      "respiratory-rate": "8",
+      spo2: "98",
+      temperature: "37",
+      sbp: "120",
+      pulse: "75",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+    const joined = (r.warnings ?? []).join(" ");
+    expect(joined).toContain("single parameter scoring 3");
+  });
+
+  it("news2 band-specific advice and follow-up escalate with severity", () => {
+    const low = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      "respiratory-rate": "14", spo2: "98", temperature: "37", sbp: "120", pulse: "75",
+    });
+    const veryHigh = calc(news2Calculator, {
+      "spo2-scale": "standard",
+      "respiratory-rate": "25", spo2: "91", temperature: "39.5", sbp: "85", pulse: "135",
+    });
+    expect(low.status).toBe("normal");
+    expect(veryHigh.status).toBe("critical");
+    expect((low.advice ?? []).join(" ")).toContain("routine monitoring");
+    expect((veryHigh.advice ?? []).join(" ")).toContain("emergency clinical assessment");
+    expect((veryHigh.followUp ?? []).join(" ")).toContain("critical-care teams");
+  });
+
+  // --- qSOFA ---------------------------------------------------------------
+  it("qsofa calculation unchanged for score 0", () => {
+    const r = calc(qsofaCalculator, {
+      sbp: "120", "respiratory-rate": "16", "mental-status": "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toBe(
+      "qSOFA 0 \u2013 Low clinical concern. Continue to monitor for signs of deterioration.",
+    );
+  });
+
+  it("qsofa elevated score retains classification and carries sepsis-diagnosis caveat", () => {
+    const r = calc(qsofaCalculator, {
+      sbp: "95", "respiratory-rate": "24", "mental-status": "1",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("high");
+    const warnings = (r.warnings ?? []).join(" ");
+    expect(warnings).toContain("does not diagnose sepsis by itself");
+    expect(warnings).toContain("does not exclude sepsis");
+    expect((r.advice ?? []).join(" ")).toContain("not as a standalone diagnosis");
+  });
+
+  it("qsofa low score still warns against excluding sepsis", () => {
+    const r = calc(qsofaCalculator, {
+      sbp: "125", "respiratory-rate": "18", "mental-status": "0",
+    });
+    expect(r.value).toBe(0);
+    expect((r.warnings ?? []).join(" ")).toContain("does not exclude sepsis");
+  });
+
+  // --- SOFA ----------------------------------------------------------------
+  it("sofa calculation unchanged for minimal score", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "150", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "0.9",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("sofa calculation unchanged for elevated score", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "2", platelets: "80", bilirubin: "2.5",
+      cardiovascular: "1", gcs: "11", creatinine: "1.8",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("critical");
+  });
+
+  it("sofa includes delta-SOFA/sepsis caveat and baseline caveat", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "0", platelets: "150", bilirubin: "1.0",
+      cardiovascular: "0", gcs: "15", creatinine: "0.9",
+    });
+    const warnings = (r.warnings ?? []).join(" ");
+    expect(warnings).toContain("\u22652 points");
+    expect(warnings).toContain("does not establish infection");
+    expect(warnings).toContain("Baseline SOFA is often unknown");
+  });
+
+  it("sofa follow-up recommends serial reassessment", () => {
+    const r = calc(sofaScoreCalculator, {
+      "pao2-fio2": "2", platelets: "80", bilirubin: "2.5",
+      cardiovascular: "1", gcs: "11", creatinine: "1.8",
+    });
+    expect((r.followUp ?? []).join(" ")).toMatch(/Reassess|serially/i);
+  });
+
+  // --- SIRS ----------------------------------------------------------------
+  it("sirs scoring unchanged across bands", () => {
+    const zero = calc(sirsCriteriaCalculator, {
+      temperature: "37", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    const two = calc(sirsCriteriaCalculator, {
+      temperature: "38.5", "heart-rate": "110", "respiratory-rate": "16", wbc: "8",
+    });
+    const four = calc(sirsCriteriaCalculator, {
+      temperature: "38.5", "heart-rate": "110", "respiratory-rate": "22", wbc: "14",
+    });
+    expect(zero.value).toBe(0);
+    expect(zero.status).toBe("normal");
+    expect(two.value).toBe(2);
+    expect(two.status).toBe("high");
+    expect(four.value).toBe(4);
+    expect(four.status).toBe("high");
+  });
+
+  it("sirs includes non-infectious trigger warning and no standalone diagnosis claim", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "38.5", "heart-rate": "110", "respiratory-rate": "22", wbc: "14",
+    });
+    const warnings = (r.warnings ?? []).join(" ");
+    expect(warnings).toContain("Non-infectious conditions");
+    expect(warnings).toContain("should not be used to diagnose sepsis");
+    const interpretation = r.interpretation ?? "";
+    expect(interpretation).not.toMatch(/^Sepsis confirmed/i);
+  });
+
+  it("sirs sub-threshold result carries guidance too", () => {
+    const r = calc(sirsCriteriaCalculator, {
+      temperature: "37", "heart-rate": "80", "respiratory-rate": "16", wbc: "8",
+    });
+    expect(r.warnings?.length).toBeGreaterThan(0);
+    expect(r.advice?.length).toBeGreaterThan(0);
+    expect(r.followUp?.length).toBeGreaterThan(0);
+  });
+
+  // --- GCS -----------------------------------------------------------------
+  it("gcs calculation unchanged across bands", () => {
+    const full = calc(gcsCalculator, { eye: "4", verbal: "5", motor: "6" });
+    const mild = calc(gcsCalculator, { eye: "3", verbal: "4", motor: "6" });
+    const moderate = calc(gcsCalculator, { eye: "3", verbal: "4", motor: "4" });
+    const eight = calc(gcsCalculator, { eye: "2", verbal: "2", motor: "4" });
+    expect(full.value).toBe(15);
+    expect(full.status).toBe("normal");
+    expect(mild.value).toBe(13);
+    expect(mild.status).toBe("normal");
+    expect(moderate.value).toBe(11);
+    expect(moderate.status).toBe("high");
+    expect(eight.value).toBe(8);
+    expect(eight.status).toBe("critical");
+  });
+
+  it("gcs includes confounder warning at every severity level", () => {
+    for (const inputs of [
+      { eye: "4", verbal: "5", motor: "6" },
+      { eye: "3", verbal: "4", motor: "4" },
+      { eye: "2", verbal: "2", motor: "4" },
+    ]) {
+      const r = calc(gcsCalculator, inputs);
+      expect((r.warnings ?? []).join(" ")).toContain("confound scoring");
+    }
+  });
+
+  it("gcs includes serial-assessment guidance and airway caveat at severe range", () => {
+    const severe = calc(gcsCalculator, { eye: "2", verbal: "2", motor: "4" });
+    expect((severe.advice ?? []).join(" ")).toContain(
+      "\u2264 8 is commonly used as a threshold",
+    );
+    expect((severe.followUp ?? []).join(" ")).toMatch(/repeat GCS|reassess/i);
+
+    const mild = calc(gcsCalculator, { eye: "4", verbal: "5", motor: "6" });
+    expect((mild.followUp ?? []).join(" ")).toMatch(/[Rr]epeat the GCS/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// P2-B2 regression — result-level guidance for Tier-1 emergency/cardio scores
+// ---------------------------------------------------------------------------
+describe("P2-B2 result-level guidance", () => {
+  type GuidanceCase = { label: string; result: ReturnType<typeof calc> };
+
+  const run = (cases: GuidanceCase[]) => {
+    for (const { label, result } of cases) {
+      expect(result.warnings?.length ?? 0, `${label}.warnings`).toBeGreaterThan(0);
+      expect(result.advice?.length ?? 0, `${label}.advice`).toBeGreaterThan(0);
+      expect(result.followUp?.length ?? 0, `${label}.followUp`).toBeGreaterThan(0);
+      for (const arr of [result.warnings, result.advice, result.followUp]) {
+        for (const item of arr ?? []) {
+          expect(typeof item).toBe("string");
+          expect(item.trim().length, `${label} item length`).toBeGreaterThan(15);
+        }
+      }
+    }
+  };
+
+  it("heart-score: all bands carry guidance with unchanged calculation", () => {
+    const low = calc(heartScoreCalculator, {
+      history: "0", ecg: "0", age: "0", "risk-factors": "0", troponin: "0",
+    });
+    const moderate = calc(heartScoreCalculator, {
+      history: "1", ecg: "1", age: "1", "risk-factors": "1", troponin: "1",
+    });
+    const high = calc(heartScoreCalculator, {
+      history: "2", ecg: "2", age: "2", "risk-factors": "2", troponin: "1",
+    });
+    expect(low.value).toBe(0); expect(low.status).toBe("normal");
+    expect(moderate.value).toBe(5); expect(moderate.status).toBe("low");
+    expect(high.value).toBe(9); expect(high.status).toBe("critical");
+    run([
+      { label: "heart-score/low", result: low },
+      { label: "heart-score/moderate", result: moderate },
+      { label: "heart-score/high", result: high },
+    ]);
+    expect((low.warnings ?? []).join(" ")).toContain("not an independent diagnosis");
+    expect((moderate.advice ?? []).join(" ")).toContain("serial troponins");
+  });
+
+  it("timi: boundaries carry guidance with unchanged calculation", () => {
+    const zero = calc(timiCalculator, {
+      "age-65": "0", "risk-factors": "0", "known-cad": "0", aspirin: "0",
+      "anginal-events": "0", "ecg-changes": "0", troponin: "0",
+    });
+    const mid = calc(timiCalculator, {
+      "age-65": "1", "risk-factors": "1", "known-cad": "1", aspirin: "0",
+      "anginal-events": "0", "ecg-changes": "0", troponin: "0",
+    });
+    const max = calc(timiCalculator, {
+      "age-65": "1", "risk-factors": "1", "known-cad": "1", aspirin: "1",
+      "anginal-events": "1", "ecg-changes": "1", troponin: "1",
+    });
+    expect(zero.value).toBe(0); expect(zero.status).toBe("normal");
+    expect(mid.value).toBe(3); expect(mid.status).toBe("high");
+    expect(max.value).toBe(7); expect(max.status).toBe("critical");
+    run([
+      { label: "timi/low", result: zero },
+      { label: "timi/mid", result: mid },
+      { label: "timi/high", result: max },
+    ]);
+    expect((zero.warnings ?? []).join(" ")).toContain("intended population");
+  });
+
+  it("grace: corrected status semantics preserved alongside new guidance", () => {
+    const low = calc(graceCalculator, {
+      age: "41", "heart-rate": "9", sbp: "34", creatinine: "4",
+      killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "0",
+    });
+    const intermediate = calc(graceCalculator, {
+      age: "41", "heart-rate": "15", sbp: "34", creatinine: "7",
+      killip: "0", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "14",
+    });
+    const high = calc(graceCalculator, {
+      age: "91", "heart-rate": "24", sbp: "58", creatinine: "21",
+      killip: "20", "cardiac-arrest": "0", "st-deviation": "0", "elevated-enzymes": "0",
+    });
+    expect(low.value).toBe(88); expect(low.status).toBe("normal");
+    expect(intermediate.value).toBe(111); expect(intermediate.status).toBe("low");
+    expect(intermediate.interpretation).toContain("INTERMEDIATE risk");
+    expect(high.value).toBe(214); expect(high.status).toBe("critical");
+    run([
+      { label: "grace/low", result: low },
+      { label: "grace/intermediate", result: intermediate },
+      { label: "grace/high", result: high },
+    ]);
+  });
+
+  it("cha2ds2-vasc: low/high examples with anticoagulation caveat", () => {
+    const male0 = calc(cha2ds2VascCalculator, {
+      chf: "0", hypertension: "0", age: "0", diabetes: "0",
+      stroke: "0", "vascular-disease": "0", sex: "0",
+    });
+    const femaleHigh = calc(cha2ds2VascCalculator, {
+      chf: "1", hypertension: "1", age: "2", diabetes: "1",
+      stroke: "2", "vascular-disease": "0", sex: "1",
+    });
+    expect(male0.value).toBe(0); expect(male0.status).toBe("normal");
+    expect(femaleHigh.value).toBe(8); expect(femaleHigh.status).toBe("critical");
+    run([
+      { label: "chads/low", result: male0 },
+      { label: "chads/high", result: femaleHigh },
+    ]);
+    const warnings = (femaleHigh.warnings ?? []).join(" ");
+    expect(warnings).toContain("does not by itself determine whether anticoagulation is appropriate");
+    expect(warnings).toContain("non-valvular");
+  });
+
+  it("has-bled: examples emphasize modifiable factors and no withhold rule", () => {
+    const zero = calc(hasBledCalculator, {
+      hypertension: "0", renal: "0", liver: "0", stroke: "0", bleeding: "0",
+      "labile-inr": "0", elderly: "0", drugs: "0", alcohol: "0",
+    });
+    const high = calc(hasBledCalculator, {
+      hypertension: "1", renal: "0", liver: "0", stroke: "0", bleeding: "1",
+      "labile-inr": "0", elderly: "0", drugs: "1", alcohol: "0",
+    });
+    expect(zero.value).toBe(0); expect(zero.status).toBe("normal");
+    expect(high.value).toBe(3); expect(high.status).toBe("critical");
+    run([
+      { label: "hasbled/low", result: zero },
+      { label: "hasbled/high", result: high },
+    ]);
+    const warnings = (high.warnings ?? []).join(" ");
+    expect(warnings).toContain("not by itself a reason to withhold anticoagulation");
+    expect(warnings).toContain("Modifiable bleeding-risk factors");
+  });
+
+  it("rcri: boundaries carry guidance without clearance thresholds", () => {
+    const zero = calc(rcriCalculator, {
+      "high-risk-surgery": "0", "ischemic-heart-disease": "0", chf: "0",
+      cerebrovascular: "0", "insulin-diabetes": "0", creatinine: "0",
+    });
+    const threePlus = calc(rcriCalculator, {
+      "high-risk-surgery": "1", "ischemic-heart-disease": "1", chf: "1",
+      cerebrovascular: "0", "insulin-diabetes": "0", creatinine: "0",
+    });
+    expect(zero.value).toBe(0); expect(zero.status).toBe("normal");
+    expect(threePlus.value).toBe(3); expect(threePlus.status).toBe("critical");
+    run([
+      { label: "rcri/low", result: zero },
+      { label: "rcri/high", result: threePlus },
+    ]);
+    expect((threePlus.warnings ?? []).join(" ")).toContain("does not define surgical clearance thresholds");
+  });
+
+  it("wells-pe: low/high bands with pretest-probability warnings", () => {
+    const low = calc(wellsPeCalculator, {
+      "dvt-signs": "0", "pe-most-likely": "0", tachycardia: "1",
+      immobilization: "0", "prior-dvt-pe": "0", hemoptysis: "0", malignancy: "0",
+    });
+    const high = calc(wellsPeCalculator, {
+      "dvt-signs": "1", "pe-most-likely": "1", tachycardia: "0",
+      immobilization: "0", "prior-dvt-pe": "0", hemoptysis: "0", malignancy: "0",
+    });
+    expect(low.value).toBe(1.5); expect(low.status).toBe("normal");
+    expect(high.value).toBe(6); expect(high.status).toBe("high");
+    run([
+      { label: "wellspe/low", result: low },
+      { label: "wellspe/high", result: high },
+    ]);
+    expect((low.warnings ?? []).join(" ")).toContain("does not independently exclude PE in every patient");
+    expect((high.followUp ?? []).join(" ")).toContain("escalate care immediately");
+  });
+
+  it("wells-dvt: low/high bands with pathway guidance", () => {
+    const low = calc(wellsDvtCalculator, {
+      "active-cancer": "0", paralysis: "0", bedridden: "0",
+      "localized-tenderness": "1", "entire-leg-swollen": "0", "calf-swelling": "0",
+      "pitting-edema": "0", "collateral-veins": "0", "previous-dvt": "0",
+      "alternative-diagnosis": "0",
+    });
+    const high = calc(wellsDvtCalculator, {
+      "active-cancer": "1", paralysis: "0", bedridden: "0",
+      "localized-tenderness": "0", "entire-leg-swollen": "0", "calf-swelling": "1",
+      "pitting-edema": "0", "collateral-veins": "0", "previous-dvt": "0",
+      "alternative-diagnosis": "0",
+    });
+    expect(low.value).toBe(1); expect(low.status).toBe("normal");
+    expect(high.value).toBe(2); expect(high.status).toBe("high");
+    run([
+      { label: "wellsdvt/low", result: low },
+      { label: "wellsdvt/high", result: high },
+    ]);
+    expect((low.followUp ?? []).join(" ")).toContain("diagnostic uncertainty remains");
+  });
+
+  it("perc-rule: pass/fail both guided; fail lists unmet criteria", () => {
+    const passInputs = {
+      age: "1", "heart-rate": "1", "oxygen-saturation": "1",
+      hemoptysis: "1", estrogen: "1", "prior-dvt-pe": "1",
+      "leg-swelling": "1", "surgery-trauma": "1",
+    };
+    const pass = calc(percRuleCalculator, passInputs);
+    const fail = calc(percRuleCalculator, { ...passInputs, age: "0" });
+    expect(pass.value).toBe(8); expect(pass.status).toBe("normal");
+    expect(fail.value).toBe(7); expect(fail.status).toBe("high");
+    run([
+      { label: "perc/pass", result: pass },
+      { label: "perc/fail", result: fail },
+    ]);
+    expect((pass.warnings ?? []).join(" ")).toContain("not a universal exclusion rule");
+    expect((fail.advice ?? []).join(" ")).toContain("Unmet criteria:");
+    expect((fail.advice ?? []).join(" ")).toContain("Age < 50");
+  });
+
+  it("psi-port: class boundaries retain classification with disposition guidance", () => {
+    const base = (over: Record<string, string>) => ({
+      sex: "male",
+      "nursing-home": "0", "neoplastic-disease": "0", "liver-disease": "0",
+      chf: "0", cerebrovascular: "0", "renal-disease": "0", ams: "0",
+      "respiratory-rate": "16", temperature: "37.0",
+      "heart-rate": "80", ph: "", sodium: "140",
+      glucose: "100", hematocrit: "40", pao2: "", "pleural-effusion": "0",
+      ...over,
+    });
+    const classOne = calc(psiPortCalculator, base({ age: "40", sbp: "130", bun: "15" }));
+    const classFive = calc(psiPortCalculator, base({
+      age: "80", sbp: "80", bun: "40", "nursing-home": "1", chf: "1", ams: "1",
+      "respiratory-rate": "32", "heart-rate": "130",
+    }));
+    expect(classOne.value).toBe(40); expect(classOne.status).toBe("normal");
+    expect(classFive.value).toBe(190); expect(classFive.status).toBe("critical");
+    run([
+      { label: "psi/classI", result: classOne },
+      { label: "psi/classV", result: classFive },
+    ]);
+    expect((classFive.advice ?? []).join(" ")).toContain("critical-care involvement");
+  });
+
+  it("rts: boundaries retain calculation with stabilization warning", () => {
+    const normal = calc(rtsCalculator, { gcs: "15", sbp: "110", rr: "16" });
+    const severe = calc(rtsCalculator, { gcs: "3", sbp: "40", rr: "35" });
+    expect(normal.value).toBeCloseTo(7.8408, 4); expect(normal.status).toBe("normal");
+    expect(severe.status).toBe("critical");
+    run([
+      { label: "rts/normal", result: normal },
+      { label: "rts/severe", result: severe },
+    ]);
+    expect((severe.warnings ?? []).join(" ")).toContain("must not delay immediate trauma stabilization");
+    expect((severe.advice ?? []).join(" ")).toContain("in parallel rather than sequentially");
+  });
+
+  it("parkland-formula: representative calculations keep advice and add titration warnings", () => {
+    const minor = calc(parklandFormulaCalculator, {
+      weight: "70", head: "4.5", "anterior-trunk": "0", "posterior-trunk": "0",
+      "right-upper-limb": "0", "left-upper-limb": "0", "right-lower-limb": "0",
+      "left-lower-limb": "0", perineum: "0",
+    });
+    const moderate = calc(parklandFormulaCalculator, {
+      weight: "70", head: "0", "anterior-trunk": "18", "posterior-trunk": "0",
+      "right-upper-limb": "0", "left-upper-limb": "0", "right-lower-limb": "0",
+      "left-lower-limb": "0", perineum: "0",
+    });
+    expect(minor.value).toBe(1260); expect(minor.status).toBe("normal");
+    expect(moderate.value).toBe(5040); expect(moderate.status).toBe("high");
+    run([
+      { label: "parkland/minor", result: minor },
+      { label: "parkland/moderate", result: moderate },
+    ]);
+    expect((moderate.advice ?? []).join(" ")).toContain("initial estimate");
+    expect((moderate.warnings ?? []).join(" ")).toContain("titrated to clinical endpoints");
+    expect((minor.warnings ?? []).join(" ")).toContain("oral rehydration");
+  });
+
+  it("curb-65: score bands retain classification with band-specific follow-up", () => {
+    const base = { confusion: "0", urea: "5", "respiratory-rate": "18", sbp: "130" };
+    const zero = calc(curb65Calculator, { ...base, age: "40" });
+    const two = calc(curb65Calculator, { ...base, age: "70", urea: "8" });
+    const three = calc(curb65Calculator, {
+      ...base, age: "70", urea: "8", "respiratory-rate": "30",
+    });
+    expect(zero.value).toBe(0); expect(zero.status).toBe("normal");
+    expect(two.value).toBe(2); expect(two.status).toBe("low");
+    expect(three.value).toBe(3); expect(three.status).toBe("high");
+    run([
+      { label: "curb65/0", result: zero },
+      { label: "curb65/2", result: two },
+      { label: "curb65/3", result: three },
+    ]);
+    expect((three.advice ?? []).join(" ")).toContain("urgent hospital assessment");
+    expect((two.followUp ?? []).join(" ")).toContain("escalation");
+  });
+
+  it("crb-65: score bands retain classification with oxygenation caveat", () => {
+    const base = { confusion: "0", "respiratory-rate": "20", sbp: "120", dbp: "80" };
+    const zero = calc(crb65Calculator, { ...base, age: "50" });
+    const three = calc(crb65Calculator, {
+      confusion: "1", "respiratory-rate": "32", sbp: "85", dbp: "60", age: "50",
+    });
+    expect(zero.value).toBe(0); expect(zero.status).toBe("normal");
+    expect(three.value).toBe(3); expect(three.status).toBe("critical");
+    run([
+      { label: "crb65/0", result: zero },
+      { label: "crb65/3", result: three },
+    ]);
+    const warnings = (three.warnings ?? []).join(" ");
+    expect(warnings).toContain("does not replace assessment of oxygenation");
+    expect(warnings).toContain("clinical judgment");
+  });
+
+  it("shock-index: representative values retain bands with medication warning", () => {
+    const normal = calc(shockIndexCalculator, { "heart-rate": "70", sbp: "100" });
+    const critical = calc(shockIndexCalculator, { "heart-rate": "120", sbp: "90" });
+    expect(normal.value).toBe(0.7); expect(normal.status).toBe("normal");
+    expect(critical.value).toBe(1.33); expect(critical.status).toBe("critical");
+    run([
+      { label: "shockindex/normal", result: normal },
+      { label: "shockindex/critical", result: critical },
+    ]);
+    const warnings = (critical.warnings ?? []).join(" ");
+    expect(warnings).toContain("beta-blockers");
+    expect(warnings).toContain("not a diagnosis");
+  });
+
+  it("map: representative values carry perfusion-context warnings", () => {
+    const r = calc(mapCalculator, { sbp: "120", dbp: "80" });
+    expect(r.value).toBeCloseTo(93.33, 2);
+    expect(r.status).toBe("normal");
+    run([{ label: "map/basic", result: r }]);
+    const warnings = (r.warnings ?? []).join(" ");
+    expect(warnings).toContain("does not by itself diagnose shock or guarantee adequate organ perfusion");
+    expect((r.followUp ?? []).join(" ")).toContain("Reassess whenever blood pressure");
   });
 });

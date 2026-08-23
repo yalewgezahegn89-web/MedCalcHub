@@ -177,6 +177,12 @@ export const hasBledCalculator: CalculatorDefinition = {
       score += value;
     }
 
+    const hasBledWarnings = [
+      "HAS-BLED estimates 1-year major bleeding risk; a high score is not by itself a reason to withhold anticoagulation.",
+      "Modifiable bleeding-risk factors (uncontrolled hypertension, labile INR, antiplatelet/NSAID use, alcohol excess) should be identified and corrected where possible.",
+      "Bleeding risk must be weighed against stroke/thromboembolic risk — the score does not produce a treat-or-withhold answer.",
+    ];
+
     if (score <= 1) {
       return {
         value: score,
@@ -184,6 +190,13 @@ export const hasBledCalculator: CalculatorDefinition = {
         interpretation:
           `HAS-BLED score ${score} — LOW bleeding risk. Estimated 1-year major bleeding risk approximately 1%.`,
         status: "normal",
+        warnings: hasBledWarnings,
+        advice: [
+          "Continue routine clinical monitoring and review of medications that affect bleeding risk.",
+        ],
+        followUp: [
+          "Reassess when medications, blood pressure control, or relevant laboratory values change.",
+        ],
       };
     }
 
@@ -195,6 +208,13 @@ export const hasBledCalculator: CalculatorDefinition = {
           `HAS-BLED score ${score} — MODERATE bleeding risk. Estimated 1-year major bleeding risk approximately 2%. ` +
           "Monitor carefully and review modifiable risk factors.",
         status: "high",
+        warnings: hasBledWarnings,
+        advice: [
+          "Focus on correcting modifiable contributors (blood pressure control, avoid unnecessary antiplatelets/NSAIDs, address alcohol excess) rather than on the score alone.",
+        ],
+        followUp: [
+          "Recheck the score after any intervention on modifiable factors or changes in anticoagulation management.",
+        ],
       };
     }
 
@@ -205,6 +225,16 @@ export const hasBledCalculator: CalculatorDefinition = {
         `HAS-BLED score ${score} — HIGH bleeding risk. Estimated 1-year major bleeding risk approximately 4% or more. ` +
         "Address and correct modifiable bleeding risk factors and reassess anticoagulation strategy, considering the net clinical benefit.",
       status: "critical",
+      warnings: [
+        ...hasBledWarnings,
+        "In atrial fibrillation the net clinical benefit may still favor anticoagulation despite a high HAS-BLED score — do not convert the score into an automatic yes/no rule.",
+      ],
+      advice: [
+        "Prioritize correction of modifiable risk factors and closer follow-up; any change to anticoagulation strategy should weigh both thrombotic and bleeding risk together.",
+      ],
+      followUp: [
+        "Reassess frequently while modifiable factors are being corrected and whenever the medication list or clinical status changes.",
+      ],
     };
   },
 };

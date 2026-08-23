@@ -54,6 +54,17 @@ export const news2Calculator: CalculatorDefinition = {
 
   inputs: [
   {
+    id: "spo2-scale",
+    label: "SpO₂ Scale",
+    type: "select",
+    required: true,
+    options: [
+      { label: "Scale 1 — Standard (target SpO₂ ≥ 94%)", value: "standard" },
+      { label: "Scale 2 — Alternative (target SpO₂ 88–92% for chronic hypercapnic respiratory failure)", value: "alternative" },
+    ],
+    defaultValue: "standard",
+  },
+  {
     id: "respiratory-rate",
     label: "Respiratory Rate",
     type: "number",
@@ -95,6 +106,26 @@ calculate(
   values: Record<string, string>,
 ) {
 
+if (
+  values["spo2-scale"] === "" ||
+  values["spo2-scale"] === undefined
+) {
+  return {
+    value: 0,
+    interpretation: "SpO\u2082 Scale is required.",
+    status: "critical",
+  };
+}
+
+const spo2Scale = values["spo2-scale"];
+
+if (spo2Scale !== "standard" && spo2Scale !== "alternative") {
+  return {
+    value: 0,
+    interpretation: "Invalid SpO\u2082 Scale selection.",
+    status: "critical",
+  };
+}
 
 if (
   values["respiratory-rate"] === "" ||
@@ -317,11 +348,23 @@ function scoreRespiratoryRate(v: number): number {
   return 3;
 }
 
-function scoreSpo2(v: number): number {
+// SpO2 Scale 1 - Standard (target SpO2 >= 94%)
+function scoreSpo2Standard(v: number): number {
   if (v <= 91) return 3;
   if (v <= 93) return 2;
   if (v <= 95) return 1;
   return 0;
+}
+
+// SpO2 Scale 2 - Alternative (target SpO2 88-92% for chronic hypercapnic respiratory failure)
+function scoreSpo2Alternative(v: number): number {
+  if (v <= 83) return 3;
+  if (v <= 85) return 2;
+  if (v <= 87) return 1;
+  if (v <= 92) return 0;
+  if (v <= 94) return 1;
+  if (v <= 96) return 2;
+  return 3;
 }
 
 function scoreTemperature(v: number): number {
@@ -350,7 +393,9 @@ function scorePulse(v: number): number {
 }
 
 const respiratoryRateScore = scoreRespiratoryRate(respiratoryRate);
-const spo2Score = scoreSpo2(spo2);
+const spo2Score = spo2Scale === "alternative"
+  ? scoreSpo2Alternative(spo2)
+  : scoreSpo2Standard(spo2);
 const temperatureScore = scoreTemperature(temperature);
 const sbpScore = scoreSbp(sbp);
 const pulseScore = scorePulse(pulse);
@@ -380,30 +425,86 @@ let status:
   "critical";
 let referenceRange = "";
 
+const scaleLabel = spo2Scale === "alternative"
+  ? " (SpO\u2082 Scale 2)"
+  : "";
+
 if (result === 0) {
   interpretation =
-    "NEWS2 0 – Low clinical risk.";
+    "NEWS2" + scaleLabel + " 0 \u2013 Low clinical risk.";
   status = "normal";
   referenceRange = "0";
 } else if (result <= 4 && !singleParameterThree) {
   interpretation =
-    "NEWS2 " + result + " – Low-to-moderate risk.";
+    "NEWS2" + scaleLabel + " " + result + " \u2013 Low-to-moderate risk.";
   status = "low";
-  referenceRange = "1–4";
+  referenceRange = "1\u20134";
 } else if (result <= 6) {
   interpretation =
-    "NEWS2 " + result + " – High risk.";
+    "NEWS2" + scaleLabel + " " + result + " \u2013 High risk.";
   status = "high";
-  referenceRange = "5–6";
+  referenceRange = "5\u20136";
 } else {
   interpretation =
-    "NEWS2 " + result + " – Very high risk.";
+    "NEWS2" + scaleLabel + " " + result + " \u2013 Very high risk.";
   status = "critical";
-  referenceRange = "≥7";
+  referenceRange = "\u22657";
 }
 
+const baseWarnings = [
+  "NEWS2 is a deterioration-monitoring score, not a diagnosis; it does not identify the underlying cause of acute illness.",
+];
 
+if (spo2Scale === "alternative") {
+  baseWarnings.push(
+    "SpO\u2082 Scale 2 is scored against a target range of 88\u201392% and is intended only for patients with confirmed chronic hypercapnic respiratory failure who are clinically designated for that target; do not apply Scale 2 routinely.",
+  );
+} else {
+  baseWarnings.push(
+    "SpO\u2082 is scored on Scale 1 (standard). For patients with confirmed chronic hypercapnic respiratory failure on an 88\u201392% target range, select SpO\u2082 Scale 2 instead.",
+  );
+}
 
+let bandAdvice: string[];
+let bandFollowUp: string[];
+
+if (result === 0) {
+  bandAdvice = [
+    "Continue routine monitoring of vital signs and reassess with each set of observations.",
+  ];
+  bandFollowUp = [
+    "Repeat NEWS2 at the monitoring frequency appropriate for the clinical setting and after any change in condition.",
+  ];
+} else if (result <= 4 && !singleParameterThree) {
+  bandAdvice = [
+    "Arrange review by a registered nurse or equivalent clinician and check that the observations were measured correctly.",
+  ];
+  bandFollowUp = [
+    "Increase the observation frequency and repeat NEWS2 after any intervention or change in condition.",
+  ];
+} else if (result <= 6) {
+  bandAdvice = [
+    "Obtain urgent assessment by a clinician with competence in acute illness assessment and review the patient's management plan.",
+  ];
+  bandFollowUp = [
+    "Repeat NEWS2 frequently and after every intervention; escalate further if the score rises or fails to fall as expected.",
+  ];
+} else {
+  bandAdvice = [
+    "Arrange emergency clinical assessment; continuous monitoring of vital signs should be considered while awaiting review.",
+  ];
+  bandFollowUp = [
+    "Reassess NEWS2 continuously or after every intervention until the patient is stabilized, and involve critical-care teams according to local practice.",
+  ];
+}
+
+const bandWarnings =
+  singleParameterThree && result <= 6
+    ? [
+        ...baseWarnings,
+        "A single parameter scoring 3 triggers the high-risk response even though the aggregate score is modest; do not defer escalation based on the total alone.",
+      ]
+    : baseWarnings;
 
 return {
   value:
@@ -414,6 +515,12 @@ return {
   status,
 
   referenceRange,
+
+  warnings: bandWarnings,
+
+  advice: bandAdvice,
+
+  followUp: bandFollowUp,
 };
 },
 

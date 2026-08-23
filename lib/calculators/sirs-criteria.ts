@@ -168,7 +168,18 @@ export const sirsCriteriaCalculator: CalculatorDefinition = {
           `SIRS PRESENT — ${count}/4 criteria met: ${met.join("; ")}. ` +
           "Evaluate for infection and consider sepsis workup.",
         status: "high",
-        followUp: ["Assess for a source of infection and consider blood cultures."],
+        warnings: [
+          "SIRS is sensitive but nonspecific — it reflects a systemic inflammatory response, whatever its cause.",
+          "Non-infectious conditions (trauma, burns, surgery, pancreatitis, and other inflammatory states) commonly produce SIRS.",
+          "SIRS alone should not be used to diagnose sepsis; Sepsis-3 defines sepsis as organ dysfunction from a dysregulated response to infection.",
+        ],
+        advice: [
+          `An elevated SIRS count (${count}/4) should trigger clinical assessment for infection and for non-infectious inflammatory causes, interpreted alongside vital signs, examination, and available investigations.`,
+        ],
+        followUp: [
+          "Assess for a source of infection and consider blood cultures before antimicrobial decisions where appropriate.",
+          "Reassess the criteria as the clinical picture evolves and evaluate with the full clinical context rather than the count alone.",
+        ],
       };
     }
 
@@ -180,6 +191,16 @@ export const sirsCriteriaCalculator: CalculatorDefinition = {
         `SIRS criteria not met (${count}/4). ` +
         (met.length > 0 ? `Met: ${met.join("; ")}.` : "No criteria met."),
       status: "normal",
+      warnings: [
+        "SIRS is sensitive but nonspecific — fewer than 2 criteria do not exclude serious infection or sepsis.",
+        "Non-infectious inflammatory conditions can produce individual SIRS criteria.",
+      ],
+      advice: [
+        "Continue clinical assessment based on the overall presentation; absence of SIRS does not remove the need to evaluate concerning features.",
+      ],
+      followUp: [
+        "Repeat assessment if the clinical condition changes or new abnormalities develop in temperature, heart rate, respiratory rate, or white cell count.",
+      ],
     };
   },
 };

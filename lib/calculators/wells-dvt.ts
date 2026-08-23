@@ -205,6 +205,16 @@ export const wellsDvtCalculator: CalculatorDefinition = {
           `Wells DVT score ${score} (${threeTier} probability, three-tier) — DVT LIKELY (two-tier). ` +
           "Proceed directly to compression ultrasound; D-dimer is not recommended.",
         status: "high",
+        warnings: [
+          "The Wells DVT score estimates pretest probability; it does not confirm or exclude DVT by itself.",
+          "Clinical suspicion discordant with the score should prompt continued evaluation regardless of the result.",
+        ],
+        advice: [
+          "With DVT-likely status, proceed along established imaging pathways rather than D-dimer exclusion.",
+        ],
+        followUp: [
+          "Escalate promptly if symptoms progress or the limb becomes threatened while awaiting investigation.",
+        ],
       };
     }
 
@@ -215,6 +225,16 @@ export const wellsDvtCalculator: CalculatorDefinition = {
         `Wells DVT score ${score} (${threeTier} probability, three-tier) — DVT UNLIKELY (two-tier). ` +
         "A negative high-sensitivity D-dimer safely excludes DVT without imaging.",
       status: "normal",
+      warnings: [
+        "The Wells DVT score estimates pretest probability; it does not confirm or exclude DVT by itself.",
+        "Results must be combined with appropriate imaging and laboratory pathways for the clinical setting.",
+      ],
+      advice: [
+        "Use this result within an established DVT assessment pathway; a positive D-dimer returns the patient to diagnostic imaging.",
+      ],
+      followUp: [
+        "Reassess if symptoms evolve, worsen, or fail to resolve, or if diagnostic uncertainty remains after initial testing.",
+      ],
     };
   },
 };

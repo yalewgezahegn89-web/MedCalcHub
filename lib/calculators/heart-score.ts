@@ -149,6 +149,18 @@ export const heartScoreCalculator: CalculatorDefinition = {
           `HEART score ${score} — LOW risk. 6-week MACE risk approximately 1–2%. ` +
           "Candidate for early discharge with serial troponins and outpatient follow-up.",
         status: "normal",
+        warnings: [
+          "The HEART score is a risk-stratification tool for undifferentiated chest pain, not an independent diagnosis of ACS.",
+          "Clinical assessment, ECG review, serial biomarkers, and local chest-pain protocols remain necessary regardless of the score.",
+          "A low-risk score applies to the evaluated episode only — recurrent or progressive symptoms require reassessment.",
+        ],
+        advice: [
+          "Early discharge pathways should include clear return precautions and documented outpatient follow-up.",
+        ],
+        followUp: [
+          "Complete the planned serial troponin schedule before final discharge decisions.",
+          "Advise the patient to seek immediate reassessment if chest pain recurs or worsens.",
+        ],
       };
     }
 
@@ -159,7 +171,18 @@ export const heartScoreCalculator: CalculatorDefinition = {
         interpretation:
           `HEART score ${score} — MODERATE risk. 6-week MACE risk approximately 12–17%. ` +
           "Admit for observation and serial troponin measurement.",
-        status: "high",
+        status: "low",
+        warnings: [
+          "The HEART score is a risk-stratification tool for undifferentiated chest pain, not an independent diagnosis of ACS.",
+          "Moderate risk does not exclude an acute coronary syndrome — observation with serial biomarkers is still required.",
+        ],
+        advice: [
+          "Admission for observation with serial troponins and repeat ECGs is appropriate for this risk band; escalate if any component worsens.",
+        ],
+        followUp: [
+          "Repeat ECG and troponin on the observation protocol and reassess the HEART score as new data become available.",
+          "Arrange cardiology review before discharge if serial testing is inconclusive or symptoms continue.",
+        ],
       };
     }
 
@@ -170,6 +193,16 @@ export const heartScoreCalculator: CalculatorDefinition = {
         `HEART score ${score} — HIGH risk. 6-week MACE risk approximately 50–65%. ` +
         "Consider early invasive strategy and cardiology consultation.",
       status: "critical",
+      warnings: [
+        "The HEART score identifies high MACE risk but does not by itself establish a diagnosis of ACS or dictate therapy choice.",
+        "Interpret alongside ongoing ECG changes, biomarker trends, hemodynamic status, and local revascularization pathways.",
+      ],
+      advice: [
+        "Urgent cardiology consultation is appropriate at this risk level; continue guideline-directed medical management while the invasive decision is made.",
+      ],
+      followUp: [
+        "Maintain continuous monitoring and reassess after each intervention or clinical change.",
+      ],
     };
   },
 };

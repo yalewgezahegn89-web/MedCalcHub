@@ -163,6 +163,16 @@ export const timiCalculator: CalculatorDefinition = {
           `TIMI risk score ${score} — LOW risk. 14-day risk of death, MI, or urgent revascularization approximately 4.7%. ` +
           "Early discharge with outpatient follow-up may be considered in suitable patients.",
         status: "normal",
+        warnings: [
+          "The TIMI score is a risk-stratification model for UA/NSTEMI, not a standalone diagnosis.",
+          "It applies to the intended population (unstable angina / non-ST-elevation MI); accuracy outside this context is not established.",
+        ],
+        advice: [
+          "Interpret the risk estimate together with the ECG, biomarker trend, symptom pattern, and overall clinical assessment.",
+        ],
+        followUp: [
+          "If early discharge is pursued, ensure timely outpatient follow-up and clear return precautions.",
+        ],
       };
     }
 
@@ -174,6 +184,16 @@ export const timiCalculator: CalculatorDefinition = {
           `TIMI risk score ${score} — INTERMEDIATE risk. 14-day risk of death, MI, or urgent revascularization approximately 8.3–19.9%. ` +
           "Admit and initiate guideline-directed medical therapy; consider early invasive strategy.",
         status: "high",
+        warnings: [
+          "The TIMI score estimates composite event probability; it does not determine which specific therapy is required.",
+          "Risk should be interpreted with ECG findings, serial biomarkers, symptoms, and clinical assessment.",
+        ],
+        advice: [
+          "Admission with guideline-directed medical therapy is appropriate at this band; reassess ischemic risk as serial data accumulate.",
+        ],
+        followUp: [
+          "Repeat clinical assessment and ECG during admission and escalate if recurrent ischemia or biomarker rise occurs.",
+        ],
       };
     }
 
@@ -184,6 +204,16 @@ export const timiCalculator: CalculatorDefinition = {
         `TIMI risk score ${score} — HIGH risk. 14-day risk of death, MI, or urgent revascularization approximately 26.2–40.9%. ` +
         "Consider urgent invasive strategy and intensive antithrombotic therapy.",
       status: "critical",
+      warnings: [
+        "A high TIMI score signals elevated short-term event risk but does not by itself mandate any specific invasive or antithrombotic protocol.",
+        "Apply only within the intended UA/NSTEMI population and interpret with the full clinical picture.",
+      ],
+      advice: [
+        "Urgent cardiology review is appropriate at this risk level; management decisions should follow current guidelines and local pathways.",
+      ],
+      followUp: [
+        "Continue close monitoring and reassess after each intervention or change in clinical status.",
+      ],
     };
   },
 };
