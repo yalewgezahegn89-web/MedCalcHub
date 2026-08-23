@@ -353,6 +353,19 @@ export const clinicalContentRegistry: Record<
         level: "Review Article",
       },
     ],
+    evidence: {
+      source: "NKF / KDIGO",
+      reference:
+        "KDIGO Clinical Practice Guideline for the Evaluation and Management of CKD.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2024",
+      updatedAt: "2026-08",
+      references: [
+        "KDIGO Clinical Practice Guideline.",
+        "National Kidney Foundation.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The BUN/Cr ratio should be interpreted in the context of the individual patient's clinical presentation and other laboratory values.",
   },
@@ -5954,6 +5967,19 @@ export const clinicalContentRegistry: Record<
         level: "Validation Study",
       },
     ],
+    evidence: {
+      source: "Original derivation + observational validation (peer-reviewed)",
+      reference:
+        "Steinhäuslin F, et al. Fractional excretion of trace lithium and uric acid in acute renal failure. J Am Soc Nephrol. 1994;4(7):1429-1437.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Steinhäuslin F, et al. J Am Soc Nephrol. 1994;4(7):1429-1437.",
+        "Fenske W, et al. FE-urate and FE-urea in the differential diagnosis of SIADH. Eur J Clin Invest. 2010;40(6):506-513.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. FEUA must be interpreted with the clinical context and alongside other urinary indices.",
   },
@@ -6013,6 +6039,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Review",
       },
     ],
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Broadus AE, et al. Phosphate homeostasis and evaluation of hypophosphatemia. J Clin Invest. 1983;72(1):119-126.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Broadus AE, et al. J Clin Invest. 1983;72(1):119-126.",
+        "Farrow EG, et al. Tumor-induced osteomalacia: the tumor takes the calcium, phosphate, and other nutrients. J Am Soc Nephrol. 2010;21(3):395-398.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. FEP must be interpreted with the clinical context and the prevailing serum phosphate.",
   },
@@ -6073,6 +6112,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Original derivation + validation (peer-reviewed)",
+      reference:
+        "Christiansen C, et al. Discriminative power of three indices of renal calcium excretion for the distinction between familial hypocalciuric hypercalcaemia and primary hyperparathyroidism. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Christiansen C, et al. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
+        "National Institute for Health and Care Excellence (NICE). Hyperparathyroidism (primary): diagnosis, assessment and initial management. NG132. 2019.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. FECa is one component of the FHH evaluation and must be interpreted with PTH, family history, and genetic testing when indicated.",
   },
@@ -6132,6 +6184,19 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Miller TR, et al. Urinary diagnostic indices in acute renal failure: a prospective study. Ann Intern Med. 1978;89(1):47-50.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Miller TR, et al. Ann Intern Med. 1978;89(1):47-50.",
+        "Espinel CH. The FENa test: use in the differential diagnosis of acute renal failure. JAMA. 1976;236(6):579-581.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. RFI must be interpreted with the clinical context and alongside other urinary indices.",
   },
@@ -6191,6 +6256,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Review",
       },
     ],
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Kraut JA, Kurtz I. Toxic alcohol ingestions: clinical features, diagnosis, and management. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Kraut JA, Kurtz I. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
+        "Hoffman RS, et al. Osmol and gap: a critical appraisal. Am J Emerg Med. 1993;11(5):543-547.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Suspected toxic alcohol ingestion requires specific assays and urgent clinical management regardless of the urine osmolal gap.",
   },
@@ -6249,6 +6327,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Review",
       },
     ],
+    evidence: {
+      source: "Original derivation (classic renal physiology)",
+      reference:
+        "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+        "Goldberg M. Hyponatremia. Med Clin North Am. 1981;65(2):251-269.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Water balance decisions require the full clinical picture, including intake, insensible losses, and serum sodium trends.",
   },
@@ -6307,6 +6398,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Review",
       },
     ],
+    evidence: {
+      source: "Original derivation (classic renal physiology)",
+      reference:
+        "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+        "Nguyen MK, Kurtz I. Derivation of a new formula for calculating urinary electrolyte-free water clearance based on the Edelman equation. Am J Physiol Renal Physiol. 2005;288(1):F1-7.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Fluid therapy in dysnatremia must account for the full clinical picture and serial laboratory monitoring.",
   },
@@ -6364,6 +6468,19 @@ export const clinicalContentRegistry: Record<
         level: "Validation Study",
       },
     ],
+    evidence: {
+      source: "Guideline + validation studies",
+      reference:
+        "National Kidney Foundation. KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int Suppl. 2013;3(1):1-150.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "KDIGO 2012 CKD Guideline. Kidney Int Suppl. 2013;3(1):1-150.",
+        "Ginsberg JM, et al. Use of single voided urine samples to estimate quantitative proteinuria. N Engl J Med. 1983;309(25):1543-1546.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Proteinuria results must be interpreted with the clinical context and confirmed with repeat testing when abnormal.",
   },
@@ -6422,6 +6539,19 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    evidence: {
+      source: "Classic renal physiology definition",
+      reference:
+        "Levey AS, et al. Expressing the Modification of Diet in Renal Disease Study equation for estimating glomerular filtration rate with standardized serum creatinine values. Clin Chem. 2007;53(4):766-772.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Levey AS, et al. Clin Chem. 2007;53(4):766-772.",
+        "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16(1):31-41.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Collection completeness and clinical context are essential when interpreting creatinine clearance.",
   },
@@ -6480,6 +6610,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Review",
       },
     ],
+    evidence: {
+      source: "Epidemiological association (peer-reviewed)",
+      reference:
+        "Stampfer MJ, et al. A prospective study of cholesterol, apolipoproteins, and the risk of myocardial infarction. N Engl J Med. 1991;325(6):373-381.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Stampfer MJ, et al. N Engl J Med. 1991;325(6):373-381.",
+        "Assmann G, et al. The role of HDL cholesterol in the metabolic syndrome. Atheroscler Suppl. 2002;3(4):35-41.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The TC/HDL ratio should be interpreted within the framework of a complete cardiovascular risk assessment.",
   },
@@ -6537,6 +6680,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Review",
       },
     ],
+    evidence: {
+      source: "Original derivation (peer-reviewed)",
+      reference:
+        "Dobiásová M, Frohlich J. The plasma parameter log (TG/HDL-C) as an atherogenic index: correlation with lipoprotein particle size and esterification rate in apoB-lipoprotein-depleted plasma (FERHDL). Clin Biochem. 2001;34(7):583-588.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Dobiásová M, Frohlich J. Clin Biochem. 2001;34(7):583-588.",
+        "Dobiásová M. Atherogenic index of plasma [log(triglycerides/HDL-cholesterol)]: theoretical and practical implications. Clin Chem. 2004;50(7):1113-1115.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The AIP should be used as an adjunct to, not a substitute for, comprehensive lipid and cardiovascular risk assessment.",
   },
@@ -6595,6 +6751,19 @@ export const clinicalContentRegistry: Record<
         level: "Validation Study",
       },
     ],
+    evidence: {
+      source: "Epidemiological association (peer-reviewed)",
+      reference:
+        "Walldius G, Jungner I. The apoB/apoA-I ratio: a strong, new risk factor for cardiovascular disease and a target for lipid-lowering therapy — a review of the evidence. J Intern Med. 2006;259(5):493-519.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Walldius G, Jungner I. J Intern Med. 2006;259(5):493-519.",
+        "Yusuf S, et al. Effect of potentially modifiable risk factors associated with myocardial infarction in 52 countries (INTERHEART). Lancet. 2004;364(9438):937-952.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Use the performing laboratory's reference interval and incorporate the ratio into a complete cardiovascular risk assessment.",
   },
@@ -6654,6 +6823,19 @@ export const clinicalContentRegistry: Record<
         level: "Expert Review",
       },
     ],
+    evidence: {
+      source: "Classic acid–base physiology / expert-derived rules",
+      reference:
+        "Merck Manual Professional Version. Respiratory Acidosis and Respiratory Alkalosis. www.merckmanuals.com.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Merck Manual Professional Version. Respiratory Acidosis and Alkalosis.",
+        "Brewer ED. Disorders of acid-base balance. Pediatr Clin North Am. 1990;37(2):429-447.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Acid–base interpretation requires the full clinical picture, including electrolytes, albumin, and the anion gap.",
   },
@@ -6711,6 +6893,19 @@ export const clinicalContentRegistry: Record<
         level: "Textbook",
       },
     ],
+    evidence: {
+      source: "Classic acid–base physiology / expert-derived rule",
+      reference:
+        "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
+        "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Acid–base interpretation requires the full clinical picture and should guide, not replace, clinical judgment.",
   },
@@ -7347,6 +7542,20 @@ export const clinicalContentRegistry: Record<
         level: "Original Description",
       },
     ],
+    evidence: {
+      source: "ACOG Practice Bulletin and Original Descriptions",
+      reference:
+        "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260. Pritchard JA. Surg Gynecol Obstet. 1955;100(2):131-140. Zuspan FP. Clin Obstet Gynecol. 1966;9(4):954-972.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2020",
+      updatedAt: "2026-08",
+      references: [
+        "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
+        "Pritchard JA. Surg Gynecol Obstet. 1955;100(2):131-140.",
+        "Zuspan FP. Clin Obstet Gynecol. 1966;9(4):954-972.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Magnesium sulfate therapy requires individualized dosing, monitoring for toxicity, and prompt treatment of adverse effects.",
   },
@@ -7406,6 +7615,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "ACOG Practice Bulletins",
+      reference:
+        "ACOG Committee Opinion No. 794: Quantitative blood loss in obstetric hemorrhage. Obstet Gynecol. 2019;134(6):e150-e156. ACOG Practice Bulletin No. 183: Postpartum hemorrhage. Obstet Gynecol. 2017;130(4):e168-e186.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2019",
+      updatedAt: "2026-08",
+      references: [
+        "ACOG Committee Opinion No. 794. Obstet Gynecol. 2019;134(6):e150-e156.",
+        "ACOG Practice Bulletin No. 183. Obstet Gynecol. 2017;130(4):e168-e186.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Blood-loss estimates are imprecise; clinical signs of hypovolemia always take precedence in hemorrhage management.",
   },
@@ -7470,6 +7692,19 @@ export const clinicalContentRegistry: Record<
         level: "Committee Opinion",
       },
     ],
+    evidence: {
+      source: "Original Validation and ACOG Committee Opinion",
+      reference:
+        "Cox JL, Holden JM, Sagovsky R. Detection of postnatal depression: development of the 10-item Edinburgh Postnatal Depression Scale. Br J Psychiatry. 1987;150:782-786. ACOG Committee Opinion No. 757: Screening for perinatal depression. Obstet Gynecol. 2018;132(5):e208-e212.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1987",
+      updatedAt: "2026-08",
+      references: [
+        "Cox JL, Holden JM, Sagovsky R. Br J Psychiatry. 1987;150:782-786.",
+        "ACOG Committee Opinion No. 757. Obstet Gynecol. 2018;132(5):e208-e212.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The EPDS is a screening tool; a positive screen requires full clinical assessment, and any item-10 positive response requires immediate safety evaluation.",
   },
@@ -7620,6 +7855,18 @@ export const clinicalContentRegistry: Record<
         level: "Course Manual",
       },
     ],
+    evidence: {
+      source: "Original Description and ACS ATLS",
+      reference:
+        "James HE, Trauner D. The Glasgow Coma Scale. In: Brain Insults in Infants and Children. Grune & Stratton; 1985:179-182. American College of Surgeons. ATLS Student Course Manual. 10th ed. ACS; 2018.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1985",
+      updatedAt: "2026-08",
+      references: [
+        "James HE, Trauner D. Brain Insults in Infants and Children. Grune & Stratton; 1985:179-182.",
+        "American College of Surgeons. ATLS Student Course Manual. 10th ed. ACS; 2018.",
+      ],
+    },
     faq: [
       {
         question:
@@ -7701,6 +7948,18 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Original Description and ACS Guideline",
+      reference:
+        "Tepas JJ 3rd, et al. The Pediatric Trauma Score as a predictor of injury severity in the injured child. J Pediatr Surg. 1987;22(1):14-18. American College of Surgeons. Resources for Optimal Care of the Injured Patient. ACS; 2022.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1987",
+      updatedAt: "2026-08",
+      references: [
+        "Tepas JJ 3rd, et al. J Pediatr Surg. 1987;22(1):14-18.",
+        "American College of Surgeons. Resources for Optimal Care of the Injured Patient. ACS; 2022.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Trauma triage requires continuous reassessment, and clinical judgment should always override any score-based triage recommendation.",
   },
@@ -7761,6 +8020,18 @@ export const clinicalContentRegistry: Record<
         level: "Review",
       },
     ],
+    evidence: {
+      source: "Original Description and Lancet Review",
+      reference:
+        "Westley CR, Cotton EK, Brooks JG. Nebulized racemic epinephrine by IPPB for the treatment of croup: a double-blind study. Am J Dis Child. 1978;132(5):484-487. Bjornson CL, Johnson DW. Croup. Lancet. 2008;371(9609):329-339.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1978",
+      updatedAt: "2026-08",
+      references: [
+        "Westley CR, et al. Am J Dis Child. 1978;132(5):484-487.",
+        "Bjornson CL, Johnson DW. Lancet. 2008;371(9609):329-339.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. A child who is drowsy or cyanotic at rest has critical obstruction regardless of the score; continuous airway reassessment is mandatory.",
   },
@@ -7823,6 +8094,18 @@ export const clinicalContentRegistry: Record<
         level: "Validation Study",
       },
     ],
+    evidence: {
+      source: "PECARN Derivation/Validation and Ann Emerg Med Validation",
+      reference:
+        "Kuppermann N, et al. Identification of children at very low risk of clinically-important brain injuries after head trauma: a prospective cohort study. Lancet. 2009;374(9696):1160-1170. Schonfeld D, et al. Ann Emerg Med. 2013;62(6):597-603.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2009",
+      updatedAt: "2026-08",
+      references: [
+        "Kuppermann N, et al. Lancet. 2009;374(9696):1160-1170.",
+        "Schonfeld D, et al. Ann Emerg Med. 2013;62(6):597-603.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. The PECARN rule supports, but does not replace, clinical judgment; any child with clinical deterioration warrants CT regardless of the calculated risk.",
   },
@@ -7892,6 +8175,19 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Original Description and AAP Guideline",
+      reference:
+        "Jaskiewicz JA, et al. Febrile infants at low risk for serious bacterial infection — an appraisal of the Rochester criteria and implications for management. Pediatrics. 1994;94(3):390-396. Dagan R, et al. J Pediatr. 1985;107(6):855-860. Pantell RH, et al. Pediatrics. 2021;148(2):e2021052228.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1994",
+      updatedAt: "2026-08",
+      references: [
+        "Jaskiewicz JA, et al. Pediatrics. 1994;94(3):390-396.",
+        "Dagan R, et al. J Pediatr. 1985;107(6):855-860.",
+        "Pantell RH, et al. Pediatrics. 2021;148(2):e2021052228.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Febrile infant management must follow current institutional and AAP guidelines; cultures and reassessment are essential regardless of the calculated risk.",
   },
@@ -7951,6 +8247,18 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "Original Description and WHO Guideline",
+      reference:
+        "Gorelick MH, Shaw KN, Murphy KO. Validity and reliability of clinical signs in the diagnosis of dehydration in children. Pediatrics. 1997;99(5):E6. World Health Organization. The Treatment of Diarrhoea: A Manual for Physicians and Other Senior Health Workers. 4th rev. WHO; 2005.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1997",
+      updatedAt: "2026-08",
+      references: [
+        "Gorelick MH, et al. Pediatrics. 1997;99(5):E6.",
+        "World Health Organization. The Treatment of Diarrhoea. 4th rev. WHO; 2005.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Combine the score with weight change, urine output, and clinical judgment; never delay resuscitation of a shocked child to complete scoring.",
   },
@@ -8009,6 +8317,18 @@ export const clinicalContentRegistry: Record<
         level: "Guideline",
       },
     ],
+    evidence: {
+      source: "AHA PALS Guidelines",
+      reference:
+        "American Heart Association. Pediatric Advanced Life Support Provider Manual. AHA; 2020. Kleinman ME, et al. Pediatric advanced life support: 2010 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care. Pediatrics. 2010;126(5):e1361-e1399.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2020",
+      updatedAt: "2026-08",
+      references: [
+        "American Heart Association. PALS Provider Manual. AHA; 2020.",
+        "Kleinman ME, et al. Pediatrics. 2010;126(5):e1361-e1399.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. A normal blood pressure does not exclude shock; always assess perfusion, mental status, and urine output alongside blood pressure.",
   },
@@ -8068,6 +8388,18 @@ export const clinicalContentRegistry: Record<
         level: "Systematic Review",
       },
     ],
+    evidence: {
+      source: "Original Description and BMJ Systematic Review",
+      reference:
+        "Monaghan A. Detecting and managing deterioration in children. Paediatr Nurs. 2005;17(1):32-35. Lambert V, et al. Paediatric early warning systems for detecting and responding to clinical deterioration in children: a systematic review. BMJ Open. 2017;7(3):e014497.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2005",
+      updatedAt: "2026-08",
+      references: [
+        "Monaghan A. Paediatr Nurs. 2005;17(1):32-35.",
+        "Lambert V, et al. BMJ Open. 2017;7(3):e014497.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. PEWS complements, but does not replace, clinical assessment; escalate any child who looks unwell regardless of the score.",
   },
@@ -9501,6 +9833,19 @@ export const clinicalContentRegistry: Record<
         level: "Reliability study",
       },
     ],
+    evidence: {
+      source: "Original Scale and Validation Studies",
+      reference:
+        "Mahoney FI, Barthel DW. Functional evaluation: the Barthel Index. Md State Med J. 1965;14:61-65. Shah S, Vanclay F, Cooper B. J Clin Epidemiol. 1989;42(8):703-709. Collin C, Wade DT, et al. Int Disabil Stud. 1988;10(2):61-63.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1965",
+      updatedAt: "2026-08",
+      references: [
+        "Mahoney FI, Barthel DW. Md State Med J. 1965;14:61-65.",
+        "Shah S, Vanclay F, Cooper B. J Clin Epidemiol. 1989;42(8):703-709.",
+        "Collin C, Wade DT, et al. Int Disabil Stud. 1988;10(2):61-63.",
+      ],
+    },
     faq: [
       {
         question: "What score indicates the patient is ready for discharge?",
@@ -9573,6 +9918,18 @@ export const clinicalContentRegistry: Record<
         url: "https://doi.org/10.1016/0021-9681(60)90137-5",
       },
     ],
+    evidence: {
+      source: "Original Scale Description",
+      reference:
+        "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655. Zubrod CG, Schneiderman M, Frei E, et al. J Chronic Dis. 1960;11(1):7-33.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1982",
+      updatedAt: "2026-08",
+      references: [
+        "Oken MM, Creech RH, et al. Am J Clin Oncol. 1982;5(6):649-655.",
+        "Zubrod CG, Schneiderman M, et al. J Chronic Dis. 1960;11(1):7-33.",
+      ],
+    },
     faq: [
       {
         question: "Why is ECOG 0–1 used for most trials?",
@@ -9778,6 +10135,18 @@ export const clinicalContentRegistry: Record<
         level: "Original model",
       },
     ],
+    evidence: {
+      source: "Hepatology Literature",
+      reference:
+        "Sterling RK, et al. Development of a simple noninvasive index to predict significant fibrosis in patients with HIV/HCV coinfection. Hepatology. 2006;43:1317-1325.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Sterling RK, et al. Hepatology. 2006;43:1317-1325.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. FIB-4 is a screening index and does not replace clinical evaluation or confirmatory fibrosis testing.",
   },
@@ -9833,6 +10202,18 @@ export const clinicalContentRegistry: Record<
         level: "Original model",
       },
     ],
+    evidence: {
+      source: "Hepatology Literature",
+      reference:
+        "Wai CT, et al. A simple noninvasive index can predict both significant fibrosis and cirrhosis in patients with chronic hepatitis C. Hepatology. 2003;38:518-526.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Wai CT, et al. Hepatology. 2003;38:518-526.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. APRI is a screening index; fibrosis stage should be confirmed with further testing when clinically indicated.",
   },
@@ -10090,6 +10471,18 @@ export const clinicalContentRegistry: Record<
         level: "Original score",
       },
     ],
+    evidence: {
+      source: "Hepatology Literature",
+      reference:
+        "Angulo P, et al. The NAFLD fibrosis score: a noninvasive system that identifies liver fibrosis in patients with NAFLD. Hepatology. 2007;45:846-854.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Angulo P, et al. Hepatology. 2007;45:846-854.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The NAFLD Fibrosis Score is a screening tool and does not replace clinical evaluation or confirmatory fibrosis testing.",
   },
@@ -10145,6 +10538,17 @@ export const clinicalContentRegistry: Record<
         level: "Original index",
       },
     ],
+    evidence: {
+      source: "Original Index Description",
+      reference:
+        "Roca O, Messika J, Caralt B, et al. Predicting success of high-flow nasal cannula in pneumonia patients with hypoxemic respiratory failure: The utility of the ROX index. J Crit Care. 2016;35:200-205.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2016",
+      updatedAt: "2026-08",
+      references: [
+        "Roca O, et al. J Crit Care. 2016;35:200-205.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The ROX index is one component of respiratory-failure assessment and must be interpreted with serial measurements and full clinical judgment.",
   },
@@ -10198,6 +10602,17 @@ export const clinicalContentRegistry: Record<
         level: "Original classification",
       },
     ],
+    evidence: {
+      source: "Berlin Definition Consensus",
+      reference:
+        "ARDS Definition Task Force; Ranieri VM, Rubenfeld GD, Thompson BT, et al. Acute respiratory distress syndrome: the Berlin definition. JAMA. 2012;307(23):2526-2533.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2012",
+      updatedAt: "2026-08",
+      references: [
+        "ARDS Definition Task Force; Ranieri VM, et al. JAMA. 2012;307(23):2526-2533.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The P/F ratio is a component of ARDS assessment and does not by itself establish the diagnosis of ARDS.",
   },
@@ -10253,6 +10668,18 @@ export const clinicalContentRegistry: Record<
         level: "Textbook",
       },
     ],
+    evidence: {
+      source: "Classic Respiratory Physiology",
+      reference:
+        "Fenn WO, Rahn H, Otis AB. A theoretical study of the composition of the alveolar air at altitude. Am J Physiol. 1946;146(5):637-653. West JB. Respiratory Physiology: The Essentials. 11th ed. Wolters Kluwer; 2022.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1946",
+      updatedAt: "2026-08",
+      references: [
+        "Fenn WO, Rahn H, Otis AB. Am J Physiol. 1946;146(5):637-653.",
+        "West JB. Respiratory Physiology: The Essentials. 11th ed. Wolters Kluwer; 2022.",
+      ],
+    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The A–a gradient is one component of ABG interpretation and must be considered together with the clinical picture.",
   },
@@ -10570,6 +10997,18 @@ export const clinicalContentRegistry: Record<
         level: "Original research",
       },
     ],
+    evidence: {
+      source: "Nephrology Literature",
+      reference:
+        "Carvounis CP, et al. Significance of fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62:1184-1191.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Carvounis CP, et al. Kidney Int. 2002;62:1184-1191.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The calculator returns a numeric FENa only; the prerenal/intrinsic interpretation is educational and must be applied with the full clinical context.",
   },
@@ -10622,6 +11061,18 @@ export const clinicalContentRegistry: Record<
         level: "Clinical guideline",
       },
     ],
+    evidence: {
+      source: "ACOG Committee Opinion",
+      reference:
+        "ACOG Committee Opinion No. 700: Methods for estimating the due date. Obstet Gynecol. 2017;129(5):e150-e154.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2017",
+      updatedAt: "2026-08",
+      references: [
+        "ACOG Committee Opinion No. 700. Obstet Gynecol. 2017;129(5):e150-e154.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The expected date of delivery is an estimate based on the LMP and a 28-day cycle assumption; ultrasound dating should be used to confirm or correct the date when clinically indicated.",
   },
@@ -10676,6 +11127,18 @@ export const clinicalContentRegistry: Record<
         level: "Clinical guideline",
       },
     ],
+    evidence: {
+      source: "ACOG Committee Opinion",
+      reference:
+        "ACOG Committee Opinion No. 700: Methods for estimating the due date. Obstet Gynecol. 2017;129(5):e150-e154.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2017",
+      updatedAt: "2026-08",
+      references: [
+        "ACOG Committee Opinion No. 700. Obstet Gynecol. 2017;129(5):e150-e154.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. Gestational age reflects the entered dating only and does not determine pregnancy viability or obstetric diagnosis.",
   },

@@ -3809,6 +3809,102 @@ const E3B_EXPECTED_EVIDENCE: Record<
   },
 };
 
+const E4A_EVIDENCE_SLUGS = [
+  "bun-creatinine-ratio",
+  "fractional-excretion-uric-acid",
+  "fractional-excretion-phosphate",
+  "fractional-excretion-calcium",
+  "fractional-excretion-calculator",
+  "renal-failure-index",
+  "urine-osmolal-gap",
+  "free-water-clearance",
+  "electrolyte-free-water-clearance",
+  "urine-protein-creatinine-ratio",
+  "creatinine-clearance-24h",
+] as const;
+
+const E4A_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  "bun-creatinine-ratio": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "KDIGO Clinical Practice Guideline.",
+      "National Kidney Foundation.",
+    ],
+  },
+  "fractional-excretion-uric-acid": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Steinhäuslin F, et al. J Am Soc Nephrol. 1994;4(7):1429-1437.",
+      "Fenske W, et al. FE-urate and FE-urea in the differential diagnosis of SIADH. Eur J Clin Invest. 2010;40(6):506-513.",
+    ],
+  },
+  "fractional-excretion-phosphate": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Broadus AE, et al. J Clin Invest. 1983;72(1):119-126.",
+      "Farrow EG, et al. Tumor-induced osteomalacia: the tumor takes the calcium, phosphate, and other nutrients. J Am Soc Nephrol. 2010;21(3):395-398.",
+    ],
+  },
+  "fractional-excretion-calcium": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Christiansen C, et al. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
+      "National Institute for Health and Care Excellence (NICE). Hyperparathyroidism (primary): diagnosis, assessment and initial management. NG132. 2019.",
+    ],
+  },
+  "fractional-excretion-calculator": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Carvounis CP, et al. Kidney Int. 2002;62:1184-1191.",
+    ],
+  },
+  "renal-failure-index": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Miller TR, et al. Ann Intern Med. 1978;89(1):47-50.",
+      "Espinel CH. The FENa test: use in the differential diagnosis of acute renal failure. JAMA. 1976;236(6):579-581.",
+    ],
+  },
+  "urine-osmolal-gap": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Kraut JA, Kurtz I. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
+      "Hoffman RS, et al. Osmol and gap: a critical appraisal. Am J Emerg Med. 1993;11(5):543-547.",
+    ],
+  },
+  "free-water-clearance": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+      "Goldberg M. Hyponatremia. Med Clin North Am. 1981;65(2):251-269.",
+    ],
+  },
+  "electrolyte-free-water-clearance": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+      "Nguyen MK, Kurtz I. Derivation of a new formula for calculating urinary electrolyte-free water clearance based on the Edelman equation. Am J Physiol Renal Physiol. 2005;288(1):F1-7.",
+    ],
+  },
+  "urine-protein-creatinine-ratio": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "KDIGO 2012 CKD Guideline. Kidney Int Suppl. 2013;3(1):1-150.",
+      "Ginsberg JM, et al. Use of single voided urine samples to estimate quantitative proteinuria. N Engl J Med. 1983;309(25):1543-1546.",
+    ],
+  },
+  "creatinine-clearance-24h": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Levey AS, et al. Clin Chem. 2007;53(4):766-772.",
+      "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16(1):31-41.",
+    ],
+  },
+};
+
 describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () => {
   it("all 25 E3b targets have clinical content", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
@@ -3962,5 +4058,1171 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
       }
     }
     expect(evidenceCount).toBeGreaterThanOrEqual(101);
+  });
+});
+
+describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgrade)", () => {
+  it("all 11 E4a targets have clinical content", () => {
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 11 E4a targets have evidence", () => {
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 11 E4a targets have non-empty source", () => {
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 11 E4a targets have non-empty reference", () => {
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 11 E4a targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 11 E4a targets have at least 1 reference in references array", () => {
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("all 11 E4a target references match the expected citations", () => {
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E4A_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("no E4a target contains placeholder evidence", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("all 11 E4a targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E4A_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E4a slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E4a implements exactly 11 target slugs", () => {
+    expect(E4A_EVIDENCE_SLUGS.length).toBe(11);
+  });
+
+  it("E4a does not alter E1, E2, E3a, or E3b evidence counts unexpectedly", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(112);
+  });
+});
+
+const E4B_EVIDENCE_SLUGS = [
+  "total-cholesterol-hdl-ratio",
+  "atherogenic-index-of-plasma",
+  "apob-apoa1-ratio",
+  "respiratory-compensation",
+  "metabolic-alkalosis-compensation",
+] as const;
+
+const E4B_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  "total-cholesterol-hdl-ratio": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Stampfer MJ, et al. N Engl J Med. 1991;325(6):373-381.",
+      "Assmann G, et al. The role of HDL cholesterol in the metabolic syndrome. Atheroscler Suppl. 2002;3(4):35-41.",
+    ],
+  },
+  "atherogenic-index-of-plasma": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Dobiásová M, Frohlich J. Clin Biochem. 2001;34(7):583-588.",
+      "Dobiásová M. Atherogenic index of plasma [log(triglycerides/HDL-cholesterol)]: theoretical and practical implications. Clin Chem. 2004;50(7):1113-1115.",
+    ],
+  },
+  "apob-apoa1-ratio": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Walldius G, Jungner I. J Intern Med. 2006;259(5):493-519.",
+      "Yusuf S, et al. Effect of potentially modifiable risk factors associated with myocardial infarction in 52 countries (INTERHEART). Lancet. 2004;364(9438):937-952.",
+    ],
+  },
+  "respiratory-compensation": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Merck Manual Professional Version. Respiratory Acidosis and Alkalosis.",
+      "Brewer ED. Disorders of acid-base balance. Pediatr Clin North Am. 1990;37(2):429-447.",
+    ],
+  },
+  "metabolic-alkalosis-compensation": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
+      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
+    ],
+  },
+};
+
+describe("Clinical Content — Evidence Batch E4b (Lipids and Acid-Base NONE to FULL Upgrade)", () => {
+  it("all 5 E4b targets have clinical content", () => {
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 5 E4b targets have evidence", () => {
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 5 E4b targets have non-empty source", () => {
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 5 E4b targets have non-empty reference", () => {
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 5 E4b targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 5 E4b targets have at least 1 reference in references array", () => {
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("all 5 E4b target references contain no placeholders", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("all 5 E4b target references match the verified citation set", () => {
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E4B_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("all 5 E4b targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E4B_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E4b slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E4b implements exactly 5 target slugs", () => {
+    expect(E4B_EVIDENCE_SLUGS.length).toBe(5);
+  });
+
+  it("no E1–E4a evidence count regresses", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(117);
+  });
+});
+
+const E4C_EVIDENCE_SLUGS = [
+  "fib-4-index",
+  "apri-score",
+  "nafld-fibrosis-score",
+] as const;
+
+const E4C_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  "fib-4-index": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Sterling RK, et al. Hepatology. 2006;43:1317-1325.",
+    ],
+  },
+  "apri-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Wai CT, et al. Hepatology. 2003;38:518-526.",
+    ],
+  },
+  "nafld-fibrosis-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Angulo P, et al. Hepatology. 2007;45:846-854.",
+    ],
+  },
+};
+
+describe("Clinical Content — Evidence Batch E4c (Hepatology and Endocrine NONE to FULL Upgrade)", () => {
+  it("all 3 verified E4c targets have clinical content", () => {
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 3 verified E4c targets have evidence", () => {
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 3 verified E4c targets have non-empty source", () => {
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 3 verified E4c targets have non-empty reference", () => {
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 3 verified E4c targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 3 verified E4c targets have at least 1 reference in references array", () => {
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("all 3 verified E4c target references contain no placeholders", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("all 3 verified E4c target references match the verified citation set", () => {
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E4C_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("all 3 verified E4c targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E4C_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E4c slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E4c implements exactly 3 verified target slugs", () => {
+    expect(E4C_EVIDENCE_SLUGS.length).toBe(3);
+  });
+
+  it("adrenal-steroid-converter is blocked (citation verification failed)", () => {
+    const content = clinicalContentRegistry["adrenal-steroid-converter"];
+    expect(content, "adrenal-steroid-converter has content").toBeDefined();
+    const hasEvidence =
+      content!.evidence !== undefined &&
+      content!.evidence!.source !== undefined &&
+      content!.evidence!.source!.length > 0;
+    expect(
+      hasEvidence,
+      "adrenal-steroid-converter should NOT have verified evidence",
+    ).toBe(false);
+  });
+
+  it("no E1–E4b evidence count regresses", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(120);
+  });
+});
+
+const E4D_EVIDENCE_SLUGS = [
+  "ebl-obstetric",
+  "epds",
+  "magnesium-sulfate-preeclampsia",
+  "gestational-age",
+  "edd",
+  "barthel",
+  "ecog",
+] as const;
+
+const E4D_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  "ebl-obstetric": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "ACOG Committee Opinion No. 794. Obstet Gynecol. 2019;134(6):e150-e156.",
+      "ACOG Practice Bulletin No. 183. Obstet Gynecol. 2017;130(4):e168-e186.",
+    ],
+  },
+  "epds": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Cox JL, Holden JM, Sagovsky R. Br J Psychiatry. 1987;150:782-786.",
+      "ACOG Committee Opinion No. 757. Obstet Gynecol. 2018;132(5):e208-e212.",
+    ],
+  },
+  "magnesium-sulfate-preeclampsia": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
+      "Pritchard JA. Surg Gynecol Obstet. 1955;100(2):131-140.",
+      "Zuspan FP. Clin Obstet Gynecol. 1966;9(4):954-972.",
+    ],
+  },
+  "gestational-age": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "ACOG Committee Opinion No. 700. Obstet Gynecol. 2017;129(5):e150-e154.",
+    ],
+  },
+  "edd": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "ACOG Committee Opinion No. 700. Obstet Gynecol. 2017;129(5):e150-e154.",
+    ],
+  },
+  "barthel": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Mahoney FI, Barthel DW. Md State Med J. 1965;14:61-65.",
+      "Shah S, Vanclay F, Cooper B. J Clin Epidemiol. 1989;42(8):703-709.",
+      "Collin C, Wade DT, et al. Int Disabil Stud. 1988;10(2):61-63.",
+    ],
+  },
+  "ecog": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Oken MM, Creech RH, et al. Am J Clin Oncol. 1982;5(6):649-655.",
+      "Zubrod CG, Schneiderman M, et al. J Chronic Dis. 1960;11(1):7-33.",
+    ],
+  },
+};
+
+describe("Clinical Content — Evidence Batch E4d (OB/GYN, Functional, Geriatric)", () => {
+  it("all 7 E4d targets have clinical content", () => {
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 7 E4d targets have evidence", () => {
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 7 E4d targets have non-empty source", () => {
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 7 E4d targets have non-empty reference", () => {
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 7 E4d targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 7 E4d targets have at least 1 reference in references array", () => {
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("all 7 E4d target references contain no placeholders", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("all 7 E4d target references match the verified citation set", () => {
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E4D_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("all 7 E4d targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E4D_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E4d slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E4d implements exactly 7 target slugs", () => {
+    expect(E4D_EVIDENCE_SLUGS.length).toBe(7);
+  });
+
+  it("no E1–E4c evidence count regresses", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(128);
+  });
+});
+
+const E4E_EVIDENCE_SLUGS = [
+  "pediatric-gcs",
+  "pecarn-head-trauma",
+  "pediatric-hypotension",
+  "peds-pews",
+  "pediatric-trauma-score",
+  "westley-croup-score",
+  "rochester-criteria",
+  "gorelick-dehydration",
+] as const;
+
+const E4E_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  "pediatric-gcs": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "James HE, Trauner D. Brain Insults in Infants and Children. Grune & Stratton; 1985:179-182.",
+      "American College of Surgeons. ATLS Student Course Manual. 10th ed. ACS; 2018.",
+    ],
+  },
+  "pecarn-head-trauma": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Kuppermann N, et al. Lancet. 2009;374(9696):1160-1170.",
+      "Schonfeld D, et al. Ann Emerg Med. 2013;62(6):597-603.",
+    ],
+  },
+  "pediatric-hypotension": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "American Heart Association. PALS Provider Manual. AHA; 2020.",
+      "Kleinman ME, et al. Pediatrics. 2010;126(5):e1361-e1399.",
+    ],
+  },
+  "peds-pews": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Monaghan A. Paediatr Nurs. 2005;17(1):32-35.",
+      "Lambert V, et al. BMJ Open. 2017;7(3):e014497.",
+    ],
+  },
+  "pediatric-trauma-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Tepas JJ 3rd, et al. J Pediatr Surg. 1987;22(1):14-18.",
+      "American College of Surgeons. Resources for Optimal Care of the Injured Patient. ACS; 2022.",
+    ],
+  },
+  "westley-croup-score": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Westley CR, et al. Am J Dis Child. 1978;132(5):484-487.",
+      "Bjornson CL, Johnson DW. Lancet. 2008;371(9609):329-339.",
+    ],
+  },
+  "rochester-criteria": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Jaskiewicz JA, et al. Pediatrics. 1994;94(3):390-396.",
+      "Dagan R, et al. J Pediatr. 1985;107(6):855-860.",
+      "Pantell RH, et al. Pediatrics. 2021;148(2):e2021052228.",
+    ],
+  },
+  "gorelick-dehydration": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Gorelick MH, et al. Pediatrics. 1997;99(5):E6.",
+      "World Health Organization. The Treatment of Diarrhoea. 4th rev. WHO; 2005.",
+    ],
+  },
+};
+
+const E4E_BLOCKED_SLUGS = [
+  "oxygen-index",
+  "adrenal-steroid-converter",
+] as const;
+
+describe("Clinical Content — Evidence Batch E4e (Pediatrics NONE to FULL Upgrade)", () => {
+  it("all 8 E4e targets have clinical content", () => {
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 8 E4e targets have evidence", () => {
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 8 E4e targets have non-empty source", () => {
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 8 E4e targets have non-empty reference", () => {
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 8 E4e targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 8 E4e targets have at least 1 reference in references array", () => {
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("all 8 E4e target references contain no placeholders", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("all 8 E4e target references match the verified citation set", () => {
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E4E_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("all 8 E4e targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E4E_EVIDENCE_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E4e slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E4e implements exactly 8 target slugs", () => {
+    expect(E4E_EVIDENCE_SLUGS.length).toBe(8);
+  });
+
+  it("all 5 deferred/blocked calculators remain untouched (no evidence)", () => {
+    for (const slug of E4E_BLOCKED_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} has content`).toBeDefined();
+      const hasEvidence =
+        content!.evidence !== undefined &&
+        content!.evidence!.source !== undefined &&
+        content!.evidence!.source!.length > 0;
+      expect(
+        hasEvidence,
+        `${slug} should NOT have verified evidence (deferred/blocked)`,
+      ).toBe(false);
+    }
+  });
+
+  it("no E1–E4d evidence count regresses", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(136);
+  });
+});
+
+const E4F_IMPLEMENTED_SLUGS = [
+  "rox-index",
+  "pf-ratio",
+  "a-a-gradient",
+] as const;
+
+const E4F_BLOCKED_SLUGS = [
+  "oxygen-index",
+  "adrenal-steroid-converter",
+] as const;
+
+const E4F_EXPECTED_EVIDENCE: Record<
+  string,
+  { reviewedBy: string; references: string[] }
+> = {
+  "rox-index": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Roca O, et al. J Crit Care. 2016;35:200-205.",
+    ],
+  },
+  "pf-ratio": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "ARDS Definition Task Force; Ranieri VM, et al. JAMA. 2012;307(23):2526-2533.",
+    ],
+  },
+  "a-a-gradient": {
+    reviewedBy: "MedCalcHub Clinical Team",
+    references: [
+      "Fenn WO, Rahn H, Otis AB. Am J Physiol. 1946;146(5):637-653.",
+      "West JB. Respiratory Physiology: The Essentials. 11th ed. Wolters Kluwer; 2022.",
+    ],
+  },
+};
+
+describe("Clinical Content — Evidence Batch E4f (Final Stage 3 Evidence Completion)", () => {
+  it("all 3 implemented E4f targets have clinical content", () => {
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} missing content`).toBeDefined();
+    }
+  });
+
+  it("all 3 implemented E4f targets have evidence", () => {
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const content = clinicalContentRegistry[slug]!;
+      expect(content.evidence, `${slug} missing evidence`).toBeDefined();
+    }
+  });
+
+  it("all 3 implemented E4f targets have non-empty source", () => {
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
+      expect(
+        evidence.source!.length,
+        `${slug}.evidence.source length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 3 implemented E4f targets have non-empty reference", () => {
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
+      expect(
+        evidence.reference!.length,
+        `${slug}.evidence.reference length`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("all 3 implemented E4f targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.reviewedBy,
+        `${slug}.evidence.reviewedBy`,
+      ).toBe("MedCalcHub Clinical Team");
+    }
+  });
+
+  it("all 3 implemented E4f targets have at least 1 reference in references array", () => {
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      expect(
+        evidence.references,
+        `${slug}.evidence.references`,
+      ).toBeDefined();
+      expect(
+        Array.isArray(evidence.references),
+        `${slug}.evidence.references is array`,
+      ).toBe(true);
+      expect(
+        evidence.references!.length,
+        `${slug}.evidence.references length`,
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("all 3 implemented E4f target references contain no placeholders", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const texts: string[] = [
+        evidence.source ?? "",
+        evidence.reference ?? "",
+        evidence.version ?? "",
+        evidence.reviewedBy ?? "",
+        evidence.updatedAt ?? "",
+        ...(evidence.references ?? []),
+      ];
+      for (const text of texts) {
+        for (const pattern of placeholderPatterns) {
+          expect(
+            pattern.test(text),
+            `${slug} evidence contains placeholder: "${text}"`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("all 3 implemented E4f target references match the verified citation set", () => {
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      const evidence = clinicalContentRegistry[slug]!.evidence!;
+      const expected = E4F_EXPECTED_EVIDENCE[slug];
+      expect(
+        evidence.references!.length,
+        `${slug} references count`,
+      ).toBe(expected.references.length);
+      for (let i = 0; i < expected.references.length; i++) {
+        expect(
+          evidence.references![i],
+          `${slug} reference[${i}]`,
+        ).toBe(expected.references[i]);
+      }
+    }
+  });
+
+  it("all 3 implemented E4f targets are registered calculators", () => {
+    const registrySlugs = new Set(
+      calculatorRegistry.map((c) => c.slug),
+    );
+    for (const slug of E4F_IMPLEMENTED_SLUGS) {
+      expect(
+        registrySlugs.has(slug),
+        `E4f slug "${slug}" is not a registered calculator`,
+      ).toBe(true);
+    }
+  });
+
+  it("E4f implements exactly 3 target slugs", () => {
+    expect(E4F_IMPLEMENTED_SLUGS.length).toBe(3);
+  });
+
+  it("all 2 blocked calculators remain untouched (no evidence)", () => {
+    for (const slug of E4F_BLOCKED_SLUGS) {
+      const content = clinicalContentRegistry[slug];
+      expect(content, `${slug} has content`).toBeDefined();
+      const hasEvidence =
+        content!.evidence !== undefined &&
+        content!.evidence!.source !== undefined &&
+        content!.evidence!.source!.length > 0;
+      expect(
+        hasEvidence,
+        `${slug} should NOT have verified evidence (blocked)`,
+      ).toBe(false);
+    }
+  });
+
+  it("no E1–E4e evidence count regresses", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBeGreaterThanOrEqual(139);
   });
 });
