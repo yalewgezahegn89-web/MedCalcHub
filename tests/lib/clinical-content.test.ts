@@ -4869,7 +4869,6 @@ const E4E_EXPECTED_EVIDENCE: Record<
 };
 
 const E4E_BLOCKED_SLUGS = [
-  "oxygen-index",
   "adrenal-steroid-converter",
 ] as const;
 
@@ -5039,7 +5038,6 @@ const E4F_IMPLEMENTED_SLUGS = [
 ] as const;
 
 const E4F_BLOCKED_SLUGS = [
-  "oxygen-index",
   "adrenal-steroid-converter",
 ] as const;
 
@@ -5224,5 +5222,107 @@ describe("Clinical Content — Evidence Batch E4f (Final Stage 3 Evidence Comple
       }
     }
     expect(evidenceCount).toBeGreaterThanOrEqual(139);
+  });
+});
+
+describe("Clinical Content — Final Stage 3 Evidence Closure (oxygen-index)", () => {
+  it("oxygen-index has clinical content", () => {
+    const content = clinicalContentRegistry["oxygen-index"];
+    expect(content, "oxygen-index missing content").toBeDefined();
+  });
+
+  it("oxygen-index has canonical evidence", () => {
+    const content = clinicalContentRegistry["oxygen-index"]!;
+    expect(content.evidence, "oxygen-index missing evidence").toBeDefined();
+  });
+
+  it("oxygen-index evidence source is non-empty", () => {
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    expect(evidence.source, "oxygen-index.evidence.source").toBeDefined();
+    expect(evidence.source!.length, "oxygen-index.evidence.source length").toBeGreaterThan(0);
+  });
+
+  it("oxygen-index evidence reference is non-empty", () => {
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    expect(evidence.reference, "oxygen-index.evidence.reference").toBeDefined();
+    expect(evidence.reference!.length, "oxygen-index.evidence.reference length").toBeGreaterThan(0);
+  });
+
+  it("oxygen-index evidence reviewedBy is MedCalcHub Clinical Team", () => {
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    expect(evidence.reviewedBy, "oxygen-index.evidence.reviewedBy").toBe("MedCalcHub Clinical Team");
+  });
+
+  it("oxygen-index evidence references[] is non-empty", () => {
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    expect(evidence.references, "oxygen-index.evidence.references").toBeDefined();
+    expect(Array.isArray(evidence.references), "oxygen-index.evidence.references is array").toBe(true);
+    expect(evidence.references!.length, "oxygen-index.evidence.references length").toBeGreaterThanOrEqual(1);
+  });
+
+  it("oxygen-index evidence contains no placeholder text", () => {
+    const placeholderPatterns = [
+      /\btbd\b/i,
+      /\bplaceholder\b/i,
+      /\blorem\b/i,
+      /sample reference/i,
+      /\[\s*insert/i,
+      /to be (?:added|completed|filled)/i,
+      /\btodo\b/i,
+    ];
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    const texts: string[] = [
+      evidence.source ?? "",
+      evidence.reference ?? "",
+      evidence.version ?? "",
+      evidence.reviewedBy ?? "",
+      evidence.updatedAt ?? "",
+      ...(evidence.references ?? []),
+    ];
+    for (const text of texts) {
+      for (const pattern of placeholderPatterns) {
+        expect(pattern.test(text), `oxygen-index evidence contains placeholder: "${text}"`).toBe(false);
+      }
+    }
+  });
+
+  it("oxygen-index evidence reference contains Pediatric Acute Lung Injury Consensus Conference", () => {
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    expect(evidence.reference!.toLowerCase()).toContain("pediatric acute lung injury consensus conference");
+  });
+
+  it("oxygen-index evidence reference contains 2015", () => {
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    expect(evidence.reference!).toContain("2015");
+  });
+
+  it("oxygen-index evidence source is not the old placeholder", () => {
+    const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
+    expect(evidence.source!.toLowerCase()).not.toContain("repository reference");
+    expect(evidence.source!.toLowerCase()).not.toContain("removed pending");
+  });
+
+  it("adrenal-steroid-converter still has NO canonical evidence", () => {
+    const content = clinicalContentRegistry["adrenal-steroid-converter"];
+    expect(content, "adrenal-steroid-converter has content").toBeDefined();
+    const hasEvidence =
+      content!.evidence !== undefined &&
+      content!.evidence!.source !== undefined &&
+      content!.evidence!.source!.length > 0;
+    expect(hasEvidence, "adrenal-steroid-converter should NOT have verified evidence").toBe(false);
+  });
+
+  it("canonical evidence count is exactly 140", () => {
+    let evidenceCount = 0;
+    for (const [, content] of Object.entries(clinicalContentRegistry)) {
+      if (
+        content.evidence !== undefined &&
+        content.evidence.source !== undefined &&
+        content.evidence.source!.length > 0
+      ) {
+        evidenceCount++;
+      }
+    }
+    expect(evidenceCount).toBe(140);
   });
 });

@@ -10731,10 +10731,22 @@ export const clinicalContentRegistry: Record<
     references: [
       {
         citation:
-          "Oxygen Index severity bands as implemented by this calculator. The citation previously supplied was not specific or verifiable and has been removed pending independent verification.",
-        level: "Repository reference",
+          "Pediatric Acute Lung Injury Consensus Conference Group. Pediatric Acute Respiratory Distress Syndrome: Consensus Recommendations From the Pediatric Acute Lung Injury Consensus Conference. Pediatr Crit Care Med. 2015;16(5):428-439.",
+        level: "Consensus Recommendation",
       },
     ],
+    evidence: {
+      source: "Pediatric Acute Lung Injury Consensus Conference (PALICC)",
+      reference:
+        "Pediatric Acute Lung Injury Consensus Conference Group. Pediatric Acute Respiratory Distress Syndrome: Consensus Recommendations From the Pediatric Acute Lung Injury Consensus Conference. Pediatr Crit Care Med. 2015;16(5):428-439.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "2015",
+      updatedAt: "2026-08",
+      references: [
+        "Pediatric Acute Lung Injury Consensus Conference Group. Pediatr Crit Care Med. 2015;16(5):428-439. doi:10.1097/PCC.0000000000000350.",
+      ],
+    },
+
     disclaimer:
       "This calculator is intended for educational and clinical decision support. The Oxygen Index is one component of oxygenation assessment in ventilated patients and must be interpreted with the full clinical context.",
   },
