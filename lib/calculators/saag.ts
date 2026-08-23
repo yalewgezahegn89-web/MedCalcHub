@@ -147,8 +147,8 @@ export const saagCalculator: CalculatorDefinition = {
 
   relatedCalculators: [
     "child-pugh",
-    "meld",
-    "meld-na",
+    "meld-score",
+    "meld-na-score",
     "albumin-globulin-ratio",
   ],
 

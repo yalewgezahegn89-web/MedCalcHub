@@ -19,9 +19,9 @@ export function RelatedCalculators({
     const currentId = calculator.id;
     const seen = new Set<string>([currentId]);
     calculators = related
-      .map((id) =>
+      .map((slug) =>
         calculatorRegistry.find(
-          (calc) => calc.id === id,
+          (calc) => calc.slug === slug,
         ),
       )
       .filter(
@@ -31,9 +31,9 @@ export function RelatedCalculators({
   } else if (related && related.length > 0) {
     const seen = new Set<string>();
     calculators = related
-      .map((id) =>
+      .map((slug) =>
         calculatorRegistry.find(
-          (calc) => calc.id === id,
+          (calc) => calc.slug === slug,
         ),
       )
       .filter(

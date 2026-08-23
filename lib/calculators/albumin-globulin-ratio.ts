@@ -158,8 +158,8 @@ export const albuminGlobulinRatioCalculator: CalculatorDefinition = {
   relatedCalculators: [
     "corrected-calcium",
     "child-pugh",
-    "meld",
-    "fib-4",
+    "meld-score",
+    "fib-4-index",
   ],
 
   inputs: [

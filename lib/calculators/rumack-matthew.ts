@@ -151,8 +151,8 @@ export const rumackMatthewCalculator: CalculatorDefinition = {
   },
 
   relatedCalculators: [
-    "meld",
-    "meld-na",
+    "meld-score",
+    "meld-na-score",
     "child-pugh",
     "grace",
     "heart-score",

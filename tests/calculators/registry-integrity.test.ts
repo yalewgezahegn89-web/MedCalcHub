@@ -285,13 +285,13 @@ describe("Calculator Registry Integrity", () => {
     expect(uniqueShortNames.size).toBe(shortNames.length);
   });
 
-  it("every relatedCalculators reference resolves to a registered calculator", () => {
-    const ids = new Set(calculatorRegistry.map((c) => c.id));
+  it("every relatedCalculators reference resolves to a registered calculator slug", () => {
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
     for (const calc of calculatorRegistry) {
       for (const ref of calc.relatedCalculators ?? []) {
         expect(
-          ids.has(ref),
-          `${calc.id}: relatedCalculators references "${ref}" which is not a registered calculator id`,
+          slugs.has(ref),
+          `${calc.id}: relatedCalculators references "${ref}" which is not a registered calculator slug`,
         ).toBe(true);
       }
     }

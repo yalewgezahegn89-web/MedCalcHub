@@ -31,8 +31,8 @@ export function getRelatedCalculators(
 
   if (manualIds.length > 0) {
     const manualRelated = manualIds
-      .map((id) =>
-        calculatorRegistry.find((c) => c.id === id),
+      .map((slug) =>
+        calculatorRegistry.find((c) => c.slug === slug),
       )
       .filter(
         (c): c is CalculatorDefinition =>

@@ -151,10 +151,10 @@ export const albiScoreCalculator: CalculatorDefinition = {
 
   relatedCalculators: [
     "child-pugh",
-    "meld",
-    "meld-na",
-    "apri",
-    "fib-4",
+    "meld-score",
+    "meld-na-score",
+    "apri-score",
+    "fib-4-index",
     "albumin-globulin-ratio",
   ],
 

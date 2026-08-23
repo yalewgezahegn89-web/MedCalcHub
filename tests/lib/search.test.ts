@@ -1647,11 +1647,11 @@ describe("registry / search integration", () => {
   });
 
   it("related calculator references are always registered", () => {
-    const registryIds = new Set(calculatorRegistry.map((c) => c.id));
+    const registrySlugs = new Set(calculatorRegistry.map((c) => c.slug));
     for (const calc of calculatorRegistry) {
       if (calc.relatedCalculators) {
-        for (const relId of calc.relatedCalculators) {
-          expect(registryIds.has(relId)).toBe(true);
+        for (const relSlug of calc.relatedCalculators) {
+          expect(registrySlugs.has(relSlug)).toBe(true);
         }
       }
     }

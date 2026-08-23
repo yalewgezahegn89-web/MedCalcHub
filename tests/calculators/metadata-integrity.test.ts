@@ -215,13 +215,13 @@ describe("Calculator Metadata Repository Integrity", () => {
     }
   });
 
-  it("every relatedCalculators entry in calculator definitions resolves to a registered id", () => {
+  it("all relatedCalculators references resolve to registered calculator slugs", () => {
     for (const calc of registered) {
       if (!calc.relatedCalculators) continue;
       for (const ref of calc.relatedCalculators) {
         expect(
-          registeredIds.has(ref),
-          `${calc.slug}.relatedCalculators contains "${ref}" which is not a registered calculator id`,
+          registeredSlugs.has(ref),
+          `${calc.slug}.relatedCalculators contains "${ref}" which is not a registered calculator slug`,
         ).toBe(true);
       }
     }
@@ -244,6 +244,65 @@ describe("Calculator Metadata Repository Integrity", () => {
         unique.size,
         `${calc.slug}.relatedCalculators contains duplicates`,
       ).toBe(calc.relatedCalculators.length);
+    }
+  });
+
+  it("albumin-globulin-ratio contains only valid corrected slugs", () => {
+    const calc = registered.find((c) => c.id === "albumin-globulin-ratio");
+    expect(calc).toBeDefined();
+    expect(calc!.relatedCalculators).toEqual(
+      expect.arrayContaining(["meld-score", "fib-4-index"]),
+    );
+    expect(calc!.relatedCalculators).not.toContain("meld");
+    expect(calc!.relatedCalculators).not.toContain("fib-4");
+  });
+
+  it("saag contains corrected MELD slugs", () => {
+    const calc = registered.find((c) => c.id === "saag");
+    expect(calc).toBeDefined();
+    expect(calc!.relatedCalculators).toEqual(
+      expect.arrayContaining(["meld-score", "meld-na-score"]),
+    );
+    expect(calc!.relatedCalculators).not.toContain("meld");
+    expect(calc!.relatedCalculators).not.toContain("meld-na");
+  });
+
+  it("rumack-matthew contains corrected MELD slugs", () => {
+    const calc = registered.find((c) => c.id === "rumack-matthew");
+    expect(calc).toBeDefined();
+    expect(calc!.relatedCalculators).toEqual(
+      expect.arrayContaining(["meld-score", "meld-na-score"]),
+    );
+    expect(calc!.relatedCalculators).not.toContain("meld");
+    expect(calc!.relatedCalculators).not.toContain("meld-na");
+  });
+
+  it("albi-score contains all four corrected slugs", () => {
+    const calc = registered.find((c) => c.id === "albi-score");
+    expect(calc).toBeDefined();
+    expect(calc!.relatedCalculators).toEqual(
+      expect.arrayContaining([
+        "meld-score",
+        "meld-na-score",
+        "apri-score",
+        "fib-4-index",
+      ]),
+    );
+    expect(calc!.relatedCalculators).not.toContain("meld");
+    expect(calc!.relatedCalculators).not.toContain("meld-na");
+    expect(calc!.relatedCalculators).not.toContain("apri");
+    expect(calc!.relatedCalculators).not.toContain("fib-4");
+  });
+
+  it("none of the 10 stale slugs remain anywhere in active related-calculator metadata", () => {
+    const staleSlugs = ["meld", "meld-na", "apri", "fib-4"];
+    for (const calc of registered) {
+      if (!calc.relatedCalculators) continue;
+      for (const stale of staleSlugs) {
+        expect(
+          calc.relatedCalculators,
+        ).not.toContain(stale);
+      }
     }
   });
 });
