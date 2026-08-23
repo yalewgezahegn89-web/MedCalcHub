@@ -5,7 +5,7 @@ export const mapCalculator: CalculatorDefinition = {
 
   slug: "map",
 
-  name: "map",
+  name: "Mean Arterial Pressure (MAP)",
 
   shortName: "map",
 

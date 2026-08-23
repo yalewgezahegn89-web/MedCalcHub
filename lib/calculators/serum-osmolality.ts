@@ -5,7 +5,7 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
 
   slug: "serum-osmolality",
 
-  name: "serum-osmolality",
+  name: "Serum Osmolality",
 
   shortName: "serum-osmolality",
 

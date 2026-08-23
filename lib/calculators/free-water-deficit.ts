@@ -6,7 +6,7 @@ export const freeWaterDeficitCalculator: CalculatorDefinition = {
 
   slug: "free-water-deficit",
 
-  name: "free-water-deficit",
+  name: "Free Water Deficit",
 
   shortName: "free-water-deficit",
 

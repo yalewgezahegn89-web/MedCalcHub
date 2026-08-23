@@ -5,7 +5,7 @@ export const ttkgCalculator: CalculatorDefinition = {
 
   slug: "ttkg",
 
-  name: "ttkg",
+  name: "Transtubular Potassium Gradient (TTKG)",
 
   shortName: "ttkg",
 

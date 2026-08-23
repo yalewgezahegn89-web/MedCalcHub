@@ -5,7 +5,7 @@ export const correctedSodiumCalculator: CalculatorDefinition = {
 
   slug: "corrected-sodium",
 
-  name: "corrected-sodium",
+  name: "Corrected Sodium",
 
   shortName: "corrected-sodium",
 

@@ -5,7 +5,7 @@ export const feureaCalculator: CalculatorDefinition = {
 
   slug: "feurea",
 
-  name: "feurea",
+  name: "Fractional Excretion of Urea (FEUrea)",
 
   shortName: "feurea",
 

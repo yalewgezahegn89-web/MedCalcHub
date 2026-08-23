@@ -5,7 +5,7 @@ export const qsofaCalculator: CalculatorDefinition = {
 
   slug: "qsofa",
 
-  name: "qsofa",
+  name: "Quick SOFA (qSOFA) Score",
 
   shortName: "qsofa",
 

@@ -53,8 +53,6 @@ export const categoryDescriptions: Record<string, string> = {
     "Age-appropriate calculators for paediatric GCS, trauma scoring, croup severity, sepsis screening, and dehydration assessment.",
   Pulmonology:
     "Respiratory physiology calculators for gas exchange assessment, oxygenation indices, and ventilator-based ratios.",
-  Renal:
-    "Kidney function, electrolytes, acid-base disorders, and renal dosing calculators.",
   "Sleep Medicine":
     "Sleep disorder screening tools for daytime sleepiness and obstructive sleep apnoea risk.",
 };
@@ -82,6 +80,8 @@ export const specialtyDescriptions: Record<string, string> = {
     "Neurological scoring systems for stroke severity, subarachnoid haemorrhage grading, functional outcome prediction, and seizures.",
   Pulmonology:
     "Pulmonary function assessment, COPD severity stratification, respiratory failure classification, and asthma control tools.",
+  Gastroenterology:
+    "Hepatology and gastrointestinal calculators for liver disease severity, GI bleeding risk, liver transplant listing, and fibrosis assessment.",
   Obstetrics:
     "Pregnancy dating, estimated fetal weight, pre-eclampsia criteria, obstetric haemorrhage estimation, and perinatal screening.",
   Pediatrics:

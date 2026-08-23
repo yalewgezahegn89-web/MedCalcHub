@@ -5,7 +5,7 @@ export const fenaCalculator: CalculatorDefinition = {
 
   slug: "fena",
 
-  name: "fena",
+  name: "Fractional Excretion of Sodium (FENa)",
 
   shortName: "fena",
 

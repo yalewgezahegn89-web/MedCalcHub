@@ -5,7 +5,7 @@ export const curb65Calculator: CalculatorDefinition = {
 
   slug: "curb-65",
 
-  name: "curb-65",
+  name: "CURB-65 Score",
 
   shortName: "curb-65",
 

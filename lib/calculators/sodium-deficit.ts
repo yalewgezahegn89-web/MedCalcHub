@@ -5,7 +5,7 @@ export const sodiumDeficitCalculator: CalculatorDefinition = {
 
   slug: "sodium-deficit",
 
-  name: "sodium-deficit",
+  name: "Sodium Deficit",
 
   shortName: "sodium-deficit",
 

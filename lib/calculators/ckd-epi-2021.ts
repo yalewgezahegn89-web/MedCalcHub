@@ -5,7 +5,7 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
 
   slug: "ckd-epi-2021",
 
-  name: "ckd-epi-2021",
+  name: "CKD-EPI 2021 eGFR Equation",
 
   shortName: "ckd-epi-2021",
 

@@ -5,7 +5,7 @@ export const heartRateCalculator: CalculatorDefinition = {
 
   slug: "heart-rate",
 
-  name: "heart-rate",
+  name: "Heart Rate",
 
   shortName: "heart-rate",
 

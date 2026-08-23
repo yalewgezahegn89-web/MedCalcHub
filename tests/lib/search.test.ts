@@ -133,8 +133,8 @@ describe("searchCalculators (lib/search engine)", () => {
   });
 
   describe("category search", () => {
-    it("returns calculators from Renal category", () => {
-      const results = searchCalculators("Renal");
+    it("returns calculators from Nephrology category", () => {
+      const results = searchCalculators("Nephrology");
       const slugs = results.map((r) => r.document.slug);
       expect(slugs).toContain("albumin-creatinine-ratio");
     });
@@ -264,7 +264,7 @@ describe("searchCalculators (lib/search engine)", () => {
     });
 
     it("category match receives correct weight (40)", () => {
-      const results = searchCalculators("Renal");
+      const results = searchCalculators("Nephrology");
       expect(results.length).toBeGreaterThan(0);
       const categoryMatches = results.filter((r) =>
         r.matchedFields.includes("category"),
@@ -357,13 +357,13 @@ describe("searchCalculators (lib/search engine)", () => {
 
   describe("existing calculator coverage", () => {
     it("CKD-EPI calculator is searchable by name", () => {
-      const results = searchCalculators("ckd-epi-2021");
+      const results = searchCalculators("CKD-EPI");
       expect(results.length).toBeGreaterThan(0);
       const match = results.find(
         (r) => r.document.slug === "ckd-epi-2021",
       );
       expect(match).toBeDefined();
-      expect(match!.document.title).toBe("ckd-epi-2021");
+      expect(match!.document.title).toBe("CKD-EPI 2021 eGFR Equation");
       expect(match!.document.category).toBe("Nephrology");
     });
 
@@ -411,7 +411,7 @@ describe("searchCalculators (lib/search engine)", () => {
     });
 
     it("Corrected Sodium calculator is searchable by name", () => {
-      const results = searchCalculators("corrected-sodium");
+      const results = searchCalculators("Corrected Sodium");
       const match = results.find(
         (r) => r.document.slug === "corrected-sodium",
       );
@@ -470,7 +470,7 @@ describe("buildSearchIndex", () => {
     const index = buildSearchIndex();
     const bmi = index.find((d) => d.slug === "bmi");
     expect(bmi).toBeDefined();
-    expect(bmi!.title).toBe("bmi");
+    expect(bmi!.title).toBe("Body Mass Index (BMI)");
     expect(bmi!.category).toBe("Anthropometry");
     expect(bmi!.description).toContain("Body Mass Index");
   });
@@ -482,7 +482,7 @@ describe("buildSearchIndex", () => {
     );
     expect(acr).toBeDefined();
     expect(acr!.title).toBe("Albumin-to-Creatinine Ratio");
-    expect(acr!.category).toBe("Renal");
+    expect(acr!.category).toBe("Nephrology");
     expect(acr!.specialty).toBe("Nephrology");
   });
 
@@ -614,7 +614,7 @@ describe("clinical discovery queries", () => {
     const results = searchCalculators("renal");
     expect(results.length).toBeGreaterThan(0);
     const slugs = results.map((r) => r.document.slug);
-    expect(slugs).toContain("albumin-creatinine-ratio");
+    expect(slugs).toContain("renal-failure-index");
   });
 
   it("returns calculators for 'kidney' query", () => {
@@ -1182,7 +1182,7 @@ describe("partial clinical terms", () => {
 
 describe("ranking after metadata additions", () => {
   it("CKD-EPI title match still outranks keyword-only matches", () => {
-    const results = searchCalculators("ckd-epi-2021");
+    const results = searchCalculators("CKD-EPI");
     expect(results.length).toBeGreaterThan(0);
     expect(results[0].document.slug).toBe("ckd-epi-2021");
     expect(results[0].score).toBeGreaterThanOrEqual(100);

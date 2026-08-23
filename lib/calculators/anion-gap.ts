@@ -5,7 +5,7 @@ export const anionGapCalculator: CalculatorDefinition = {
 
   slug: "anion-gap",
 
-  name: "anion-gap",
+  name: "Anion Gap",
 
   shortName: "anion-gap",
 

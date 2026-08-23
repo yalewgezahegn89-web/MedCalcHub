@@ -5,7 +5,7 @@ export const gcsCalculator: CalculatorDefinition = {
 
   slug: "gcs",
 
-  name: "gcs",
+  name: "Glasgow Coma Scale",
 
   shortName: "gcs",
 

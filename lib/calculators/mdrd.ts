@@ -5,7 +5,7 @@ export const mdrdCalculator: CalculatorDefinition = {
 
   slug: "mdrd",
 
-  name: "mdrd",
+  name: "MDRD GFR Equation",
 
   shortName: "mdrd",
 

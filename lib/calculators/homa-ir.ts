@@ -5,7 +5,7 @@ export const homaIrCalculator: CalculatorDefinition = {
 
   slug: "homa-ir",
 
-  name: "homa-ir",
+  name: "HOMA-IR Calculator",
 
   shortName: "homa-ir",
 

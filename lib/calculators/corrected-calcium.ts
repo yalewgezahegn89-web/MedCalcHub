@@ -5,7 +5,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   slug: "corrected-calcium",
 
-  name: "corrected-calcium",
+  name: "Corrected Calcium",
 
   shortName: "corrected-calcium",
 

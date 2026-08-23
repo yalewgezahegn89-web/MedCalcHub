@@ -5,7 +5,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
   slug: "cockcroft-gault",
 
-  name: "cockcroft-gault",
+  name: "Cockcroft-Gault Equation",
 
   shortName: "cockcroft-gault",
 

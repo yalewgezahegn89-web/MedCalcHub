@@ -5,7 +5,7 @@ export const bunCreatinineRatioCalculator: CalculatorDefinition = {
 
   slug: "bun-creatinine-ratio",
 
-  name: "bun-creatinine-ratio",
+  name: "BUN/Creatinine Ratio",
 
   shortName: "bun-creatinine-ratio",
 

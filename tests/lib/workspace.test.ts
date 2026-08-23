@@ -61,8 +61,8 @@ describe("workspace", () => {
 
     const saved = resolveWorkspaceCalculators(getFavorites());
     expect(saved.map((calc) => calc.id)).toEqual(["bmi", "gcs"]);
-    expect(saved[0]?.name).toBe("bmi");
-    expect(saved[1]?.name).toBe("gcs");
+    expect(saved[0]?.name).toBe("Body Mass Index (BMI)");
+    expect(saved[1]?.name).toBe("Glasgow Coma Scale");
   });
 
   it("resolved saved calculators open valid calculator routes", () => {

@@ -5,7 +5,7 @@ export const bsaCalculator: CalculatorDefinition = {
 
   slug: "bsa",
 
-  name: "bsa",
+  name: "Body Surface Area (BSA)",
 
   shortName: "bsa",
 

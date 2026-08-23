@@ -5,7 +5,7 @@ export const news2Calculator: CalculatorDefinition = {
 
   slug: "news2",
 
-  name: "news2",
+  name: "National Early Warning Score 2 (NEWS2)",
 
   shortName: "news2",
 

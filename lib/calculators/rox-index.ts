@@ -14,6 +14,8 @@ export const roxIndexCalculator: CalculatorDefinition = {
 
   category: "Pulmonology",
 
+  specialty: "Pulmonology",
+
   featured: true,
 
   updatedAt: "2026-07",

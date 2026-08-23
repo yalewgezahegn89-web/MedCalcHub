@@ -5,7 +5,7 @@ export const levothyroxineDoseCalculator: CalculatorDefinition = {
 
   slug: "levothyroxine-dose",
 
-  name: "levothyroxine-dose",
+  name: "Levothyroxine Dose Calculator",
 
   shortName: "levothyroxine-dose",
 

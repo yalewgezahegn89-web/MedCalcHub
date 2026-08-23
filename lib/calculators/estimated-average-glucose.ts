@@ -5,7 +5,7 @@ export const estimatedAverageGlucoseCalculator: CalculatorDefinition = {
 
   slug: "estimated-average-glucose",
 
-  name: "estimated-average-glucose",
+  name: "Estimated Average Glucose (eAG)",
 
   shortName: "estimated-average-glucose",
 

@@ -14,6 +14,8 @@ export const correctedQtCalculator: CalculatorDefinition = {
 
   category: "Endocrinology",
 
+  specialty: "Endocrinology",
+
   featured: true,
 
   updatedAt: "2026-07",

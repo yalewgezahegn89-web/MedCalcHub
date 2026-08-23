@@ -5,7 +5,7 @@ export const insulinSensitivityCalculator: CalculatorDefinition = {
 
   slug: "insulin-sensitivity",
 
-  name: "insulin-sensitivity",
+  name: "Insulin Sensitivity",
 
   shortName: "insulin-sensitivity",
 

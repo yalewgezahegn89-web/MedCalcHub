@@ -5,7 +5,7 @@ export const homaBCalculator: CalculatorDefinition = {
 
   slug: "homa-b",
 
-  name: "homa-b",
+  name: "HOMA-B Calculator",
 
   shortName: "homa-b",
 

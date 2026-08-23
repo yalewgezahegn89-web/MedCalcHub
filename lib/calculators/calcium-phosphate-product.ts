@@ -5,7 +5,7 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
 
   slug: "calcium-phosphate-product",
 
-  name: "calcium-phosphate-product",
+  name: "Calcium-Phosphate Product",
 
   shortName: "calcium-phosphate-product",
 

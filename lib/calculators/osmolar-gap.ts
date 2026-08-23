@@ -5,7 +5,7 @@ export const osmolarGapCalculator: CalculatorDefinition = {
 
   slug: "osmolar-gap",
 
-  name: "osmolar-gap",
+  name: "Osmolar Gap",
 
   shortName: "osmolar-gap",
 

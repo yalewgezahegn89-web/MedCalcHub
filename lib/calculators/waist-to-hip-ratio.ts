@@ -5,7 +5,7 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
 
   slug: "waist-to-hip-ratio",
 
-  name: "waist-to-hip-ratio",
+  name: "Waist-to-Hip Ratio",
 
   shortName: "waist-to-hip-ratio",
 

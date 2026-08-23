@@ -14,6 +14,8 @@ export const gestationalAgeCalculator: CalculatorDefinition = {
 
   category: "Obstetrics & Gynecology",
 
+  specialty: "Obstetrics",
+
   featured: true,
 
   updatedAt: "2026-07",

@@ -5,7 +5,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
   slug: "bmi",
 
-  name: "bmi",
+  name: "Body Mass Index (BMI)",
 
   shortName: "bmi",
 

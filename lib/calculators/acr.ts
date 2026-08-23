@@ -18,7 +18,7 @@ export const acrCalculator: CalculatorDefinition = {
   description:
     "Calculates urine albumin-to-creatinine ratio (ACR) for CKD screening and staging.",
 
-  category: "Renal",
+  category: "Nephrology",
 
   specialty: "Nephrology",
 

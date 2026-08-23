@@ -305,4 +305,60 @@ describe("Calculator Metadata Repository Integrity", () => {
       }
     }
   });
+
+  it("every calculator has a non-empty human-readable name (no pure slug names)", () => {
+    for (const calc of registered) {
+      expect(calc.name).toBeTruthy();
+      expect(calc.name.length).toBeGreaterThan(0);
+      expect(
+        /^[a-z0-9]+(-[a-z0-9]+)*$/.test(calc.name),
+        `${calc.slug}: name "${calc.name}" is a pure slug — expected a human-readable display name`,
+      ).toBe(false);
+    }
+  });
+
+  it("every calculator has a specialty value", () => {
+    for (const calc of registered) {
+      expect(
+        calc.specialty,
+        `${calc.slug}: missing specialty`,
+      ).toBeTruthy();
+      expect(typeof calc.specialty).toBe("string");
+    }
+  });
+
+  it("all specialty values belong to the existing taxonomy", () => {
+    const validSpecialties = new Set([
+      "Cardiology",
+      "Critical Care",
+      "Emergency Medicine",
+      "Endocrinology",
+      "Gastroenterology",
+      "General Medicine",
+      "Internal Medicine",
+      "Nephrology",
+      "Neurology",
+      "Obstetrics",
+      "Pediatrics",
+      "Pulmonology",
+    ]);
+    for (const calc of registered) {
+      expect(
+        validSpecialties.has(calc.specialty!),
+        `${calc.slug}: specialty "${calc.specialty}" is not in the valid taxonomy`,
+      ).toBe(true);
+    }
+  });
+
+  it("ACR category is Nephrology (not Renal)", () => {
+    const acr = registered.find((c) => c.id === "albumin-creatinine-ratio");
+    expect(acr).toBeDefined();
+    expect(acr!.category).toBe("Nephrology");
+  });
+
+  it("gestational-weight-gain category is Obstetrics & Gynecology", () => {
+    const gw = registered.find((c) => c.slug === "gestational-weight-gain");
+    expect(gw).toBeDefined();
+    expect(gw!.category).toBe("Obstetrics & Gynecology");
+  });
 });

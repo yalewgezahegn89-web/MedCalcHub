@@ -15,6 +15,8 @@ export const fluidRequirementCalculator: CalculatorDefinition = {
 
   category: "Internal Medicine",
 
+  specialty: "Internal Medicine",
+
   featured: true,
 
   updatedAt: "2026-07",

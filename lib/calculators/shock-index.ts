@@ -5,7 +5,7 @@ export const shockIndexCalculator: CalculatorDefinition = {
 
   slug: "shock-index",
 
-  name: "shock-index",
+  name: "Shock Index",
 
   shortName: "shock-index",
 

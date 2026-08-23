@@ -14,6 +14,8 @@ export const nafldFibrosisCalculator: CalculatorDefinition = {
 
   category: "Gastroenterology",
 
+  specialty: "Gastroenterology",
+
   featured: true,
 
   updatedAt: "2026-07",

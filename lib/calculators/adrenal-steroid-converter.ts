@@ -5,7 +5,7 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
 
   slug: "adrenal-steroid-converter",
 
-  name: "adrenal-steroid-converter",
+  name: "Adrenal Steroid Converter",
 
   shortName: "adrenal-steroid-converter",
 
