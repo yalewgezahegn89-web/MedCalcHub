@@ -80,6 +80,8 @@ export const specialtyDescriptions: Record<string, string> = {
     "Kidney function estimation, dialysis adequacy, electrolyte handling, fractional excretion analysis, and renal dosing tools.",
   Neurology:
     "Neurological scoring systems for stroke severity, subarachnoid haemorrhage grading, functional outcome prediction, and seizures.",
+  Pulmonology:
+    "Pulmonary function assessment, COPD severity stratification, respiratory failure classification, and asthma control tools.",
   Obstetrics:
     "Pregnancy dating, estimated fetal weight, pre-eclampsia criteria, obstetric haemorrhage estimation, and perinatal screening.",
   Pediatrics:

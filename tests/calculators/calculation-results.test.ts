@@ -257,6 +257,13 @@ import { mifflinStJeorCalculator } from "../../lib/calculators/mifflin-st-jeor";
 import { harrisBenedictCalculator } from "../../lib/calculators/harris-benedict";
 import { calorieRequirementCalculator } from "../../lib/calculators/calorie-requirement";
 import { fluidRequirementCalculator } from "../../lib/calculators/fluid-requirement";
+import { alvaradoScoreCalculator } from "../../lib/calculators/alvarado-score";
+import { correctedMagnesiumCalculator } from "../../lib/calculators/corrected-magnesium";
+import { kdigoAkiStagingCalculator } from "../../lib/calculators/kdigo-aki-staging";
+import { saagCalculator } from "../../lib/calculators/saag";
+import { rumackMatthewCalculator } from "../../lib/calculators/rumack-matthew";
+import { bodeIndexCalculator } from "../../lib/calculators/bode-index";
+import { albiScoreCalculator } from "../../lib/calculators/albi-score";
 
 import type {
   CalculatorDefinition,
@@ -11708,5 +11715,656 @@ describe("Fluid Requirement calculate() output", () => {
     expect(r.value).toBe(0);
     expect(r.status).toBe("critical");
     expect(r.interpretation).toBe("Weight is required.");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Alvarado Score — MANTRELS: 8 criteria, sum 0–10
+// ≤4 low (normal); 5–6 moderate (low); 7–8 high; 9–10 very high (critical)
+// Scores: Migration(1), Anorexia(1), Nausea(1), RLQ(2), Rebound(1), Fever(1), Leukocytosis(2), Left Shift(1)
+// ---------------------------------------------------------------------------
+describe("Alvarado Score calculate() output", () => {
+  it("score 0: all No → low probability", () => {
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "0", anorexia: "0", nausea: "0",
+      "rlq-tenderness": "0", rebound: "0", fever: "0",
+      leukocytosis: "0", "left-shift": "0",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("score 5: moderate probability", () => {
+    // Migration(1) + Anorexia(1) + Nausea(1) + RLQ(2) = 5
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "1", anorexia: "1", nausea: "1",
+      "rlq-tenderness": "2", rebound: "0", fever: "0",
+      leukocytosis: "0", "left-shift": "0",
+    });
+    expect(r.value).toBe(5);
+    expect(r.status).toBe("low");
+  });
+
+  it("score 7: high probability", () => {
+    // Migration(1) + Anorexia(1) + Nausea(1) + RLQ(2) + Rebound(1) + Fever(1) = 7
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "1", anorexia: "1", nausea: "1",
+      "rlq-tenderness": "2", rebound: "1", fever: "1",
+      leukocytosis: "0", "left-shift": "0",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("high");
+  });
+
+  it("score 10: all positive → very high probability", () => {
+    // 1+1+1+2+1+1+2+1 = 10
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "1", anorexia: "1", nausea: "1",
+      "rlq-tenderness": "2", rebound: "1", fever: "1",
+      leukocytosis: "2", "left-shift": "1",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("critical");
+  });
+
+  it("boundary 4→5: score 4 still low probability", () => {
+    // Anorexia(1) + Nausea(1) + RLQ(2) = 4
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "0", anorexia: "1", nausea: "1",
+      "rlq-tenderness": "2", rebound: "0", fever: "0",
+      leukocytosis: "0", "left-shift": "0",
+    });
+    expect(r.value).toBe(4);
+    expect(r.status).toBe("normal");
+  });
+
+  it("boundary 6→7: score 6 still moderate", () => {
+    // Migration(1) + Anorexia(1) + RLQ(2) + Fever(1) + Left Shift(1) = 6
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "1", anorexia: "1", nausea: "0",
+      "rlq-tenderness": "2", rebound: "0", fever: "1",
+      leukocytosis: "0", "left-shift": "1",
+    });
+    expect(r.value).toBe(6);
+    expect(r.status).toBe("low");
+  });
+
+  it("boundary 8→9: score 8 still high", () => {
+    // Migration(1) + Anorexia(1) + Nausea(1) + RLQ(2) + Rebound(1) + Leukocytosis(2) = 8
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "1", anorexia: "1", nausea: "1",
+      "rlq-tenderness": "2", rebound: "1", fever: "0",
+      leukocytosis: "2", "left-shift": "0",
+    });
+    expect(r.value).toBe(8);
+    expect(r.status).toBe("high");
+  });
+
+  it("missing input → critical validation", () => {
+    const r = calc(alvaradoScoreCalculator, {
+      migration: "", anorexia: "0", nausea: "0",
+      "rlq-tenderness": "0", rebound: "0", fever: "0",
+      leukocytosis: "0", "left-shift": "0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Corrected Magnesium — Measured Mg + 0.005 × (40 − Albumin)
+// Normal: 0.75–1.05 mmol/L
+// <0.50 severe hypo; 0.50–0.65 moderate hypo; 0.66–0.74 mild hypo;
+// 1.06–1.50 mild hyper; 1.51–2.0 moderate hyper; >2.0 severe hyper
+// Result = Number(result.toFixed(2))
+// ---------------------------------------------------------------------------
+describe("Corrected Magnesium calculate() output", () => {
+  it("normal: Mg=0.9, albumin=40 → 0.9", () => {
+    // 0.9 + 0.005 × (40 − 40) = 0.9
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "0.9", albumin: "40",
+    });
+    expect(r.value).toBe(0.9);
+    expect(r.status).toBe("normal");
+  });
+
+  it("low albumin: Mg=0.7, albumin=20 → 0.8", () => {
+    // 0.7 + 0.005 × (40 − 20) = 0.7 + 0.1 = 0.8
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "0.7", albumin: "20",
+    });
+    expect(r.value).toBe(0.8);
+    expect(r.status).toBe("normal");
+  });
+
+  it("severe hypomagnesemia: Mg=0.3, albumin=40 → 0.3", () => {
+    // 0.3 + 0 = 0.3
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "0.3", albumin: "40",
+    });
+    expect(r.value).toBe(0.3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("moderate hypomagnesemia: Mg=0.5, albumin=35 → 0.58", () => {
+    // 0.5 + 0.005 × (40 − 35) = 0.5 + 0.025 = 0.525 → 0.53
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "0.5", albumin: "35",
+    });
+    expect(r.value).toBe(0.53);
+    expect(r.status).toBe("high");
+  });
+
+  it("mild hypomagnesemia: Mg=0.7, albumin=30 → 0.75", () => {
+    // 0.7 + 0.005 × (40 − 30) = 0.7 + 0.05 = 0.75
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "0.7", albumin: "30",
+    });
+    expect(r.value).toBe(0.75);
+    expect(r.status).toBe("normal");
+  });
+
+  it("mild hypermagnesemia: Mg=1.2, albumin=40 → 1.2", () => {
+    // 1.2 + 0 = 1.2
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "1.2", albumin: "40",
+    });
+    expect(r.value).toBe(1.2);
+    expect(r.status).toBe("low");
+  });
+
+  it("severe hypermagnesemia: Mg=2.5, albumin=40 → 2.5", () => {
+    // 2.5 + 0 = 2.5
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "2.5", albumin: "40",
+    });
+    expect(r.value).toBe(2.5);
+    expect(r.status).toBe("critical");
+  });
+
+  it("missing magnesium → critical validation", () => {
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "", albumin: "40",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing albumin → critical validation", () => {
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "0.8", albumin: "",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("zero magnesium → critical validation", () => {
+    const r = calc(correctedMagnesiumCalculator, {
+      magnesium: "0", albumin: "40",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("cannot be zero");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// KDIGO AKI Staging — creatinine + urine output criteria
+// Stage 0: no AKI; Stage 1: Cr rise ≥0.3 or 1.5–1.9×; UO <0.5 for 6–12h
+// Stage 2: Cr 2.0–2.9×; UO <0.5 for ≥12h
+// Stage 3: Cr ≥3.0× or ≥4.0 or RRT; UO <0.3 for ≥24h
+// Highest stage wins; RRT overrides to Stage 3
+// ---------------------------------------------------------------------------
+describe("KDIGO AKI Staging calculate() output", () => {
+  it("no AKI: Cr 1.0 baseline, 1.0 current → stage 0", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "1.0",
+      "on-rrt": "no",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("Stage 1 by absolute rise: Cr 1.0 → 1.4 → rise 0.4", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "1.4",
+      "on-rrt": "no",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("low");
+  });
+
+  it("Stage 1 by ratio: Cr 1.0 → 1.6 → ratio 1.6", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "1.6",
+      "on-rrt": "no",
+    });
+    expect(r.value).toBe(1);
+    expect(r.status).toBe("low");
+  });
+
+  it("Stage 2 by ratio: Cr 1.0 → 2.5 → ratio 2.5", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "2.5",
+      "on-rrt": "no",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("Stage 3 by ratio: Cr 1.0 → 3.5 → ratio 3.5", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "3.5",
+      "on-rrt": "no",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("Stage 3 by absolute Cr ≥4.0: current 4.5, no baseline", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "current-creatinine": "4.5",
+      "on-rrt": "no",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("RRT overrides to Stage 3", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "1.1",
+      "on-rrt": "yes",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("critical");
+  });
+
+  it("highest stage wins: Cr stage 1 + UO stage 2 → stage 2", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "1.4",
+      weight: "70", "urine-output-rate": "0.4",
+      "urine-output-duration": "14", "on-rrt": "no",
+    });
+    expect(r.value).toBe(2);
+    expect(r.status).toBe("high");
+  });
+
+  it("missing on-rrt → critical validation", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "1.0", "current-creatinine": "1.0",
+      "on-rrt": "",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("baseline creatinine 0 → critical validation", () => {
+    const r = calc(kdigoAkiStagingCalculator, {
+      "baseline-creatinine": "0", "current-creatinine": "1.0",
+      "on-rrt": "no",
+    });
+    expect(r.status).toBe("critical");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// SAAG — Serum-Ascites Albumin Gradient
+// SAAG = serum albumin − ascites albumin (g/dL)
+// ≥1.1 g/dL = portal hypertension; <1.1 = non-portal hypertension
+// Result = Math.round(saag * 10) / 10
+// ---------------------------------------------------------------------------
+describe("SAAG calculate() output", () => {
+  it("portal hypertension: serum 3.2, ascites 1.0 → SAAG 2.2", () => {
+    const r = calc(saagCalculator, {
+      "serum-albumin": "3.2",
+      "ascites-albumin": "1.0",
+    });
+    expect(r.value).toBe(2.2);
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("portal hypertension");
+  });
+
+  it("non-portal hypertension: serum 2.5, ascites 2.0 → SAAG 0.5", () => {
+    const r = calc(saagCalculator, {
+      "serum-albumin": "2.5",
+      "ascites-albumin": "2.0",
+    });
+    expect(r.value).toBe(0.5);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("non-portal hypertensive");
+  });
+
+  it("exact boundary: serum 3.0, ascites 1.9 → SAAG 1.1 (portal HTN)", () => {
+    const r = calc(saagCalculator, {
+      "serum-albumin": "3.0",
+      "ascites-albumin": "1.9",
+    });
+    expect(r.value).toBe(1.1);
+    expect(r.status).toBe("high");
+  });
+
+  it("just below boundary: serum 3.0, ascites 2.0 → SAAG 1.0 (non-portal HTN)", () => {
+    const r = calc(saagCalculator, {
+      "serum-albumin": "3.0",
+      "ascites-albumin": "2.0",
+    });
+    expect(r.value).toBe(1.0);
+    expect(r.status).toBe("low");
+  });
+
+  it("zero values → critical validation", () => {
+    const r = calc(saagCalculator, {
+      "serum-albumin": "0",
+      "ascites-albumin": "1.0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("greater than zero");
+  });
+
+  it("missing serum albumin → critical validation", () => {
+    const r = calc(saagCalculator, {
+      "serum-albumin": "",
+      "ascites-albumin": "1.0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing ascites albumin → critical validation", () => {
+    const r = calc(saagCalculator, {
+      "serum-albumin": "3.2",
+      "ascites-albumin": "",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Rumack-Matthew — Acetaminophen Nomogram
+// Treatment threshold: exp(5.333 − 0.0805 × time) in mcg/mL
+// Valid for 4–24h post single acute ingestion
+// ---------------------------------------------------------------------------
+describe("Rumack-Matthew calculate() output", () => {
+  it("below treatment line: 6h, 100 mcg/mL → below threshold", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "6",
+      "acetaminophen-level": "100",
+    });
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("BELOW the treatment threshold");
+  });
+
+  it("above treatment line: 4h, 200 mcg/mL → above threshold", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "4",
+      "acetaminophen-level": "200",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("ABOVE the treatment threshold");
+  });
+
+  it("at treatment threshold: 4h, 150 mcg/mL → above threshold (equal)", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "4",
+      "acetaminophen-level": "150",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("AT OR ABOVE");
+  });
+
+  it("earliest valid time: 4h, 50 mcg/mL → below threshold", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "4",
+      "acetaminophen-level": "50",
+    });
+    expect(r.status).toBe("normal");
+  });
+
+  it("latest valid time: 24h, 20 mcg/mL → below threshold", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "24",
+      "acetaminophen-level": "20",
+    });
+    expect(r.status).toBe("normal");
+  });
+
+  it("time <4h → critical (nomogram not applicable)", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "2",
+      "acetaminophen-level": "200",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("not valid before 4 hours");
+  });
+
+  it("time >24h → critical (nomogram not applicable)", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "30",
+      "acetaminophen-level": "50",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("exceeds the 24-hour");
+  });
+
+  it("missing time → critical validation", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "",
+      "acetaminophen-level": "100",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing level → critical validation", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "6",
+      "acetaminophen-level": "",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("level 0 → critical validation", () => {
+    const r = calc(rumackMatthewCalculator, {
+      "time-since-ingestion": "6",
+      "acetaminophen-level": "0",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("greater than zero");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// BODE Index — COPD prognosis
+// BMI (0–1) + FEV1 (0–3) + mMRC (0–4) + 6MWD (0–3) = 0–10
+// 0–2 low, 3–4 moderate, 5–6 high, 7–10 very high risk
+// ---------------------------------------------------------------------------
+describe("BODE Index calculate() output", () => {
+  it("minimum score: BMI>21, FEV1≥65%, mMRC 0, 6MWD≥350 → score 0", () => {
+    const r = calc(bodeIndexCalculator, {
+      bmi: "25",
+      "fev1-percent": "70",
+      "mmrc-dyspnea": "0",
+      "six-minute-walk": "400",
+    });
+    expect(r.value).toBe(0);
+    expect(r.status).toBe("normal");
+  });
+
+  it("maximum score: BMI≤21, FEV1≤35%, mMRC 4, 6MWD≤149 → score 10", () => {
+    const r = calc(bodeIndexCalculator, {
+      bmi: "20",
+      "fev1-percent": "30",
+      "mmrc-dyspnea": "4",
+      "six-minute-walk": "100",
+    });
+    expect(r.value).toBe(10);
+    expect(r.status).toBe("critical");
+  });
+
+  it("moderate risk: BMI>21, FEV1 50%, mMRC 2, 6MWD 300 → score 3", () => {
+    const r = calc(bodeIndexCalculator, {
+      bmi: "24",
+      "fev1-percent": "55",
+      "mmrc-dyspnea": "2",
+      "six-minute-walk": "300",
+    });
+    expect(r.value).toBe(3);
+    expect(r.status).toBe("low");
+  });
+
+  it("high risk: BMI≤21, FEV1 40%, mMRC 3, 6MWD 200 → score 7", () => {
+    const r = calc(bodeIndexCalculator, {
+      bmi: "19",
+      "fev1-percent": "40",
+      "mmrc-dyspnea": "3",
+      "six-minute-walk": "200",
+    });
+    expect(r.value).toBe(7);
+    expect(r.status).toBe("critical");
+  });
+
+  it("BMI boundary: BMI=21 → score 1, BMI=21.1 → score 0", () => {
+    const r1 = calc(bodeIndexCalculator, {
+      bmi: "21",
+      "fev1-percent": "70",
+      "mmrc-dyspnea": "0",
+      "six-minute-walk": "400",
+    });
+    expect(r1.value).toBe(1);
+
+    const r2 = calc(bodeIndexCalculator, {
+      bmi: "21.1",
+      "fev1-percent": "70",
+      "mmrc-dyspnea": "0",
+      "six-minute-walk": "400",
+    });
+    expect(r2.value).toBe(0);
+  });
+
+  it("FEV1 boundaries: 65%→0, 64%→1, 50%→1, 49%→2, 36%→2, 35%→3", () => {
+    const r1 = calc(bodeIndexCalculator, { bmi: "25", "fev1-percent": "65", "mmrc-dyspnea": "0", "six-minute-walk": "400" });
+    expect(r1.value).toBe(0);
+
+    const r2 = calc(bodeIndexCalculator, { bmi: "25", "fev1-percent": "64", "mmrc-dyspnea": "0", "six-minute-walk": "400" });
+    expect(r2.value).toBe(1);
+
+    const r3 = calc(bodeIndexCalculator, { bmi: "25", "fev1-percent": "35", "mmrc-dyspnea": "0", "six-minute-walk": "400" });
+    expect(r3.value).toBe(3);
+  });
+
+  it("6MWD boundaries: 350→0, 349→1, 250→1, 249→2, 150→2, 149→3", () => {
+    const r1 = calc(bodeIndexCalculator, { bmi: "25", "fev1-percent": "70", "mmrc-dyspnea": "0", "six-minute-walk": "350" });
+    expect(r1.value).toBe(0);
+
+    const r2 = calc(bodeIndexCalculator, { bmi: "25", "fev1-percent": "70", "mmrc-dyspnea": "0", "six-minute-walk": "349" });
+    expect(r2.value).toBe(1);
+
+    const r3 = calc(bodeIndexCalculator, { bmi: "25", "fev1-percent": "70", "mmrc-dyspnea": "0", "six-minute-walk": "149" });
+    expect(r3.value).toBe(3);
+  });
+
+  it("missing BMI → critical validation", () => {
+    const r = calc(bodeIndexCalculator, {
+      bmi: "",
+      "fev1-percent": "50",
+      "mmrc-dyspnea": "2",
+      "six-minute-walk": "300",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ALBI Score — Albumin-Bilirubin for HCC prognosis
+// ALBI = (log10(bilirubin [µmol/L]) × −0.372) + (albumin [g/L] × −0.198) + 4.90
+// Grade I ≤ −2.60; Grade II −2.60 to −1.39; Grade III > −1.39
+// Result = Math.round(albi * 100) / 100
+// ---------------------------------------------------------------------------
+describe("ALBI Score calculate() output", () => {
+  it("Grade I: bilirubin 20, albumin 40 → ALBI ≤ −2.60", () => {
+    // log10(20)×-0.372 + 40×-0.198 + 4.90 = 1.301×-0.372 + (-7.92) + 4.90
+    // = -0.484 + (-7.92) + 4.90 = -3.504
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "20",
+      albumin: "40",
+    });
+    expect(r.value).toBe(-3.5);
+    expect(r.status).toBe("normal");
+    expect(r.interpretation).toContain("Grade I");
+  });
+
+  it("Grade II: bilirubin 50, albumin 30 → ALBI between −2.60 and −1.39", () => {
+    // log10(50)×-0.372 + 30×-0.198 + 4.90 = 1.699×-0.372 + (-5.94) + 4.90
+    // = -0.632 + (-5.94) + 4.90 = -1.672
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "50",
+      albumin: "30",
+    });
+    expect(r.value).toBe(-1.67);
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("Grade II");
+  });
+
+  it("Grade III: bilirubin 150, albumin 22 → ALBI > −1.39", () => {
+    // log10(150)×-0.372 + 22×-0.198 + 4.90 = 2.176×-0.372 + (-4.356) + 4.90
+    // = -0.810 + (-4.356) + 4.90 = -0.266
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "150",
+      albumin: "22",
+    });
+    expect(r.value).toBe(-0.27);
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("Grade III");
+  });
+
+  it("Grade I/II boundary: bilirubin 34, albumin 35 → ALBI ≈ −2.03 (Grade II)", () => {
+    // log10(34)×-0.372 + 35×-0.198 + 4.90 = 1.531×-0.372 + (-6.93) + 4.90
+    // = -0.570 + (-6.93) + 4.90 = -2.6
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "34",
+      albumin: "35",
+    });
+    expect(r.value).toBe(-2.6);
+    expect(r.interpretation).toContain("Grade I");
+  });
+
+  it("Grade II/III boundary: bilirubin 100, albumin 28 → ALBI ≈ −1.39", () => {
+    // log10(100)×-0.372 + 28×-0.198 + 4.90 = 2.0×-0.372 + (-5.544) + 4.90
+    // = -0.744 + (-5.544) + 4.90 = -1.388
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "100",
+      albumin: "28",
+    });
+    expect(r.value).toBe(-1.39);
+    expect(r.interpretation).toContain("Grade II");
+  });
+
+  it("missing bilirubin → critical validation", () => {
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "",
+      albumin: "38",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("missing albumin → critical validation", () => {
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "25",
+      albumin: "",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("required");
+  });
+
+  it("zero bilirubin → critical validation", () => {
+    const r = calc(albiScoreCalculator, {
+      bilirubin: "0",
+      albumin: "38",
+    });
+    expect(r.status).toBe("critical");
+    expect(r.interpretation).toContain("greater than zero");
   });
 });

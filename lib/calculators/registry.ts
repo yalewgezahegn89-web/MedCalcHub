@@ -165,6 +165,14 @@ import { ascvdCalculator } from "./ascvd";
 import { daptCalculator } from "./dapt";
 import { h2fpefCalculator } from "./h2fpef";
 
+import { alvaradoScoreCalculator } from "./alvarado-score";
+import { correctedMagnesiumCalculator } from "./corrected-magnesium";
+import { kdigoAkiStagingCalculator } from "./kdigo-aki-staging";
+import { saagCalculator } from "./saag";
+import { rumackMatthewCalculator } from "./rumack-matthew";
+import { bodeIndexCalculator } from "./bode-index";
+import { albiScoreCalculator } from "./albi-score";
+
 export const calculatorRegistry: CalculatorDefinition[] = [
   ckdEpi2021Calculator,
   curb65Calculator,
@@ -334,6 +342,14 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   ascvdCalculator,
   daptCalculator,
   h2fpefCalculator,
+
+  alvaradoScoreCalculator,
+  correctedMagnesiumCalculator,
+  kdigoAkiStagingCalculator,
+  saagCalculator,
+  rumackMatthewCalculator,
+  bodeIndexCalculator,
+  albiScoreCalculator,
 ];
 
 export function getCalculatorById(

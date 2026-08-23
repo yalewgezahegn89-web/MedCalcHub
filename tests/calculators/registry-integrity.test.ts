@@ -19,8 +19,8 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 141 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(141);
+  it("registry contains exactly 148 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(148);
   });
 
   it("the 8 General Medicine Batch 8 (Sprint 1.9) calculators are registered and searchable", () => {
@@ -319,6 +319,21 @@ describe("Calculator Registry Integrity", () => {
       expect(getCalculatorById(calc.id)).toBe(calc);
       const bySlug = calculatorRegistry.find((c) => c.slug === calc.slug);
       expect(bySlug).toBe(calc);
+    }
+  });
+
+  it("the 3 Batch 12 (Sprint 1.9) calculators are registered and searchable", () => {
+    const batch12Ids = [
+      "alvarado-score",
+      "corrected-magnesium",
+      "kdigo-aki-staging",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const id of batch12Ids) {
+      const calc = getCalculatorById(id);
+      expect(calc, `batch-12 calculator "${id}" must resolve`).toBeDefined();
+      expect(slugs.has(calc!.slug)).toBe(true);
+      expect(searchCalculators(calc!.name).length).toBeGreaterThanOrEqual(1);
     }
   });
 

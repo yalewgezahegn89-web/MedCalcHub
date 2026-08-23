@@ -11333,4 +11333,475 @@ export const clinicalContentRegistry: Record<
       ],
     },
   },
+  "alvarado-score": {
+    clinicalPurpose:
+      "Risk-stratifies patients with suspected acute appendicitis using the Alvarado (MANTRELS) scoring system to assist clinical decision-making regarding imaging, observation, and surgical consultation.",
+    howToUse: [
+      "Assess each of the 8 MANTRELS criteria and assign 1 point each for Migration, Anorexia, Nausea/Vomiting, Rebound, Fever, Left Shift, 2 points for RLQ Tenderness, and 2 points for Leukocytosis.",
+      "Sum all points for a total score out of 10.",
+      "Score ≤4: low probability — consider alternative diagnoses.",
+      "Score 5–6: moderate probability — clinical observation, serial examination, and imaging recommended.",
+      "Score 7–8: high probability — strong consideration for surgical consultation and CT or ultrasound imaging.",
+      "Score 9–10: very high probability — urgent surgical consultation warranted.",
+    ],
+    interpretation: {
+      guide:
+        "A score of 7 or higher strongly suggests appendicitis and warrants strong consideration for surgical intervention. A score of 5–6 is equivocal and typically requires further imaging or observation. A score below 5 has low probability but does not exclude appendicitis.",
+    },
+    clinicalSignificance:
+      "The Alvarado score (MANTRELS) was described by Alvarado in 1986 and has been extensively validated for acute appendicitis screening. It uses 8 clinical and laboratory parameters. CT imaging remains the gold standard for appendicitis confirmation in adults.",
+    whenToUse: [
+      "Adult patients presenting with acute abdominal pain suspicious for appendicitis",
+      "Initial clinical screening before imaging",
+      "Resource-limited settings where CT imaging is not immediately available",
+    ],
+    whenNotToUse: [
+      "As a sole basis for operative decision-making",
+      "In pregnant women, elderly patients, or young children where the score has lower sensitivity",
+      "When CT imaging is readily available and clinical suspicion is moderate to high",
+    ],
+    limitations: [
+      "Lower sensitivity in elderly patients, pregnant women, and young children.",
+      "Does not replace clinical judgment or imaging studies.",
+      "A negative score does not definitively exclude appendicitis.",
+    ],
+    example: {
+      description: "A 25-year-old male presents with migrating abdominal pain, anorexia, nausea, RLQ tenderness, and fever.",
+      inputs: {
+        migration: "1",
+        anorexia: "1",
+        nausea: "1",
+        "rlq-tenderness": "2",
+        rebound: "0",
+        fever: "1",
+        leukocytosis: "0",
+        "left-shift": "0",
+      },
+      expectedResult:
+        "Score = 1 + 1 + 1 + 2 + 0 + 1 + 0 + 0 = 6 — moderate probability; clinical observation and imaging recommended.",
+    },
+    references: [
+      {
+        citation: "Alvarado A. A practical score for the early diagnosis of acute appendicitis. Ann Emerg Med. 1986;15(5):557-564.",
+        level: "Diagnostic study",
+      },
+      {
+        citation: "Ohmann C, et al. Systematic review of scores for diagnosing acute appendicitis. Dig Surg. 1999;16(6):449-457.",
+        level: "Systematic review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The Alvarado score is a screening tool and should not replace clinical judgment, imaging studies, or specialist consultation.",
+    evidence: {
+      source: "Emergency Medicine",
+      reference: "Alvarado A. Ann Emerg Med. 1986;15(5):557-564.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Alvarado A. Ann Emerg Med. 1986;15(5):557-564.",
+        "Ohmann C, et al. Dig Surg. 1999;16(6):449-457.",
+      ],
+    },
+  },
+  "corrected-magnesium": {
+    clinicalPurpose:
+      "Adjusts measured serum magnesium for hypoalbuminemia. When serum albumin is low, measured total magnesium is falsely reduced because less magnesium is bound to proteins.",
+    howToUse: [
+      "Enter the measured serum magnesium in mmol/L.",
+      "Enter the serum albumin in g/L.",
+      "The calculator applies the correction: Corrected Mg = Measured Mg + 0.005 × (40 − Albumin).",
+      "Use the corrected value for clinical interpretation of magnesium status.",
+    ],
+    interpretation: {
+      guide:
+        "A corrected magnesium below 0.75 mmol/L suggests true hypomagnesemia. A value above 1.05 mmol/L suggests hypermagnesemia. The correction is most useful when albumin is significantly reduced (e.g., critical illness, liver disease, nephrotic syndrome).",
+    },
+    clinicalSignificance:
+      "Approximately 25–30% of serum magnesium binds to albumin. When albumin falls, measured total magnesium decreases proportionally even though ionized (biologically active) magnesium may remain normal. This correction is analogous to the corrected calcium formula.",
+    whenToUse: [
+      "Patients with hypoalbuminemia (critical illness, liver disease, nephrotic syndrome, malnutrition)",
+      "When measured total magnesium appears low but clinical signs of hypomagnesemia are absent",
+      "To avoid unnecessary magnesium supplementation in hypoalbuminemic patients",
+    ],
+    whenNotToUse: [
+      "When ionized magnesium measurement is available and reliable",
+      "In neonates or pediatric populations (different binding dynamics)",
+      "When acid-base disturbances or hyperphosphatemia are present (alter magnesium binding independently)",
+    ],
+    limitations: [
+      "Does not replace ionized magnesium measurement when available.",
+      "Not validated in neonates or pediatric populations.",
+      "Results become less reliable when albumin is extremely low (<20 g/L).",
+      "Concurrent acid-base disturbances and hyperphosphatemia can reduce correction accuracy.",
+    ],
+    example: {
+      description: "A patient with liver cirrhosis has a measured magnesium of 0.7 mmol/L and albumin of 20 g/L.",
+      inputs: {
+        magnesium: "0.7",
+        albumin: "20",
+      },
+      expectedResult:
+        "Corrected Mg = 0.7 + 0.005 × (40 − 20) = 0.7 + 0.1 = 0.8 mmol/L — within normal range, suggesting the measured value was falsely low due to hypoalbuminemia.",
+    },
+    references: [
+      {
+        citation: "Kroll MH, Elin RJ. Relationships between magnesium and protein concentrations in serum. Clin Chem. 1985;31(2):326-327.",
+        level: "Laboratory study",
+      },
+      {
+        citation: "Costello RB, et al. Perspective: The case for an evidence-based reference interval for serum magnesium. Adv Nutr. 2016;7(6):977-993.",
+        level: "Review",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. The corrected magnesium is an estimate; direct ionized magnesium measurement is the gold standard when available.",
+    evidence: {
+      source: "Clinical Chemistry",
+      reference: "Kroll MH, Elin RJ. Clin Chem. 1985;31(2):326-327.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Kroll MH, Elin RJ. Clin Chem. 1985;31(2):326-327.",
+        "Costello RB, et al. Adv Nutr. 2016;7(6):977-993.",
+      ],
+    },
+  },
+  "kdigo-aki-staging": {
+    clinicalPurpose:
+      "Classifies acute kidney injury (AKI) severity using the KDIGO 2012 criteria based on serum creatinine changes and urine output.",
+    howToUse: [
+      "Enter baseline creatinine (lowest in past 7 days) if available.",
+      "Enter current serum creatinine.",
+      "If assessing urine output criteria, enter patient weight, average urine output rate, and duration.",
+      "Indicate whether the patient is currently on renal replacement therapy (RRT).",
+      "The calculator assigns the highest applicable stage from either creatinine or urine output criteria.",
+    ],
+    interpretation: {
+      guide:
+        "Stage 0: No AKI. Stage 1: Cr rise ≥0.3 mg/dL or 1.5–1.9× baseline; UO <0.5 mL/kg/h for 6–12h. Stage 2: Cr 2.0–2.9× baseline; UO <0.5 mL/kg/h for ≥12h. Stage 3: Cr ≥3.0× baseline or ≥4.0 mg/dL or RRT; UO <0.3 mL/kg/h for ≥24h.",
+    },
+    clinicalSignificance:
+      "The KDIGO 2012 guidelines define AKI using serum creatinine and urine output criteria. AKI is staged 1–3 based on severity. The highest applicable stage from either criterion is assigned. KDIGO staging is the current international standard for AKI classification.",
+    whenToUse: [
+      "All patients with suspected or confirmed acute kidney injury",
+      "For severity classification and prognosis communication",
+      "To guide clinical management decisions regarding monitoring intensity and nephrology consultation",
+    ],
+    whenNotToUse: [
+      "To determine the cause of AKI (prerenal, intrarenal, postrenal)",
+      "As a standalone diagnostic tool without clinical assessment",
+      "To replace serial creatinine measurements for tracking trajectory",
+    ],
+    limitations: [
+      "Does not account for the cause of AKI (prerenal, intrarenal, postrenal).",
+      "CKD patients may have a higher baseline creatinine, affecting staging accuracy.",
+      "Single creatinine measurements may not capture the trajectory; serial measurements are preferred.",
+      "Urine output criteria require accurate intake/output monitoring over the specified duration.",
+    ],
+    example: {
+      description: "A patient's baseline creatinine was 1.0 mg/dL; current creatinine is 2.5 mg/dL.",
+      inputs: {
+        "baseline-creatinine": "1.0",
+        "current-creatinine": "2.5",
+        "on-rrt": "no",
+      },
+      expectedResult:
+        "Ratio = 2.5/1.0 = 2.5× baseline → KDIGO Stage 2 AKI. Consider urgent nephrology consultation and renal ultrasound.",
+    },
+    references: [
+      {
+        citation: "KDIGO Acute Kidney Injury Work Group. KDIGO Clinical Practice Guideline for Acute Kidney Injury. Kidney Int Suppl. 2012;2(1):1-138.",
+        level: "Clinical guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. KDIGO staging should be used in conjunction with clinical assessment and is not a standalone diagnostic tool.",
+    evidence: {
+      source: "Nephrology",
+      reference: "KDIGO AKI Work Group. Kidney Int Suppl. 2012;2(1):1-138.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "KDIGO AKI Work Group. Kidney Int Suppl. 2012;2(1):1-138.",
+        "Bellomo R, et al. Intensive Care Med. 2004;30(8):1417-1425.",
+      ],
+    },
+  },
+  "saag": {
+    clinicalPurpose:
+      "Calculates the Serum-Ascites Albumin Gradient (SAAG) to classify ascites as portal hypertensive (SAAG ≥1.1 g/dL) or non-portal hypertensive (SAAG <1.1 g/dL). This is the first-line diagnostic tool for ascites workup.",
+    howToUse: [
+      "Obtain serum albumin and ascitic fluid albumin from the same blood draw.",
+      "Enter both values in g/dL (multiply g/L by 0.1 to convert).",
+      "The calculator computes the gradient and classifies the ascites.",
+      "SAAG ≥1.1 g/dL indicates portal hypertension as the cause of ascites.",
+      "SAAG <1.1 g/dL indicates non-portal hypertensive causes.",
+    ],
+    interpretation: {
+      guide:
+        "SAAG ≥1.1 g/dL is consistent with portal hypertension (cirrhosis, heart failure, Budd-Chiari). SAAG <1.1 g/dL suggests peritoneal carcinomatosis, tuberculosis, nephrotic syndrome, or pancreatic ascites. The gradient must be interpreted alongside ascitic fluid cell count, protein, glucose, and cytology.",
+    },
+    whenToUse: [
+      "Any patient with new-onset or unexplained ascites",
+      "Initial workup to classify ascites etiology",
+      "When the cause of ascites is uncertain",
+      "Before deciding on further diagnostic testing (e.g., diagnostic paracentesis)",
+    ],
+    whenNotToUse: [
+      "When the cause of ascites is clinically obvious (e.g., known decompensated cirrhosis with typical features)",
+      "In mixed ascites (cirrhosis with concurrent peritoneal carcinomatosis)",
+      "When serum albumin is <2.8 g/dL (may reduce accuracy)",
+    ],
+    limitations: [
+      "SAAG must be measured simultaneously from serum and ascitic fluid.",
+      "Hypoalbuminemia (<2.8 g/dL) may reduce SAAG accuracy.",
+      "SAAG is unreliable in mixed ascites.",
+      "Does not identify the specific cause of portal hypertension or non-portal hypertensive ascites.",
+    ],
+    example: {
+      description:
+        "A patient with known cirrhosis presents with new-onset ascites. Serum albumin is 3.2 g/dL and ascitic fluid albumin is 1.0 g/dL.",
+      inputs: {
+        "serum-albumin": "3.2",
+        "ascites-albumin": "1.0",
+      },
+      expectedResult:
+        "SAAG = 3.2 − 1.0 = 2.2 g/dL (≥1.1 g/dL). Consistent with portal hypertension from cirrhosis.",
+    },
+    clinicalSignificance:
+      "SAAG is the single most reliable test for classifying ascites, replacing the older transudate/exudate classification. It correctly identifies portal hypertension with >90% accuracy and guides the subsequent diagnostic workup.",
+    references: [
+      {
+        citation: "Boyer TD, Kahn AM, Reynolds TB. Arch Intern Med. 1968;122(5):425-428.",
+        level: "Diagnostic study",
+      },
+      {
+        citation: "Runyon BA, Hoefs JC, Morgenthaler US. N Engl J Med. 1983;309(22):1340-1344.",
+        level: "Validation study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. SAAG should be interpreted with ascitic fluid analysis and clinical context. It does not replace comprehensive clinical assessment.",
+    evidence: {
+      source: "Gastroenterology",
+      reference: "Boyer TD, et al. Arch Intern Med. 1968;122(5):425-428.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Boyer TD, et al. Arch Intern Med. 1968;122(5):425-428.",
+        "Runyon BA, et al. N Engl J Med. 1983;309(22):1340-1344.",
+      ],
+    },
+  },
+  "rumack-matthew": {
+    clinicalPurpose:
+      "Determines whether N-acetylcysteine (NAC) treatment is indicated following a single acute acetaminophen ingestion, based on the serum acetaminophen concentration and time since ingestion.",
+    howToUse: [
+      "Confirm the ingestion was a single acute event with a known time of ingestion.",
+      "Obtain a serum acetaminophen level at 4 or more hours after ingestion.",
+      "Enter the time since ingestion (hours) and the serum level (mcg/mL).",
+      "The calculator computes the treatment threshold at that time point.",
+      "If the level is at or above the threshold, initiate NAC per institutional protocol.",
+    ],
+    interpretation: {
+      guide:
+        "Level at or above treatment threshold: Initiate NAC therapy. Level below treatment threshold: NAC not indicated for single acute ingestion with known timing. The nomogram is valid only for 4–24 hours post-ingestion.",
+    },
+    whenToUse: [
+      "Single acute acetaminophen ingestion with known time of ingestion",
+      "Serum acetaminophen level obtained 4–24 hours post-ingestion",
+      "To determine need for N-acetylcysteine (NAC) treatment",
+    ],
+    whenNotToUse: [
+      "Repeated supratherapeutic ingestion or chronic use",
+      "Staggered ingestion (multiple doses over time)",
+      "Unknown time of ingestion",
+      "Sustained-release formulations (different pharmacokinetics)",
+      "Patients presenting with hepatotoxicity (treat with NAC regardless of level)",
+    ],
+    limitations: [
+      "Valid only for single acute ingestion with known timing.",
+      "Valid only for levels obtained 4–24 hours post-ingestion.",
+      "Does not apply to repeated, staggered, or chronic ingestion.",
+      "Does not account for co-ingestants or individual patient factors.",
+      "Clinical toxicology consultation supersedes this calculator when uncertainty exists.",
+    ],
+    example: {
+      description:
+        "A patient ingested a single acute dose of acetaminophen. At 6 hours post-ingestion, the serum level is 120 mcg/mL.",
+      inputs: {
+        "time-since-ingestion": "6",
+        "acetaminophen-level": "120",
+      },
+      expectedResult:
+        "Treatment threshold at 6h ≈ 130 mcg/mL. Level 120 mcg/mL is BELOW the threshold — NAC not indicated for this single acute ingestion.",
+    },
+    clinicalSignificance:
+      "The Rumack-Matthew nomogram is the standard tool for determining NAC treatment in acute acetaminophen overdose in the United States. Early NAC treatment is highly effective at preventing hepatotoxicity when initiated within 8 hours of ingestion.",
+    references: [
+      {
+        citation: "Rumack BH, Matthew H. Pediatrics. 1975;55(6):871-876.",
+        level: "Original description",
+      },
+      {
+        citation: "Smilkstein MJ, et al. N Engl J Med. 1988;319(24):1557-1562.",
+        level: "Validation study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. For acetaminophen overdose, always consult clinical toxicology and follow institutional protocols. This calculator does not replace clinical judgment.",
+    evidence: {
+      source: "Emergency Medicine",
+      reference: "Rumack BH, Matthew H. Pediatrics. 1975;55(6):871-876.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Rumack BH, Matthew H. Pediatrics. 1975;55(6):871-876.",
+        "Smilkstein MJ, et al. N Engl J Med. 1988;319(24):1557-1562.",
+      ],
+    },
+  },
+  "bode-index": {
+    clinicalPurpose:
+      "Multidimensional prognostic index for COPD based on Body mass index, airflow Obstruction, Dyspnea, and Exercise capacity. Predicts mortality and guides treatment decisions including transplant evaluation.",
+    howToUse: [
+      "Enter patient BMI (kg/m²), FEV1 % predicted, mMRC dyspnea grade (0–4), and 6-minute walk distance (meters).",
+      "The calculator scores each component and sums to a BODE Index (0–10).",
+      "Score 0–2: Low risk (~10% 4-year mortality).",
+      "Score 3–4: Moderate risk (~25% 4-year mortality).",
+      "Score 5–6: High risk (~50% 4-year mortality).",
+      "Score 7–10: Very high risk (~80% 4-year mortality). Consider lung transplant referral.",
+    ],
+    interpretation: {
+      guide:
+        "Higher BODE scores indicate worse prognosis. The BODE Index is superior to FEV1 alone for predicting mortality. Scores ≥7 should prompt consideration of lung transplant referral and advanced care planning.",
+    },
+    whenToUse: [
+      "Stable COPD patients for mortality risk assessment",
+      "Guiding treatment intensity and rehabilitation referrals",
+      "Evaluating lung transplant candidacy",
+      "Tracking disease progression over time",
+    ],
+    whenNotToUse: [
+      "During acute COPD exacerbations (components may be temporarily worsened)",
+      "In patients unable to perform 6-minute walk test",
+      "As a sole determinant for treatment decisions (must integrate clinical context)",
+    ],
+    limitations: [
+      "Validated in stable COPD patients; may be less reliable during exacerbations.",
+      "6-minute walk test requires proper instruction and supervision.",
+      "BMI cutoff may vary in different populations (elderly,不同 ethnic groups).",
+      "Does not account for comorbidities beyond the four measured components.",
+    ],
+    example: {
+      description:
+        "A 65-year-old COPD patient with BMI 22, FEV1 45%, mMRC grade 3, and 6MWD 200 meters.",
+      inputs: {
+        bmi: "22",
+        "fev1-percent": "45",
+        "mmrc-dyspnea": "3",
+        "six-minute-walk": "200",
+      },
+      expectedResult:
+        "BMI score 0 (>21), FEV1 score 2 (36–49%), mMRC score 2 (grade 3), 6MWD score 2 (150–249m). BODE = 0+2+2+2 = 6 (high risk). Intensify therapy and consider pulmonary rehabilitation.",
+    },
+    clinicalSignificance:
+      "The BODE Index outperforms FEV1 alone for predicting mortality in COPD. It is recommended by GOLD guidelines for comprehensive assessment and has been validated in multiple international cohorts.",
+    references: [
+      {
+        citation: "Celli BR, et al. N Engl J Med. 2004;350(10):1005-1012.",
+        level: "Original validation",
+      },
+      {
+        citation: "GOLD Report 2024. Global Strategy for COPD.",
+        level: "Clinical guideline",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. BODE Index should be used as part of comprehensive COPD assessment, not as a standalone tool for treatment decisions.",
+    evidence: {
+      source: "Pulmonology",
+      reference: "Celli BR, et al. N Engl J Med. 2004;350(10):1005-1012.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Celli BR, et al. N Engl J Med. 2004;350(10):1005-1012.",
+        "GOLD Report 2024.",
+      ],
+    },
+  },
+  "albi-score": {
+    clinicalPurpose:
+      "Objective prognostic assessment of liver function using serum albumin and bilirubin. Primarily validated in hepatocellular carcinoma (HCC) for stratifying prognosis and guiding treatment decisions.",
+    howToUse: [
+      "Enter total bilirubin in µmol/L (multiply mg/dL by 17.1 to convert).",
+      "Enter serum albumin in g/L (multiply g/dL by 10 to convert).",
+      "The calculator computes the ALBI score and assigns a grade.",
+      "Grade I (≤ −2.60): Best prognosis. Consider curative therapies.",
+      "Grade II (−2.60 to −1.39): Intermediate prognosis. Multidisciplinary discussion.",
+      "Grade III (> −1.39): Worst prognosis. Consider systemic therapy or supportive care.",
+    ],
+    interpretation: {
+      guide:
+        "ALBI Grade I indicates preserved liver function with favorable prognosis. Grade III indicates severe liver dysfunction with poor prognosis. ALBI is objective and reproducible, eliminating the subjective components of Child-Pugh scoring.",
+    },
+    whenToUse: [
+      "HCC patients for liver function assessment and prognosis stratification",
+      "When objective liver function assessment is preferred over Child-Pugh",
+      "For HCC treatment decision-making (curative vs. palliative intent)",
+      "For comparing liver function across patients or studies",
+    ],
+    whenNotToUse: [
+      "As a sole determinant for treatment decisions (must integrate tumor stage, performance status)",
+      "In non-HCC liver disease without additional validation",
+      "When portal hypertension complications (varices, ascites) need assessment (use Child-Pugh)",
+    ],
+    limitations: [
+      "Primarily validated in HCC patients; use in other liver diseases should be interpreted with caution.",
+      "Does not account for portal hypertension, encephalopathy, or other clinical features.",
+      "Extreme albumin or bilirubin values may produce less reliable results.",
+      "Does not replace comprehensive clinical assessment for treatment decisions.",
+    ],
+    example: {
+      description:
+        "An HCC patient with bilirubin 25 µmol/L and albumin 38 g/L.",
+      inputs: {
+        bilirubin: "25",
+        albumin: "38",
+      },
+      expectedResult:
+        "ALBI = (log10(25) × −0.372) + (38 × −0.198) + 4.90 = (1.398 × −0.372) + (−7.524) + 4.90 = −0.520 + (−7.524) + 4.90 = −3.14 (Grade I — best prognosis).",
+    },
+    clinicalSignificance:
+      "ALBI provides an objective, reproducible alternative to Child-Pugh for liver function assessment in HCC. It uses only two laboratory values and has been validated in multiple international cohorts, making it increasingly adopted in HCC staging systems.",
+    references: [
+      {
+        citation: "Johnson PJ, et al. J Clin Oncol. 2015;33(6):550-558.",
+        level: "Original validation",
+      },
+      {
+        citation: "Hiraoka A, et al. Liver Cancer. 2017;6(2):112-119.",
+        level: "Validation study",
+      },
+    ],
+    disclaimer:
+      "This calculator is intended for educational and clinical decision support. ALBI score should be used as part of comprehensive HCC assessment, not as a standalone tool for treatment decisions.",
+    evidence: {
+      source: "Gastroenterology",
+      reference: "Johnson PJ, et al. J Clin Oncol. 2015;33(6):550-558.",
+      reviewedBy: "MedCalcHub Clinical Team",
+      version: "1.0",
+      updatedAt: "2026-08",
+      references: [
+        "Johnson PJ, et al. J Clin Oncol. 2015;33(6):550-558.",
+        "Hiraoka A, et al. Liver Cancer. 2017;6(2):112-119.",
+      ],
+    },
+  },
 };

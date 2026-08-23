@@ -194,6 +194,13 @@ const BATCH_20_SLUGS = [
   "adrenal-steroid-converter",
   "thyroid-dose",
   "levothyroxine-dose",
+  "alvarado-score",
+  "corrected-magnesium",
+  "kdigo-aki-staging",
+  "saag",
+  "rumack-matthew",
+  "bode-index",
+  "albi-score",
 ] as const;
 
 describe("Clinical Content Registry", () => {
@@ -2163,8 +2170,8 @@ describe("Clinical Content — Sprint 1.9 Batch 19 (Pulmonary/Respiratory)", () 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 141 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(141);
+  it("all 148 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(148);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -2437,10 +2444,10 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     ecog: 2,
   };
 
-  it("reports the final coverage totals (141 registered, 141 with content, 0 deferred)", () => {
+  it("reports the final coverage totals (148 registered, 148 with content, 0 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
-    expect(calculatorRegistry.length).toBe(141);
-    expect(contentSlugs.size).toBe(141);
+    expect(calculatorRegistry.length).toBe(148);
+    expect(contentSlugs.size).toBe(148);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,
@@ -2666,6 +2673,13 @@ describe("Clinical Content — Sprint 1.9 Batch 20 (Final Coverage)", () => {
     "adrenal-steroid-converter": 10,
     "thyroid-dose": 112,
     "levothyroxine-dose": 112,
+    "alvarado-score": 6,
+    "corrected-magnesium": 0.8,
+    "kdigo-aki-staging": 2,
+    "saag": 2.2,
+    "rumack-matthew": 127.7,
+    "bode-index": 6,
+    "albi-score": -3.14,
   };
 
   const batch20Categories: Record<string, string> = {
@@ -2678,6 +2692,13 @@ describe("Clinical Content — Sprint 1.9 Batch 20 (Final Coverage)", () => {
     "adrenal-steroid-converter": "Endocrinology",
     "thyroid-dose": "Endocrinology",
     "levothyroxine-dose": "Endocrinology",
+    "alvarado-score": "Emergency",
+    "corrected-magnesium": "Laboratory",
+    "kdigo-aki-staging": "Nephrology",
+    "saag": "Gastroenterology",
+    "rumack-matthew": "Emergency",
+    "bode-index": "Pulmonology",
+    "albi-score": "Gastroenterology",
   };
 
   it("every batch-20 calculator has clinical content", () => {
@@ -5312,7 +5333,7 @@ describe("Clinical Content — Final Stage 3 Evidence Closure (oxygen-index)", (
     expect(hasEvidence, "adrenal-steroid-converter should NOT have verified evidence").toBe(false);
   });
 
-  it("canonical evidence count is exactly 140", () => {
+  it("canonical evidence count is exactly 147", () => {
     let evidenceCount = 0;
     for (const [, content] of Object.entries(clinicalContentRegistry)) {
       if (
@@ -5323,6 +5344,6 @@ describe("Clinical Content — Final Stage 3 Evidence Closure (oxygen-index)", (
         evidenceCount++;
       }
     }
-    expect(evidenceCount).toBe(140);
+    expect(evidenceCount).toBe(147);
   });
 });

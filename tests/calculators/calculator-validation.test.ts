@@ -895,6 +895,43 @@ const testInputs: Record<string, Record<string, string>> = {
     bpRx: "no",
     glucoseRx: "no",
   },
+  "alvarado-score": {
+    migration: "1",
+    anorexia: "1",
+    nausea: "1",
+    "rlq-tenderness": "2",
+    rebound: "1",
+    fever: "1",
+    leukocytosis: "2",
+    "left-shift": "1",
+  },
+  "corrected-magnesium": {
+    magnesium: "0.8",
+    albumin: "40",
+  },
+  "kdigo-aki-staging": {
+    "baseline-creatinine": "1.0",
+    "current-creatinine": "2.5",
+    "on-rrt": "no",
+  },
+  "saag": {
+    "serum-albumin": "3.2",
+    "ascites-albumin": "1.0",
+  },
+  "rumack-matthew": {
+    "time-since-ingestion": "6",
+    "acetaminophen-level": "120",
+  },
+  "bode-index": {
+    bmi: "22",
+    "fev1-percent": "45",
+    "mmrc-dyspnea": "3",
+    "six-minute-walk": "200",
+  },
+  "albi-score": {
+    bilirubin: "25",
+    albumin: "38",
+  },
 };
 
 // ---------------------------------------------------------------------------
