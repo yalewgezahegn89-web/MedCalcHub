@@ -52,73 +52,14 @@ export const rumackMatthewCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "The Rumack-Matthew nomogram applies only to a single acute ingestion with a known time of ingestion.",
-      "Obtain a serum acetaminophen level at 4 or more hours after ingestion.",
-      "If the level is at or above the treatment line at the given time, initiate NAC therapy.",
-      "If the level is below the treatment line and no other concerning features are present, NAC is not indicated.",
-      "Clinical toxicology consultation supersedes this calculator when clinical judgment or applicability is uncertain.",
-    ],
-    warnings: [
-      "This nomogram does NOT apply to: repeated supratherapeutic ingestions, chronic ingestion, staggered ingestions, or unknown time of ingestion.",
-      "For repeated or staggered ingestion, treat with NAC regardless of acetaminophen level (consult toxicology).",
-      "The nomogram assumes the patient presents within 24 hours of ingestion. Levels obtained after 24 hours require clinical judgment.",
-      "Patients presenting with hepatotoxicity (elevated AST/ALT, INR, or acidosis) should be treated with NAC regardless of level or timing.",
-      "This calculator is an adjunct to clinical decision-making, not a replacement for clinical toxicology consultation.",
-    ],
-    followUp: [
-      "If NAC is indicated: administer per institutional protocol (21-hour IV protocol or 72-hour oral protocol).",
-      "Monitor hepatic function (AST, ALT, INR, bilirubin) serially for 24–72 hours.",
-      "Repeat acetaminophen level at 4–6 hours if initial level was obtained before 4 hours post-ingestion.",
-      "Refer to hepatology if hepatotoxicity develops (elevated INR, encephalopathy, or multi-organ failure).",
-    ],
-  },
+
 
   clinicalNotes:
     "The Rumack-Matthew nomogram was published in 1975 (Pediatrics 55:871-876) and is the standard tool for determining NAC treatment in acute acetaminophen ingestion in the United States. The nomogram uses a semi-log plot of serum acetaminophen concentration versus time since ingestion, with a treatment line derived from reported cases of hepatotoxicity. The treatment line represents the minimum acetaminophen level associated with potential hepatotoxicity at each time point.",
 
-  evidence: {
-    source: "Emergency Medicine",
-    reference:
-      "Rumack BH, Matthew H. Acetaminophen poisoning and toxicity. Pediatrics. 1975;55(6):871-876.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Rumack BH, Matthew H. Pediatrics. 1975;55(6):871-876.",
-      "Smilkstein MJ, Knapp GL, Kulig KW, Rumack BH. Efficacy of oral N-acetylcysteine in the treatment of acetaminophen overdose. N Engl J Med. 1988;319(24):1557-1562.",
-      "Dart RC, Erdman AR, Olson KR, et al. ACMT and AACT guidelines: Acetaminophen overdose: An evidence-based consensus guideline for out-of-hospital management. Clin Toxicol. 2006;44(1):1-18.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the Rumack-Matthew nomogram?",
-      answer:
-        "The Rumack-Matthew nomogram is a graphical tool that plots serum acetaminophen concentration against time since ingestion. A treatment line defines the threshold above which N-acetylcysteine (NAC) treatment is recommended to prevent hepatotoxicity.",
-    },
-    {
-      question: "When is the nomogram applicable?",
-      answer:
-        "The nomogram is applicable ONLY for a single acute ingestion (one time ingestion) with a KNOWN time of ingestion. It is valid for serum levels obtained 4 to 24 hours after ingestion. It does NOT apply to repeated ingestions, chronic use, or staggered ingestions.",
-    },
-    {
-      question: "What if the time of ingestion is unknown?",
-      answer:
-        "If the time of ingestion is unknown, the nomogram cannot be used. In this case, obtain acetaminophen level, hepatic function tests (AST, ALT, INR), and renal function. Treat with NAC if there is any concern for toxicity, and consult toxicology.",
-    },
-    {
-      question: "What if the level is obtained before 4 hours?",
-      answer:
-        "Levels obtained before 4 hours post-ingestion may not have peaked and are unreliable for ruling out toxicity. Repeat the level at 4 hours or later. If there is clinical concern, start NAC and recheck.",
-    },
-    {
-      question: "Does this nomogram apply to sustained-release acetaminophen?",
-      answer:
-        "The nomogram is not validated for sustained-release formulations. For sustained-release ingestion, consider prolonged monitoring and consult toxicology, as peak levels may be delayed.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Acetaminophen Overdose Assessment Tools",
@@ -138,14 +79,6 @@ export const rumackMatthewCalculator: CalculatorDefinition = {
           "Assessing liver disease severity once hepatotoxicity has developed.",
         limitation:
           "Does not guide initial NAC treatment decisions in acetaminophen overdose.",
-      },
-      {
-        name: "King's College Criteria",
-        href: "/calculators/meld-score",
-        bestFor:
-          "Determining need for liver transplant in acetaminophen-induced acute liver failure.",
-        limitation:
-          "Applied after hepatotoxicity develops; does not replace early NAC treatment decisions.",
       },
     ],
   },

@@ -35,9 +35,7 @@ export const maintenanceFluidsCalculator: CalculatorDefinition = {
     "Clinical practice references",
   ],
 
-  warnings: [
-    "Do not use as a substitute for individualized fluid prescription.",
-  ],
+
 
   keywords: [
     "Maintenance Fluids",

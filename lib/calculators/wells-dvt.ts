@@ -41,18 +41,14 @@ export const wellsDvtCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "Two-tier interpretation (most commonly used): ≤1 point = DVT unlikely; ≥2 points = DVT likely. In DVT-unlikely patients a negative high-sensitivity D-dimer safely excludes DVT. Three-tier interpretation: ≤0 low, 1–2 moderate, ≥3 high probability.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

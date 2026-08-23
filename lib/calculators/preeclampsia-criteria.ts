@@ -103,51 +103,13 @@ export const preeclampsiaCriteriaCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Diagnose preeclampsia as new-onset hypertension (SBP ≥ 140 or DBP ≥ 90 on two occasions ≥ 4 hours apart) after 20 weeks with proteinuria OR, in the absence of proteinuria, new-onset hypertension plus thrombocytopenia, renal insufficiency, impaired liver function, pulmonary edema, or cerebral/visual symptoms.",
-      "Count severe features carefully — each has management and delivery-timing implications.",
-      "A diagnosis of preeclampsia with severe features typically warrants hospital care and delivery planning (often at ≥ 34 weeks).",
-    ],
-    warnings: [
-      "Severe hypertension (SBP ≥ 160 or DBP ≥ 110) sustained ≥ 15 minutes is an emergency — treat promptly regardless of the total feature count.",
-      "Eclampsia (seizures) can occur with or without severe features and mandates magnesium sulfate.",
-      "Headache, visual changes, and epigastric/RUQ pain are red-flag symptoms.",
-    ],
-    followUp: [
-      "Preeclampsia without severe features: maternal and fetal surveillance, serial BP and labs, delivery at 37 weeks.",
-      "Preeclampsia with severe features: inpatient management, magnesium sulfate for seizure prophylaxis, and delivery based on gestational age.",
-      "Persistent postpartum hypertension/eclampsia requires ongoing monitoring.",
-    ],
-  },
+
 
   clinicalNotes:
     "ACOG PB 222 (2020) defines preeclampsia as gestational hypertension (≥ 140/90 after 20 weeks) accompanied by proteinuria (≥ 300 mg/24 h, protein:creatinine ≥ 0.3, or dipstick ≥ 2+) or, without proteinuria, by end-organ dysfunction (thrombocytopenia < 100,000, creatinine > 1.1 or doubling, transaminases ≥ 2× ULN, pulmonary edema, new headache unresponsive to treatment, or visual symptoms). Severe features additionally include SBP ≥ 160 or DBP ≥ 110. This calculator counts severe features and reports preeclampsia status.",
-  evidence: {
-    source: "National specialty guideline",
-    reference:
-      "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
-      "American College of Obstetricians and Gynecologists. Gestational hypertension and preeclampsia: ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Can preeclampsia be diagnosed without proteinuria?",
-      answer:
-        "Yes — new-onset hypertension plus any of thrombocytopenia, renal insufficiency, liver involvement, pulmonary edema, or cerebral/visual symptoms meets criteria even without proteinuria.",
-    },
-    {
-      question: "What counts as a severe feature?",
-      answer:
-        "SBP ≥ 160 or DBP ≥ 110; platelets < 100,000/µL; creatinine > 1.1 mg/dL or doubling; transaminases ≥ 2× ULN; pulmonary edema; new headache unresponsive to medication; and visual symptoms.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

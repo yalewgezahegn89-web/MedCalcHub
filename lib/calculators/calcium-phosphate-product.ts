@@ -43,18 +43,14 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["An elevated calcium-phosphate product (> 55 mg²/dL²) is associated with an increased risk of vascular calcification and cardiovascular morbidity.","This product is particularly important to monitor in patients with chronic kidney disease and those on dialysis."],
-    warnings: ["This should be interpreted with the patient's renal and mineral metabolism status.","Treat phosphate elevation rather than calcium alone to reduce the calcium-phosphate product."],
-    followUp: ["If elevated, assess dietary phosphorus intake and consider phosphate binders.","Monitor parathyroid hormone (PTH) and vitamin D levels in CKD patients."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Nephrology Literature","reference":"KDIGO CKD-MBD Guideline. Improving global outcomes (KDIGO) CKD-MBD update. Kidney Int Suppl. 2017;7:1-59.","reviewedBy":"MedCalcHub Clinical Team","version":"2017","updatedAt":"2026-07","references":["Nephrology references","Clinical practice guidelines"]},
 
-  faq: [{"question":"What does an elevated calcium-phosphate product mean?","answer":"A product > 55 mg²/dL² indicates an increased risk of metastatic calcification and vascular calcification, especially in CKD patients."},{"question":"How do you lower the calcium-phosphate product?","answer":"Reduce dietary phosphorus, use phosphate binders, and optimize dialysis adequacy. Avoid excessive calcium-based binders."}],
+
+
 
   comparison: {"title":"Which Mineral Metabolism Calculator Should I Use?","calculators":[{"name":"Calcium-Phosphate Product","href":"/calculators/calcium-phosphate-product","bestFor":"Assessing vascular calcification risk in CKD.","limitation":"Does not directly measure PTH or vitamin D status."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Estimating kidney function.","limitation":"Does not assess mineral metabolism."}]},
 

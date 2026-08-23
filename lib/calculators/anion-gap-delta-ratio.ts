@@ -97,58 +97,14 @@ export const anionGapDeltaRatioCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use the delta ratio only when a high anion gap metabolic acidosis (AG > 12) is present; it is not applicable to normo- or low-anion-gap states.",
-      "A ratio between 1 and 2 is consistent with a pure high anion gap metabolic acidosis.",
-      "A ratio < 1 suggests a concurrent non-anion gap metabolic acidosis (e.g., diarrhea, renal tubular acidosis, hyperchloremic losses).",
-      "A ratio > 2 suggests a concurrent metabolic alkalosis or a pre-existing elevated bicarbonate.",
-    ],
-    warnings: [
-      "The formula assumes a normal anion gap of 12 and a normal bicarbonate of 24; local lab reference intervals may differ.",
-      "In lactic acidosis the gap may initially appear narrow while bicarbonate is falling rapidly.",
-      "The delta ratio is a screening aid; final interpretation requires correlation with the clinical picture.",
-    ],
-    followUp: [
-      "If the ratio is < 1, evaluate for additional bicarbonate losses or hyperchloremic acidosis.",
-      "If the ratio is > 2, evaluate for concurrent metabolic alkalosis (e.g., vomiting, diuretics, volume contraction).",
-      "Recheck electrolytes and ABG after the underlying cause is treated.",
-    ],
-  },
+
 
   clinicalNotes:
     "The delta ratio compares the observed increase in the anion gap to the observed decrease in bicarbonate. A ratio below 1 or above 2 suggests an additional acid-base disorder requiring separate evaluation.",
 
-  evidence: {
-    source: "Review article and textbook standard",
-    reference:
-      "Rastegar A, Nagami GT, Shafiee MA. Metabolic acidosis. In: Brenner & Rector's The Kidney. Elsevier; 2020. Also: Seifter JL, ed. Acid-base disorders. StatPearls. NCBI Bookshelf; 2024.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Rastegar A. Use of the delta gap ratio in mixed acid-base disorders. J Am Soc Nephrol. 2007;18(10):2631-2636.",
-      "Seifter JL. Acid-base disorders. In: Brenner & Rector's The Kidney. Elsevier; 2020.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a delta ratio less than 1 mean?",
-      answer:
-        "It suggests the fall in bicarbonate is greater than the rise in the anion gap would predict — a concurrent non-anion gap (hyperchloremic) metabolic acidosis, for example from diarrhea or a renal tubular acidosis.",
-    },
-    {
-      question: "What does a delta ratio greater than 2 mean?",
-      answer:
-        "It suggests the bicarbonate is higher than expected for the anion gap elevation — a concurrent metabolic alkalosis or a pre-existing high bicarbonate, for example in a patient with vomiting superimposed on a high anion gap acidosis.",
-    },
-    {
-      question: "Can the delta ratio be used when the anion gap is normal?",
-      answer:
-        "No. The delta ratio is only meaningful when a high anion gap metabolic acidosis is already established. With a normal anion gap, different analyses apply.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

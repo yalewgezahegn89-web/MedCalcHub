@@ -41,18 +41,14 @@ export const sirsCriteriaCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "SIRS is present when ≥2 of 4 criteria are met. Sepsis is SIRS plus a confirmed or suspected source of infection. Note: the Sepsis-3 consensus now defines sepsis as life-threatening organ dysfunction (SOFA increase ≥2) and no longer requires SIRS criteria, but SIRS remains useful for early recognition and screening.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

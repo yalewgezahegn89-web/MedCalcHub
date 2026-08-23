@@ -90,10 +90,7 @@ export function resolveSelectedCalculators(
 function resolveComparisonItems(
   calculator: CalculatorDefinition,
 ): ComparisonItem[] {
-  const comparison = calculator.comparison;
-  if (!comparison) return [];
-  if (Array.isArray(comparison)) return comparison;
-  return comparison.calculators ?? [];
+  return calculator.comparison?.calculators ?? [];
 }
 
 function findSelfItem(
@@ -137,16 +134,10 @@ export function prepareComparisonRows(
 function resolveComparisonTitle(
   calculator: CalculatorDefinition,
 ): string {
-  if (
-    calculator.comparison &&
-    !Array.isArray(calculator.comparison) &&
-    calculator.comparison.title
-  ) {
-    return calculator.comparison.title;
-  }
-
   return (
-    clinicalContentRegistry[calculator.slug]?.comparison?.title ?? ""
+    calculator.comparison?.title ??
+    clinicalContentRegistry[calculator.slug]?.comparison?.title ??
+    ""
   );
 }
 

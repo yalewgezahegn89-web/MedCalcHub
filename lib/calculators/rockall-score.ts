@@ -31,10 +31,7 @@ export const rockallCalculator: CalculatorDefinition = {
     "Rebleeding",
   ],
 
-  warnings: [
-    "Full Rockall Score requires endoscopic findings.",
-    "Clinical judgment should always be used.",
-  ],
+
 
   formula:
     "Composite score using Age, Shock, Comorbidity, Diagnosis and Endoscopic Stigmata.",

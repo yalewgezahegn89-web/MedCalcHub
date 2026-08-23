@@ -138,50 +138,13 @@ export const modifiedRankinScaleCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Assign the level based on what the patient can actually do, rather than what they could do before the event.",
-      "Distinguish mRS 2 from 3 by whether the patient can walk without another person's help — use of a walking aid alone is not assistance.",
-      "A structured interview improves interobserver agreement.",
-    ],
-    warnings: [
-      "mRS is a global measure of disability, not a measure of impairment; cognitive and language deficits are easily underestimated.",
-      "The scale is ordinal — treat the difference between levels as meaningful, not arithmetic.",
-      "Do not use mRS to guide acute treatment decisions; it is primarily an outcome measure.",
-    ],
-    followUp: [
-      "Record mRS at a defined time point (e.g., 90 days) using a validated structured assessment.",
-      "Use serial assessments to document recovery or decline.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Rankin scale was originally described by John Rankin in 1957 and modified by Warlow and colleagues during the UK-TIA trial in the 1980s; its reproducibility was first examined by van Swieten and colleagues (Stroke 1988), who reported a weighted kappa of 0.91. The modified scale runs from 0 (no symptoms) to 5 (severe disability requiring constant care) with 6 added for death. Scores of 0–2 are conventionally classified as a favorable outcome in acute stroke trials.",
-  evidence: {
-    source: "Validated functional outcome scale (Stroke 1988)",
-    reference:
-      "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
-      "Rankin J. Cerebrovascular accidents in patients over the age of 60. II. Prognosis. Scott Med J. 1957;2(5):200-215.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is a good mRS outcome?",
-      answer:
-        "An mRS of 0–2 is conventionally considered a good outcome because patients are functionally independent; scores of 3–5 represent increasing dependency and 6 is death.",
-    },
-    {
-      question: "How is the mRS different from the NIHSS?",
-      answer:
-        "The NIHSS measures acute neurologic impairment, while the mRS measures global functional disability and is used as the outcome measure over time.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Stroke outcome and severity measures",

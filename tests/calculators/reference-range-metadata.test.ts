@@ -286,7 +286,7 @@ describe("ReferenceRange — registry integrity", () => {
   });
 });
 
-describe("Clinical metadata — clinical vs clinicalGuidance", () => {
+describe("Clinical metadata — clinical is the canonical insight channel", () => {
   it("clinical is the canonical rendered field and always well-formed when present", () => {
     const withClinical = calculatorRegistry.filter(
       (c) => c.clinical !== undefined,
@@ -303,71 +303,29 @@ describe("Clinical metadata — clinical vs clinicalGuidance", () => {
     }
   });
 
-  it("clinicalGuidance remains populated with static content (no loss of guidance)", () => {
-    const withGuidance = calculatorRegistry.filter(
-      (c) => c.clinicalGuidance !== undefined,
-    );
-    expect(withGuidance.length).toBeGreaterThan(0);
-    for (const calc of withGuidance) {
-      const g = calc.clinicalGuidance;
-      if (g?.advice !== undefined) {
-        expect(Array.isArray(g.advice)).toBe(true);
-      }
-      if (g?.warnings !== undefined) {
-        expect(Array.isArray(g.warnings)).toBe(true);
-      }
-      if (g?.followUp !== undefined) {
-        expect(Array.isArray(g.followUp)).toBe(true);
-      }
+  it("legacy clinicalGuidance field is fully retired from all definitions", () => {
+    for (const calc of calculatorRegistry) {
+      expect(
+        (calc as unknown as { clinicalGuidance?: unknown }).clinicalGuidance,
+        `${calc.slug} still defines legacy clinicalGuidance`,
+      ).toBeUndefined();
     }
   });
 
-  it("clinicalGuidance content is preserved (pilot calculators retain guidance)", () => {
-    // Pilot calculators from Sprint 1.8: BMI, CKD-EPI 2021, corrected calcium, etc.
-    const bmi = calculatorRegistry.find((c) => c.slug === "bmi");
-    expect(bmi?.clinicalGuidance?.advice?.length).toBeGreaterThan(0);
-    expect(bmi?.clinicalGuidance?.warnings?.length).toBeGreaterThan(0);
-    expect(bmi?.clinicalGuidance?.followUp?.length).toBeGreaterThan(0);
-
-    const ckd = calculatorRegistry.find((c) => c.slug === "ckd-epi-2021");
-    expect(ckd?.clinicalGuidance?.advice?.length).toBeGreaterThan(0);
-    expect(ckd?.clinicalGuidance?.warnings?.length).toBeGreaterThan(0);
-    expect(ckd?.clinicalGuidance?.followUp?.length).toBeGreaterThan(0);
-  });
-
-  it("a calculator may have both clinical and clinicalGuidance without conflict", () => {
-    const both = calculatorRegistry.filter(
-      (c) => c.clinical !== undefined && c.clinicalGuidance !== undefined,
-    );
-    // lean-body-weight and waist-to-hip-ratio have both
-    for (const calc of both) {
-      expect(calc.clinical).toBeDefined();
-      expect(calc.clinicalGuidance).toBeDefined();
-    }
+  it("ACR keeps its rendered pearl/mistakes via clinical", () => {
+    const acr = calculatorRegistry.find((c) => c.slug === "albumin-creatinine-ratio");
+    expect(acr?.clinical?.pearl).toBeTruthy();
+    expect(acr?.clinical?.commonMistakes?.length).toBeGreaterThan(0);
   });
 });
 
 describe("Top-level definition metadata fields", () => {
-  it("definition-level warnings/advice/followUp, when present, are string arrays", () => {
+  it("definition-level warnings/advice/followUp are retired (result-level fields remain)", () => {
     for (const calc of calculatorRegistry) {
-      if (calc.warnings !== undefined) {
-        expect(Array.isArray(calc.warnings)).toBe(true);
-        for (const w of calc.warnings) {
-          expect(typeof w).toBe("string");
-        }
-      }
-      if (calc.advice !== undefined) {
-        expect(Array.isArray(calc.advice)).toBe(true);
-        for (const a of calc.advice) {
-          expect(typeof a).toBe("string");
-        }
-      }
-      if (calc.followUp !== undefined) {
-        expect(Array.isArray(calc.followUp)).toBe(true);
-        for (const f of calc.followUp) {
-          expect(typeof f).toBe("string");
-        }
-      }
+      const legacy = calc as unknown as Record<string, unknown>;
+      expect(legacy.warnings, `${calc.slug}.warnings`).toBeUndefined();
+      expect(legacy.advice, `${calc.slug}.advice`).toBeUndefined();
+      expect(legacy.followUp, `${calc.slug}.followUp`).toBeUndefined();
     }
   });
 });

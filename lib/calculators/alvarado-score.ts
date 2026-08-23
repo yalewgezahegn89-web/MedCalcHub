@@ -57,70 +57,14 @@ export const alvaradoScoreCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "A score of 7–8 strongly suggests appendicitis; consider surgical consultation and imaging (CT or ultrasound).",
-      "A score of 5–6 represents moderate probability; clinical observation, serial examination, and imaging are recommended.",
-      "A score of 1–4 has low probability but does not exclude appendicitis; alternative diagnoses should be explored.",
-      "The score supports but does not replace clinical judgment. Atypical presentations (elderly, pregnant, pediatric) may require modified approaches.",
-    ],
-    warnings: [
-      "This score has lower sensitivity in elderly patients, pregnant women, and young children.",
-      "CT imaging remains the gold standard for appendicitis confirmation in adults when clinical suspicion is moderate to high.",
-      "A negative Alvarado score does not definitively exclude appendicitis.",
-      "Do not use this score as the sole basis for operative decision-making.",
-    ],
-    followUp: [
-      "If clinical suspicion remains high despite a low score, obtain CT or ultrasound imaging.",
-      "Patients with moderate scores (5–6) should undergo serial abdominal examinations every 6–8 hours.",
-      "If appendicitis is confirmed, surgical consultation for appendectomy should be initiated promptly.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Alvarado score (also known as MANTRELS) was described by Alvarado in 1986 and has been extensively validated. It uses 8 clinical and laboratory parameters to estimate the probability of acute appendicitis. The maximum score is 10. Scores ≥7 are considered high probability and warrant strong consideration for surgical intervention. Scores 5–6 are equivocal and typically require further imaging or observation.",
 
-  evidence: {
-    source: "Emergency Medicine",
-    reference:
-      "Alvarado A. A practical score for the early diagnosis of acute appendicitis. Ann Emerg Med. 1986;15(5):557-564.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Alvarado A. A practical score for the early diagnosis of acute appendicitis. Ann Emerg Med. 1986;15(5):557-564.",
-      "Ohmann C, et al. Systematic review of scores for diagnosing acute appendicitis. Dig Surg. 1999;16(6):449-457.",
-      "Tehrani HY, et al. The Alvarado score for diagnosing appendicitis. Am J Emerg Med. 2009;27(3):347-350.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the Alvarado score?",
-      answer:
-        "The Alvarado score (MANTRELS) is a clinical scoring system that estimates the probability of acute appendicitis based on 8 clinical and laboratory parameters: Migration of pain, Anorexia, Nausea/vomiting, Tenderness in the right lower quadrant, Rebound pain, Fever, Leukocytosis, and left Shift (neutrophilia).",
-    },
-    {
-      question: "What does a score of 7 or higher mean?",
-      answer:
-        "A score of 7–8 is considered high probability for appendicitis and strongly supports surgical consultation and consideration for appendectomy. A score of 9–10 is very high probability.",
-    },
-    {
-      question: "Can appendicitis be present with a low score?",
-      answer:
-        "Yes. The Alvarado score has a sensitivity of approximately 75–95% depending on the study. A low score does not definitively exclude appendicitis, particularly in atypical populations (elderly, pregnant women, young children).",
-    },
-    {
-      question: "How does the Alvarado score compare to CT imaging?",
-      answer:
-        "CT imaging has higher sensitivity and specificity than the Alvarado score for appendicitis. The Alvarado score is a clinical screening tool that helps determine which patients should proceed to imaging. CT is the gold standard for definitive diagnosis.",
-    },
-    {
-      question: "Is the Alvarado score reliable in children?",
-      answer:
-        "The Alvarado score has been validated in pediatric populations but may be less reliable in very young children. The Pediatric Appendicitis Score (PAS) is an alternative specifically designed for children.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Appendicitis Assessment Tools",

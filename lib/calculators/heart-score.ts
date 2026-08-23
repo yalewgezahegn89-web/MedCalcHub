@@ -43,18 +43,14 @@ export const heartScoreCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "HEART score stratifies 6-week MACE risk (MI, PCI, CABG, death). 0–3 low risk (~1–2% MACE, candidates for early discharge); 4–6 moderate risk (~12–17% MACE, observation with serial troponins); 7–10 high risk (~50–65% MACE, early invasive strategy).",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

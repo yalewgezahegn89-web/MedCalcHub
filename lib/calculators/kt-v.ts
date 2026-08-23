@@ -110,58 +110,14 @@ export const ktVCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Measure pre- and post-dialysis BUN on the same treatment and record the exact dialysis time and net ultrafiltration.",
-      "Use post-dialysis weight (kg) and ultrafiltrate in liters; the formula is the second-generation Daugirdas equation.",
-      "KDOQI recommends a minimum delivered spKt/V of 1.2 for three-times-weekly dialysis; if using twice-weekly schedules, other adequacy targets apply.",
-      "For Kt/V targets in alternative schedules, consider the standardized Kt/V (stdKt/V) or equivalent renal urea clearance.",
-    ],
-    warnings: [
-      "This formula assumes three-times-weekly hemodialysis with a 4-hour session in mind; it does not apply to peritoneal dialysis.",
-      "Rebound of urea after dialysis is not captured by single-pool Kt/V; this is acceptable for routine monitoring.",
-      "Post-dialysis BUN must be sampled correctly (after blood pump slowed for ~1 minute) to avoid underestimating Kt/V.",
-    ],
-    followUp: [
-      "If spKt/V is below target, review access recirculation, dialysis prescription (time, blood and dialysate flow), and ultrafiltration volume.",
-      "Recheck after prescription changes; address vascular access dysfunction when adequacy is persistently low.",
-      "In patients with significant residual renal function, incorporate residual renal urea clearance into total clearance.",
-    ],
-  },
+
 
   clinicalNotes:
     "Single-pool Kt/V (spKt/V) is the standard measure of hemodialysis urea removal. The Daugirdas second-generation equation corrects for ultrafiltration and treatment time and is the KDOQI-recommended method.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Daugirdas JT. Second generation logarithmic estimates of single-pool variable volume Kt/V: an analysis of error. J Am Soc Nephrol. 1993;4(5):1205-1213.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Daugirdas JT. J Am Soc Nephrol. 1993;4(5):1205-1213.",
-      "National Kidney Foundation. KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 update. Am J Kidney Dis. 2015;66(5):884-930.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does Kt/V measure?",
-      answer:
-        "Kt/V is a dimensionless measure of dialysis dose: K is urea clearance (mL/min), t is treatment time (min), and V is the volume of distribution of urea (mL). spKt/V is the single-pool estimate from pre- and post-dialysis BUN.",
-    },
-    {
-      question: "What is the difference between spKt/V and eKt/V?",
-      answer:
-        "spKt/V does not account for post-dialysis urea rebound, while equilibrated Kt/V (eKt/V) does. The difference is small at lower doses but grows at higher doses; spKt/V is the KDOQI standard for routine monitoring.",
-    },
-    {
-      question: "Can this formula be used for peritoneal dialysis?",
-      answer:
-        "No. This calculator implements the Daugirdas equation for hemodialysis. Peritoneal dialysis adequacy uses weekly Kt/V targets (e.g., Kt/V ≥ 1.7/week).",
-    },
-  ],
+
+
 
   comparison: undefined,
 

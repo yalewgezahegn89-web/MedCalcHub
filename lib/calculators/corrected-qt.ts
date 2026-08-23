@@ -40,9 +40,7 @@ export const correctedQtCalculator: CalculatorDefinition = {
     "ECG interpretation references",
   ],
 
-  warnings: [
-    "Use in conjunction with clinical context and the patient's medication list.",
-  ],
+
 
   keywords: ["Corrected QT", "QTc", "ECG", "Electrolytes", "Cardiology", "Arrhythmia", "Torsades de Pointes", "QT Prolongation", "Cardiac"],
 

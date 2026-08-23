@@ -31,10 +31,7 @@ export const nafldFibrosisCalculator: CalculatorDefinition = {
     "Fatty Liver",
   ],
 
-  warnings: [
-    "Use only in patients with NAFLD/MASLD.",
-    "Interpret together with clinical assessment.",
-  ],
+
 
   formula:
     "-1.675 + (0.037×Age) + (0.094×BMI) + (1.13×Diabetes) + (0.99×AST/ALT) − (0.013×Platelets) − (0.66×Albumin)",

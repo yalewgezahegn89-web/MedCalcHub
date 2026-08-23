@@ -32,10 +32,7 @@ export const oxygenIndexCalculator: CalculatorDefinition = {
     "ICU",
   ],
 
-  warnings: [
-    "Applicable only in mechanically ventilated patients.",
-    "Mean Airway Pressure (MAP) should be measured directly from the ventilator.",
-  ],
+
 
   formula:
     "OI = (FiO₂ × Mean Airway Pressure × 100) ÷ PaO₂",

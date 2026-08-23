@@ -107,51 +107,14 @@ export const apobApoa1RatioCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use ApoB and ApoA1 measured in the same units (typically g/L).",
-      "A ratio above 1.0 in men and above 0.8 in women is generally considered elevated and associated with higher cardiovascular risk.",
-      "ApoB approximates the number of atherogenic particles and is a recognized alternative to LDL for risk assessment.",
-    ],
-    warnings: [
-      "The 1.0/0.8 thresholds are population reference conventions (e.g., FINRISK and general laboratory intervals), not guideline treatment targets.",
-      "Ratios vary by assay, ethnicity, and age; use the reference interval from the performing laboratory.",
-      "Do not use the ratio alone to decide statin initiation — apply validated risk scores.",
-    ],
-    followUp: [
-      "For an elevated ratio, assess global cardiovascular risk and consider statin therapy if indicated.",
-      "Repeat ApoB/ApoA1 after lipid-lowering therapy to gauge response.",
-    ],
-  },
+
 
   clinicalNotes:
     "ApoB is present on all atherogenic lipoproteins (LDL, VLDL, IDL, Lp(a)) while ApoA1 is the main protein of HDL. The ApoB:ApoA1 ratio summarizes the atherogenic-to-protective balance and has been studied in large cohorts such as INTERHEART.",
 
-  evidence: {
-    source: "Epidemiological association (peer-reviewed)",
-    reference:
-      "Walldius G, Jungner I. The apoB/apoA-I ratio: a strong, new risk factor for cardiovascular disease and a target for lipid-lowering therapy—a review of the evidence. J Intern Med. 2006;259(5):493-519.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Walldius G, Jungner I. J Intern Med. 2006;259(5):493-519.",
-      "Yusuf S, et al. Effect of potentially modifiable risk factors associated with myocardial infarction in 52 countries (INTERHEART). Lancet. 2004;364(9438):937-952.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why is the ApoB:ApoA1 ratio used?",
-      answer:
-        "It reflects the balance between atherogenic and protective lipoproteins, and in epidemiological studies (e.g., INTERHEART, AMORIS) it has performed well as a cardiovascular risk marker.",
-    },
-    {
-      question: "What is the difference between ApoB and LDL?",
-      answer:
-        "LDL cholesterol measures cholesterol mass; ApoB counts the number of atherogenic particles (one per particle), which better captures risk from small, dense LDL and remnant particles.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

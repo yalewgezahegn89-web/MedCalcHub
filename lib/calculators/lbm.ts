@@ -29,9 +29,7 @@ export const lbmCalculator: CalculatorDefinition = {
     "Body Composition",
   ],
 
-  warnings: [
-    "Lean Body Mass is an estimate and should be interpreted within the clinical context.",
-  ],
+
 
   formula:
     "Male: LBM = 0.407 × Weight + 0.267 × Height − 19.2; Female: LBM = 0.252 × Weight + 0.473 × Height − 48.3",

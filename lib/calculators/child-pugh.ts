@@ -31,10 +31,7 @@ export const childPughCalculator: CalculatorDefinition = {
     "Liver Failure",
   ],
 
-  warnings: [
-    "Use only in patients with chronic liver disease or cirrhosis.",
-    "Should not replace clinical judgment.",
-  ],
+
 
   formula:
     "Child-Pugh Score = Bilirubin + Albumin + INR + Ascites + Encephalopathy",

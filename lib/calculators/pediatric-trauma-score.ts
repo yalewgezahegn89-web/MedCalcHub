@@ -100,50 +100,13 @@ export const pediatricTraumaScoreCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score the best status observed in each of the six components and sum for the total.",
-      "Use a PTS < 8 as a trigger for early transfer to a pediatric trauma center (standard triage threshold).",
-      "Reassess the score as the child is stabilized — the score should improve with resuscitation.",
-    ],
-    warnings: [
-      "The PTS is a field/ED triage tool, not a diagnostic test; anatomic injuries may be underestimated in the first minutes.",
-      "Systolic blood pressure thresholds differ from adult norms — use the pediatric values provided.",
-      "The score does not capture penetrating mechanism as thoroughly as anatomic scoring systems (e.g., ISS).",
-    ],
-    followUp: [
-      "Activate the trauma team or transfer for any score < 8.",
-      "Compare the PTS with the Injury Severity Score (ISS) once the full injury pattern is known.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Pediatric Trauma Score (Tepas 1988) was developed to provide a rapid, physiologic-and-anatomic triage tool specific to children, who cannot be triaged with adult trauma scoring alone. Each of six components is scored +2, +1, or −1: weight > 20 kg (+2), 10–20 kg (+1), < 10 kg (−1); normal airway (+2), maintainable (+1), unmaintainable (−1); SBP > 90 (+2), 50–90 (+1), < 50 (−1); awake (+2), obtunded (+1), coma/decerebrate (−1); no open wound (+2), minor (+1), major/penetrating (−1); no skeletal injury (+2), closed fracture (+1), open/multiple (−1). Scores < 8 identify children with substantially increased mortality who warrant pediatric trauma center care.",
-  evidence: {
-    source: "Original derivation/validation study",
-    reference:
-      "Tepas JJ 3rd, Ramenofsky ML, Mollitt DL, et al. The Pediatric Trauma Score as a predictor of injury severity in the injured child. J Pediatr Surg. 1987;22(1):14-18.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Tepas JJ 3rd, Ramenofsky ML, Mollitt DL, et al. The Pediatric Trauma Score as a predictor of injury severity in the injured child. J Pediatr Surg. 1987;22(1):14-18.",
-      "American College of Surgeons. Resources for Optimal Care of the Injured Patient. Chicago, IL: ACS; 2022.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What PTS threshold indicates the need for a trauma center?",
-      answer:
-        "A Pediatric Trauma Score below 8 is the standard threshold associated with a clinically significant risk of mortality and warrants transfer to a pediatric trauma center.",
-    },
-    {
-      question: "Why does the PTS use −1 for small children?",
-      answer:
-        "Infants and small children (< 10 kg) have less physiologic reserve and are more vulnerable to the same injuries, so the weighting accounts for their higher risk.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Pediatric trauma scoring",

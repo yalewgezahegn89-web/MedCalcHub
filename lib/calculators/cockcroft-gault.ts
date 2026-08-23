@@ -51,18 +51,14 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["Use actual body weight unless adjusted body weight is clinically indicated (e.g. obesity).","Cockcroft-Gault remains the preferred equation for many drug dosing recommendations.","Use stable serum creatinine; avoid using values during acute kidney injury for chronic dosing."],
-    warnings: ["Not recommended for unstable kidney function or acute kidney injury.","Overestimates creatinine clearance in elderly patients with low muscle mass.","Does not provide direct GFR estimation; use CKD-EPI for CKD staging."],
-    followUp: ["Verify drug-specific dosing guidelines for renal adjustment thresholds.","Monitor renal function periodically in patients with CrCl < 50 mL/min."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Original Publication","reference":"Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16:31-41.","reviewedBy":"MedCalcHub Clinical Team","version":"1976","updatedAt":"2026-07","references":["Cockcroft DW, Gault MH. Nephron. 1976;16:31-41.","KDIGO Clinical Practice Guideline."]},
 
-  faq: [{"question":"When should I use Cockcroft-Gault instead of CKD-EPI?","answer":"Use Cockcroft-Gault when adjusting medication doses, as many drug labels still reference CrCl from this equation."},{"question":"What weight should I use in the Cockcroft-Gault equation?","answer":"Use actual body weight by default. Adjusted body weight may be used in obese patients per institutional guidelines."}],
+
+
 
   comparison: {"title":"Which Kidney Calculator Should I Use?","calculators":[{"name":"Cockcroft-Gault","href":"/calculators/cockcroft-gault","bestFor":"Medication dosing adjustment.","limitation":"Less accurate for estimating true GFR."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Routine kidney function assessment and CKD staging.","limitation":"Not preferred for medication dosing."},{"name":"MDRD","href":"/calculators/mdrd","bestFor":"Historical comparison.","limitation":"Largely replaced by CKD-EPI."}]},
 

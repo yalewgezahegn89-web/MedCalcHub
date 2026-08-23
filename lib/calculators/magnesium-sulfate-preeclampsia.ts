@@ -68,51 +68,13 @@ export const magnesiumSulfatePreeclampsiaCalculator: CalculatorDefinition = {
 
   classification: [],
 
-  clinicalGuidance: {
-    advice: [
-      "Give the loading dose over 20–30 minutes IV and start the maintenance infusion immediately after the load.",
-      "Standard ACOG maintenance is 1–2 g/h (commonly 2 g/h in preeclampsia with severe features; 1 g/h is used in some centers).",
-      "Monitor patellar reflexes, respiratory rate, urine output, and serum magnesium (if available) during therapy.",
-    ],
-    warnings: [
-      "Magnesium toxicity: loss of patellar reflexes (~10 mg/dL), respiratory depression (~12 mg/dL). Stop infusion and give 10% calcium gluconate (10 mL) IV for respiratory depression.",
-      "Use reduced doses or special caution in renal impairment — magnesium is renally cleared and accumulates.",
-      "Obtain a baseline and follow serum creatinine; monitor urine output (oliguria increases toxicity risk).",
-    ],
-    followUp: [
-      "Continue magnesium for 24 hours postpartum (or 24 hours after delivery / last seizure) in most protocols.",
-      "Confirm resolution of severe features before discontinuation.",
-    ],
-  },
+
 
   clinicalNotes:
     "Magnesium sulfate is the drug of choice for seizure prophylaxis in preeclampsia with severe features and for eclampsia. ACOG (PB 222, 2020) recommends an initial IV loading dose of 4–6 g over 20–30 minutes, followed by a maintenance infusion of 1–2 g/h (typically 2 g/h) for 24 hours. The Zuspan regimen (4 g IV + 2 g/h) and Pritchard regimen (4 g IV + 10 g IM, then 5 g IM every 4 h) are classic alternatives. This calculator sums the total 24-hour dose for the selected IV load and maintenance rate.",
-  evidence: {
-    source: "National specialty guideline",
-    reference:
-      "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
-      "Zuspan FP. Treatment of severe preeclampsia and eclampsia. Clin Obstet Gynecol. 1966;9(4):954-972.",
-      "Pritchard JA. The use of the magnesium ion in the management of eclamptogenic toxemias. Surg Gynecol Obstet. 1955;100(2):131-140.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What serum level is therapeutic?",
-      answer:
-        "Therapeutic serum magnesium is approximately 4.8–8.4 mg/dL (2–3.5 mEq/L). Levels above 10 mg/dL cause loss of deep tendon reflexes, and respiratory depression occurs near 12 mg/dL.",
-    },
-    {
-      question: "How long is magnesium continued?",
-      answer:
-        "Most protocols continue therapy for 24 hours after delivery (or 24 hours after the last seizure), after which it is discontinued if severe features have resolved.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

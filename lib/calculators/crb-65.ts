@@ -47,18 +47,14 @@ export const crb65Calculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "CRB-65 is the lab-free version of CURB-65 and is intended for primary care/out-of-hospital use. Score 0 = low mortality risk (approximately 1%), consider outpatient care. Score 1–2 = intermediate risk (approximately 8%), consider hospital admission. Score 3–4 = high risk (approximately 30%), urgent hospital admission and consider ICU.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

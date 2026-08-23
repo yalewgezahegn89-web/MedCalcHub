@@ -43,18 +43,14 @@ export const graceCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "GRACE in-hospital score predicts in-hospital mortality in ACS: ≤108 points (low risk, <1%), 109–140 (intermediate risk, 1–3%), >140 (high risk, >3%). The GRACE model is the only widely validated ACS risk score using continuous variables; the discrete nomogram is the point-based version used at the bedside.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

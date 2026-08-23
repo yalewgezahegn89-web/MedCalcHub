@@ -96,51 +96,14 @@ export const totalCholesterolHdlRatioCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use a fasting lipid panel for consistency; a TC/HDL ratio near 3.5 or lower is associated with lower cardiovascular risk.",
-      "Interpret alongside LDL, non-HDL cholesterol, triglycerides, and the full cardiovascular risk assessment (e.g., pooled cohort equations).",
-      "TC/HDL is a simple risk marker, not a treatment target.",
-    ],
-    warnings: [
-      "The ratio does not replace LDL or non-HDL cholesterol for guiding statin therapy in most modern guidelines.",
-      "Acute illness, recent meals, and non-fasting samples can alter triglycerides and the calculated ratio.",
-      "Healthy women typically have a lower TC/HDL than men of the same age.",
-    ],
-    followUp: [
-      "Repeat the lipid panel per guideline intervals (often annually or after medication changes).",
-      "Incorporate the ratio into a global risk score rather than using it in isolation.",
-    ],
-  },
+
 
   clinicalNotes:
     "The TC/HDL ratio is one of several lipid ratios studied in cardiovascular epidemiology (e.g., PROCAM, Framingham cohorts). Lower values reflect a higher HDL proportion and are generally associated with lower atherosclerotic risk.",
 
-  evidence: {
-    source: "Epidemiological association (peer-reviewed)",
-    reference:
-      "Stampfer MJ, et al. A prospective study of cholesterol, apolipoproteins, and the risk of myocardial infarction. N Engl J Med. 1991;325(6):373-381.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Stampfer MJ, et al. N Engl J Med. 1991;325(6):373-381.",
-      "Assmann G, et al. The role of HDL cholesterol in the metabolic syndrome. Atheroscler Suppl. 2002;3(4):35-41.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is a good TC/HDL ratio?",
-      answer:
-        "Values below 4 are generally considered desirable, with some risk models favoring values around 3.5 or lower. The ratio should be interpreted in the context of overall cardiovascular risk.",
-    },
-    {
-      question: "Is TC/HDL still recommended?",
-      answer:
-        "Modern guidelines emphasize LDL and non-HDL cholesterol for treatment decisions, but the TC/HDL ratio remains a useful, inexpensive risk indicator and patient-education tool.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

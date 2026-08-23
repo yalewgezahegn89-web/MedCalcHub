@@ -98,51 +98,14 @@ export const fecaCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use in PTH-dependent hypercalcemia (elevated or inappropriately normal PTH) to differentiate FHH from primary hyperparathyroidism.",
-      "Collect spot urine calcium, urine creatinine, serum calcium, and serum creatinine at the same time.",
-      "A FECa < 1% (CCCR < 0.01) is the traditional threshold suggesting FHH; using < 2% (CCCR < 0.02) as a screening cutoff captures approximately 98% of FHH.",
-    ],
-    warnings: [
-      "Low urine calcium also occurs with vitamin D deficiency, low calcium/salt intake, thiazides, lithium, and advanced renal insufficiency.",
-      "The 1% and 2% thresholds overlap clinically — up to ~20–35% of genetically confirmed FHH may have CCCR ≥ 0.01.",
-      "This test does not diagnose FHH by itself; CASR gene analysis remains the reference standard in ambiguous cases.",
-    ],
-    followUp: [
-      "If FECa < 1% with hypercalcemia, review family history, serum magnesium, vitamin D status, and medications.",
-      "If FHH is suspected but FECa is in the gray zone (1–2%), consider CASR gene testing.",
-    ],
-  },
+
 
   clinicalNotes:
     "FECa is the renal calcium clearance expressed relative to creatinine clearance. In FHH, the calcium-sensing receptor is reset, causing relative hypocalciuria despite hypercalcemia. NICE recommends measuring urine calcium excretion (including the calcium:creatinine clearance ratio) to exclude FHH before proceeding to surgery for primary hyperparathyroidism.",
 
-  evidence: {
-    source: "Original derivation + validation (peer-reviewed)",
-    reference:
-      "Christiansen C, et al. Discriminative power of three indices of renal calcium excretion for the distinction between familial hypocalciuric hypercalcaemia and primary hyperparathyroidism. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Christiansen C, et al. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
-      "National Institute for Health and Care Excellence (NICE). Hyperparathyroidism (primary): diagnosis, assessment and initial management. NG132. 2019.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why is FECa used to diagnose FHH?",
-      answer:
-        "FHH is characterized by an inappropriately low renal calcium excretion relative to the prevailing hypercalcemia. A calcium–creatinine clearance ratio below 0.01 (FECa < 1%) supports FHH over primary hyperparathyroidism.",
-    },
-    {
-      question: "What is the preferred FECa threshold?",
-      answer:
-        "Traditional teaching uses < 0.01 (1%). Retrospective data suggest a screening cutoff of 0.02 (2%) captures about 98% of FHH cases, at the cost of including some primary hyperparathyroidism patients.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

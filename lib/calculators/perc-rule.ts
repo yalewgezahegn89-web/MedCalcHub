@@ -41,18 +41,14 @@ export const percRuleCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "The PERC rule is applied to patients with a low pre-test probability of PE (e.g., Wells score <4). If all eight criteria are met, PE can be considered ruled out without D-dimer or imaging. It must not be used in patients with intermediate or high pre-test probability.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

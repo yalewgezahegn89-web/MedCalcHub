@@ -43,18 +43,14 @@ export const feureaCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["FEUrea can be useful when diuretics are present and FENa is less reliable.","FEUrea < 35% suggests prerenal azotemia; > 50% suggests intrinsic renal injury."],
-    warnings: ["FEUrea is less widely validated than FENa and should be used as a complementary test.","Protein intake and corticosteroids can affect urea handling and may alter the ratio."],
-    followUp: ["If FEUrea is equivocal, combine with clinical assessment and other urine biomarkers.","Consider renal ultrasound if intrinsic renal injury is suspected."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Nephrology Literature","reference":"Pépin MN, et al. Reassessment of the fractional excretion of urea for the differential diagnosis of acute renal failure. Clin Invest Med. 2007;30:E163-167.","reviewedBy":"MedCalcHub Clinical Team","version":"2007","updatedAt":"2026-07","references":["Renal physiology references","Clinical nephrology references"]},
 
-  faq: [{"question":"When should I use FEUrea instead of FENa?","answer":"Use FEUrea when the patient has received diuretics, which can increase urinary sodium and make FENa unreliable."},{"question":"What does FEUrea > 50% mean?","answer":"A FEUrea > 50% suggests intrinsic renal injury such as acute tubular necrosis."}],
+
+
 
   comparison: {"title":"Which Renal Assessment Should I Use?","calculators":[{"name":"FEUrea","href":"/calculators/feurea","bestFor":"Renal assessment when diuretics are present.","limitation":"Less widely validated than FENa."},{"name":"FENa","href":"/calculators/fena","bestFor":"Distinguishing prerenal azotemia from ATN.","limitation":"Unreliable with diuretic use."},{"name":"BUN/Creatinine Ratio","href":"/calculators/bun-creatinine-ratio","bestFor":"Rapid bedside assessment.","limitation":"Not a direct tubular function test."}]},
 

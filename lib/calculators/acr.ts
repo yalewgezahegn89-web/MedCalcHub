@@ -1,11 +1,5 @@
 import type { CalculatorDefinition } from "./calculator.types";
 
-import { acrFaq } from "./faqs/acr";
-import { acrComparison } from "./comparisons/acr";
-import { acrRelatedCalculators } from "./related/acr";
-import { acrEvidence } from "./evidence/acr";
-import { acrClinical } from "./clinical/acr";
-
 export const acrCalculator: CalculatorDefinition = {
   id: "albumin-creatinine-ratio",
 
@@ -64,15 +58,52 @@ export const acrCalculator: CalculatorDefinition = {
     "KDIGO Clinical Practice Guideline 2024",
   ],
 
-  faq: acrFaq,
 
-  comparison: acrComparison,
 
-  relatedCalculators: acrRelatedCalculators,
+  comparison: {
+    title: "Which Kidney Calculator Should I Use?",
+    calculators: [
+      {
+        name: "Albumin-to-Creatinine Ratio (ACR)",
+        href: "/calculators/albumin-creatinine-ratio",
+        use: "Detects and stages albuminuria.",
+      },
+      {
+        name: "CKD-EPI 2021",
+        href: "/calculators/ckd-epi-2021",
+        use: "Estimates glomerular filtration rate.",
+      },
+      {
+        name: "Cockcroft-Gault",
+        href: "/calculators/cockcroft-gault",
+        use: "Medication dose adjustment.",
+      },
+      {
+        name: "MDRD",
+        href: "/calculators/mdrd",
+        use: "Legacy GFR equation.",
+      },
+    ],
+  },
 
-  evidence: acrEvidence,
+  relatedCalculators: [
+    "ckd-epi-2021",
+    "cockcroft-gault",
+    "mdrd",
+    "fena",
+    "feurea",
+    "ttkg",
+  ],
 
-  clinical: acrClinical,
+  clinical: {
+    pearl:
+      "Persistent albuminuria is one of the earliest indicators of chronic kidney disease and should always be interpreted together with eGFR.",
+    commonMistakes: [
+      "Diagnosing CKD from a single abnormal ACR result.",
+      "Ignoring transient albuminuria caused by fever, exercise, or urinary tract infection.",
+      "Using ACR alone without assessing kidney function (eGFR).",
+    ],
+  },
 
   inputs: [
     {

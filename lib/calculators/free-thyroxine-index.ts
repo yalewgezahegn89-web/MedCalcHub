@@ -98,51 +98,14 @@ export const freeThyroxineIndexCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use total T4 and T3 resin uptake (or thyroid hormone-binding ratio, THBR) measured on the same sample.",
-      "The FTI corrects total T4 for changes in thyroid hormone-binding proteins (e.g., pregnancy, estrogens, oral contraceptives, illness, and some drugs).",
-      "Interpret the FTI with TSH, clinical status, and pregnancy context.",
-    ],
-    warnings: [
-      "The reference interval (1.0–4.5) is assay- and laboratory-specific; always use the performing laboratory's range.",
-      "Direct free T4 assays have largely replaced FTI in most modern laboratories; FTI remains useful where free T4 is not available or binding-protein artifacts are suspected.",
-      "Pregnancy changes binding proteins markedly; use trimester-specific free T4 assays or thyroglobulin-based assessment when available.",
-    ],
-    followUp: [
-      "If the FTI is abnormal, confirm thyroid status with TSH and repeat testing; consider direct free T4, free T3, and thyroid antibody testing as clinically indicated.",
-      "Recheck after adjusting thyroid hormone replacement or when interfering conditions (illness, medication) resolve.",
-    ],
-  },
+
 
   clinicalNotes:
     "The free thyroxine index (FTI = total T4 × T3 uptake) estimates the free (active) T4 fraction when direct assays are unavailable. It is a well-established, long-standing endocrine laboratory index that corrects for variations in thyroid hormone-binding proteins.",
 
-  evidence: {
-    source: "Established laboratory index (peer-reviewed)",
-    reference:
-      "Mayo Clinic Laboratories. Free Thyroxine Index (FTI), Serum. Test definition, www.mayocliniclabs.com.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Mayo Clinic Laboratories. Free Thyroxine Index (FTI), Serum.",
-      "Surks MI, et al. American Thyroid Association guidelines for use of laboratory tests in thyroid disorders. JAMA. 1990;263(11):1529-1532.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How is FTI different from free T4?",
-      answer:
-        "Free T4 is a direct (or calculated) measure of unbound T4. FTI is an indirect index derived by multiplying total T4 by the T3 resin uptake, used when direct free T4 measurement is not available or binding-protein effects are confounding.",
-    },
-    {
-      question: "What causes the FTI to be falsely abnormal?",
-      answer:
-        "Abnormalities in thyroid hormone-binding proteins (pregnancy, estrogens, androgens, liver disease, nephrotic syndrome) and drugs (salicylates, phenytoin, heparin) can alter total T4 and T3 uptake, changing the FTI even when free hormone is normal.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

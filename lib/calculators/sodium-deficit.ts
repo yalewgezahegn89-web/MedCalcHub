@@ -47,18 +47,14 @@ export const sodiumDeficitCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["Total body water (TBW) is estimated as 0.6 × body weight in men and 0.5 × body weight in women; this calculator uses 0.6 × weight as the default.","This estimate represents the TOTAL sodium deficit; do not attempt to correct the full deficit rapidly.","Limit sodium correction to 8–10 mmol/L in the first 24 hours and 18 mmol/L in 48 hours to reduce the risk of osmotic demyelination syndrome (ODS)."],
-    warnings: ["Rapid correction of hyponatremia can cause osmotic demyelination syndrome (ODS), a devastating neurological complication.","The calculated deficit does not account for ongoing losses or ongoing free water intake.","In severe symptomatic hyponatremia, use hypertonic saline and follow institutional protocols rather than relying solely on this formula."],
-    followUp: ["Check serum sodium every 2–4 hours during active correction to ensure safe rates.","If sodium correction is too rapid, consider D5W infusion or desmopressin to slow or reverse the correction.","After achieving the target, identify and treat the underlying cause of hyponatremia."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Nephrology / Internal Medicine","reference":"Adrogue HJ, Madias NE. Hyponatremia. N Engl J Med. 2000;342:1581–1589.","reviewedBy":"MedCalcHub Clinical Team","version":"1.0","updatedAt":"2026-08","references":["Adrogue HJ, Madias NE. N Engl J Med. 2000;342:1581–1589.","Sterns RH. Disorders of plasma sodium. N Engl J Med. 2015;372:55–65."]},
 
-  faq: [{"question":"How is the sodium deficit calculated?","answer":"The sodium deficit is calculated as: TBW × (Target Na − Current Na), where TBW is estimated as 0.6 × body weight (men) or 0.5 × body weight (women). This gives the total millimoles of sodium needed to reach the target."},{"question":"How fast should I correct sodium?","answer":"For chronic hyponatremia, limit correction to 8–10 mmol/L in 24 hours and 18 mmol/L in 48 hours to avoid osmotic demyelination syndrome. For acute, severely symptomatic hyponatremia, a more rapid correction may be warranted using hypertonic saline."},{"question":"What if I overshoot the target?","answer":"If sodium is corrected too rapidly, immediately slow or stop sodium replacement. D5W infusion and/or desmopressin (DDAVP) can be used to bring the sodium back down to a safe range."}],
+
+
 
   comparison: {"title":"Which Sodium Disorder Calculator Should I Use?","calculators":[{"name":"Sodium Deficit","href":"/calculators/sodium-deficit","bestFor":"Planning hyponatremia correction in chronic hyponatremia.","limitation":"Does not account for ongoing losses or intake."},{"name":"Free Water Deficit","href":"/calculators/free-water-deficit","bestFor":"Estimating water replacement in hypernatremia.","limitation":"Addresses hypernatremia, not hyponatremia."},{"name":"Corrected Sodium","href":"/calculators/corrected-sodium","bestFor":"Assessing true sodium in hyperglycemia.","limitation":"Does not estimate the sodium deficit."}]},
 

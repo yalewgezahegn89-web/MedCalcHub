@@ -2,51 +2,32 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import { comparisonRegistry } from "@/lib/calculators/comparisons";
 import {
   getComparisonGroupBySlug,
   getComparisonQuery,
 } from "@/lib/comparison";
-import type {
-  ComparisonMetadata,
-  ComparisonItem,
-} from "@/lib/calculators/calculator.types";
+import type { ComparisonMetadata } from "@/lib/calculators/calculator.types";
 
 type Props = {
   slug: string;
-  comparison?: ComparisonMetadata | ComparisonItem[];
+  comparison?: ComparisonMetadata;
 };
 
-function resolveItems(
-  comparison: ComparisonMetadata | ComparisonItem[] | undefined,
-): ComparisonItem[] {
-  if (!comparison) return [];
-  if (Array.isArray(comparison)) return comparison;
-  return comparison.calculators ?? [];
+function resolveItems(comparison: ComparisonMetadata | undefined) {
+  return comparison?.calculators ?? [];
 }
 
 function resolveTitle(
-  comparison: ComparisonMetadata | ComparisonItem[] | undefined,
+  comparison: ComparisonMetadata | undefined,
 ): string {
-  if (
-    comparison &&
-    !Array.isArray(comparison) &&
-    comparison.title
-  ) {
-    return comparison.title;
-  }
-  return "Related Clinical Calculators";
+  return comparison?.title ?? "Related Clinical Calculators";
 }
 
 export function CalculatorComparison({
   slug,
   comparison,
 }: Props) {
-  const items = resolveItems(comparison);
-  const registryItems = comparisonRegistry[slug] ?? [];
-
-  const comparisons =
-    items.length > 0 ? items : registryItems;
+  const comparisons = resolveItems(comparison);
 
   if (comparisons.length === 0) {
     return null;

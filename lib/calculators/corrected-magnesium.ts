@@ -77,69 +77,14 @@ export const correctedMagnesiumCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use this correction when serum albumin is low (e.g. critical illness, liver disease, nephrotic syndrome, malnutrition) and the measured total magnesium appears falsely low.",
-      "The corrected magnesium is an estimate; direct ionized magnesium measurement is the gold standard when available.",
-      "The correction assumes a normal albumin of 40 g/L (4.0 g/dL). Results become less reliable when albumin is extremely low (<20 g/L).",
-    ],
-    warnings: [
-      "This correction is not validated in neonates or pediatric populations.",
-      "Concurrent acid-base disturbances, hyperphosphatemia, and assay variability can reduce correction accuracy.",
-      "Serum magnesium does not reflect intracellular levels; a normal serum level does not exclude total body magnesium depletion.",
-      "The correction assumes a linear relationship between albumin and magnesium binding, which may not hold at extreme albumin values.",
-    ],
-    followUp: [
-      "If corrected magnesium is low, evaluate for causes of hypomagnesemia (GI losses, renal wasting, medications, malnutrition).",
-      "If corrected magnesium is high, evaluate for causes of hypermagnesemia (renal failure, excessive supplementation, magnesium-containing antacids).",
-      "Consider measuring ionized magnesium directly when clinical suspicion is high and ionized testing is available.",
-    ],
-  },
+
 
   clinicalNotes:
     "Approximately 25–30% of serum magnesium binds to albumin. When albumin falls, measured total magnesium decreases proportionally even though ionized (biologically active) magnesium may remain normal. The Kroll-Elin correction normalizes the measured value to a reference albumin of 40 g/L. This is analogous to the well-established corrected calcium formula but uses a different coefficient reflecting magnesium's lower protein-binding fraction.",
 
-  evidence: {
-    source: "Clinical Chemistry",
-    reference:
-      "Kroll MH, Elin RJ. Relationships between magnesium and protein concentrations in serum. Clin Chem. 1985;31(2):326-327.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Kroll MH, Elin RJ. Relationships between magnesium and protein concentrations in serum. Clin Chem. 1985;31(2):326-327.",
-      "Huijgen HJ, et al. The fraction of free magnesium in serum. Clin Chem Lab Med. 2000;38(12):1229-1233.",
-      "Costello RB, et al. Perspective: The case for an evidence-based reference interval for serum magnesium. Adv Nutr. 2016;7(6):977-993.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why should I correct magnesium for albumin?",
-      answer:
-        "About 25–30% of serum magnesium is bound to albumin. When albumin is low (hypoalbuminemia), measured total magnesium appears falsely low even though ionized magnesium may be normal. The correction estimates what total magnesium would be at a normal albumin of 40 g/L.",
-    },
-    {
-      question: "What does a corrected magnesium below normal mean?",
-      answer:
-        "A corrected magnesium below 0.75 mmol/L suggests true hypomagnesemia. Common causes include gastrointestinal losses (vomiting, diarrhea), renal wasting (diuretics), malnutrition, alcohol use disorder, and critical illness. Hypomagnesemia can cause cardiac arrhythmias, seizures, and refractory hypokalemia.",
-    },
-    {
-      question: "Is ionized magnesium better than corrected magnesium?",
-      answer:
-        "Yes. Ionized (free) magnesium directly measures the biologically active fraction and is not affected by albumin. However, ionized magnesium assays require specialized analyzers that are not available in all clinical settings. The corrected magnesium is a practical alternative.",
-    },
-    {
-      question: "How does this differ from corrected calcium?",
-      answer:
-        "Both correct for albumin-binding effects, but they use different coefficients. Calcium uses 0.8 (g/dL units) because ~40–50% of calcium binds to albumin. Magnesium uses 0.005 (g/L units) because only ~25–30% binds to albumin. They are distinct analytes with distinct clinical implications.",
-    },
-    {
-      question: "When should I NOT use this correction?",
-      answer:
-        "Avoid using this correction in neonates (different binding dynamics), when ionized magnesium testing is available and reliable, or when acid-base disturbances or hyperphosphatemia are present (these alter magnesium binding independently of albumin).",
-    },
-  ],
+
+
 
   comparison: {
     title: "Albumin-Correction Calculators",

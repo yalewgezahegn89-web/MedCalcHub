@@ -34,9 +34,7 @@ export const gestationalAgeCalculator: CalculatorDefinition = {
     "Obstetrics references",
   ],
 
-  warnings: [
-    "Clinical dating should include ultrasound when available.",
-  ],
+
 
   keywords: ["Gestational Age", "Pregnancy", "Obstetrics"],
 

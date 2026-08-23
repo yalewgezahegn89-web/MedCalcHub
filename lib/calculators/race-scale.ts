@@ -89,50 +89,13 @@ export const raceScaleCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score the patient in the prehospital setting using the worst finding in each item.",
-      "A score ≥ 5 should prompt consideration of direct transport to an endovascular-capable stroke center.",
-      "Record the score alongside the time of symptom onset, which is critical for treatment decisions.",
-    ],
-    warnings: [
-      "RACE is a screening tool; a low score does not exclude all large vessel occlusions or disabling strokes.",
-      "The scale was validated in the prehospital setting — use it consistently for field triage decisions.",
-      "Do not delay transport or bypass protocols based on the score alone.",
-    ],
-    followUp: [
-      "Activate the stroke team and endovascular pathway for RACE ≥ 5.",
-      "Reassess in the emergency department and combine with NIHSS and neuroimaging.",
-    ],
-  },
+
 
   clinicalNotes:
     "The RACE scale was developed and validated by Pérez de la Ossa and colleagues (Stroke 2014) specifically for prehospital identification of large vessel occlusion (LVO) in acute ischemic stroke. It scores facial palsy, arm and leg motor function, gaze deviation, and the presence of aphasia or neglect/agnosia, giving a total of 0–9. A cut-off of 5 yielded a sensitivity of 0.85 and specificity of 0.68 for LVO, enabling earlier activation of endovascular stroke pathways.",
-  evidence: {
-    source: "Prehospital validation study (Stroke 2014)",
-    reference:
-      "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
-      "Carrera D, Gorchs M, Querol M, et al. Revalidation of the RACE scale after its regional implementation in Catalonia: a triage tool for large vessel occlusion. J Neurointerv Surg. 2019;11(8):751-756.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a RACE score of 5 or more mean?",
-      answer:
-        "A score ≥ 5 suggests a large vessel occlusion and supports prehospital routing to an endovascular-capable stroke center for potential thrombectomy.",
-    },
-    {
-      question: "Can the RACE scale miss a stroke?",
-      answer:
-        "Yes. RACE is a screening tool with a sensitivity of 0.85 for LVO; posterior circulation strokes and smaller cortical strokes may score low.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Acute stroke screening scales",

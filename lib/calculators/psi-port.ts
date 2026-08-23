@@ -47,18 +47,14 @@ export const psiPortCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "PSI class I–II (score ≤70): low mortality (~0.1–0.6%), consider outpatient management. Class III (71–90): low-intermediate risk (~0.9–2.8%), consider brief observation or inpatient. Class IV (91–130): moderate risk (~8–9%), admit. Class V (>130): high risk (~27–31%), admit and consider ICU. Only the pH, BUN, sodium, glucose, hematocrit and PaO2 inputs can be left blank; all others are required.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

@@ -99,51 +99,14 @@ export const fepCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Measure urine and serum phosphate with simultaneous urine and serum creatinine.",
-      "In hypophosphatemia, FEP > 5% indicates inappropriate renal phosphate wasting (e.g., FGF23 excess, Fanconi syndrome); FEP < 5% favors redistribution or gastrointestinal loss.",
-      "Normalize the FEP interpretation to the prevailing serum phosphate — it is most discriminative when the patient is hypophosphatemic.",
-    ],
-    warnings: [
-      "High dietary phosphate, vitamin D therapy, and PTH/FGF23 status all change phosphate excretion and may affect the result.",
-      "The 5% threshold is a clinical convention from the literature, not a formally standardized cutoff.",
-      "FEP is not useful when serum phosphate is elevated (e.g., CKD), where FEP naturally rises.",
-    ],
-    followUp: [
-      "If FEP > 5% with hypophosphatemia, evaluate PTH, FGF23, urine glucose and amino acids (Fanconi screen), and drug exposure.",
-      "Repeat after correcting phosphate repletion or treating the underlying cause.",
-    ],
-  },
+
 
   clinicalNotes:
     "FEP estimates proximal tubular phosphate handling. It is most valuable in the evaluation of hypophosphatemia to separate renal phosphate wasting from redistribution or gastrointestinal losses.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Broadus AE, et al. Phosphate homeostasis and evaluation of hypophosphatemia. J Clin Invest. 1983;72(1):119-126.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Broadus AE, et al. J Clin Invest. 1983;72(1):119-126.",
-      "Farrow EG, et al. Tumor-induced osteomalacia: the tumor takes the calcium, phosphate, and other nutrients. J Am Soc Nephrol. 2010;21(3):395-398.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When is FEP most useful?",
-      answer:
-        "In a hypophosphatemic patient, FEP helps distinguish renal phosphate wasting (FEP > 5%) from causes such as redistribution into cells or gastrointestinal losses.",
-    },
-    {
-      question: "Why is FEP unreliable in CKD?",
-      answer:
-        "As GFR falls, fractional phosphate excretion rises physiologically due to FGF23/PTH-driven phosphaturia, so a high FEP is expected and not diagnostic.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

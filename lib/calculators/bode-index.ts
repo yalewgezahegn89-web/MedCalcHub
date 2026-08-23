@@ -59,71 +59,14 @@ export const bodeIndexCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "BODE Index predicts 4-year mortality in COPD: score 0–2 ≈10%, 3–4 ≈25%, 5–6 ≈50%, 7–10 ≈80%.",
-      "The BODE Index is superior to FEV1 alone for predicting mortality and guiding treatment decisions.",
-      "Consider lung transplant referral when BODE score ≥7.",
-      "The BODE Index should be reassessed periodically to track disease progression.",
-    ],
-    warnings: [
-      "BODE Index was validated in stable COPD patients. Acute exacerbations may temporarily worsen components.",
-      "The 6-minute walk distance requires proper instruction and supervision; results may be affected by patient effort, motivation, and musculoskeletal limitations.",
-      "BMI cutoff may vary in different populations (e.g., elderly,不同 ethnic groups).",
-      "BODE Index does not account for comorbidities beyond those captured by the four components.",
-    ],
-    followUp: [
-      "Score 0–2 (Low risk): Continue current management. Reassess in 6–12 months.",
-      "Score 3–4 (Moderate risk): Optimize pharmacotherapy. Consider pulmonary rehabilitation. Reassess in 3–6 months.",
-      "Score 5–6 (High risk): Urgent pulmonary rehabilitation referral. Consider specialist consultation. Reassess in 3 months.",
-      "Score 7–10 (Very high risk): Consider lung transplant referral. Implement advanced care planning. Aggressive symptom management.",
-    ],
-  },
+
 
   clinicalNotes:
     "The BODE Index was published by Celli et al. in 2004 (NEJM 350:1005-1012) and validated in a large international cohort. It is a validated multidimensional scoring system that outperforms FEV1 alone for predicting mortality in COPD. The BODE Index has been incorporated into international COPD guidelines (GOLD) as a tool for assessing disease severity and guiding treatment decisions, including lung transplant eligibility.",
 
-  evidence: {
-    source: "Pulmonology",
-    reference:
-      "Celli BR, Cote CG, Marin JM, et al. The body-mass index, airflow obstruction, dyspnea, and exercise capacity index in chronic obstructive pulmonary disease. N Engl J Med. 2004;350(10):1005-1012.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Celli BR, Cote CG, Marin JM, et al. N Engl J Med. 2004;350(10):1005-1012.",
-      "Cote CG, Celli BR. BODE Index: A new tool for the assessment of COPD prognosis. Respir Care. 2006;51(8):889-894.",
-      "GOLD Report 2024. Global Strategy for the Diagnosis, Management, and Prevention of Chronic Obstructive Pulmonary Disease.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does the BODE Index measure?",
-      answer:
-        "The BODE Index is a composite score (0–10) that combines four validated predictors of mortality in COPD: Body mass index (B), airflow Obstruction (O, measured by FEV1 % predicted), Dyspnea (D, measured by mMRC scale), and Exercise capacity (E, measured by 6-minute walk distance).",
-    },
-    {
-      question: "What does a high BODE score mean?",
-      answer:
-        "A higher BODE score indicates worse prognosis. Scores 0–2 have ~10% 4-year mortality, while scores 7–10 have ~80% 4-year mortality. Scores ≥7 should prompt consideration of lung transplant referral and advanced care planning.",
-    },
-    {
-      question: "How often should BODE be reassessed?",
-      answer:
-        "BODE should be reassessed at least annually in stable COPD patients, and more frequently (every 3–6 months) in patients with moderate-to-severe disease or during exacerbation recovery.",
-    },
-    {
-      question: "Can BODE Index guide lung transplant decisions?",
-      answer:
-        "Yes. A BODE score ≥7 is associated with very high mortality and is one indicator for lung transplant referral. However, transplant decisions involve multiple factors including comorbidities, functional status, and patient preferences.",
-    },
-    {
-      question: "Is BODE Index validated for all COPD patients?",
-      answer:
-        "BODE was validated in stable COPD patients. It may be less reliable during acute exacerbations, in very elderly patients, or in patients with significant comorbidities affecting exercise capacity.",
-    },
-  ],
+
+
 
   comparison: {
     title: "COPD Severity and Prognosis Tools",
@@ -143,14 +86,6 @@ export const bodeIndexCalculator: CalculatorDefinition = {
           "Initial COPD severity classification based on FEV1 alone.",
         limitation:
           "FEV1 alone underestimates mortality risk compared to BODE Index.",
-      },
-      {
-        name: "mMRC Dyspnea Scale",
-        href: "/calculators/bode-index",
-        bestFor:
-          "Assessing dyspnea severity as one component of BODE.",
-        limitation:
-          "Single dimension; does not capture overall prognosis.",
       },
     ],
   },

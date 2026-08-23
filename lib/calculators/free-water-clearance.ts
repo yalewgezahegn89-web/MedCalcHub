@@ -87,51 +87,14 @@ export const freeWaterClearanceCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use any consistent urine flow unit (mL/min is shown); the clearance shares that unit.",
-      "A positive CH₂O (dilute urine) is seen in diabetes insipidus, primary polydipsia, and after a water load; a negative CH₂O (concentrated urine) is seen in SIADH and volume depletion.",
-      "For tonicity-corrected estimates in dysnatremia, use the electrolyte-free water clearance (EFWC).",
-    ],
-    warnings: [
-      "Urea contributes to urine osmolality but not tonicity, so CH₂O can be misleading in high-urea (osmotic) diuresis — EFWC is preferable there.",
-      "CH₂O is a point estimate; it does not account for intake or non-renal losses.",
-      "Interpretation always requires concurrent plasma and urine osmolality quality and the clinical volume status.",
-    ],
-    followUp: [
-      "In polyuria, pair CH₂O with serum sodium, urine osmolality, and a water-deprivation/desmopressin trial as indicated.",
-      "In dysnatremia, combine with electrolyte-free water clearance to guide fluid therapy.",
-    ],
-  },
+
 
   clinicalNotes:
     "Free water clearance is the classic renal physiology metric of water handling: it is the portion of urine flow that is free of osmotically active solute. It remains useful in the bedside evaluation of polyuria and dysnatremia.",
 
-  evidence: {
-    source: "Original derivation (classic renal physiology)",
-    reference:
-      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
-      "Goldberg M. Hyponatremia. Med Clin North Am. 1981;65(2):251-269.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a positive CH₂O mean?",
-      answer:
-        "A positive CH₂O means the kidney is excreting electrolyte-free water (dilute urine). This is appropriate after water loading and seen in diabetes insipidus and primary polydipsia.",
-    },
-    {
-      question: "When should I prefer EFWC over CH₂O?",
-      answer:
-        "In high-urea (osmotic) diuresis and when predicting the direction of serum sodium change, the electrolyte-free water clearance is more accurate because it excludes urea.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

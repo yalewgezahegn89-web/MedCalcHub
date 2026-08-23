@@ -95,57 +95,14 @@ export const wintersFormulaCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Apply Winter's formula only when a primary metabolic acidosis is confirmed (low HCO3 with low pH).",
-      "If the measured PaCO2 is lower than expected, compensation is appropriate; if higher, a concurrent respiratory acidosis exists; if lower than expected, a concurrent respiratory alkalosis exists.",
-      "Use the equation with the limits (measured PaCO2 between expected + 2 and expected − 2) to allow for respiratory variability.",
-    ],
-    warnings: [
-      "The formula is not valid in metabolic alkalosis or when HCO3 is normal or elevated.",
-      "Compensation is a physiologic response — never assume a co-existing disorder without correlating with pH and clinical context.",
-      "Rapidly changing acid-base status can make the ABG lag behind the chemistry panel.",
-    ],
-    followUp: [
-      "If the measured PaCO2 exceeds the expected range, evaluate for respiratory acidosis (e.g., hypoventilation, neuromuscular disease, sedation).",
-      "If the measured PaCO2 is below the expected range, evaluate for respiratory alkalosis (e.g., pain, hypoxia, sepsis).",
-      "Recheck ABG and electrolytes after treating the underlying metabolic acidosis.",
-    ],
-  },
+
 
   clinicalNotes:
     "Winter's formula is a compensation equation: it predicts the physiologic ventilatory response (approximately 1.5 × HCO3 + 8 ± 2 mmHg), not a target to be achieved.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Albert MS, Dell RB, Winters RW. Quantitative displacement of acid-base equilibrium in metabolic acidosis. Ann Intern Med. 1967;66(2):312-322.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Albert MS, et al. Ann Intern Med. 1967;66(2):312-322.",
-      "Bushinsky DA. Acid-base. In: Brenner & Rector's The Kidney. Elsevier; 2020.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When is Winter's formula used?",
-      answer:
-        "It is used in confirmed primary metabolic acidosis to check whether the respiratory compensation is appropriate, incomplete (suggesting concurrent respiratory acidosis), or excessive (suggesting concurrent respiratory alkalosis).",
-    },
-    {
-      question: "What does an unexpectedly high PaCO2 mean?",
-      answer:
-        "If the measured PaCO2 is more than 2 mmHg above the expected value, compensation is inadequate, and a concurrent respiratory acidosis should be considered — for example, in patients who cannot mount a full ventilatory response.",
-    },
-    {
-      question: "Does the formula apply in metabolic alkalosis?",
-      answer:
-        "No. Winter's formula applies only to primary metabolic acidosis. In metabolic alkalosis the expected compensation follows a different relationship (PaCO2 ≈ 0.7 × HCO3 + 20, capped at ~55 mmHg).",
-    },
-  ],
+
+
 
   comparison: undefined,
 

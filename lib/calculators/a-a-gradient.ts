@@ -31,10 +31,7 @@ export const aaGradientCalculator: CalculatorDefinition = {
     "Respiratory Failure",
   ],
 
-  warnings: [
-    "Assumes sea level (760 mmHg) and respiratory quotient (RQ = 0.8).",
-    "Interpret together with the patient's age and clinical condition.",
-  ],
+
 
   formula:
     "PAO₂ = FiO₂ × (760 − 47) − (PaCO₂ / 0.8); A–a Gradient = PAO₂ − PaO₂",

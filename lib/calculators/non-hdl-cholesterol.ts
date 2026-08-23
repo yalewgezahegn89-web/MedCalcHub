@@ -120,57 +120,14 @@ export const nonHdlCholesterolCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Non-HDL cholesterol is calculated from total cholesterol and HDL, so it is available from the same lipid panel without fasting requirements or additional measurement.",
-      "It captures all atherogenic apolipoprotein B-containing particles, making it valuable when triglycerides are elevated.",
-      "ATP III set non-HDL treatment goals approximately 30 mg/dL higher than corresponding LDL goals.",
-    ],
-    warnings: [
-      "Non-HDL cholesterol is an estimate of atherogenic particle burden, not a direct apolipoprotein B measurement.",
-      "Very low total cholesterol or an implausible HDL value can produce a non-positive result.",
-      "Interpret relative to overall ASCVD risk; population categories are not individual treatment targets.",
-    ],
-    followUp: [
-      "If non-HDL is above target, address triglycerides and LDL in parallel.",
-      "Consider measuring apolipoprotein B when discordance between LDL and non-HDL is clinically significant.",
-      "Repeat on a fasting sample when triglycerides are elevated.",
-    ],
-  },
+
 
   clinicalNotes:
     "Non-HDL cholesterol answers a distinct clinical question from calculated LDL: it reflects the total atherogenic (apolipoprotein B-containing) particle burden, including VLDL and remnant cholesterol.",
 
-  evidence: {
-    source: "National Cholesterol Education Program ATP III",
-    reference:
-      "National Cholesterol Education Program (NCEP) Expert Panel. Executive Summary of the Third Report of the NCEP Adult Treatment Panel III. JAMA. 2001;285(19):2486-2497.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "NCEP ATP III Executive Summary. JAMA. 2001;285:2486-2497.",
-      "Grundy SM, et al. Implications of recent clinical trials for the NCEP ATP III guidelines. Circulation. 2004;110:227-239.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why use non-HDL cholesterol instead of LDL?",
-      answer:
-        "Non-HDL cholesterol includes all apolipoprotein B-containing atherogenic particles (LDL, VLDL, IDL, and remnants). It is a useful secondary target, especially when triglycerides are elevated and calculated LDL is less reliable.",
-    },
-    {
-      question: "Can non-HDL be calculated from a non-fasting sample?",
-      answer:
-        "Total and HDL cholesterol are minimally affected by fasting, so non-HDL cholesterol can be calculated from non-fasting samples, an advantage over calculated LDL.",
-    },
-    {
-      question: "What is the relationship between non-HDL and LDL targets?",
-      answer:
-        "ATP III set non-HDL goals approximately 30 mg/dL above the corresponding LDL goal (e.g., LDL < 100 corresponds to non-HDL < 130).",
-    },
-  ],
+
+
 
   comparison: undefined,
 

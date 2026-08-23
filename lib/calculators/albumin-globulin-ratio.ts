@@ -97,57 +97,14 @@ export const albuminGlobulinRatioCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Always interpret the A/G ratio alongside the absolute albumin and total protein values; a normal ratio can mask concurrent low albumin and low globulin.",
-      "A low ratio (globulin predominance) may reflect reduced albumin (liver disease, nephrotic syndrome, malnutrition) or increased globulins (chronic inflammation, monoclonal gammopathy).",
-      "Confirm the reference interval of the local laboratory, as normal ranges vary with the method used.",
-    ],
-    warnings: [
-      "The ratio is a derived screening tool and cannot distinguish among the causes of hypoalbuminemia or hyperglobulinemia.",
-      "Abnormal total protein with albumin within range suggests a globulin abnormality, not an albumin problem.",
-      "Hemolyzed or improperly processed samples can artifactually alter measured protein fractions.",
-    ],
-    followUp: [
-      "If the ratio is low, check the absolute values: serum protein electrophoresis is indicated when globulins are elevated.",
-      "If the ratio is low from hypoalbuminemia, evaluate liver function, urine protein, and nutritional status.",
-      "Repeat testing if the result is unexpected or inconsistent with the clinical picture.",
-    ],
-  },
+
 
   clinicalNotes:
     "The A/G ratio is a derived screening parameter from the basic metabolic chemistry panel and is most informative when the component values are reported together.",
 
-  evidence: {
-    source: "Standard clinical chemistry reference",
-    reference:
-      "Tietz Textbook of Clinical Chemistry and Molecular Diagnostics (Rifai N, Horvath AR, Wittwer CT, eds). Elsevier; 6th ed. 2018.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Rifai N, et al. Tietz Textbook of Clinical Chemistry. 6th ed. 2018.",
-      "Busher JT. Serum albumin and globulin. In: Walker HK, Hall WD, Hurst JW, eds. Clinical Methods. 3rd ed. Butterworths; 1990.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a low A/G ratio mean?",
-      answer:
-        "A low ratio means globulin predominates relative to albumin. It occurs with reduced albumin (liver disease, nephrotic syndrome, malnutrition, inflammation) or increased globulins (infection, autoimmune disease, multiple myeloma). The absolute values must be reviewed together.",
-    },
-    {
-      question: "Why is the ratio also reported with the component values?",
-      answer:
-        "The ratio alone can be misleading. For example, a patient with both low albumin and low globulin may have a normal ratio despite significant hypoproteinemia. Always interpret the ratio with the absolute values.",
-    },
-    {
-      question: "Is the A/G ratio reliable for screening for myeloma?",
-      answer:
-        "It is a useful trigger for further testing, but serum protein electrophoresis and immunofixation are the diagnostic tests for monoclonal gammopathies.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

@@ -125,50 +125,13 @@ export const huntHessScaleCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Grade the patient before any intervention that could alter the clinical state (sedation, intubation, endovascular treatment).",
-      "Use the grade together with the World Federation of Neurosurgical Societies (WFNS) grade and imaging findings.",
-      "Grades I–III are generally candidates for early aneurysm securing; grades IV–V require stabilization first.",
-    ],
-    warnings: [
-      "Historically quoted mortality figures overestimate current mortality; modern series report better outcomes across all grades with aggressive care.",
-      "In the 1974 modification, the grade may be increased in the presence of serious systemic disease (e.g., hypertension, diabetes, severe atherosclerosis).",
-      "The scale is somewhat subjective and interobserver agreement is imperfect.",
-    ],
-    followUp: [
-      "Confirm the diagnosis with CT and CT angiography (or catheter angiography).",
-      "Re-grade after resuscitation, as the clinical grade can improve or deteriorate.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Hunt and Hess scale was published by William Hunt and Robert Hess in 1968 (Journal of Neurosurgery) to grade the surgical risk in 275 patients with aneurysmal subarachnoid hemorrhage. Grade I denotes no or minimal symptoms; grade II moderate to severe headache with nuchal rigidity and no deficit other than cranial nerve palsy; grade III drowsiness, confusion, or mild focal deficit; grade IV stupor with moderate to severe hemiparesis and possible early decerebrate rigidity; and grade V deep coma with decerebrate rigidity. A 1974 modification added grades 0 and 1a and the rule to add one grade in the presence of serious systemic disease.",
-  evidence: {
-    source: "Original clinical grading system (J Neurosurg 1968)",
-    reference:
-      "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
-      "Hunt WE, Kosnik EJ. Timing and perioperative care in intracranial aneurysm surgery. Clin Neurosurg. 1974;21:79-89.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the difference between Hunt and Hess grades III and IV?",
-      answer:
-        "Grade III patients are drowsy or confused with only a mild focal deficit; grade IV patients are stuporous with moderate to severe hemiparesis and possibly early decerebrate rigidity.",
-    },
-    {
-      question: "Is the Hunt and Hess scale still used?",
-      answer:
-        "Yes, it remains widely used for clinical grading of SAH, frequently alongside the WFNS scale and the modified Fisher scale for clot burden.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Subarachnoid hemorrhage grading",

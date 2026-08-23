@@ -83,51 +83,14 @@ export const metabolicAlkalosisCompensationCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use for patients with confirmed metabolic alkalosis (elevated HCO₃ with alkalemia).",
-      "Expected PaCO₂ = 40 + 0.6 × (HCO₃ − 24); the measured PaCO₂ should be within ~5 mmHg of this value.",
-      "If the measured PaCO₂ is well below expected, consider a concurrent respiratory alkalosis; if far above, consider a concurrent respiratory acidosis.",
-    ],
-    warnings: [
-      "This formula requires HCO₃ > 24 mEq/L; it is not applicable to metabolic acidosis or to patients on ventilatory support with fixed ventilation.",
-      "Compensation is capped — PaCO₂ rarely rises above ~55 mmHg regardless of the bicarbonate, so the formula is less reliable at extreme HCO₃ values.",
-      "Chronic obstructive pulmonary disease or sedating medications can blunt the expected ventilatory response.",
-    ],
-    followUp: [
-      "Investigate the cause of metabolic alkalosis (vomiting, diuretics, hyperaldosteronism, chloride depletion) and correct it.",
-      "Re-evaluate the acid–base status after chloride and potassium repletion.",
-    ],
-  },
+
 
   clinicalNotes:
     "In metabolic alkalosis, hypoventilation is the physiologic compensation and produces a rise in PaCO₂ of roughly 0.6 mmHg per 1 mEq/L rise in bicarbonate. The respiratory response has a ceiling near 55 mmHg.",
 
-  evidence: {
-    source: "Classic acid–base physiology / expert-derived rule",
-    reference:
-      "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
-      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why is the expected PaCO₂ capped?",
-      answer:
-        "The ventilatory response has an upper limit — PaCO₂ rarely exceeds ~55 mmHg in pure metabolic alkalosis even at very high bicarbonates — so the linear rule flattens at the extreme.",
-    },
-    {
-      question: "What does a PaCO₂ below expected suggest?",
-      answer:
-        "It suggests a coexisting respiratory alkalosis (e.g., pain, anxiety, hypoxemia, or over-breathing). A PaCO₂ well above expected suggests a coexisting respiratory acidosis.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

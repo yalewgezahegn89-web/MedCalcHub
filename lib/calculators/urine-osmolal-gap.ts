@@ -99,51 +99,14 @@ export const urineOsmolalGapCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use when the serum osmolar gap is negative or misleading and toxic alcohol or mannitol exposure is suspected.",
-      "The estimated urine osmolality accounts for sodium, potassium, urea, and glucose; the residual gap represents unmeasured osmoles.",
-      "Urea in mg/dL is converted to mmol/L by dividing by 2.8; glucose in mg/dL by dividing by 18.",
-    ],
-    warnings: [
-      "A normal urine osmolal gap does not exclude toxic alcohol ingestion — the serum osmolar gap and measurement of the specific alcohol remain essential.",
-      "The 10 mOsm/kg cutoff is a practical convention, not a formally standardized diagnostic threshold.",
-      "Rapid methanol/ethylene glycol metabolism can lower the gap, so early sampling matters.",
-    ],
-    followUp: [
-      "If the urine osmolal gap is elevated, pursue specific assays for ethylene glycol, methanol, and other osmotically active alcohols.",
-      "Correlate with the serum osmolar gap, anion gap, and urinary crystals (e.g., calcium oxalate in ethylene glycol).",
-    ],
-  },
+
 
   clinicalNotes:
     "The urine osmolal gap detects osmotically active solutes that are not routinely measured. It is a helpful adjunct when toxic alcohol poisoning is suspected and the serum osmolar gap is unreliable or negative.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Kraut JA, Kurtz I. Toxic alcohol ingestions: clinical features, diagnosis, and management. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Kraut JA, Kurtz I. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
-      "Hoffman RS, et al. Osmol and gap: a critical appraisal. Am J Emerg Med. 1993;11(5):543-547.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does the urine osmolal gap measure?",
-      answer:
-        "It compares measured urine osmolality to the osmolality predicted from urine sodium, potassium, urea, and glucose. The difference represents unmeasured osmotically active solutes.",
-    },
-    {
-      question: "When is the urine osmolal gap used?",
-      answer:
-        "Mainly in suspected toxic alcohol or mannitol exposure when the serum osmolar gap is normal or negative, and as part of the metabolic evaluation of unmeasured osmoles.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

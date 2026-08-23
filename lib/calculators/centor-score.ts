@@ -118,52 +118,13 @@ export const centorCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score patients presenting with acute sore throat without features suggesting a viral illness (cough, rhinorrhea, hoarseness, oral ulcers) or complications.",
-      "Scores of 0–1: GAS is unlikely; no testing or antibiotics are needed.",
-      "Scores of 2–3: perform a rapid antigen detection test (RADT) with culture follow-up in children and adolescents; treat with antibiotics only if GAS is confirmed.",
-      "Score 4: GAS probability is high; confirm with RADT/culture and treat only if positive, per current IDSA recommendations.",
-    ],
-    warnings: [
-      "The score is intended for children and adults with pharyngitis, not for patients with clinical features of viral infection, immune compromise, rheumatic fever history, or suspected peritonsillar abscess.",
-      "IDSA guidelines recommend against empiric antibiotic therapy on the basis of clinical findings alone.",
-      "Fever, in the absence of other criteria, does not increase the score.",
-    ],
-    followUp: [
-      "When culture is performed after a negative RADT, contact the patient if the culture grows GAS.",
-      "Advise supportive care and analgesia for all patients.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Centor criteria were described by Centor and colleagues in 1981 for identifying adults with group A streptococcal pharyngitis; the estimated GAS probability rose from ~2.5% with no criteria to ~55.7% with all four. McIsaac and colleagues (1998) modified the score by adding an age adjustment — one additional point for ages 3–14, no adjustment for 15–44, and subtracting one point for ages ≥ 45 — and validated the modified score in a large primary-care cohort, finding GAS positivity of approximately 2.5% at score 0, 5.1% at 1, 11.2% at 2, 27.8% at 3, and 52.8% at 4. The IDSA 2012 guideline uses these scores to guide rapid antigen testing and antibiotic use.",
-  evidence: {
-    source: "Modified Centor criteria (McIsaac 1998) validated in primary care",
-    reference:
-      "McIsaac WJ, White D, Tannenbaum D, Low DE. A clinical score to reduce unnecessary antibiotic use in patients with sore throat. CMAJ. 1998;158(1):75-83.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "McIsaac WJ, White D, Tannenbaum D, Low DE. A clinical score to reduce unnecessary antibiotic use in patients with sore throat. CMAJ. 1998;158(1):75-83.",
-      "Centor RM, Witherspoon JM, Dalton HP, Brody CE, Link K. The diagnosis of strep throat in adults in the emergency room. Med Decis Making. 1981;1(3):239-246.",
-      "Shulman ST, Bisno AL, Clegg HW, et al. Clinical practice guideline for the diagnosis and management of group A streptococcal pharyngitis: 2012 update by the Infectious Diseases Society of America. Clin Infect Dis. 2012;55(10):e86-e102.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the difference between Centor and Modified Centor (McIsaac)?",
-      answer:
-        "The original Centor criteria score only the four clinical features in adults. The Modified Centor (McIsaac) score adds an age adjustment (+1 for ages 3–14, 0 for 15–44, −1 for ages ≥ 45).",
-    },
-    {
-      question: "Should a patient with a score of 4 receive antibiotics without testing?",
-      answer:
-        "Current IDSA guidelines recommend confirming GAS with a rapid antigen test and/or culture and treating only if the test is positive, even at a high clinical score.",
-    },
-  ],
+
+
 
   references: [
     "McIsaac WJ, White D, Tannenbaum D, Low DE. A clinical score to reduce unnecessary antibiotic use in patients with sore throat. CMAJ. 1998;158(1):75-83.",

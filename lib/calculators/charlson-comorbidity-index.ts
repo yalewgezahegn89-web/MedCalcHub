@@ -154,50 +154,13 @@ export const charlsonCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score only conditions that are currently active or documented in the record; use the same source consistently when comparing patients.",
-      "Combine the raw score with the age adjustment to obtain the age-adjusted CCI (ACCI) used for 10-year survival estimation.",
-      "For mild liver disease score 1, moderate or severe liver disease 3 — they are mutually exclusive.",
-      "For diabetes: score 1 for diabetes without end-organ damage and 2 for diabetes with end-organ damage — they are mutually exclusive.",
-    ],
-    warnings: [
-      "The index was derived from medical inpatients in the 1980s and may not capture modern treatments or frailty.",
-      "It predicts mortality in populations, not outcomes for an individual patient — use alongside clinical judgment.",
-      "Missing conditions reduce the score; incomplete documentation can understate comorbidity burden.",
-    ],
-    followUp: [
-      "Consider supplementing the CCI with disease-specific risk scores (e.g., MELD for liver disease) when making individual treatment decisions.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Charlson Comorbidity Index was published by Mary Charlson and colleagues in 1987 as a method of classifying comorbid conditions to predict short-term (one-year) mortality. Nineteen conditions are assigned weights of 1, 2, 3, or 6 based on their adjusted relative risk of death; in the derivation cohort, one-year mortality rose from 12% at score 0 to 26% at 1–2, 52% at 3–4, and 85% at scores ≥ 5. In 1994 the index was age-adjusted by adding one point per decade over age 40, and an exponential model (10-year survival = 0.983^e^(0.9 × score)) was validated, yielding 10-year survivals of approximately 96%, 90%, 77%, 53%, and 21% for scores 1 through 5. The CCI is one of the most widely used comorbidity measures in clinical research.",
-  evidence: {
-    source: "Original derivation cohort (Charlson 1987) and age-adjusted validation (Charlson 1994)",
-    reference:
-      "Charlson ME, Pompei P, Ales KL, MacKenzie CR. A new method of classifying prognostic comorbidity in longitudinal studies: development and validation. J Chronic Dis. 1987;40(5):373-383.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Charlson ME, Pompei P, Ales KL, MacKenzie CR. A new method of classifying prognostic comorbidity in longitudinal studies: development and validation. J Chronic Dis. 1987;40(5):373-383.",
-      "Charlson M, Szatrowski TP, Peterson J, Gold J. Validation of a combined comorbidity index. J Clin Epidemiol. 1994;47(11):1245-1251.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the difference between CCI and age-adjusted CCI (ACCI)?",
-      answer:
-        "The age-adjusted CCI adds one point for each decade over age 40 (1 point for ages 50–59, 2 for 60–69, 3 for 70–79, 4 for ages 80+). It is the version used for ten-year survival estimation.",
-    },
-    {
-      question: "How do I interpret the ten-year survival estimate?",
-      answer:
-        "The estimate (0.983^e^(0.9 × score) × 100%) is a population-level prediction derived from the validation cohort — for example ~53% for a score of 4 and ~21% for a score of 5. It should not be used to predict an individual patient's outcome.",
-    },
-  ],
+
+
 
   references: [
     "Charlson ME, Pompei P, Ales KL, MacKenzie CR. A new method of classifying prognostic comorbidity in longitudinal studies: development and validation. J Chronic Dis. 1987;40(5):373-383.",

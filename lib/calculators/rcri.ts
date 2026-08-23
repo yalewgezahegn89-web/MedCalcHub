@@ -41,18 +41,14 @@ export const rcriCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "RCRI predicts major cardiac events within 30 days of non-cardiac surgery: 0 predictors ~0.4%, 1 predictor ~0.9%, 2 predictors ~7%, ≥3 predictors ~11%. It guides perioperative cardiac risk stratification but should be combined with functional capacity assessment and the surgical procedure risk.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

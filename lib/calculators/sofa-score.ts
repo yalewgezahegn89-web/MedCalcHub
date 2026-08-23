@@ -49,18 +49,14 @@ export const sofaScoreCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "SOFA is used to describe organ dysfunction in sepsis (Sepsis-3). An acute increase of ≥2 points from baseline indicates organ dysfunction consistent with sepsis. Higher scores correlate with higher ICU mortality.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

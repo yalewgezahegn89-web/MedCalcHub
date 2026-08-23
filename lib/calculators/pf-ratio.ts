@@ -31,10 +31,7 @@ export const pfRatioCalculator: CalculatorDefinition = {
     "Hypoxemia",
   ],
 
-  warnings: [
-    "FiO₂ should be entered as a fraction (e.g. room air = 0.21).",
-    "Interpret together with PEEP according to the Berlin ARDS definition.",
-  ],
+
 
   formula:
     "P/F Ratio = PaO₂ ÷ FiO₂",

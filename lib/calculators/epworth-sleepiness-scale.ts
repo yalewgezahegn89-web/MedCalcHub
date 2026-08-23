@@ -117,50 +117,13 @@ export const epworthCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Ask the patient how likely they are to doze off or fall asleep, rather than just feeling tired, in each of the eight situations.",
-      "Interpret the score in the context of the preceding period of the patient's usual life; do not ask about periods when the patient is sleep-deprived for other reasons.",
-      "Scores ≥ 11 warrant evaluation for sleep disorders, particularly obstructive sleep apnea.",
-    ],
-    warnings: [
-      "The ESS measures sleep propensity, not fatigue or insomnia severity — a patient with insomnia may score low.",
-      "The scale is a screening tool; a definitive diagnosis of sleep apnea requires polysomnography or home sleep testing.",
-      "Falling asleep while driving is a safety issue that requires urgent discussion regardless of the ESS score.",
-    ],
-    followUp: [
-      "Refer patients with an elevated ESS for sleep medicine evaluation and testing.",
-      "Counsel patients about driving safety when excessive daytime sleepiness is present.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Epworth Sleepiness Scale was introduced by Murray Johns in 1991 to measure the general level of daytime sleepiness. Patients rate their chance of dozing in eight situations — sitting and reading; watching television; sitting inactive in a public place; riding as a car passenger for an hour without a break; lying down to rest in the afternoon; sitting and talking to someone; sitting quietly after lunch without alcohol; and sitting in a car while stopped in traffic. Each is scored 0 (would never doze) to 3 (high chance of dozing), giving a total of 0–24. A score of 11–14 indicates mild, 15–17 moderate, and 18–24 severe excessive daytime sleepiness. The ESS is widely used in the assessment of obstructive sleep apnea and other sleep disorders.",
-  evidence: {
-    source: "Original validation (Johns 1991)",
-    reference:
-      "Johns MW. A new method for measuring daytime sleepiness: the Epworth sleepiness scale. Sleep. 1991;14(6):540-545.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Johns MW. A new method for measuring daytime sleepiness: the Epworth sleepiness scale. Sleep. 1991;14(6):540-545.",
-      "Johns MW. Daytime sleepiness, snoring, and obstructive sleep apnea. The Epworth Sleepiness Scale. Chest. 1993;103(1):30-36.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a score of 11 or more mean?",
-      answer:
-        "A score of 11–14 indicates mild, 15–17 moderate, and 18–24 severe excessive daytime sleepiness. Scores of 11 or more warrant evaluation for sleep disorders such as obstructive sleep apnea.",
-    },
-    {
-      question: "Is a low ESS score enough to exclude sleep apnea?",
-      answer:
-        "No. The ESS is a screening measure of sleep propensity; some patients with obstructive sleep apnea have normal scores. Corroborating features such as witnessed apnea, gasping, and hypertension should be assessed.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Sleep-disordered breathing screening",

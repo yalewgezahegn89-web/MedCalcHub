@@ -24,9 +24,7 @@ export const ibwCalculator: CalculatorDefinition = {
 
   keywords: ["IBW", "Ideal Body Weight", "Devine", "Height", "Weight"],
 
-  warnings: [
-    "Ideal body weight is an estimate and should be interpreted within the clinical context.",
-  ],
+
 
   inputs: [
     {

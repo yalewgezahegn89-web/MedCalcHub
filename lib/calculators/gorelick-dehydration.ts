@@ -97,50 +97,13 @@ export const gorelickDehydrationCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Evaluate capillary refill, mucous membranes, tears, and overall appearance in a calm, cooperative child.",
-      "The 4-item scale was derived for children with gastroenteritis and is most accurate at the extremes — 0–2 findings argues against, and ≥ 3 findings argues for, significant dehydration.",
-      "Use the result together with objective measures such as post-illness weight change, urine output, and vital signs.",
-    ],
-    warnings: [
-      "None of the individual findings, or the score alone, is perfectly accurate — combine the score with clinical judgment.",
-      "Fever, ambient temperature, and inter-observer variation affect capillary refill and tears.",
-      "Do not delay emergent resuscitation in a shocked or markedly lethargic child to complete the scoring.",
-    ],
-    followUp: [
-      "For ≥ 5% dehydration, plan intravenous or nasogastric rehydration and treat the cause (e.g., rehydration per WHO Plan B/C).",
-      "Weigh the child and re-examine after rehydration to confirm the actual weight-based fluid deficit.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Gorelick dehydration scale (1997) was derived from a cohort of children with acute gastroenteritis to predict dehydration ≥ 5% of body weight using bedside clinical signs. A 4-item model (capillary refill > 2 seconds, dry mucous membranes, absent tears, ill/toxic appearance) predicted ≥ 5% dehydration with a sensitivity of approximately 0.84 and a specificity of approximately 0.86 when 3 or more findings were present. It is a rapid, practical screening tool for rehydration decisions in emergency and outpatient pediatrics.",
-  evidence: {
-    source: "Original derivation/validation study",
-    reference:
-      "Gorelick MH, Shaw KN, Murphy KO. Validity and reliability of clinical signs in the diagnosis of dehydration in children. Pediatrics. 1997;99(5):E6.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Gorelick MH, Shaw KN, Murphy KO. Validity and reliability of clinical signs in the diagnosis of dehydration in children. Pediatrics. 1997;99(5):E6.",
-      "World Health Organization. The Treatment of Diarrhoea: A Manual for Physicians and Other Senior Health Workers. 4th rev. Geneva: WHO; 2005.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How many positive signs mean significant dehydration?",
-      answer:
-        "Three or more of the four signs (prolonged capillary refill, dry mucous membranes, absent tears, ill appearance) predict ≥ 5% dehydration, which usually warrants intravenous rehydration.",
-    },
-    {
-      question: "Can a child with 2 signs still be dehydrated?",
-      answer:
-        "Yes — the scale is a screening tool, not a perfect test. Weigh the child, track urine output, and combine the score with clinical judgment.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Pediatric rehydration decision support",

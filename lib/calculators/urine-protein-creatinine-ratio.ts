@@ -110,51 +110,14 @@ export const upcrCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Collect a spot (preferably first-morning) urine for protein and creatinine; the ratio corrects for urine concentration.",
-      "UPCR in mg/mg approximates grams of protein per day (e.g., 3.5 mg/mg ≈ 3.5 g/day).",
-      "KDIGO recommends quantification of proteinuria for CKD detection and staging; nephrotic range proteinuria is ≥ 3.5 g/day in adults.",
-    ],
-    warnings: [
-      "The ratio is less reliable with gross hematuria, dilute/concentrated extremes, or heavy Bence Jones protein (non-albumin protein).",
-      "UPCR does not distinguish albuminuria from other proteinuria; the urine albumin-to-creatinine ratio (ACR) is preferred for early diabetic kidney disease.",
-      "Pediatric nephrotic range proteinuria uses a different threshold (ratio ≥ 2.0).",
-    ],
-    followUp: [
-      "If UPCR is abnormal, confirm with a repeat measurement and quantify albuminuria (ACR) to guide staging and treatment.",
-      "In established CKD, follow UPCR trends to assess response to ACE inhibitors/ARBs and disease progression.",
-    ],
-  },
+
 
   clinicalNotes:
     "The spot UPCR is a validated estimate of 24-hour urinary protein excretion and is recommended by KDIGO for the detection and monitoring of proteinuria, avoiding the inconvenience of timed collections.",
 
-  evidence: {
-    source: "Guideline + validation studies",
-    reference:
-      "National Kidney Foundation. KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int Suppl. 2013;3(1):1-150.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "KDIGO 2012 CKD Guideline. Kidney Int Suppl. 2013;3(1):1-150.",
-      "Ginsberg JM, et al. Use of single voided urine samples to estimate quantitative proteinuria. N Engl J Med. 1983;309(25):1543-1546.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How does UPCR relate to 24-hour urine protein?",
-      answer:
-        "In most adults, a spot UPCR in mg/mg is approximately equal to grams of protein per day, so 3.5 mg/mg approximates nephrotic range (≥ 3.5 g/day) proteinuria.",
-    },
-    {
-      question: "Should I use UPCR or ACR?",
-      answer:
-        "ACR (albumin) is preferred for early diabetic kidney disease and KDIGO staging. UPCR (total protein) is used for general proteinuria quantification, including nephrotic syndrome.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

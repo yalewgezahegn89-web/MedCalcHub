@@ -43,18 +43,14 @@ export const ttkgCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["TTKG is used to assess the renal response to potassium handling, particularly in the evaluation of hyperkalemia.","A TTKG > 10 in the setting of hyperkalemia suggests intact aldosterone-mediated potassium secretion.","A TTKG < 8 in hyperkalemia suggests impaired distal potassium secretion (e.g. hypoaldosteronism, AKI)."],
-    warnings: ["Interpretation may be affected by diuretics and other renal conditions.","Some experts have questioned the physiological validity of TTKG; use in conjunction with clinical assessment."],
-    followUp: ["If TTKG suggests impaired potassium secretion, evaluate aldosterone and renin levels.","Consider renal biopsy if intrinsic tubular disease is suspected."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Nephrology Literature","reference":"Kamel KS, et al. Transtubular potassium gradient in the assessment of hyperkalemia. J Am Soc Nephrol. 2001;12:1839-1844.","reviewedBy":"MedCalcHub Clinical Team","version":"2001","updatedAt":"2026-07","references":["Clinical electrolyte guidelines","Nephrology references"]},
 
-  faq: [{"question":"What does a low TTKG mean in hyperkalemia?","answer":"A low TTKG (< 8) in the setting of hyperkalemia suggests impaired aldosterone-mediated potassium secretion, possibly due to hypoaldosteronism or distal tubular dysfunction."},{"question":"Is TTKG still used clinically?","answer":"TTKG remains a useful bedside tool but some experts have questioned its physiological basis. It should be used alongside other clinical data."}],
+
+
 
   comparison: {"title":"Which Potassium Assessment Should I Use?","calculators":[{"name":"TTKG","href":"/calculators/ttkg","bestFor":"Assessing renal potassium secretion in hyperkalemia.","limitation":"Physiological validity has been questioned."},{"name":"FENa","href":"/calculators/fena","bestFor":"Assessing sodium handling in AKI.","limitation":"Does not assess potassium."},{"name":"FEUrea","href":"/calculators/feurea","bestFor":"Prerenal vs. intrinsic AKI when on diuretics.","limitation":"Does not assess potassium."}]},
 

@@ -104,51 +104,14 @@ export const metabolicSyndromeAtp3Calculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use fasting glucose, fasting triglycerides, HDL, blood pressure, and measured waist circumference (or body mass index ≥ 30 kg/m² as an alternative for waist).",
-      "Treatment for dyslipidemia, hypertension, or hyperglycemia counts toward the respective criteria (ATP III update).",
-      "Diagnosis requires at least 3 of the 5 criteria; the more criteria present, the higher the cardiometabolic risk.",
-    ],
-    warnings: [
-      "ATP III uses ethnic-specific waist thresholds in some guidelines (e.g., Asian: 90 cm men / 80 cm women); this calculator uses the classic 102/88 cm cutoffs.",
-      "Waist circumference thresholds differ for men and women, and treatment exemptions vary by guideline (IDF vs ATP III).",
-      "Metabolic syndrome is a risk-clustering diagnosis, not a substitute for formal 10-year cardiovascular risk scoring.",
-    ],
-    followUp: [
-      "Patients with metabolic syndrome warrant aggressive lifestyle intervention (weight loss, exercise, diet) and screening for diabetes, hypertension, and dyslipidemia.",
-      "Consider referral for obesity management, diabetes screening, and cardiovascular risk scoring.",
-    ],
-  },
+
 
   clinicalNotes:
     "The updated NCEP ATP III criteria (2005) define metabolic syndrome as the presence of at least three of five components: abdominal obesity (waist ≥ 102 cm men / ≥ 88 cm women, or BMI ≥ 30), triglycerides ≥ 150 mg/dL or drug treatment, HDL < 40 mg/dL men / < 50 mg/dL women or drug treatment, blood pressure ≥ 130/85 mmHg or drug treatment, and fasting glucose ≥ 100 mg/dL or drug treatment.",
 
-  evidence: {
-    source: "Expert consensus panel definition",
-    reference:
-      "Grundy SM, et al. Diagnosis and management of the metabolic syndrome: an American Heart Association/National Heart, Lung, and Blood Institute scientific statement. Circulation. 2005;112(17):2735-2752.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Grundy SM, et al. Circulation. 2005;112(17):2735-2752.",
-      "Alberti KG, et al. Harmonizing the metabolic syndrome: a joint interim statement of the IDF Task Force on Epidemiology and Prevention; NHLBI; AHA; WHF; IAS; IASO. Circulation. 2009;120(16):1640-1645.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How is metabolic syndrome diagnosed?",
-      answer:
-        "Any 3 of the 5 ATP III criteria (waist, triglycerides, HDL, blood pressure, glucose), with patients on drug treatment for any criterion counted as meeting that criterion.",
-    },
-    {
-      question: "What waist thresholds should I use?",
-      answer:
-        "The classic ATP III cutoffs are 102 cm (men) and 88 cm (women), or BMI ≥ 30 kg/m². Some population-specific guidelines use lower cutoffs (e.g., 90/80 cm for Asian populations).",
-    },
-  ],
+
+
 
   comparison: undefined,
 

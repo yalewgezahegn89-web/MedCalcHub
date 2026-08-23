@@ -41,18 +41,14 @@ export const hasBledCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "HAS-BLED estimates 1-year major bleeding risk on anticoagulation: 0–1 points (low risk, ~1%), 2 points (moderate risk, ~2%), ≥3 points (high risk, ~4% per year). A high score should prompt review and correction of modifiable risk factors, not the automatic withholding of anticoagulation, particularly in AF where the net clinical benefit may still favor treatment.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

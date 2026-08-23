@@ -155,50 +155,13 @@ export const gestationalWeightGainCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use the pre-pregnancy BMI (ideally measured before or in very early pregnancy) to select the recommended range.",
-      "Track total weight gain and the 2nd/3rd-trimester weekly rate at each prenatal visit.",
-      "Counsel on diet and physical activity to stay within the IOM range; weight gain outside the range is associated with adverse maternal and neonatal outcomes.",
-    ],
-    warnings: [
-      "IOM ranges apply to singleton pregnancies in the general population; twin pregnancies and special populations have different targets.",
-      "A single early-pregnancy weight measurement is preferred over a recalled value.",
-      "Rapid excessive gain and inadequate gain both warrant evaluation.",
-    ],
-    followUp: [
-      "If gain exceeds or lags the recommended range, address nutrition, physical activity, and underlying causes; consider nutrition consultation.",
-      "For obese women, weight maintenance (0–11 lb) may be reasonable in some settings — discuss with the obstetric provider.",
-    ],
-  },
+
 
   clinicalNotes:
     "The IOM/NRC 2009 guidelines (weight gain during pregnancy) recommend total weight gain by pre-pregnancy BMI: underweight 28–40 lb, normal weight 25–35 lb, overweight 15–25 lb, and obese 11–20 lb, with 2nd/3rd-trimester rates of 1.0–1.3, 0.8–1.0, 0.5–0.7, and 0.4–0.6 lb/week respectively. The calculator returns the midpoint of the recommended total range for the entered BMI.",
-  evidence: {
-    source: "National guideline (IOM/NRC 2009)",
-    reference:
-      "Institute of Medicine (IOM) and National Research Council (NRC). Weight Gain During Pregnancy: Reexamining the Guidelines. Washington, DC: The National Academies Press; 2009.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Institute of Medicine and National Research Council. Weight Gain During Pregnancy: Reexamining the Guidelines. National Academies Press; 2009.",
-      "ACOG Committee Opinion No. 548: Weight gain during pregnancy. Obstet Gynecol. 2013;121(1):210-212.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What BMI do I use?",
-      answer:
-        "The pre-pregnancy BMI (weight and height measured before conception or at the first prenatal visit) determines the recommended weight-gain range.",
-    },
-    {
-      question: "Do these ranges apply to twin pregnancy?",
-      answer:
-        "No. IOM 2009 also provides separate recommendations for twin gestations; this calculator applies to singleton pregnancies.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

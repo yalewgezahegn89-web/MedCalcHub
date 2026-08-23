@@ -46,9 +46,7 @@ export const basalMetabolicRateCalculator: CalculatorDefinition = {
     "Academy of Nutrition and Dietetics",
   ],
 
-  warnings: [
-    "BMR is an estimate and should be interpreted within the clinical context.",
-  ],
+
 
   keywords: [
     "Basal Metabolic Rate",

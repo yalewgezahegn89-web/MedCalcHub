@@ -41,18 +41,14 @@ export const wellsPeCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "Two-tier interpretation (most commonly used): ≤4 points = PE unlikely; >4 points = PE likely. In PE-unlikely patients a negative high-sensitivity D-dimer safely excludes PE. Three-tier interpretation: 0–1 low, 2–6 moderate, >6 high probability.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

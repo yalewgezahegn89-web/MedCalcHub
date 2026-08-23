@@ -41,18 +41,14 @@ export const timiCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "TIMI UA/NSTEMI score stratifies 14-day risk of the composite of all-cause mortality, new or recurrent MI, or severe recurrent ischemia requiring urgent revascularization. 0–1: low risk (~4.7%); 2–4: intermediate risk (~8.3–19.9%); 5–7: high risk (~26.2–40.9%).",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

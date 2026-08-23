@@ -130,51 +130,13 @@ export const phq9Calculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Ask the patient to rate each symptom over the past two weeks using the four frequency options.",
-      "A score ≥ 10 identifies likely major depression and is the threshold at which treatment should be considered.",
-      "Always ask about item 9 (thoughts of being better off dead or of hurting yourself) regardless of the total score.",
-      "Use the PHQ-9 serially to monitor response to treatment — a 5-point drop is the standard minimal clinically important difference.",
-    ],
-    warnings: [
-      "The PHQ-9 is a screening and severity tool, not a diagnostic instrument — confirm with clinical assessment.",
-      "If item 9 is endorsed at any level, perform an immediate suicide risk assessment and arrange urgent management.",
-      "Rapid onset, psychosis, and bipolar features should prompt specialty referral.",
-    ],
-    followUp: [
-      "Re-score at follow-up after 4–8 weeks of treatment to evaluate response.",
-      "Escalate persistent scores ≥ 15 or any endorsement of self-harm ideation to specialty mental health care.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Patient Health Questionnaire-9 is the 9-item depression module of the PRIME-MD diagnostic instrument. Each item corresponds to one of the nine DSM-5 criteria for major depressive disorder and is scored 0 (not at all) to 3 (nearly every day) for the previous two weeks, giving a total of 0–27. A cut-point of 10 maximizes combined sensitivity (~88%) and specificity (~88%) for major depressive disorder. Severity bands are 0–4 (minimal), 5–9 (mild), 10–14 (moderate), 15–19 (moderately severe), and 20–27 (severe). Item 9 explicitly probes suicidal ideation and, when endorsed, requires urgent evaluation regardless of the total score.",
-  evidence: {
-    source: "Original validation cohort (Kroenke 2001)",
-    reference:
-      "Kroenke K, Spitzer RL, Williams JB. The PHQ-9: validity of a brief depression severity measure. J Gen Intern Med. 2001;16(9):606-613.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Kroenke K, Spitzer RL, Williams JB. The PHQ-9: validity of a brief depression severity measure. J Gen Intern Med. 2001;16(9):606-613.",
-      "Spitzer RL, Kroenke K, Williams JB. Validation and utility of a self-report version of PRIME-MD: the PHQ primary care study. JAMA. 1999;282(18):1737-1744.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What PHQ-9 score suggests major depression?",
-      answer:
-        "A score of 10 or more has approximately 88% sensitivity and 88% specificity for major depressive disorder and is the recommended threshold for initiating treatment.",
-    },
-    {
-      question: "What should I do if item 9 is positive?",
-      answer:
-        "Any endorsement of item 9 (thoughts of being better off dead or of self-harm) requires immediate, careful suicide risk assessment and urgent management, regardless of the total score.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Mental health screening",

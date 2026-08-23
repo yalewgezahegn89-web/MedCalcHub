@@ -47,18 +47,14 @@ export const osmolarGapCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["An osmolar gap > 10 mOsm/kg in the context of a suspected toxic ingestion should raise concern for toxic alcohols (methanol, ethylene glycol, isopropanol) or other ingestions (propylene glycol, ethanol).","Always interpret the osmolar gap alongside the anion gap—both may be elevated in toxic alcohol ingestions.","A normal osmolar gap does not completely exclude toxic ingestion, particularly in delayed presentations where metabolism has occurred."],
-    warnings: ["The measured osmolality must be obtained from the laboratory; do not use the calculated value.","Ethanol elevates osmolality. If ethanol is present, subtract its contribution (Ethanol / 4.6) before interpreting the gap.","DKA, starvation, renal failure, and recent alcohol intoxication can all affect the osmolar gap."],
-    followUp: ["If the osmolar gap is elevated and toxic ingestion is suspected, obtain serum toxic alcohol levels (methanol, ethylene glycol, isopropanol).","Consider fomepizole or ethanol therapy if a toxic alcohol ingestion is confirmed or strongly suspected.","Repeat the osmolar gap after treatment to confirm resolution."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Emergency Medicine / Toxicology","reference":"Brent J, et al. Fomepizole for the treatment of methanol poisoning. N Engl J Med. 2001;344:424–429.","reviewedBy":"MedCalcHub Clinical Team","version":"1.0","updatedAt":"2026-08","references":["Brent J, et al. N Engl J Med. 2001;344:424–429.","Tintinalli's Emergency Medicine, 9th Ed.","UpToDate: Osmolar gap."]},
 
-  faq: [{"question":"What does an elevated osmolar gap mean?","answer":"An elevated osmolar gap (> 10 mOsm/kg) indicates the presence of unmeasured osmotically active substances. In the emergency setting, this may suggest toxic alcohol ingestion (methanol, ethylene glycol), ethanol, or propylene glycol. Other causes include DKA, uremia, and alcohol intoxication."},{"question":"Can the osmolar gap be normal in toxic ingestion?","answer":"Yes. In delayed presentations of toxic alcohol ingestion, the parent alcohol may have been metabolized to its toxic metabolites, normalizing the osmolar gap while toxicity persists. The anion gap may be elevated in these cases."},{"question":"What is the normal osmolar gap?","answer":"A normal osmolar gap is generally considered to be between -10 and +10 mOsm/kg. Values above this range are considered elevated."}],
+
+
 
   comparison: {"title":"Which Toxicology Calculator Should I Use?","calculators":[{"name":"Osmolar Gap","href":"/calculators/osmolar-gap","bestFor":"Detecting unmeasured osmoles in toxic ingestion.","limitation":"Requires a measured osmolality from the lab."},{"name":"Serum Osmolality","href":"/calculators/serum-osmolality","bestFor":"Estimating calculated osmolality.","limitation":"Does not detect unmeasured osmoles."},{"name":"Anion Gap","href":"/calculators/anion-gap","bestFor":"Detecting high anion gap metabolic acidosis.","limitation":"May be normal in early toxic alcohol ingestion."}]},
 

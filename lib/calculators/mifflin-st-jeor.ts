@@ -40,9 +40,7 @@ export const mifflinStJeorCalculator: CalculatorDefinition = {
     "Journal of the American Dietetic Association",
   ],
 
-  warnings: [
-    "This estimate is not a substitute for individualized metabolic assessment.",
-  ],
+
 
   keywords: [
     "Mifflin-St Jeor",

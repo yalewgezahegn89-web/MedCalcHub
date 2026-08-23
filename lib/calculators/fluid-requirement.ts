@@ -42,9 +42,7 @@ export const fluidRequirementCalculator: CalculatorDefinition = {
     "Clinical practice references",
   ],
 
-  warnings: [
-    "Actual fluid needs depend on clinical status, losses, and comorbidities.",
-  ],
+
 
   keywords: [
     "Fluid Requirement",

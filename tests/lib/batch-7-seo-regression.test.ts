@@ -27,7 +27,6 @@ import { SITE_URL } from "../../lib/site-url";
 import { buildCalculatorSEO } from "../../lib/seo/calculator-seo";
 import { buildCalculatorJsonLd } from "../../lib/seo/jsonld";
 import { getClinicalContent } from "../../lib/clinical-content";
-import { calculatorFaqs } from "../../lib/calculators/faqs";
 import { taxonomyToSlug } from "../../lib/seo/taxonomy-content";
 
 const root = join(__dirname, "../..");
@@ -351,21 +350,14 @@ describe("E — FAQ JSON-LD / rendering parity", () => {
     expect(content!.faq!.length).toBeGreaterThan(0);
   });
 
-  it("JSON-LD FAQ priority: clinical content > definition > faqs.ts", () => {
+  it("JSON-LD FAQ is sourced exclusively from clinical content", () => {
     const calc = calculatorRegistry.find(
       (c) => c.slug === "corrected-anion-gap",
     );
     expect(calc).toBeDefined();
 
     const clinicalContent = getClinicalContent("corrected-anion-gap");
-    const definitionFaq = calc!.faq;
-    const fallbackFaq = calculatorFaqs["corrected-anion-gap"];
-
-    const expectedFaq =
-      clinicalContent?.faq ??
-      definitionFaq ??
-      fallbackFaq ??
-      [];
+    const expectedFaq = clinicalContent?.faq ?? [];
 
     const jsonLd = buildCalculatorJsonLd(calc!);
     const graph = jsonLd["@graph"] as Array<{
@@ -385,52 +377,57 @@ describe("E — FAQ JSON-LD / rendering parity", () => {
     }
   });
 
-  it("calculator with only faqs.ts FAQ still resolves correctly", () => {
-    const calc = calculatorRegistry.find(
-      (c) => c.slug === "bmi",
-    );
-    expect(calc).toBeDefined();
+  it("migrated calculators render the same FAQ source on-page and in JSON-LD", () => {
+    const migratedSlugs = ["bmi", "ckd-epi-2021", "cockcroft-gault"];
 
-    const jsonLd = buildCalculatorJsonLd(calc!);
-    const graph = jsonLd["@graph"] as Array<{
-      "@type": string;
-      mainEntity?: Array<{ name: string }>;
-    }>;
-    const faqPage = graph.find(
-      (item) => item["@type"] === "FAQPage",
-    );
-    expect(faqPage).toBeDefined();
-    expect(faqPage!.mainEntity!.length).toBe(
-      calculatorFaqs["bmi"].length,
-    );
+    for (const slug of migratedSlugs) {
+      const content = getClinicalContent(slug);
+      expect(content, `clinical content missing for ${slug}`).toBeDefined();
+      expect(
+        content!.faq?.length,
+        `${slug} must have canonical FAQ in clinical content`,
+      ).toBeGreaterThan(0);
+
+      const calc = calculatorRegistry.find((c) => c.slug === slug);
+      expect(calc).toBeDefined();
+
+      const jsonLd = buildCalculatorJsonLd(calc!);
+      const graph = jsonLd["@graph"] as Array<{
+        "@type": string;
+        mainEntity?: Array<{ name: string; acceptedAnswer: { text: string } }>;
+      }>;
+      const faqPage = graph.find((item) => item["@type"] === "FAQPage");
+
+      expect(faqPage, `JSON-LD FAQPage missing for ${slug}`).toBeDefined();
+      expect(faqPage!.mainEntity!.length).toBe(content!.faq!.length);
+
+      const onPageSource = content!.faq!;
+      for (let i = 0; i < onPageSource.length; i++) {
+        expect(faqPage!.mainEntity![i].name).toBe(onPageSource[i].question);
+        expect(faqPage!.mainEntity![i].acceptedAnswer.text).toBe(
+          onPageSource[i].answer,
+        );
+      }
+
+      // the page renders FAQs exclusively from clinical content
+      // (CalculatorFAQ/faqs.ts fallback removed in P3-B2)
+      expect(readFile("app/calculators/[slug]/page.tsx")).not.toContain(
+        "CalculatorFAQ",
+      );
+    }
   });
 
   it("calculator with no FAQ anywhere omits FAQPage from JSON-LD", () => {
-    const calc = calculatorRegistry.find(
-      (c) => c.slug === "map",
-    );
+    const noFaqSlug = calculatorRegistry.find(
+      (c) => !getClinicalContent(c.slug)?.faq?.length,
+    )!.slug;
+    const calc = calculatorRegistry.find((c) => c.slug === noFaqSlug);
     expect(calc).toBeDefined();
 
-    const clinicalContent = getClinicalContent("map");
-    const hasFaq =
-      clinicalContent?.faq?.length ||
-      calc!.faq?.length ||
-      calculatorFaqs["map"]?.length;
-
     const jsonLd = buildCalculatorJsonLd(calc!);
-    const graph = jsonLd["@graph"] as Array<{
-      "@type": string;
-      mainEntity?: Array<{ name: string }>;
-    }>;
-    const faqPage = graph.find(
-      (item) => item["@type"] === "FAQPage",
-    );
-
-    if (!hasFaq) {
-      expect(faqPage).toBeUndefined();
-    } else {
-      expect(faqPage).toBeDefined();
-    }
+    const graph = jsonLd["@graph"] as Array<{ "@type": string }>;
+    const faqPage = graph.find((item) => item["@type"] === "FAQPage");
+    expect(faqPage).toBeUndefined();
   });
 
   it("FAQ JSON-LD never falls back to wrong source when clinical content has FAQ", () => {

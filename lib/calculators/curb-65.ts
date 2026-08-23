@@ -31,18 +31,14 @@ export const curb65Calculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "CURB-65 stratifies severity in community-acquired pneumonia. Scores of 0–1 are typically managed as outpatients; 2 suggests hospital admission; ≥ 3 suggests severe pneumonia and consideration of ICU admission. Interpret alongside clinical judgement.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

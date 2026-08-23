@@ -100,50 +100,13 @@ export const abcd2ScoreCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score the patient within the first hours after symptom onset using the worst clinical features during the event.",
-      "Classify clinical features as unilateral weakness, speech disturbance without weakness, or other symptoms.",
-      "Duration refers to the total length of the TIA symptoms.",
-    ],
-    warnings: [
-      "ABCD2 is a risk-stratification aid, not a substitute for prompt specialist evaluation and neuroimaging.",
-      "All patients with a suspected TIA need urgent assessment regardless of the score, because even low scores do not exclude stroke.",
-      "The original cohort predates modern rapid imaging pathways; other tools (e.g., imaging-based risk) may be preferred in some centers.",
-    ],
-    followUp: [
-      "Arrange urgent TIA clinic or hospital assessment with carotid imaging and treatment (antiplatelet therapy, statin, blood-pressure control).",
-      "Higher scores warrant more urgent evaluation, typically same-day.",
-    ],
-  },
+
 
   clinicalNotes:
     "The ABCD2 score was derived and validated by Johnston and colleagues (Lancet 2007) from multiple TIA cohorts and is among the most widely used clinical tools for TIA risk stratification. Age 60 years or older adds 1 point; blood pressure ≥ 140/90 mmHg adds 1; unilateral weakness adds 2 and speech disturbance without weakness adds 1; symptoms lasting ≥ 60 minutes add 2, 10–59 minutes add 1, and under 10 minutes add 0; and diabetes adds 1. The 2-day stroke risk ranges from about 1% (score 0–3) to about 8% (score 6–7).",
-  evidence: {
-    source: "Derivation and validation cohort (Lancet 2007)",
-    reference:
-      "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
-      "Rothwell PM, Giles MF, Flossmann E, et al. A simple score (ABCD) to identify individuals at high early risk of stroke after transient ischaemic attack. Lancet. 2005;366(9479):29-36.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a low ABCD2 score mean?",
-      answer:
-        "A score of 0–3 is associated with a 2-day stroke risk of about 1.0%. Patients still need urgent specialist evaluation, but the risk is lower.",
-    },
-    {
-      question: "Does ABCD2 replace imaging?",
-      answer:
-        "No. ABCD2 is an adjunct for triage; diffusion-weighted MRI and carotid imaging provide additional risk information and are part of modern TIA pathways.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Stroke risk prediction",

@@ -117,21 +117,14 @@ export type Classification = {
 
 
 
-export type CalculatorClinicalGuidance = {
-
-  advice?: string[];
-
-  warnings?: string[];
-
-  followUp?: string[];
-
+/**
+ * Rendered clinical-insight channel for a calculator.
+ * Surfaced via ClinicalGuidancePanel on the calculator page.
+ */
+export type CalculatorClinicalInsight = {
   pearl?: string;
-
   commonMistakes?: string[];
-
 };
-
-
 
 export type CalculatorEvidence = {
 
@@ -244,27 +237,11 @@ export interface CalculatorDefinition {
 
 
 
-  tags?: string[];
-
-
-
   difficulty?: string;
 
 
 
   estimatedTime?: string;
-
-
-
-  warnings?: string[];
-
-
-
-  advice?: string[];
-
-
-
-  followUp?: string[];
 
 
 
@@ -288,19 +265,9 @@ export interface CalculatorDefinition {
 
 
 
-  clinicalGuidance?: CalculatorClinicalGuidance;
+  clinical?: CalculatorClinicalInsight;
 
-
-
-  clinical?: CalculatorClinicalGuidance;
-
-
-
-  evidence?: CalculatorEvidence;
-
-  faq?: FAQItem[];
-
-  comparison?: ComparisonMetadata | ComparisonItem[];
+  comparison?: ComparisonMetadata;
 
   references?: string[];
 

@@ -125,50 +125,13 @@ export const nihssCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Administer the scale in a standardized fashion at presentation and serially to track change over time.",
-      "Score the best response obtainable; for the motor items, score each arm and each leg separately.",
-      "Record the first score before any reperfusion treatment when possible, as the score is used to stratify therapy eligibility.",
-    ],
-    warnings: [
-      "A score of 2 or more on item 1a is one of several exclusions for thrombolysis outside of research settings — always follow current national acute stroke guidelines.",
-      "NIHSS has known ceiling and floor effects and does not capture all stroke symptoms (e.g., isolated posterior circulation findings).",
-      "Intubation, sedation, language barriers, and aphasia can confound the verbal items.",
-    ],
-    followUp: [
-      "Repeat the NIHSS at intervals and after any change in neurologic status.",
-      "Escalate any worsening of ≥ 2 points, which indicates neurologic deterioration and warrants urgent re-imaging.",
-    ],
-  },
+
 
   clinicalNotes:
     "The NIH Stroke Scale was developed in 1989 (Brott et al.) as a 15-item standardized neurologic examination for use in acute stroke trials and has become the standard bedside tool for quantifying stroke severity and tracking change over time. Higher scores indicate greater impairment, and the baseline score is a strong predictor of outcome and of eligibility for reperfusion therapies. The motor items (5 and 6) are scored for both arms and both legs, giving a maximum contribution of 16 from the four motor sub-scores.",
-  evidence: {
-    source: "Clinical scoring system validated in acute stroke",
-    reference:
-      "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
-      "Lyden P, Brott T, Tilley B, et al. Improved reliability of the NIH Stroke Scale using video training. Stroke. 1994;25(11):2220-2226.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What NIHSS score indicates a severe stroke?",
-      answer:
-        "Conventionally, scores of 0 are no symptoms, 1–4 are minor, 5–15 moderate, 16–20 moderate–severe, and 21–42 severe stroke.",
-    },
-    {
-      question: "Should the NIHSS be repeated?",
-      answer:
-        "Yes. Serial scoring is recommended because a change of 2 or more points signals clinical deterioration or improvement.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Stroke and neurologic severity scales",

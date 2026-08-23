@@ -69,50 +69,13 @@ export const hadlockEfwCalculator: CalculatorDefinition = {
 
   classification: [],
 
-  clinicalGuidance: {
-    advice: [
-      "Use BPD, HC, AC, and FL measured in centimeters on a high-quality fetal ultrasound.",
-      "EFW is used together with gestational age to detect growth restriction (EFW < 10th percentile) or macrosomia (EFW ≥ 4000–4500 g).",
-      "Compare serial measurements over time; a single EFW is only a snapshot.",
-    ],
-    warnings: [
-      "All EFW formulas carry substantial error (1 SD ≈ 7.5–15%); do not treat a single value as exact.",
-      "Formula accuracy declines at the extremes (growth restriction and macrosomia) and in late gestation.",
-      "Measurements are operator-dependent — poor images give unreliable EFW.",
-    ],
-    followUp: [
-      "For suspected growth restriction or macrosomia, confirm with serial growth scans, Doppler studies, and amniotic fluid assessment.",
-      "Use EFW together with fetal status surveillance (BPP, NST) when abnormal growth is suspected.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Hadlock four-parameter model (1985, Am J Obstet Gynecol 151:333-337) estimates fetal weight from biparietal diameter, head circumference, abdominal circumference, and femur length: log₁₀ EFW = 1.3596 − 0.00386(AC × FL) + 0.0064(HC) + 0.00061(BPD × AC) + 0.0424(AC) + 0.174(FL). The reported error is ±1 SD ≈ 7.5%. This calculator implements the full four-parameter model; all four inputs are required.",
-  evidence: {
-    source: "Published fetal biometry formula",
-    reference:
-      "Hadlock FP, et al. Estimation of fetal weight with the use of head, body, and femur measurements — a prospective study. Am J Obstet Gynecol. 1985;151(3):333-337.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Hadlock FP, et al. Am J Obstet Gynecol. 1985;151(3):333-337.",
-      "ACOG Practice Bulletin No. 227: Fetal growth restriction. Obstet Gynecol. 2021;137(2):e16-e28.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How accurate is the Hadlock formula?",
-      answer:
-        "The 1 SD error is approximately 7.5% (roughly ±250 g near term). This means a computed EFW of 3000 g should be read as approximately 2775–3225 g.",
-    },
-    {
-      question: "Why are all four measurements required?",
-      answer:
-        "This calculator uses the four-parameter Hadlock model (BPD, HC, AC, FL), which has better accuracy than models using fewer measurements. Three-parameter and two-parameter variants exist but are less precise.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

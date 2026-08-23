@@ -32,10 +32,7 @@ export const apriCalculator: CalculatorDefinition = {
     "AST",
   ],
 
-  warnings: [
-    "Interpret together with clinical findings.",
-    "Different AST upper limits of normal (ULN) may affect the result.",
-  ],
+
 
   formula:
     "[(AST / AST ULN) × 100] / Platelet Count",

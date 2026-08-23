@@ -103,50 +103,13 @@ export const hellpSyndromeCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Draw CBC, LDH, AST, and a peripheral smear (or haptoglobin/bilirubin) in any patient with preeclampsia features and epigastric pain, headache, or visual symptoms.",
-      "HELLP syndrome is a severe hypertensive disorder of pregnancy that can progress rapidly; diagnosis requires all three Tennessee criteria.",
-      "Delivery is the definitive treatment; timing depends on gestational age, maternal status, and fetal status.",
-    ],
-    warnings: [
-      "HELLP syndrome can occur without hypertension or proteinuria and is often misdiagnosed (gastritis, hepatitis, thrombotic microangiopathy).",
-      "Complications include eclampsia, hepatic rupture, DIC, renal failure, and maternal death — urgent obstetric and maternal–fetal medicine involvement is warranted.",
-      "Platelet count may fall rapidly; monitor frequently.",
-    ],
-    followUp: [
-      "If complete HELLP is present, arrange urgent delivery and multidisciplinary management (obstetric, anesthesia, hematology, critical care).",
-      "Postpartum monitoring continues because HELLP can worsen or first appear after delivery.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Tennessee (Sibai) criteria define HELLP syndrome as hemolysis (abnormal peripheral smear with schistocytes, low haptoglobin, LDH ≥ 600 U/L, or total bilirubin > 1.2 mg/dL), elevated liver enzymes (AST ≥ 70 U/L), and low platelets (< 100,000/µL). Complete HELLP requires all three; patients with only some features are often labeled partial or atypical HELLP and managed similarly.",
-  evidence: {
-    source: "Diagnostic classification (Tennessee criteria)",
-    reference:
-      "Sibai BM, et al. Maternal morbidity and mortality in 442 pregnancies with hemolysis, elevated liver enzymes, and low platelets (HELLP syndrome). Am J Obstet Gynecol. 1993;169(4):1000-1006.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Sibai BM, et al. Am J Obstet Gynecol. 1993;169(4):1000-1006.",
-      "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the difference between complete and partial HELLP?",
-      answer:
-        "Complete (classic) HELLP requires all three Tennessee criteria (hemolysis, AST ≥ 70, platelets < 100,000). Partial HELLP has one or two features; management is generally similar given the risk of progression.",
-    },
-    {
-      question: "Can HELLP occur without hypertension?",
-      answer:
-        "Yes — up to 15–20% of patients do not have significant hypertension or proteinuria at presentation, which contributes to misdiagnosis.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

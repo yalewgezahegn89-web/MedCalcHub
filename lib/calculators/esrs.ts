@@ -99,50 +99,13 @@ export const esrsCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score patients with a history of ischemic stroke or TIA to guide the intensity of secondary prevention.",
-      "Apply current guideline-based treatment regardless of the score — the score supports treatment intensity decisions.",
-      "In patients with atrial fibrillation, anticoagulation rather than antiplatelet therapy is indicated.",
-    ],
-    warnings: [
-      "The ESRS was derived from the CAPRIE cohort and does not capture all predictors of recurrence.",
-      "Do not use the ESRS to decide on anticoagulation for atrial fibrillation — use stroke risk scores validated for AF (e.g., CHA2DS2-VASc).",
-      "A low score does not remove the need for optimal secondary prevention.",
-    ],
-    followUp: [
-      "Optimize blood pressure, lipids, glucose, and lifestyle in all patients.",
-      "Reassess risk and treatment adherence at follow-up visits.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Essen Stroke Risk Score was developed from the CAPRIE trial cohort of patients with prior ischemic events to predict the risk of recurrent ischemic stroke and to identify patients who might benefit from more intensive antiplatelet or antithrombotic therapy. Points are assigned for age 65–75 (1) and > 75 (2), hypertension, diabetes, prior myocardial infarction, other cardiovascular disease (excluding myocardial infarction and atrial fibrillation), peripheral arterial disease, smoking, and a prior ischemic stroke or TIA. Scores of 3 or more are considered high risk.",
-  evidence: {
-    source: "Derivation cohort (CAPRIE); validation in stroke populations",
-    reference:
-      "Diener HC, Ringleb PA, Savi P. Clopidogrel for the secondary prevention of stroke. Expert Opin Pharmacother. 2005;6(5):755-764.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Diener HC, Ringleb PA, Savi P. Clopidogrel for the secondary prevention of stroke. Expert Opin Pharmacother. 2005;6(5):755-764.",
-      "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How is the ESRS different from ABCD2?",
-      answer:
-        "ABCD2 predicts the 2-day stroke risk after a TIA, while the ESRS predicts long-term recurrent stroke risk in patients who have already had an ischemic stroke or TIA.",
-    },
-    {
-      question: "Does the ESRS replace CHA2DS2-VASc in atrial fibrillation?",
-      answer:
-        "No. In atrial fibrillation, use an AF-specific tool such as CHA2DS2-VASc to guide anticoagulation.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Stroke risk assessment",

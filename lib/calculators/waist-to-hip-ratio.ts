@@ -51,21 +51,7 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: [
-      "WHR is a strong predictor of cardiovascular disease and type 2 diabetes.",
-      "Measure waist at the narrowest point between the rib cage and iliac crest.",
-      "Measure hips at the widest point of the buttocks."
-    ],
-    warnings: [
-      "WHR measurements require standardized technique for consistent results.",
-      "WHR should be interpreted alongside other cardiovascular risk factors."
-    ],
-    followUp: [
-      "If WHR is elevated, assess other cardiovascular risk factors including blood pressure, lipids, and glucose.",
-      "Lifestyle modifications including diet and exercise are primary interventions."
-    ],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
@@ -74,20 +60,7 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
     "MedCalcHub Clinical References",
   ],
 
-  faq: [
-    {
-      "question": "What does Waist-to-Hip Ratio measure?",
-      "answer": "WHR measures the distribution of body fat, specifically central (abdominal) adiposity, which is a strong predictor of cardiovascular risk."
-    },
-    {
-      "question": "What WHR indicates increased risk?",
-      "answer": "For males, WHR ≥ 0.90 indicates increased risk. For females, WHR ≥ 0.85 indicates increased risk."
-    },
-    {
-      "question": "How is WHR measured?",
-      "answer": "Measure waist circumference at the narrowest point between the rib cage and iliac crest. Measure hip circumference at the widest point of the buttocks. Divide waist by hip."
-    }
-  ],
+
 
   comparison: {
     "title": "Body Composition and Risk Assessment",
@@ -102,31 +75,6 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
         "href": "/calculators/bsa",
         "use": "Drug dosing and scaling"
       }
-    ]
-  },
-
-  clinical: {
-    "advice": [
-      "WHR is a strong predictor of cardiovascular disease and type 2 diabetes.",
-      "Measure waist at the narrowest point between the rib cage and iliac crest.",
-      "Measure hips at the widest point of the buttocks."
-    ],
-    "warnings": [
-      "WHR measurements require standardized technique for consistent results.",
-      "WHR should be interpreted alongside other cardiovascular risk factors."
-    ],
-    "followUp": [
-      "If WHR is elevated, assess other cardiovascular risk factors including blood pressure, lipids, and glucose.",
-      "Lifestyle modifications including diet and exercise are primary interventions."
-    ]
-  },
-
-  evidence: {
-    "source": "WHO",
-    "reference": "Waist circumference and waist-hip ratio: report of a WHO expert consultation. WHO, 2008.",
-    "references": [
-      "WHO. Waist circumference and waist-hip ratio: report of a WHO expert consultation. Geneva: World Health Organization, 2008.",
-      "Yusuf S, et al. Obesity and the risk of myocardial infarction in 27 000 participants from 52 countries. Lancet. 2005."
     ]
   },
 

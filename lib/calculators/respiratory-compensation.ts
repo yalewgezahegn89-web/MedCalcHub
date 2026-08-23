@@ -104,51 +104,14 @@ export const respiratoryCompensationCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Enter the measured PaCO₂ and the disorder type; the calculator returns the expected bicarbonate and compares it to the measured value.",
-      "If the measured HCO₃ is within the expected range (about ±2), the metabolic compensation is appropriate and a mixed disorder is unlikely from this axis alone.",
-      "Use the appropriate factor: acute respiratory acidosis +1 per 10 mmHg, chronic respiratory acidosis +4, acute respiratory alkalosis −2, chronic respiratory alkalosis −5.",
-    ],
-    warnings: [
-      "The compensation rules are approximations; values in the first few hours of a change may be lower than the steady-state prediction.",
-      "A discordant bicarbonate suggests a mixed acid–base disorder (e.g., concurrent metabolic acidosis or alkalosis) and warrants a full acid–base analysis (anion gap, delta ratio).",
-      "Chronic respiratory acidosis is commonly defined as > 3–5 days of elevated PaCO₂; clinical history is essential.",
-    ],
-    followUp: [
-      "When the measured bicarbonate deviates from the expected range, calculate the anion gap and delta ratio to characterize any coexisting metabolic disorder.",
-      "Reassess after treatment of the underlying respiratory process.",
-    ],
-  },
+
 
   clinicalNotes:
     "The compensation rules quantify the normal bicarbonate response to chronic alterations in PaCO₂. When the measured bicarbonate deviates beyond the expected range, a mixed acid–base disorder should be suspected.",
 
-  evidence: {
-    source: "Classic acid–base physiology / expert-derived rules",
-    reference:
-      "Merck Manual Professional Version. Respiratory Acidosis and Respiratory Alkalosis. www.merckmanuals.com.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Merck Manual Professional Version. Respiratory Acidosis and Alkalosis.",
-      "Brewer ED. Disorders of acid-base balance. Pediatr Clin North Am. 1990;37(2):429-447.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does 'within ±2' mean for the expected HCO₃?",
-      answer:
-        "It means the measured bicarbonate should fall within roughly 2 mEq/L of the calculated expected value for the patient's PaCO₂ and disorder type. Larger deviations suggest a mixed acid–base disorder.",
-    },
-    {
-      question: "Why are the factors different for acute vs chronic disorders?",
-      answer:
-        "Acute changes rely mainly on cellular buffering, which raises HCO₃ modestly. With time, renal compensation becomes much more effective, so chronic respiratory acidosis and alkalosis produce larger changes in bicarbonate.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

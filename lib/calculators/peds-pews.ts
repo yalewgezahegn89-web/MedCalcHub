@@ -114,50 +114,13 @@ export const pedsPewsCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score each domain using the descriptors and add 1 point if the parent/carer or a staff member has significant concern that the child is deteriorating.",
-      "Use age-appropriate normal heart rate, respiratory rate, and blood pressure references when judging the cardiovascular and respiratory domains.",
-      "Escalation thresholds are a prompt, not a diagnosis — act on the score with senior clinical review.",
-    ],
-    warnings: [
-      "The Brighton PEWS was designed for ward-based early warning; a normal score does not exclude serious illness in a child who looks unwell.",
-      "Interpret tachycardia, bradycardia, and perfusion findings relative to the child's age.",
-      "Different centers use locally adapted PEWS charts — use this calculator with the locally adopted escalation protocol.",
-    ],
-    followUp: [
-      "For an intermediate or high score, re-evaluate at the interval dictated by the escalation protocol and reassess the child's response to interventions.",
-      "Escalate to the rapid response team or intensive care for any score ≥ 5 or for a deteriorating child regardless of the score.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Brighton Pediatric Early Warning Score (Monaghan 2005) combines three domains — behavior, cardiovascular status, and respiratory status — each scored 0–3, with an additional point for persistent concern by the parent or a staff member. It is used on pediatric wards to detect early deterioration so that care can be escalated before critical decompensation. A total of 3–4 prompts increased observation and senior staff review, while a total ≥ 5 (or a score of 3 in any single domain) prompts urgent medical review and consideration of transfer to a higher level of care. PEWS systems have been associated with improved identification of deteriorating children, though specific escalation protocols vary between institutions.",
-  evidence: {
-    source: "Original description (Brighton PEWS)",
-    reference:
-      "Monaghan A. Detecting and managing deterioration in children. Paediatr Nurs. 2005;17(1):32-35.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Monaghan A. Detecting and managing deterioration in children. Paediatr Nurs. 2005;17(1):32-35.",
-      "Lambert V, Matthews A, MacDonell R, Fitzsimons J. Paediatric early warning systems for detecting and responding to clinical deterioration in children: a systematic review. BMJ Open. 2017;7(3):e014497.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When should I escalate with the PEWS?",
-      answer:
-        "A score of 3–4 warrants increased observation frequency and informing senior staff; a score of 5 or higher warrants urgent medical review. A score of 3 in any single domain should also prompt immediate senior involvement.",
-    },
-    {
-      question: "Does a low PEWS mean the child is safe?",
-      answer:
-        "No. PEWS is a monitoring adjunct; a child who appears unwell to an experienced clinician should be escalated regardless of the score.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Pediatric deterioration detection",

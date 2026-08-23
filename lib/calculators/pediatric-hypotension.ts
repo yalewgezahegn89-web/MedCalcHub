@@ -99,50 +99,13 @@ export const pediatricHypotensionCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use the age-specific threshold when assessing a child for compensated or hypotensive shock during resuscitation.",
-      "An SBP below the 5th percentile is a PALS definition of hypotension and indicates the need for rapid volume resuscitation and support.",
-      "In the first few days of life, an alternative criterion is mean arterial pressure less than the gestational age in weeks.",
-    ],
-    warnings: [
-      "These are PALS resuscitation thresholds, not diagnostic criteria for chronic hypertension or hypotension.",
-      "A normal SBP does not exclude compensated shock — use the full clinical picture (capillary refill, pulses, urine output, mental status).",
-      "Age in the 1–10 year formula must be interpreted in completed years.",
-    ],
-    followUp: [
-      "If hypotensive, initiate PALS shock algorithm (high-flow oxygen, IV/IO access, 20 mL/kg boluses, reassess) and investigate the cause.",
-      "Reassess blood pressure frequently during resuscitation.",
-    ],
-  },
+
 
   clinicalNotes:
     "Pediatric Advanced Life Support (PALS) defines hypotension as systolic blood pressure below the 5th percentile for age, commonly summarized as: < 60 mmHg for term newborns to 1 month, < 70 mmHg for infants 1–12 months, < 70 + (2 × age in years) mmHg for children 1–10 years, and < 90 mmHg for children older than 10 years. These thresholds are used to recognize hypotensive (decompensated) shock and trigger immediate intervention, but they are only one component of the PALS systematic assessment of perfusion.",
-  evidence: {
-    source: "Professional society guideline (PALS)",
-    reference:
-      "American Heart Association. Pediatric Advanced Life Support Provider Manual. Dallas, TX: AHA; 2020.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "American Heart Association. Pediatric Advanced Life Support Provider Manual. Dallas, TX: AHA; 2020.",
-      "Kleinman ME, Chameides L, Schexnayder SM, et al. Pediatric advanced life support: 2010 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care. Pediatrics. 2010;126(5):e1361-e1399.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the hypotension threshold for a 4-year-old?",
-      answer:
-        "70 + (2 × 4) = 78 mmHg. A systolic blood pressure below 78 mmHg in a 4-year-old is defined as hypotension by the PALS criteria.",
-    },
-    {
-      question: "Is a normal blood pressure enough to rule out shock?",
-      answer:
-        "No. Blood pressure is a late sign of shock; a child in compensated shock may have a normal blood pressure but abnormal perfusion, so assess capillary refill, pulses, urine output, and mental status as well.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Pediatric shock assessment",

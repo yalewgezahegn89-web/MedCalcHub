@@ -32,10 +32,7 @@ export const roxIndexCalculator: CalculatorDefinition = {
     "ICU",
   ],
 
-  warnings: [
-    "Use in patients receiving High-Flow Nasal Cannula (HFNC).",
-    "Clinical judgment should always guide escalation of respiratory support.",
-  ],
+
 
   formula:
     "ROX = (SpO₂ / FiO₂) ÷ Respiratory Rate",

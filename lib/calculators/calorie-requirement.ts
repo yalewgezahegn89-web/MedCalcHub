@@ -50,9 +50,7 @@ export const calorieRequirementCalculator: CalculatorDefinition = {
     "Clinical nutrition references",
   ],
 
-  warnings: [
-    "This is an estimate and should be adjusted by clinical judgment.",
-  ],
+
 
   keywords: [
     "Calorie Requirement",

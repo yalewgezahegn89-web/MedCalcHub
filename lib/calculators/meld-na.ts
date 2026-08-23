@@ -32,10 +32,7 @@ export const meldNaCalculator: CalculatorDefinition = {
     "Mortality",
   ],
 
-  warnings: [
-    "Use only in patients with chronic liver disease.",
-    "Interpret together with clinical findings.",
-  ],
+
 
   formula:
     "MELD + 1.32 × (137 − Na) − [0.033 × MELD × (137 − Na)]",

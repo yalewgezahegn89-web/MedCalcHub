@@ -58,71 +58,14 @@ export const kdigoAkiStagingCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "The stage is determined by the HIGHEST applicable criterion from either creatinine or urine output.",
-      "When both creatinine and urine output criteria are met, assign the higher stage.",
-      "In the absence of baseline creatinine, use an estimated baseline or the lowest recorded value.",
-      "KDIGO AKI staging should be used in conjunction with clinical assessment; it is not a standalone diagnostic tool.",
-    ],
-    warnings: [
-      "This staging system does not account for the cause of AKI (prerenal, intrarenal, postrenal).",
-      "Chronic kidney disease patients may have a higher baseline creatinine, which affects staging accuracy.",
-      "Single creatinine measurements may not capture the trajectory; serial measurements are preferred.",
-      "Urine output criteria require accurate intake/output monitoring over the specified duration.",
-    ],
-    followUp: [
-      "Stage 1: Identify and treat reversible causes. Monitor creatinine and urine output closely. Avoid nephrotoxins.",
-      "Stage 2: Urgent nephrology consultation may be warranted. Consider renal ultrasound to exclude obstruction.",
-      "Stage 3: Consider nephrology consultation and possible renal replacement therapy. Manage complications (hyperkalemia, metabolic acidosis, fluid overload).",
-      "All stages: Discontinue or adjust renally cleared medications. Ensure adequate volume status.",
-    ],
-  },
+
 
   clinicalNotes:
     "The KDIGO (Kidney Disease: Improving Global Outcomes) 2012 guidelines define AKI using serum creatinine and urine output criteria. AKI is staged 1–3 based on severity. The highest applicable stage from either criterion is assigned. KDIGO staging has replaced earlier RIFLE and AKIN criteria and is the current international standard for AKI classification.",
 
-  evidence: {
-    source: "Nephrology",
-    reference:
-      "Kidney Disease: Improving Global Outcomes (KDIGO) Acute Kidney Injury Work Group. KDIGO Clinical Practice Guideline for Acute Kidney Injury. Kidney Int Suppl. 2012;2(1):1-138.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "KDIGO Acute Kidney Injury Work Group. Kidney Int Suppl. 2012;2(1):1-138.",
-      "Bellomo R, et al. Acute renal failure – definition, outcome measures, animal models, fluid therapy and information technology needs. Intensive Care Med. 2004;30(8):1417-1425.",
-      "Mehta RL, et al. Acute Kidney Injury Network: report of an initiative to improve outcomes in acute kidney injury. Crit Care. 2007;11(2):R31.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is KDIGO AKI staging?",
-      answer:
-        "KDIGO AKI staging is an international classification system for acute kidney injury severity. It uses serum creatinine changes and urine output measurements to assign stages 1–3, with Stage 3 being the most severe.",
-    },
-    {
-      question: "How is the AKI stage determined when both creatinine and urine output criteria are met?",
-      answer:
-        "The highest applicable stage is assigned. For example, if creatinine criteria meet Stage 1 but urine output criteria meet Stage 2, the final stage is Stage 2.",
-    },
-    {
-      question: "What if I don't have a baseline creatinine?",
-      answer:
-        "If no baseline creatinine is available, use the lowest creatinine value from the preceding 7 days, or estimate baseline using the MDRD or CKD-EPI equation assuming normal kidney function. Clinical judgment is essential.",
-    },
-    {
-      question: "Does AKI staging include the cause of kidney injury?",
-      answer:
-        "No. KDIGO staging classifies severity but does not distinguish between prerenal, intrarenal (structural), or postrenal causes. The underlying etiology must be determined separately.",
-    },
-    {
-      question: "How does KDIGO differ from RIFLE and AKIN?",
-      answer:
-        "KDIGO is the most current standard (2012) and incorporates elements of both RIFLE (2004) and AKIN (2007). KDIGO uses both creatinine and urine output criteria, defines AKI based on changes within 48 hours or 7 days, and is the recommended classification in current clinical practice.",
-    },
-  ],
+
+
 
   comparison: {
     title: "AKI Classification Systems",

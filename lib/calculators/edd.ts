@@ -34,9 +34,7 @@ export const eddCalculator: CalculatorDefinition = {
     "Obstetrics references",
   ],
 
-  warnings: [
-    "Use pregnancy ultrasound and clinical assessment for confirmation.",
-  ],
+
 
   keywords: ["EDD", "Expected Date of Delivery", "Pregnancy", "Obstetrics"],
 

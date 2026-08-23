@@ -162,50 +162,13 @@ export const ecogCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Assign the grade based on the patient's current functional status, not their expected or pre-illness status.",
-      "ECOG 0–1 is the conventional eligibility threshold for most intensive chemotherapy regimens and many clinical trials.",
-      "Record the ECOG PS at baseline and re-assess at each treatment decision point, because it predicts tolerance of therapy and prognosis.",
-    ],
-    warnings: [
-      "ECOG PS is a physician-assessed scale and can underestimate patient-reported impairment — consider patient-reported measures alongside it.",
-      "Performance status is dynamic; a single measurement may not reflect the trajectory of a rapidly changing illness.",
-      "ECOG PS complements but does not replace a comprehensive geriatric assessment in older adults.",
-    ],
-    followUp: [
-      "Re-assess ECOG PS whenever treatment decisions are made.",
-      "A decline in performance status should prompt evaluation of reversible causes and goals-of-care discussion.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Eastern Cooperative Oncology Group (ECOG) performance status, also known as the WHO or Zubrod score, was published by Oken and colleagues in 1982. It uses a single grade from 0 (fully active) to 4 (completely disabled), with 5 denoting death, to describe a patient's level of function in daily activities. Because poor performance status independently predicts reduced tolerance of chemotherapy and worse survival across most cancers, ECOG PS is used to select patients for treatment and clinical trials (commonly requiring ECOG 0–1 or 0–2), to adjust treatment intensity, and to estimate prognosis. It is quick to administer, reproducible, and remains one of the most widely used functional measures in oncology.",
-  evidence: {
-    source: "Original ECOG group scale (Oken 1982)",
-    reference:
-      "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655.",
-      "Zubrod CG, Schneiderman M, Frei E, et al. Appraisal of methods for the study of chemotherapy of cancer in man: comparative therapeutic trial of nitrogen mustard and triethylene thiophosphoramide. J Chronic Dis. 1960;11(1):7-33.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What ECOG score is needed for chemotherapy?",
-      answer:
-        "Most chemotherapy regimens and clinical trials require ECOG 0–1, though some regimens and trials accept ECOG 0–2. Higher scores generally prompt dose adjustment or supportive-care-focused treatment.",
-    },
-    {
-      question: "Is ECOG PS the same as Karnofsky performance status?",
-      answer:
-        "No. ECOG PS uses six grades (0–5) while the Karnofsky scale uses percentages (100–0). The two can be cross-walked: ECOG 0 ≈ Karnofsky 100, ECOG 1 ≈ 80–90, ECOG 2 ≈ 60–70, ECOG 3 ≈ 40–50, ECOG 4 ≈ 10–30.",
-    },
-  ],
+
+
 
   references: [
     "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655.",

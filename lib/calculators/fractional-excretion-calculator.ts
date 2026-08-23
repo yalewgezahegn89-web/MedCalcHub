@@ -33,9 +33,7 @@ export const fractionalExcretionCalculator: CalculatorDefinition = {
     "Clinical nephrology references",
   ],
 
-  warnings: [
-    "Interpretation should always be made in the context of renal function and urine chemistry.",
-  ],
+
 
   keywords: [
     "Fractional Excretion",

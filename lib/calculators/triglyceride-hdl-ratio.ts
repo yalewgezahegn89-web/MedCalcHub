@@ -84,57 +84,14 @@ export const triglycerideHdlRatioCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use fasting triglycerides and HDL in mg/dL; the 3.0 cut-point is defined in mg/dL units.",
-      "Interpret the ratio as one component of insulin resistance assessment, together with waist circumference, blood pressure, and glucose.",
-      "The ratio is most applicable to overweight, non-diabetic adults and should be interpreted with caution in other populations.",
-    ],
-    warnings: [
-      "The ratio is not reliable as an insulin resistance marker in African American populations.",
-      "Severely elevated triglycerides make the ratio less informative for cardiovascular risk prediction.",
-      "It is not a substitute for formal glucose tolerance testing or HbA1c in diagnosing diabetes.",
-    ],
-    followUp: [
-      "If the ratio is ≥ 3.0, screen for glucose intolerance and metabolic syndrome components.",
-      "Address modifiable factors: weight, physical activity, refined carbohydrates, and alcohol.",
-      "Reassess lipids after lifestyle changes; consider pharmacotherapy per lipid guidelines.",
-    ],
-  },
+
 
   clinicalNotes:
     "In the derivation by McLaughlin and colleagues, a TG/HDL ratio ≥ 3.0 identified insulin-resistant overweight adults with high sensitivity and specificity, but this performance was not reproduced in African American cohorts.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "McLaughlin T, Abbasi F, Cheal K, et al. Use of metabolic markers to identify overweight individuals who are insulin resistant. Ann Intern Med. 2003;139(10):802-809.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "McLaughlin T, et al. Ann Intern Med. 2003;139(10):802-809.",
-      "Sumner AE, et al. The TG/HDL ratio is not a reliable marker of insulin resistance in African Americans. Diabetes Care. 2005;28(6):1433-1438.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a TG/HDL ratio ≥ 3.0 indicate?",
-      answer:
-        "In overweight non-diabetic adults, a ratio ≥ 3.0 was associated with insulin resistance as measured by clamp studies. It is a screening clue, not a diagnostic test.",
-    },
-    {
-      question: "Why is the ratio less useful in African Americans?",
-      answer:
-        "Sumner and colleagues showed that the relationship between the TG/HDL ratio and clamp-measured insulin sensitivity does not hold in African American cohorts, so the cut-point is not reliable in this population.",
-    },
-    {
-      question: "What units does this calculator use?",
-      answer:
-        "Both inputs are in mg/dL. If you have mmol/L values, convert triglycerides (×88.57) and HDL (×38.67) to mg/dL first, or use a calculator that supports unit conversion.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

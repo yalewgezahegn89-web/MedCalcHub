@@ -33,9 +33,7 @@ export const albuminCorrectedCalciumCalculator: CalculatorDefinition = {
     "UpToDate",
   ],
 
-  warnings: [
-    "This estimate may not be accurate in critically ill patients or in atypical albumin states.",
-  ],
+
 
   keywords: [
     "Albumin Corrected Calcium",

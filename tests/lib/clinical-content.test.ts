@@ -2866,8 +2866,6 @@ describe("Clinical Content — Sprint 1.9 Batch 13A P1 Remediation", () => {
       (c) => c.slug === "metabolic-alkalosis-compensation",
     )!;
     const texts = [
-      ...(calc.evidence?.reference ? [calc.evidence.reference] : []),
-      ...(calc.evidence?.references ?? []),
       ...(calc.references ?? []),
     ];
     for (const t of texts) {

@@ -32,10 +32,7 @@ export const meldCalculator: CalculatorDefinition = {
     "Hepatology",
   ],
 
-  warnings: [
-    "The MELD score should be interpreted together with the patient's overall clinical condition.",
-    "This calculator is intended for adults with chronic liver disease.",
-  ],
+
 
   formula:
     "3.78 × ln(Bilirubin) + 11.2 × ln(INR) + 9.57 × ln(Creatinine) + 6.43",

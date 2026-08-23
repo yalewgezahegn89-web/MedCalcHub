@@ -87,50 +87,13 @@ export const ottawaSahRuleCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Apply the rule only to patients who are alert (GCS 15), aged 15 years or older, with a new acute nontraumatic headache that reaches maximum intensity within 1 hour, a normal neurologic examination, and no previous history of SAH.",
-      "If any criterion is present, obtain a non-contrast head CT to exclude SAH.",
-      "If CT is negative but suspicion remains, consider lumbar puncture for xanthochromia, especially if the CT was delayed.",
-    ],
-    warnings: [
-      "The rule does NOT apply to patients with new focal neurologic deficits, prior SAH, known brain tumors, or headache from trauma.",
-      "The rule is designed to rule OUT SAH; it is not an indication rule for other causes of headache.",
-      "The rule was derived for use within the first days after headache onset; delayed presentations warrant increased caution.",
-    ],
-    followUp: [
-      "Patients with any positive criterion should proceed to non-contrast CT.",
-      "A negative CT within 6 hours of onset by a modern scanner may not require LP in some centers — follow local protocol.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Ottawa SAH Rule was derived and validated by Perry and colleagues in a multicenter Canadian cohort (JAMA 2013). Among patients presenting to the emergency department with acute nontraumatic headache peaking within 1 hour, the presence of any of six findings — age ≥ 40 years, neck pain or stiffness, witnessed loss of consciousness, headache onset during exertion, thunderclap headache (instantly peaking pain), or limited neck flexion on examination — identified all patients with subarachnoid hemorrhage (100% sensitivity) while being negative in 15.3% of patients without SAH. It is widely used as an ED rule-out tool for SAH.",
-  evidence: {
-    source: "Multicenter validation cohort (JAMA 2013)",
-    reference:
-      "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
-      "Perry JJ, Stiell IG, Sivilotti MLA, et al. High risk clinical characteristics for subarachnoid haemorrhage in patients with acute headache: prospective cohort study. BMJ. 2010;341:c5204.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When is the Ottawa SAH Rule applied?",
-      answer:
-        "It applies to alert patients aged 15 years or older with an acute nontraumatic headache reaching maximum intensity within 1 hour and a normal neurologic examination, to decide whether CT is needed to rule out SAH.",
-    },
-    {
-      question: "What if the rule is negative?",
-      answer:
-        "A negative rule (no criteria present) has 100% sensitivity, meaning CT to rule out SAH is not required; other causes of headache should still be considered.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Headache and SAH decision tools",

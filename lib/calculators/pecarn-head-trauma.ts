@@ -110,51 +110,13 @@ export const pecarnHeadTraumaCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Apply the rule only to children who have suffered blunt head trauma within the last 24 hours, have GCS 14–15, and had no more than brief (< 1 minute) LOC, if any.",
-      "Answer the predictors for the child's age group (under 2 years vs 2 years and older).",
-      "The rule predicts clinically important traumatic brain injury (death, intubation > 24 h, neurosurgery, or TBI with hospital admission ≥ 2 nights); it is not a substitute for clinical judgment in high-energy or penetrating mechanisms.",
-    ],
-    warnings: [
-      "Do not apply when the mechanism is high-energy (e.g., polytrauma, ejection), in children with known bleeding disorders or ventriculoperitoneal shunts, or when GCS < 14 — these children are not covered by the very-low-risk conclusion.",
-      "In infants under 3 months with a head injury, even a small scalp hematoma confers substantial ciTBI risk; CT is generally recommended for these infants regardless of the rule.",
-      "An isolated predictor does not rule out ciTBI; the 'very low risk' conclusion requires ALL predictors to be absent.",
-    ],
-    followUp: [
-      "If no predictor is present, provide head-injury return precautions and discharge.",
-      "If one predictor is present, observe for 4–6 hours and reassess; proceed to CT for any deterioration or additional predictors.",
-      "If two or more predictors are present, obtain CT per the rule.",
-    ],
-  },
+
 
   clinicalNotes:
     "The PECARN (Pediatric Emergency Care Applied Research Network) rule (Kuppermann 2009) was derived and validated on 42,412 children with minor blunt head trauma (GCS 14–15). For children under 2 years, the six predictors are altered mental status (including GCS < 15), palpable skull fracture, non-frontal scalp hematoma, loss of consciousness ≥ 5 seconds, not acting normally per the parent, and a dangerous mechanism. For children 2 years and older the predictors are altered mental status, signs of basilar skull fracture, vomiting, severe headache, any loss of consciousness, and a dangerous mechanism. Children with none of the predictors have a ciTBI risk below 0.05% and can be managed without CT. A dangerous mechanism is a motor-vehicle crash with ejection, death of another passenger, or rollover; a pedestrian or cyclist (without a helmet) struck by a motorized vehicle; a fall from > 3 feet (under 2 years) or > 5 feet (2 years and older); or a head struck by a high-impact object.",
-  evidence: {
-    source: "Derivation and validation cohort study (42,412 children)",
-    reference:
-      "Kuppermann N, Holmes JF, Dayan PS, et al. Identification of children at very low risk of clinically-important brain injuries after head trauma: a prospective cohort study. Lancet. 2009;374(9696):1160-1170.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Kuppermann N, Holmes JF, Dayan PS, et al. Identification of children at very low risk of clinically-important brain injuries after head trauma: a prospective cohort study. Lancet. 2009;374(9696):1160-1170.",
-      "Schonfeld D, Fitz BM, Nigrovic LE. Effect of the duration of emergency department observation on computed tomography use in children with minor blunt head trauma. Ann Emerg Med. 2013;62(6):597-603.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is 'clinically important' TBI in the PECARN rule?",
-      answer:
-        "Death, the need for neurosurgery, intubation for more than 24 hours, or traumatic brain injury with a hospital stay of 2 or more nights.",
-    },
-    {
-      question: "When is a CT definitely needed?",
-      answer:
-        "In general, CT is recommended for children with two or more PECARN predictors, any high-risk predictor with substantial clinical concern, or deterioration during observation. Children under 3 months with any scalp hematoma are also generally scanned.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Pediatric head trauma decision support",

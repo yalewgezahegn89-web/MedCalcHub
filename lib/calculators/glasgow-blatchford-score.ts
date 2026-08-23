@@ -31,10 +31,7 @@ export const glasgowBlatchfordCalculator: CalculatorDefinition = {
     "Emergency",
   ],
 
-  warnings: [
-    "Use only in suspected upper gastrointestinal bleeding.",
-    "Clinical judgment remains essential.",
-  ],
+
 
   formula:
     "Composite score based on BUN, Hemoglobin, Systolic BP, Pulse, Melena, Syncope, Hepatic disease and Cardiac failure.",

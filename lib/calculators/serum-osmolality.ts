@@ -47,18 +47,14 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["Serum osmolality is most useful when measured and calculated values are compared to identify unmeasured osmoles (osmolar gap).","Use this calculator alongside the Osmolar Gap calculator when toxic alcohol ingestion is suspected.","In hypernatremia, serum osmolality helps guide the rate of correction."],
-    warnings: ["This formula uses glucose and BUN in mg/dL; results will be incorrect if different units are entered.","The formula does not account for ethanol, which contributes to effective osmolality. Add ethanol correction if needed: Ethanol / 4.6.","Measured osmolality must be obtained from the laboratory to calculate the osmolar gap."],
-    followUp: ["If osmolality is elevated, check serum sodium, glucose, and BUN for the primary cause.","If the osmolar gap is elevated (measured > calculated), consider toxic alcohol ingestion and obtain specific assays.","In hyperosmolality, assess volume status and guide fluid correction."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Emergency Medicine / Nephrology","reference":"Dorwart WV, Chalmers T. Comparison of methods for calculating serum osmolality from chemical concentrations, and the prognostic value of such calculations. Clin Chem. 1975;21:190–194.","reviewedBy":"MedCalcHub Clinical Team","version":"1.0","updatedAt":"2026-08","references":["Dorwart WV, Chalmers T. Clin Chem. 1975;21:190–194.","Tintinalli's Emergency Medicine, 9th Ed.","UpToDate: Serum osmolality."]},
 
-  faq: [{"question":"What is normal serum osmolality?","answer":"Normal serum osmolality is approximately 275–295 mOsm/kg. Values below this suggest dilutional hyponatremia; values above suggest dehydration, hyperglycemia, or ingestion of osmotically active substances."},{"question":"When should I order a measured osmolality?","answer":"Order a measured osmolality when toxic alcohol ingestion is suspected, when the calculated osmolality does not explain the clinical picture, or when you need to calculate the osmolar gap."},{"question":"What does a high calculated osmolality mean?","answer":"A high calculated osmolality suggests hypernatremia, hyperglycemia, elevated BUN (uremia), or ingestion of osmotically active substances. The differential depends on the clinical context."}],
+
+
 
   comparison: {"title":"Which Osmolality Calculator Should I Use?","calculators":[{"name":"Serum Osmolality","href":"/calculators/serum-osmolality","bestFor":"Estimating serum osmolality from basic labs.","limitation":"Does not account for ethanol or unmeasured osmoles."},{"name":"Osmolar Gap","href":"/calculators/osmolar-gap","bestFor":"Detecting toxic alcohol ingestion.","limitation":"Requires a measured osmolality from the lab."},{"name":"Corrected Sodium","href":"/calculators/corrected-sodium","bestFor":"Adjusting sodium for hyperglycemia.","limitation":"Assesses sodium, not total osmolality."}]},
 

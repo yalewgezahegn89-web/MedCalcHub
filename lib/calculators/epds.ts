@@ -86,50 +86,13 @@ export const epdsCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Administer the 10-item scale in a private, comfortable setting; ask the patient to answer according to how they have felt in the past 7 days.",
-      "Items 1 and 2 are reverse-worded — their response options are ordered in the opposite direction from the other items.",
-      "A total ≥ 10 is screen-positive for possible depression; a score ≥ 13 indicates a higher likelihood.",
-    ],
-    warnings: [
-      "Any positive response on item 10 (thoughts of self-harm) requires immediate clinical evaluation, regardless of the total score.",
-      "The EPDS is a screening instrument, not a diagnostic test; a positive screen requires confirmatory clinical assessment.",
-      "A woman may score low yet still be at risk — use clinical judgment.",
-    ],
-    followUp: [
-      "Screen-positive patients should receive a full psychosocial and psychiatric assessment, and referral for treatment (counseling, medication, social support).",
-      "Screen routinely at postpartum visits and repeat at later intervals when risk factors are present.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Edinburgh Postnatal Depression Scale (Cox, Holden & Sagovsky 1987) is a 10-item self-report instrument validated in both antenatal and postnatal settings. Each item is scored 0–3 (total 0–30). A threshold of ≥ 10 is widely used for screening; item 10 addresses thoughts of self-harm and any positive response mandates urgent assessment. This calculator sums the 10 selected item scores.",
-  evidence: {
-    source: "Validated screening instrument",
-    reference:
-      "Cox JL, Holden JM, Sagovsky R. Detection of postnatal depression: development of the 10-item Edinburgh Postnatal Depression Scale. Br J Psychiatry. 1987;150:782-786.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Cox JL, et al. Br J Psychiatry. 1987;150:782-786.",
-      "ACOG Committee Opinion No. 757: Screening for perinatal depression. Obstet Gynecol. 2018;132(5):e208-e212.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What score indicates possible depression?",
-      answer:
-        "A total of 10 or higher is commonly used as the screen-positive cutoff; some settings use 13 or higher to increase specificity. Any score requires clinical judgment and follow-up.",
-    },
-    {
-      question: "What if the answer to item 10 is positive?",
-      answer:
-        "Item 10 asks about thoughts of self-harm. Any response other than 'Never' (score > 0) warrants immediate clinical assessment for safety.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

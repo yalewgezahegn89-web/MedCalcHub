@@ -100,51 +100,13 @@ export const biophysicalProfileCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Assess each ultrasound component over a 30-minute observation window; the NST is performed during the same session in the full BPP.",
-      "A normal BPP (8–10) with normal amniotic fluid is reassuring and supports continuing expectant management.",
-      "Amniotic fluid assessment reflects long-term (chronic) fetal status, while the other components reflect acute status.",
-    ],
-    warnings: [
-      "A score of 6 is equivocal and should generally be repeated within 24 hours; clinical context (gestational age, indication) determines urgency.",
-      "A score ≤ 4 is abnormal and warrants obstetric evaluation and likely delivery planning.",
-      "The BPP is a screening test for fetal compromise — it does not replace continuous fetal heart rate monitoring in labor.",
-    ],
-    followUp: [
-      "Equivocal (6): repeat BPP within 24 hours or proceed based on the indication for testing.",
-      "Abnormal (≤ 4): notify the obstetric provider; plan for delivery if clinically indicated.",
-      "Oligohydramnios (reduced amniotic fluid) with otherwise reassuring BPP requires additional evaluation and consideration of delivery.",
-    ],
-  },
+
 
   clinicalNotes:
     "The biophysical profile (Manning 1980) combines acute markers of fetal well-being (breathing, movement, tone, NST) with a chronic marker (amniotic fluid volume). Each component is scored 2 (normal) or 0 (absent/abnormal), summing to 10. A score of 8–10 is reassuring, 6 is equivocal (repeat in 24 hours), and ≤ 4 is abnormal.",
-  evidence: {
-    source: "Established antepartum testing modality",
-    reference:
-      "Manning FA, et al. Fetal biophysical profile scoring: a prospective study in 1,184 high-risk patients. Am J Obstet Gynecol. 1981;140(3):289-294.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Manning FA, et al. Am J Obstet Gynecol. 1981;140(3):289-294.",
-      "UpToDate. The fetal biophysical profile. Wolters Kluwer. 2025.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a BPP of 6 mean?",
-      answer:
-        "A score of 6 is equivocal. It is typically repeated within 24 hours; management depends on the indication for testing, gestational age, and the specific component(s) that were abnormal.",
-    },
-    {
-      question: "Why is amniotic fluid scored separately?",
-      answer:
-        "Amniotic fluid volume reflects chronic fetal status (weeks), while breathing, movement, tone, and the NST reflect acute status (minutes to hours).",
-    },
-  ],
+
+
 
   comparison: undefined,
 

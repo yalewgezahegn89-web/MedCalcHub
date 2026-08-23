@@ -135,51 +135,14 @@ export const creatinineClearance24hCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use a complete 24-hour collection; incomplete collection underestimates clearance and creatinine excretion.",
-      "CrCl overestimates true GFR because creatinine is also secreted by the renal tubules, especially at low GFR.",
-      "The Cockcroft-Gault and CKD-EPI formulas are alternatives when a timed collection is not feasible.",
-    ],
-    warnings: [
-      "Verify collection completeness with the expected daily creatinine excretion (roughly 15–20 mg/kg/day in men, 10–15 mg/kg/day in women).",
-      "Serum creatinine must be stable during the collection; changing renal function invalidates the estimate.",
-      "Large muscle mass, high meat intake, and some medications (cimetidine, trimethoprim) alter serum creatinine and creatinine secretion.",
-    ],
-    followUp: [
-      "When an estimated GFR (e.g., CKD-EPI) and measured CrCl disagree, recheck collection completeness.",
-      "For drug dosing, use the estimating equation recommended by the local formulary rather than a single 24h CrCl.",
-    ],
-  },
+
 
   clinicalNotes:
     "The timed 24-hour creatinine clearance is the classical bedside estimate of GFR. Because of collection errors and tubular creatinine secretion, it is less commonly used than estimating equations but remains useful in select settings (e.g., extremes of body habitus).",
 
-  evidence: {
-    source: "Classic renal physiology definition",
-    reference:
-      "Levey AS, et al. Expressing the Modification of Diet in Renal Disease Study equation for estimating glomerular filtration rate with standardized serum creatinine values. Clin Chem. 2007;53(4):766-772.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Levey AS, et al. Clin Chem. 2007;53(4):766-772.",
-      "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16(1):31-41.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why does CrCl overestimate true GFR?",
-      answer:
-        "Creatinine is filtered and also actively secreted by proximal tubules, so urinary creatinine clearance exceeds the true filtration rate by roughly 10–20%, with a larger gap at low GFR.",
-    },
-    {
-      question: "How do I check whether the 24-hour collection was complete?",
-      answer:
-        "Compare the collection's total creatinine (urine creatinine × volume) with the expected daily excretion (~15–20 mg/kg/day in men, 10–15 mg/kg/day in women). Wide deviations suggest over- or under-collection.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

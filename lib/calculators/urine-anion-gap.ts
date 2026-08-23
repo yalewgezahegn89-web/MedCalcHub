@@ -97,58 +97,14 @@ export const urineAnionGapCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use the urine anion gap only in the setting of a normal anion gap (hyperchloremic) metabolic acidosis with hypokalemia.",
-      "A negative urine anion gap (typically −20 to −50 mEq/L) indicates that unmeasured cations (ammonium NH4+) are being excreted, consistent with GI bicarbonate loss.",
-      "A positive or near-zero urine anion gap suggests impaired renal ammonium excretion — e.g., distal renal tubular acidosis.",
-      "Urine pH, serum potassium, and the clinical history should be reviewed together with the gap.",
-    ],
-    warnings: [
-      "The urine anion gap is not interpretable in high anion gap acidosis or in patients with renal failure, because ammonium handling is affected.",
-      "The urine ammonium concentration is the direct measure of renal acid excretion; the urine anion gap is an indirect surrogate and becomes unreliable at extremes of urine sodium or chloride.",
-      "Urine anion gap does not distinguish type 1 from type 2 RTA.",
-    ],
-    followUp: [
-      "If the gap is positive, measure urine ammonium or perform acid-loading testing when RTA is suspected.",
-      "If the gap is negative with severe diarrhea, assess volume status and potassium balance.",
-      "Recheck serum electrolytes after correction of the underlying cause.",
-    ],
-  },
+
 
   clinicalNotes:
     "In normal urine, ammonium (an unmeasured cation) balances the chloride excess, so the gap is usually negative in states of GI bicarbonate loss where the kidney is excreting ammonium appropriately.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Battle DC, Hizon M, Cohen E, et al. The use of the urinary anion gap in the diagnosis of hyperchloremic metabolic acidosis. N Engl J Med. 1988;318(10):594-599.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Battle DC, et al. N Engl J Med. 1988;318(10):594-599.",
-      "Rose BD, Post TW. Clinical Physiology of Acid-Base and Electrolyte Disorders. 6th ed. McGraw-Hill; 2013.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When should the urine anion gap be measured?",
-      answer:
-        "It is most useful in a normal anion gap (hyperchloremic) metabolic acidosis with hypokalemia and normal renal function, to distinguish GI bicarbonate loss (e.g., diarrhea) from renal bicarbonate loss (e.g., distal RTA).",
-    },
-    {
-      question: "What does a negative urine anion gap indicate?",
-      answer:
-        "A negative gap means the urine contains unmeasured cations (mainly ammonium), indicating the kidney is appropriately excreting acid. This points to an extrarenal cause of the acidosis, such as GI bicarbonate loss.",
-    },
-    {
-      question: "Why is the urine anion gap unreliable in renal failure?",
-      answer:
-        "In renal failure, tubular ammonium excretion is impaired by the kidney disease itself, so the urine anion gap cannot distinguish renal from extrarenal causes of acidosis.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

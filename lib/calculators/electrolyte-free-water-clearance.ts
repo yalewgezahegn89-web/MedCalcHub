@@ -100,51 +100,14 @@ export const electrolyteFreeWaterClearanceCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use in hypernatremia to determine whether the kidney is the source of ongoing free water loss.",
-      "EFWC > 0 indicates ongoing renal electrolyte-free water loss (osmotic diuresis, diuretics, diabetes insipidus, renal failure); values near zero or negative point to gastrointestinal or insensible losses.",
-      "A positive EFWC estimates the free water that must be replaced to keep serum sodium from rising further.",
-    ],
-    warnings: [
-      "EFWC is a point estimate that assumes a steady plasma sodium during the collection and does not account for inputs.",
-      "The formula is derived from classic renal physiology (Rose); newer Edelman-based variants exist but are not implemented here.",
-      "Urine sodium and potassium must be measured on the same urine sample as the flow rate.",
-    ],
-    followUp: [
-      "Quantify ongoing EFWC and include it when computing the total water deficit and replacement rate.",
-      "Recheck urine electrolytes and flow when the clinical state or medications change.",
-    ],
-  },
+
 
   clinicalNotes:
     "Electrolyte-free water clearance was introduced by Goldberg and popularized by Rose. Unlike CH₂O, it excludes urea, making it more accurate in osmotic diuresis and when predicting the direction of serum sodium change.",
 
-  evidence: {
-    source: "Original derivation (classic renal physiology)",
-    reference:
-      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
-      "Nguyen MK, Kurtz I. Derivation of a new formula for calculating urinary electrolyte-free water clearance based on the Edelman equation. Am J Physiol Renal Physiol. 2005;288(1):F1-7.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How is EFWC different from CH₂O?",
-      answer:
-        "CH₂O uses total urine osmolality (including urea); EFWC uses only urine sodium + potassium relative to plasma sodium, so it reflects tonicity and is more accurate in osmotic diuresis.",
-    },
-    {
-      question: "What does a high positive EFWC imply in hypernatremia?",
-      answer:
-        "It means the kidneys are excreting substantial electrolyte-free water — the cause of the hypernatremia is renal, and replacement therapy must match this ongoing loss.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

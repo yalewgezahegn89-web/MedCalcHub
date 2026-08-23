@@ -98,51 +98,14 @@ export const rfiCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use RFI as one component of the AKI workup together with FENa, FEUrea, urine microscopy, and clinical volume assessment.",
-      "The RFI is computed as urine sodium (mEq/L) × plasma creatinine (mg/dL) ÷ urine creatinine (mg/dL).",
-      "RFI < 1 supports a prerenal pattern; RFI > 1 favors intrinsic renal injury (ATN).",
-    ],
-    warnings: [
-      "RFI shares the limitations of FENa: diuretics and saline resuscitation raise urine sodium and can cause false 'ATN-like' values in prerenal patients.",
-      "The <1/>1 convention comes from classic literature (Miller et al., 1968) and is not a validated diagnostic threshold alone.",
-      "Do not use RFI when urine output is absent or when creatinine assays are not standardized.",
-    ],
-    followUp: [
-      "When RFI is indeterminate (1–2), combine with FEUrea and clinical response to volume expansion.",
-      "Reassess after diuretic washout if clinically safe and the diagnosis remains unclear.",
-    ],
-  },
+
 
   clinicalNotes:
     "The renal failure index was introduced by Miller and colleagues in 1968 as a urinary index for acute renal failure. It is essentially FENa without the plasma sodium term and is interpreted with the same caveats.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Miller TR, et al. Urinary diagnostic indices in acute renal failure: a prospective study. Ann Intern Med. 1978;89(1):47-50.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Miller TR, et al. Ann Intern Med. 1978;89(1):47-50.",
-      "Espinel CH. The FENa test: use in the differential diagnosis of acute renal failure. JAMA. 1976;236(6):579-581.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "How does RFI differ from FENa?",
-      answer:
-        "FENa divides by the plasma sodium and expresses the result as a percentage; RFI omits the plasma sodium term. Both use urine sodium and the urine:plasma creatinine ratio and are interpreted similarly.",
-    },
-    {
-      question: "Is RFI still used?",
-      answer:
-        "FENa and FEUrea are more commonly used today, but RFI remains a classic, quick index taught for the AKI differential and is easily calculated at the bedside.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

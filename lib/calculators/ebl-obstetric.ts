@@ -112,50 +112,13 @@ export const eblObstetricCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "For the gravimetric method, weigh all blood-soaked sponges, laparotomy pads, and drapes; subtract the known dry weight (1 g ≈ 1 mL of blood).",
-      "For the hematocrit method, use pre- and post-delivery hematocrit and an estimated blood volume of ~85 mL/kg (70–100 mL/kg range).",
-      "Blood loss estimates are imprecise; correlate with vital signs, urine output, and clinical signs of hypovolemia.",
-    ],
-    warnings: [
-      "Hematocrit-based estimates lag behind acute losses and are unreliable immediately after bleeding (equilibration takes time).",
-      "All methods underestimate massive hemorrhage; PPH is defined clinically by cumulative loss ≥ 1000 mL or signs of hypovolemia.",
-      "Activate the obstetric hemorrhage protocol early — do not wait for the estimated loss to be confirmed.",
-    ],
-    followUp: [
-      "If EBL reaches or exceeds 1000 mL, institute the hemorrhage protocol: uterotonics, source control, fluid/blood products, and early escalation.",
-      "Document cumulative loss and re-estimate frequently during ongoing hemorrhage.",
-    ],
-  },
+
 
   clinicalNotes:
     "Estimated blood loss in obstetrics is typically quantified by the gravimetric method (weighing blood-soaked materials; 1 g ≈ 1 mL) and/or calculated from hematocrit: EBL = blood volume × (pre-Hct − post-Hct)/pre-Hct. Blood volume in pregnancy averages ~85 mL/kg (range 70–100 mL/kg). ACOG (Obstetric Hemorrhage, CO 794) defines postpartum hemorrhage as cumulative blood loss ≥ 1000 mL or bleeding with signs of hypovolemia within 24 hours of delivery.",
-  evidence: {
-    source: "National specialty guideline",
-    reference:
-      "ACOG Committee Opinion No. 794: Quantitative blood loss in obstetric hemorrhage. Obstet Gynecol. 2019;134(6):e150-e156.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "ACOG Committee Opinion No. 794: Quantitative blood loss in obstetric hemorrhage. Obstet Gynecol. 2019;134(6):e150-e156.",
-      "ACOG Practice Bulletin No. 183: Postpartum hemorrhage. Obstet Gynecol. 2017;130(4):e168-e186.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why use 85 mL/kg for blood volume?",
-      answer:
-        "Maternal blood volume expands during pregnancy to approximately 85 mL/kg (range 70–100 mL/kg). Using the non-pregnant ~70 mL/kg underestimates total blood volume and can overestimate proportional loss.",
-    },
-    {
-      question: "When is blood loss defined as postpartum hemorrhage?",
-      answer:
-        "ACOG defines PPH as cumulative blood loss ≥ 1000 mL, or bleeding with signs/symptoms of hypovolemia, within 24 hours after delivery — regardless of delivery route.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

@@ -34,9 +34,7 @@ export const adjbwCalculator: CalculatorDefinition = {
     "Drug Dosing",
   ],
 
-  warnings: [
-    "Adjusted body weight is primarily used for medication dosing in overweight and obese adults.",
-  ],
+
 
   formula: "AdjBW = IBW + 0.4 × (Actual Weight − IBW)",
 

@@ -116,49 +116,13 @@ export const gad7Calculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Ask the patient to rate each symptom over the past two weeks using the four frequency options.",
-      "A cut-point of 10 optimizes sensitivity (~89%) and specificity (~82%) for generalized anxiety disorder.",
-      "Use the GAD-7 together with the PHQ-9, because anxiety and depression frequently co-occur.",
-    ],
-    warnings: [
-      "The GAD-7 screens for generalized anxiety disorder but does not exclude panic disorder, social anxiety, OCD, or other anxiety disorders.",
-      "Symptoms due to medical illness, substance use, or medication side effects should be considered.",
-    ],
-    followUp: [
-      "Re-score after 4–8 weeks of treatment to monitor response.",
-      "Refer for specialty evaluation when symptoms are severe, atypical, or refractory to first-line treatment.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Generalized Anxiety Disorder-7 (GAD-7) was developed by Spitzer, Kroenke, and colleagues in 2006 as a brief self-report scale for detecting probable generalized anxiety disorder and grading its severity. Each of the seven items is rated 0 (not at all) to 3 (nearly every day) for the past two weeks, for a total of 0–21. A cut-point of 10 yields a sensitivity of 89% and a specificity of 82% for generalized anxiety disorder. Severity bands are 0–4 (minimal), 5–9 (mild), 10–14 (moderate), and 15–21 (severe). Because anxiety and depression often co-exist, the GAD-7 is commonly administered alongside the PHQ-9.",
-  evidence: {
-    source: "Original validation cohort (Spitzer 2006)",
-    reference:
-      "Spitzer RL, Kroenke K, Williams JB, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med. 2006;166(10):1092-1097.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Spitzer RL, Kroenke K, Williams JB, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med. 2006;166(10):1092-1097.",
-      "Kroenke K, Spitzer RL, Williams JB, Monahan PO, Löwe B. Anxiety disorders in primary care: prevalence, impairment, comorbidity, and detection. Ann Intern Med. 2007;146(5):317-325.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What GAD-7 score indicates generalized anxiety disorder?",
-      answer:
-        "A score of 10 or more is the recommended cut-point, with approximately 89% sensitivity and 82% specificity for generalized anxiety disorder.",
-    },
-    {
-      question: "Can the GAD-7 rule out other anxiety disorders?",
-      answer:
-        "No. The GAD-7 focuses on generalized anxiety and does not exclude panic disorder, social anxiety disorder, OCD, or specific phobias.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Mental health screening",

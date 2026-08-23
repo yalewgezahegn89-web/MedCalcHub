@@ -101,51 +101,14 @@ export const feuaCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Collect urine and serum uric acid with urine and serum creatinine from the same time point.",
-      "In AKI, FEUA < 12% supports a prerenal pattern; FEUA > 20% is more consistent with intrinsic renal injury (ATN).",
-      "FEUA is less influenced by diuretics than FENa and can be a useful adjunct when FENa is unreliable.",
-    ],
-    warnings: [
-      "Thresholds of 12% and 20% derive from observational AKI data and overlap substantially; never diagnose on a single index.",
-      "FEUA is influenced by volume status, uricosuric drugs (e.g., losartan, probenecid), and renal function.",
-      "In hyponatremia workup, a FEUA > 12% has been proposed as supporting SIADH, but it should be used with the full clinical picture.",
-    ],
-    followUp: [
-      "Combine FEUA with FENa, FEUrea, urine microscopy, and clinical assessment when differentiating prerenal AKI from ATN.",
-      "If uric acid over- or underexcretion is suspected, evaluate with 24-hour uric acid excretion and urate balance.",
-    ],
-  },
+
 
   clinicalNotes:
     "FEUA is the fractional excretion of urate across the proximal tubule. It is more stable than FENa in patients receiving diuretics and is used both in AKI differential diagnosis and in disorders of urate handling.",
 
-  evidence: {
-    source: "Original derivation + observational validation (peer-reviewed)",
-    reference:
-      "Steinhäuslin F, et al. Fractional excretion of trace lithium and uric acid in acute renal failure. J Am Soc Nephrol. 1994;4(7):1429-1437.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Steinhäuslin F, et al. J Am Soc Nephrol. 1994;4(7):1429-1437.",
-      "Fenske W, et al. FE-urate and FE-urea in the differential diagnosis of SIADH. Eur J Clin Invest. 2010;40(6):506-513.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why use FEUA instead of FENa?",
-      answer:
-        "FENa is inflated by diuretics and saline resuscitation, which makes it unreliable in many AKI patients. FEUA is less affected by diuretics and can complement FENa and FEUrea.",
-    },
-    {
-      question: "What does a high FEUA mean in AKI?",
-      answer:
-        "In AKI, a FEUA persistently > 20% is more consistent with intrinsic renal injury (e.g., ATN), whereas a low FEUA supports a prerenal pattern. Overlap is common.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

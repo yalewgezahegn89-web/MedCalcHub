@@ -123,51 +123,13 @@ export const barthelIndexCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score the patient's actual current performance over the preceding 24–48 hours, not what they could do in ideal circumstances.",
-      "Where a task requires supervision for safety, award the lower (dependent) score.",
-      "Use the score at admission and at intervals to track functional recovery, especially after stroke and in rehabilitation.",
-    ],
-    warnings: [
-      "The Barthel Index focuses on physical disability in ADLs and does not measure cognitive impairment, communication, or caregiver burden.",
-      "A ceiling effect limits sensitivity in highly independent patients — consider the Modified Barthel or other instruments in that population.",
-      "Variants with different item weights (e.g., original 0–100 vs. Shah ordinal) are not directly interchangeable.",
-    ],
-    followUp: [
-      "Re-assess the Barthel Index at fixed intervals (e.g., admission, discharge, and follow-up) to document change.",
-      "Combine with a cognitive screen (e.g., MMSE/MoCA) for a fuller functional picture.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Barthel Index was originally described by Mahoney and Barthel in 1965 as a simple ordinal scale of independence in activities of daily living. Ten domains are scored: feeding (0/5/10), bathing (0/5), grooming (0/5), dressing (0/5/10), bowels (0/5/10), bladder (0/5/10), toilet use (0/5/10), transfers (0/5/10/15), mobility (0/5/10/15), and stairs (0/5/10), for a total of 0–100. Shah and colleagues (1989) introduced a five-level modification of the item scoring to improve sensitivity. The scale is widely used to quantify disability after stroke, in rehabilitation, and in geriatric medicine; the bands of total (0–20), severe (21–60), moderate (61–90), slight (91–99), and independent (100) dependence aid interpretation.",
-  evidence: {
-    source: "Original scale (Mahoney & Barthel 1965) with Shah 1989 modification",
-    reference:
-      "Mahoney FI, Barthel DW. Functional evaluation: the Barthel Index. Md State Med J. 1965;14:61-65.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Mahoney FI, Barthel DW. Functional evaluation: the Barthel Index. Md State Med J. 1965;14:61-65.",
-      "Shah S, Vanclay F, Cooper B. Improving the sensitivity of the Barthel Index for stroke rehabilitation. J Clin Epidemiol. 1989;42(8):703-709.",
-      "Collin C, Wade DT, Davies S, Horne V. The Barthel ADL Index: a reliability study. Int Disabil Stud. 1988;10(2):61-63.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a Barthel Index of 100 mean?",
-      answer:
-        "A score of 100 indicates full independence in all ten activities of daily living measured by the scale, though the index does not assess cognition or complex instrumental activities.",
-    },
-    {
-      question: "What is the difference between the original and modified Barthel Index?",
-      answer:
-        "The Shah 1989 modification expands the item scoring to five levels per item to improve sensitivity in detecting change, while retaining the same 0–100 total.",
-    },
-  ],
+
+
 
   references: [
     "Mahoney FI, Barthel DW. Functional evaluation: the Barthel Index. Md State Med J. 1965;14:61-65.",

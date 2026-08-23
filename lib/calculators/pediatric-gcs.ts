@@ -102,50 +102,13 @@ export const pediatricGcsCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use the age-appropriate verbal description that best fits the child's best response to the strongest stimulus.",
-      "Record the best response in each category and sum to the total score.",
-      "A GCS of 8 or less indicates severe injury and the need for airway protection and urgent neurosurgical evaluation.",
-    ],
-    warnings: [
-      "The pediatric scale differs from the adult scale ONLY in the verbal component; eye and motor scoring are identical.",
-      "In pre-verbal children, the verbal component relies on age-appropriate behaviors (smile, consolability, cry pattern) — use the descriptors exactly.",
-      "The score is confounded by sedation, intubation, paralysis, and intoxication; document any such factors.",
-    ],
-    followUp: [
-      "Repeat scoring over time; a declining score is more concerning than a single low score.",
-      "GCS < 15 with suspected trauma should trigger evaluation per pediatric head-injury decision rules (e.g., PECARN).",
-    ],
-  },
+
 
   clinicalNotes:
     "The Pediatric Glasgow Coma Scale modifies only the verbal component of the adult GCS to be developmentally appropriate for infants and pre-verbal children. The most widely used version assigns 5 points to an interactive infant who smiles, fixes, and follows; 4 to consolable crying; 3 to inconsolable crying; 2 to moaning or restless agitation; and 1 to no verbal response. The eye (4) and motor (6) components are identical to the adult scale, giving a total of 3–15.",
-  evidence: {
-    source: "Established clinical scoring system",
-    reference:
-      "James HE, Trauner D. The Glasgow Coma Scale. In: James HE, Anas NG, Perkin RM, eds. Brain Insults in Infants and Children. Orlando, FL: Grune & Stratton; 1985:179-182.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "James HE, Trauner D. The Glasgow Coma Scale. In: James HE, Anas NG, Perkin RM, eds. Brain Insults in Infants and Children. Orlando, FL: Grune & Stratton; 1985:179-182.",
-      "American College of Surgeons. Advanced Trauma Life Support (ATLS) Student Course Manual. 10th ed. Chicago, IL: ACS; 2018.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is the difference between the pediatric and adult GCS?",
-      answer:
-        "Only the verbal component differs. In infants and pre-verbal children, the verbal score uses age-appropriate behaviors (smiling, consolability, cry quality) instead of orientation and speech.",
-    },
-    {
-      question: "What score indicates coma?",
-      answer:
-        "A pediatric GCS of 8 or less indicates coma and warrants airway protection, usually by endotracheal intubation, and urgent evaluation.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Pediatric consciousness assessment",

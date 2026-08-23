@@ -49,18 +49,14 @@ export const daptCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "The DAPT score was derived from the DAPT Study to identify patients who derive net benefit from continuing DAPT beyond 12 months after coronary stenting. A score ≥2 favors extended DAPT (up to 30 months), while a score <2 favors standard 12-month therapy, balancing ischemic reduction against moderate/severe bleeding risk.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

@@ -100,50 +100,13 @@ export const westleyCroupScoreCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score each component based on the worst finding observed while the child is calm and, for stridor/cyanosis, when agitated.",
-      "Administer dexamethasone to essentially all children with croup; add nebulized epinephrine for moderate-to-severe or worsening stridor at rest.",
-      "A score of 8 or higher, or any component with the maximal value, signals impending airway compromise — involve senior clinicians and ICU early.",
-    ],
-    warnings: [
-      "Do not allow the child to become distressed during assessment; agitation worsens stridor and airway edema.",
-      "Suspected bacterial tracheitis, foreign body, epiglottitis, or angioedema must be excluded — these mimic croup and progress differently.",
-      "A child who is drowsy or cyanotic at rest has critical obstruction regardless of the total score.",
-    ],
-    followUp: [
-      "Observe for 3–4 hours after nebulized epinephrine for rebound stridor.",
-      "Admit children with persistent stridor at rest, hypoxemia, or scores in the moderate-to-severe range.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Westley croup score (1978) quantifies severity of viral laryngotracheobronchitis (croup) using level of consciousness, cyanosis, stridor, air entry, and chest-wall retractions. Mild croup (score ≤ 2) is typically managed as an outpatient with a single dose of dexamethasone; moderate croup (3–7) adds nebulized epinephrine when stridor is present at rest; severe croup (≥ 8) implies impending respiratory failure with marked retractions, cyanosis, or depressed consciousness and requires urgent airway management and ICU support. The score is a research and bedside severity tool, not a substitute for continuous clinical reassessment.",
-  evidence: {
-    source: "Original derivation study",
-    reference:
-      "Westley CR, Cotton EK, Brooks JG. Nebulized racemic epinephrine by IPPB for the treatment of croup: a double-blind study. Am J Dis Child. 1978;132(5):484-487.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Westley CR, Cotton EK, Brooks JG. Nebulized racemic epinephrine by IPPB for the treatment of croup: a double-blind study. Am J Dis Child. 1978;132(5):484-487.",
-      "Bjornson CL, Johnson DW. Croup. Lancet. 2008;371(9609):329-339.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When is nebulized epinephrine indicated?",
-      answer:
-        "Nebulized epinephrine is indicated for stridor at rest (moderate-to-severe croup). A single dose of dexamethasone should be given to essentially all children with croup.",
-    },
-    {
-      question: "How high does the score need to be before admission?",
-      answer:
-        "Persistent stridor at rest, hypoxemia, or a score in the moderate-to-severe range (3 or higher with concerning features, ≥ 8 for severe) generally warrant admission for observation and treatment.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Pediatric respiratory severity tools",

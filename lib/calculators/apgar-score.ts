@@ -103,50 +103,13 @@ export const apgarScoreCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Record the score at 1 and 5 minutes; if the 5-minute score is below 7, continue scoring every 5 minutes for up to 20 minutes.",
-      "Assign each sign at the moment of scoring using a timer; evaluate all five signs in order.",
-      "The 1-minute score reflects the need for immediate resuscitation; the 5-minute (and later) scores reflect the response to resuscitation.",
-    ],
-    warnings: [
-      "The Apgar score alone does NOT determine whether resuscitation is needed — resuscitation is guided by respirations, heart rate, and color (AAP/AHA).",
-      "Scores may be low in preterm, sedated, or congenitally abnormal infants without indicating asphyxia.",
-      "The score is a reporting tool and a crude index of response to resuscitation, not a predictor of long-term neurologic outcome.",
-    ],
-    followUp: [
-      "An Apgar score of 0–3 beyond 5 minutes should prompt consideration of therapeutic hypothermia per local protocol for suspected hypoxic-ischemic encephalopathy.",
-      "Document the exact times at which each score was assigned.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Apgar score (Virginia Apgar, 1953) evaluates five signs — Appearance (color), Pulse (heart rate), Grimace (reflex irritability), Activity (muscle tone), and Respiration — each scored 0–2. The AAP/AHA (2015) recommend that the Apgar score be reported but not used alone to drive resuscitation decisions; ventilation and heart-rate assessment take precedence. It remains the standard universal newborn assessment tool at 1 and 5 minutes of life.",
-  evidence: {
-    source: "Established clinical scoring system",
-    reference:
-      "Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg. 1953;32(4):260-267.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg. 1953;32(4):260-267.",
-      "AAP Committee on Fetus and Newborn, ACOG Committee on Obstetric Practice. The Apgar score. Pediatrics. 2015;136(4):819-822.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When are Apgar scores assigned?",
-      answer:
-        "At 1 minute and 5 minutes of life; if the 5-minute score is below 7, the score is repeated every 5 minutes for up to 20 minutes.",
-    },
-    {
-      question: "Does a low Apgar score mean brain damage?",
-      answer:
-        "Not by itself. The Apgar score reflects the infant's immediate transition and response to resuscitation; it is not a predictor of long-term neurologic outcome, and many factors (prematurity, sedation) lower scores without asphyxia.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Neonatal assessment tools",

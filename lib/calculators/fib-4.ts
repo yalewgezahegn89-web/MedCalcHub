@@ -32,10 +32,7 @@ export const fib4Calculator: CalculatorDefinition = {
     "Cirrhosis",
   ],
 
-  warnings: [
-    "FIB-4 is a screening tool and should be interpreted with clinical findings.",
-    "Performance is reduced in patients younger than 35 years.",
-  ],
+
 
   formula:
     "(Age × AST) / (Platelets × √ALT)",

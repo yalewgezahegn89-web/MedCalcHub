@@ -47,18 +47,14 @@ export const bmiCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["Maintain a balanced diet and regular physical activity.","Assess cardiovascular and metabolic risk factors when clinically indicated."],
-    warnings: ["BMI may not accurately reflect body composition in athletes, elderly patients, or individuals with significant muscle mass."],
-    followUp: ["Interpret BMI together with clinical history and physical examination.","Consider additional risk assessment based on the patient's overall health profile."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: undefined,
 
-  faq: [{"question":"What is BMI?","answer":"BMI is a screening tool that estimates body fat using height and weight."},{"question":"Can BMI diagnose obesity?","answer":"No. BMI is only a screening tool and should always be interpreted together with clinical findings."}],
+
+
 
   comparison: undefined,
 

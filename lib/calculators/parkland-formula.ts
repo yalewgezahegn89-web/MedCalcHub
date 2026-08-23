@@ -52,18 +52,14 @@ export const parklandFormulaCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "For adult burns ≥20% TBSA. Rate is a starting estimate only — titrate to urine output 0.5–1.0 mL/kg/h and hemodynamics. Do not use for electrical or chemical burns (higher volumes may be needed) or isolated smoke inhalation. Burns are second- and third-degree only; do not include first-degree (superficial) burns in TBSA. Perineum is excluded from pediatric modifications (use pediatric formulas under 30 kg).",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

@@ -114,50 +114,13 @@ export const bishopScoreCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use the score together with the clinical indication for induction and gestational age; a favorable cervix increases the likelihood of successful induction and reduces induction-to-delivery time.",
-      "A score ≥ 8 (traditional) or ≥ 6 (modified) is generally considered favorable; lower scores suggest cervical ripening (pharmacologic or mechanical) before oxytocin.",
-      "Document each component at the same examination.",
-    ],
-    warnings: [
-      "The Bishop score is one of several predictors of induction success; parity, prior vaginal delivery, gestational age, and fetal status also matter.",
-      "Serial scoring over time is more informative than a single value.",
-      "Do not use the score alone to decide on mode or timing of delivery; maternal and fetal indications always take precedence.",
-    ],
-    followUp: [
-      "If the cervix is unfavorable, plan cervical ripening (prostaglandins, balloon catheter) and reassess before oxytocin.",
-      "Reassess the score periodically if induction is planned or underway.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Bishop score (1964) quantifies cervical favorability for induction using dilatation, effacement, fetal station, consistency, and position. Scores ≥ 8 are traditionally considered favorable; a modified Bishop score ≥ 6 is commonly used as an acceptable threshold in current practice. It is a bedside examination score, not a diagnostic test.",
-  evidence: {
-    source: "Established clinical scoring system",
-    reference:
-      "Bishop EH. Pelvic scoring for elective induction. Obstet Gynecol. 1964;24:266-268.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Bishop EH. Pelvic scoring for elective induction. Obstet Gynecol. 1964;24:266-268.",
-      "ACOG Practice Bulletin No. 107: Induction of labor. Obstet Gynecol. 2009;114(2 Pt 1):386-397.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What is a good Bishop score for induction?",
-      answer:
-        "A score of 8 or higher is traditionally considered favorable; a modified Bishop score of 6 or higher is often used as the threshold at which induction is likely to succeed.",
-    },
-    {
-      question: "What if the Bishop score is low?",
-      answer:
-        "A low score (unfavorable cervix) suggests cervical ripening is warranted before oxytocin, using pharmacologic agents or mechanical methods, then reassessment.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

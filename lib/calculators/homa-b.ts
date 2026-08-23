@@ -47,18 +47,14 @@ export const homaBCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["HOMA-B < 50% suggests significant beta-cell dysfunction and may indicate progression toward insulin-dependent diabetes.","Pair with HOMA-IR to distinguish beta-cell failure from insulin resistance.","Useful in tracking beta-cell decline in type 2 diabetes over time."],
-    warnings: ["HOMA-B values are not directly comparable across studies using different insulin assays.","In newly diagnosed type 2 diabetes, HOMA-B may be transiently elevated due to glucotoxicity-driven hyperinsulinemia.","Not validated for use in type 1 diabetes or patients on exogenous insulin."],
-    followUp: ["If HOMA-B is low, consider progression of diabetes and possible need for insulin therapy.","Pair with C-peptide measurement for a more direct assessment of beta-cell function.","Monitor HbA1c and fasting glucose longitudinally."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Endocrine Society / ADA","reference":"Matthews DR, Hosker JP, Rudenski AS, et al. Homeostasis model assessment: insulin resistance and beta-cell function from fasting plasma glucose and insulin concentrations in man. Diabetologia. 1985;28:412–419.","reviewedBy":"MedCalcHub Clinical Team","version":"1.0","updatedAt":"2026-08","references":["Matthews DR, et al. Diabetologia. 1985;28:412–419.","ADA Standards of Care in Diabetes. 2025.","UK Prospective Diabetes Study (UKPDS)."]},
 
-  faq: [{"question":"What does a low HOMA-B mean?","answer":"A HOMA-B below 100% suggests reduced beta-cell function, meaning the pancreas is producing less insulin than expected for the glucose level. This is common in progressive type 2 diabetes."},{"question":"How is HOMA-B different from HOMA-IR?","answer":"HOMA-B estimates how well the pancreas produces insulin (beta-cell function), while HOMA-IR estimates how well the body responds to it (insulin resistance)."},{"question":"What is normal HOMA-B?","answer":"A normal HOMA-B is approximately 100–200%. Values below 50% indicate significant beta-cell dysfunction."}],
+
+
 
   comparison: {"title":"Beta-Cell Function Assessment Tools","calculators":[{"name":"HOMA-B","href":"/calculators/homa-b","bestFor":"Estimating beta-cell function from fasting labs.","limitation":"Not validated in type 1 diabetes or on exogenous insulin."},{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Estimating insulin resistance.","limitation":"Measures resistance, not secretion."},{"name":"Insulin Sensitivity","href":"/calculators/insulin-sensitivity","bestFor":"Quick sensitivity estimate.","limitation":"Inverse of HOMA-IR; does not assess beta cells."}]},
 

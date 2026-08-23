@@ -41,18 +41,14 @@ export const rtsCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "RTS is a triage tool used in trauma systems. An RTS <4 predicts survival probability <70% and warrants consideration of transfer to a trauma center. Coding: GCS 13–15=4, 9–12=3, 6–8=2, 4–5=1, 3=0; SBP >89=4, 76–89=3, 50–75=2, 1–49=1, 0=0; RR 10–29=4, >29=3, 6–9=2, 1–5=1, 0=0.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

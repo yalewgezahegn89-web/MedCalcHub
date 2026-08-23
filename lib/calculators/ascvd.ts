@@ -129,18 +129,14 @@ export const ascvdCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "ASCVD risk categories (2018 ACC/AHA): <5% low, 5–7.4% borderline, 7.5–19.9% intermediate, ≥20% high. In adults 40–75 years without clinical ASCVD, risk estimates guide statin therapy. The equations are validated for ages 40–79, total cholesterol 130–320 mg/dL, HDL 20–100 mg/dL, and SBP 90–200 mmHg. White/other equations are applied to all non-Black races.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

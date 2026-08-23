@@ -113,51 +113,13 @@ export const rochesterCriteriaCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Apply to febrile infants (rectal temperature ≥ 38.0 °C) between 0 and 60 days of age who are otherwise well-appearing at presentation.",
-      "Answer every criterion honestly — the 'low-risk' conclusion requires ALL seven criteria to be met.",
-      "If low risk, discuss the option of outpatient management with the family, including the need for blood and urine cultures, close follow-up within 24 hours, and return precautions.",
-    ],
-    warnings: [
-      "The criteria were validated in a specific population (term, previously healthy, well-appearing infants) — do not generalize to preterm, chronically ill, or toxic-appearing infants.",
-      "Cultures (blood, urine, and cerebrospinal fluid when performed) must be obtained before outpatient management is considered.",
-      "These criteria do not replace clinical judgment or the requirement to reassess the infant frequently.",
-    ],
-    followUp: [
-      "If low risk, arrange follow-up within 24 hours and instruct the family to return for fever recurrence, worsening appearance, or any new symptom.",
-      "If not low risk, admit for a full sepsis evaluation, empiric antibiotics, and observation.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Rochester criteria (Jaskiewicz 1994, based on the original Rochester, NY strategy of Dagan et al.) identify febrile infants 0–60 days at LOW risk of serious bacterial infection (SBI): term gestation ≥ 37 weeks, previously healthy, non-toxic clinical appearance, no focal bacterial infection on examination, WBC 5,000–15,000/µL, urinalysis with < 10 WBC/HPF (or negative screen), and stool with < 5 WBC/HPF when diarrhea is present. Infants meeting all criteria historically had an SBI risk of < 1–2% and could be managed as outpatients with cultures and close follow-up; infants failing any criterion require a full sepsis evaluation. The tool is an adjunct to — not a replacement for — contemporary clinical reassessment and guideline-based management of the febrile neonate.",
-  evidence: {
-    source: "Original derivation/validation study",
-    reference:
-      "Jaskiewicz JA, McCarthy CA, Richardson AC, et al. Febrile infants at low risk for serious bacterial infection — an appraisal of the Rochester criteria and implications for management. Pediatrics. 1994;94(3):390-396.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Jaskiewicz JA, McCarthy CA, Richardson AC, et al. Febrile infants at low risk for serious bacterial infection — an appraisal of the Rochester criteria and implications for management. Pediatrics. 1994;94(3):390-396.",
-      "Dagan R, Powell KR, Hall CB, Menegus MA. Identification of infants unlikely to have serious bacterial infection although hospitalized for suspected sepsis. J Pediatr. 1985;107(6):855-860.",
-      "Pantell RH, Roberts KB, Adams WG, et al. Evaluation and management of well-appearing febrile infants 8 to 60 days old. Pediatrics. 2021;148(2):e2021052228.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What temperature counts as a fever in a young infant?",
-      answer:
-        "A rectal temperature of 38.0 °C (100.4 °F) or higher. Axillary and tympanic readings are less reliable in young infants and should be confirmed rectally.",
-    },
-    {
-      question: "Can a 'low-risk' infant be sent home without tests?",
-      answer:
-        "No. Blood and urine cultures should be obtained before outpatient management is considered, and the infant needs close follow-up within 24 hours and clear return precautions.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Febrile infant risk tools",

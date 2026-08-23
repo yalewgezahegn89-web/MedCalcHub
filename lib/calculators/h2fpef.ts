@@ -55,18 +55,14 @@ export const h2fpefCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "H2FPEF score estimates the probability of HFpEF in patients with unexplained dyspnea: 0–1 (low, ~6% probability), 2–5 (intermediate, ~10–46%), 6–9 (high, ~67–95% probability of HFpEF). The score was derived and validated in patients referred for unexplained exertional dyspnea and includes atrial fibrillation (3 points) as the strongest predictor.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

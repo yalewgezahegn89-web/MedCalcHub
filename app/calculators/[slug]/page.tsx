@@ -8,7 +8,6 @@ import { AdSlot } from "@/components/ads";
 import { ClinicalGuidancePanel } from "@/components/calculators/clinical-guidance-panel";
 import { EvidenceCard } from "@/components/calculators/evidence-card";
 import { CalculatorComparison } from "@/components/calculators/calculator-comparison";
-import { CalculatorFAQ } from "@/components/calculators/calculator-faq";
 import { ReferenceRanges } from "@/components/calculators/reference-ranges";
 import { RelatedCalculators } from "@/components/calculators/related-calculators";
 import { ClinicalContentPanel } from "@/components/calculators/clinical-content-panel";
@@ -115,12 +114,6 @@ export default async function CalculatorPage({
           <CalculatorComparison
             slug={calculator.slug}
             comparison={calculator.comparison}
-          />
-        )}
-
-        {!clinicalContent?.faq?.length && (
-          <CalculatorFAQ
-            slug={calculator.slug}
           />
         )}
 

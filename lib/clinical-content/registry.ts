@@ -17,6 +17,25 @@ export const clinicalContentRegistry: Record<
   ClinicalContent
 > = {
   "anion-gap": {
+    faq: [
+          {
+        "question": "What does an elevated anion gap mean?",
+        "answer": "An elevated anion gap (> 12 mmol/L) in the setting of metabolic acidosis suggests accumulation of unmeasured anions such as lactate, ketoacids, or toxic metabolites. Common causes include lactic acidosis, diabetic ketoacidosis, renal failure, and toxic alcohol ingestion."
+      },
+      {
+        "question": "What does a low anion gap mean?",
+        "answer": "A low anion gap (< 8 mmol/L) may indicate hypoalbuminemia, lithium or bromide toxicity, or laboratory error. It can also be seen with hypercalcemia, hypermagnesemia, or hyperkalemia."
+      },
+      {
+        "question": "Why should I correct for albumin?",
+        "answer": "About 80% of the normal anion gap is accounted for by albumin. In hypoalbuminemia, the anion gap is falsely low, potentially masking a high anion gap metabolic acidosis. For every 1 g/dL drop in albumin below 4.0, the expected anion gap decreases by approximately 2.5 mmol/L."
+      },
+      {
+        "question": "When should I use the corrected anion gap?",
+        "answer": "Use the albumin-corrected anion gap when the patient has known or suspected hypoalbuminemia (e.g. critical illness, nephrotic syndrome, liver disease, malnutrition)."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the serum anion gap to help differentiate high anion gap metabolic acidosis (HAGMA) from normal anion gap metabolic acidosis (NAGMA).",
     howToUse: [
@@ -91,6 +110,21 @@ export const clinicalContentRegistry: Record<
   },
 
   "ckd-epi-2021": {
+    faq: [
+          {
+        "question": "What does eGFR measure?",
+        "answer": "eGFR estimates how well the kidneys are filtering waste from the blood, expressed in mL/min/1.73 m²."
+      },
+      {
+        "question": "Why was the race variable removed from CKD-EPI?",
+        "answer": "The 2021 equation removed race because including it was not scientifically justified and contributed to health disparities in CKD detection."
+      },
+      {
+        "question": "Is CKD-EPI better than MDRD?",
+        "answer": "Yes. CKD-EPI is more accurate at higher GFR values and is now the preferred equation in most guidelines."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates glomerular filtration rate (eGFR) using the 2021 CKD-EPI creatinine equation, which removed the race variable.",
     howToUse: [
@@ -238,6 +272,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "bmi": {
+    faq: [
+          {
+        "question": "What is BMI?",
+        "answer": "BMI is a screening tool that estimates body fat using height and weight."
+      },
+      {
+        "question": "Can BMI diagnose obesity?",
+        "answer": "No. BMI is only a screening tool and should always be interpreted together with clinical findings."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates Body Mass Index (BMI) to screen for underweight, normal weight, overweight, and obesity categories.",
     howToUse: [
@@ -304,6 +349,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "bun-creatinine-ratio": {
+    faq: [
+          {
+        "question": "What does a high BUN/Creatinine ratio mean?",
+        "answer": "A ratio >20:1 may suggest prerenal azotemia (e.g. dehydration, heart failure), GI bleeding, or high protein intake."
+      },
+      {
+        "question": "What does a low BUN/Creatinine ratio mean?",
+        "answer": "A ratio <10:1 may indicate intrinsic renal disease, liver disease, malnutrition, or a low-protein diet."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the blood urea nitrogen (BUN) to serum creatinine ratio to help differentiate causes of acute kidney injury and assess hydration status.",
     howToUse: [
@@ -371,6 +427,21 @@ export const clinicalContentRegistry: Record<
   },
 
   "corrected-sodium": {
+    faq: [
+          {
+        "question": "Why does hyperglycemia lower sodium?",
+        "answer": "High glucose increases serum osmolality, drawing water from the intracellular to the extracellular space. This dilutes the serum sodium, causing a falsely low measured value. The corrected sodium estimates what the sodium would be at a normal glucose."
+      },
+      {
+        "question": "What correction factor should I use?",
+        "answer": "The conventional correction factor is 1.6 mmol/L for every 100 mg/dL increase in glucose above 100 mg/dL. For very high glucose (> 400 mg/dL), some experts use a factor of 2.0–2.4."
+      },
+      {
+        "question": "When should I correct sodium for glucose?",
+        "answer": "Correct sodium whenever glucose is significantly elevated (> 200 mg/dL), especially in diabetic ketoacidosis (DKA) and hyperosmolar hyperglycemic state (HHS), to accurately assess the patient's true sodium status."
+      }
+
+  ],
     clinicalPurpose:
       "Corrects the measured serum sodium for hyperglycemia to reveal the true sodium status in patients with significant glucose elevation.",
     howToUse: [
@@ -436,6 +507,21 @@ export const clinicalContentRegistry: Record<
   },
 
   "osmolar-gap": {
+    faq: [
+          {
+        "question": "What does an elevated osmolar gap mean?",
+        "answer": "An elevated osmolar gap (> 10 mOsm/kg) indicates the presence of unmeasured osmotically active substances. In the emergency setting, this may suggest toxic alcohol ingestion (methanol, ethylene glycol), ethanol, or propylene glycol. Other causes include DKA, uremia, and alcohol intoxication."
+      },
+      {
+        "question": "Can the osmolar gap be normal in toxic ingestion?",
+        "answer": "Yes. In delayed presentations of toxic alcohol ingestion, the parent alcohol may have been metabolized to its toxic metabolites, normalizing the osmolar gap while toxicity persists. The anion gap may be elevated in these cases."
+      },
+      {
+        "question": "What is the normal osmolar gap?",
+        "answer": "A normal osmolar gap is generally considered to be between -10 and +10 mOsm/kg. Values above this range are considered elevated."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the difference between measured and calculated serum osmolality to detect the presence of unmeasured osmoles, which may indicate toxic alcohol ingestion.",
     howToUse: [
@@ -593,6 +679,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "cockcroft-gault": {
+    faq: [
+          {
+        "question": "When should I use Cockcroft-Gault instead of CKD-EPI?",
+        "answer": "Use Cockcroft-Gault when adjusting medication doses, as many drug labels still reference CrCl from this equation."
+      },
+      {
+        "question": "What weight should I use in the Cockcroft-Gault equation?",
+        "answer": "Use actual body weight by default. Adjusted body weight may be used in obese patients per institutional guidelines."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates creatinine clearance (CrCl) to guide drug dosing adjustments, particularly for renally cleared medications.",
     howToUse: [
@@ -660,6 +757,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "homa-ir": {
+    faq: [
+          {
+        "question": "What does a high HOMA-IR mean?",
+        "answer": "A HOMA-IR > 2.5 suggests insulin resistance, meaning the body's cells are not responding efficiently to insulin. This is a risk factor for type 2 diabetes, metabolic syndrome, and cardiovascular disease."
+      },
+      {
+        "question": "What are the units of HOMA-IR?",
+        "answer": "HOMA-IR is unitless. It is calculated using fasting glucose in mg/dL and fasting insulin in µU/mL: (glucose × insulin) / 405."
+      },
+      {
+        "question": "How does HOMA-IR differ from HOMA-B?",
+        "answer": "HOMA-IR estimates insulin resistance, while HOMA-B estimates pancreatic beta-cell function. Both use the same fasting glucose and insulin values but different formulas."
+      },
+      {
+        "question": "When should HOMA-IR be measured?",
+        "answer": "HOMA-IR requires fasting for at least 8 hours. It is best measured in the morning before any food intake."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the Homeostatic Model Assessment for Insulin Resistance (HOMA-IR) to estimate insulin resistance from fasting glucose and insulin levels.",
     howToUse: [
@@ -1153,6 +1269,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "mdrd": {
+    faq: [
+          {
+        "question": "Is MDRD still used clinically?",
+        "answer": "Most laboratories have transitioned to CKD-EPI, but MDRD may still appear on older reports. CKD-EPI is now preferred."
+      },
+      {
+        "question": "Why is MDRD less accurate at higher GFR?",
+        "answer": "The MDRD equation was developed in patients with known CKD and was not validated in healthy individuals, leading to underestimation at higher GFR values."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates glomerular filtration rate (eGFR) using the 4-variable MDRD equation, primarily encountered in older laboratory reports and historical comparisons.",
     howToUse: [
@@ -1226,6 +1353,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "fena": {
+    faq: [
+          {
+        "question": "What does FENa < 1% mean?",
+        "answer": "A FENa < 1% suggests prerenal azotemia, meaning the kidneys are appropriately retaining sodium in response to decreased perfusion."
+      },
+      {
+        "question": "When is FENa unreliable?",
+        "answer": "FENa is unreliable in patients on diuretics, in chronic kidney disease, and in the elderly. Consider FEUrea in these situations."
+      }
+
+  ],
     clinicalPurpose:
       "Quantifies the fractional excretion of sodium to help distinguish prerenal azotemia from intrinsic renal injury (such as acute tubular necrosis) in acute kidney injury.",
     howToUse: [
@@ -1296,6 +1434,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "feurea": {
+    faq: [
+          {
+        "question": "When should I use FEUrea instead of FENa?",
+        "answer": "Use FEUrea when the patient has received diuretics, which can increase urinary sodium and make FENa unreliable."
+      },
+      {
+        "question": "What does FEUrea > 50% mean?",
+        "answer": "A FEUrea > 50% suggests intrinsic renal injury such as acute tubular necrosis."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates the fractional excretion of urea to help distinguish prerenal azotemia from intrinsic renal injury, particularly useful when diuretics make FENa unreliable.",
     howToUse: [
@@ -1364,6 +1513,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "albumin-creatinine-ratio": {
+    faq: [
+          {
+        "question": "What is the Albumin-to-Creatinine Ratio (ACR)?",
+        "answer": "The Albumin-to-Creatinine Ratio estimates the amount of albumin excreted in urine while correcting for urine concentration using creatinine."
+      },
+      {
+        "question": "Why is ACR important?",
+        "answer": "ACR is one of the earliest markers of kidney damage and is recommended for screening chronic kidney disease, especially in patients with diabetes or hypertension."
+      },
+      {
+        "question": "What is considered a normal ACR?",
+        "answer": "An ACR below 30 mg/g is considered normal or mildly increased (A1)."
+      },
+      {
+        "question": "When should ACR be repeated?",
+        "answer": "Persistent albuminuria should be confirmed with at least two abnormal measurements over a period of three months."
+      }
+
+  ],
     clinicalPurpose:
       "Quantifies urine albumin relative to urine creatinine to screen for and stage chronic kidney disease (albuminuria categories A1–A3).",
     howToUse: [
@@ -1435,6 +1603,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "corrected-calcium": {
+    faq: [
+          {
+        "question": "Why correct calcium for albumin?",
+        "answer": "About 40–50% of serum calcium is bound to albumin. When albumin is low (e.g. liver disease, nephrotic syndrome), total calcium appears falsely low even though ionized (biologically active) calcium may be normal. The correction factor estimates what total calcium would be at a normal albumin of 4.0 g/dL."
+      },
+      {
+        "question": "What does a corrected calcium above normal mean?",
+        "answer": "A corrected calcium > 10.5 mg/dL suggests true hypercalcemia. Common causes include primary hyperparathyroidism, malignancy, vitamin D toxicity, and granulomatous disease. Confirm with ionized calcium and investigate accordingly."
+      },
+      {
+        "question": "Is ionized calcium better than corrected calcium?",
+        "answer": "Yes. Ionized (free) calcium directly measures the physiologically active fraction and is not affected by albumin. It is the preferred test, but the correction is useful when ionized calcium measurement is unavailable."
+      },
+      {
+        "question": "Can this formula be used in children?",
+        "answer": "The formula is validated in adults. Neonatal and paediatric reference ranges and correction factors differ; consult local guidelines for those populations."
+      }
+
+  ],
     clinicalPurpose:
       "Adjusts measured total serum calcium for hypoalbuminemia to estimate the physiologically relevant total calcium, since a large fraction of serum calcium is albumin-bound.",
     howToUse: [
@@ -1504,6 +1691,21 @@ export const clinicalContentRegistry: Record<
   },
 
   "homa-b": {
+    faq: [
+          {
+        "question": "What does a low HOMA-B mean?",
+        "answer": "A HOMA-B below 100% suggests reduced beta-cell function, meaning the pancreas is producing less insulin than expected for the glucose level. This is common in progressive type 2 diabetes."
+      },
+      {
+        "question": "How is HOMA-B different from HOMA-IR?",
+        "answer": "HOMA-B estimates how well the pancreas produces insulin (beta-cell function), while HOMA-IR estimates how well the body responds to it (insulin resistance)."
+      },
+      {
+        "question": "What is normal HOMA-B?",
+        "answer": "A normal HOMA-B is approximately 100–200%. Values below 50% indicate significant beta-cell dysfunction."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates pancreatic beta-cell function relative to the prevailing fasting glucose, complementing HOMA-IR in the assessment of glucose–insulin homeostasis.",
     howToUse: [
@@ -1572,6 +1774,21 @@ export const clinicalContentRegistry: Record<
   },
 
   "insulin-sensitivity": {
+    faq: [
+          {
+        "question": "What is insulin sensitivity?",
+        "answer": "Insulin sensitivity measures how effectively the body's cells respond to insulin. A higher value means cells are more responsive, requiring less insulin to manage blood glucose."
+      },
+      {
+        "question": "How is this different from HOMA-IR?",
+        "answer": "This is simply 1 / HOMA-IR. It presents the same information in a more intuitive direction: higher values mean better sensitivity."
+      },
+      {
+        "question": "What is a good insulin sensitivity score?",
+        "answer": "A score > 0.4 is generally considered good insulin sensitivity. Below 0.2 suggests significant insulin resistance."
+      }
+
+  ],
     clinicalPurpose:
       "Presents insulin resistance as its reciprocal so that higher values indicate better insulin sensitivity, providing an intuitive complement to HOMA-IR.",
     howToUse: [
@@ -5700,6 +5917,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "fractional-excretion-uric-acid": {
+    faq: [
+          {
+        "question": "Why use FEUA instead of FENa?",
+        "answer": "FENa is inflated by diuretics and saline resuscitation, which makes it unreliable in many AKI patients. FEUA is less affected by diuretics and can complement FENa and FEUrea."
+      },
+      {
+        "question": "What does a high FEUA mean in AKI?",
+        "answer": "In AKI, a FEUA persistently > 20% is more consistent with intrinsic renal injury (e.g., ATN), whereas a low FEUA supports a prerenal pattern. Overlap is common."
+      }
+
+  ],
     clinicalPurpose:
       "Quantifies the fractional excretion of uric acid (FEUA) to help distinguish prerenal azotemia from intrinsic renal injury in acute kidney injury, and to assess urate handling in conditions such as SIADH, tumor lysis syndrome, and Fanconi syndrome.",
     howToUse: [
@@ -5775,6 +6003,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "fractional-excretion-phosphate": {
+    faq: [
+          {
+        "question": "When is FEP most useful?",
+        "answer": "In a hypophosphatemic patient, FEP helps distinguish renal phosphate wasting (FEP > 5%) from causes such as redistribution into cells or gastrointestinal losses."
+      },
+      {
+        "question": "Why is FEP unreliable in CKD?",
+        "answer": "As GFR falls, fractional phosphate excretion rises physiologically due to FGF23/PTH-driven phosphaturia, so a high FEP is expected and not diagnostic."
+      }
+
+  ],
     clinicalPurpose:
       "Quantifies the fractional excretion of phosphate (FEP) to localize the cause of hypophosphatemia: a high FEP indicates renal phosphate wasting, whereas a low FEP favors redistribution or gastrointestinal losses.",
     howToUse: [
@@ -5847,6 +6086,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "fractional-excretion-calcium": {
+    faq: [
+          {
+        "question": "Why is FECa used to diagnose FHH?",
+        "answer": "FHH is characterized by an inappropriately low renal calcium excretion relative to the prevailing hypercalcemia. A calcium–creatinine clearance ratio below 0.01 (FECa < 1%) supports FHH over primary hyperparathyroidism."
+      },
+      {
+        "question": "What is the preferred FECa threshold?",
+        "answer": "Traditional teaching uses < 0.01 (1%). Retrospective data suggest a screening cutoff of 0.02 (2%) captures about 98% of FHH cases, at the cost of including some primary hyperparathyroidism patients."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the fractional excretion of calcium (calcium–creatinine clearance ratio, CCCR) to help distinguish familial hypocalciuric hypercalcemia (FHH) from primary hyperparathyroidism in PTH-dependent hypercalcemia.",
     howToUse: [
@@ -5920,6 +6170,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "renal-failure-index": {
+    faq: [
+          {
+        "question": "How does RFI differ from FENa?",
+        "answer": "FENa divides by the plasma sodium and expresses the result as a percentage; RFI omits the plasma sodium term. Both use urine sodium and the urine:plasma creatinine ratio and are interpreted similarly."
+      },
+      {
+        "question": "Is RFI still used?",
+        "answer": "FENa and FEUrea are more commonly used today, but RFI remains a classic, quick index taught for the AKI differential and is easily calculated at the bedside."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the renal failure index (RFI), a classic urinary index using urine sodium relative to the urine:plasma creatinine ratio to help distinguish prerenal azotemia from acute tubular necrosis.",
     howToUse: [
@@ -5992,6 +6253,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "urine-osmolal-gap": {
+    faq: [
+          {
+        "question": "What does the urine osmolal gap measure?",
+        "answer": "It compares measured urine osmolality to the osmolality predicted from urine sodium, potassium, urea, and glucose. The difference represents unmeasured osmotically active solutes."
+      },
+      {
+        "question": "When is the urine osmolal gap used?",
+        "answer": "Mainly in suspected toxic alcohol or mannitol exposure when the serum osmolar gap is normal or negative, and as part of the metabolic evaluation of unmeasured osmoles."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the urine osmolal gap — the difference between measured and estimated urine osmolality — to detect unmeasured osmoles in the urine (e.g., ethylene glycol, methanol, mannitol).",
     howToUse: [
@@ -6064,6 +6336,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "free-water-clearance": {
+    faq: [
+          {
+        "question": "What does a positive CH₂O mean?",
+        "answer": "A positive CH₂O means the kidney is excreting electrolyte-free water (dilute urine). This is appropriate after water loading and seen in diabetes insipidus and primary polydipsia."
+      },
+      {
+        "question": "When should I prefer EFWC over CH₂O?",
+        "answer": "In high-urea (osmotic) diuresis and when predicting the direction of serum sodium change, the electrolyte-free water clearance is more accurate because it excludes urea."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates renal free water clearance (CH₂O) from urine flow, urine osmolality, and plasma osmolality to characterize renal water handling in polyuria, hyponatremia, and hypernatremia.",
     howToUse: [
@@ -6135,6 +6418,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "electrolyte-free-water-clearance": {
+    faq: [
+          {
+        "question": "How is EFWC different from CH₂O?",
+        "answer": "CH₂O uses total urine osmolality (including urea); EFWC uses only urine sodium + potassium relative to plasma sodium, so it reflects tonicity and is more accurate in osmotic diuresis."
+      },
+      {
+        "question": "What does a high positive EFWC imply in hypernatremia?",
+        "answer": "It means the kidneys are excreting substantial electrolyte-free water — the cause of the hypernatremia is renal, and replacement therapy must match this ongoing loss."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates urinary electrolyte-free water clearance (EFWC) from urine flow and urinary/plasma sodium and potassium to distinguish renal from extrarenal water losses and guide fluid therapy in dysnatremia.",
     howToUse: [
@@ -6206,6 +6500,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "urine-protein-creatinine-ratio": {
+    faq: [
+          {
+        "question": "How does UPCR relate to 24-hour urine protein?",
+        "answer": "In most adults, a spot UPCR in mg/mg is approximately equal to grams of protein per day, so 3.5 mg/mg approximates nephrotic range (≥ 3.5 g/day) proteinuria."
+      },
+      {
+        "question": "Should I use UPCR or ACR?",
+        "answer": "ACR (albumin) is preferred for early diabetic kidney disease and KDIGO staging. UPCR (total protein) is used for general proteinuria quantification, including nephrotic syndrome."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the urine protein-to-creatinine ratio (UPCR) from a spot urine sample to estimate 24-hour proteinuria for CKD detection, monitoring, and nephrotic range proteinuria screening.",
     howToUse: [
@@ -6276,6 +6581,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "creatinine-clearance-24h": {
+    faq: [
+          {
+        "question": "Why does CrCl overestimate true GFR?",
+        "answer": "Creatinine is filtered and also actively secreted by proximal tubules, so urinary creatinine clearance exceeds the true filtration rate by roughly 10–20%, with a larger gap at low GFR."
+      },
+      {
+        "question": "How do I check whether the 24-hour collection was complete?",
+        "answer": "Compare the collection's total creatinine (urine creatinine × volume) with the expected daily excretion (~15–20 mg/kg/day in men, 10–15 mg/kg/day in women). Wide deviations suggest over- or under-collection."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates creatinine clearance from a 24-hour urine collection using urine creatinine, serum creatinine, and 24-hour urine volume, providing the classic timed-collection estimate of GFR.",
     howToUse: [
@@ -6347,6 +6663,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "total-cholesterol-hdl-ratio": {
+    faq: [
+          {
+        "question": "What is a good TC/HDL ratio?",
+        "answer": "Values below 4 are generally considered desirable, with some risk models favoring values around 3.5 or lower. The ratio should be interpreted in the context of overall cardiovascular risk."
+      },
+      {
+        "question": "Is TC/HDL still recommended?",
+        "answer": "Modern guidelines emphasize LDL and non-HDL cholesterol for treatment decisions, but the TC/HDL ratio remains a useful, inexpensive risk indicator and patient-education tool."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the total cholesterol to HDL ratio (TC/HDL), a simple lipid-based indicator of cardiovascular risk that compares total cholesterol with the protective HDL fraction.",
     howToUse: [
@@ -6418,6 +6745,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "atherogenic-index-of-plasma": {
+    faq: [
+          {
+        "question": "What does the AIP actually measure?",
+        "answer": "AIP reflects the balance between atherogenic triglyceride-rich lipoproteins and protective HDL. Higher values correlate with smaller, denser LDL particles and increased cardiovascular risk."
+      },
+      {
+        "question": "How do I compute AIP when TG and HDL are in mmol/L?",
+        "answer": "The ratio TG/HDL is unit-independent (it is a ratio), so AIP can be computed with mg/dL or mmol/L values; only the logarithmic transformation matters."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the atherogenic index of plasma (AIP), the logarithmically transformed ratio of triglycerides to HDL cholesterol, reflecting the balance of atherogenic and protective lipoproteins.",
     howToUse: [
@@ -6488,6 +6826,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "apob-apoa1-ratio": {
+    faq: [
+          {
+        "question": "Why is the ApoB:ApoA1 ratio used?",
+        "answer": "It reflects the balance between atherogenic and protective lipoproteins, and in epidemiological studies (e.g., INTERHEART, AMORIS) it has performed well as a cardiovascular risk marker."
+      },
+      {
+        "question": "What is the difference between ApoB and LDL?",
+        "answer": "LDL cholesterol measures cholesterol mass; ApoB counts the number of atherogenic particles (one per particle), which better captures risk from small, dense LDL and remnant particles."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the apolipoprotein B to apolipoprotein A1 ratio (ApoB:ApoA1), an index of the balance between atherogenic and anti-atherogenic lipoproteins used in cardiovascular risk assessment.",
     howToUse: [
@@ -6559,6 +6908,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "respiratory-compensation": {
+    faq: [
+          {
+        "question": "What does 'within ±2' mean for the expected HCO₃?",
+        "answer": "It means the measured bicarbonate should fall within roughly 2 mEq/L of the calculated expected value for the patient's PaCO₂ and disorder type. Larger deviations suggest a mixed acid–base disorder."
+      },
+      {
+        "question": "Why are the factors different for acute vs chronic disorders?",
+        "answer": "Acute changes rely mainly on cellular buffering, which raises HCO₃ modestly. With time, renal compensation becomes much more effective, so chronic respiratory acidosis and alkalosis produce larger changes in bicarbonate."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates the expected serum bicarbonate during acute or chronic respiratory acidosis and alkalosis using the Winters/Merck compensation rules, to identify appropriate compensation or a mixed acid–base disorder.",
     howToUse: [
@@ -6631,6 +6991,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "metabolic-alkalosis-compensation": {
+    faq: [
+          {
+        "question": "Why is the expected PaCO₂ capped?",
+        "answer": "The ventilatory response has an upper limit — PaCO₂ rarely exceeds ~55 mmHg in pure metabolic alkalosis even at very high bicarbonates — so the linear rule flattens at the extreme."
+      },
+      {
+        "question": "What does a PaCO₂ below expected suggest?",
+        "answer": "It suggests a coexisting respiratory alkalosis (e.g., pain, anxiety, hypoxemia, or over-breathing). A PaCO₂ well above expected suggests a coexisting respiratory acidosis."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the expected arterial PaCO₂ in metabolic alkalosis (PaCO₂ ≈ 40 + 0.6 × (HCO₃ − 24)) to assess whether respiratory compensation is appropriate or a concurrent respiratory disorder is present.",
     howToUse: [
@@ -6701,6 +7072,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "free-thyroxine-index": {
+    faq: [
+          {
+        "question": "How is FTI different from free T4?",
+        "answer": "Free T4 is a direct (or calculated) measure of unbound T4. FTI is an indirect index derived by multiplying total T4 by the T3 resin uptake, used when direct free T4 measurement is not available or binding-protein effects are confounding."
+      },
+      {
+        "question": "What causes the FTI to be falsely abnormal?",
+        "answer": "Abnormalities in thyroid hormone-binding proteins (pregnancy, estrogens, androgens, liver disease, nephrotic syndrome) and drugs (salicylates, phenytoin, heparin) can alter total T4 and T3 uptake, changing the FTI even when free hormone is normal."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the free thyroxine index (FTI or T7) from total T4 and the T3 resin uptake, an indirect estimate of free thyroid hormone used when direct free T4 assays are unavailable or binding-protein status is in question.",
     howToUse: [
@@ -6771,6 +7153,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "metabolic-syndrome-atp3": {
+    faq: [
+          {
+        "question": "How is metabolic syndrome diagnosed?",
+        "answer": "Any 3 of the 5 ATP III criteria (waist, triglycerides, HDL, blood pressure, glucose), with patients on drug treatment for any criterion counted as meeting that criterion."
+      },
+      {
+        "question": "What waist thresholds should I use?",
+        "answer": "The classic ATP III cutoffs are 102 cm (men) and 88 cm (women), or BMI ≥ 30 kg/m². Some population-specific guidelines use lower cutoffs (e.g., 90/80 cm for Asian populations)."
+      }
+
+  ],
     clinicalPurpose:
       "Assesses metabolic syndrome using the updated NCEP ATP III criteria, requiring at least 3 of 5 components: elevated waist circumference, elevated triglycerides (or treatment), reduced HDL (or treatment), elevated blood pressure (or treatment), and elevated fasting glucose (or treatment).",
     howToUse: [
@@ -6849,6 +7242,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "bishop-score": {
+    faq: [
+          {
+        "question": "What is a good Bishop score for induction?",
+        "answer": "A score of 8 or higher is traditionally considered favorable; a modified Bishop score of 6 or higher is often used as the threshold at which induction is likely to succeed."
+      },
+      {
+        "question": "What if the Bishop score is low?",
+        "answer": "A low score (unfavorable cervix) suggests cervical ripening is warranted before oxytocin, using pharmacologic agents or mechanical methods, then reassessment."
+      }
+
+  ],
     clinicalPurpose:
       "Scores cervical readiness for induction of labor (Bishop 1964) using dilatation, effacement, station, consistency, and position, summing to a total of 0–13 to predict the likelihood of successful induction and vaginal delivery.",
     howToUse: [
@@ -6922,6 +7326,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "biophysical-profile": {
+    faq: [
+          {
+        "question": "What does a BPP of 6 mean?",
+        "answer": "A score of 6 is equivocal. It is typically repeated within 24 hours; management depends on the indication for testing, gestational age, and the specific component(s) that were abnormal."
+      },
+      {
+        "question": "Why is amniotic fluid scored separately?",
+        "answer": "Amniotic fluid volume reflects chronic fetal status (weeks), while breathing, movement, tone, and the NST reflect acute status (minutes to hours)."
+      }
+
+  ],
     clinicalPurpose:
       "Scores fetal well-being using the biophysical profile (Manning 1980): fetal breathing, gross body movement, fetal tone, amniotic fluid volume, and the non-stress test, each scored 0 or 2 for a total of 0–10.",
     howToUse: [
@@ -6994,6 +7409,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "hellp-syndrome": {
+    faq: [
+          {
+        "question": "What is the difference between complete and partial HELLP?",
+        "answer": "Complete (classic) HELLP requires all three Tennessee criteria (hemolysis, AST ≥ 70, platelets < 100,000). Partial HELLP has one or two features; management is generally similar given the risk of progression."
+      },
+      {
+        "question": "Can HELLP occur without hypertension?",
+        "answer": "Yes — up to 15–20% of patients do not have significant hypertension or proteinuria at presentation, which contributes to misdiagnosis."
+      }
+
+  ],
     clinicalPurpose:
       "Assesses the HELLP syndrome using the Tennessee (Sibai) criteria: hemolysis (LDH ≥ 600 U/L or schistocytes/low haptoglobin), elevated liver enzymes (AST ≥ 70 U/L), and low platelets (< 100,000/µL); complete HELLP requires all three.",
     howToUse: [
@@ -7065,6 +7491,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "hadlock-efw": {
+    faq: [
+          {
+        "question": "How accurate is the Hadlock formula?",
+        "answer": "The 1 SD error is approximately 7.5% (roughly ±250 g near term). This means a computed EFW of 3000 g should be read as approximately 2775–3225 g."
+      },
+      {
+        "question": "Why are all four measurements required?",
+        "answer": "This calculator uses the four-parameter Hadlock model (BPD, HC, AC, FL), which has better accuracy than models using fewer measurements. Three-parameter and two-parameter variants exist but are less precise."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates fetal weight from the Hadlock four-parameter model (1985) using biparietal diameter, head circumference, abdominal circumference, and femur length, output as estimated fetal weight in grams.",
     howToUse: [
@@ -7136,6 +7573,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "preeclampsia-criteria": {
+    faq: [
+          {
+        "question": "Can preeclampsia be diagnosed without proteinuria?",
+        "answer": "Yes — new-onset hypertension plus any of thrombocytopenia, renal insufficiency, liver involvement, pulmonary edema, or cerebral/visual symptoms meets criteria even without proteinuria."
+      },
+      {
+        "question": "What counts as a severe feature?",
+        "answer": "SBP ≥ 160 or DBP ≥ 110; platelets < 100,000/µL; creatinine > 1.1 mg/dL or doubling; transaminases ≥ 2× ULN; pulmonary edema; new headache unresponsive to medication; and visual symptoms."
+      }
+
+  ],
     clinicalPurpose:
       "Assesses the ACOG (2020) diagnostic criteria for preeclampsia — new-onset hypertension after 20 weeks with proteinuria or end-organ dysfunction — and counts the number of severe features present to guide management and delivery timing.",
     howToUse: [
@@ -7207,6 +7655,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "gestational-weight-gain": {
+    faq: [
+          {
+        "question": "What BMI do I use?",
+        "answer": "The pre-pregnancy BMI (weight and height measured before conception or at the first prenatal visit) determines the recommended weight-gain range."
+      },
+      {
+        "question": "Do these ranges apply to twin pregnancy?",
+        "answer": "No. IOM 2009 also provides separate recommendations for twin gestations; this calculator applies to singleton pregnancies."
+      }
+
+  ],
     clinicalPurpose:
       "Provides the IOM/NRC 2009 recommended total gestational weight gain and second/third-trimester weekly rate based on pre-pregnancy BMI (underweight < 18.5, normal 18.5–24.9, overweight 25–29.9, obese ≥ 30).",
     howToUse: [
@@ -7275,6 +7734,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "magnesium-sulfate-preeclampsia": {
+    faq: [
+          {
+        "question": "What serum level is therapeutic?",
+        "answer": "Therapeutic serum magnesium is approximately 4.8–8.4 mg/dL (2–3.5 mEq/L). Levels above 10 mg/dL cause loss of deep tendon reflexes, and respiratory depression occurs near 12 mg/dL."
+      },
+      {
+        "question": "How long is magnesium continued?",
+        "answer": "Most protocols continue therapy for 24 hours after delivery (or 24 hours after the last seizure), after which it is discontinued if severe features have resolved."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the total 24-hour magnesium sulfate dose for seizure prophylaxis in preeclampsia with severe features or eclampsia from the IV loading dose (4–6 g) and maintenance infusion rate (1–2 g/h) per ACOG (2020).",
     howToUse: [
@@ -7351,6 +7821,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "ebl-obstetric": {
+    faq: [
+          {
+        "question": "Why use 85 mL/kg for blood volume?",
+        "answer": "Maternal blood volume expands during pregnancy to approximately 85 mL/kg (range 70–100 mL/kg). Using the non-pregnant ~70 mL/kg underestimates total blood volume and can overestimate proportional loss."
+      },
+      {
+        "question": "When is blood loss defined as postpartum hemorrhage?",
+        "answer": "ACOG defines PPH as cumulative blood loss ≥ 1000 mL, or bleeding with signs/symptoms of hypovolemia, within 24 hours after delivery — regardless of delivery route."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates obstetric blood loss by the gravimetric method (weighed sponges and drapes; 1 g ≈ 1 mL) or the hematocrit-based method (EBL = estimated blood volume × (pre-Hct − post-Hct)/pre-Hct, with a pregnancy blood volume of ~85 mL/kg).",
     howToUse: [
@@ -7423,6 +7904,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "epds": {
+    faq: [
+          {
+        "question": "What score indicates possible depression?",
+        "answer": "A total of 10 or higher is commonly used as the screen-positive cutoff; some settings use 13 or higher to increase specificity. Any score requires clinical judgment and follow-up."
+      },
+      {
+        "question": "What if the answer to item 10 is positive?",
+        "answer": "Item 10 asks about thoughts of self-harm. Any response other than 'Never' (score > 0) warrants immediate clinical assessment for safety."
+      }
+
+  ],
     clinicalPurpose:
       "Screens for postpartum (and antenatal) depression using the 10-item Edinburgh Postnatal Depression Scale (Cox 1987), each item scored 0–3 for a total of 0–30; a total ≥ 10 is screen-positive and any positive item-10 response requires urgent assessment.",
     howToUse: [
@@ -7682,6 +8174,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "pediatric-trauma-score": {
+    faq: [
+          {
+        "question": "What PTS threshold indicates the need for a trauma center?",
+        "answer": "A Pediatric Trauma Score below 8 is the standard threshold associated with a clinically significant risk of mortality and warrants transfer to a pediatric trauma center."
+      },
+      {
+        "question": "Why does the PTS use −1 for small children?",
+        "answer": "Infants and small children (< 10 kg) have less physiologic reserve and are more vulnerable to the same injuries, so the weighting accounts for their higher risk."
+      }
+
+  ],
     clinicalPurpose:
       "Scores the severity of pediatric trauma across six components — weight, airway, systolic blood pressure, mental status, open wounds, and skeletal injury — each scored +2, +1, or −1, for a total of −6 to +12 (Tepas 1988). Lower scores predict higher mortality and the need for pediatric trauma center care.",
     howToUse: [
@@ -7755,6 +8258,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "westley-croup-score": {
+    faq: [
+          {
+        "question": "When is nebulized epinephrine indicated?",
+        "answer": "Nebulized epinephrine is indicated for stridor at rest (moderate-to-severe croup). A single dose of dexamethasone should be given to essentially all children with croup."
+      },
+      {
+        "question": "How high does the score need to be before admission?",
+        "answer": "Persistent stridor at rest, hypoxemia, or a score in the moderate-to-severe range (3 or higher with concerning features, ≥ 8 for severe) generally warrant admission for observation and treatment."
+      }
+
+  ],
     clinicalPurpose:
       "Scores the severity of viral croup (laryngotracheobronchitis) using the five-component Westley scale (1978): level of consciousness, cyanosis, stridor, air entry, and chest-wall retractions, for a total of 0–17. Higher scores indicate more severe upper-airway obstruction.",
     howToUse: [
@@ -7827,6 +8341,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "pecarn-head-trauma": {
+    faq: [
+          {
+        "question": "What is 'clinically important' TBI in the PECARN rule?",
+        "answer": "Death, the need for neurosurgery, intubation for more than 24 hours, or traumatic brain injury with a hospital stay of 2 or more nights."
+      },
+      {
+        "question": "When is a CT definitely needed?",
+        "answer": "In general, CT is recommended for children with two or more PECARN predictors, any high-risk predictor with substantial clinical concern, or deterioration during observation. Children under 3 months with any scalp hematoma are also generally scanned."
+      }
+
+  ],
     clinicalPurpose:
       "Identifies children with minor blunt head trauma at very low risk of clinically important traumatic brain injury (ciTBI) using the age-specific PECARN decision rule (Kuppermann 2009) — separate predictor sets for children under 2 years and children 2 years and older.",
     howToUse: [
@@ -7901,6 +8426,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "rochester-criteria": {
+    faq: [
+          {
+        "question": "What temperature counts as a fever in a young infant?",
+        "answer": "A rectal temperature of 38.0 °C (100.4 °F) or higher. Axillary and tympanic readings are less reliable in young infants and should be confirmed rectally."
+      },
+      {
+        "question": "Can a 'low-risk' infant be sent home without tests?",
+        "answer": "No. Blood and urine cultures should be obtained before outpatient management is considered, and the infant needs close follow-up within 24 hours and clear return precautions."
+      }
+
+  ],
     clinicalPurpose:
       "Risk-stratifies febrile infants aged 0–60 days for serious bacterial infection using the Rochester criteria (Jaskiewicz 1994): term gestation, previously healthy, non-toxic appearance, no focal bacterial infection, WBC 5,000–15,000/µL, urinalysis < 10 WBC/HPF, and stool < 5 WBC/HPF when diarrhea is present.",
     howToUse: [
@@ -7983,6 +8519,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "gorelick-dehydration": {
+    faq: [
+          {
+        "question": "How many positive signs mean significant dehydration?",
+        "answer": "Three or more of the four signs (prolonged capillary refill, dry mucous membranes, absent tears, ill appearance) predict ≥ 5% dehydration, which usually warrants intravenous rehydration."
+      },
+      {
+        "question": "Can a child with 2 signs still be dehydrated?",
+        "answer": "Yes — the scale is a screening tool, not a perfect test. Weigh the child, track urine output, and combine the score with clinical judgment."
+      }
+
+  ],
     clinicalPurpose:
       "Predicts clinically important dehydration (≥ 5% of body weight) in children with gastroenteritis using the validated 4-item Gorelick scale (1997): capillary refill > 2 seconds, dry mucous membranes, absent tears, and ill/toxic appearance.",
     howToUse: [
@@ -8054,6 +8601,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "pediatric-hypotension": {
+    faq: [
+          {
+        "question": "What is the hypotension threshold for a 4-year-old?",
+        "answer": "70 + (2 × 4) = 78 mmHg. A systolic blood pressure below 78 mmHg in a 4-year-old is defined as hypotension by the PALS criteria."
+      },
+      {
+        "question": "Is a normal blood pressure enough to rule out shock?",
+        "answer": "No. Blood pressure is a late sign of shock; a child in compensated shock may have a normal blood pressure but abnormal perfusion, so assess capillary refill, pulses, urine output, and mental status as well."
+      }
+
+  ],
     clinicalPurpose:
       "Provides the age-based PALS 5th-percentile systolic blood pressure threshold for pediatric hypotension (< 60 mmHg in term newborns to 1 month; < 70 mmHg in infants 1–12 months; < 70 + 2 × age in years in children 1–10 years; < 90 mmHg beyond 10 years) and compares a measured systolic blood pressure against it.",
     howToUse: [
@@ -8124,6 +8682,17 @@ export const clinicalContentRegistry: Record<
   },
 
   "peds-pews": {
+    faq: [
+          {
+        "question": "When should I escalate with the PEWS?",
+        "answer": "A score of 3–4 warrants increased observation frequency and informing senior staff; a score of 5 or higher warrants urgent medical review. A score of 3 in any single domain should also prompt immediate senior involvement."
+      },
+      {
+        "question": "Does a low PEWS mean the child is safe?",
+        "answer": "No. PEWS is a monitoring adjunct; a child who appears unwell to an experienced clinician should be escalated regardless of the score."
+      }
+
+  ],
     clinicalPurpose:
       "Scores the risk of clinical deterioration on pediatric wards using the Brighton Pediatric Early Warning Score (Monaghan 2005): Behavior, Cardiovascular, and Respiratory domains (each 0–3) plus 1 point for persistent parent or staff concern, for a total of 0–10.",
     howToUse: [
@@ -10542,6 +11111,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "free-water-deficit": {
+    faq: [
+          {
+        "question": "How is the free water deficit calculated?",
+        "answer": "The free water deficit is calculated as: TBW × (Current Na / Target Na − 1), where TBW is estimated as 0.6 × body weight (men) or 0.5 × body weight (women). This gives the total liters of free water needed."
+      },
+      {
+        "question": "How fast should I correct hypernatremia?",
+        "answer": "Correct hypernatremia slowly—no more than 0.5 mmol/L per hour or 10–12 mmol/L per 24 hours. Faster correction risks cerebral edema as water shifts into brain cells."
+      },
+      {
+        "question": "Should I use D5W or hypotonic saline?",
+        "answer": "D5W (which becomes free water after glucose metabolism) or hypotonic saline (0.45% NaCl) are commonly used. The choice depends on the patient's volume status—hypotonic saline for hypovolemic hypernatremia, D5W for euvolemic or hypervolemic patients."
+      },
+      {
+        "question": "What if the patient has ongoing losses?",
+        "answer": "Add estimated ongoing losses (GI losses, urinary output) to the calculated deficit. Ongoing losses must be replaced in addition to the free water deficit."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates the free water deficit in a patient with hypernatremia — the approximate volume of free water needed to bring the serum sodium from its current value down to a chosen target — using total body water estimated as 0.6 × body weight.",
     howToUse: [
@@ -10815,6 +11403,21 @@ export const clinicalContentRegistry: Record<
   },
 
   "adrenal-steroid-converter": {
+    faq: [
+          {
+        "question": "How do I convert prednisone to dexamethasone?",
+        "answer": "Prednisone 5 mg is approximately equivalent to dexamethasone 0.75 mg. Divide the prednisone dose by approximately 6.67 to get the dexamethasone equivalent."
+      },
+      {
+        "question": "Why is hydrocortisone used for adrenal insufficiency?",
+        "answer": "Hydrocortisone has both glucocorticoid and mineralocorticoid activity, making it the preferred replacement in adrenal insufficiency when given in divided doses to mimic physiological cortisol rhythm."
+      },
+      {
+        "question": "Are steroid equivalences exact?",
+        "answer": "No. These are approximations based on anti-inflammatory potency. Individual patient response varies based on metabolism, comorbidities, and the specific clinical condition."
+      }
+
+  ],
     clinicalPurpose:
       "Converts a dose of one glucocorticoid into its approximate prednisone-equivalent dose using standard anti-inflammatory potency equivalence factors, to support comparing doses across glucocorticoids.",
     howToUse: [
@@ -10870,6 +11473,21 @@ export const clinicalContentRegistry: Record<
   },
 
   "levothyroxine-dose": {
+    faq: [
+          {
+        "question": "What is the difference between Thyroid Dose and Levothyroxine Dose calculators?",
+        "answer": "Both use the same 1.6 µg/kg/day formula. Thyroid Dose provides the estimate, while Levothyroxine Dose includes clinical guidance on titration, cardiac precautions, and pregnancy adjustments."
+      },
+      {
+        "question": "How quickly can levothyroxine dose be increased?",
+        "answer": "In healthy patients, dose can be titrated every 6–8 weeks. In elderly or cardiac patients, increase more slowly (every 6–12 weeks)."
+      },
+      {
+        "question": "Does levothyroxine need to be taken on an empty stomach?",
+        "answer": "Yes. Take 30–60 minutes before breakfast with water only. Separate from calcium, iron supplements, and PPIs."
+      }
+
+  ],
     clinicalPurpose:
       "Estimates a weight-based levothyroxine dose (≈1.6 µg/kg/day) using the calculator's implemented equation, illustrating the weight-based reference point used when starting levothyroxine replacement.",
     howToUse: [
@@ -10931,6 +11549,29 @@ export const clinicalContentRegistry: Record<
     },
   },
   "alvarado-score": {
+    faq: [
+          {
+        "question": "What is the Alvarado score?",
+        "answer": "The Alvarado score (MANTRELS) is a clinical scoring system that estimates the probability of acute appendicitis based on 8 clinical and laboratory parameters: Migration of pain, Anorexia, Nausea/vomiting, Tenderness in the right lower quadrant, Rebound pain, Fever, Leukocytosis, and left Shift (neutrophilia)."
+      },
+      {
+        "question": "What does a score of 7 or higher mean?",
+        "answer": "A score of 7–8 is considered high probability for appendicitis and strongly supports surgical consultation and consideration for appendectomy. A score of 9–10 is very high probability."
+      },
+      {
+        "question": "Can appendicitis be present with a low score?",
+        "answer": "Yes. The Alvarado score has a sensitivity of approximately 75–95% depending on the study. A low score does not definitively exclude appendicitis, particularly in atypical populations (elderly, pregnant women, young children)."
+      },
+      {
+        "question": "How does the Alvarado score compare to CT imaging?",
+        "answer": "CT imaging has higher sensitivity and specificity than the Alvarado score for appendicitis. The Alvarado score is a clinical screening tool that helps determine which patients should proceed to imaging. CT is the gold standard for definitive diagnosis."
+      },
+      {
+        "question": "Is the Alvarado score reliable in children?",
+        "answer": "The Alvarado score has been validated in pediatric populations but may be less reliable in very young children. The Pediatric Appendicitis Score (PAS) is an alternative specifically designed for children."
+      }
+
+  ],
     clinicalPurpose:
       "Risk-stratifies patients with suspected acute appendicitis using the Alvarado (MANTRELS) scoring system to assist clinical decision-making regarding imaging, observation, and surgical consultation.",
     howToUse: [
@@ -11002,6 +11643,29 @@ export const clinicalContentRegistry: Record<
     },
   },
   "corrected-magnesium": {
+    faq: [
+          {
+        "question": "Why should I correct magnesium for albumin?",
+        "answer": "About 25–30% of serum magnesium is bound to albumin. When albumin is low (hypoalbuminemia), measured total magnesium appears falsely low even though ionized magnesium may be normal. The correction estimates what total magnesium would be at a normal albumin of 40 g/L."
+      },
+      {
+        "question": "What does a corrected magnesium below normal mean?",
+        "answer": "A corrected magnesium below 0.75 mmol/L suggests true hypomagnesemia. Common causes include gastrointestinal losses (vomiting, diarrhea), renal wasting (diuretics), malnutrition, alcohol use disorder, and critical illness. Hypomagnesemia can cause cardiac arrhythmias, seizures, and refractory hypokalemia."
+      },
+      {
+        "question": "Is ionized magnesium better than corrected magnesium?",
+        "answer": "Yes. Ionized (free) magnesium directly measures the biologically active fraction and is not affected by albumin. However, ionized magnesium assays require specialized analyzers that are not available in all clinical settings. The corrected magnesium is a practical alternative."
+      },
+      {
+        "question": "How does this differ from corrected calcium?",
+        "answer": "Both correct for albumin-binding effects, but they use different coefficients. Calcium uses 0.8 (g/dL units) because ~40–50% of calcium binds to albumin. Magnesium uses 0.005 (g/L units) because only ~25–30% binds to albumin. They are distinct analytes with distinct clinical implications."
+      },
+      {
+        "question": "When should I NOT use this correction?",
+        "answer": "Avoid using this correction in neonates (different binding dynamics), when ionized magnesium testing is available and reliable, or when acid-base disturbances or hyperphosphatemia are present (these alter magnesium binding independently of albumin)."
+      }
+
+  ],
     clinicalPurpose:
       "Adjusts measured serum magnesium for hypoalbuminemia. When serum albumin is low, measured total magnesium is falsely reduced because less magnesium is bound to proteins.",
     howToUse: [
@@ -11066,6 +11730,29 @@ export const clinicalContentRegistry: Record<
     },
   },
   "kdigo-aki-staging": {
+    faq: [
+          {
+        "question": "What is KDIGO AKI staging?",
+        "answer": "KDIGO AKI staging is an international classification system for acute kidney injury severity. It uses serum creatinine changes and urine output measurements to assign stages 1–3, with Stage 3 being the most severe."
+      },
+      {
+        "question": "How is the AKI stage determined when both creatinine and urine output criteria are met?",
+        "answer": "The highest applicable stage is assigned. For example, if creatinine criteria meet Stage 1 but urine output criteria meet Stage 2, the final stage is Stage 2."
+      },
+      {
+        "question": "What if I don't have a baseline creatinine?",
+        "answer": "If no baseline creatinine is available, use the lowest creatinine value from the preceding 7 days, or estimate baseline using the MDRD or CKD-EPI equation assuming normal kidney function. Clinical judgment is essential."
+      },
+      {
+        "question": "Does AKI staging include the cause of kidney injury?",
+        "answer": "No. KDIGO staging classifies severity but does not distinguish between prerenal, intrarenal (structural), or postrenal causes. The underlying etiology must be determined separately."
+      },
+      {
+        "question": "How does KDIGO differ from RIFLE and AKIN?",
+        "answer": "KDIGO is the most current standard (2012) and incorporates elements of both RIFLE (2004) and AKIN (2007). KDIGO uses both creatinine and urine output criteria, defines AKI based on changes within 48 hours or 7 days, and is the recommended classification in current clinical practice."
+      }
+
+  ],
     clinicalPurpose:
       "Classifies acute kidney injury (AKI) severity using the KDIGO 2012 criteria based on serum creatinine changes and urine output.",
     howToUse: [
@@ -11128,6 +11815,29 @@ export const clinicalContentRegistry: Record<
     },
   },
   "saag": {
+    faq: [
+          {
+        "question": "What is SAAG and how is it calculated?",
+        "answer": "SAAG (Serum-Ascites Albumin Gradient) is the difference between serum albumin and ascitic fluid albumin, both measured in g/dL. It is calculated as: SAAG = Serum albumin − Ascites albumin."
+      },
+      {
+        "question": "What does a SAAG ≥1.1 g/dL mean?",
+        "answer": "A SAAG ≥1.1 g/dL indicates that portal hypertension is the cause of ascites. Common causes include liver cirrhosis, congestive heart failure, and Budd-Chiari syndrome. The gradient is maintained because the elevated hydrostatic pressure in the portal system forces albumin-rich fluid into the peritoneal cavity."
+      },
+      {
+        "question": "What does a SAAG <1.1 g/dL mean?",
+        "answer": "A SAAG <1.1 g/dL indicates non-portal hypertensive causes of ascites, such as peritoneal carcinomatosis, tuberculosis, nephrotic syndrome, or pancreatic ascites. These conditions cause ascites through mechanisms other than elevated portal pressure."
+      },
+      {
+        "question": "When should SAAG not be used?",
+        "answer": "SAAG may be unreliable in mixed ascites (e.g., cirrhosis with concurrent cancer), severe hypoalbuminemia (serum albumin <2.8 g/dL), or when serum and ascitic fluid samples are not collected simultaneously."
+      },
+      {
+        "question": "How does SAAG compare to the transudate/exudate classification?",
+        "answer": "SAAG is superior to the traditional transudate/exudate classification (based on ascitic fluid protein) for classifying ascites. SAAG correctly classifies >90% of ascites, while the protein-based method misclassifies up to 20-30% of cases due to the confounding effect of serum albumin."
+      }
+
+  ],
     clinicalPurpose:
       "Calculates the Serum-Ascites Albumin Gradient (SAAG) to classify ascites as portal hypertensive (SAAG ≥1.1 g/dL) or non-portal hypertensive (SAAG <1.1 g/dL). This is the first-line diagnostic tool for ascites workup.",
     howToUse: [
@@ -11195,6 +11905,29 @@ export const clinicalContentRegistry: Record<
     },
   },
   "rumack-matthew": {
+    faq: [
+          {
+        "question": "What is the Rumack-Matthew nomogram?",
+        "answer": "The Rumack-Matthew nomogram is a graphical tool that plots serum acetaminophen concentration against time since ingestion. A treatment line defines the threshold above which N-acetylcysteine (NAC) treatment is recommended to prevent hepatotoxicity."
+      },
+      {
+        "question": "When is the nomogram applicable?",
+        "answer": "The nomogram is applicable ONLY for a single acute ingestion (one time ingestion) with a KNOWN time of ingestion. It is valid for serum levels obtained 4 to 24 hours after ingestion. It does NOT apply to repeated ingestions, chronic use, or staggered ingestions."
+      },
+      {
+        "question": "What if the time of ingestion is unknown?",
+        "answer": "If the time of ingestion is unknown, the nomogram cannot be used. In this case, obtain acetaminophen level, hepatic function tests (AST, ALT, INR), and renal function. Treat with NAC if there is any concern for toxicity, and consult toxicology."
+      },
+      {
+        "question": "What if the level is obtained before 4 hours?",
+        "answer": "Levels obtained before 4 hours post-ingestion may not have peaked and are unreliable for ruling out toxicity. Repeat the level at 4 hours or later. If there is clinical concern, start NAC and recheck."
+      },
+      {
+        "question": "Does this nomogram apply to sustained-release acetaminophen?",
+        "answer": "The nomogram is not validated for sustained-release formulations. For sustained-release ingestion, consider prolonged monitoring and consult toxicology, as peak levels may be delayed."
+      }
+
+  ],
     clinicalPurpose:
       "Determines whether N-acetylcysteine (NAC) treatment is indicated following a single acute acetaminophen ingestion, based on the serum acetaminophen concentration and time since ingestion.",
     howToUse: [
@@ -11264,6 +11997,29 @@ export const clinicalContentRegistry: Record<
     },
   },
   "bode-index": {
+    faq: [
+          {
+        "question": "What does the BODE Index measure?",
+        "answer": "The BODE Index is a composite score (0–10) that combines four validated predictors of mortality in COPD: Body mass index (B), airflow Obstruction (O, measured by FEV1 % predicted), Dyspnea (D, measured by mMRC scale), and Exercise capacity (E, measured by 6-minute walk distance)."
+      },
+      {
+        "question": "What does a high BODE score mean?",
+        "answer": "A higher BODE score indicates worse prognosis. Scores 0–2 have ~10% 4-year mortality, while scores 7–10 have ~80% 4-year mortality. Scores ≥7 should prompt consideration of lung transplant referral and advanced care planning."
+      },
+      {
+        "question": "How often should BODE be reassessed?",
+        "answer": "BODE should be reassessed at least annually in stable COPD patients, and more frequently (every 3–6 months) in patients with moderate-to-severe disease or during exacerbation recovery."
+      },
+      {
+        "question": "Can BODE Index guide lung transplant decisions?",
+        "answer": "Yes. A BODE score ≥7 is associated with very high mortality and is one indicator for lung transplant referral. However, transplant decisions involve multiple factors including comorbidities, functional status, and patient preferences."
+      },
+      {
+        "question": "Is BODE Index validated for all COPD patients?",
+        "answer": "BODE was validated in stable COPD patients. It may be less reliable during acute exacerbations, in very elderly patients, or in patients with significant comorbidities affecting exercise capacity."
+      }
+
+  ],
     clinicalPurpose:
       "Multidimensional prognostic index for COPD based on Body mass index, airflow Obstruction, Dyspnea, and Exercise capacity. Predicts mortality and guides treatment decisions including transplant evaluation.",
     howToUse: [
@@ -11334,6 +12090,29 @@ export const clinicalContentRegistry: Record<
     },
   },
   "albi-score": {
+    faq: [
+          {
+        "question": "What is the ALBI score?",
+        "answer": "The ALBI (Albumin-Bilirubin) score is an objective prognostic tool for assessing liver function using only serum albumin and bilirubin. It was developed as a more reproducible alternative to the Child-Pugh score, eliminating subjective components like ascites and encephalopathy grading."
+      },
+      {
+        "question": "What are the ALBI grades?",
+        "answer": "ALBI Grade I (≤ −2.60): Best prognosis, ~25% 1-year mortality. ALBI Grade II (−2.60 to −1.39): Intermediate prognosis, ~50% 1-year mortality. ALBI Grade III (> −1.39): Worst prognosis, ~75% 1-year mortality. These were derived from HCC patient cohorts."
+      },
+      {
+        "question": "How does ALBI compare to Child-Pugh?",
+        "answer": "ALBI uses only two objective lab values (albumin and bilirubin), while Child-Pugh includes subjective components (ascites, encephalopathy, nutritional status). ALBI is more reproducible and has been shown to predict outcomes similarly or better than Child-Pugh in HCC patients."
+      },
+      {
+        "question": "Can ALBI be used for non-HCC liver disease?",
+        "answer": "ALBI was primarily validated in HCC patients. While it may provide useful prognostic information in other liver diseases (cirrhosis, hepatitis), its use outside HCC should be interpreted with caution as it has not been as extensively validated in these populations."
+      },
+      {
+        "question": "What units does the ALBI formula use?",
+        "answer": "The ALBI formula uses bilirubin in µmol/L (SI units; multiply mg/dL by 17.1 to convert) and albumin in g/L (multiply g/dL by 10 to convert)."
+      }
+
+  ],
     clinicalPurpose:
       "Objective prognostic assessment of liver function using serum albumin and bilirubin. Primarily validated in hepatocellular carcinoma (HCC) for stratifying prognosis and guiding treatment decisions.",
     howToUse: [

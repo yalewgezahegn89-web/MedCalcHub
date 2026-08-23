@@ -98,50 +98,13 @@ export const stopBangCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Score one point for each item; the total ranges 0–8.",
-      "A score of 3–4 (intermediate) or 5–8 (high) warrants objective testing (polysomnography or home sleep apnea test) in appropriate clinical settings.",
-      "A score < 3 can help rule out moderate-to-severe OSA, particularly in preoperative screening.",
-    ],
-    warnings: [
-      "Screening positive does not diagnose OSA — confirm with objective testing.",
-      "Screening negative does not exclude mild OSA or central sleep apnea.",
-      "The STOP-BANG was validated largely in surgical and sleep-clinic populations; use clinical judgment in other settings.",
-    ],
-    followUp: [
-      "Arrange diagnostic sleep testing for intermediate- or high-risk patients when clinically indicated.",
-      "Re-screen after weight change or changes in risk factors.",
-    ],
-  },
+
 
   clinicalNotes:
     "The STOP-BANG questionnaire was introduced by Chung and colleagues in 2008 for preoperative OSA screening and expanded in 2012. Four STOP items (Snoring, Tiredness, Observed apnea, high blood Pressure) are derived from history, and four BANG items (BMI > 35 kg/m², Age > 50 years, Neck circumference > 40 cm, male Gender) from physical examination. At a threshold of ≥ 3, the score is 93.1% sensitive for moderate OSA and 100% sensitive for severe OSA, making it an effective rule-out tool, though its specificity is lower. Scores of 5–8 are associated with a markedly increased probability of moderate-to-severe OSA.",
-  evidence: {
-    source: "Original description and 2012 large-cohort validation",
-    reference:
-      "Chung F, Abdullah HR, Liao P. STOP-Bang questionnaire: a practical approach to screen for obstructive sleep apnea. Chest. 2016;149(3):631-638.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Chung F, Yegneswaran B, Liao P, et al. STOP questionnaire: a tool to screen patients for obstructive sleep apnea. Anesthesiology. 2008;108(5):812-821.",
-      "Chung F, Subramanyam R, Liao P, Sasaki E, Shapiro C, Sun Y. High STOP-Bang score indicates a high probability of obstructive sleep apnoea. Br J Anaesth. 2012;108(5):768-775.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does a STOP-BANG score of 3 mean?",
-      answer:
-        "A score of 3–4 indicates an intermediate probability and 5–8 a high probability of obstructive sleep apnea. A score of 3 or more is highly sensitive for moderate and severe OSA and should prompt objective testing when clinically indicated.",
-    },
-    {
-      question: "Can a low STOP-BANG score rule out sleep apnea?",
-      answer:
-        "A score below 3 has a strong negative predictive value and can help rule out moderate-to-severe OSA, but it does not exclude mild OSA or other sleep disorders.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Sleep-disordered breathing screening",

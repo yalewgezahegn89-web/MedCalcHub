@@ -96,51 +96,14 @@ export const atherogenicIndexPlasmaCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use fasting triglycerides and HDL cholesterol measured on the same sample.",
-      "AIP < 0.11 indicates low atherogenic risk; > 0.21 indicates high risk in the Dobiásová classification.",
-      "Higher AIP correlates with smaller, denser LDL particles and higher cardiovascular risk.",
-    ],
-    warnings: [
-      "The categorical cutoffs (0.11 / 0.21) derive from the original Dobiásová work and are not a universal clinical standard.",
-      "Non-fasting samples and high dietary fat intake inflate triglycerides and raise AIP.",
-      "AIP is an adjunct marker; use it alongside LDL, non-HDL cholesterol, and global risk scores.",
-    ],
-    followUp: [
-      "For elevated AIP, address triglycerides (lifestyle, weight, alcohol, glycemic control) and reassess with a fasting panel.",
-      "Incorporate the result into the full dyslipidemia and cardiovascular risk evaluation.",
-    ],
-  },
+
 
   clinicalNotes:
     "The atherogenic index of plasma (log10 TG/HDL) was introduced by Dobiásová and colleagues. It correlates with LDL particle size and is used as a research and clinical marker of atherogenic risk.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Dobiásová M, Frohlich J. The plasma parameter log (TG/HDL-C) as an atherogenic index: correlation with lipoprotein particle size and esterification rate in apoB-lipoprotein-depleted plasma (FERHDL). Clin Biochem. 2001;34(7):583-588.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Dobiásová M, Frohlich J. Clin Biochem. 2001;34(7):583-588.",
-      "Dobiásová M. Atherogenic index of plasma [log(triglycerides/HDL-cholesterol)]: theoretical and practical implications. Clin Chem. 2004;50(7):1113-1115.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "What does the AIP actually measure?",
-      answer:
-        "AIP reflects the balance between atherogenic triglyceride-rich lipoproteins and protective HDL. Higher values correlate with smaller, denser LDL particles and increased cardiovascular risk.",
-    },
-    {
-      question: "How do I compute AIP when TG and HDL are in mmol/L?",
-      answer:
-        "The ratio TG/HDL is unit-independent (it is a ratio), so AIP can be computed with mg/dL or mmol/L values; only the logarithmic transformation matters.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

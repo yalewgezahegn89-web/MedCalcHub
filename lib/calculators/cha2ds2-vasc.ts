@@ -49,18 +49,14 @@ export const cha2ds2VascCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "CHA₂DS₂-VASc estimates annual ischemic stroke risk in non-valvular AF. Per 2019 AHA/ACC/HRS and 2020 ESC guidelines, oral anticoagulation is recommended for men with score ≥2 and women with score ≥3. Men with score 1 and women with score 2 may be considered for anticoagulation based on net clinical benefit.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

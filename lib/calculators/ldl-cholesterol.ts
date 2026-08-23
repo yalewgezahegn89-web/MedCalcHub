@@ -121,57 +121,14 @@ export const ldlCholesterolCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Use a fasting lipid panel for the Friedewald equation; non-fasting samples overestimate triglycerides.",
-      "The Friedewald equation is not valid when triglycerides are ≥ 400 mg/dL, in chylomicronemia, or in Type III hyperlipoproteinemia.",
-      "Treatment targets follow overall ASCVD risk (e.g., very high risk: LDL < 70 mg/dL); ATP III categories describe population cut-points, not individual targets.",
-    ],
-    warnings: [
-      "Direct (measured) LDL or apolipoprotein B should be used when triglycerides are elevated or when a more accurate particle estimate is needed.",
-      "The equation is less reliable at very low LDL and at very high triglycerides.",
-      "Interpret with clinical context; the same LDL value carries different risk in different patients.",
-    ],
-    followUp: [
-      "If LDL is above the patient's risk-based target, address lifestyle factors and reassess.",
-      "For confirmed high LDL with elevated triglycerides, check non-HDL cholesterol.",
-      "Repeat a fasting lipid panel to confirm before starting or escalating lipid-lowering therapy.",
-    ],
-  },
+
 
   clinicalNotes:
     "The Friedewald equation assumes VLDL cholesterol is approximately triglycerides/5 (mg/dL). It answers a distinct laboratory question from non-HDL cholesterol, which captures all apolipoprotein B-containing lipoproteins.",
 
-  evidence: {
-    source: "Original derivation (peer-reviewed)",
-    reference:
-      "Friedewald WT, Levy RI, Fredrickson DS. Estimation of the concentration of low-density lipoprotein cholesterol in plasma, without use of the preparative ultracentrifuge. Clin Chem. 1972;18(6):499-502.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Friedewald WT, et al. Clin Chem. 1972;18(6):499-502.",
-      "Expert Panel on Detection, Evaluation, and Treatment of High Blood Cholesterol in Adults (ATP III). JAMA. 2001;285:2486-2497.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "When is the Friedewald equation invalid?",
-      answer:
-        "The equation is not valid when triglycerides are ≥ 400 mg/dL, in chylomicronemia, and in Type III hyperlipoproteinemia. Direct LDL measurement or a non-HDL cholesterol assessment should be used instead.",
-    },
-    {
-      question: "Can I use a non-fasting sample?",
-      answer:
-        "The Friedewald equation was derived from fasting samples. Non-fasting samples have higher triglycerides, which can underestimate calculated LDL. Non-fasting samples should not be used for this estimate.",
-    },
-    {
-      question: "How is calculated LDL different from non-HDL cholesterol?",
-      answer:
-        "LDL estimates the cholesterol carried in LDL particles specifically, while non-HDL (total minus HDL) captures all atherogenic apolipoprotein B-containing particles, including VLDL and remnant lipoproteins.",
-    },
-  ],
+
+
 
   comparison: undefined,
 

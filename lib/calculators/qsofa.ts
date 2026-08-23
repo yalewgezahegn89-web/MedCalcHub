@@ -31,18 +31,14 @@ export const qsofaCalculator: CalculatorDefinition = {
 
   referenceRanges: [],
 
-  clinicalGuidance: {
-    advice: [],
-    warnings: [],
-    followUp: [],
-  },
+
 
   clinicalNotes:
     "qSOFA (quick SOFA) uses three bedside criteria to identify adults with suspected infection who are likely to have poor outcomes. A score ≥ 2 identifies patients at greater risk of death or prolonged ICU stay.",
 
-  evidence: undefined,
 
-  faq: undefined,
+
+
 
   comparison: undefined,
 

@@ -88,35 +88,9 @@ export const bmiForPediatricsCalculator: CalculatorDefinition = {
   clinicalNotes:
     "Pediatric BMI is interpreted using age- and sex-specific CDC BMI-for-age percentiles (ages 2–20 years). Unlike adult BMI, a raw BMI value cannot be interpreted without knowing the child's age and sex.",
 
-  clinicalGuidance: {
-    advice: [
-      "Pediatric BMI should be interpreted using age- and sex-specific CDC percentiles.",
-      "BMI-for-age percentiles are appropriate for children aged 2–20 years.",
-      "Use the CDC growth charts (2000) as the reference standard.",
-    ],
-    warnings: [
-      "BMI-for-age percentiles are not valid for children under 2 years.",
-      "BMI does not distinguish between fat and muscle mass.",
-      "Clinical assessment should also consider growth velocity, pubertal stage, and family history.",
-    ],
-    followUp: [
-      "For children with BMI ≥95th percentile, evaluate for comorbidities and consider referral.",
-      "For children with BMI <5th percentile, evaluate for underlying conditions and nutritional status.",
-    ],
-  },
 
-  evidence: {
-    source: "CDC Growth Charts",
-    reference:
-      "Kuczmarski RJ, Ogden CL, Guo SS, et al. 2000 CDC Growth Charts for the United States: Methods and Development. Vital Health Stat 11. 2002;(246):1-190.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "2000",
-    updatedAt: "2026-08",
-    references: [
-      "Kuczmarski RJ, et al. Vital Health Stat 11. 2002;(246):1-190.",
-      "CDC National Center for Health Statistics: CDC Growth Charts.",
-    ],
-  },
+
+
 
   inputs: [
     {

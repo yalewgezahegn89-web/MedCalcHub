@@ -30,10 +30,7 @@ export const maddreyCalculator: CalculatorDefinition = {
     "Hepatology",
   ],
 
-  warnings: [
-    "Use only in patients with suspected alcoholic hepatitis.",
-    "Interpret together with the complete clinical assessment.",
-  ],
+
 
   formula:
     "4.6 × (Patient PT − Control PT) + Total Bilirubin",

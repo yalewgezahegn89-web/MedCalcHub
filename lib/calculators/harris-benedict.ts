@@ -42,9 +42,7 @@ export const harrisBenedictCalculator: CalculatorDefinition = {
     "Clinical nutrition references",
   ],
 
-  warnings: [
-    "This estimate is not a substitute for individualized metabolic assessment.",
-  ],
+
 
   keywords: [
     "Harris-Benedict",

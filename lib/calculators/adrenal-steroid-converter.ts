@@ -43,18 +43,14 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
   }
 ],
 
-  clinicalGuidance: {
-    advice: ["Use equivalent doses when switching between glucocorticoids to avoid under- or over-treatment.","Biological half-life matters: dexamethasone and betamethasone are long-acting and carry higher risk of HPA axis suppression.","When transitioning to hydrocortisone for adrenal insufficiency, consider physiological cortisol rhythm (higher morning dose)."],
-    warnings: ["These are approximate equivalences; individual patient response may vary.","Conversion does not account for mineralocorticoid activity (hydrocortisone has significant mineralocorticoid effect; dexamethasone has none).","Long-term steroid use at any dose increases risk of osteoporosis, diabetes, and infections."],
-    followUp: ["Monitor blood glucose, bone density, and blood pressure during prolonged glucocorticoid therapy.","When tapering, reduce gradually to allow HPA axis recovery.","Consider steroid-sparing agents in autoimmune or inflammatory conditions."],
-  },
+
 
   clinicalNotes:
     "Interpret results together with the patient's clinical presentation.",
 
-  evidence: {"source":"Endocrine Society","reference":"Liu MM, Rebholz AE, et al. Equivalent glucocorticoid dose conversion: a review. J Endocrinol Invest. 2021;44:1–11. Stavros K, et al. Glucocorticoid equivalency. Endocr Pract. 2022;28:1001–1008.","reviewedBy":"MedCalcHub Clinical Team","version":"1.0","updatedAt":"2026-08","references":["Liu MM, et al. J Endocrinol Invest. 2021.","Stavros K, et al. Endocr Pract. 2022;28:1001–1008.","Endocrine Society Clinical Practice Guidelines."]},
 
-  faq: [{"question":"How do I convert prednisone to dexamethasone?","answer":"Prednisone 5 mg is approximately equivalent to dexamethasone 0.75 mg. Divide the prednisone dose by approximately 6.67 to get the dexamethasone equivalent."},{"question":"Why is hydrocortisone used for adrenal insufficiency?","answer":"Hydrocortisone has both glucocorticoid and mineralocorticoid activity, making it the preferred replacement in adrenal insufficiency when given in divided doses to mimic physiological cortisol rhythm."},{"question":"Are steroid equivalences exact?","answer":"No. These are approximations based on anti-inflammatory potency. Individual patient response varies based on metabolism, comorbidities, and the specific clinical condition."}],
+
+
 
   comparison: {"title":"Steroid Conversion Reference","calculators":[{"name":"Adrenal Steroid Converter","href":"/calculators/adrenal-steroid-converter","bestFor":"Converting between equivalent steroid doses.","limitation":"Approximate equivalences only."}]},
 

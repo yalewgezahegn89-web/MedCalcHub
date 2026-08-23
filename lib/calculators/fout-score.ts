@@ -114,50 +114,13 @@ export const foutScoreCalculator: CalculatorDefinition = {
     },
   ],
 
-  clinicalGuidance: {
-    advice: [
-      "Assess each of the four components at the patient's best response and sum to a total of 0–16.",
-      "For the motor component, give a thumbs-up, fist, or peace sign to test command following.",
-      "The brainstem component examines pupillary and corneal reflexes; the respiration component documents the breathing pattern or ventilator interaction.",
-    ],
-    warnings: [
-      "Unlike the GCS, the FOUR score does not have a verbal component, so it remains testable in intubated patients.",
-      "Sedation, neuromuscular blockade, and systemic illness can confound the motor and respiratory components.",
-      "A very low total (0–4) is associated with high in-hospital mortality but is not by itself a basis for limiting care.",
-    ],
-    followUp: [
-      "Repeat scoring over time; a declining score warrants urgent reassessment of the cause of coma.",
-      "Combine with neuroimaging and neurophysiologic testing when considering prognosis.",
-    ],
-  },
+
 
   clinicalNotes:
     "The FOUR score was introduced by Wijdicks and colleagues (Neurology 2005) as an alternative to the Glasgow Coma Scale for patients with impaired consciousness. It grades eye response (from open with tracking or blinking to command, down to remain closed to pain), motor response (from command following such as thumbs-up, fist, or peace sign, down to no response or myoclonus status), brainstem reflexes (pupillary, corneal, and cough), and respiration (regular, Cheyne-Stokes, irregular, or dependent on/absent above the ventilator rate). The total ranges from 0 to 16, with lower scores associated with higher in-hospital mortality, and it avoids the GCS limitation of untestable verbal items in intubated patients.",
-  evidence: {
-    source: "Original description and validation (Neurology 2005)",
-    reference:
-      "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
-    reviewedBy: "MedCalcHub Clinical Team",
-    version: "1.0",
-    updatedAt: "2026-08",
-    references: [
-      "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
-      "Wijdicks EFM. The bare essentials: coma. Pract Neurol. 2010;10(1):51-60.",
-    ],
-  },
 
-  faq: [
-    {
-      question: "Why use the FOUR score instead of the GCS?",
-      answer:
-        "The FOUR score includes brainstem and respiration items and removes the verbal component, making it usable in intubated patients while capturing more prognostic information.",
-    },
-    {
-      question: "What FOUR score predicts high mortality?",
-      answer:
-        "Scores of 0–4 are associated with the highest in-hospital mortality in validation studies; the score should be interpreted together with the cause of coma.",
-    },
-  ],
+
+
 
   comparison: {
     title: "Coma and consciousness assessment",
