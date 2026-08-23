@@ -12,6 +12,7 @@ import {
   getCategoriesForSpecialty,
   taxonomyToSlug,
 } from "@/lib/seo/taxonomy-content";
+import { buildCollectionJsonLd } from "@/lib/seo/jsonld";
 import { AdSlot } from "@/components/ads";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
@@ -117,47 +118,24 @@ export default async function SpecialtyPage({
   const specialtyUrl =
     `${SITE_URL}/specialties/${slug}`;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
+  const jsonLd = buildCollectionJsonLd({
+    name: `${specialty} Medical Calculators`,
+    description:
+      description ??
+      `${specialty} medical calculators for healthcare professionals.`,
+    path: `/specialties/${slug}`,
+    breadcrumb: [
       {
-        "@type": "CollectionPage",
-        name: `${specialty} Medical Calculators`,
-        description:
-          description ??
-          `${specialty} medical calculators for healthcare professionals.`,
-        url: specialtyUrl,
-        isPartOf: {
-          "@type": "WebSite",
-          name: "MedCalcHub",
-          url: SITE_URL,
-        },
+        name: "Specialties",
+        item: `${SITE_URL}/specialties`,
       },
       {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: SITE_URL,
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Specialties",
-            item: `${SITE_URL}/specialties`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: specialty,
-            item: specialtyUrl,
-          },
-        ],
+        name: specialty,
+        item: specialtyUrl,
       },
     ],
-  };
+    calculators,
+  });
 
   return (
     <>

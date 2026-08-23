@@ -159,15 +159,14 @@ describe("Batch 4 — category detail page structure", () => {
     expect(source).toContain("export async function generateMetadata");
   });
 
-  it("renders JSON-LD structured data", () => {
+  it("renders JSON-LD structured data via shared CollectionPage builder", () => {
     expect(source).toContain('type="application/ld+json"');
-    expect(source).toContain("CollectionPage");
-    expect(source).toContain("BreadcrumbList");
+    expect(source).toContain("buildCollectionJsonLd");
   });
 
   it("JSON-LD breadcrumb has Home → Categories → Category", () => {
-    expect(source).toContain('"Home"');
-    expect(source).toContain('"Categories"');
+    expect(source).toContain('name: "Categories"');
+    expect(source).toContain("item: categoryUrl");
   });
 
   it("renders the description paragraph", () => {
@@ -212,15 +211,14 @@ describe("Batch 4 — specialty detail page structure", () => {
     expect(source).toContain("export async function generateMetadata");
   });
 
-  it("renders JSON-LD structured data", () => {
+  it("renders JSON-LD structured data via shared CollectionPage builder", () => {
     expect(source).toContain('type="application/ld+json"');
-    expect(source).toContain("CollectionPage");
-    expect(source).toContain("BreadcrumbList");
+    expect(source).toContain("buildCollectionJsonLd");
   });
 
   it("JSON-LD breadcrumb has Home → Specialties → Specialty", () => {
-    expect(source).toContain('"Home"');
-    expect(source).toContain('"Specialties"');
+    expect(source).toContain('name: "Specialties"');
+    expect(source).toContain("item: specialtyUrl");
   });
 
   it("renders the description paragraph", () => {

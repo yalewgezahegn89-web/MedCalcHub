@@ -26,6 +26,7 @@ import {
 import { SITE_URL } from "../../lib/site-url";
 import { buildCalculatorSEO } from "../../lib/seo/calculator-seo";
 import { buildCalculatorJsonLd } from "../../lib/seo/jsonld";
+import { buildCollectionJsonLd } from "../../lib/seo/jsonld";
 import { getClinicalContent } from "../../lib/clinical-content";
 import { taxonomyToSlug } from "../../lib/seo/taxonomy-content";
 
@@ -278,28 +279,73 @@ describe("D — BreadcrumbList JSON-LD", () => {
     );
   });
 
-  it("category detail JSON-LD has BreadcrumbList with Home → Categories → category", () => {
+  it("category detail JSON-LD has BreadcrumbList with Home → Categories → category (via shared builder)", () => {
     const source = readFile(
       "app/categories/[category]/page.tsx",
     );
-    expect(source).toContain('"BreadcrumbList"');
-    expect(source).toContain('"Home"');
-    expect(source).toContain('"Categories"');
-    expect(source).toContain("position: 1");
-    expect(source).toContain("position: 2");
-    expect(source).toContain("position: 3");
+    expect(source).toContain("buildCollectionJsonLd");
+    expect(source).toContain('name: "Categories"');
+    expect(source).toContain("item: categoryUrl");
+
+    const category = "Nephrology";
+    const ld = buildCollectionJsonLd({
+      name: `${category} Calculators`,
+      description: "x",
+      path: `/categories/${taxonomyToSlug(category)}`,
+      breadcrumb: [
+        { name: "Categories", item: `${SITE_URL}/categories` },
+        { name: category, item: `${SITE_URL}/categories/${taxonomyToSlug(category)}` },
+      ],
+      calculators: getCalculatorsByCategory(category),
+    }) as {
+      "@graph": Array<{
+        "@type": string;
+        itemListElement: Array<{ name: string }>;
+      }>;
+    };
+    const crumbs = ld["@graph"].find(
+      (node) => node["@type"] === "BreadcrumbList",
+    )!;
+    expect(crumbs.itemListElement.map((c) => c.name)).toEqual([
+      "Home",
+      "Categories",
+      category,
+    ]);
   });
 
-  it("specialty detail JSON-LD has BreadcrumbList with Home → Specialties → specialty", () => {
+  it("specialty detail JSON-LD has BreadcrumbList with Home → Specialties → specialty (via shared builder)", () => {
     const source = readFile(
       "app/specialties/[slug]/page.tsx",
     );
-    expect(source).toContain('"BreadcrumbList"');
-    expect(source).toContain('"Home"');
-    expect(source).toContain('"Specialties"');
-    expect(source).toContain("position: 1");
-    expect(source).toContain("position: 2");
-    expect(source).toContain("position: 3");
+    expect(source).toContain("buildCollectionJsonLd");
+    expect(source).toContain('name: "Specialties"');
+    expect(source).toContain("item: specialtyUrl");
+
+    const specialty = "Cardiology";
+    const slug = taxonomyToSlug(specialty);
+    const ld = buildCollectionJsonLd({
+      name: `${specialty} Medical Calculators`,
+      description: "x",
+      path: `/specialties/${slug}`,
+      breadcrumb: [
+        { name: "Specialties", item: `${SITE_URL}/specialties` },
+        { name: specialty, item: `${SITE_URL}/specialties/${slug}` },
+      ],
+      calculators: getCalculatorsBySpecialty(specialty),
+    }) as {
+      "@graph": Array<{
+        "@type": string;
+        itemListElement: Array<{ name: string }>;
+      }>;
+    };
+    const crumbs = ld["@graph"].find(
+      (node) => node["@type"] === "BreadcrumbList",
+    )!;
+    expect(crumbs.itemListElement.map((c) => c.name)).toEqual([
+      "Home",
+      "Specialties",
+      specialty,
+    ]);
   });
 
   it("calculator breadcrumb positions are sequential starting from 1", () => {

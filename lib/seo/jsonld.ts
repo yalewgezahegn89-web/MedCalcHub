@@ -87,3 +87,87 @@ export function buildCalculatorJsonLd(
     "@graph": graph,
   };
 }
+
+/**
+ * P3-C1 — Collection-page structured data for calculator listing surfaces.
+ * Emits a CollectionPage node (with an ItemList of member calculators)
+ * plus a BreadcrumbList. The breadcrumb trail passed by callers must not
+ * include Home; it is prepended automatically.
+ */
+export function buildCollectionJsonLd(input: {
+  name: string;
+  description: string;
+  path: string;
+  breadcrumb: Array<{ name: string; item: string }>;
+  calculators: CalculatorDefinition[];
+}) {
+  const url = `${SITE_URL}${input.path}`;
+
+  const itemListElement = input.calculators.map(
+    (calculator, index) => ({
+      "@type": "ListItem",
+
+      position: index + 1,
+
+      name: calculator.name,
+
+      url: `${SITE_URL}/calculators/${calculator.slug}`,
+    }),
+  );
+
+  return {
+    "@context": "https://schema.org",
+
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+
+        name: input.name,
+
+        description: input.description,
+
+        url,
+
+        isPartOf: {
+          "@type": "WebSite",
+
+          name: "MedCalcHub",
+
+          url: SITE_URL,
+        },
+
+        mainEntity: {
+          "@type": "ItemList",
+
+          itemListElement,
+        },
+      },
+
+      {
+        "@type": "BreadcrumbList",
+
+        itemListElement: [
+          {
+            "@type": "ListItem",
+
+            position: 1,
+
+            name: "Home",
+
+            item: SITE_URL,
+          },
+
+          ...input.breadcrumb.map((crumb, index) => ({
+            "@type": "ListItem",
+
+            position: index + 2,
+
+            name: crumb.name,
+
+            item: crumb.item,
+          })),
+        ],
+      },
+    ],
+  };
+}

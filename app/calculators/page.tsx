@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
+import { buildCollectionJsonLd } from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site-url";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
@@ -45,8 +46,30 @@ export default function CalculatorsPage() {
     a.name.localeCompare(b.name),
   );
 
+  const jsonLd = buildCollectionJsonLd({
+    name: "All Medical Calculators",
+    description:
+      "Browse all evidence-based medical calculators for healthcare professionals.",
+    path: "/calculators",
+    breadcrumb: [
+      {
+        name: "Calculators",
+        item: `${SITE_URL}/calculators`,
+      },
+    ],
+    calculators,
+  });
+
   return (
-    <div className="mx-auto max-w-6xl p-6">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
+
+      <div className="mx-auto max-w-6xl p-6">
       <h1 className="mb-2 text-3xl font-bold">
         Medical Calculators
       </h1>
@@ -76,6 +99,7 @@ export default function CalculatorsPage() {
           </Link>
         ))}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
