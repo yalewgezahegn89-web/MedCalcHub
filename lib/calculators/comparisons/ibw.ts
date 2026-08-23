@@ -5,7 +5,7 @@ export const comparisonTemplate = {
     {
       name: "ibw",
 
-      href: "/calculators/ibw",
+      href: "/calculators/ideal-body-weight",
 
       use: "Primary calculator.",
     },

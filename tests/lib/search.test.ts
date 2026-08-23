@@ -890,19 +890,19 @@ describe("clinical synonym discovery", () => {
   });
 
   describe("diabetes / endocrinology discovery", () => {
-    it("discovers a1c-eag-converter via 'HbA1c'", () => {
+    it("discovers estimated-average-glucose via 'HbA1c'", () => {
       const results = searchCalculators("HbA1c");
-      expect(results.map((r) => r.document.slug)).toContain("a1c-eag-converter");
+      expect(results.map((r) => r.document.slug)).toContain("estimated-average-glucose");
     });
 
-    it("discovers a1c-eag-converter via 'glycated hemoglobin'", () => {
+    it("discovers estimated-average-glucose via 'glycated hemoglobin'", () => {
       const results = searchCalculators("glycated hemoglobin");
-      expect(results.map((r) => r.document.slug)).toContain("a1c-eag-converter");
+      expect(results.map((r) => r.document.slug)).toContain("estimated-average-glucose");
     });
 
-    it("discovers a1c-eag-converter via 'diabetes'", () => {
+    it("discovers estimated-average-glucose via 'diabetes'", () => {
       const results = searchCalculators("diabetes");
-      expect(results.map((r) => r.document.slug)).toContain("a1c-eag-converter");
+      expect(results.map((r) => r.document.slug)).toContain("estimated-average-glucose");
     });
 
     it("discovers estimated-average-glucose via 'eAG'", () => {
@@ -938,7 +938,7 @@ describe("clinical synonym discovery", () => {
     it("discovers multiple diabetes calculators via 'diabetes'", () => {
       const results = searchCalculators("diabetes");
       const slugs = results.map((r) => r.document.slug);
-      expect(slugs).toContain("a1c-eag-converter");
+      expect(slugs).toContain("estimated-average-glucose");
       expect(slugs).toContain("homa-ir");
       expect(slugs).toContain("homa-b");
     });
@@ -1340,14 +1340,13 @@ describe("index completeness after metadata additions", () => {
     expect(og!.keywords).toContain("Methanol");
   });
 
-  it("a1c-eag-converter has new keywords in index", () => {
+  it("estimated-average-glucose has new keywords in index", () => {
     const index = buildSearchIndex();
-    const a1c = index.find((d) => d.slug === "a1c-eag-converter");
-    expect(a1c).toBeDefined();
-    expect(a1c!.keywords).toContain("HbA1c");
-    expect(a1c!.keywords).toContain("Hemoglobin A1c");
-    expect(a1c!.keywords).toContain("Glycated Hemoglobin");
-    expect(a1c!.keywords).toContain("Diabetes");
+    const eag = index.find((d) => d.slug === "estimated-average-glucose");
+    expect(eag).toBeDefined();
+    expect(eag!.keywords).toContain("HbA1c");
+    expect(eag!.keywords).toContain("Glycated Hemoglobin");
+    expect(eag!.keywords).toContain("Diabetes");
   });
 
   it("gcs has new keywords in index", () => {

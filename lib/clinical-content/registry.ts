@@ -2306,97 +2306,6 @@ export const clinicalContentRegistry: Record<
       "This calculator is intended for educational and clinical decision support purposes only. Manage the underlying mineral abnormalities rather than treating the number alone.",
   },
 
-  "a1c-eag-converter": {
-    clinicalPurpose:
-      "Converts between hemoglobin A1c and estimated average glucose (eAG) using the ADAG equation, helping patients relate A1c to familiar glucose readings.",
-    howToUse: [
-      "Enter the NGSP-standardized HbA1c value (%).",
-      "Review the corresponding eAG in mg/dL.",
-      "Use the ADA target of A1c <7% (eAG <154 mg/dL) for most non-pregnant adults as a starting point.",
-    ],
-    interpretation: {
-      guide:
-        "A1c <6.0% is the normal band, 6.0–6.4% is the pre-diabetes band, and ≥6.5% is diagnostic of diabetes (ADA diagnostic threshold). The ADA defines pre-diabetes as A1c 5.7–6.4%; this calculator applies a conservative normal threshold of <6.0%. An A1c of 7% corresponds to an eAG of approximately 154 mg/dL.",
-      sexSpecific: false,
-      ageSpecific: false,
-    },
-    whenToUse: [
-      "Explaining A1c results to patients in glucose units",
-      "Setting and reviewing glycemic targets",
-      "Translating between A1c and eAG in diabetes care",
-    ],
-    whenNotToUse: [
-      "When A1c is unreliable (haemoglobinopathies, iron deficiency, pregnancy, altered red cell turnover)",
-      "With assays not standardized to NGSP",
-      "As a measure of glycemic variability",
-    ],
-    limitations: [
-      "eAG is an average and does not capture glucose variability or hypoglycemic episodes.",
-      "The ADAG formula applies to NGSP-standardized assays only.",
-      "A1c may be falsely low or high with altered red blood cell lifespan.",
-    ],
-    example: {
-      description:
-        "A 52-year-old patient with type 2 diabetes has an HbA1c of 7.0%.",
-      inputs: {
-        a1c: "7",
-      },
-      expectedResult:
-        "eAG = 28.7 × 7 − 46.7 = 154.2 mg/dL, consistent with the ADA target of <7% (eAG <154 mg/dL).",
-    },
-    clinicalSignificance:
-      "Converting A1c to eAG translates a percentage into everyday glucose units, improving patient understanding and engagement in diabetes self-management.",
-    references: [
-      {
-        citation:
-          "Nathan DM, Kuenen J, Borg R, et al. Translating the A1c assay into estimated average glucose values. Diabetes Care. 2008;31(8):1473-1478.",
-        level: "Primary Study",
-      },
-      {
-        citation:
-          "American Diabetes Association. Standards of Care in Diabetes. Diabetes Care. 2025.",
-        level: "Guideline",
-      },
-    ],
-    evidence: {
-      source: "ADA / ADAG Study",
-      reference: "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
-      reviewedBy: "MedCalcHub Clinical Team",
-      version: "2008",
-      references: [
-        "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
-        "ADA Standards of Care in Diabetes. 2025.",
-      ],
-    },
-    faq: [
-      {
-        question:
-          "What is the ADA target for most adults with diabetes?",
-        answer:
-          "The ADA recommends an HbA1c target of <7% (eAG <154 mg/dL) for most non-pregnant adults, with individualization based on age, comorbidities, and hypoglycemia risk.",
-      },
-      {
-        question:
-          "How accurate is the A1c to eAG conversion?",
-        answer:
-          "The ADAG equation explains most of the relationship between A1c and average glucose, but individual results vary with assay standardization and red cell turnover.",
-      },
-    ],
-    comparison: {
-      title: "Which Glycemic Calculator Should I Use?",
-      calculators: [
-        {
-          name: "Estimated Average Glucose",
-          href: "/calculators/estimated-average-glucose",
-          bestFor: "A1c to eAG conversion only.",
-          limitation: "Unidirectional.",
-        },
-      ],
-    },
-    disclaimer:
-      "This calculator is intended for educational and clinical decision support purposes only. Glycemic targets should be individualized and verified with appropriate laboratory assays.",
-  },
-
   "estimated-average-glucose": {
     clinicalPurpose:
       "Estimates mean plasma glucose from HbA1c using the ADAG equation, translating A1c into a mg/dL value patients can compare with home glucose readings.",
@@ -2466,17 +2375,6 @@ export const clinicalContentRegistry: Record<
           "An eAG of 126 mg/dL corresponds to an HbA1c of approximately 6.0% using the ADAG formula.",
       },
     ],
-    comparison: {
-      title: "Which Glycemic Calculator Should I Use?",
-      calculators: [
-        {
-          name: "A1c ↔ eAG Converter",
-          href: "/calculators/a1c-eag-converter",
-          bestFor: "Bidirectional conversion.",
-          limitation: "Same underlying formula.",
-        },
-      ],
-    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Use NGSP-standardized A1c values and interpret within the clinical context.",
   },
@@ -2664,94 +2562,6 @@ export const clinicalContentRegistry: Record<
       "This calculator is intended for educational and clinical decision support purposes only. Dosing decisions must follow drug-specific labeling and institutional protocols.",
   },
 
-  "mifflin-st-jeor": {
-    clinicalPurpose:
-      "Estimates resting energy expenditure (REE) using the Mifflin-St Jeor equation for nutritional assessment and weight management.",
-    howToUse: [
-      "Select sex and enter age (years), weight (kg), and height (cm).",
-      "Review the estimated resting energy expenditure in kcal/day.",
-      "Multiply by an activity factor to estimate total daily calorie needs.",
-    ],
-    interpretation: {
-      guide:
-        "REE is the energy required at rest. Mifflin-St Jeor: male = 10 × weight + 6.25 × height − 5 × age + 5; female = 10 × weight + 6.25 × height − 5 × age − 161.",
-      sexSpecific: true,
-      ageSpecific: true,
-    },
-    whenToUse: [
-      "Estimating resting energy expenditure in healthy and overweight adults",
-      "Baseline for calorie planning in weight management",
-      "Nutritional assessment in clinical practice",
-    ],
-    whenNotToUse: [
-      "In critically ill patients where indirect calorimetry is preferred",
-      "In children (formula validated in adults)",
-      "As a substitute for individualized metabolic assessment",
-    ],
-    limitations: [
-      "Estimate only; actual needs vary with body composition and clinical status.",
-      "Less accurate at extremes of body size.",
-      "Does not account for illness, activity, or thermic effect of food.",
-    ],
-    example: {
-      description:
-        "A 40-year-old man weighs 80 kg, is 180 cm tall, and is sedentary.",
-      inputs: {
-        sex: "male",
-        age: "40",
-        weight: "80",
-        height: "180",
-      },
-      expectedResult:
-        "REE = 10 × 80 + 6.25 × 180 − 5 × 40 + 5 = 1,730 kcal/day.",
-    },
-    clinicalSignificance:
-      "The Mifflin-St Jeor equation is one of the most accurate predictive equations for resting energy expenditure and is widely used to anchor nutrition and weight-management plans.",
-    references: [
-      {
-        citation:
-          "Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.",
-        level: "Primary Study",
-      },
-    ],
-    evidence: {
-      source: "Nutrition Literature",
-      reference: "Mifflin MD, et al. Am J Clin Nutr. 1990;51(2):241-247.",
-      reviewedBy: "MedCalcHub Clinical Team",
-      version: "1990",
-      references: [
-        "Mifflin MD, et al. Am J Clin Nutr. 1990;51(2):241-247.",
-      ],
-    },
-    faq: [
-      {
-        question:
-          "How does Mifflin-St Jeor compare to Harris-Benedict?",
-        answer:
-          "Mifflin-St Jeor is generally considered more accurate than the original Harris-Benedict equation in modern, overweight populations and is preferred by many nutrition guidelines.",
-      },
-      {
-        question:
-          "How do I convert REE to total daily calories?",
-        answer:
-          "Multiply REE by an activity factor — approximately 1.2 for sedentary, 1.375 for light activity, 1.55 for moderate, and 1.725 for active individuals.",
-      },
-    ],
-    comparison: {
-      title: "Which Energy Expenditure Calculator Should I Use?",
-      calculators: [
-        {
-          name: "Harris-Benedict",
-          href: "/calculators/harris-benedict",
-          bestFor: "Historical BMR estimation.",
-          limitation: "May overestimate in overweight patients.",
-        },
-      ],
-    },
-    disclaimer:
-      "This calculator is intended for educational and clinical decision support purposes only. REE is an estimate and nutrition plans should be individualized.",
-  },
-
   "harris-benedict": {
     clinicalPurpose:
       "Estimates basal metabolic rate (BMR) using the Harris-Benedict equation for nutritional assessment and calorie planning.",
@@ -2831,17 +2641,6 @@ export const clinicalContentRegistry: Record<
           "Multiply BMR by an activity factor (e.g., 1.2 sedentary, 1.55 moderate activity, 1.725 very active) to estimate total daily energy expenditure.",
       },
     ],
-    comparison: {
-      title: "Which Energy Expenditure Calculator Should I Use?",
-      calculators: [
-        {
-          name: "Mifflin-St Jeor",
-          href: "/calculators/mifflin-st-jeor",
-          bestFor: "Modern REE estimation.",
-          limitation: "Adult populations only.",
-        },
-      ],
-    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Energy estimates should be individualized and verified clinically.",
   },
@@ -3198,17 +2997,6 @@ export const clinicalContentRegistry: Record<
           "BMR (or REE) can be estimated with the Mifflin-St Jeor or Harris-Benedict calculator, which use sex, age, weight, and height.",
       },
     ],
-    comparison: {
-      title: "Which Energy Calculators Work Together?",
-      calculators: [
-        {
-          name: "Mifflin-St Jeor",
-          href: "/calculators/mifflin-st-jeor",
-          bestFor: "Estimating the resting energy expenditure input.",
-          limitation: "Adult populations only.",
-        },
-      ],
-    },
     disclaimer:
       "This calculator is intended for educational and clinical decision support purposes only. Calorie targets are estimates and nutrition plans should be individualized.",
   },
@@ -5177,12 +4965,6 @@ export const clinicalContentRegistry: Record<
     comparison: {
       title: "Related serum protein tools",
       calculators: [
-        {
-          name: "Albumin-Corrected Calcium",
-          href: "/calculators/albumin-corrected-calcium",
-          use: "Calcium correction when albumin is abnormal",
-          bestFor: "Calcium interpretation in low albumin",
-        },
         {
           name: "Child-Pugh Score",
           href: "/calculators/child-pugh",
@@ -10823,69 +10605,6 @@ export const clinicalContentRegistry: Record<
       "This calculator is intended for educational and clinical decision support. The free water deficit is an estimate and is not a prescription; correction of hypernatremia requires assessment of volume status, ongoing losses, and an individualized rate of correction.",
   },
 
-  "albumin-corrected-calcium": {
-    clinicalPurpose:
-      "Adjusts the measured serum total calcium for an abnormal serum albumin, estimating the total calcium corrected to a normal albumin of 4.0 g/dL, to help interpret whether calcium is low, normal, or high.",
-    howToUse: [
-      "Enter the serum calcium and albumin measured from the same blood sample (mg/dL and g/dL, respectively).",
-      "The calculator applies the standard correction: corrected calcium = measured calcium + 0.8 × (4 − albumin).",
-      "Use the corrected value to gauge calcium status, keeping in mind that it remains an estimate of total calcium.",
-    ],
-    interpretation: {
-      guide:
-        "Corrected calcium <8.5 mg/dL is reported as low (consistent with hypocalcemia), 8.5–10.5 mg/dL as normal, and >10.5 mg/dL as high (consistent with hypercalcemia). The correction is a bedside estimate; in critically ill patients, in those with markedly abnormal proteins, or in acid-base disturbances, the corrected value is less reliable and ionized calcium should be considered when available.",
-      sexSpecific: false,
-      ageSpecific: false,
-      pediatric: false,
-    },
-    whenToUse: [
-      "Interpreting serum calcium when the serum albumin is abnormal",
-      "When ionized calcium measurement is not available and albumin is known",
-      "Educational review of the relationship between albumin and total calcium",
-    ],
-    whenNotToUse: [
-      "In critically ill patients where ionized calcium is available and preferred",
-      "When either calcium or albumin has not been measured",
-      "As a substitute for ionized calcium in unstable patients or those with abnormal calcium-binding proteins",
-    ],
-    limitations: [
-      "The correction is an approximation and is less reliable in critical illness, altered protein binding, and acid-base disorders.",
-      "It estimates total (protein-bound plus free) calcium, not ionized calcium.",
-      "The typical range used (8.5–10.5 mg/dL) reflects adult reference values and may differ between laboratories and populations.",
-    ],
-    example: {
-      description: "A patient has serum calcium 8.0 mg/dL and albumin 3.0 g/dL.",
-      inputs: {
-        calcium: "8.0",
-        albumin: "3.0",
-      },
-      expectedResult:
-        "Corrected calcium = 8.0 + 0.8 × (4.0 − 3.0) = 8.8 mg/dL — reported as normal.",
-    },
-    clinicalSignificance:
-      "Because a large fraction of serum calcium is bound to albumin, adjusting for albumin helps prevent both misclassifying patients with hypoalbuminemia as hypocalcemic and overlooking true hypercalcemia, supporting more accurate interpretation of total calcium.",
-    references: [
-      {
-        citation: "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J. 1973;4(5893):643-646.",
-        level: "Original correction formula",
-      },
-    ],
-    evidence: {
-      source: "Clinical Biochemistry",
-      reference:
-        "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J. 1973;4(5893):643-646.",
-      reviewedBy: "MedCalcHub Clinical Team",
-      version: "1.0",
-      updatedAt: "2026-08",
-      references: [
-        "Payne RB, et al. Br Med J. 1973;4(5893):643-646.",
-      ],
-    },
-
-    disclaimer:
-      "This calculator is intended for educational and clinical decision support. Corrected calcium is an estimate; when calcium status affects clinical decisions, particularly in the critically ill, ionized calcium should be measured.",
-  },
-
   "basal-metabolic-rate": {
     clinicalPurpose:
       "Estimates basal metabolic rate (BMR) — the energy expended at complete rest — using the Mifflin-St Jeor equation with sex, age, weight, and height.",
@@ -10955,74 +10674,6 @@ export const clinicalContentRegistry: Record<
 
     disclaimer:
       "This calculator is intended for educational and clinical decision support. BMR estimates are approximations and do not replace measured energy expenditure in patients whose nutritional support is clinically critical.",
-  },
-
-  "fractional-excretion-calculator": {
-    clinicalPurpose:
-      "Calculates the fractional excretion of sodium (FENa) — the percentage of filtered sodium that appears in the urine — from paired urine and plasma sodium and creatinine values, as one component of evaluating acute kidney injury.",
-    howToUse: [
-      "Enter urine sodium, plasma sodium, urine creatinine, and plasma creatinine measured from samples taken close together in time.",
-      "The calculator returns a numeric FENa (%) only; it does not assign a prerenal or intrinsic classification automatically.",
-      "Interpret the number with the clinical context, including whether diuretics were recently given.",
-      "The educational interpretation below describes common patterns and is not part of the calculator output.",
-    ],
-    interpretation: {
-      guide:
-        "The calculator output is the numeric FENa only — there is no automatic prerenal/intrinsic classification. As educational background, in appropriate clinical settings a low FENa (commonly <1%) can support a prerenal pattern of azotemia, while higher values (commonly >1–2%) can be seen with intrinsic tubular injury. These are general patterns, not absolute diagnostic thresholds, and FENa is unreliable during diuretic use, in chronic kidney disease, and in many oliguric states.",
-      sexSpecific: false,
-      ageSpecific: false,
-      pediatric: false,
-    },
-    whenToUse: [
-      "Supporting the clinical distinction between prerenal azotemia and intrinsic tubular injury in appropriate settings",
-      "When paired urine and plasma sodium and creatinine are available",
-      "As part of a broader evaluation of acute kidney injury",
-    ],
-    whenNotToUse: [
-      "As the sole basis for diagnosing the cause of acute kidney injury",
-      "In patients receiving diuretics, with chronic kidney disease, or in low-urine-output states where FENa is unreliable",
-      "In children, where different interpretation and reference patterns may apply",
-    ],
-    limitations: [
-      "The calculator returns a numeric value only; prerenal versus intrinsic classification is an educational interpretation and is not computed by the calculator.",
-      "FENa is unreliable in diuretic use, chronic kidney disease, and oliguric states; alternative indices such as the fractional excretion of urea may be more useful.",
-      "Requires simultaneously obtained urine and plasma samples.",
-      "Commonly quoted thresholds (e.g., <1%, >1–2%) are general patterns, not absolute diagnostic cut-offs.",
-    ],
-    example: {
-      description:
-        "A patient with acute kidney injury has urine sodium 30 mmol/L, plasma sodium 140 mmol/L, urine creatinine 80 mg/dL, and plasma creatinine 1.2 mg/dL.",
-      inputs: {
-        urineNa: "30",
-        plasmaNa: "140",
-        urineCr: "80",
-        plasmaCr: "1.2",
-      },
-      expectedResult:
-        "FENa = (30/140) ÷ (80/1.2) × 100 ≈ 0.3%. The calculator returns this numeric value; the educational pattern is a low FENa that may support a prerenal pattern in the appropriate clinical setting.",
-    },
-    clinicalSignificance:
-      "FENa is a widely used urinary index for evaluating the cause of acute kidney injury; interpreted together with the clinical picture it can support the distinction between prerenal azotemia and intrinsic tubular injury, but it must not be used in isolation.",
-    references: [
-      {
-        citation: "Carvounis CP, et al. Significance of the fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62(3):1184-1191.",
-        level: "Original research",
-      },
-    ],
-    evidence: {
-      source: "Nephrology Literature",
-      reference:
-        "Carvounis CP, et al. Significance of fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62:1184-1191.",
-      reviewedBy: "MedCalcHub Clinical Team",
-      version: "1.0",
-      updatedAt: "2026-08",
-      references: [
-        "Carvounis CP, et al. Kidney Int. 2002;62:1184-1191.",
-      ],
-    },
-
-    disclaimer:
-      "This calculator is intended for educational and clinical decision support. The calculator returns a numeric FENa only; the prerenal/intrinsic interpretation is educational and must be applied with the full clinical context.",
   },
 
   "edd": {
@@ -11208,68 +10859,6 @@ export const clinicalContentRegistry: Record<
     ],
     disclaimer:
       "This calculator is intended for educational and clinical decision support. Glucocorticoid equivalence is approximate and is not a prescribing or tapering plan; formulation, route, indication, duration, and individual patient factors must be considered by the treating clinician.",
-  },
-
-  "thyroid-dose": {
-    clinicalPurpose:
-      "Estimates a weight-based levothyroxine replacement dose (≈1.6 µg/kg/day) using the calculator's implemented equation, anchoring the 'full replacement dose' concept that clinicians individualize in hypothyroidism.",
-    howToUse: [
-      "Enter body weight in kg.",
-      "The calculator returns the total daily dose in µg based on 1.6 µg/kg/day.",
-      "Treat the result as an educational estimate of the full replacement dose; real-world dosing is titrated to a target TSH.",
-      "Actual starting doses are individualized; the calculator does not incorporate age, cardiac risk, or pregnancy.",
-    ],
-    interpretation: {
-      guide:
-        "The calculator reports the weight-based estimate (1.6 µg/kg/day) as the 'full replacement dose.' The calculator's only input is body weight — age, cardiac risk, and pregnancy are not inputs and are not reflected in the number. Actual starting doses are individualized; many patients, especially older adults or those with cardiac disease, are started at much lower doses (commonly 25–50 µg/day) and titrated using TSH.",
-      sexSpecific: false,
-      ageSpecific: false,
-      pediatric: false,
-    },
-    whenToUse: [
-      "Educational review of the conventional full replacement levothyroxine dose estimate",
-      "As background when discussing thyroid hormone replacement dosing",
-      "When a rough weight-based starting estimate is wanted as a reference",
-    ],
-    whenNotToUse: [
-      "As a prescription or dosing instruction",
-      "Without individualization for age, cardiac disease, residual thyroid function, and concurrent medications",
-      "In children, where weight-based dosing differs and specialist guidance applies",
-    ],
-    limitations: [
-      "The calculation is purely weight-based (1.6 × weight) and does not account for age, cardiac disease, pregnancy, thyroid reserve, or aetiology.",
-      "The calculator description mentions lean body weight, but the implemented equation uses total body weight.",
-      "The result is a starting-dose estimate; individual requirements vary and the dose is typically titrated to a target TSH.",
-      "Absorption is affected by food and medications such as iron, calcium, and proton pump inhibitors, which is not modeled by the calculator.",
-    ],
-    example: {
-      description: "A 70 kg adult is being evaluated for thyroid hormone replacement.",
-      inputs: {
-        weight: "70",
-      },
-      expectedResult:
-        "Estimated dose = 1.6 × 70 = 112 µg/day — reported as the full replacement dose estimate.",
-    },
-    clinicalSignificance:
-      "A weight-based estimate (≈1.6 µg/kg/day) provides a reference point for full levothyroxine replacement, but real-world starting doses are individualized — particularly in older adults and patients with cardiac disease — and are titrated to a target TSH.",
-    references: [
-      {
-        citation: "Jonklaas J, Bianco AC, Bauer AJ, et al. Guidelines for the treatment of hypothyroidism. Thyroid. 2014;24:1670-1751.",
-        level: "Clinical guideline",
-      },
-    ],
-    disclaimer:
-      "This calculator is intended for educational and clinical decision support. The result is not a prescription: actual starting doses are individualized, current treatment guidance and patient factors must be considered, and this calculator does not apply any automatic adjustment for age, cardiac disease, or pregnancy.",
-    evidence: {
-      source: "Endocrinology",
-      reference: "Jonklaas J, et al. Thyroid. 2014;24(12):1670-1751.",
-      reviewedBy: "MedCalcHub Clinical Team",
-      version: "2014",
-      updatedAt: "2026-08",
-      references: [
-        "Jonklaas J, et al. Thyroid. 2014;24(12):1670-1751.",
-      ],
-    },
   },
 
   "levothyroxine-dose": {

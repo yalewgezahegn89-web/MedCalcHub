@@ -56,13 +56,13 @@ export const estimatedAverageGlucoseCalculator: CalculatorDefinition = {
 
   faq: [{"question":"What is estimated average glucose?","answer":"eAG converts your HbA1c into an average blood glucose value in mg/dL over the past 2–3 months, making it easier to compare with home glucose readings."},{"question":"What HbA1c equals an eAG of 126 mg/dL?","answer":"An eAG of 126 mg/dL corresponds to an HbA1c of approximately 6.0%."},{"question":"Is eAG the same as average blood glucose?","answer":"eAG is a statistical estimate of average glucose validated by CGM studies. It may not exactly match simple averages of finger-stick measurements."}],
 
-  comparison: {"title":"Glycemic Assessment Tools","calculators":[{"name":"Estimated Average Glucose","href":"/calculators/estimated-average-glucose","bestFor":"Converting A1c to mg/dL average.","limitation":"Affected by conditions altering red cell lifespan."},{"name":"HbA1c ↔ eAG","href":"/calculators/a1c-eag-converter","bestFor":"Bidirectional A1c ↔ eAG conversion.","limitation":"Same underlying formula."},{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Assessing insulin resistance.","limitation":"Different glycemic measure."}]},
+  comparison: {"title":"Glycemic Assessment Tools","calculators":[{"name":"Estimated Average Glucose","href":"/calculators/estimated-average-glucose","bestFor":"Converting A1c to mg/dL average.","limitation":"Affected by conditions altering red cell lifespan."},{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Assessing insulin resistance.","limitation":"Different glycemic measure."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: ["a1c-eag-converter","homa-ir","homa-b"],
+  relatedCalculators: ["homa-ir","homa-b"],
 
   inputs: [
   {

@@ -318,12 +318,6 @@ const testInputs: Record<string, Record<string, string>> = {
     weight: "70",
     height: "170",
   },
-  "mifflin-st-jeor": {
-    sex: "male",
-    age: "30",
-    weight: "70",
-    height: "170",
-  },
   "harris-benedict": {
     sex: "male",
     age: "30",
@@ -350,17 +344,6 @@ const testInputs: Record<string, Record<string, string>> = {
     sodium: "120",
     glucose: "400",
   },
-  "albumin-corrected-calcium": {
-    calcium: "8.0",
-    albumin: "3.0",
-  },
-  "fractional-excretion-calculator": {
-    urineNa: "40",
-    plasmaNa: "140",
-    urineCr: "80",
-    plasmaCr: "1.0",
-  },
-
   // -- Laboratory --
   "corrected-calcium": {
     calcium: "8.5",
@@ -372,13 +355,11 @@ const testInputs: Record<string, Record<string, string>> = {
   "homa-b": { glucose: "100", insulin: "10" },
   "insulin-sensitivity": { homaIr: "2.5" },
   "estimated-average-glucose": { a1c: "7.0" },
-  "a1c-eag-converter": { a1c: "7.0" },
   "corrected-qt": {
     qt: "400",
     heartRate: "70",
     sex: "1",
   },
-  "thyroid-dose": { weight: "70" },
   "levothyroxine-dose": { weight: "70" },
   "adrenal-steroid-converter": {
     dose: "10",
@@ -984,11 +965,6 @@ const exactExpectations: Record<string, ExpectedExact> = {
     tolerance: 0.1,
     status: "normal",
   },
-  "mifflin-st-jeor": {
-    value: 1617.5,
-    tolerance: 0.1,
-    status: "normal",
-  },
   "harris-benedict": {
     value: 1671.7,
     tolerance: 0.1,
@@ -1023,10 +999,6 @@ const exactExpectations: Record<string, ExpectedExact> = {
     value: 154.2,
     tolerance: 0.1,
   },
-  "a1c-eag-converter": {
-    value: 154.2,
-    tolerance: 0.1,
-  },
   gcs: {
     value: 15,
     tolerance: 0.01,
@@ -1039,11 +1011,6 @@ const exactExpectations: Record<string, ExpectedExact> = {
   },
   "corrected-qt": {
     value: 432,
-    tolerance: 0.01,
-    status: "normal",
-  },
-  "thyroid-dose": {
-    value: 112,
     tolerance: 0.01,
     status: "normal",
   },
@@ -1731,52 +1698,40 @@ describe("Direct-Call Validation Guards", () => {
 
 const BATCH7_GUARDED_IDS = [
   "basal-metabolic-rate",
-  "mifflin-st-jeor",
   "harris-benedict",
   "calorie-requirement",
   "fluid-requirement",
   "maintenance-fluids",
-  "albumin-corrected-calcium",
-  "fractional-excretion-calculator",
   "gestational-age",
   "waist-to-hip-ratio",
 ] as const;
 
 const BATCH7_VALID_INPUTS: Record<string, Record<string, string>> = {
   "basal-metabolic-rate": { sex: "male", age: "30", weight: "70", height: "170" },
-  "mifflin-st-jeor": { sex: "male", age: "30", weight: "70", height: "170" },
   "harris-benedict": { sex: "male", age: "30", weight: "70", height: "170" },
   "calorie-requirement": { bmr: "1700", activity: "1.55" },
   "fluid-requirement": { weight: "70" },
   "maintenance-fluids": { weight: "70" },
-  "albumin-corrected-calcium": { calcium: "8.0", albumin: "3.0" },
-  "fractional-excretion-calculator": { urineNa: "40", plasmaNa: "140", urineCr: "80", plasmaCr: "1.0" },
   "gestational-age": { weeks: "30", days: "4" },
   "waist-to-hip-ratio": { waist: "80", hip: "100", sex: "1" },
 };
 
 const BATCH7_NEGATIVE_OVERRIDES: Record<string, Record<string, string>> = {
   "basal-metabolic-rate": { sex: "male", age: "-30", weight: "-70", height: "-170" },
-  "mifflin-st-jeor": { sex: "male", age: "-30", weight: "-70", height: "-170" },
   "harris-benedict": { sex: "male", age: "-30", weight: "-70", height: "-170" },
   "calorie-requirement": { bmr: "-1700", activity: "-1.55" },
   "fluid-requirement": { weight: "-70" },
   "maintenance-fluids": { weight: "-70" },
-  "albumin-corrected-calcium": { calcium: "-8.0", albumin: "-3.0" },
-  "fractional-excretion-calculator": { urineNa: "-40", plasmaNa: "-140", urineCr: "-80", plasmaCr: "-1.0" },
   "gestational-age": { weeks: "-1", days: "4" },
   "waist-to-hip-ratio": { waist: "-80", hip: "-100", sex: "1" },
 };
 
 const BATCH7_ZERO_OVERRIDES: Record<string, Record<string, string>> = {
   "basal-metabolic-rate": { sex: "male", age: "30", weight: "0", height: "170" },
-  "mifflin-st-jeor": { sex: "male", age: "30", weight: "0", height: "170" },
   "harris-benedict": { sex: "male", age: "30", weight: "0", height: "170" },
   "calorie-requirement": { bmr: "0", activity: "1.55" },
   "fluid-requirement": { weight: "0" },
   "maintenance-fluids": { weight: "0" },
-  "albumin-corrected-calcium": { calcium: "8.0", albumin: "0" },
-  "fractional-excretion-calculator": { urineNa: "40", plasmaNa: "140", urineCr: "80", plasmaCr: "0" },
   "waist-to-hip-ratio": { waist: "80", hip: "0", sex: "1" },
 };
 

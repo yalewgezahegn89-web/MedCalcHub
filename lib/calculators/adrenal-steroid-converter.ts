@@ -56,13 +56,13 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
 
   faq: [{"question":"How do I convert prednisone to dexamethasone?","answer":"Prednisone 5 mg is approximately equivalent to dexamethasone 0.75 mg. Divide the prednisone dose by approximately 6.67 to get the dexamethasone equivalent."},{"question":"Why is hydrocortisone used for adrenal insufficiency?","answer":"Hydrocortisone has both glucocorticoid and mineralocorticoid activity, making it the preferred replacement in adrenal insufficiency when given in divided doses to mimic physiological cortisol rhythm."},{"question":"Are steroid equivalences exact?","answer":"No. These are approximations based on anti-inflammatory potency. Individual patient response varies based on metabolism, comorbidities, and the specific clinical condition."}],
 
-  comparison: {"title":"Steroid Conversion Reference","calculators":[{"name":"Adrenal Steroid Converter","href":"/calculators/adrenal-steroid-converter","bestFor":"Converting between equivalent steroid doses.","limitation":"Approximate equivalences only."},{"name":"Thyroid Dose","href":"/calculators/thyroid-dose","bestFor":"Thyroid hormone dosing.","limitation":"Different endocrine system."}]},
+  comparison: {"title":"Steroid Conversion Reference","calculators":[{"name":"Adrenal Steroid Converter","href":"/calculators/adrenal-steroid-converter","bestFor":"Converting between equivalent steroid doses.","limitation":"Approximate equivalences only."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: ["thyroid-dose","levothyroxine-dose"],
+  relatedCalculators: ["levothyroxine-dose"],
 
   inputs: [
   {

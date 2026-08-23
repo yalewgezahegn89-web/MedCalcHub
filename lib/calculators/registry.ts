@@ -27,7 +27,6 @@ import { serumOsmolalityCalculator } from "./serum-osmolality";
 import { osmolarGapCalculator } from "./osmolar-gap";
 
 import { basalMetabolicRateCalculator } from "./basal-metabolic-rate";
-import { mifflinStJeorCalculator } from "./mifflin-st-jeor";
 import { harrisBenedictCalculator } from "./harris-benedict";
 import { calorieRequirementCalculator } from "./calorie-requirement";
 
@@ -37,19 +36,15 @@ import { freeWaterDeficitCalculator } from "./free-water-deficit";
 import { sodiumDeficitCalculator } from "./sodium-deficit";
 import { correctedSodiumCalculator } from "./corrected-sodium";
 
-import { albuminCorrectedCalciumCalculator } from "./albumin-corrected-calcium";
-
 import { fenaCalculator } from "./fena";
 import { feureaCalculator } from "./feurea";
 import { ttkgCalculator } from "./ttkg";
 import { calciumPhosphateProductCalculator } from "./calcium-phosphate-product";
-import { fractionalExcretionCalculator } from "./fractional-excretion-calculator";
 
 import { homaIrCalculator } from "./homa-ir";
 import { homaBCalculator } from "./homa-b";
 import { insulinSensitivityCalculator } from "./insulin-sensitivity";
 import { estimatedAverageGlucoseCalculator } from "./estimated-average-glucose";
-import { a1cEagConverterCalculator } from "./a1c-eag-converter";
 
 import { ldlCholesterolCalculator } from "./ldl-cholesterol";
 import { nonHdlCholesterolCalculator } from "./non-hdl-cholesterol";
@@ -83,7 +78,6 @@ import { metabolicSyndromeAtp3Calculator } from "./metabolic-syndrome-atp3";
 
 import { correctedQtCalculator } from "./corrected-qt";
 
-import { thyroidDoseCalculator } from "./thyroid-dose";
 import { levothyroxineDoseCalculator } from "./levothyroxine-dose";
 import { adrenalSteroidConverterCalculator } from "./adrenal-steroid-converter";
 
@@ -204,7 +198,6 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   osmolarGapCalculator,
 
   basalMetabolicRateCalculator,
-  mifflinStJeorCalculator,
   harrisBenedictCalculator,
   calorieRequirementCalculator,
 
@@ -214,13 +207,10 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   sodiumDeficitCalculator,
   correctedSodiumCalculator,
 
-  albuminCorrectedCalciumCalculator,
-
   fenaCalculator,
   feureaCalculator,
   ttkgCalculator,
   calciumPhosphateProductCalculator,
-  fractionalExcretionCalculator,
 
   feuaCalculator,
   fepCalculator,
@@ -243,7 +233,6 @@ export const calculatorRegistry: CalculatorDefinition[] = [
   homaBCalculator,
   insulinSensitivityCalculator,
   estimatedAverageGlucoseCalculator,
-  a1cEagConverterCalculator,
 
   ldlCholesterolCalculator,
   nonHdlCholesterolCalculator,
@@ -258,7 +247,6 @@ export const calculatorRegistry: CalculatorDefinition[] = [
 
   correctedQtCalculator,
 
-  thyroidDoseCalculator,
   levothyroxineDoseCalculator,
   adrenalSteroidConverterCalculator,
   freeThyroxineIndexCalculator,

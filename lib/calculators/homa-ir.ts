@@ -56,13 +56,13 @@ export const homaIrCalculator: CalculatorDefinition = {
 
   faq: [{"question":"What does a high HOMA-IR mean?","answer":"A HOMA-IR > 2.5 suggests insulin resistance, meaning the body's cells are not responding efficiently to insulin. This is a risk factor for type 2 diabetes, metabolic syndrome, and cardiovascular disease."},{"question":"What are the units of HOMA-IR?","answer":"HOMA-IR is unitless. It is calculated using fasting glucose in mg/dL and fasting insulin in µU/mL: (glucose × insulin) / 405."},{"question":"How does HOMA-IR differ from HOMA-B?","answer":"HOMA-IR estimates insulin resistance, while HOMA-B estimates pancreatic beta-cell function. Both use the same fasting glucose and insulin values but different formulas."},{"question":"When should HOMA-IR be measured?","answer":"HOMA-IR requires fasting for at least 8 hours. It is best measured in the morning before any food intake."}],
 
-  comparison: {"title":"Insulin Resistance Assessment Tools","calculators":[{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Estimating insulin resistance from fasting labs.","limitation":"Requires fasting samples; not validated in type 1 diabetes."},{"name":"HOMA-B","href":"/calculators/homa-b","bestFor":"Estimating pancreatic beta-cell function.","limitation":"Reflects secretion, not resistance."},{"name":"Insulin Sensitivity","href":"/calculators/insulin-sensitivity","bestFor":"Quick inverse estimate of insulin sensitivity.","limitation":"Derived from HOMA-IR; same fasting requirement."},{"name":"HbA1c ↔ eAG","href":"/calculators/a1c-eag-converter","bestFor":"Converting A1c to average glucose.","limitation":"Does not directly measure insulin resistance."}]},
+  comparison: {"title":"Insulin Resistance Assessment Tools","calculators":[{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Estimating insulin resistance from fasting labs.","limitation":"Requires fasting samples; not validated in type 1 diabetes."},{"name":"HOMA-B","href":"/calculators/homa-b","bestFor":"Estimating pancreatic beta-cell function.","limitation":"Reflects secretion, not resistance."},{"name":"Insulin Sensitivity","href":"/calculators/insulin-sensitivity","bestFor":"Quick inverse estimate of insulin sensitivity.","limitation":"Derived from HOMA-IR; same fasting requirement."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: ["homa-b","insulin-sensitivity","estimated-average-glucose","a1c-eag-converter"],
+  relatedCalculators: ["homa-b","insulin-sensitivity","estimated-average-glucose"],
 
   inputs: [
   {

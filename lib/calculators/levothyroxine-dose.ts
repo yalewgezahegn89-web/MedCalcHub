@@ -56,13 +56,13 @@ export const levothyroxineDoseCalculator: CalculatorDefinition = {
 
   faq: [{"question":"What is the difference between Thyroid Dose and Levothyroxine Dose calculators?","answer":"Both use the same 1.6 µg/kg/day formula. Thyroid Dose provides the estimate, while Levothyroxine Dose includes clinical guidance on titration, cardiac precautions, and pregnancy adjustments."},{"question":"How quickly can levothyroxine dose be increased?","answer":"In healthy patients, dose can be titrated every 6–8 weeks. In elderly or cardiac patients, increase more slowly (every 6–12 weeks)."},{"question":"Does levothyroxine need to be taken on an empty stomach?","answer":"Yes. Take 30–60 minutes before breakfast with water only. Separate from calcium, iron supplements, and PPIs."}],
 
-  comparison: {"title":"Thyroid Replacement Dose Tools","calculators":[{"name":"Levothyroxine Dose","href":"/calculators/levothyroxine-dose","bestFor":"Clinical dosing with titration guidance.","limitation":"Requires clinical context."},{"name":"Thyroid Dose","href":"/calculators/thyroid-dose","bestFor":"Quick full replacement estimate.","limitation":"No titration guidance."}]},
+  comparison: {"title":"Thyroid Replacement Dose Tools","calculators":[{"name":"Levothyroxine Dose","href":"/calculators/levothyroxine-dose","bestFor":"Clinical dosing with titration guidance.","limitation":"Requires clinical context."}]},
 
   references: [
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: ["thyroid-dose","bmi"],
+  relatedCalculators: ["bmi"],
 
   inputs: [
   {

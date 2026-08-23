@@ -19,8 +19,8 @@ describe("Calculator Registry Integrity", () => {
     expect(calculatorRegistry.length).toBeGreaterThan(0);
   });
 
-  it("registry contains exactly 148 calculators", () => {
-    expect(calculatorRegistry).toHaveLength(148);
+  it("registry contains exactly 143 calculators", () => {
+    expect(calculatorRegistry).toHaveLength(143);
   });
 
   it("the 8 General Medicine Batch 8 (Sprint 1.9) calculators are registered and searchable", () => {
@@ -342,5 +342,57 @@ describe("Calculator Registry Integrity", () => {
       "xyzzy_nonexistent_12345",
     );
     expect(results).toHaveLength(0);
+  });
+
+  it("adjbw comparison link uses slug-based href (P1-2 regression)", () => {
+    const adjbw = getCalculatorById("adjbw");
+    expect(adjbw).toBeDefined();
+    const comparison = adjbw!.comparison;
+    const items = Array.isArray(comparison)
+      ? comparison
+      : (comparison?.calculators ?? []);
+    for (const item of items) {
+      expect(item.href).toContain("/calculators/adjusted-body-weight");
+    }
+  });
+
+  it("ibw comparison link uses slug-based href (P1-2 regression)", () => {
+    const ibw = getCalculatorById("ibw");
+    expect(ibw).toBeDefined();
+    const comparison = ibw!.comparison;
+    const items = Array.isArray(comparison)
+      ? comparison
+      : (comparison?.calculators ?? []);
+    for (const item of items) {
+      expect(item.href).toContain("/calculators/ideal-body-weight");
+    }
+  });
+
+  it("no duplicate calculators remain after P1-1 consolidation", () => {
+    const removedSlugs = [
+      "fractional-excretion-calculator",
+      "albumin-corrected-calcium",
+      "a1c-eag-converter",
+      "thyroid-dose",
+      "mifflin-st-jeor",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const slug of removedSlugs) {
+      expect(slugs.has(slug), `duplicate slug "${slug}" should have been removed`).toBe(false);
+    }
+  });
+
+  it("canonical calculators from consolidated pairs are present", () => {
+    const canonicalSlugs = [
+      "fena",
+      "corrected-calcium",
+      "estimated-average-glucose",
+      "levothyroxine-dose",
+      "basal-metabolic-rate",
+    ];
+    const slugs = new Set(calculatorRegistry.map((c) => c.slug));
+    for (const slug of canonicalSlugs) {
+      expect(slugs.has(slug), `canonical slug "${slug}" must be present`).toBe(true);
+    }
   });
 });

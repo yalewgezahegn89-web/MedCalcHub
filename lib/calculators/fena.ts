@@ -62,7 +62,7 @@ export const fenaCalculator: CalculatorDefinition = {
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: ["feurea","bun-creatinine-ratio","fractional-excretion-calculator","ttkg"],
+  relatedCalculators: ["feurea","bun-creatinine-ratio","ttkg"],
 
   inputs: [
   {

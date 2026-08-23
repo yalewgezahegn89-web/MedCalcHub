@@ -150,7 +150,6 @@ export const saagCalculator: CalculatorDefinition = {
     "meld",
     "meld-na",
     "albumin-globulin-ratio",
-    "albumin-corrected-calcium",
   ],
 
   inputs: [

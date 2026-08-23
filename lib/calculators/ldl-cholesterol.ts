@@ -184,7 +184,6 @@ export const ldlCholesterolCalculator: CalculatorDefinition = {
     "non-hdl-cholesterol",
     "triglyceride-hdl-ratio",
     "tyg-index",
-    "a1c-eag-converter",
   ],
 
   inputs: [

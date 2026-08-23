@@ -155,7 +155,6 @@ export const fecaCalculator: CalculatorDefinition = {
     "urine-protein-creatinine-ratio",
     "calcium-phosphate-product",
     "corrected-calcium",
-    "albumin-corrected-calcium",
   ],
 
   inputs: [

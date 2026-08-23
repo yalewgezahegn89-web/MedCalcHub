@@ -152,7 +152,6 @@ export const freeThyroxineIndexCalculator: CalculatorDefinition = {
   ],
 
   relatedCalculators: [
-    "thyroid-dose",
     "levothyroxine-dose",
     "metabolic-syndrome-atp3",
   ],

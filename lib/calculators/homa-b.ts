@@ -66,7 +66,7 @@ export const homaBCalculator: CalculatorDefinition = {
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: ["homa-ir","insulin-sensitivity","a1c-eag-converter","estimated-average-glucose"],
+  relatedCalculators: ["homa-ir","insulin-sensitivity","estimated-average-glucose"],
 
   inputs: [
   {

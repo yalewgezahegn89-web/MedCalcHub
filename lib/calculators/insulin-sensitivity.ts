@@ -62,7 +62,7 @@ export const insulinSensitivityCalculator: CalculatorDefinition = {
     "MedCalcHub Clinical References",
   ],
 
-  relatedCalculators: ["homa-ir","homa-b","a1c-eag-converter"],
+  relatedCalculators: ["homa-ir","homa-b"],
 
   inputs: [
   {

@@ -47,11 +47,9 @@ const BATCH_6_SLUGS = [
   "serum-osmolality",
   "ttkg",
   "calcium-phosphate-product",
-  "a1c-eag-converter",
   "estimated-average-glucose",
   "bmi-for-pediatrics",
   "lean-body-weight",
-  "mifflin-st-jeor",
   "harris-benedict",
   "sodium-deficit",
   "heart-rate",
@@ -186,13 +184,10 @@ const BATCH_19_SLUGS = [
 
 const BATCH_20_SLUGS = [
   "free-water-deficit",
-  "albumin-corrected-calcium",
   "basal-metabolic-rate",
-  "fractional-excretion-calculator",
   "edd",
   "gestational-age",
   "adrenal-steroid-converter",
-  "thyroid-dose",
   "levothyroxine-dose",
   "alvarado-score",
   "corrected-magnesium",
@@ -2170,8 +2165,8 @@ describe("Clinical Content — Sprint 1.9 Batch 19 (Pulmonary/Respiratory)", () 
 describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
   const ALL_SLUGS = Object.keys(clinicalContentRegistry);
 
-  it("all 148 clinical content records contain structurally valid data", () => {
-    expect(ALL_SLUGS.length).toBe(148);
+  it("all 143 clinical content records contain structurally valid data", () => {
+    expect(ALL_SLUGS.length).toBe(143);
     for (const slug of ALL_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
@@ -2312,7 +2307,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
     }
   });
 
-  it("existing 86 records remain intact", () => {
+  it("existing 84 records remain intact", () => {
     const expected = new Set([
       ...PILOT_SLUGS,
       ...BATCH_5_SLUGS,
@@ -2323,7 +2318,7 @@ describe("Clinical Content — Sprint 1.8 Batch 8 Rendering Support", () => {
       ...BATCH_12_SLUGS,
       ...BATCH_13_SLUGS,
     ]).size;
-    expect(expected).toBe(86);
+    expect(expected).toBe(84);
     expect(ALL_SLUGS.length).toBe(
       expected + BATCH_14_SLUGS.length + BATCH_15_SLUGS.length + BATCH_16_SLUGS.length + BATCH_17_SLUGS.length + BATCH_18_SLUGS.length + BATCH_19_SLUGS.length + BATCH_20_SLUGS.length,
     );
@@ -2370,11 +2365,9 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     "serum-osmolality": 296.11,
     ttkg: 6,
     "calcium-phosphate-product": 57,
-    "a1c-eag-converter": 154.2,
     "estimated-average-glucose": 125.5,
     "bmi-for-pediatrics": 17.9,
     "lean-body-weight": 61.4,
-    "mifflin-st-jeor": 1730,
     "harris-benedict": 1796.9,
     "sodium-deficit": 420,
     "heart-rate": 72,
@@ -2444,10 +2437,10 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
     ecog: 2,
   };
 
-  it("reports the final coverage totals (148 registered, 148 with content, 0 deferred)", () => {
+  it("reports the final coverage totals (143 registered, 143 with content, 0 deferred)", () => {
     const contentSlugs = new Set(Object.keys(clinicalContentRegistry));
-    expect(calculatorRegistry.length).toBe(148);
-    expect(contentSlugs.size).toBe(148);
+    expect(calculatorRegistry.length).toBe(143);
+    expect(contentSlugs.size).toBe(143);
     for (const slug of DEFERRED_WITHOUT_CONTENT) {
       expect(contentSlugs.has(slug), `${slug} should have no content`).toBe(
         false,
@@ -2665,13 +2658,10 @@ describe("Clinical Content — Sprint 1.8 Batch 9 Final Audit", () => {
 describe("Clinical Content — Sprint 1.9 Batch 20 (Final Coverage)", () => {
   const batch20VerifiedValues: Record<string, string | number> = {
     "free-water-deficit": 6.9,
-    "albumin-corrected-calcium": 8.8,
     "basal-metabolic-rate": 1598.8,
-    "fractional-excretion-calculator": 0.3,
     edd: "2026-10-08",
     "gestational-age": 32.4286,
     "adrenal-steroid-converter": 10,
-    "thyroid-dose": 112,
     "levothyroxine-dose": 112,
     "alvarado-score": 6,
     "corrected-magnesium": 0.8,
@@ -2684,13 +2674,10 @@ describe("Clinical Content — Sprint 1.9 Batch 20 (Final Coverage)", () => {
 
   const batch20Categories: Record<string, string> = {
     "free-water-deficit": "Internal Medicine",
-    "albumin-corrected-calcium": "Internal Medicine",
     "basal-metabolic-rate": "Internal Medicine",
-    "fractional-excretion-calculator": "Internal Medicine",
     edd: "Obstetrics & Gynecology",
     "gestational-age": "Obstetrics & Gynecology",
     "adrenal-steroid-converter": "Endocrinology",
-    "thyroid-dose": "Endocrinology",
     "levothyroxine-dose": "Endocrinology",
     "alvarado-score": "Emergency",
     "corrected-magnesium": "Laboratory",
@@ -2843,31 +2830,6 @@ describe("Clinical Content — Sprint 1.9 Batch 13A P1 Remediation", () => {
       expect(c).not.toContain("ACHA");
     }
     expect(citations.some((c) => c.includes("AHA ECG Guidelines"))).toBe(true);
-  });
-
-  it("a1c-eag-converter guide bands are non-overlapping and code-aligned", () => {
-    const guide =
-      clinicalContentRegistry["a1c-eag-converter"]!.interpretation!.guide!;
-    expect(guide).toContain("A1c <6.0%");
-    expect(guide).toContain("6.0–6.4%");
-    expect(guide).toContain("≥6.5%");
-    expect(guide).not.toContain("<6.1");
-    expect(guide).not.toContain("6.0–6.5%");
-  });
-
-  it("a1c-eag-converter guide is consistent with the calculator bands", () => {
-    const a1cEag = calculatorRegistry.find(
-      (c) => c.slug === "a1c-eag-converter",
-    )!;
-    expect(a1cEag.calculate({ a1c: "6.0" }).interpretation).toBe(
-      "Pre-diabetes range",
-    );
-    expect(a1cEag.calculate({ a1c: "6.4" }).interpretation).toBe(
-      "Pre-diabetes range",
-    );
-    expect(a1cEag.calculate({ a1c: "6.5" }).interpretation).toBe(
-      "Diabetes range",
-    );
   });
 
   it("oxygen-index no longer carries the vague AAP Neonatal reference", () => {
@@ -3049,21 +3011,6 @@ describe("Clinical Content — Sprint 1.9 Batch 13B P2 Editorial Remediation", (
     expect(
       howToUse.some((step) => step.includes("renal/liver")),
     ).toBe(false);
-  });
-
-  it("thyroid-dose and levothyroxine-dose content are distinct but accurate", () => {
-    const t = clinicalContentRegistry["thyroid-dose"]!;
-    const l = clinicalContentRegistry["levothyroxine-dose"]!;
-    expect(t.clinicalPurpose).not.toBe(l.clinicalPurpose);
-    expect(t.howToUse![2]).not.toBe(l.howToUse![2]);
-    for (const c of [t, l]) {
-      expect(
-        c.howToUse!.some((step) =>
-          step.includes("does not incorporate age, cardiac risk, or pregnancy"),
-        ),
-      ).toBe(true);
-      expect(c.disclaimer).toContain("not a prescription");
-    }
   });
 
   it("the eight P2 disclaimers use the standardized opener", () => {
@@ -3671,7 +3618,6 @@ const E3B_EVIDENCE_SLUGS = [
   "gestational-weight-gain",
   "apgar-score",
   "free-water-deficit",
-  "albumin-corrected-calcium",
   "basal-metabolic-rate",
 ] as const;
 
@@ -3816,12 +3762,6 @@ const E3B_EXPECTED_EVIDENCE: Record<
       "Sterns RH. Disorders of plasma sodium. N Engl J Med. 2015;372(1):55-65.",
     ],
   },
-  "albumin-corrected-calcium": {
-    reviewedBy: "MedCalcHub Clinical Team",
-    references: [
-      "Payne RB, et al. Br Med J. 1973;4(5893):643-646.",
-    ],
-  },
   "basal-metabolic-rate": {
     reviewedBy: "MedCalcHub Clinical Team",
     references: [
@@ -3835,7 +3775,6 @@ const E4A_EVIDENCE_SLUGS = [
   "fractional-excretion-uric-acid",
   "fractional-excretion-phosphate",
   "fractional-excretion-calcium",
-  "fractional-excretion-calculator",
   "renal-failure-index",
   "urine-osmolal-gap",
   "free-water-clearance",
@@ -3874,12 +3813,6 @@ const E4A_EXPECTED_EVIDENCE: Record<
     references: [
       "Christiansen C, et al. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
       "National Institute for Health and Care Excellence (NICE). Hyperparathyroidism (primary): diagnosis, assessment and initial management. NG132. 2019.",
-    ],
-  },
-  "fractional-excretion-calculator": {
-    reviewedBy: "MedCalcHub Clinical Team",
-    references: [
-      "Carvounis CP, et al. Kidney Int. 2002;62:1184-1191.",
     ],
   },
   "renal-failure-index": {
@@ -3927,21 +3860,21 @@ const E4A_EXPECTED_EVIDENCE: Record<
 };
 
 describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () => {
-  it("all 25 E3b targets have clinical content", () => {
+  it("all 24 E3b targets have clinical content", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
     }
   });
 
-  it("all 25 E3b targets have evidence", () => {
+  it("all 24 E3b targets have evidence", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const content = clinicalContentRegistry[slug]!;
       expect(content.evidence, `${slug} missing evidence`).toBeDefined();
     }
   });
 
-  it("all 25 E3b targets have non-empty source", () => {
+  it("all 24 E3b targets have non-empty source", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
@@ -3952,7 +3885,7 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
     }
   });
 
-  it("all 25 E3b targets have non-empty reference", () => {
+  it("all 24 E3b targets have non-empty reference", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
@@ -3963,7 +3896,7 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
     }
   });
 
-  it("all 25 E3b targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 24 E3b targets have reviewedBy set to MedCalcHub Clinical Team", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(
@@ -3973,7 +3906,7 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
     }
   });
 
-  it("all 25 E3b targets have at least 1 reference in references array", () => {
+  it("all 24 E3b targets have at least 1 reference in references array", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(
@@ -3991,7 +3924,7 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
     }
   });
 
-  it("all 25 E3b target references match the expected citations", () => {
+  it("all 24 E3b target references match the expected citations", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       const expected = E3B_EXPECTED_EVIDENCE[slug];
@@ -4055,7 +3988,7 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
     expect(allText).not.toContain("Ann Clin Biochem. 2004;41(6):486-488");
   });
 
-  it("all 25 E3b targets are registered calculators", () => {
+  it("all 24 E3b targets are registered calculators", () => {
     const registrySlugs = new Set(
       calculatorRegistry.map((c) => c.slug),
     );
@@ -4083,21 +4016,21 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
 });
 
 describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgrade)", () => {
-  it("all 11 E4a targets have clinical content", () => {
+  it("all 10 E4a targets have clinical content", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const content = clinicalContentRegistry[slug];
       expect(content, `${slug} missing content`).toBeDefined();
     }
   });
 
-  it("all 11 E4a targets have evidence", () => {
+  it("all 10 E4a targets have evidence", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const content = clinicalContentRegistry[slug]!;
       expect(content.evidence, `${slug} missing evidence`).toBeDefined();
     }
   });
 
-  it("all 11 E4a targets have non-empty source", () => {
+  it("all 10 E4a targets have non-empty source", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(evidence.source, `${slug}.evidence.source`).toBeDefined();
@@ -4108,7 +4041,7 @@ describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgra
     }
   });
 
-  it("all 11 E4a targets have non-empty reference", () => {
+  it("all 10 E4a targets have non-empty reference", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(evidence.reference, `${slug}.evidence.reference`).toBeDefined();
@@ -4119,7 +4052,7 @@ describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgra
     }
   });
 
-  it("all 11 E4a targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 10 E4a targets have reviewedBy set to MedCalcHub Clinical Team", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(
@@ -4129,7 +4062,7 @@ describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgra
     }
   });
 
-  it("all 11 E4a targets have at least 1 reference in references array", () => {
+  it("all 10 E4a targets have at least 1 reference in references array", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       expect(
@@ -4147,7 +4080,7 @@ describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgra
     }
   });
 
-  it("all 11 E4a target references match the expected citations", () => {
+  it("all 10 E4a target references match the expected citations", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
       const expected = E4A_EXPECTED_EVIDENCE[slug];
@@ -4195,7 +4128,7 @@ describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgra
     }
   });
 
-  it("all 11 E4a targets are registered calculators", () => {
+  it("all 10 E4a targets are registered calculators", () => {
     const registrySlugs = new Set(
       calculatorRegistry.map((c) => c.slug),
     );
@@ -4207,8 +4140,8 @@ describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgra
     }
   });
 
-  it("E4a implements exactly 11 target slugs", () => {
-    expect(E4A_EVIDENCE_SLUGS.length).toBe(11);
+  it("E4a implements exactly 10 target slugs", () => {
+    expect(E4A_EVIDENCE_SLUGS.length).toBe(10);
   });
 
   it("E4a does not alter E1, E2, E3a, or E3b evidence counts unexpectedly", () => {
@@ -5333,7 +5266,7 @@ describe("Clinical Content — Final Stage 3 Evidence Closure (oxygen-index)", (
     expect(hasEvidence, "adrenal-steroid-converter should NOT have verified evidence").toBe(false);
   });
 
-  it("canonical evidence count is exactly 147", () => {
+  it("canonical evidence count is exactly 142", () => {
     let evidenceCount = 0;
     for (const [, content] of Object.entries(clinicalContentRegistry)) {
       if (
@@ -5344,6 +5277,6 @@ describe("Clinical Content — Final Stage 3 Evidence Closure (oxygen-index)", (
         evidenceCount++;
       }
     }
-    expect(evidenceCount).toBe(147);
+    expect(evidenceCount).toBe(142);
   });
 });
