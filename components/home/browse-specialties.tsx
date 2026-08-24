@@ -11,6 +11,9 @@ import {
   Pill,
   ShieldPlus,
   Microscope,
+  ScanLine,
+  Wind,
+  Venus,
 } from "lucide-react";
 
 import { SectionHeader } from "@/components/ui/section-header";
@@ -57,6 +60,22 @@ const specialtyVisuals: Record<string, { icon: ReactNode; color: string }> = {
   "Critical Care": {
     icon: <ShieldPlus className="h-7 w-7 text-white" />,
     color: "bg-rose-600",
+  },
+  Gastroenterology: {
+    icon: <ScanLine className="h-7 w-7 text-white" />,
+    color: "bg-cyan-500",
+  },
+  "General Medicine": {
+    icon: <Stethoscope className="h-7 w-7 text-white" />,
+    color: "bg-teal-500",
+  },
+  Obstetrics: {
+    icon: <Venus className="h-7 w-7 text-white" />,
+    color: "bg-pink-500",
+  },
+  Pulmonology: {
+    icon: <Wind className="h-7 w-7 text-white" />,
+    color: "bg-indigo-500",
   },
 };
 
