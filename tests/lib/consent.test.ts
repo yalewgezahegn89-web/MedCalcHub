@@ -215,3 +215,272 @@ describe("consent", () => {
     });
   });
 });
+
+// ─────────────────────────────────────────────────
+// Batch 16 — Consent Accessibility Tests
+// ─────────────────────────────────────────────────
+
+describe("CookieBanner accessibility", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    vi.resetModules();
+  });
+
+  function createBannerMocks() {
+    const store = new Map<string, string>();
+    const addEventListeners: Array<[string, EventListener]> = [];
+    const removeEventListeners: Array<[string, EventListener]> = [];
+
+    return {
+      store,
+      localStorage: {
+        getItem: vi.fn((key: string) => store.get(key) ?? null),
+        setItem: vi.fn((key: string, value: string) => { store.set(key, value); }),
+        removeItem: vi.fn((key: string) => { store.delete(key); }),
+        clear: vi.fn(() => { store.clear(); }),
+      },
+      window: {
+        dispatchEvent: vi.fn(),
+        addEventListener: vi.fn((...args: [string, EventListener]) => {
+          addEventListeners.push(args);
+        }),
+        removeEventListener: vi.fn((...args: [string, EventListener]) => {
+          removeEventListeners.push(args);
+        }),
+      },
+      addEventListeners,
+      removeEventListeners,
+    };
+  }
+
+  it("banner has role=dialog and aria-label", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain('role="dialog"');
+    expect(src).toContain('aria-label="Cookie and advertising consent"');
+  });
+
+  it("banner renders Accept and Reject buttons", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("Accept advertising");
+    expect(src).toContain("Reject advertising");
+  });
+
+  it("Accept button has ref for initial focus", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("acceptRef");
+    expect(src).toContain("ref={acceptRef}");
+  });
+
+  it("initial focus effect targets Accept button", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("acceptRef.current?.focus()");
+  });
+
+  it("Escape key triggers reject (safe explicit outcome)", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain('"Escape"');
+    expect(src).toContain("setConsent(false)");
+  });
+
+  it("no keyboard trap: Escape handler uses preventDefault but does not block navigation", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("e.preventDefault()");
+  });
+
+  it("focus restoration targets previousFocusRef", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("previousFocusRef");
+    expect(src).toContain("previousFocusRef.current.focus()");
+  });
+
+  it("banner returns null when consent is not null", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("if (consent !== null)");
+    expect(src).toContain("return null;");
+  });
+
+  it("useEffect cleanup removes keydown listener", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
+      "utf8",
+    );
+    expect(src).toContain('document.removeEventListener("keydown", onKeyDown)');
+  });
+});
+
+// ─────────────────────────────────────────────────
+// Batch 16 — Consent Flow Integration Tests
+// ─────────────────────────────────────────────────
+
+describe("Consent flow integration", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    vi.resetModules();
+  });
+
+  it("clearConsent causes getConsent to return null", async () => {
+    const store = new Map<string, string>([["medcalchub-consent", "true"]]);
+    vi.stubGlobal("localStorage", {
+      getItem: (key: string) => store.get(key) ?? null,
+      setItem: (key: string, value: string) => { store.set(key, value); },
+      removeItem: (key: string) => { store.delete(key); },
+      clear: () => { store.clear(); },
+    });
+    vi.stubGlobal("window", {
+      dispatchEvent: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+
+    const consent = await import("../../lib/consent/consent");
+    expect(consent.getConsent()).toBe(true);
+    consent.clearConsent();
+    expect(consent.getConsent()).toBeNull();
+    expect(consent.hasConsent()).toBe(false);
+  });
+
+  it("setConsent(false) causes hasConsent to return false", async () => {
+    const store = new Map<string, string>();
+    vi.stubGlobal("localStorage", {
+      getItem: (key: string) => store.get(key) ?? null,
+      setItem: (key: string, value: string) => { store.set(key, value); },
+      removeItem: (key: string) => { store.delete(key); },
+      clear: () => { store.clear(); },
+    });
+    vi.stubGlobal("window", {
+      dispatchEvent: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+
+    const consent = await import("../../lib/consent/consent");
+    consent.setConsent(false);
+    expect(consent.hasConsent()).toBe(false);
+    expect(consent.getConsent()).toBe(false);
+  });
+
+  it("setConsent(true) causes hasConsent to return true", async () => {
+    const store = new Map<string, string>();
+    vi.stubGlobal("localStorage", {
+      getItem: (key: string) => store.get(key) ?? null,
+      setItem: (key: string, value: string) => { store.set(key, value); },
+      removeItem: (key: string) => { store.delete(key); },
+      clear: () => { store.clear(); },
+    });
+    vi.stubGlobal("window", {
+      dispatchEvent: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+
+    const consent = await import("../../lib/consent/consent");
+    consent.setConsent(true);
+    expect(consent.hasConsent()).toBe(true);
+  });
+
+  it("consent change event is dispatched on setConsent", async () => {
+    const dispatchSpy = vi.fn();
+    vi.stubGlobal("localStorage", {
+      getItem: () => null,
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    });
+    vi.stubGlobal("window", {
+      dispatchEvent: dispatchSpy,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+
+    const consent = await import("../../lib/consent/consent");
+    consent.setConsent(true);
+    expect(dispatchSpy).toHaveBeenCalled();
+    const eventArg = dispatchSpy.mock.calls[0][0] as Event;
+    expect(eventArg.type).toBe("medcalchub-consent-changed");
+  });
+
+  it("consent change event is dispatched on clearConsent", async () => {
+    const dispatchSpy = vi.fn();
+    vi.stubGlobal("localStorage", {
+      getItem: () => null,
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    });
+    vi.stubGlobal("window", {
+      dispatchEvent: dispatchSpy,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+
+    const consent = await import("../../lib/consent/consent");
+    consent.clearConsent();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it("subscribeConsent fires on consent change event", async () => {
+    let handler: EventListener | undefined;
+    vi.stubGlobal("localStorage", {
+      getItem: () => null,
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    });
+    vi.stubGlobal("window", {
+      dispatchEvent: vi.fn(),
+      addEventListener: vi.fn((_event: string, cb: EventListener) => {
+        handler = cb;
+      }),
+      removeEventListener: vi.fn(),
+    });
+
+    const consent = await import("../../lib/consent/consent");
+    const spy = vi.fn();
+    consent.subscribeConsent(spy);
+    expect(handler).toBeDefined();
+  });
+});

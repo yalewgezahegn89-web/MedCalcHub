@@ -265,6 +265,11 @@ describe("Default advertising state", () => {
     expect(src).toContain('raw === undefined || raw === null || raw === ""');
     expect(src).toContain("return false");
   });
+
+  it("ads config does not hardcode real publisher IDs", () => {
+    const src = readFile("../../lib/ads/config.ts");
+    expect(src).not.toMatch(/ca-pub-\d{10,}/);
+  });
 });
 
 /* ------------------------------------------------------------------
@@ -303,5 +308,132 @@ describe("Slot ID conventions", () => {
       const src = readFile(page);
       expect(src).not.toMatch(/ca-pub-\d+/);
     }
+  });
+});
+
+/* ------------------------------------------------------------------
+   17. Consent / Ads security boundary — source-level
+   ------------------------------------------------------------------ */
+
+describe("Consent / Ads security boundary", () => {
+  it("AdSlot gates on consent before rendering", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain("hasConsent");
+    expect(src).toContain("consent");
+  });
+
+  it("AdScripts gates on consent before rendering", () => {
+    const src = readFile("../../components/ads/ad-scripts.tsx");
+    expect(src).toContain("hasConsent");
+    expect(src).toContain("consent");
+  });
+
+  it("AdSlot does not render without valid slot ID", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain("isValidSlotId(slotId)");
+  });
+
+  it("AdScripts does not render without adsenseReady", () => {
+    const src = readFile("../../components/ads/ad-scripts.tsx");
+    expect(src).toContain("adsConfig.adsenseReady");
+  });
+
+  it("consent banner default state is null (not yet decided)", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain("consent !== null");
+  });
+
+  it("consent preferences button calls clearConsent", () => {
+    const src = readFile("../../components/consent/consent-preferences-button.tsx");
+    expect(src).toContain("clearConsent");
+  });
+});
+
+/* ------------------------------------------------------------------
+   18. Accessibility source verification
+   ------------------------------------------------------------------ */
+
+describe("Ad accessibility", () => {
+  it("AdSlot uses role=complementary", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain('role="complementary"');
+  });
+
+  it("AdSlot has aria-label", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain("aria-label={label}");
+  });
+
+  it("consent dialog uses role=dialog", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain('role="dialog"');
+  });
+
+  it("consent dialog has aria-label", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain('aria-label="Cookie and advertising consent"');
+  });
+});
+
+/* ------------------------------------------------------------------
+   19. Consent flow source verification
+   ------------------------------------------------------------------ */
+
+describe("Consent flow source verification", () => {
+  it("cookie banner has Accept button", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain("handleAccept");
+    expect(src).toContain("Accept advertising");
+  });
+
+  it("cookie banner has Reject button", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain("handleReject");
+    expect(src).toContain("Reject advertising");
+  });
+
+  it("accept calls setConsent(true)", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain("setConsent(true)");
+  });
+
+  it("reject calls setConsent(false)", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain("setConsent(false)");
+  });
+
+  it("banner disappears after consent is set", () => {
+    const src = readFile("../../components/consent/cookie-banner.tsx");
+    expect(src).toContain("if (consent !== null)");
+    expect(src).toContain("return null;");
+  });
+});
+
+/* ------------------------------------------------------------------
+   20. Layout / responsive safety — source verification
+   ------------------------------------------------------------------ */
+
+describe("Layout responsive safety", () => {
+  it("all AdSlot sizes include w-full for responsive behavior", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain("w-full");
+  });
+
+  it("AdSlot sizes use max-w constraints", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain("max-w-[728px]");
+    expect(src).toContain("max-w-[970px]");
+    expect(src).toContain("max-w-[336px]");
+    expect(src).toContain("max-w-[320px]");
+  });
+
+  it("AdSlot uses mx-auto for centering", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain("mx-auto");
+  });
+
+  it("AdSlot has overflow-hidden to prevent content spillover", () => {
+    const src = readFile("../../components/ads/ad-slot.tsx");
+    expect(src).toContain("overflow-hidden");
   });
 });

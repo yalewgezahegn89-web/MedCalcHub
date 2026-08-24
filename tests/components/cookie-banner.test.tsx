@@ -9,6 +9,9 @@ vi.mock("react", async () => {
       getSnapshot: () => unknown,
     ) => getSnapshot(),
     useCallback: <T extends (...args: unknown[]) => unknown>(cb: T) => cb,
+    useRef: (initial: unknown) => ({ current: initial }),
+    // Mock useEffect to be a no-op — DOM effects don't run in unit tests
+    useEffect: () => {},
   };
 });
 

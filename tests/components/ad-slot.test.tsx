@@ -121,4 +121,64 @@ describe("AdSlot", () => {
     expect(result).not.toBeNull();
     expect(result).toHaveProperty("type", "aside");
   });
+
+  it("renders with role=complementary and aria-label", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-1234567890");
+    vi.resetModules();
+
+    const { AdSlot } = await import("../../components/ads/ad-slot");
+    const result = AdSlot({ size: "banner", slotId: "1234567890", label: "Sponsored" });
+    expect(result).not.toBeNull();
+    expect(result?.props.role).toBe("complementary");
+    expect(result?.props["aria-label"]).toBe("Sponsored");
+  });
+
+  it("uses default aria-label when label not provided", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-1234567890");
+    vi.resetModules();
+
+    const { AdSlot } = await import("../../components/ads/ad-slot");
+    const result = AdSlot({ size: "banner", slotId: "1234567890" });
+    expect(result).not.toBeNull();
+    expect(result?.props["aria-label"]).toBe("Advertisement");
+  });
+
+  it("reserved sizing min-h prevents CLS", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-1234567890");
+    vi.resetModules();
+
+    const { AdSlot } = await import("../../components/ads/ad-slot");
+    const result = AdSlot({ size: "banner", slotId: "1234567890" });
+    expect(result).not.toBeNull();
+    expect(result?.props.className).toContain("min-h-");
+  });
+
+  it("AdSlotInit try/catch prevents crash on adsbygoogle error", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/ads/ad-slot.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("try {");
+    expect(src).toContain("} catch {");
+    expect(src).toContain("window.adsbygoogle");
+  });
+
+  it("AdSlot does not expose error details to users", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../components/ads/ad-slot.tsx"),
+      "utf8",
+    );
+    expect(src).not.toContain("console.error");
+    expect(src).not.toContain("throw ");
+  });
 });

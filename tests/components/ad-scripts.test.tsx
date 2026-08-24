@@ -96,4 +96,47 @@ describe("AdScripts", () => {
     const result = AdScripts();
     expect(result).not.toBeNull();
   });
+
+  it("does not render when ads enabled but no consent", async () => {
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-1234567890");
+    vi.resetModules();
+
+    const { AdScripts } = await import("../../components/ads/ad-scripts");
+    const result = AdScripts();
+    expect(result).toBeNull();
+  });
+
+  it("does not render when consent true but ads disabled", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.resetModules();
+
+    const { AdScripts } = await import("../../components/ads/ad-scripts");
+    const result = AdScripts();
+    expect(result).toBeNull();
+  });
+
+  it("Script src contains publisher ID", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-9999999999");
+    vi.resetModules();
+
+    const { AdScripts } = await import("../../components/ads/ad-scripts");
+    const result = AdScripts();
+    expect(result).not.toBeNull();
+    expect(result?.props.src).toContain("ca-pub-9999999999");
+  });
+
+  it("Script uses afterInteractive strategy", async () => {
+    ls.store.set(CONSENT_KEY, "true");
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-1234567890");
+    vi.resetModules();
+
+    const { AdScripts } = await import("../../components/ads/ad-scripts");
+    const result = AdScripts();
+    expect(result).not.toBeNull();
+    expect(result?.props.strategy).toBe("afterInteractive");
+  });
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 
 import {
   getConsent,
@@ -15,6 +15,9 @@ export function CookieBanner() {
     () => null,
   );
 
+  const acceptRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
   const handleAccept = useCallback(() => {
     setConsent(true);
   }, []);
@@ -22,6 +25,37 @@ export function CookieBanner() {
   const handleReject = useCallback(() => {
     setConsent(false);
   }, []);
+
+  // Initial focus: move focus to Accept button when banner appears
+  useEffect(() => {
+    if (consent === null) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      acceptRef.current?.focus();
+    }
+  }, [consent]);
+
+  // Keyboard: Escape rejects consent (safe, explicit outcome)
+  useEffect(() => {
+    if (consent !== null) return;
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setConsent(false);
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [consent]);
+
+  // Focus restoration: when consent resolves, restore focus to trigger
+  useEffect(() => {
+    if (consent !== null && previousFocusRef.current) {
+      previousFocusRef.current.focus();
+      previousFocusRef.current = null;
+    }
+  }, [consent]);
 
   if (consent !== null) {
     return null;
@@ -47,6 +81,7 @@ export function CookieBanner() {
 
         <div className="mt-4 flex flex-wrap gap-3">
           <button
+            ref={acceptRef}
             onClick={handleAccept}
             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >

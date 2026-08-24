@@ -111,3 +111,94 @@ describe("ads config", () => {
     expect(isValidSlotId("123456789012")).toBe(true);
   });
 });
+
+// ─────────────────────────────────────────────────
+// Batch 16 — Security / Consent Boundary Tests
+// ─────────────────────────────────────────────────
+
+describe("ads security boundary", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+    vi.resetModules();
+  });
+
+  it("ads disabled by default — no ad scripts or slots render", async () => {
+    const { adsConfig } = await import("../../lib/ads/config");
+    expect(adsConfig.enabled).toBe(false);
+    expect(adsConfig.adsenseReady).toBe(false);
+  });
+
+  it("placeholder publisher ID cannot make adsenseReady true", async () => {
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "ca-pub-XXXXXXXXXXXXXXXX");
+    vi.resetModules();
+
+    const { adsConfig } = await import("../../lib/ads/config");
+    expect(adsConfig.adsenseReady).toBe(false);
+  });
+
+  it("placeholder slot ID fails validation", async () => {
+    const { isValidSlotId } = await import("../../lib/ads/config");
+    expect(isValidSlotId("placeholder-calc-primary")).toBe(false);
+    expect(isValidSlotId("placeholder-homepage-below-fold")).toBe(false);
+    expect(isValidSlotId("placeholder-category-feed")).toBe(false);
+    expect(isValidSlotId("placeholder-specialty-feed")).toBe(false);
+  });
+
+  it("non-ca-pub publisher ID fails validation", async () => {
+    vi.stubEnv("NEXT_PUBLIC_ADS_ENABLED", "true");
+    vi.stubEnv("NEXT_PUBLIC_ADSENSE_PUB_ID", "pub-1234567890");
+    vi.resetModules();
+
+    const { adsConfig } = await import("../../lib/ads/config");
+    expect(adsConfig.adsenseReady).toBe(false);
+  });
+
+  it("all slot IDs in pages are placeholders that fail validation", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+
+    const pages = [
+      "../../app/calculators/[slug]/page.tsx",
+      "../../app/categories/[category]/page.tsx",
+      "../../app/specialties/[slug]/page.tsx",
+      "../../app/page.tsx",
+    ];
+
+    const { isValidSlotId } = await import("../../lib/ads/config");
+
+    for (const page of pages) {
+      const src = fs.readFileSync(
+        path.resolve(__dirname, page),
+        "utf8",
+      );
+      const slotMatch = src.match(/slotId="([^"]+)"/);
+      if (slotMatch) {
+        expect(isValidSlotId(slotMatch[1])).toBe(false);
+      }
+    }
+  });
+
+  it("no page contains hardcoded ca-pub- IDs", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+
+    const pages = [
+      "../../app/calculators/[slug]/page.tsx",
+      "../../app/categories/[category]/page.tsx",
+      "../../app/specialties/[slug]/page.tsx",
+      "../../app/page.tsx",
+      "../../app/layout.tsx",
+    ];
+
+    for (const page of pages) {
+      const src = fs.readFileSync(
+        path.resolve(__dirname, page),
+        "utf8",
+      );
+      expect(src).not.toMatch(/ca-pub-\d{10,}/);
+    }
+  });
+});
