@@ -45,8 +45,60 @@ export const metadata: Metadata = {
 export default function SpecialtiesPage() {
   const specialties = getSpecialties();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: "Medical Specialties",
+        description:
+          "Browse medical calculators by specialty — cardiology, nephrology, oncology, emergency medicine, and more.",
+        url: `${SITE_URL}/specialties`,
+        isPartOf: {
+          "@type": "WebSite",
+          name: "MedCalcHub",
+          url: SITE_URL,
+        },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: specialties.map((specialty, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: specialty,
+            url: `${SITE_URL}/specialties/${specialty.toLowerCase().replace(/\s+/g, "-")}`,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Specialties",
+            item: `${SITE_URL}/specialties`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div className="mx-auto max-w-6xl px-6 py-10">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
+
+      <div className="mx-auto max-w-6xl px-6 py-10">
 
       <div className="mb-10">
         <h1 className="text-4xl font-bold">
@@ -87,5 +139,6 @@ export default function SpecialtiesPage() {
       </div>
 
     </div>
+    </>
   );
 }

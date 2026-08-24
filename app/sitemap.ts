@@ -41,12 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    {
-      url: `${SITE_URL}/search`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
   ];
 
   const calculatorPages: MetadataRoute.Sitemap =

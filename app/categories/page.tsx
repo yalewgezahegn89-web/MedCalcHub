@@ -46,8 +46,60 @@ export const metadata: Metadata = {
 export default function CategoriesPage() {
   const categories = getCategories();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: "Calculator Categories",
+        description:
+          "Browse medical calculator categories organized by clinical specialty.",
+        url: `${SITE_URL}/categories`,
+        isPartOf: {
+          "@type": "WebSite",
+          name: "MedCalcHub",
+          url: SITE_URL,
+        },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: categories.map((category, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: category,
+            url: `${SITE_URL}/categories/${category.toLowerCase().replace(/\s+/g, "-")}`,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Categories",
+            item: `${SITE_URL}/categories`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
+
+      <div className="mx-auto max-w-5xl px-6 py-10">
 
       <div className="mb-10">
         <h1 className="text-4xl font-bold">
@@ -98,5 +150,6 @@ export default function CategoriesPage() {
       </div>
 
     </div>
+    </>
   );
 }

@@ -15,14 +15,14 @@ export const metadata: Metadata = {
     absolute: "MedCalcHub — Professional Medical Calculators",
   },
   description:
-    "Free evidence-based medical calculators for healthcare professionals. 140+ clinical tools including BMI, GFR, CHA₂DS₂-VASc, MELD, Wells Score, and more.",
+    "Free evidence-based medical calculators for healthcare professionals. 143 clinical tools including BMI, GFR, CHA₂DS₂-VASc, MELD, Wells Score, and more.",
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
     title: "MedCalcHub — Professional Medical Calculators",
     description:
-      "Free evidence-based medical calculators for healthcare professionals. 140+ clinical tools.",
+      "Free evidence-based medical calculators for healthcare professionals. 143 clinical tools.",
     url: SITE_URL,
     type: "website",
     siteName: "MedCalcHub",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MedCalcHub — Professional Medical Calculators",
     description:
-      "Free evidence-based medical calculators for healthcare professionals. 140+ clinical tools.",
+      "Free evidence-based medical calculators for healthcare professionals. 143 clinical tools.",
     images: [OG_IMAGE],
   },
 };
@@ -64,7 +64,7 @@ export default function HomePage() {
           "@type": "SearchAction",
           target: {
             "@type": "EntryPoint",
-            urlTemplate: `${SITE_URL}/calculators?q={search_term_string}`,
+            urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
           },
           "query-input": "required name=search_term_string",
         },
