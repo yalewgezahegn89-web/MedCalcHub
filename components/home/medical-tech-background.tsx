@@ -7,8 +7,8 @@
  * soft medical plus marks. Static geometry only — no animation, no
  * network requests, no raster assets.
  *
- * Intensity is kept at roughly 3–10%: low-alpha strokes plus a radial
- * mask that dissolves the artwork behind the centered hero content.
+ * Intensity is kept at roughly 15–25%: moderate-alpha strokes plus a
+ * radial mask that softens the artwork behind the centered hero content.
  * The component is server-renderable and fully decorative.
  */
 export function MedicalTechBackground() {
@@ -16,17 +16,17 @@ export function MedicalTechBackground() {
     <div
       data-testid="medical-tech-background"
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 isolate select-none overflow-hidden opacity-90 dark:opacity-70"
+      className="pointer-events-none absolute inset-0 isolate select-none overflow-hidden opacity-100 dark:opacity-85"
     >
       {/* Desktop / tablet artwork */}
       <svg
         viewBox="0 0 1440 620"
         preserveAspectRatio="xMidYMin meet"
-        className="hidden h-auto w-full md:block [mask-image:radial-gradient(ellipse_115%_92%_at_50%_36%,_transparent_34%,_black_78%)] [-webkit-mask-image:radial-gradient(ellipse_115%_92%_at_50%_36%,_transparent_34%,_black_78%)]"
+        className="hidden h-auto w-full md:block [mask-image:radial-gradient(ellipse_115%_92%_at_50%_36%,_transparent_22%,_black_74%)] [-webkit-mask-image:radial-gradient(ellipse_115%_92%_at_50%_36%,_transparent_22%,_black_74%)]"
       >
         {/* ECG waveform — left side */}
         <g
-          className="text-sky-600/20 dark:text-sky-400/15"
+          className="text-sky-600/35 dark:text-sky-400/25"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
@@ -36,7 +36,7 @@ export function MedicalTechBackground() {
           <path d="M-20 340 H96 L104 322 L112 340 H168 C176 340 178 328 186 328 C194 328 196 340 204 340 H252 L260 350 L272 258 L286 398 L298 306 L304 340 H420 L428 322 L436 340 H492 C500 340 502 328 510 328 C518 328 520 340 528 340 H576 L584 350 L596 258 L610 398 L622 306 L628 340 H780" />
         </g>
         <g
-          className="text-slate-400/15 dark:text-slate-500/15"
+          className="text-slate-500/22 dark:text-slate-400/[0.16]"
           fill="none"
           stroke="currentColor"
           strokeWidth="1"
@@ -52,7 +52,7 @@ export function MedicalTechBackground() {
 
         {/* Molecular network — upper left */}
         <g
-          className="text-indigo-500/15 dark:text-indigo-400/10"
+          className="text-indigo-500/30 dark:text-indigo-400/22"
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
@@ -75,7 +75,7 @@ export function MedicalTechBackground() {
 
         {/* Molecular network — upper right */}
         <g
-          className="text-indigo-500/15 dark:text-indigo-400/10"
+          className="text-indigo-500/30 dark:text-indigo-400/22"
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
@@ -96,7 +96,7 @@ export function MedicalTechBackground() {
 
         {/* Anatomical line-art impression — right side */}
         <g
-          className="text-slate-500/12 dark:text-slate-400/[0.08]"
+          className="text-slate-500/22 dark:text-slate-400/[0.16]"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.1"
@@ -122,7 +122,7 @@ export function MedicalTechBackground() {
 
         {/* DNA-helix-inspired curves — far right */}
         <g
-          className="text-blue-600/15 dark:text-blue-300/10"
+          className="text-blue-600/30 dark:text-blue-300/22"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.2"
@@ -142,7 +142,7 @@ export function MedicalTechBackground() {
 
         {/* Soft medical plus symbols */}
         <g
-          className="text-blue-500/15 dark:text-blue-400/10"
+          className="text-blue-500/28 dark:text-blue-400/20"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.6"
@@ -161,10 +161,10 @@ export function MedicalTechBackground() {
       <svg
         viewBox="0 0 400 360"
         preserveAspectRatio="xMidYMin meet"
-        className="h-auto w-full opacity-70 md:hidden [mask-image:radial-gradient(ellipse_130%_95%_at_50%_30%,_transparent_30%,_black_80%)] [-webkit-mask-image:radial-gradient(ellipse_130%_95%_at_50%_30%,_transparent_30%,_black_80%)]"
+        className="h-auto w-full opacity-80 md:hidden [mask-image:radial-gradient(ellipse_130%_95%_at_50%_30%,_transparent_28%,_black_82%)] [-webkit-mask-image:radial-gradient(ellipse_130%_95%_at_50%_30%,_transparent_28%,_black_82%)]"
       >
         <g
-          className="text-sky-600/20 dark:text-sky-400/15"
+          className="text-sky-600/28 dark:text-sky-400/20"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.4"
@@ -175,7 +175,7 @@ export function MedicalTechBackground() {
         </g>
 
         <g
-          className="text-indigo-500/15 dark:text-indigo-400/10"
+          className="text-indigo-500/25 dark:text-indigo-400/18"
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
@@ -189,7 +189,7 @@ export function MedicalTechBackground() {
         </g>
 
         <g
-          className="text-blue-500/15 dark:text-blue-400/10"
+          className="text-blue-500/22 dark:text-blue-400/15"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.6"
