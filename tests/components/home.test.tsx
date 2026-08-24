@@ -24,6 +24,8 @@ import { FavoritesWidget } from "../../components/home/favorites-widget";
 import { RecentCalculatorsWidget } from "../../components/home/recent-calculators-widget";
 import { BrowseCategories } from "../../components/home/browse-categories";
 import { BrowseSpecialties } from "../../components/home/browse-specialties";
+import { MedicalTechBackground } from "../../components/home/medical-tech-background";
+import HomePage from "../../app/page";
 
 import {
   calculatorRegistry,
@@ -235,5 +237,70 @@ describe("Homepage collection sections", () => {
     );
     expect(markup).toContain('href="/specialties"');
     expect(markup).toContain('href="/specialties/');
+  });
+});
+
+describe("Medical-tech background", () => {
+  const markup = render(<MedicalTechBackground />);
+
+  it("renders as a purely decorative layer", () => {
+    expect(markup).toContain('data-testid="medical-tech-background"');
+    expect(markup).toContain('aria-hidden="true"');
+    expect(markup).toContain("pointer-events-none");
+    expect(markup).toContain("select-none");
+  });
+
+  it("contains no interactive elements or SVG text", () => {
+    expect(markup).not.toContain("<button");
+    expect(markup).not.toContain("<a ");
+    expect(markup).not.toContain("<a>");
+    expect(markup).not.toContain("<input");
+    expect(markup).not.toContain("<text");
+    expect(markup).not.toContain("<textarea");
+  });
+
+  it("provides simplified mobile artwork and a masked desktop layer", () => {
+    expect(markup).toContain("md:hidden");
+    expect(markup).toContain("hidden h-auto w-full md:block");
+    expect(markup).toContain("mask-image");
+    expect(markup.toLowerCase()).not.toContain("prefers-color-scheme");
+  });
+});
+
+describe("Homepage with medical-tech background", () => {
+  const pageMarkup = render(<HomePage />);
+
+  it("mounts the decorative background inside the hero region", () => {
+    const bgIndex = pageMarkup.indexOf(
+      'data-testid="medical-tech-background"',
+    );
+    const heroIndex = pageMarkup.indexOf("Clinical calculations,");
+
+    expect(bgIndex).toBeGreaterThan(-1);
+    expect(heroIndex).toBeGreaterThan(bgIndex);
+  });
+
+  it("keeps all approved homepage sections intact", () => {
+    for (const section of [
+      "Clinical calculations,",
+      "Popular Clinical Tools",
+      "No saved favorites yet",
+      "Explore by Clinical Area",
+      "Explore by Specialty",
+      'aria-label="Search calculators"',
+    ]) {
+      expect(
+        pageMarkup.includes(section),
+        `Missing homepage content: ${section}`,
+      ).toBe(true);
+    }
+  });
+
+  it("renders exactly one background instance (no wallpaper behind cards)", () => {
+    const instances = pageMarkup.match(
+      /data-testid="medical-tech-background"/g,
+    );
+
+    expect(instances?.length).toBe(1);
   });
 });

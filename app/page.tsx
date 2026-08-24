@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Hero } from "@/components/home/hero";
+import { MedicalTechBackground } from "@/components/home/medical-tech-background";
 import { CalculatorSearch } from "@/components/home/calculator-search";
 import { TrustStrip } from "@/components/home/trust-strip";
 import { PopularCalculators } from "@/components/home/popular-calculators";
@@ -86,11 +87,17 @@ export default function HomePage() {
 
       <div className="mx-auto max-w-6xl space-y-12 px-4 py-10 sm:px-6 sm:space-y-14">
 
-      <Hero />
+      <section className="relative isolate overflow-hidden">
+        <MedicalTechBackground />
 
-      <CalculatorSearch />
+        <div className="relative space-y-12 sm:space-y-14">
+          <Hero />
 
-      <TrustStrip />
+          <CalculatorSearch />
+
+          <TrustStrip />
+        </div>
+      </section>
 
       <PopularCalculators />
 
