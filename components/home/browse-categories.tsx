@@ -8,6 +8,17 @@ import {
   Stethoscope,
   HeartPulse,
   Microscope,
+  Activity,
+  FlaskConical,
+  PersonStanding,
+  Bug,
+  TestTube,
+  Brain,
+  VenusAndMars,
+  Dna,
+  Baby,
+  Wind,
+  Moon,
 } from "lucide-react";
 
 import { SectionHeader } from "@/components/ui/section-header";
@@ -38,6 +49,62 @@ const categoryVisuals: Record<string, { icon: React.ReactNode; color: string }> 
   Cardiology: {
     icon: <HeartPulse className="h-7 w-7 text-white" />,
     color: "bg-rose-600",
+  },
+  Anthropometry: {
+    icon: <Calculator className="h-7 w-7 text-white" />,
+    color: "bg-orange-500",
+  },
+  Emergency: {
+    icon: <Activity className="h-7 w-7 text-white" />,
+    color: "bg-red-500",
+  },
+  Gastroenterology: {
+    icon: <FlaskConical className="h-7 w-7 text-white" />,
+    color: "bg-teal-500",
+  },
+  Geriatrics: {
+    icon: <PersonStanding className="h-7 w-7 text-white" />,
+    color: "bg-violet-500",
+  },
+  "Infectious Disease": {
+    icon: <Bug className="h-7 w-7 text-white" />,
+    color: "bg-lime-600",
+  },
+  Laboratory: {
+    icon: <TestTube className="h-7 w-7 text-white" />,
+    color: "bg-slate-500",
+  },
+  "Mental Health": {
+    icon: <Brain className="h-7 w-7 text-white" />,
+    color: "bg-purple-500",
+  },
+  Nephrology: {
+    icon: <Droplets className="h-7 w-7 text-white" />,
+    color: "bg-cyan-500",
+  },
+  Neurology: {
+    icon: <Brain className="h-7 w-7 text-white" />,
+    color: "bg-indigo-500",
+  },
+  "Obstetrics & Gynecology": {
+    icon: <VenusAndMars className="h-7 w-7 text-white" />,
+    color: "bg-pink-500",
+  },
+  Oncology: {
+    icon: <Dna className="h-7 w-7 text-white" />,
+    color: "bg-rose-500",
+  },
+  Pediatrics: {
+    icon: <Baby className="h-7 w-7 text-white" />,
+    color: "bg-green-500",
+  },
+  Pulmonology: {
+    icon: <Wind className="h-7 w-7 text-white" />,
+    color: "bg-sky-500",
+  },
+  "Sleep Medicine": {
+    icon: <Moon className="h-7 w-7 text-white" />,
+    color: "bg-indigo-600",
   },
 };
 
