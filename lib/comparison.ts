@@ -201,6 +201,43 @@ export function buildSuggestedGroups(): ComparisonGroup[] {
   return groups;
 }
 
+/**
+ * Normalizes a comparison title purely for display-level duplicate
+ * detection: lowercase, trimmed, whitespace-collapsed.
+ * The stored title in comparison data is never modified.
+ */
+export function normalizeComparisonTitle(name: string): string {
+  return name.toLowerCase().trim().replace(/\s+/g, " ");
+}
+
+/**
+ * Display-level view of the suggested groups used by UI controls.
+ *
+ * Different comparison groups may share the same human-readable title
+ * (e.g. several distinct kidney trios titled "Which Kidney Calculator
+ * Should I Use?"). Rendering all of them produces repeated, confusing
+ * buttons. This view keeps only the highest-priority group per
+ * normalized title while leaving every underlying group intact:
+ *
+ * Priority (deterministic):
+ *   1. larger group first
+ *   2. existing buildSuggestedGroups() order (registry order)
+ */
+export function buildDisplaySuggestedGroups(): ComparisonGroup[] {
+  const seenTitles = new Set<string>();
+  const displayGroups: ComparisonGroup[] = [];
+
+  for (const group of buildSuggestedGroups()) {
+    const titleKey = normalizeComparisonTitle(group.name);
+    if (!titleKey || seenTitles.has(titleKey)) continue;
+
+    seenTitles.add(titleKey);
+    displayGroups.push(group);
+  }
+
+  return displayGroups;
+}
+
 export function shouldShowSafetyNote(
   calculators: CalculatorDefinition[],
 ): boolean {

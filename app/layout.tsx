@@ -9,8 +9,10 @@ import { ConsentPreferencesButton } from "@/components/consent/consent-preferenc
 import { CookieBanner } from "@/components/consent/cookie-banner";
 import Navbar from "@/components/navbar";
 import { SearchProvider } from "@/components/search/search-provider";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { NotificationProvider } from "@/components/ui/notification/notification-provider";
 import { SITE_URL } from "@/lib/site-url";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff2",
@@ -48,6 +50,8 @@ export const metadata: Metadata = {
   },
 };
 
+const themeInitScript = `(function(){try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");if(t!=="light"&&t!=="dark"&&t!=="system")t="system";var m=window.matchMedia?window.matchMedia("(prefers-color-scheme: dark)").matches:false;var d=t==="dark"||(t==="system"&&m);var e=document.documentElement;e.classList.toggle("dark",d);e.style.colorScheme=d?"dark":"light";}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,8 +61,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeInitScript,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-slate-50 text-slate-900">
+        <ThemeProvider />
+
         <Navbar />
 
         <SearchProvider />
@@ -84,8 +98,8 @@ export default function RootLayout({
         <NotificationProvider />
 
         <CookieBanner />
-
         <AdScripts />
+
       </body>
     </html>
   );

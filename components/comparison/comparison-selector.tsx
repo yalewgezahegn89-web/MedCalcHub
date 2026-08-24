@@ -6,7 +6,7 @@ import { calculatorRegistry } from "@/lib/calculators/registry";
 
 import {
   MAX_COMPARISON,
-  buildSuggestedGroups,
+  buildDisplaySuggestedGroups,
 } from "@/lib/comparison";
 
 const SUGGESTED_GROUP_LIMIT = 6;
@@ -21,7 +21,7 @@ export function ComparisonSelector({
   onChange,
 }: ComparisonSelectorProps) {
   const [filter, setFilter] = useState("");
-  const suggestedGroups = buildSuggestedGroups().slice(
+  const suggestedGroups = buildDisplaySuggestedGroups().slice(
     0,
     SUGGESTED_GROUP_LIMIT,
   );

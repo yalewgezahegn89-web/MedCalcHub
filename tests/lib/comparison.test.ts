@@ -5,10 +5,12 @@ import { calculatorRegistry } from "@/lib/calculators/registry";
 
 import {
   MAX_COMPARISON,
+  buildDisplaySuggestedGroups,
   buildSuggestedGroups,
   decodeSelection,
   encodeSelection,
   getComparisonQuery,
+  normalizeComparisonTitle,
   normalizeSelection,
   prepareComparisonRows,
   resolveSelectedCalculators,
@@ -222,6 +224,109 @@ describe("buildSuggestedGroups", () => {
 
   it("is deterministic across calls", () => {
     expect(groups).toEqual(buildSuggestedGroups());
+  });
+});
+
+describe("normalizeComparisonTitle", () => {
+  it("lowercases, trims, and collapses whitespace for comparison only", () => {
+    expect(
+      normalizeComparisonTitle("  Which   Kidney\nCalculator? "),
+    ).toBe("which kidney calculator?");
+    expect(normalizeComparisonTitle("Insulin Resistance Surrogates"))
+      .toBe("insulin resistance surrogates");
+  });
+
+  it("does not mutate the original group titles", () => {
+    const groups = buildSuggestedGroups();
+    const display = buildDisplaySuggestedGroups();
+    const originalTitles = new Set(groups.map((group) => group.name));
+
+    for (const group of display) {
+      expect(originalTitles.has(group.name)).toBe(true);
+    }
+  });
+});
+
+describe("buildDisplaySuggestedGroups", () => {
+  const underlying = buildSuggestedGroups();
+  const display = buildDisplaySuggestedGroups();
+
+  it("never repeats a normalized display title", () => {
+    const titles = new Set(
+      display.map((group) => normalizeComparisonTitle(group.name)),
+    );
+    expect(titles.size).toBe(display.length);
+  });
+
+  it("keeps every underlying group intact (display is a subset)", () => {
+    expect(display.length).toBeLessThanOrEqual(underlying.length);
+
+    const underlyingByKey = new Map(
+      underlying.map((group) => [
+        [...group.slugs].sort().join("|"),
+        group,
+      ]),
+    );
+
+    for (const group of display) {
+      const key = [...group.slugs].sort().join("|");
+      expect(underlyingByKey.get(key)).toEqual(group);
+    }
+  });
+
+  it("prefers the largest group when collapsing shared titles", () => {
+    const largestByTitle = new Map<
+      string,
+      { name: string; slugs: string[] }
+    >();
+
+    for (const group of underlying) {
+      const titleKey = normalizeComparisonTitle(group.name);
+      const current = largestByTitle.get(titleKey);
+
+      if (
+        !current ||
+        group.slugs.length > current.slugs.length
+      ) {
+        largestByTitle.set(titleKey, group);
+      }
+    }
+
+    for (const group of display) {
+      const titleKey = normalizeComparisonTitle(group.name);
+      const expected = largestByTitle.get(titleKey);
+      expect(group.slugs.length).toBe(expected?.slugs.length ?? -1);
+    }
+  });
+
+  it("collapses the previously repeated kidney label in the UI slice", () => {
+    const uiSlice = display.slice(0, 6);
+    const titles = uiSlice.map((group) =>
+      normalizeComparisonTitle(group.name),
+    );
+
+    expect(new Set(titles).size).toBe(titles.length);
+    expect(
+      titles.filter(
+        (title) => title === "which kidney calculator should i use?",
+      ).length,
+    ).toBeLessThanOrEqual(1);
+  });
+
+  it("keeps groups within bounds and registered slugs", () => {
+    const slugs = new Set(calculatorRegistry.map((calc) => calc.slug));
+
+    for (const group of display) {
+      expect(group.slugs.length).toBeGreaterThanOrEqual(2);
+      expect(group.slugs.length).toBeLessThanOrEqual(MAX_COMPARISON);
+      for (const slug of group.slugs) {
+        expect(slugs.has(slug)).toBe(true);
+      }
+    }
+  });
+
+  it("is deterministic across calls", () => {
+    expect(display).toEqual(buildDisplaySuggestedGroups());
   });
 });
 

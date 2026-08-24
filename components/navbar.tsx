@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Clock, Heart, Menu, Bookmark, Scale, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { isActiveRoute } from "@/lib/nav/active-route";
+import { ThemeControl } from "@/components/theme/theme-control";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -180,6 +181,9 @@ export default function Navbar() {
             <Search className="h-5 w-5" aria-hidden="true" />
           </button>
 
+          {/* Theme preference */}
+          <ThemeControl />
+
           {/* Mobile menu button */}
           <button
             ref={buttonRef}
@@ -234,6 +238,15 @@ export default function Navbar() {
               );
             })}
           </nav>
+
+          {/* Theme preference (same control as desktop) */}
+          <div className="mt-3 border-t border-slate-200 pt-3 dark:border-slate-800">
+            <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+              Theme
+            </p>
+
+            <ThemeControl />
+          </div>
         </div>
       )}
     </header>
