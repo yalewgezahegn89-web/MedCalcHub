@@ -71,6 +71,7 @@ export default async function CalculatorPage({
         description={calculator.description}
         specialty={calculator.specialty}
         category={calculator.category}
+        updatedAt={calculator.updatedAt}
       >
         <CalculatorClient slug={calculator.slug} />
 

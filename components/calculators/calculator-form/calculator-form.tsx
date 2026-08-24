@@ -158,14 +158,28 @@ export const CalculatorForm = forwardRef<
 
     setErrors(nextErrors);
 
-    return Object.keys(nextErrors).length === 0;
+    return {
+      valid: Object.keys(nextErrors).length === 0,
+      errors: nextErrors,
+    };
   }, [calculator.inputs, values]);
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
 
-      if (!validate()) {
+      const { valid, errors: validationErrors } = validate();
+
+      if (!valid) {
+        for (const input of calculator.inputs) {
+          if (validationErrors[input.id]) {
+            const el = document.getElementById(
+              `${calculator.id}-${input.id}`,
+            );
+            el?.focus();
+            break;
+          }
+        }
         return;
       }
 
@@ -229,7 +243,7 @@ export const CalculatorForm = forwardRef<
 
     const snapshot = { ...values };
 
-    saveSavedCalculation({
+    const saved = saveSavedCalculation({
       calculatorId: calculator.id,
       calculatorName: calculator.name,
       values: snapshot,
@@ -237,9 +251,15 @@ export const CalculatorForm = forwardRef<
       savedAt: Date.now(),
     });
 
-    toast.success("Calculation saved", {
-      description: `${calculator.name} saved to Saved Calculations.`,
-    });
+    if (saved) {
+      toast.success("Calculation saved", {
+        description: `${calculator.name} saved to Saved Calculations.`,
+      });
+    } else {
+      toast.error("Save failed", {
+        description: "Unable to save the calculation. Please check your browser storage and try again.",
+      });
+    }
   }, [calculator, values, result, isStale]);
 
   const sections: ResultSections | undefined = result

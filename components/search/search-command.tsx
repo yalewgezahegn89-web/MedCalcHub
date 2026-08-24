@@ -2,6 +2,7 @@
 
 import { useId, useCallback, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, ArrowRight, Calculator } from "lucide-react";
 
 import { searchCalculators } from "@/lib/search";
@@ -12,6 +13,7 @@ export default function SearchCommand() {
   const [activeIndex, setActiveIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxId = useId();
+  const router = useRouter();
 
   const results = useMemo(() => {
     const trimmed = query.trim();
@@ -33,10 +35,10 @@ export default function SearchCommand() {
         setActiveIndex((prev) => (prev > 0 ? prev - 1 : results.length - 1));
       } else if (e.key === "Enter" && activeIndex >= 0 && activeIndex < results.length) {
         e.preventDefault();
-        window.location.href = `/calculators/${results[activeIndex].document.slug}`;
+        router.push(`/calculators/${results[activeIndex].document.slug}`);
       }
     },
-    [results, activeIndex],
+    [results, activeIndex, router],
   );
 
   const hasResults = results.length > 0;

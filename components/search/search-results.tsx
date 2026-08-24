@@ -9,6 +9,7 @@ export interface SearchResultsProps {
   onResultClick?: () => void;
   activeIndex?: number;
   listboxId?: string;
+  query?: string;
 }
 
 export function SearchResults({
@@ -16,8 +17,13 @@ export function SearchResults({
   onResultClick,
   activeIndex = -1,
   listboxId,
+  query,
 }: SearchResultsProps) {
   if (results.length === 0) {
+    if (!query || query.trim().length === 0) {
+      return null;
+    }
+
     return (
       <div className="px-4 py-8 text-center text-sm text-muted-foreground" role="status">
         No results found.

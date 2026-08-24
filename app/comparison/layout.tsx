@@ -37,3 +37,11 @@ export const metadata: Metadata = {
     images: [OG_IMAGE],
   },
 };
+
+export default function ComparisonLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
+}

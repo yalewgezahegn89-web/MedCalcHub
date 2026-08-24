@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Link from "next/link";
 
 import "./globals.css";
 
@@ -71,9 +72,9 @@ export default function RootLayout({
               Data stored locally in your browser. Not synced to any server.
             </p>
             <p className="mt-3">
-              <a href="/privacy" className="underline hover:text-slate-700 dark:hover:text-slate-200">Privacy Policy</a>
+              <Link href="/privacy" className="underline hover:text-slate-700 dark:hover:text-slate-200">Privacy Policy</Link>
               {" · "}
-              <a href="/cookie" className="underline hover:text-slate-700 dark:hover:text-slate-200">Cookie Policy</a>
+              <Link href="/cookie" className="underline hover:text-slate-700 dark:hover:text-slate-200">Cookie Policy</Link>
               {" · "}
               <ConsentPreferencesButton />
             </p>

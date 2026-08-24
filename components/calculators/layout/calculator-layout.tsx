@@ -20,6 +20,7 @@ export const CalculatorLayout = forwardRef<
     specialty,
     category,
     actions,
+    updatedAt,
     children,
     ...props
   },
@@ -41,7 +42,7 @@ export const CalculatorLayout = forwardRef<
           specialty={specialty}
           category={category}
           actions={actions}
-          updatedAt={new Date().getFullYear().toString()}
+          updatedAt={updatedAt ?? new Date().getFullYear().toString()}
         />
 
         <div className="mt-8">

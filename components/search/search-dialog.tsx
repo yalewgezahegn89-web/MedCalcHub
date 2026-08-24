@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useSearch } from "./use-search";
 import { SearchInput } from "./search-input";
@@ -27,6 +28,7 @@ export function SearchDialog({
 }: SearchDialogProps) {
   const { query, setQuery, results, isSearching } =
     useSearch();
+  const router = useRouter();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -93,7 +95,7 @@ export function SearchDialog({
       if (e.key === "Enter" && activeIndex >= 0 && activeIndex < results.length) {
         e.preventDefault();
         const slug = results[activeIndex].document.slug;
-        window.location.href = `/calculators/${slug}`;
+        router.push(`/calculators/${slug}`);
         onClose();
         return;
       }
@@ -126,7 +128,7 @@ export function SearchDialog({
         }
       }
     },
-    [onClose, results, activeIndex, resetState],
+    [onClose, results, activeIndex, resetState, router],
   );
 
   useEffect(() => {
@@ -187,6 +189,7 @@ export function SearchDialog({
           onResultClick={onClose}
           activeIndex={effectiveActiveIndex}
           listboxId={listboxId}
+          query={query}
         />
       </div>
     </div>

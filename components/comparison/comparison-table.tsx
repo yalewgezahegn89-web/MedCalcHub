@@ -26,7 +26,7 @@ function Row({
     <tr>
       <th
         scope="row"
-        className={`px-4 py-3 text-left font-medium ${last ? "" : "border-b"}`}
+        className={`sticky left-0 z-10 bg-white px-4 py-3 text-left font-medium dark:bg-slate-950 ${last ? "" : "border-b"}`}
       >
         {label}
       </th>
@@ -60,7 +60,7 @@ export function ComparisonTable({
         </caption>
         <thead className="bg-slate-50 dark:bg-slate-900">
           <tr>
-            <th scope="col" className="border-b px-4 py-3 text-left font-semibold">
+            <th scope="col" className="sticky left-0 z-10 border-b bg-slate-50 px-4 py-3 text-left font-semibold dark:bg-slate-900">
               Feature
             </th>
 

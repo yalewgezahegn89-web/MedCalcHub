@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useMemo } from "react";
+
 import { calculatorRegistry } from "@/lib/calculators/registry";
 
 import {
@@ -18,11 +20,23 @@ export function ComparisonSelector({
   selected,
   onChange,
 }: ComparisonSelectorProps) {
+  const [filter, setFilter] = useState("");
   const suggestedGroups = buildSuggestedGroups().slice(
     0,
     SUGGESTED_GROUP_LIMIT,
   );
   const atLimit = selected.length >= MAX_COMPARISON;
+
+  const filteredCalculators = useMemo(() => {
+    const trimmed = filter.trim().toLowerCase();
+    if (!trimmed) return calculatorRegistry;
+    return calculatorRegistry.filter(
+      (calc) =>
+        calc.name.toLowerCase().includes(trimmed) ||
+        calc.category.toLowerCase().includes(trimmed) ||
+        (calc.specialty && calc.specialty.toLowerCase().includes(trimmed)),
+    );
+  }, [filter]);
 
   function toggleCalculator(slug: string) {
     if (selected.includes(slug)) {
@@ -77,37 +91,57 @@ export function ComparisonSelector({
         </div>
       )}
 
-      <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {calculatorRegistry.map((calculator) => {
-          const checked = selected.includes(calculator.slug);
-          const disabled = atLimit && !checked;
+      <div className="mt-6">
+        <label htmlFor="comparison-filter" className="sr-only">
+          Filter calculators
+        </label>
+        <input
+          id="comparison-filter"
+          type="text"
+          placeholder="Filter by name or category..."
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-400"
+        />
+      </div>
 
-          return (
-            <label
-              key={calculator.id}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-blue-500 dark:border-slate-700"
-            >
-              <input
-                type="checkbox"
-                checked={checked}
-                disabled={disabled}
-                onChange={() =>
-                  toggleCalculator(calculator.slug)
-                }
-              />
+      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {filteredCalculators.length === 0 ? (
+          <p className="col-span-full py-6 text-center text-sm text-slate-500 dark:text-slate-400">
+            No calculators match your filter.
+          </p>
+        ) : (
+          filteredCalculators.map((calculator) => {
+            const checked = selected.includes(calculator.slug);
+            const disabled = atLimit && !checked;
 
-              <div>
-                <div className="font-medium">
-                  {calculator.name}
+            return (
+              <label
+                key={calculator.id}
+                className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-blue-500 dark:border-slate-700"
+              >
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  disabled={disabled}
+                  onChange={() =>
+                    toggleCalculator(calculator.slug)
+                  }
+                />
+
+                <div>
+                  <div className="font-medium">
+                    {calculator.name}
+                  </div>
+
+                  <div className="text-sm text-slate-500">
+                    {calculator.category}
+                  </div>
                 </div>
-
-                <div className="text-sm text-slate-500">
-                  {calculator.category}
-                </div>
-              </div>
-            </label>
-          );
-        })}
+              </label>
+            );
+          })
+        )}
       </div>
 
     </div>

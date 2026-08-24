@@ -11,4 +11,6 @@ export type CalculatorLayoutProps =
 
     // NEW
     actions?: ReactNode;
+
+    updatedAt?: string;
   };
