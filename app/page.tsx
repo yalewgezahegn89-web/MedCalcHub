@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
+import { Hero } from "@/components/home/hero";
 import { CalculatorSearch } from "@/components/home/calculator-search";
+import { TrustStrip } from "@/components/home/trust-strip";
+import { PopularCalculators } from "@/components/home/popular-calculators";
 import { FavoritesWidget } from "@/components/home/favorites-widget";
 import { RecentCalculatorsWidget } from "@/components/home/recent-calculators-widget";
 import { BrowseSpecialties } from "@/components/home/browse-specialties";
@@ -81,25 +84,22 @@ export default function HomePage() {
         }}
       />
 
-      <div className="container mx-auto space-y-12 px-4 py-10">
+      <div className="mx-auto max-w-6xl space-y-12 px-4 py-10 sm:px-6 sm:space-y-14">
 
-      <section className="space-y-4 text-center">
-        <h1 className="text-4xl font-bold">
-          MedCalcHub
-        </h1>
-
-        <p className="mx-auto max-w-3xl text-muted-foreground">
-          Professional medical calculators, clinical decision support,
-          and evidence-based tools for healthcare professionals.
-        </p>
-      </section>
+      <Hero />
 
       <CalculatorSearch />
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <FavoritesWidget />
-        <RecentCalculatorsWidget />
-      </div>
+      <TrustStrip />
+
+      <PopularCalculators />
+
+      <section aria-label="Quick access">
+        <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
+          <FavoritesWidget />
+          <RecentCalculatorsWidget />
+        </div>
+      </section>
 
       <BrowseCategories />
 

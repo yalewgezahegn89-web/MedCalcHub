@@ -94,8 +94,8 @@ export function BrowseSpecialties() {
   return (
     <section className="space-y-8">
       <SectionHeader
-        title="Browse by Specialty"
-        description="Choose your medical specialty to quickly find the most relevant calculators."
+        title="Explore by Specialty"
+        description="Find calculators by clinical specialty."
         action={
           <Link
             href="/specialties"

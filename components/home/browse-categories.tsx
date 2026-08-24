@@ -123,8 +123,8 @@ export function BrowseCategories() {
   return (
     <section className="space-y-8">
       <SectionHeader
-        title="Browse by Category"
-        description="Explore clinical calculators organized by medical topic."
+        title="Explore by Clinical Area"
+        description="Find calculators organized by medical topic."
         action={
           <Link
             href="/categories"
