@@ -160,7 +160,7 @@ export function SearchDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-start justify-center bg-black/40 backdrop-blur-sm pt-[15vh]"
+      className="fixed inset-0 z-[9999] flex items-start justify-center bg-black/40 px-4 pt-[10vh] backdrop-blur-sm sm:pt-[15vh]"
       onClick={handleBackdropClick}
     >
       <div
@@ -168,7 +168,7 @@ export function SearchDialog({
         role="dialog"
         aria-modal="true"
         aria-label="Search calculators"
-        className="w-full max-w-lg max-h-[70vh] overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900 flex flex-col"
+        className="flex max-h-[75vh] w-full max-w-[45rem] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900"
       >
         <div className="border-b p-4 shrink-0">
           <SearchInput

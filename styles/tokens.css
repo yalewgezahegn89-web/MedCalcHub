@@ -9,12 +9,16 @@
   --color-success: #16a34a;
   --color-warning: #ca8a04;
 
-  /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
+  /* Spacing
+     NOTE: these MUST NOT be named --spacing-* — in Tailwind v4 every
+     `--spacing-<key>` token is injected into the dynamic spacing scale,
+     so e.g. --spacing-lg silently redefined max-w-lg / w-lg to 1.5rem,
+     collapsing sized containers (the search dialog became a 24px pill). */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
 
   /* Radius */
   --radius-sm: 0.25rem;

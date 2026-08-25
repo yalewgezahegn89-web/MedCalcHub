@@ -99,7 +99,7 @@ export function BrowseSpecialties() {
         action={
           <Link
             href="/specialties"
-            className="text-sm font-medium text-blue-600 hover:underline"
+            className="inline-flex min-h-[44px] items-center text-sm font-medium text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:text-blue-400 dark:focus-visible:ring-offset-slate-950"
           >
             See all specialties
           </Link>

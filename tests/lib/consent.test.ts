@@ -294,7 +294,7 @@ describe("CookieBanner accessibility", () => {
       path.resolve(__dirname, "../../components/consent/cookie-banner.tsx"),
       "utf8",
     );
-    expect(src).toContain("acceptRef.current?.focus()");
+    expect(src).toContain("acceptRef.current?.focus({ preventScroll: true })");
   });
 
   it("Escape key triggers reject (safe explicit outcome)", async () => {
@@ -326,7 +326,9 @@ describe("CookieBanner accessibility", () => {
       "utf8",
     );
     expect(src).toContain("previousFocusRef");
-    expect(src).toContain("previousFocusRef.current.focus()");
+    expect(src).toContain(
+      "previousFocusRef.current.focus({ preventScroll: true })",
+    );
   });
 
   it("banner returns null when consent is not null", async () => {
