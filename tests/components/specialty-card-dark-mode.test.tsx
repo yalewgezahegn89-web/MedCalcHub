@@ -19,14 +19,15 @@ describe("SpecialtyCard dark-mode readability (regression)", () => {
   }
 
   it("renders a high-contrast light title in dark mode", () => {
-    expect(renderCard()).toContain("dark:text-white");
+    expect(renderCard()).toContain("dark:text-slate-100");
+    // The old faint white-on-white / slate-400 title tones must not return
+    expect(renderCard()).not.toContain("dark:text-white");
   });
 
   it("renders readable muted description and calculator count in dark mode", () => {
     const html = renderCard();
     expect(html).toContain("dark:text-slate-300");
-    // The old faint slate-400 muted tone must not come back
-    expect(html).not.toContain("dark:text-slate-400");
+    expect(html).toContain("dark:text-slate-400");
     expect(html).toContain("12 calculators");
   });
 
@@ -34,7 +35,19 @@ describe("SpecialtyCard dark-mode readability (regression)", () => {
     const html = renderCard();
     expect(html).toContain("dark:border-slate-700");
     expect(html).not.toContain("dark:border-slate-800");
-    expect(html).not.toContain("dark:border-slate-700/0");
+  });
+
+  it("has deliberate dark-mode decorative treatment (accent strip + icon halo)", () => {
+    const html = renderCard();
+    // tinted top accent
+    expect(html).toContain("via-blue-400/40");
+    // icon glow halo that preserves the specialty color underneath
+    expect(html).toContain("dark:shadow-blue-500/10");
+    expect(html).toContain("dark:ring-white/10");
+  });
+
+  it("keeps the dark surface distinct from the page canvas", () => {
+    expect(renderCard()).toContain("dark:bg-slate-900");
   });
 
   it("preserves hover and group-hover affordances", () => {

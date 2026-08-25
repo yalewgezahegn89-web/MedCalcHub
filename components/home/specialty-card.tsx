@@ -22,15 +22,21 @@ export function SpecialtyCard({
   return (
     <Link
       href={href}
-      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-slate-500 dark:hover:bg-slate-800/70 dark:hover:shadow-lg dark:hover:shadow-black/40 dark:focus-visible:ring-blue-400 dark:focus-visible:ring-offset-slate-950"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-slate-500 dark:hover:bg-slate-800/70 dark:hover:shadow-lg dark:hover:shadow-black/40 dark:focus-visible:ring-blue-400 dark:focus-visible:ring-offset-slate-950"
     >
+      {/* Decorative tinted top accent — clinical, restrained */}
       <div
-        className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${color}`}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-blue-600/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:via-blue-400/40 dark:opacity-100"
+      />
+
+      <div
+        className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl shadow-md shadow-black/5 ring-1 ring-black/5 dark:shadow-blue-500/10 dark:ring-white/10 ${color}`}
       >
         <span aria-hidden="true">{icon}</span>
       </div>
 
-      <h3 className="text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
+      <h3 className="text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
         {title}
       </h3>
 
@@ -39,7 +45,7 @@ export function SpecialtyCard({
       </p>
 
       {calculatorCount !== undefined && (
-        <div className="mt-4 text-sm font-medium text-slate-500 dark:text-slate-300">
+        <div className="mt-4 text-sm font-medium text-slate-500 dark:text-slate-400">
           {calculatorCount} calculators
         </div>
       )}

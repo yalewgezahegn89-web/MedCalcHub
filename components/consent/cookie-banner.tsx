@@ -84,6 +84,10 @@ export function CookieBanner() {
             ref={acceptRef}
             type="button"
             onClick={handleAccept}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              handleAccept();
+            }}
             className="inline-flex min-h-[44px] min-w-[44px] touch-manipulation select-none items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             Accept advertising
@@ -92,6 +96,10 @@ export function CookieBanner() {
           <button
             type="button"
             onClick={handleReject}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              handleReject();
+            }}
             className="inline-flex min-h-[44px] min-w-[44px] touch-manipulation select-none items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
           >
             Reject advertising

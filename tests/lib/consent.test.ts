@@ -115,13 +115,31 @@ describe("consent", () => {
       expect(dispatchEventSpy.mock.calls[0][0].type).toBe(CHANGE_EVENT);
     });
 
-    it("returns false when localStorage throws", async () => {
+    it("still records the decision and notifies subscribers when localStorage throws", async () => {
+      // iOS Safari privacy modes (Lockdown Mode, disabled website data)
+      // make setItem throw. The decision must still be recorded in
+      // memory and the change event must still fire, otherwise the
+      // banner can never be dismissed.
       ls.mock.setItem.mockImplementation(() => {
         throw new Error("quota exceeded");
       });
-      const { setConsent } = await load();
+      const { setConsent, getConsent } = await load();
       const result = setConsent(true);
-      expect(result).toBe(false);
+      expect(result).toBe(true);
+      expect(getConsent()).toBe(true);
+      expect(dispatchEventSpy).toHaveBeenCalledWith(
+        expect.any(Event),
+      );
+    });
+
+    it("memory fallback keeps the session decision after a failed storage write", async () => {
+      ls.mock.setItem.mockImplementation(() => {
+        throw new Error("SecurityError");
+      });
+      const { setConsent, getConsent, hasConsent } = await load();
+      setConsent(false);
+      expect(getConsent()).toBe(false);
+      expect(hasConsent()).toBe(false);
     });
   });
 
@@ -140,13 +158,15 @@ describe("consent", () => {
       expect(dispatchEventSpy).toHaveBeenCalled();
     });
 
-    it("returns false when localStorage throws", async () => {
+    it("still resets the decision and notifies subscribers when localStorage throws", async () => {
       ls.mock.removeItem.mockImplementation(() => {
         throw new Error("quota exceeded");
       });
-      const { clearConsent } = await load();
+      const { clearConsent, getConsent } = await load();
       const result = clearConsent();
-      expect(result).toBe(false);
+      expect(result).toBe(true);
+      expect(getConsent()).toBeNull();
+      expect(dispatchEventSpy).toHaveBeenCalled();
     });
 
     it("causes getConsent to return null after clearing", async () => {

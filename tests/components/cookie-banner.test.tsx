@@ -103,8 +103,6 @@ describe("CookieBanner", () => {
 
 /* ---- Mobile consent interaction regressions ---- */
 
-type ClickableElement = { onClick: (...args: unknown[]) => void };
-
 function flattenText(node: unknown): string {
   if (node === null || node === undefined) return "";
   if (typeof node === "string" || typeof node === "number") {
@@ -129,10 +127,11 @@ function flattenText(node: unknown): string {
 function findClickableByLabel(
   node: unknown,
   label: string,
-): ClickableElement | null {
+  handler: "onClick" | "onTouchEnd" = "onClick",
+): { onClick: (...args: unknown[]) => void } | null {
   if (Array.isArray(node)) {
     for (const child of node) {
-      const found = findClickableByLabel(child, label);
+      const found = findClickableByLabel(child, label, handler);
       if (found) return found;
     }
     return null;
@@ -141,19 +140,24 @@ function findClickableByLabel(
   const element = node as ReactElement<{
     children?: unknown;
     onClick?: (...args: unknown[]) => void;
+    onTouchEnd?: (...args: unknown[]) => void;
   }>;
 
   if (!element || typeof element !== "object" || !element.props) {
     return null;
   }
 
-  const { children, onClick } = element.props;
+  const { children } = element.props;
+  const fn =
+    handler === "onTouchEnd"
+      ? element.props.onTouchEnd
+      : element.props.onClick;
 
-  if (typeof onClick === "function" && flattenText(children).includes(label)) {
-    return { onClick };
+  if (typeof fn === "function" && flattenText(children).includes(label)) {
+    return { onClick: fn };
   }
 
-  return findClickableByLabel(children, label);
+  return findClickableByLabel(children, label, handler);
 }
 
 describe("CookieBanner mobile interaction (regression)", () => {
@@ -248,5 +252,60 @@ describe("CookieBanner mobile interaction (regression)", () => {
     expect(consentLib).toContain(
       'window.removeEventListener(CHANGE_EVENT, handler)',
     );
+  });
+
+  it("Accept works via the touch path (onTouchEnd) without any focus state", async () => {
+    const { CookieBanner } = await import(
+      "../../components/consent/cookie-banner"
+    );
+
+    // Tap-equivalent: no prior focus, no click event — proves the
+    // interaction does not rely on focus state.
+    const touch = findClickableByLabel(
+      CookieBanner(),
+      "Accept advertising",
+      "onTouchEnd",
+    );
+    expect(touch).not.toBeNull();
+
+    let prevented = false;
+    touch!.onClick!({ preventDefault: () => { prevented = true; } });
+
+    expect(prevented).toBe(true);
+    expect(ls.store.get(CONSENT_KEY)).toBe("true");
+  });
+
+  it("banner dismisses via Accept even when localStorage writes throw (iOS privacy modes)", async () => {
+    ls.mock.setItem.mockImplementation(() => {
+      throw new Error("SecurityError: storage blocked");
+    });
+
+    const mod = await import("../../components/consent/cookie-banner");
+
+    const accept = findClickableByLabel(mod.CookieBanner(), "Accept advertising");
+    accept!.onClick!();
+
+    // Same module instance: memory fallback must flip the snapshot so the
+    // banner unmounts even though persistence failed.
+    expect(mod.CookieBanner()).toBeNull();
+  });
+
+  it("Reject works via the touch path and cancels the synthetic click once", async () => {
+    const { CookieBanner } = await import(
+      "../../components/consent/cookie-banner"
+    );
+
+    const touch = findClickableByLabel(
+      CookieBanner(),
+      "Reject advertising",
+      "onTouchEnd",
+    );
+    expect(touch).not.toBeNull();
+
+    let preventCalls = 0;
+    touch!.onClick!({ preventDefault: () => { preventCalls += 1; } });
+
+    expect(preventCalls).toBe(1);
+    expect(ls.store.get(CONSENT_KEY)).toBe("false");
   });
 });

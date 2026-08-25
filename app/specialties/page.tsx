@@ -101,11 +101,11 @@ export default function SpecialtiesPage() {
       <div className="mx-auto max-w-6xl px-6 py-10">
 
       <div className="mb-10">
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
           Medical Specialties
         </h1>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-300">
           Browse calculators by medical specialty.
         </p>
       </div>
@@ -122,13 +122,13 @@ export default function SpecialtiesPage() {
               href={`/specialties/${encodeURIComponent(
                 specialty.toLowerCase().replace(/\s+/g, "-"),
               )}`}
-              className="rounded-xl border bg-white p-6 shadow-sm transition hover:shadow-lg hover:border-blue-500"
+              className="group rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-blue-400 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-blue-500/70 dark:hover:bg-slate-800/70 dark:hover:shadow-lg dark:hover:shadow-black/40 dark:focus-visible:ring-blue-400 dark:focus-visible:ring-offset-slate-950"
             >
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-xl font-semibold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
                 {specialty}
               </h2>
 
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-sm text-gray-600 dark:text-slate-400">
                 {calculators.length} calculator
                 {calculators.length !== 1 ? "s" : ""}
               </p>
