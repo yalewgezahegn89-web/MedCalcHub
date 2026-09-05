@@ -21,6 +21,11 @@ const NAV_LINKS = [
   { href: "/workspace", label: "Workspace" },
 ];
 
+const TRUST_LINKS = [
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
 function getMobileFocusableElements(
   container: HTMLElement,
 ): HTMLElement[] {
@@ -167,6 +172,25 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <span className="h-4 w-px bg-slate-200 dark:bg-slate-700" aria-hidden="true" />
+          {TRUST_LINKS.map(({ href, label }) => {
+            const active = isActive(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "text-sm font-medium transition",
+                  active
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400",
+                )}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right-side controls */}
@@ -233,6 +257,26 @@ export default function Navbar() {
                   )}
                 >
                   {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
+                  {label}
+                </Link>
+              );
+            })}
+            <span className="my-1 h-px bg-slate-200 dark:bg-slate-700" aria-hidden="true" />
+            {TRUST_LINKS.map(({ href, label }) => {
+              const active = isActive(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={closeMenu}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "rounded-lg px-3 py-3 text-sm font-medium transition",
+                    active
+                      ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
+                      : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800",
+                  )}
+                >
                   {label}
                 </Link>
               );

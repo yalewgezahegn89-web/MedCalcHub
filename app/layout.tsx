@@ -80,17 +80,59 @@ export default function RootLayout({
         <main id="main-content">{children}</main>
 
         <footer className="border-t border-slate-200 bg-white py-8 dark:border-slate-800 dark:bg-slate-900">
-          <div className="mx-auto max-w-7xl px-6 text-center text-sm text-slate-500 dark:text-slate-400">
-            <p>MedCalcHub — Professional medical calculators for healthcare professionals.</p>
-            <p className="mt-2">
-              Data stored locally in your browser. Not synced to any server.
-            </p>
-            <p className="mt-3">
-              <Link href="/privacy" className="underline hover:text-slate-700 dark:hover:text-slate-200">Privacy Policy</Link>
-              {" · "}
-              <Link href="/cookie" className="underline hover:text-slate-700 dark:hover:text-slate-200">Cookie Policy</Link>
-              {" · "}
-              <ConsentPreferencesButton />
+          <div className="mx-auto max-w-7xl px-6 text-sm text-slate-500 dark:text-slate-400">
+            <div className="grid gap-6 sm:grid-cols-3">
+              <div>
+                <p className="font-semibold text-slate-700 dark:text-slate-300">
+                  MedCalcHub
+                </p>
+                <p className="mt-1">
+                  Evidence-based medical calculators and clinical
+                  decision-support tools for healthcare professionals.
+                </p>
+                <p className="mt-1">
+                  Data stored locally in your browser. Not synced to any server.
+                </p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-slate-700 dark:text-slate-300">
+                  Platform
+                </p>
+                <ul className="mt-1 space-y-1">
+                  <li>
+                    <Link href="/about" className="underline hover:text-slate-700 dark:hover:text-slate-200">About</Link>
+                  </li>
+                  <li>
+                    <Link href="/contact" className="underline hover:text-slate-700 dark:hover:text-slate-200">Contact</Link>
+                  </li>
+                  <li>
+                    <Link href="/terms" className="underline hover:text-slate-700 dark:hover:text-slate-200">Terms of Service</Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <p className="font-semibold text-slate-700 dark:text-slate-300">
+                  Legal
+                </p>
+                <ul className="mt-1 space-y-1">
+                  <li>
+                    <Link href="/privacy" className="underline hover:text-slate-700 dark:hover:text-slate-200">Privacy Policy</Link>
+                  </li>
+                  <li>
+                    <Link href="/cookie" className="underline hover:text-slate-700 dark:hover:text-slate-200">Cookie Policy</Link>
+                  </li>
+                  <li>
+                    <ConsentPreferencesButton />
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <p className="mt-6 text-center text-xs text-slate-400 dark:text-slate-500">
+              &copy; {new Date().getFullYear()} MedCalcHub. Free for clinical use.
+              Not a substitute for professional medical judgment.
             </p>
           </div>
         </footer>
