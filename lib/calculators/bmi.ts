@@ -50,7 +50,7 @@ export const bmiCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "Body Mass Index (BMI) is a weight-for-height index calculated as weight (kg) divided by height (m\u00B2). It is used internationally to classify adult weight status: underweight (BMI <18.5), normal weight (18.5\u201324.9), overweight (25\u201329.9), and obesity (\u226530), as defined by the World Health Organization.\n\nBMI is a screening tool, not a direct measure of body fat. It does not distinguish between fat mass and lean mass, so muscular individuals, athletes, and persons with high bone density may be misclassified. In elderly patients, reduced height from vertebral compression can artificially elevate BMI.\n\nBMI should not be used as the sole criterion for clinical decisions about weight management. It must be interpreted alongside waist circumference, metabolic markers, and the patient\u2019s overall clinical context. For children and adolescents, age- and sex-specific BMI percentiles are required. In pregnancy, BMI interpretation requires separate guidelines.\n\nThis calculator is intended for adult screening only and does not diagnose obesity or body fatness.",
 
 
 
@@ -59,7 +59,8 @@ export const bmiCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "WHO. Obesity and Overweight. World Health Organization Fact Sheet.",
+    "Nuttall FQ. Body Mass Index: Obesity, BMI, Health, and Nutritional Risks. Nutrients. 2015;7(9):8184-8191.",
   ],
 
   relatedCalculators: [],

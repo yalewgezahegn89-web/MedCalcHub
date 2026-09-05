@@ -58,7 +58,7 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The 2021 CKD-EPI creatinine equation estimates glomerular filtration rate (eGFR) in mL/min/1.73 m\u00B2 from serum creatinine, age, and sex. The 2021 equation removed the race coefficient, which was not scientifically justified and contributed to health disparities in CKD detection.\n\neGFR is an estimate, not a directly measured GFR. It is most accurate in the range of 45\u201390 mL/min/1.73 m\u00B2 and becomes less reliable at very high or very low GFR values, in extremes of muscle mass, in amputees, and during pregnancy. The equation assumes a stable, steady-state creatinine; do not use it during acute kidney injury (AKI) or when creatinine is rapidly changing.\n\nCKD staging based on eGFR (G1 through G5) requires confirmation of chronicity\u2014repeat testing after at least 3 months is recommended before diagnosing chronic kidney disease. This calculator is not intended for medication dosing; many drug labels still require creatinine clearance from the Cockcroft-Gault equation.\n\nAlways interpret eGFR alongside the patient\u2019s clinical context, albuminuria status, and other markers of kidney damage.",
 
 
 
@@ -67,7 +67,8 @@ export const ckdEpi2021Calculator: CalculatorDefinition = {
   comparison: {"title":"Which Kidney Calculator Should I Use?","calculators":[{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Routine estimation of kidney function and CKD staging.","limitation":"Not intended for medication dosing."},{"name":"Cockcroft-Gault","href":"/calculators/cockcroft-gault","bestFor":"Drug dosing adjustment.","limitation":"Less accurate for estimating true GFR."},{"name":"MDRD","href":"/calculators/mdrd","bestFor":"Historical comparison.","limitation":"Reduced accuracy at higher GFR."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Inker LA, Eneanya ND, Coresh J, et al. New Creatinine- and Cystatin C\u2013Based Equations to Estimate GFR without Race. N Engl J Med. 2021;385(19):1737-1749.",
+    "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Disease: Improving Global Outcomes.",
   ],
 
   relatedCalculators: ["cockcroft-gault","mdrd","albumin-creatinine-ratio","bun-creatinine-ratio"],

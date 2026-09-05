@@ -34,7 +34,7 @@ export const news2Calculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The National Early Warning Score 2 (NEWS2) is a standardized scoring system for detecting and responding to acute clinical deterioration. It aggregates six physiological observations: respiratory rate, oxygen saturation (SpO\u2082), temperature, systolic blood pressure, pulse rate, and level of consciousness (AVPU). Each parameter is scored 0\u20133 and the total ranges from 0 to 15.\n\nNEWS2 is designed to support clinical escalation decisions, not to make a diagnosis. A score of 0 indicates low clinical risk with routine monitoring. Scores of 1\u20134 suggest low-to-moderate risk and should prompt review by a registered nurse. A score of 5\u20136, or any single parameter scoring 3, indicates high risk requiring urgent assessment by a clinician with acute illness competencies. A score of \u22657 indicates very high risk requiring emergency assessment, often including ICU or higher-level care.\n\nScale 2 (SpO\u2082 target 88\u201392%) is reserved for patients with confirmed chronic hypercapnic respiratory failure who are clinically designated for that target. Do not apply Scale 2 routinely.\n\nLimitations: NEWS2 does not identify the underlying cause of deterioration and does not replace comprehensive clinical assessment. Patients with chronically abnormal baseline values (e.g., chronic respiratory disease, long-term oxygen therapy) require individualized interpretation. A low score does not guarantee clinical stability.",
 
 
 
@@ -43,7 +43,8 @@ export const news2Calculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "Royal College of Physicians. National Early Warning Score (NEWS) 2: Standardising the assessment of acute-illness severity in the NHS. RCP, 2017.",
+    "Smith GB, et al. The impact of the introduction of the National Early Warning Score (NEWS) on the accuracy of the Modified Early Warning Score (MEWS) in the detection of clinical deterioration. Resuscitation. 2013;84(12):1678-1684.",
   ],
 
   relatedCalculators: [],

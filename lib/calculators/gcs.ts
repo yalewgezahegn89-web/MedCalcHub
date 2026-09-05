@@ -33,7 +33,7 @@ export const gcsCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The Glasgow Coma Scale (GCS) provides a standardized assessment of consciousness based on three components: Eye Opening (1\u20134), Verbal Response (1\u20135), and Motor Response (1\u20136). The total score ranges from 3 (deep coma or death) to 15 (fully alert and oriented).\n\nGCS 13\u201315 is generally considered mild brain injury, 9\u201312 moderate, and \u22648 severe. A GCS \u22648 is commonly used as a threshold for considering airway protection, as patients at this level may not maintain a patent airway independently.\n\nSeveral factors can interfere with accurate GCS assessment. Sedation, paralysis, and intoxication can suppress responsiveness independently of brain injury. Intubation precludes verbal assessment; document a modified GCS with the verbal component noted as not testable (VT) and score the remaining components. Aphasia, language barriers, and pre-verbal age affect verbal scoring and should be documented.\n\nAlways record the best response observed in each component and use serial assessments to track trends. A fall of 2 or more points over time is clinically significant and may indicate neurologic deterioration, which can be more important than any single absolute score.",
 
 
 
@@ -42,7 +42,8 @@ export const gcsCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "Teasdale G, Jennett B. Assessment of coma and impaired consciousness: a practical scale. Lancet. 1974;304(7872):81-84.",
+    "Teasdale G, Murray G, Parker L, et al. Adding up to the Glasgow Coma Scale. Acta Neurochir Suppl. 1999;75:5-9.",
   ],
 
   relatedCalculators: [],
