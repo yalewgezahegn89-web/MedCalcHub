@@ -268,7 +268,7 @@ describe("Batch 4 — /renal consolidation", () => {
   });
 
   it("sitemap does not include /renal", () => {
-    const sitemap = readFile("app/sitemap.ts");
+    const sitemap = readFile("lib/seo/sitemap-xml.ts");
     expect(sitemap).not.toContain(
       "SITE_URL]/renal\"",
     );
@@ -281,27 +281,27 @@ describe("Batch 4 — /renal consolidation", () => {
 
 describe("Batch 4 — sitemap correctness", () => {
   it("sitemap still includes /categories and /specialties index pages", () => {
-    const sitemap = readFile("app/sitemap.ts");
-    expect(sitemap).toContain("/categories`");
-    expect(sitemap).toContain("/specialties`");
+    const sitemap = readFile("lib/seo/sitemap-xml.ts");
+    expect(sitemap).toContain("/categories");
+    expect(sitemap).toContain("/specialties");
   });
 
   it("sitemap generates category entries dynamically from getCategories()", () => {
-    const sitemap = readFile("app/sitemap.ts");
+    const sitemap = readFile("lib/seo/sitemap-xml.ts");
     expect(sitemap).toContain("getCategories()");
     expect(sitemap).toContain("categoryPages");
     expect(sitemap).toContain("category.toLowerCase()");
   });
 
   it("sitemap generates specialty entries dynamically from getSpecialties()", () => {
-    const sitemap = readFile("app/sitemap.ts");
+    const sitemap = readFile("lib/seo/sitemap-xml.ts");
     expect(sitemap).toContain("getSpecialties()");
     expect(sitemap).toContain("specialtyPages");
     expect(sitemap).toContain("specialty.toLowerCase()");
   });
 
   it("sitemap does not include /renal", () => {
-    const sitemap = readFile("app/sitemap.ts");
+    const sitemap = readFile("lib/seo/sitemap-xml.ts");
     expect(sitemap).not.toContain("SITE_URL]/renal\"");
   });
 });

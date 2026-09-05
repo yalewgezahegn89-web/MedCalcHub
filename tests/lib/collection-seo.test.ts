@@ -224,28 +224,28 @@ describe("Batch 17: /search metadata and noindex", () => {
 });
 
 describe("Batch 17: sitemap excludes /search", () => {
-  it("/search is absent from sitemap.ts", () => {
-    const source = readFile("app/sitemap.ts");
+  it("/search is absent from sitemap-xml.ts", () => {
+    const source = readFile("lib/seo/sitemap-xml.ts");
     expect(source).not.toMatch(/\/search/);
   });
 
   it("sitemap still includes calculators", () => {
-    const source = readFile("app/sitemap.ts");
+    const source = readFile("lib/seo/sitemap-xml.ts");
     expect(source).toContain("/calculators");
   });
 
   it("sitemap still includes categories", () => {
-    const source = readFile("app/sitemap.ts");
+    const source = readFile("lib/seo/sitemap-xml.ts");
     expect(source).toContain("/categories");
   });
 
   it("sitemap still includes specialties", () => {
-    const source = readFile("app/sitemap.ts");
+    const source = readFile("lib/seo/sitemap-xml.ts");
     expect(source).toContain("/specialties");
   });
 
   it("sitemap still includes comparison", () => {
-    const source = readFile("app/sitemap.ts");
+    const source = readFile("lib/seo/sitemap-xml.ts");
     expect(source).toContain("/comparison");
   });
 });
