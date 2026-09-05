@@ -33,7 +33,7 @@ export const heartRateCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "This calculator converts a counted number of beats over a measured time interval into a heart rate in beats per minute (bpm). The formula is heart rate = beats counted \u00F7 time (minutes).\n\nFor most adults, a normal resting heart rate is 60\u2013100 bpm. Well-trained athletes may have resting heart rates below 60 bpm without pathology. Heart rate is influenced by physical fitness, medications (e.g., beta-blockers, calcium channel blockers), emotional state, fever, dehydration, anemia, thyroid function, and pain.\n\nA resting heart rate consistently below 60 bpm (bradycardia) or above 100 bpm (tachycardia) warrants clinical assessment to identify the underlying cause. Heart rate alone does not determine the rhythm; an irregular rate may require electrocardiography (ECG) for further evaluation.\n\nThis calculator provides a rate measurement only. It does not diagnose bradycardia, tachycardia, or any cardiac rhythm abnormality. Always interpret the result alongside the patient\u2019s clinical context, symptoms, and other vital signs.",
 
 
 
@@ -42,7 +42,8 @@ export const heartRateCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "American Heart Association. All About Heart Rate (Pulse). https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/all-about-heart-rate-pulse",
+    "Al-Khatib SM, et al. 2017 AHA/ACC/HRS Guideline for Management of Patients With Ventricular Arrhythmias and the Prevention of Sudden Cardiac Death. Circulation. 2018;138(12):e471-e508.",
   ],
 
   relatedCalculators: [],
@@ -161,21 +162,24 @@ const time = Number(values.time);
     beats / time;
 
 
-  
-const interpretation =
-  "Heart rate " +
-  Number(result.toFixed(2)) +
-  " bpm.";
+const rate = Number(result.toFixed(2));
 
-const status:
-  "normal" |
-  "low" |
-  "high" |
-  "critical" =
-  "normal";
+let interpretation: string;
+let status: "normal" | "low" | "high" | "critical";
 
-const referenceRange =
-  "";
+if (rate < 60) {
+  interpretation =
+    "Heart rate " + rate + " bpm — bradycardia (below normal resting range).";
+  status = "low";
+} else if (rate <= 100) {
+  interpretation =
+    "Heart rate " + rate + " bpm — within normal resting range.";
+  status = "normal";
+} else {
+  interpretation =
+    "Heart rate " + rate + " bpm — tachycardia (above normal resting range).";
+  status = "high";
+}
 
 
 
@@ -187,8 +191,6 @@ return {
   interpretation,
 
   status,
-
-  referenceRange,
 };
 },
 

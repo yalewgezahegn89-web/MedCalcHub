@@ -11504,32 +11504,36 @@ describe("Gestational Age calculate() output", () => {
 // ---------------------------------------------------------------------------
 // Heart Rate — beats / time (minutes)
 // Result = Number(result.toFixed(2))
-// Status is always "normal" (no classification in the implementation).
+// Classification: < 60 → bradycardia, 60–100 → normal, > 100 → tachycardia.
 // ---------------------------------------------------------------------------
 describe("Heart Rate calculate() output", () => {
   it("representative resting rate: 70 bpm", () => {
     const r = calc(heartRateCalculator, { beats: "70", time: "1" });
     expect(r.value).toBe(70);
     expect(r.status).toBe("normal");
-    expect(r.interpretation).toBe("Heart rate 70 bpm.");
+    expect(r.interpretation).toContain("70 bpm");
+    expect(r.interpretation).toContain("normal resting range");
   });
 
   it("bradycardia: 45 bpm", () => {
     const r = calc(heartRateCalculator, { beats: "45", time: "1" });
     expect(r.value).toBe(45);
-    expect(r.status).toBe("normal");
+    expect(r.status).toBe("low");
+    expect(r.interpretation).toContain("bradycardia");
   });
 
   it("tachycardia: 120 bpm", () => {
     const r = calc(heartRateCalculator, { beats: "120", time: "1" });
     expect(r.value).toBe(120);
-    expect(r.status).toBe("normal");
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("tachycardia");
   });
 
   it("extreme tachycardia: 180 bpm", () => {
     const r = calc(heartRateCalculator, { beats: "180", time: "1" });
     expect(r.value).toBe(180);
-    expect(r.status).toBe("normal");
+    expect(r.status).toBe("high");
+    expect(r.interpretation).toContain("tachycardia");
   });
 
   it("measured over 2 minutes: 150 beats / 2 min = 75 bpm", () => {
