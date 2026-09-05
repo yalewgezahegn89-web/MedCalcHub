@@ -34,7 +34,7 @@ export const curb65Calculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "CURB-65 stratifies severity in community-acquired pneumonia. Scores of 0–1 are typically managed as outpatients; 2 suggests hospital admission; ≥ 3 suggests severe pneumonia and consideration of ICU admission. Interpret alongside clinical judgement.",
+    "The CURB-65 score is a validated, five-point severity index for adults with community-acquired pneumonia (CAP). It estimates 30-day mortality risk and helps guide site-of-care decisions: outpatient treatment, hospital admission, or intensive care.\n\nEach of the five criteria scores one point: Confusion (new-onset, defined as recent disorientation to person, place, or time), Urea > 7 mmol/L (approximately > 20 mg/dL), Respiratory rate ≥ 30 breaths/min, Blood pressure (systolic < 90 mmHg or diastolic ≤ 60 mmHg), and Age ≥ 65 years. The total score ranges from 0 to 5.\n\nA score of 0–1 indicates low severity with mortality risk < 2%, and outpatient management is usually appropriate when oxygenation is adequate and follow-up is reliable. A score of 2 indicates moderate severity with approximately 9% 30-day mortality; hospital admission should be strongly considered. A score of ≥ 3 indicates severe disease with mortality risk of 15–40% and warrants urgent hospital assessment and evaluation for ICU-level care.\n\nImportant limitations: CURB-65 does not assess oxygenation, immunocompromise, or multiorgan dysfunction. Hypoxemia (PaO₂ < 60 mmHg or SpO₂ < 92%) or significant clinical instability should prompt a higher level of care regardless of the CURB-65 score. The score should always be used alongside clinical judgment, assessment of comorbidities, functional status, and social circumstances. It is not validated for hospital-acquired pneumonia, ventilator-associated pneumonia, or pediatric patients.",
 
 
 
@@ -43,7 +43,8 @@ export const curb65Calculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "Lim WS, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax 2003;58(5):377-382.",
+    "Lim WS, van der Eerden MM, Laing R, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003;58(5):377-382.",
+    "Lim WS, Baudouin SV, George RC, et al. BTS guidelines for the management of community acquired pneumonia in adults: update 2009. Thorax. 2009;64(Suppl III):iii1-iii55.",
   ],
 
   relatedCalculators: [],
