@@ -55,7 +55,7 @@ export const ttkgCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Potassium Assessment Should I Use?","calculators":[{"name":"TTKG","href":"/calculators/ttkg","bestFor":"Assessing renal potassium secretion in hyperkalemia.","limitation":"Physiological validity has been questioned."},{"name":"FENa","href":"/calculators/fena","bestFor":"Assessing sodium handling in AKI.","limitation":"Does not assess potassium."},{"name":"FEUrea","href":"/calculators/feurea","bestFor":"Prerenal vs. intrinsic AKI when on diuretics.","limitation":"Does not assess potassium."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Halperin ML, Goldstein MB. Fluid, Electrolyte, and Acid-Base Physiology: A Problem-Based Approach. 5th ed. Philadelphia: Elsevier; 2017.",
   ],
 
   relatedCalculators: ["fena","feurea","bun-creatinine-ratio"],

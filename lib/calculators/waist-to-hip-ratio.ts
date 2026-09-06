@@ -57,7 +57,7 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
     "Interpret results together with the patient's clinical presentation.",
 
   references: [
-    "MedCalcHub Clinical References",
+    "World Health Organization. Waist circumference and waist–hip ratio: report of a WHO expert consultation. Geneva: WHO; 2008.",
   ],
 
 

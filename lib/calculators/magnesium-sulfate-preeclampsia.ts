@@ -28,7 +28,7 @@ export const magnesiumSulfatePreeclampsiaCalculator: CalculatorDefinition = {
   shortName: "MgSO4",
 
   description:
-    "Calculates the total 24-hour magnesium sulfate dose for seizure prophylaxis in preeclampsia with severe features or eclampsia using standard intravenous regimens (ACOG 2020): a 4–6 g IV loading dose over 20–30 minutes followed by a 1–2 g/hour maintenance infusion.",
+    "Estimates the total 24-hour magnesium sulfate dose for a selected IV regimen (loading dose + maintenance infusion) used for prevention and treatment of eclampsia in appropriate preeclampsia/eclampsia settings, consistent with ACOG Practice Bulletin No. 222 (2020) and WHO recommendations. Magnesium sulfate is a high-risk medication: regimen choice depends on clinical setting, route, renal function, monitoring capability, and clinician judgment.",
   category: "Obstetrics & Gynecology",
 
   specialty: "Obstetrics",
@@ -53,16 +53,16 @@ export const magnesiumSulfatePreeclampsiaCalculator: CalculatorDefinition = {
   ],
 
   formula:
-    "Total 24-h dose (g) = Loading dose (4–6 g IV) + Maintenance (1–2 g/h) × 24 h",
+    "Selected total 24-h dose (g) = Loading dose (g IV) + Maintenance rate (g/h) × 24 h",
 
   normalRange:
-    "Therapeutic serum magnesium target is 4.8–8.4 mg/dL (2–3.5 mEq/L); toxicity: loss of patellar reflexes ~ 10 mg/dL, respiratory depression ~ 12 mg/dL, cardiac arrest ~ 15–17 mg/dL.",
+    "Educational reference only: therapeutic serum magnesium for seizure prophylaxis is approximately 4.8–8.4 mg/dL (2–3.5 mEq/L). Toxicity features are typically associated with loss of patellar reflexes (~10 mg/dL), respiratory depression (~12 mg/dL), and cardiac arrest (~15–17 mg/dL). These are monitoring concepts, not a prescription target.",
 
   referenceRanges: [
     {
-      label: "Therapeutic",
+      label: "Typical therapeutic serum magnesium",
       range: "4.8–8.4 mg/dL",
-      context: "serum magnesium target",
+      context: "seizure prophylaxis monitoring target (educational)",
     },
   ],
 
@@ -71,7 +71,7 @@ export const magnesiumSulfatePreeclampsiaCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Magnesium sulfate is the drug of choice for seizure prophylaxis in preeclampsia with severe features and for eclampsia. ACOG (PB 222, 2020) recommends an initial IV loading dose of 4–6 g over 20–30 minutes, followed by a maintenance infusion of 1–2 g/h (typically 2 g/h) for 24 hours. The Zuspan regimen (4 g IV + 2 g/h) and Pritchard regimen (4 g IV + 10 g IM, then 5 g IM every 4 h) are classic alternatives. This calculator sums the total 24-hour dose for the selected IV load and maintenance rate.",
+    "Indication: magnesium sulfate is used for the prevention of eclampsia in appropriately selected women with preeclampsia (especially severe preeclampsia) and for the treatment of eclampsia. WHO (2011) recommends magnesium sulfate for prevention of eclampsia in severe preeclampsia and for treatment of eclampsia in preference to other anticonvulsants. Prevention of eclampsia is distinct from acute treatment of an eclamptic seizure; regimens for each setting may differ. This calculator supports an educational estimate of a selected IV regimen's 24-hour total; it is not a mandate for any specific regimen. Regimen choice depends on clinical setting and protocol, route, renal function, monitoring capability, and clinician judgment. Magnesium sulfate is a high-risk medication: administration requires clinical monitoring (patellar reflexes, respiratory rate, urine output, and serum magnesium where available) and is not a routine self-calculation tool. Calcium gluconate should be available to treat magnesium toxicity. This content is educational decision-support, not prescriptive.",
 
 
 
@@ -79,6 +79,7 @@ export const magnesiumSulfatePreeclampsiaCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
+    "WHO recommendations for prevention and treatment of pre-eclampsia and eclampsia. Geneva: World Health Organization; 2011.",
     "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
     "Zuspan FP. Clin Obstet Gynecol. 1966;9(4):954-972.",
     "Pritchard JA. Surg Gynecol Obstet. 1955;100(2):131-140.",
@@ -132,15 +133,25 @@ export const magnesiumSulfatePreeclampsiaCalculator: CalculatorDefinition = {
     const total = load.n + maintenance.n * 24;
 
     const interpretation =
-      `Total 24-hour magnesium sulfate dose: ${total.toFixed(0)} g (loading dose ${load.n.toFixed(0)} g IV + maintenance ${maintenance.n.toFixed(1)} g/h × 24 h). ` +
-      "Therapeutic serum magnesium is 4.8–8.4 mg/dL. Monitor patellar reflexes, respiratory rate, urine output, and serum magnesium; for respiratory depression stop the infusion and give 10% calcium gluconate IV. Continue for 24 h postpartum (or after the last seizure) per protocol.";
+      `Selected IV regimen 24-hour total: ${total.toFixed(0)} g (loading dose ${load.n.toFixed(0)} g IV + maintenance ${maintenance.n.toFixed(1)} g/h × 24 h). ` +
+      "Magnesium sulfate is a high-risk medication used for prevention of eclampsia in appropriate preeclampsia settings and for treatment of eclampsia; regimen, route, and duration depend on the clinical setting and protocol. " +
+      "Monitor patellar reflexes, respiratory rate, urine output, and serum magnesium where available; have calcium gluconate available to treat magnesium toxicity. " +
+      "This estimate is educational decision-support only and must be interpreted by the clinical team, not used as a self-calculation tool.";
 
     return {
       value: total,
       unit: "g / 24 h",
       interpretation,
       status: "normal",
-      referenceRange: "serum Mg 4.8–8.4 mg/dL",
+      referenceRange: "serum Mg 4.8–8.4 mg/dL (educational monitoring target)",
+      warnings: [
+        "Magnesium sulfate requires clinical monitoring and is not a routine self-calculation tool.",
+        "Regimen selection depends on clinical setting/protocol, route, renal function, monitoring capability, and clinician judgment.",
+      ],
+      advice: [
+        "Monitor patellar reflexes, respiratory rate, urine output, and serum magnesium where available.",
+        "Have calcium gluconate available for management of magnesium toxicity.",
+      ],
     };
   },
 };

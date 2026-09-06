@@ -42,7 +42,7 @@ export const bsaCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "Mosteller RD. Simplified calculation of body-surface area. N Engl J Med. 1987;317(17):1098.",
   ],
 
   relatedCalculators: [],

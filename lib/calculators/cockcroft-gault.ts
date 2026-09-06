@@ -63,7 +63,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Kidney Calculator Should I Use?","calculators":[{"name":"Cockcroft-Gault","href":"/calculators/cockcroft-gault","bestFor":"Medication dosing adjustment.","limitation":"Less accurate for estimating true GFR."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Routine kidney function assessment and CKD staging.","limitation":"Not preferred for medication dosing."},{"name":"MDRD","href":"/calculators/mdrd","bestFor":"Historical comparison.","limitation":"Largely replaced by CKD-EPI."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16(1):31-41.",
   ],
 
   relatedCalculators: ["ckd-epi-2021","mdrd","bun-creatinine-ratio"],

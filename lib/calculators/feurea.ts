@@ -55,7 +55,7 @@ export const feureaCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Renal Assessment Should I Use?","calculators":[{"name":"FEUrea","href":"/calculators/feurea","bestFor":"Renal assessment when diuretics are present.","limitation":"Less widely validated than FENa."},{"name":"FENa","href":"/calculators/fena","bestFor":"Distinguishing prerenal azotemia from ATN.","limitation":"Unreliable with diuretic use."},{"name":"BUN/Creatinine Ratio","href":"/calculators/bun-creatinine-ratio","bestFor":"Rapid bedside assessment.","limitation":"Not a direct tubular function test."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Kaplan AA, Kohn OF. Fractional excretion of urea as a guide to renal dysfunction. Am J Nephrol. 1992;12(1-2):49-54.",
   ],
 
   relatedCalculators: ["fena","bun-creatinine-ratio","ttkg"],

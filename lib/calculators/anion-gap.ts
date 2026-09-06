@@ -59,7 +59,7 @@ export const anionGapCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Acid-Base Calculator Should I Use?","calculators":[{"name":"Anion Gap","href":"/calculators/anion-gap","bestFor":"Screening for high anion gap metabolic acidosis.","limitation":"Does not account for hypoalbuminemia."},{"name":"Albumin-Corrected Anion Gap","href":"/calculators/corrected-anion-gap","bestFor":"Detecting hidden HAGMA in hypoalbuminemic patients.","limitation":"Requires albumin measurement."},{"name":"Serum Osmolality","href":"/calculators/serum-osmolality","bestFor":"Assessing osmolality in toxic ingestions and electrolyte disorders.","limitation":"Does not directly measure the anion gap."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Emmett M, Narins RG. Clinical use of the anion gap. Medicine (Baltimore). 1977;56(1):38-54.",
   ],
 
   relatedCalculators: ["corrected-anion-gap","serum-osmolality","osmolar-gap","corrected-calcium","bun-creatinine-ratio"],

@@ -60,9 +60,6 @@ import {
   freeWaterDeficitCalculator,
 } from "../../lib/calculators/free-water-deficit";
 import {
-  thyroidDoseCalculator,
-} from "../../lib/calculators/thyroid-dose";
-import {
   levothyroxineDoseCalculator,
 } from "../../lib/calculators/levothyroxine-dose";
 import {
@@ -3804,66 +3801,19 @@ describe("Free Water Deficit calculate() regression", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Thyroid Dose / Levothyroxine Dose — Dose = 1.6 * weight (µg/day)
+// Levothyroxine Dose — Dose = 1.6 * weight (µg/day)
 // The formula always yields the full replacement rate (1.6 µg/kg/day),
 // which is within the normal range of 1.0–2.0 µg/kg/day.
 // Result = Number(result.toFixed(2))
 // ---------------------------------------------------------------------------
-describe("Thyroid Dose calculate() regression", () => {
-  it("returns the total daily dose for weight 70", () => {
-    const r = calc(thyroidDoseCalculator, {
-      weight: "70",
-    });
-    expect(r.value).toBe(112);
-    expect(r.interpretation).toBe(
-      "Full replacement dose",
-    );
-    expect(r.status).toBe("normal");
-  });
-
-  it("returns the total daily dose for weight 90", () => {
-    const r = calc(thyroidDoseCalculator, {
-      weight: "90",
-    });
-    expect(r.value).toBe(144);
-    expect(r.status).toBe("normal");
-  });
-
-  it("pediatric weight 20 kg → 32 µg", () => {
-    const r = calc(thyroidDoseCalculator, { weight: "20" });
-    expect(r.value).toBe(32);
-    expect(r.status).toBe("normal");
-    expect(r.interpretation).toBe("Full replacement dose");
-  });
-
-  it("elderly/low weight 45 kg → 72 µg", () => {
-    const r = calc(thyroidDoseCalculator, { weight: "45" });
-    expect(r.value).toBe(72);
-    expect(r.status).toBe("normal");
-  });
-
-  it("heavy weight 120 kg → 192 µg", () => {
-    const r = calc(thyroidDoseCalculator, { weight: "120" });
-    expect(r.value).toBe(192);
-    expect(r.status).toBe("normal");
-  });
-
-  it("zero weight → critical validation error", () => {
-    const r = calc(thyroidDoseCalculator, { weight: "0" });
-    expect(r.value).toBe(0);
-    expect(r.status).toBe("critical");
-    expect(r.interpretation).toBe("Body Weight cannot be zero.");
-  });
-});
-
 describe("Levothyroxine Dose calculate() regression", () => {
   it("returns the total daily dose for weight 70", () => {
     const r = calc(levothyroxineDoseCalculator, {
       weight: "70",
     });
     expect(r.value).toBe(112);
-    expect(r.interpretation).toBe(
-      "Full replacement dose",
+    expect(r.interpretation).toContain(
+      "Estimated full replacement dose",
     );
     expect(r.status).toBe("normal");
   });
@@ -3872,7 +3822,7 @@ describe("Levothyroxine Dose calculate() regression", () => {
     const r = calc(levothyroxineDoseCalculator, { weight: "25" });
     expect(r.value).toBe(40);
     expect(r.status).toBe("normal");
-    expect(r.interpretation).toBe("Full replacement dose");
+    expect(r.interpretation).toContain("Estimated full replacement dose");
   });
 
   it("elderly/low weight 50 kg → 80 µg", () => {

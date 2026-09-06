@@ -55,7 +55,7 @@ export const insulinSensitivityCalculator: CalculatorDefinition = {
   comparison: {"title":"Insulin Resistance Assessment Tools","calculators":[{"name":"Insulin Sensitivity","href":"/calculators/insulin-sensitivity","bestFor":"Quick inverse sensitivity estimate.","limitation":"Same fasting requirement as HOMA-IR."},{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Standard insulin resistance estimate.","limitation":"Higher = worse (less intuitive)."},{"name":"HOMA-B","href":"/calculators/homa-b","bestFor":"Beta-cell function assessment.","limitation":"Different measure entirely."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Matthews DR, et al. Homeostasis model assessment: insulin resistance and beta-cell function from fasting plasma glucose and insulin concentrations in man. Diabetologia. 1985;28(7):412-419.",
   ],
 
   relatedCalculators: ["homa-ir","homa-b"],

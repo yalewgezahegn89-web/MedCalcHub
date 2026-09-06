@@ -59,7 +59,7 @@ export const correctedSodiumCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Sodium Calculator Should I Use?","calculators":[{"name":"Corrected Sodium","href":"/calculators/corrected-sodium","bestFor":"Assessing true sodium in hyperglycemia.","limitation":"Approximate correction; less reliable at extreme glucose values."},{"name":"Sodium Deficit","href":"/calculators/sodium-deficit","bestFor":"Planning hyponatremia correction.","limitation":"Estimates deficit, not corrected sodium."},{"name":"Free Water Deficit","href":"/calculators/free-water-deficit","bestFor":"Estimating water replacement in hypernatremia.","limitation":"Does not correct sodium for glucose."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Katz MA. Hyperglycemia-induced hyponatremia—calculation of expected serum sodium depression. N Engl J Med. 1973;289(16):843-844.",
   ],
 
   relatedCalculators: ["sodium-deficit","free-water-deficit","serum-osmolality","anion-gap"],

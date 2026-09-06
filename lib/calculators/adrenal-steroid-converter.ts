@@ -55,7 +55,7 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
   comparison: {"title":"Steroid Conversion Reference","calculators":[{"name":"Adrenal Steroid Converter","href":"/calculators/adrenal-steroid-converter","bestFor":"Converting between equivalent steroid doses.","limitation":"Approximate equivalences only."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Meikle AW, Tyler FH. Potency and duration of action of glucocorticoids: effects of hydrocortisone, prednisone, and dexamethasone on human pituitary-adrenal function. Am J Med. 1977;63(2):200-207.",
   ],
 
   relatedCalculators: ["levothyroxine-dose"],

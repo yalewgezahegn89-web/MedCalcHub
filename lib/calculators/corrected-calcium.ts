@@ -59,7 +59,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
   comparison: {"title":"Related Calcium / Mineral Metabolism Calculators","calculators":[{"name":"Corrected Calcium","href":"/calculators/corrected-calcium","bestFor":"Correcting total calcium in hypoalbuminemia.","limitation":"Does not replace ionized calcium measurement."},{"name":"Calcium-Phosphate Product","href":"/calculators/calcium-phosphate-product","bestFor":"Assessing vascular calcification risk in CKD.","limitation":"Does not assess albumin or calcium correction."},{"name":"Albumin-to-Creatinine Ratio","href":"/calculators/albumin-creatinine-ratio","bestFor":"CKD screening and staging.","limitation":"Assesses albuminuria, not serum calcium status."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. BMJ. 1973;4(5893):643-646.",
   ],
 
   relatedCalculators: ["calcium-phosphate-product","albumin-creatinine-ratio","ckd-epi-2021","anion-gap"],

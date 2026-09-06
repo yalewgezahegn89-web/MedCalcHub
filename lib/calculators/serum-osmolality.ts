@@ -59,7 +59,7 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Osmolality Calculator Should I Use?","calculators":[{"name":"Serum Osmolality","href":"/calculators/serum-osmolality","bestFor":"Estimating serum osmolality from basic labs.","limitation":"Does not account for ethanol or unmeasured osmoles."},{"name":"Osmolar Gap","href":"/calculators/osmolar-gap","bestFor":"Detecting toxic alcohol ingestion.","limitation":"Requires a measured osmolality from the lab."},{"name":"Corrected Sodium","href":"/calculators/corrected-sodium","bestFor":"Adjusting sodium for hyperglycemia.","limitation":"Assesses sodium, not total osmolality."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Dorwart WV, Chalmers L. Comparison of methods for calculating serum osmolality from chemical concentrations, and the prognostic value of such calculations. Clin Chem. 1975;21(2):190-194.",
   ],
 
   relatedCalculators: ["osmolar-gap","corrected-sodium","anion-gap","sodium-deficit"],

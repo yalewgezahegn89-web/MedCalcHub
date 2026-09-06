@@ -59,7 +59,7 @@ export const osmolarGapCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Toxicology Calculator Should I Use?","calculators":[{"name":"Osmolar Gap","href":"/calculators/osmolar-gap","bestFor":"Detecting unmeasured osmoles in toxic ingestion.","limitation":"Requires a measured osmolality from the lab."},{"name":"Serum Osmolality","href":"/calculators/serum-osmolality","bestFor":"Estimating calculated osmolality.","limitation":"Does not detect unmeasured osmoles."},{"name":"Anion Gap","href":"/calculators/anion-gap","bestFor":"Detecting high anion gap metabolic acidosis.","limitation":"May be normal in early toxic alcohol ingestion."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Dorwart WV, Chalmers L. Comparison of methods for calculating serum osmolality from chemical concentrations, and the prognostic value of such calculations. Clin Chem. 1975;21(2):190-194.",
   ],
 
   relatedCalculators: ["serum-osmolality","anion-gap","corrected-anion-gap","bun-creatinine-ratio"],

@@ -55,7 +55,7 @@ export const fenaCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Renal Assessment Should I Use?","calculators":[{"name":"FENa","href":"/calculators/fena","bestFor":"Distinguishing prerenal azotemia from ATN in AKI.","limitation":"Unreliable with diuretic use."},{"name":"FEUrea","href":"/calculators/feurea","bestFor":"Renal assessment when diuretics are present.","limitation":"Less widely validated than FENa."},{"name":"BUN/Creatinine Ratio","href":"/calculators/bun-creatinine-ratio","bestFor":"Rapid bedside assessment.","limitation":"Not a direct tubular function test."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Espinel CH. The FENa test: use in the differential diagnosis of acute renal failure. JAMA. 1976;236(6):579-581.",
   ],
 
   relatedCalculators: ["feurea","bun-creatinine-ratio","ttkg"],

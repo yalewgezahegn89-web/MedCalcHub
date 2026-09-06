@@ -42,7 +42,7 @@ export const mapCalculator: CalculatorDefinition = {
   comparison: undefined,
 
   references: [
-    "MedCalcHub Clinical References",
+    "Guyton AC, Hall JE. Textbook of Medical Physiology. 13th ed. Philadelphia: Elsevier; 2021.",
   ],
 
   relatedCalculators: [],

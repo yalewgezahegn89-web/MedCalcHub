@@ -55,7 +55,7 @@ export const bunCreatinineRatioCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Kidney Calculator Should I Use?","calculators":[{"name":"BUN/Creatinine Ratio","href":"/calculators/bun-creatinine-ratio","bestFor":"Differentiating prerenal from intrinsic renal causes.","limitation":"Not a direct measure of kidney function."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Estimating GFR for CKD staging.","limitation":"Does not differentiate etiology."},{"name":"FENa","href":"/calculators/fena","bestFor":"Confirming prerenal vs. intrinsic AKI.","limitation":"Affected by diuretic use."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Rifai N, et al. Tietz Textbook of Clinical Chemistry and Molecular Diagnostics. 6th ed. Elsevier; 2018.",
   ],
 
   relatedCalculators: ["ckd-epi-2021","cockcroft-gault","fena","feurea"],

@@ -55,7 +55,7 @@ export const estimatedAverageGlucoseCalculator: CalculatorDefinition = {
   comparison: {"title":"Glycemic Assessment Tools","calculators":[{"name":"Estimated Average Glucose","href":"/calculators/estimated-average-glucose","bestFor":"Converting A1c to mg/dL average.","limitation":"Affected by conditions altering red cell lifespan."},{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Assessing insulin resistance.","limitation":"Different glycemic measure."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Nathan DM, et al. Translating the A1C assay into estimated average glucose values. Diabetes Care. 2008;31(8):1473-1478.",
   ],
 
   relatedCalculators: ["homa-ir","homa-b"],

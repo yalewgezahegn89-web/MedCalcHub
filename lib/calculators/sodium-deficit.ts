@@ -59,7 +59,7 @@ export const sodiumDeficitCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Sodium Disorder Calculator Should I Use?","calculators":[{"name":"Sodium Deficit","href":"/calculators/sodium-deficit","bestFor":"Planning hyponatremia correction in chronic hyponatremia.","limitation":"Does not account for ongoing losses or intake."},{"name":"Free Water Deficit","href":"/calculators/free-water-deficit","bestFor":"Estimating water replacement in hypernatremia.","limitation":"Addresses hypernatremia, not hyponatremia."},{"name":"Corrected Sodium","href":"/calculators/corrected-sodium","bestFor":"Assessing true sodium in hyperglycemia.","limitation":"Does not estimate the sodium deficit."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Adrogué HJ, Madias NE. Hyponatremia. N Engl J Med. 2000;342(21):1581-1589.",
   ],
 
   relatedCalculators: ["free-water-deficit","corrected-sodium","serum-osmolality","fluid-requirement"],

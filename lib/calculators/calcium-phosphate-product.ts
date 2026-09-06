@@ -55,7 +55,7 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Mineral Metabolism Calculator Should I Use?","calculators":[{"name":"Calcium-Phosphate Product","href":"/calculators/calcium-phosphate-product","bestFor":"Assessing vascular calcification risk in CKD.","limitation":"Does not directly measure PTH or vitamin D status."},{"name":"CKD-EPI 2021","href":"/calculators/ckd-epi-2021","bestFor":"Estimating kidney function.","limitation":"Does not assess mineral metabolism."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "KDIGO. Clinical Practice Guideline Update for the Diagnosis, Evaluation, Prevention, and Treatment of CKD-MBD. Kidney Int Suppl. 2017;7(1):1-59.",
   ],
 
   relatedCalculators: ["ckd-epi-2021","cockcroft-gault","albumin-creatinine-ratio"],

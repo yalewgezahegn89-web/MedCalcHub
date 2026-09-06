@@ -59,7 +59,7 @@ export const correctedAnionGapCalculator: CalculatorDefinition = {
   comparison: {"title":"Which Anion Gap Calculator Should I Use?","calculators":[{"name":"Anion Gap","href":"/calculators/anion-gap","bestFor":"Standard screening in patients with normal albumin.","limitation":"Falsely low in hypoalbuminemia."},{"name":"Albumin-Corrected Anion Gap","href":"/calculators/corrected-anion-gap","bestFor":"Detecting hidden HAGMA in hypoalbuminemic patients.","limitation":"Correction is approximate; interpret in context."},{"name":"Serum Osmolality","href":"/calculators/serum-osmolality","bestFor":"Assessing osmolality in toxic ingestions.","limitation":"Does not directly assess the anion gap."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Figge J, et al. Anion gap and hypoalbuminemia. Crit Care Med. 1998;26(11):1807-1810.",
   ],
 
   relatedCalculators: ["anion-gap","serum-osmolality","osmolar-gap","bun-creatinine-ratio","corrected-calcium"],
