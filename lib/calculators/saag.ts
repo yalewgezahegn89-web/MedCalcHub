@@ -56,6 +56,11 @@ export const saagCalculator: CalculatorDefinition = {
   clinicalNotes:
     "The SAAG was introduced by Boyer et al. in 1968 and is the single most reliable test for classifying ascites. A SAAG ≥1.1 g/dL correctly identifies portal hypertension with >90% accuracy. It replaces the older transudate/exudate classification, which was unreliable for ascites due to the confounding effect of serum albumin on ascitic fluid protein.",
 
+  references: [
+    "Boyer TD, Kahn AM, Reynolds TB. Diagnostic value of ascitic fluid lactic dehydrogenase, protein, and WBC levels. Arch Intern Med. 1968;122(5):425-428.",
+    "Runyon BA, Hoefs JC, Morgenthaler US. Serum-ascites albumin gradient: improved diagnostic utility in patients with cirrhosis and ascites. N Engl J Med. 1983;309(22):1340-1344.",
+  ],
+
 
 
 

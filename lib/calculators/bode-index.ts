@@ -64,6 +64,11 @@ export const bodeIndexCalculator: CalculatorDefinition = {
   clinicalNotes:
     "The BODE Index was published by Celli et al. in 2004 (NEJM 350:1005-1012) and validated in a large international cohort. It is a validated multidimensional scoring system that outperforms FEV1 alone for predicting mortality in COPD. The BODE Index has been incorporated into international COPD guidelines (GOLD) as a tool for assessing disease severity and guiding treatment decisions, including lung transplant eligibility.",
 
+  references: [
+    "Celli BR, Cote CG, Marin JM, et al. The Body-Mass Index, Airflow Obstruction, Dyspnea, and Exercise Capacity Index in Chronic Obstructive Pulmonary Disease. N Engl J Med. 2004;350(10):1005-1012.",
+    "Global Initiative for Chronic Obstructive Lung Disease (GOLD). Global Strategy for the Diagnosis, Management, and Prevention of Chronic Obstructive Pulmonary Disease. 2024 Report.",
+  ],
+
 
 
 

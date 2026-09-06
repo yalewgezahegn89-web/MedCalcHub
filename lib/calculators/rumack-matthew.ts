@@ -57,6 +57,11 @@ export const rumackMatthewCalculator: CalculatorDefinition = {
   clinicalNotes:
     "The Rumack-Matthew nomogram was published in 1975 (Pediatrics 55:871-876) and is the standard tool for determining NAC treatment in acute acetaminophen ingestion in the United States. The nomogram uses a semi-log plot of serum acetaminophen concentration versus time since ingestion, with a treatment line derived from reported cases of hepatotoxicity. The treatment line represents the minimum acetaminophen level associated with potential hepatotoxicity at each time point.",
 
+  references: [
+    "Rumack BH, Matthew H. Acetaminophen poisoning and toxicity. Pediatrics. 1975;55(6):871-876.",
+    "Smilkstein MJ, Knapp GL, Kulig KW, Rumack BH. Efficacy of oral N-acetylcysteine in the treatment of acetaminophen overdose: analysis of the national multicenter study. N Engl J Med. 1988;319(24):1557-1562.",
+  ],
+
 
 
 

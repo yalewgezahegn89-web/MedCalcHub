@@ -24,6 +24,10 @@ export const ibwCalculator: CalculatorDefinition = {
 
   keywords: ["IBW", "Ideal Body Weight", "Devine", "Height", "Weight"],
 
+  references: [
+    "Devine BJ. Gentamicin therapy. Drug Intell Clin Pharm. 1974;8(11):650-655.",
+  ],
+
 
 
   inputs: [

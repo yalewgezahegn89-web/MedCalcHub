@@ -54,7 +54,7 @@ export const waistToHipRatioCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The waist-to-hip ratio (WHR) quantifies central adiposity by comparing waist circumference to hip circumference. A higher ratio indicates proportionally greater abdominal fat deposition, which is an independent predictor of cardiometabolic risk including type 2 diabetes, cardiovascular disease, and all-cause mortality, even after adjusting for body mass index.\n\nRisk thresholds differ by sex. In males, a WHR below 0.90 is low risk, 0.90–0.99 is moderate risk, and ≥1.0 is high risk. In females, a WHR below 0.85 is low risk and ≥0.85 indicates increased cardiometabolic risk. These cutoffs are based on WHO expert consultation recommendations and represent population-level risk stratification rather than individual diagnostic thresholds.\n\nLimitations: WHR is sensitive to measurement technique; the waist should be measured at the midpoint between the lowest rib and the iliac crest, and the hip at the widest point of the buttocks, with consistent positioning and tape tension. Results may vary with age, ethnicity, and body composition. WHR does not distinguish between subcutaneous and visceral fat, does not directly measure insulin resistance or lipid profiles, and should be interpreted alongside other clinical and metabolic assessments. It is a screening and risk-stratification tool, not a diagnostic test.",
 
   references: [
     "World Health Organization. Waist circumference and waist–hip ratio: report of a WHO expert consultation. Geneva: WHO; 2008.",

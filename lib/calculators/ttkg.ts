@@ -46,7 +46,7 @@ export const ttkgCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The transtubular potassium gradient (TTKG) estimates the electrochemical gradient for potassium secretion in the cortical collecting duct. It is calculated as (urine K⁺ × plasma osmolality) / (plasma K⁺ × urine osmolality) and is intended to help distinguish renal from extrarenal potassium losses and to assess whether the kidney is appropriately secreting or retaining potassium.\n\nIn the context of hyperkalemia, a TTKV < 8 suggests impaired distal tubular potassium secretion, pointing toward an intrinsic renal or hormonal cause (e.g., hypoaldosteronism, tubulointerstitial disease, ACE inhibitor/ARB use). A TTKV of 8–12 represents a normal renal potassium secretory response. A TTKV > 12 indicates enhanced distal potassium secretion, which may reflect extrarenal losses, mineralocorticoid excess, or other non-renal causes.\n\nImportant interpretation limitations: The TTKV assumes that distal tubular flow rate is adequate and that urine osmolality is ≥ plasma osmolality, conditions that are not always met in clinical practice. Its physiological validity has been questioned because the underlying assumptions about urea recycling and Na⁺ reabsorption in the collecting duct may not hold uniformly. Diuretic use, especially loop or thiazide diuretics, can alter urine electrolyte composition and invalidate the calculation. TTKV should be interpreted alongside serum aldosterone, renin, acid-base status, and the full clinical picture. It is an adjunctive tool, not a definitive diagnostic test for potassium disorders.",
 
 
 

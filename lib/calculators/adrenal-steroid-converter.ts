@@ -46,7 +46,7 @@ export const adrenalSteroidConverterCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "This calculator converts between equivalent anti-inflammatory and sodium-retaining doses of commonly used systemic glucocorticoids and mineralocorticoids. Equivalent doses approximate comparable biological potency but do not account for differences in pharmacokinetics, half-life, receptor affinity, or tissue-specific effects among individual agents.\n\nPractical interpretation depends on the clinical context. The equivalence factors are most applicable when switching between agents for the same indication at steady state. They are less reliable when converting between routes (e.g., intravenous to oral), when adjusting dose during acute illness, or when the clinical goal shifts from anti-inflammatory to mineralocorticoid replacement. Tissue selectivity differs: dexamethasone and betamethasone have negligible mineralocorticoid activity, while hydrocortisone retains meaningful sodium-retaining potency at replacement doses.\n\nLimitations: Steroid equivalents are approximations derived from classical bioassays and clinical experience, not precision pharmacology. The calculated dose should be treated as a starting estimate, not an exact replacement target. Duration of therapy, cumulative exposure, adrenal suppression risk, and patient-specific factors (age, weight, comorbidities, drug interactions) all influence appropriate dosing. This tool does not constitute individualized prescribing advice, and conversion decisions should be made by a clinician with familiarity with the patient's condition and steroid pharmacology.",
 
 
 

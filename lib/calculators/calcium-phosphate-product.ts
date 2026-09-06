@@ -46,7 +46,7 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The calcium-phosphate (Ca × P) product estimates the combined mineral load that may promote metastatic and vascular calcification. It is most often used in patients with chronic kidney disease (CKD) and CKD–mineral and bone disorder (CKD-MBD), where disordered calcium and phosphate homeostasis accelerates extraskeletal calcification.\n\nValues below 55 mg²/dL² are generally considered acceptable. Products of 55–70 mg²/dL² indicate an elevated calcification burden and warrant closer monitoring of phosphate binders, dietary phosphate, and vitamin D analogue dosing. Products of ≥70 mg²/dL² are critically elevated and are associated with a markedly increased risk of soft-tissue and vascular calcification, warranting urgent review of the CKD-MBD management plan.\n\nThe product should be interpreted alongside intact PTH, alkaline phosphatase, serum bicarbonate, vitamin D metabolites, and the clinical picture. An elevated Ca × P product reflects the combined effect of hypercalcemia, hyperphosphatemia, or both; the underlying cause determines management. Limitations include that it does not directly quantify tissue calcification, does not replace imaging when calcification is suspected, and should not be used in isolation to guide therapy. KDIGO guidelines recommend maintaining calcium and phosphate levels toward the normal range rather than targeting a specific product threshold.",
 
 
 

@@ -59,6 +59,11 @@ export const albiScoreCalculator: CalculatorDefinition = {
   clinicalNotes:
     "The ALBI score was published by Johnson et al. in 2014 (J Clin Oncol 32:3378-3386) as an objective alternative to the Child-Pugh score for assessing liver function in HCC. Unlike Child-Pugh, ALBI uses only two objective laboratory values (albumin and bilirubin), eliminating the subjective components of ascites, encephalopathy, and nutritional status. ALBI has been validated in multiple international cohorts and is increasingly incorporated into HCC staging systems and treatment algorithms.",
 
+  references: [
+    "Johnson PJ, Chan SC, Cheng CL, et al. Albumin-Bilirubin (ALBI) Grade as an Alternative to the Child-Pugh Score for Assessing Liver Function in Patients With HCC. J Clin Oncol. 2015;33(6):550-558.",
+    "Hiraoka A, Kumada T, Kudo M, et al. Albumin-Bilirubin (ALBI) Grade as an Alternative to Child-Pugh Score for Prognostic Stratification in HCC. Liver Cancer. 2017;6(2):112-119.",
+  ],
+
 
 
 

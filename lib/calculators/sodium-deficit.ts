@@ -50,7 +50,7 @@ export const sodiumDeficitCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "This calculator estimates total body sodium deficit using the Adrogué–Madias formula: deficit = 0.6 × body weight (kg) × (target Na⁺ − current Na⁺). The 0.6 factor approximates total body water as a fraction of body weight and assumes a relatively homogeneous distribution of sodium deficit throughout body water compartments.\n\nThe calculated value represents a theoretical estimate of sodium deficit at the time of calculation, not a prescription for the amount or rate of sodium replacement. Actual correction depends on the cause of hyponatremia (hypovolemic, euvolemic, hypervolemic), symptom severity, chronicity of the sodium derangement, volume status, choice of replacement fluid, rate of correction strategy, and ongoing monitoring. The deficit must be distributed over time with attention to avoiding overly rapid correction, which carries a risk of osmotic demyelination syndrome.\n\nCritical limitations: The formula uses a fixed distribution factor that does not account for age, sex, body composition, or the underlying pathophysiology. It does not estimate ongoing sodium losses, gastrointestinal or urinary. It should not be used to set a rigid replacement target. In acute symptomatic hyponatremia, treatment decisions must be guided by clinical urgency and specialist input, not by a calculated deficit alone. This tool is intended for clinical planning support, not as a replacement for individualized management.",
 
 
 
