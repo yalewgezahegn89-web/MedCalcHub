@@ -58,7 +58,7 @@ export const mdrdCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The Modification of Diet in Renal Disease (MDRD) equation estimates glomerular filtration rate (eGFR) from serum creatinine, age, and sex. It was the reference equation for estimating GFR for many years before being updated and progressively superseded by the CKD-EPI equation in laboratory reporting and clinical staging.\n\nThe validity of the estimate depends on creatinine measurement being standardized and traceable to the isotope dilution mass spectrometry (IDMS) reference method. When only non-IDMS-traceable creatinine values are available, the MDRD equation performs differently, which is why the laboratory's creatinine standardization must match the equation version used. The equation reports eGFR normalized to a standard body surface area (mL/min/1.73m2), not an absolute clearance.\n\nCompared with CKD-EPI, the MDRD equation is generally less accurate at higher GFR values (where CKD-EPI shows less systematic bias) and was derived from a predominantly CKD population. It is intended for adults and is not validated in children, pregnant women, or patients with rapidly changing kidney function (such as acute kidney injury), severe malnutrition, amputations, or unusual muscle mass, where steady-state assumptions do not hold.\n\nAn estimated GFR is an approximation of kidney function, not a measured value and not a diagnosis by itself; MDRD-based eGFR alone is not appropriate as a standalone diagnosis of chronic kidney disease. The result should be interpreted together with the clinical context, and where accuracy matters most, a measured GFR test may be preferred.",
 
 
 
@@ -68,6 +68,8 @@ export const mdrdCalculator: CalculatorDefinition = {
 
   references: [
     "Levey AS, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine: a new prediction equation. Ann Intern Med. 1999;130(6):461-470.",
+    "Levey AS, et al. Using standardized serum creatinine values in the modification of diet in renal disease study equation for estimating glomerular filtration rate. Ann Intern Med. 2006;145(4):247-254.",
+    "KDIGO 2024 Working Group. Kidney Disease: Improving Global Outcomes (KDIGO) 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117-S314.",
   ],
 
   relatedCalculators: ["ckd-epi-2021","cockcroft-gault","bun-creatinine-ratio"],

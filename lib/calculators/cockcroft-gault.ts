@@ -54,7 +54,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The Cockcroft-Gault equation estimates creatinine clearance (CrCl) from age, weight, sex, and serum creatinine. It was the first widely adopted method for estimating renal function before direct GFR measurement became practical, and it remains embedded in many medication dosing guidelines. The equation outputs an absolute CrCl in mL/min using actual body weight, adjusted for sex.\n\nThe estimated creatinine clearance should not be equated with measured GFR or with eGFR reported by MDRD or CKD-EPI. Those equations report GFR normalized to body surface area (mL/min/1.73m2), whereas Cockcroft-Gault outputs an absolute clearance (mL/min). Different equations also require different serum creatinine units (notably mg/dL versus micromol/L); for the standard form of this equation, creatinine must be entered in mg/dL. Converting from micromol/L requires dividing by 88.4 before entry.\n\nThe estimate is most reliable in adults with stable renal function and body weight near the population average. It becomes progressively less accurate at extremes of body size, in the very old or very young, with impaired muscle mass, amputation, pregnancy, ascites, severe edema, or rapidly changing renal function. Patients with significantly abnormal weight should have dosing decisions cross-referenced against the specific equation recommended in the source guideline.\n\nThis estimate supports clinical decision-making in a medication dosing context and is not a diagnosis of kidney disease. Transplant recipients, patients with unusual body composition, or anyone with rapidly changing creatinine should have dosing confirmed against the guideline-appropriate equation. Specialist review may be warranted when the result is discordant with the clinical picture.",
 
 
 
@@ -64,6 +64,7 @@ export const cockcroftGaultCalculator: CalculatorDefinition = {
 
   references: [
     "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16(1):31-41.",
+    "KDIGO 2024 Working Group. Kidney Disease: Improving Global Outcomes (KDIGO) 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117-S314.",
   ],
 
   relatedCalculators: ["ckd-epi-2021","mdrd","bun-creatinine-ratio"],
