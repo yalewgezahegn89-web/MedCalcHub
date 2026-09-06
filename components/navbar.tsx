@@ -198,11 +198,12 @@ export default function Navbar() {
           {/* Search button */}
           <button
             onClick={openCommandPalette}
-            className="min-h-[44px] min-w-[44px] rounded-xl border border-slate-200 p-2 transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
             title="Search (Ctrl + K)"
             aria-label="Open Search"
           >
             <Search className="h-5 w-5" aria-hidden="true" />
+            <span className="hidden sm:inline">Search</span>
           </button>
 
           {/* Theme preference */}

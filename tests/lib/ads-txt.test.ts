@@ -14,34 +14,22 @@ describe("ads.txt", () => {
     expect(content).toContain("# https://iabtechlab.com/ads.txt/");
   });
 
-  it("contains a google.com entry line", () => {
+  it("does not contain a fake placeholder publisher ID", () => {
+    const content = fs.readFileSync(adsTxtPath, "utf-8");
+    expect(content).not.toContain("pub-0000000000000000");
+  });
+
+  it("contains no active google.com entry lines", () => {
     const content = fs.readFileSync(adsTxtPath, "utf-8");
     const lines = content
       .split("\n")
       .filter((l) => l.trim().length > 0 && !l.startsWith("#"));
     const googleLine = lines.find((l) => l.startsWith("google.com,"));
-    expect(googleLine).toBeDefined();
+    expect(googleLine).toBeUndefined();
   });
 
-  it("detects placeholder publisher ID that must be replaced before launch", () => {
+  it("contains instructions for adding a real publisher entry later", () => {
     const content = fs.readFileSync(adsTxtPath, "utf-8");
-    const hasPlaceholder = content.includes("pub-0000000000000000");
-    expect(hasPlaceholder).toBe(true);
-  });
-
-  it("has correct IAB format for the entry line", () => {
-    const content = fs.readFileSync(adsTxtPath, "utf-8");
-    const lines = content
-      .split("\n")
-      .filter((l) => l.trim().length > 0 && !l.startsWith("#"));
-    const googleLine = lines.find((l) => l.startsWith("google.com,"));
-    expect(googleLine).toBeDefined();
-
-    const parts = googleLine!.split(",").map((p) => p.trim());
-    expect(parts).toHaveLength(4);
-    expect(parts[0]).toBe("google.com");
-    expect(parts[1]).toMatch(/^pub-\d+$/);
-    expect(parts[2]).toBe("DIRECT");
-    expect(parts[3]).toBe("f08c47fec0942fa0");
+    expect(content).toContain("ca-pub-XXXXXXXXXXXXXXXX");
   });
 });

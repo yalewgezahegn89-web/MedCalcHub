@@ -1,8 +1,9 @@
 # ads.txt
 #
-# This file is a placeholder. Replace the entries below with your
-# actual advertising provider details before going live.
+# No advertising publisher is currently authorized.
+# This file intentionally contains no valid entries.
+#
+# When AdSense is approved, replace this file with:
+#   google.com, ca-pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
 #
 # https://iabtechlab.com/ads.txt/
-#
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

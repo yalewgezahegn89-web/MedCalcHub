@@ -81,7 +81,7 @@ export default function RootLayout({
 
         <footer className="border-t border-slate-200 bg-white py-8 dark:border-slate-800 dark:bg-slate-900">
           <div className="mx-auto max-w-7xl px-6 text-sm text-slate-500 dark:text-slate-400">
-            <div className="grid gap-6 sm:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-4">
               <div>
                 <p className="font-semibold text-slate-700 dark:text-slate-300">
                   MedCalcHub
@@ -93,6 +93,26 @@ export default function RootLayout({
                 <p className="mt-1">
                   Data stored locally in your browser. Not synced to any server.
                 </p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-slate-700 dark:text-slate-300">
+                  Browse
+                </p>
+                <ul className="mt-1 space-y-1">
+                  <li>
+                    <Link href="/calculators" className="underline hover:text-slate-700 dark:hover:text-slate-200">Calculators</Link>
+                  </li>
+                  <li>
+                    <Link href="/categories" className="underline hover:text-slate-700 dark:hover:text-slate-200">Categories</Link>
+                  </li>
+                  <li>
+                    <Link href="/specialties" className="underline hover:text-slate-700 dark:hover:text-slate-200">Specialties</Link>
+                  </li>
+                  <li>
+                    <Link href="/search" className="underline hover:text-slate-700 dark:hover:text-slate-200">Search</Link>
+                  </li>
+                </ul>
               </div>
 
               <div>

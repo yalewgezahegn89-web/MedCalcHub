@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Page Not Found | MedCalcHub",
+  },
+  description:
+    "The page you are looking for does not exist or has been moved.",
+};
 
 export default function NotFound() {
   return (
