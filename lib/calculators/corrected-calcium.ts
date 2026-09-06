@@ -182,7 +182,7 @@ const albumin = Number(values.albumin);
 
   
 let interpretation =
-  "Clinical interpretation pending.";
+  "Result calculated. Interpret in clinical context.";
 
 let status:
   "normal" |

@@ -127,7 +127,7 @@ const a1c = Number(values.a1c);
 
   
 let interpretation =
-  "Clinical interpretation pending.";
+  "Result calculated. Interpret in clinical context.";
 
 let status:
   "normal" |

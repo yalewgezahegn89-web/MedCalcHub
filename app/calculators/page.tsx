@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     absolute: "All Medical Calculators | MedCalcHub",
   },
   description:
-    "Browse all 140+ evidence-based medical calculators including BMI, GFR, CHA₂DS₂-VASc, MELD, and more. Free clinical tools for healthcare professionals.",
+    "Browse all 143 evidence-based medical calculators including BMI, GFR, CHA₂DS₂-VASc, MELD, and more. Free clinical tools for healthcare professionals.",
   alternates: {
     canonical: `${SITE_URL}/calculators`,
   },

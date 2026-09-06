@@ -275,7 +275,7 @@ const plasmaOsmolality = Number(values.plasmaOsmolality);
 
   
 let interpretation =
-  "Clinical interpretation pending.";
+  "Result calculated. Interpret in clinical context.";
 
 let status:
   "normal" |

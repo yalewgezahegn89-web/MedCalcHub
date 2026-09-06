@@ -73,18 +73,18 @@ describe("Sitemap XML encoding regression", () => {
 
   it("sitemap contains expected static pages", () => {
     const xml = buildSitemapXml();
-    expect(xml).toContain("<loc>https://medcalchub.com</loc>");
+    expect(xml).toContain("<loc>https://medcalculatorhub.com</loc>");
     expect(xml).toContain(
-      "<loc>https://medcalchub.com/calculators</loc>",
+      "<loc>https://medcalculatorhub.com/calculators</loc>",
     );
     expect(xml).toContain(
-      "<loc>https://medcalchub.com/categories</loc>",
+      "<loc>https://medcalculatorhub.com/categories</loc>",
     );
     expect(xml).toContain(
-      "<loc>https://medcalchub.com/comparison</loc>",
+      "<loc>https://medcalculatorhub.com/comparison</loc>",
     );
     expect(xml).toContain(
-      "<loc>https://medcalchub.com/specialties</loc>",
+      "<loc>https://medcalculatorhub.com/specialties</loc>",
     );
   });
 });

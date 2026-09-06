@@ -288,26 +288,25 @@ describe("Trust — footer links", () => {
 describe("Trust — navbar links", () => {
   const source = readFile("components/navbar.tsx");
 
-  it("navbar defines TRUST_LINKS with About and Contact", () => {
-    expect(source).toContain("TRUST_LINKS");
-    expect(source).toContain('/about"');
-    expect(source).toContain('/contact"');
+  it("navbar does NOT define TRUST_LINKS", () => {
+    expect(source).not.toContain("TRUST_LINKS");
   });
 
-  it("desktop nav renders trust links", () => {
-    expect(source).toContain("TRUST_LINKS.map");
+  it("desktop nav does NOT render About or Contact", () => {
+    const desktopSection = source.slice(
+      0,
+      source.indexOf("Mobile Navigation Panel"),
+    );
+    expect(desktopSection).not.toContain('/about"');
+    expect(desktopSection).not.toContain('/contact"');
   });
 
-  it("mobile nav renders trust links", () => {
+  it("mobile nav does NOT render About or Contact", () => {
     const mobileSection = source.slice(
       source.indexOf("Mobile Navigation Panel"),
     );
-    expect(mobileSection).toContain("TRUST_LINKS.map");
-  });
-
-  it("desktop nav has a separator before trust links", () => {
-    expect(source).toContain("bg-slate-200");
-    expect(source).toContain("aria-hidden=\"true\"");
+    expect(mobileSection).not.toContain('/about"');
+    expect(mobileSection).not.toContain('/contact"');
   });
 
   it("does not remove any existing navigation items", () => {
@@ -321,6 +320,40 @@ describe("Trust — navbar links", () => {
     expect(source).toContain('"/history"');
     expect(source).toContain('"/recent"');
     expect(source).toContain('"/workspace"');
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  5b. Footer trust links                                              */
+/* ------------------------------------------------------------------ */
+
+describe("Trust — footer links", () => {
+  const source = readFile("app/layout.tsx");
+
+  it("footer contains About link", () => {
+    expect(source).toContain('href="/about"');
+    expect(source).toContain(">About<");
+  });
+
+  it("footer contains Contact link", () => {
+    expect(source).toContain('href="/contact"');
+    expect(source).toContain(">Contact<");
+  });
+
+  it("footer contains Terms link", () => {
+    expect(source).toContain('href="/terms"');
+  });
+
+  it("footer contains Privacy link", () => {
+    expect(source).toContain('href="/privacy"');
+  });
+
+  it("footer contains Cookie link", () => {
+    expect(source).toContain('href="/cookie"');
+  });
+
+  it("footer contains consent preferences button", () => {
+    expect(source).toContain("ConsentPreferencesButton");
   });
 });
 

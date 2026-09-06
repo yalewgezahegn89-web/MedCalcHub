@@ -242,7 +242,7 @@ const femaleFactor = isFemale ? 1.012 : 1;
 
   
 let interpretation =
-  "Clinical interpretation pending.";
+  "Result calculated. Interpret in clinical context.";
 
 let status:
   "normal" |

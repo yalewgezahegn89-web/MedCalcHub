@@ -32,7 +32,7 @@ describe("buildCollectionJsonLd", () => {
     description: "A collection used in tests.",
     path: "/calculators",
     breadcrumb: [
-      { name: "Calculators", item: "https://medcalchub.com/calculators" },
+      { name: "Calculators", item: "https://medcalculatorhub.com/calculators" },
     ],
     calculators,
   }) as {
@@ -60,11 +60,11 @@ describe("buildCollectionJsonLd", () => {
     )!;
     expect(page).toBeDefined();
     expect(page.name).toBe("Test Collection");
-    expect(page.url).toBe("https://medcalchub.com/calculators");
+    expect(page.url).toBe("https://medcalculatorhub.com/calculators");
     expect(page.isPartOf).toEqual({
       "@type": "WebSite",
       name: "MedCalcHub",
-      url: "https://medcalchub.com",
+      url: "https://medcalculatorhub.com",
     });
   });
 
@@ -85,7 +85,7 @@ describe("buildCollectionJsonLd", () => {
         expect(item.position).toBe(i + 1);
         expect(item.name).toBe(calculators[i].name);
         expect(item.url).toBe(
-          `https://medcalchub.com/calculators/${calculators[i].slug}`,
+          `https://medcalculatorhub.com/calculators/${calculators[i].slug}`,
         );
       },
     );
@@ -99,13 +99,13 @@ describe("buildCollectionJsonLd", () => {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://medcalchub.com",
+      item: "https://medcalculatorhub.com",
     });
     expect(crumbs.itemListElement[1]).toEqual({
       "@type": "ListItem",
       position: 2,
       name: "Calculators",
-      item: "https://medcalchub.com/calculators",
+      item: "https://medcalculatorhub.com/calculators",
     });
     expect(crumbs.itemListElement).toHaveLength(2);
   });
@@ -130,7 +130,7 @@ describe("buildCollectionJsonLd", () => {
       };
       const list = ld["@graph"][0].mainEntity;
       for (const item of list.itemListElement) {
-        const slug = item.url.replace("https://medcalchub.com/calculators/", "");
+        const slug = item.url.replace("https://medcalculatorhub.com/calculators/", "");
         expect(
           calculatorRegistry.some((c) => c.slug === slug),
           `unregistered slug ${slug}`,

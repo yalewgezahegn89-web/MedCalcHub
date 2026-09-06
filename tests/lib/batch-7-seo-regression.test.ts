@@ -378,7 +378,7 @@ describe("D — BreadcrumbList JSON-LD", () => {
       );
       const items = breadcrumb!.itemListElement!;
       for (const item of items) {
-        expect(item.item).toMatch(/^https:\/\/medcalchub\.com/);
+        expect(item.item).toMatch(/^https:\/\/medcalculatorhub\.com/);
       }
     }
   });

@@ -275,7 +275,7 @@ const plasmaCr = Number(values.plasmaCr);
 
   
 let interpretation =
-  "Clinical interpretation pending.";
+  "Result calculated. Interpret in clinical context.";
 
 let status:
   "normal" |

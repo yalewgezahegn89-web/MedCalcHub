@@ -155,7 +155,7 @@ describe("Share action", () => {
     const data = {
       title: "BMI Calculator",
       text: "Calculate your BMI",
-      url: "https://medcalchub.com/calculators/bmi",
+      url: "https://medcalculatorhub.com/calculators/bmi",
     };
 
     await navigator.share(data);
