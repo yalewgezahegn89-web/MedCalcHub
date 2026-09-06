@@ -50,7 +50,7 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "Calculated serum osmolality is an estimate derived from the principal osmotically active solutes: calculated osmolality = 2 x sodium + glucose/18 + BUN/2.8, with glucose and BUN in mg/dL. It approximates the laboratory-measured osmolality when these three solutes account for essentially all of the plasma osmolality. Sodium is the dominant contributor; glucose and urea contribute to a smaller but clinically relevant degree.\n\nThe calculated value supports the evaluation of sodium disorders and hydration status. When compared with a simultaneously measured osmolality, it yields the osmolar gap (measured minus calculated osmolality), a key screen for unmeasured osmotically active substances such as ethanol, methanol, ethylene glycol, and isopropanol.\n\nLimitations matter: the formula reflects only sodium, glucose, and urea, so it does not capture ethanol or other unmeasured solutes; it assumes sodium in mmol/L and glucose and BUN in mg/dL; and its agreement with measured osmolality depends on the laboratory method used. When the clinical question involves toxic ingestion, unmeasured solutes, or monitoring the correction of hypernatremia, a measured osmolality is preferable to relying on the calculated estimate alone.\n\nThis is an educational decision-support estimate. It does not by itself diagnose volume status, dysnatremia, or toxic exposure, and a widened osmolar gap always requires a measured osmolality for confirmation.",
 
 
 
@@ -60,6 +60,7 @@ export const serumOsmolalityCalculator: CalculatorDefinition = {
 
   references: [
     "Dorwart WV, Chalmers L. Comparison of methods for calculating serum osmolality from chemical concentrations, and the prognostic value of such calculations. Clin Chem. 1975;21(2):190-194.",
+    "Tintinalli JE, et al. Tintinalli's Emergency Medicine: A Comprehensive Study Guide. 9th ed. New York: McGraw-Hill; 2020.",
   ],
 
   relatedCalculators: ["osmolar-gap","corrected-sodium","anion-gap","sodium-deficit"],

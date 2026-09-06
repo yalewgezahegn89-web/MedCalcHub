@@ -50,7 +50,7 @@ export const correctedSodiumCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "Severe hyperglycemia raises extracellular osmolality and draws water out of cells, diluting the extracellular sodium. The measured sodium therefore underestimates the body's true sodium status in a hyperglycemic patient. This calculator applies a conventional correction factor (adding approximately 1.6 mmol/L of sodium for every 100 mg/dL of glucose above 100 mg/dL) to estimate the sodium level expected at a euglycemic glucose concentration.\n\nThe corrected value is an estimate used to put the measured sodium into clinical context; it is not a separate laboratory measurement and does not replace the measured sodium for every purpose. Recording and trending both the corrected and the measured sodium helps distinguish true hyponatremia from the spurious, dilutional fall caused by hyperglycemia, and anticipates how sodium will change as glucose falls during treatment.\n\nThe correction factor is an approximation. Its accuracy varies with the glucose range and clinical circumstances; at very high glucose concentrations the linear factor becomes less reliable, and some references propose a larger correction factor in that range. Unmeasured osmotic solutes, such as mannitol, produce hypertonicity without hyperglycemia and are not captured by this formula.\n\nInterpret the result together with volume status, other electrolytes, renal function, and osmolality. This is a decision-support estimate for clinical interpretation; it does not by itself establish a diagnosis or dictate a treatment plan.",
 
 
 
@@ -60,6 +60,7 @@ export const correctedSodiumCalculator: CalculatorDefinition = {
 
   references: [
     "Katz MA. Hyperglycemia-induced hyponatremia—calculation of expected serum sodium depression. N Engl J Med. 1973;289(16):843-844.",
+    "Hillier TA, Abbott RD, Barrett EJ. Hyponatremia: evaluating the correction factor for hyperglycemia. Am J Med. 1999;106(4):399-403.",
   ],
 
   relatedCalculators: ["sodium-deficit","free-water-deficit","serum-osmolality","anion-gap"],

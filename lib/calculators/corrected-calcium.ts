@@ -50,7 +50,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "Total serum calcium exists in three fractions: protein-bound (mostly attached to albumin), complexed, and ionized (free) calcium, with the ionized fraction being the physiologically active form. Because roughly 40-50% of total calcium is bound to albumin, hypoalbuminemia lowers the measured total calcium even when ionized calcium is normal. This calculator applies the Payne correction (corrected calcium = measured total calcium + 0.8 x (4 - albumin)) to estimate the total calcium level expected at a normal albumin of 4.0 g/dL.\n\nThe correction is an estimate, not a measurement. It assumes a fixed calcium-albumin binding relationship that varies across patients and becomes progressively less reliable at very low albumin concentrations and in states that alter protein binding, such as acid-base disturbances. The formula is not validated for every setting; it is especially unreliable when screening for hypercalcemia, and the corrected value should not replace ionized calcium measurement when the physiologically active fraction is needed, most notably in critically ill patients.\n\nIonized calcium directly reflects the biologically active fraction and is unaffected by albumin concentration; it is the preferred test when a calcium-albumin binding artifact is suspected or when the clinical question concerns the active form. The corrected value is best used as a transitional estimate to interpret total calcium in patients with abnormal albumin while weighing whether a direct ionized measurement is required.\n\nInterpret the result together with total protein, pH, kidney function, and the clinical presentation. This is an educational decision-support estimate and does not by itself diagnose hypocalcemia or hypercalcemia.",
 
 
 
@@ -60,6 +60,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
 
   references: [
     "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. BMJ. 1973;4(5893):643-646.",
+    "Bushinsky DA, Monk RD. Calcium. Lancet. 1998;352(9124):306-311.",
   ],
 
   relatedCalculators: ["calcium-phosphate-product","albumin-creatinine-ratio","ckd-epi-2021","anion-gap"],

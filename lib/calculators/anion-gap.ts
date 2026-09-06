@@ -50,7 +50,7 @@ export const anionGapCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The serum anion gap is an acid-base screening calculation derived from routinely measured electrolytes: anion gap = Na - (Cl + HCO3). It approximates the concentration of unmeasured anions, notably albumin, phosphate, sulfate, and organic anions. In metabolic acidosis, a widened anion gap is classically associated with accumulation of unmeasured anions such as lactate, ketoacids, and ingested toxins.\n\nAlbumin is a major contributor to the expected gap, so hypoalbuminemia lowers the expected anion gap and can mask a high anion gap metabolic acidosis. When albumin is low, an albumin-corrected calculation (adding roughly 2.5 mmol/L per 1 g/dL of albumin below 4.0 g/dL) is more appropriate. Because normal values vary with the laboratory method, interpret the result against the local laboratory reference range rather than a universal cutoff.\n\nThe anion gap is a pattern-recognition tool within a broader acid-base assessment. It must be interpreted alongside the arterial blood gas, other electrolytes, the delta ratio, the osmolar gap, and the clinical context. A normal anion gap does not exclude metabolic acidosis, and an elevated gap does not by itself identify the underlying cause.\n\nThis calculator performs a single arithmetic calculation for educational decision support. It does not diagnose acidosis or identify its mechanism; confirmatory laboratory assessment and clinical correlation are required.",
 
 
 
@@ -60,6 +60,7 @@ export const anionGapCalculator: CalculatorDefinition = {
 
   references: [
     "Emmett M, Narins RG. Clinical use of the anion gap. Medicine (Baltimore). 1977;56(1):38-54.",
+    "Kraut JA, Madias NE. Serum anion gap: its uses and limitations in clinical medicine. Clin J Am Soc Nephrol. 2007;2(1):162-174.",
   ],
 
   relatedCalculators: ["corrected-anion-gap","serum-osmolality","osmolar-gap","corrected-calcium","bun-creatinine-ratio"],
