@@ -46,7 +46,7 @@ export const estimatedAverageGlucoseCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "Estimated average glucose (eAG) is derived from the ADAG study equation relating glycated hemoglobin to average glucose: eAG (mg/dL) = 28.7 × HbA1c − 46.7. HbA1c reflects average glycemia over the preceding 2–3 months, and eAG translates it into the mg/dL units that patients see on home glucose meters.\n\nAn eAG value is a statistical estimate based on a studied population, not a direct glucose measurement, and it corresponds imperfectly to finger-stick or meter averages in any individual. It also does not convey glucose variability or the occurrence of hypoglycemic episodes.\n\nHbA1c-derived estimates assume normal red blood cell survival and unaltered hemoglobin. Hemoglobin variants, anemia, and any condition that shortens or lengthens red cell lifespan (e.g., hemolysis, recent transfusion, iron deficiency) can distort HbA1c and therefore eAG. For this reason, eAG should be interpreted alongside self-monitored glucose (SMBG) or continuous glucose monitoring (CGM) data and the full clinical context whenever possible.",
 
 
 

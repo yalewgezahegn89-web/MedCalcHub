@@ -50,7 +50,7 @@ export const homaBCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "HOMA-B estimates pancreatic beta-cell function from fasting glucose and insulin. It models the expected insulin output for a given fasting glucose: for any glucose level, a higher fasting insulin implies greater beta-cell responsiveness, expressed here as (20 × insulin) / (glucose − 3.5) with glucose in mmol/L and insulin in µU/mL. The result is reported in percent units.\n\nThe value is an indirect, fasting-based estimate of secretion, not a direct measurement of beta-cell mass or of the dynamic insulin response to a meal or glucose load. Because the index is computed relative to the prevailing fasting glucose, interpretation depends on the glucose level itself as well as on assay calibration and the fasting state.\n\nHOMA-B is not reliable in type 1 diabetes, in patients on exogenous insulin, or in acute illness, and it has limited comparability across populations and disease states. It should not be used as a standalone measure of beta-cell reserve; it is best paired with HOMA-IR and clinical evaluation to separate beta-cell dysfunction from insulin resistance.",
 
 
 

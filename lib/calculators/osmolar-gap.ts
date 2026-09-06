@@ -50,7 +50,7 @@ export const osmolarGapCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The osmolar gap is the difference between measured serum osmolality and the osmolality calculated from sodium, glucose, and BUN: measured − (2 × Na + glucose/18 + BUN/2.8). When the measured value exceeds the calculated estimate, osmotically active substances that are not accounted for by sodium, glucose, or BUN are present in the blood.\n\nIn the emergency setting, an elevated osmolar gap can indicate ingestion of osmotically active small molecules such as methanol, ethylene glycol, isopropanol, or propylene glycol. Because the toxic alcohols are metabolized to their acid products, the osmolar gap may normalize as the parent alcohol is cleared while the anion gap acidosis develops; a normal gap therefore does not exclude toxic alcohol exposure in delayed presentations.\n\nThe calculation assumes sodium in mmol/L and glucose and BUN in mg/dL, with osmolality reported in mOsm/kg; unit mismatches produce a misleading gap. The result is a supportive rather than diagnostic finding and must be weighed together with the timing of any potential exposure, the anion gap, the acid-base status, and the full clinical picture, including direct measurement of suspected alcohols when exposure is a concern.",
 
 
 
@@ -60,6 +60,7 @@ export const osmolarGapCalculator: CalculatorDefinition = {
 
   references: [
     "Dorwart WV, Chalmers L. Comparison of methods for calculating serum osmolality from chemical concentrations, and the prognostic value of such calculations. Clin Chem. 1975;21(2):190-194.",
+    "Nelson LS, Howland MA, Lewin NA, et al. Goldfrank's Toxicologic Emergencies. 11th ed. New York, NY: McGraw-Hill; 2019.",
   ],
 
   relatedCalculators: ["serum-osmolality","anion-gap","corrected-anion-gap","bun-creatinine-ratio"],

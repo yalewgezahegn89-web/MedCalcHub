@@ -46,7 +46,7 @@ export const feureaCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The fractional excretion of urea (FEUrea) expresses the proportion of filtered urea that is excreted rather than reabsorbed: (urine urea ÷ plasma urea) ÷ (urine creatinine ÷ plasma creatinine) × 100. In the setting of intact renal tubular responses, a low value reflects appropriate renal conservation of urea and supports prerenal physiology.\n\nFEUrea is used as an adjunct in the assessment of acute kidney injury, most often in patients who have received diuretics. Because diuretics can raise urinary sodium and make FENa unreliable, and because urea reabsorption is generally less affected by loop and thiazide diuretics than sodium handling, FEUrea may retain greater utility in this situation. It remains less widely validated than FENa and is best used as a complement rather than a replacement.\n\nUrea handling is influenced by several confounders, including hepatic urea production (liver disease and malnutrition), catabolic states, corticosteroids, and dietary protein intake. FEUrea must never be interpreted alone; it is one component of the AKI evaluation alongside history, volume status, urine microscopy, and other laboratory data, and the result does not by itself establish the cause of kidney injury or constitute a diagnosis.",
 
 
 
@@ -56,6 +56,7 @@ export const feureaCalculator: CalculatorDefinition = {
 
   references: [
     "Kaplan AA, Kohn OF. Fractional excretion of urea as a guide to renal dysfunction. Am J Nephrol. 1992;12(1-2):49-54.",
+    "Kidney Disease: Improving Global Outcomes (KDIGO) Acute Kidney Injury Work Group. KDIGO Clinical Practice Guideline for Acute Kidney Injury. Kidney Int Suppl. 2012;2(1):1-138.",
   ],
 
   relatedCalculators: ["fena","bun-creatinine-ratio","ttkg"],

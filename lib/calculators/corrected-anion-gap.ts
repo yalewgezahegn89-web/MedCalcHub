@@ -50,7 +50,7 @@ export const correctedAnionGapCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "The measured anion gap (Na − (Cl + HCO₃)) reflects the balance between unmeasured anions and unmeasured cations in the blood. Albumin is the dominant negatively charged serum protein and makes the largest contribution to the unmeasured anion pool, so hypoalbuminemia lowers the measured anion gap and can obscure a clinically important high anion gap metabolic acidosis.\n\nThis calculator corrects for low albumin by adding 2.5 mmol/L to the measured anion gap for every 1 g/dL that albumin is below 4.0 g/dL. The correction is most useful in patients with low albumin from critical illness, cirrhosis, nephrotic syndrome, or malnutrition, in whom an uncorrected normal anion gap may actually represent a significant unmeasured anion state.\n\nThe 2.5 mmol/L per 1 g/dL factor is an approximation rather than a precisely measured value, and the albumin–anion gap relationship varies between individuals and with pH. The corrected gap should be interpreted together with the measured anion gap, serum albumin, electrolytes, blood gas, and clinical context; it does not by itself identify a specific cause of acidosis.",
 
 
 

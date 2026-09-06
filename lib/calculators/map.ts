@@ -33,7 +33,7 @@ export const mapCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "Mean arterial pressure (MAP) is the time-weighted average of arterial pressure over one cardiac cycle. Because the cardiac cycle spends more time in diastole than systole, diastolic pressure is weighted twice as heavily as systolic pressure in the common approximation MAP = (SBP + 2 × DBP) / 3. MAP is used as a practical index of the average pressure driving perfusion of vital organs.\n\nIn hemodynamically unstable patients, MAP is frequently used to set blood pressure targets—for example, a commonly cited minimum perfusion target in sepsis and septic shock is 65 mmHg, with higher targets sometimes considered for patients with chronic hypertension. The formula does not incorporate heart rate or the shape of the arterial waveform, so it is an approximation that is less reliable with arrhythmias such as atrial fibrillation, marked tachycardia, or very wide pulse pressures.\n\nA single MAP value does not confirm adequate cardiac output, intravascular volume, or tissue perfusion. It should be interpreted together with blood pressure trends, urine output, mentation, lactate, and skin perfusion rather than as an isolated number.",
 
 
 

@@ -51,7 +51,7 @@ export const freeWaterDeficitCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "In hypernatremia, the free water deficit is an estimate of the volume of water (in liters) needed to bring the current serum sodium down to a chosen target. Using total body water approximated as 60% of body weight, this calculator computes deficit = 0.6 × weight × (current Na / target Na − 1). It estimates the water deficit at the moment sodium is measured rather than directly measuring water loss.\n\nThe 0.6 factor is an approximation that varies with age, sex, and body composition, and the estimate assumes no ongoing water loss or gain during the calculation; ongoing insensible losses, diarrhea, diuresis, or intravenous fluids will change the true requirement after the estimate is made.\n\nHypernatremia is generally corrected gradually, and the appropriate rate depends on whether the hypernatremia developed acutely or chronically as well as the patient's volume and neurologic status. The calculated value is a starting estimate, and serial sodium measurements should guide ongoing replacement rather than treating the initial number as a fixed prescription.",
 
 
 

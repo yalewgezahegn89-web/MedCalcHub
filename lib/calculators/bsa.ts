@@ -33,7 +33,7 @@ export const bsaCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "Body surface area (BSA) is an estimate of the external surface area of the body derived from height and weight. This calculator uses the Mosteller formula, BSA (m²) = √(height × weight / 3600), with height in centimeters and weight in kilograms. It is a widely used way to express physiologic measures that scale with body size.\n\nBSA is used clinically to index physiologic parameters such as cardiac output or glomerular filtration rate (for example, eGFR expressed per 1.73 m²) and to scale certain drug doses, most notably in oncology, where chemotherapy is often dosed per square meter. Because it is a derived estimate, its accuracy depends on the quality of the height and weight measurements.\n\nBSA reflects body size but not body composition; it does not distinguish lean mass from fat mass, and it becomes less informative at the extremes of weight where body proportions are unusual. It is not drug-specific guidance on its own, and dosing decisions should always follow the relevant medication monograph or protocol rather than the BSA value alone.",
 
 
 

@@ -46,7 +46,7 @@ export const insulinSensitivityCalculator: CalculatorDefinition = {
 
 
   clinicalNotes:
-    "Interpret results together with the patient's clinical presentation.",
+    "This calculator presents insulin sensitivity as the reciprocal of HOMA-IR (1 / HOMA-IR). Because a higher HOMA-IR indicates more insulin resistance, its inverse produces a value that rises as sensitivity improves, giving clinicians and patients a more intuitive direction for at-a-glance interpretation.\n\nThe result is a mathematical transformation of the HOMA-IR estimate not a direct measurement of insulin sensitivity. It inherits every assumption of HOMA-IR, including a proper fasting steady state, a reliable insulin assay, and accurate glucose values, and it is not equivalent to a hyperinsulinemic euglycemic clamp, an oral glucose tolerance test, or other dynamic measures of insulin action.\n\nThresholds commonly shown with this index (for example a value above 0.4 indicating normal sensitivity) are illustrative rather than universally validated cutoffs. The index is unreliable in type 1 diabetes or with exogenous insulin use and does not capture meal-related or dynamic insulin responses. It should be interpreted as a quick companion to HOMA-IR and the clinical context, not as a standalone diagnosis of insulin resistance or diabetes.",
 
 
 
