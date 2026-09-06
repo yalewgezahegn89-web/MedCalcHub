@@ -176,7 +176,7 @@ export const rumackMatthewCalculator: CalculatorDefinition = {
       return {
         value: level,
         interpretation:
-          `Time since ingestion is ${time.toFixed(1)} hours. The Rumack-Matthew nomogram is not valid before 4 hours post-ingestion because acetaminophen absorption may not be complete. Repeat the level at 4 hours or later. If there is clinical concern for toxicity, initiate NAC treatment.`,
+          `Time since ingestion is ${time.toFixed(1)} hours. The Rumack-Matthew nomogram is not valid before 4 hours post-ingestion because acetaminophen absorption may not be complete. Repeat the level at 4 hours or later. If there is clinical concern for toxicity, consider NAC treatment per applicable protocol.`,
         status: "critical" as const,
       };
     }
@@ -185,7 +185,7 @@ export const rumackMatthewCalculator: CalculatorDefinition = {
       return {
         value: level,
         interpretation:
-          `Time since ingestion is ${time.toFixed(1)} hours, which exceeds the 24-hour nomogram window. The nomogram cannot reliably guide treatment decisions this late. If there is any concern for acetaminophen toxicity (hepatotoxicity, elevated LFTs, INR), treat with NAC and consult toxicology.`,
+          `Time since ingestion is ${time.toFixed(1)} hours, which exceeds the 24-hour nomogram window. The nomogram cannot reliably guide treatment decisions this late. If there is any concern for acetaminophen toxicity (hepatotoxicity, elevated LFTs, INR), consider NAC treatment and toxicology consultation per applicable protocol.`,
         status: "critical" as const,
       };
     }
@@ -198,7 +198,7 @@ export const rumackMatthewCalculator: CalculatorDefinition = {
 
     if (level >= threshold) {
       interpretation =
-        `Serum level ${level.toFixed(0)} mcg/mL at ${time.toFixed(1)} hours is AT OR ABOVE the treatment threshold of ${threshold.toFixed(1)} mcg/mL. Initiate N-acetylcysteine (NAC) therapy per institutional protocol. Monitor hepatic function serially.`;
+        `Serum level ${level.toFixed(0)} mcg/mL at ${time.toFixed(1)} hours is AT OR ABOVE the treatment threshold of ${threshold.toFixed(1)} mcg/mL. Consider initiating N-acetylcysteine (NAC) therapy per applicable institutional/guideline protocols. Monitor hepatic function serially.`;
       status = "critical";
     } else {
       interpretation =

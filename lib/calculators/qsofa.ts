@@ -229,7 +229,7 @@ switch (result) {
     break;
   default:
     interpretation =
-      "qSOFA ≥ 2 – High risk of sepsis-related organ dysfunction and mortality. Escalate care urgently.";
+      "qSOFA ≥ 2 – High risk of sepsis-related organ dysfunction and mortality. Evaluate promptly for escalation of care.";
     status = "high";
     break;
 }

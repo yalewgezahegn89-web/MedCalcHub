@@ -39,11 +39,10 @@ export const basalMetabolicRateCalculator: CalculatorDefinition = {
   ],
 
   clinicalNotes:
-    "Basal metabolic rate is the energy required to maintain basic physiologic functions at rest.",
+    "Basal metabolic rate is the energy required to sustain basic physiologic functions at rest and typically accounts for the largest share of total daily energy expenditure. The Mifflin-St Jeor equation estimates BMR in adults; total energy expenditure requires applying an activity factor. Estimates are approximate and should be used as a starting point for individualized nutrition assessment.",
 
   references: [
-    "Mifflin MD, et al.",
-    "Academy of Nutrition and Dietetics",
+    "Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241–247.",
   ],
 
 

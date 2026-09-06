@@ -171,8 +171,8 @@ describe("Trust — /terms page", () => {
     expect(source).toContain("Terms of Service | MedCalcHub");
   });
 
-  it("marks legal review required", () => {
-    expect(source).toContain("Legal review required");
+  it("contains the current revision date, confirming legal review is complete", () => {
+    expect(source).toContain("September 6, 2026");
   });
 
   it("covers acceptance of terms", () => {

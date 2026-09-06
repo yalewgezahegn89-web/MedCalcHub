@@ -61,12 +61,11 @@ export const meldCalculator: CalculatorDefinition = {
   ],
 
   clinicalNotes:
-    "The MELD score predicts 3-month mortality in patients with chronic liver disease and is widely used for liver transplant prioritization.",
+    "The MELD score estimates 3-month mortality in patients with chronic, noncholestatic liver disease and is used for transplant waitlist prioritization. It is derived from a single set of laboratory values and does not capture all factors relevant to transplant candidacy (e.g., sodium, encephalopathy, ascites, functional status). The dialysis rule and creatinine capping reflect UNOS allocation practice; results should be interpreted by clinicians experienced in hepatology.",
 
   references: [
-    "Kamath PS, et al. Hepatology. 2001.",
-    "AASLD Practice Guidance.",
-    "United Network for Organ Sharing (UNOS).",
+    "Kamath PS, Wiesner RH, Malinchoc M, et al. A model to predict survival in patients with end-stage liver disease. Hepatology. 2001;33(2):464–470.",
+    "United Network for Organ Sharing (UNOS). Liver allocation policy.",
   ],
 
   inputs: [

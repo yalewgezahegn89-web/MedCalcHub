@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { SITE_URL } from "@/lib/site-url";
+import { ContactForm } from "@/components/contact/contact-form";
 
 export const metadata: Metadata = {
   title: {
@@ -11,12 +12,44 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/contact`,
   },
+  openGraph: {
+    title: "Contact MedCalcHub",
+    description:
+      "Contact MedCalcHub — feedback, corrections, and technical support.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact MedCalcHub",
+    description:
+      "Contact MedCalcHub — feedback, corrections, and technical support.",
+  },
 };
 
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
       <h1 className="text-3xl font-bold">Contact MedCalcHub</h1>
+
+      <section
+        aria-labelledby="send-inquiry-heading"
+        className="mt-8 space-y-4"
+      >
+        <div>
+          <h2
+            id="send-inquiry-heading"
+            className="text-2xl font-semibold text-slate-900 dark:text-slate-100"
+          >
+            Send an Inquiry
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+            Fill in the form below to prepare an inquiry. Submitting opens your
+            email app with the message ready to send — MedCalcHub does not
+            receive or store the message through this website.
+          </p>
+        </div>
+
+        <ContactForm />
+      </section>
 
       <div className="mt-8 space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
         <section>
@@ -64,8 +97,16 @@ export default function ContactPage() {
           </h2>
           <p>
             For calculator corrections and technical issues, you can also raise
-            an issue through the project&apos;s public issue tracker on GitHub.
-            This is especially useful for tracking the status of bug reports
+            an issue through the project&apos;s public{" "}
+            <a
+              href="https://github.com/yalewgezahegn89-web/MedCalcHub/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              issue tracker on GitHub
+            </a>
+            . This is especially useful for tracking the status of bug reports
             and feature requests.
           </p>
         </section>
@@ -76,11 +117,11 @@ export default function ContactPage() {
           </h2>
           <p>
             Because MedCalcHub stores all data locally in your browser and does
-            not transmit clinical data to any server, most privacy-related
-            actions can be performed directly by you — clearing your
-            browser&apos;s local storage, managing advertising consent via the
-            footer link, or removing individual saved calculations within the
-            app.
+            not upload clinical data to MedCalcHub servers, most
+            privacy-related actions can be performed directly by you — clearing
+            your browser&apos;s local storage, managing advertising consent via
+            the footer link, or removing individual saved calculations within
+            the app.
           </p>
           <p className="mt-2">
             If you have a specific privacy concern or data request, email us at{" "}

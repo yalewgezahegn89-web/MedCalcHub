@@ -12,6 +12,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/about`,
   },
+  openGraph: {
+    title: "About MedCalcHub",
+    description:
+      "About MedCalcHub — a free, evidence-based medical calculator platform for healthcare professionals.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About MedCalcHub",
+    description:
+      "About MedCalcHub — a free, evidence-based medical calculator platform for healthcare professionals.",
+  },
 };
 
 const calculatorCount = calculatorRegistry.length;
@@ -28,8 +39,9 @@ export default function AboutPage() {
             What MedCalcHub Is
           </h2>
           <p>
-            MedCalcHub is a free, open-access medical calculator and clinical
-            decision-support platform. It provides{" "}
+            MedCalcHub is an independent medical calculator and clinical
+            decision-support website operated by Yalew Abera in Hawassa, Sidama
+            Region, Ethiopia. It is a free, open-access platform providing{" "}
             <strong>{calculatorCount} evidence-based clinical calculators</strong>{" "}
             organised across <strong>{categoryCount} clinical areas</strong>,
             designed to support healthcare professionals at the point of care.
@@ -158,7 +170,8 @@ export default function AboutPage() {
           <p>
             MedCalcHub stores all data — including favourites, history, and
             saved calculations — entirely in your browser&apos;s local storage.
-            No clinical data is transmitted to any server. See the{" "}
+            Your calculator data is stored locally in your browser and is not
+            synced to MedCalcHub servers. See the{" "}
             <a
               href="/privacy"
               className="underline hover:text-blue-600 dark:hover:text-blue-400"
@@ -183,8 +196,16 @@ export default function AboutPage() {
           <p>
             MedCalcHub is built with Next.js and is designed to be fast,
             accessible, and usable on any device. The source code and full
-            calculator library are available on the project&apos;s public
-            repository.
+            calculator library are available on the project&apos;s public{" "}
+            <a
+              href="https://github.com/yalewgezahegn89-web/MedCalcHub"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              GitHub repository
+            </a>
+            .
           </p>
         </section>
       </div>

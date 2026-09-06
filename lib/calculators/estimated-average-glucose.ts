@@ -126,8 +126,7 @@ const a1c = Number(values.a1c);
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |
@@ -168,7 +167,7 @@ else if (result >= 140 && result <= 200) {
 }
 
 
-else if (result >= 200) {
+else {
 
   interpretation =
     "Diabetic range";

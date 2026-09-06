@@ -186,8 +186,7 @@ const ht = height;
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |

@@ -229,13 +229,13 @@ export const centorCalculator: CalculatorDefinition = {
     } else if (score <= 3) {
       interpretation =
         `Modified Centor ${score}/4 — INTERMEDIATE probability of GAS pharyngitis (${probability?.probability}). ` +
-        "Perform a rapid antigen detection test (with culture follow-up in children and adolescents) and treat with antibiotics only if GAS is confirmed.";
+        "Consider performing a rapid antigen detection test (with culture follow-up in children and adolescents as recommended) and treat with antibiotics only if GAS is confirmed, per applicable guidelines.";
       status = "high";
       referenceRange = "2–3";
     } else {
       interpretation =
         `Modified Centor ${score}/4 — HIGH probability of GAS pharyngitis (${probability?.probability}). ` +
-        "Confirm with a rapid antigen detection test and/or culture and treat only if positive, per IDSA recommendations.";
+        "Consider confirming with a rapid antigen detection test and/or culture and treat only if positive, per applicable guidelines.";
       status = "critical";
       referenceRange = "4";
     }

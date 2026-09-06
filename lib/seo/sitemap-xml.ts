@@ -23,6 +23,11 @@ export function buildSitemapXml(): string {
     { url: `${SITE_URL}/categories`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/comparison`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/specialties`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/about`, changeFrequency: "yearly", priority: 0.5 },
+    { url: `${SITE_URL}/contact`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/terms`, changeFrequency: "yearly", priority: 0.4 },
+    { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.4 },
+    { url: `${SITE_URL}/cookie`, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   const calculatorPages = calculatorRegistry.map((calculator) => ({

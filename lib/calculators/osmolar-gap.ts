@@ -279,8 +279,7 @@ const bun = Number(values.bun);
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |

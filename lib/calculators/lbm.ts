@@ -35,11 +35,10 @@ export const lbmCalculator: CalculatorDefinition = {
     "Male: LBM = 0.407 × Weight + 0.267 × Height − 19.2; Female: LBM = 0.252 × Weight + 0.473 × Height − 48.3",
 
   clinicalNotes:
-    "Lean Body Mass estimates the weight of the body excluding fat mass. It is commonly used in clinical nutrition, anesthesia, and medication dosing.",
+    "Lean body mass estimates the weight of the body excluding fat mass and is commonly used in clinical nutrition, anesthesia, and drug dosing. The Boer formula uses sex, weight, and height; results are approximate and less reliable at the extremes of body composition, where measured or imaging-based assessment may be preferable.",
 
   references: [
-    "Boer P. Estimated lean body mass as an index for normalization of body fluid volumes in humans.",
-    "ClinCalc Lean Body Mass",
+    "Boer P. Estimated lean body mass as an index for normalization of body fluid volumes in humans. Am J Physiol. 1984;247(4 Pt 2):F632–F636.",
   ],
 
   inputs: [

@@ -33,11 +33,10 @@ export const mifflinStJeorCalculator: CalculatorDefinition = {
   ],
 
   clinicalNotes:
-    "The Mifflin-St Jeor equation is commonly used to estimate resting metabolic rate in adults.",
+    "The Mifflin-St Jeor equation is a widely used, validated estimate of resting energy expenditure in adults and is generally preferred over the older Harris-Benedict equation. Estimates are approximate, are most reliable in healthy-weight to moderately overweight individuals, and require an activity factor to estimate total energy expenditure.",
 
   references: [
-    "Mifflin MD, et al.",
-    "Journal of the American Dietetic Association",
+    "Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241–247.",
   ],
 
 

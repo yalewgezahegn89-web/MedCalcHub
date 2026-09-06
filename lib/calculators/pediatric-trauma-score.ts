@@ -245,7 +245,7 @@ export const pediatricTraumaScoreCalculator: CalculatorDefinition = {
     } else {
       interpretation =
         `Pediatric Trauma Score ${score} (−6 to +12) — HIGH RISK. ` +
-        "This child is at high risk of death from their injuries; initiate full resuscitation and expedite transfer to a pediatric trauma center.";
+        "This child is at high risk of death from their injuries; evaluate for full resuscitation measures and prioritize early transfer to a pediatric trauma center per applicable trauma protocols.";
       status = "critical";
       referenceRange = "−6–3";
     }

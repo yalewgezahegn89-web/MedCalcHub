@@ -240,13 +240,13 @@ export const gad7Calculator: CalculatorDefinition = {
     } else if (total <= 14) {
       interpretation =
         `GAD-7 ${total}/21 — MODERATE anxiety symptoms (10–14). ` +
-        "A GAD-7 ≥ 10 is the recommended cut-point for generalized anxiety disorder (sensitivity ~89%, specificity ~82%); consider initiating treatment and monitoring response.";
+        "A GAD-7 ≥ 10 is the recommended cut-point for generalized anxiety disorder (sensitivity ~89%, specificity ~82%); evaluate for treatment options and monitor response per applicable guidelines.";
       status = "high";
       referenceRange = "10–14";
     } else {
       interpretation =
         `GAD-7 ${total}/21 — SEVERE anxiety symptoms (15–21). ` +
-        "Severe symptoms warrant active treatment and consideration of specialty mental health referral.";
+        "Severe symptoms generally warrant active treatment and evaluation for specialty mental health referral.";
       status = "critical";
       referenceRange = "15–21";
     }

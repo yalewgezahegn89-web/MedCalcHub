@@ -186,8 +186,7 @@ if (glucose <= 3.5) {
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |
@@ -241,7 +240,7 @@ else if (result >= 100 && result <= 200) {
 }
 
 
-else if (result >= 200) {
+else {
 
   interpretation =
     "Hyperinsulinemia";

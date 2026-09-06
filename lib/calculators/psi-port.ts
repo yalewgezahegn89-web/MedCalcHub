@@ -447,12 +447,12 @@ export const psiPortCalculator: CalculatorDefinition = {
     } else if (score <= 130) {
       interpretation =
         `PSI class IV (score ${score}) — MODERATE mortality risk (~8–9%). ` +
-        "Admit to hospital.";
+        "Evaluation for hospital admission is generally recommended.";
       status = "high";
     } else {
       interpretation =
         `PSI class V (score ${score}) — HIGH mortality risk (~27–31%). ` +
-        "Admit; strongly consider ICU level of care.";
+        "Evaluate for hospital admission; strongly consider ICU level of care.";
       status = "critical";
     }
 
@@ -498,7 +498,7 @@ export const psiPortCalculator: CalculatorDefinition = {
 
     const bandAdvice =
       status === "critical"
-        ? "High-mortality class warrants hospital admission with assessment for critical-care involvement."
+        ? "High-mortality class warrants evaluation for hospital admission with assessment for critical-care involvement."
         : "This class generally merits inpatient care or structured observation depending on the class band and clinical trajectory.";
 
     return {

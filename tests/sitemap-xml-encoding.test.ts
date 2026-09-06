@@ -53,7 +53,7 @@ describe("Sitemap XML encoding regression", () => {
   it("sitemap has the expected URL count", () => {
     const xml = buildSitemapXml();
     const locCount = (xml.match(/<loc>/g) || []).length;
-    expect(locCount).toBe(177);
+    expect(locCount).toBe(182);
   });
 
   it("no duplicate URLs in sitemap", () => {
@@ -86,5 +86,10 @@ describe("Sitemap XML encoding regression", () => {
     expect(xml).toContain(
       "<loc>https://medcalculatorhub.com/specialties</loc>",
     );
+    expect(xml).toContain("<loc>https://medcalculatorhub.com/about</loc>");
+    expect(xml).toContain("<loc>https://medcalculatorhub.com/contact</loc>");
+    expect(xml).toContain("<loc>https://medcalculatorhub.com/terms</loc>");
+    expect(xml).toContain("<loc>https://medcalculatorhub.com/privacy</loc>");
+    expect(xml).toContain("<loc>https://medcalculatorhub.com/cookie</loc>");
   });
 });

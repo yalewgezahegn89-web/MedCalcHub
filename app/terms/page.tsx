@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/terms`,
   },
+  openGraph: {
+    title: "Terms of Service | MedCalcHub",
+    description:
+      "Terms of Service for MedCalcHub — conditions of use for the medical calculator platform.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms of Service | MedCalcHub",
+    description:
+      "Terms of Service for MedCalcHub — conditions of use for the medical calculator platform.",
+  },
 };
 
 export default function TermsPage() {
@@ -18,8 +29,8 @@ export default function TermsPage() {
     <div className="mx-auto max-w-3xl px-6 py-10">
       <h1 className="text-3xl font-bold">Terms of Service</h1>
 
-      <p className="mt-2 text-sm text-amber-700 dark:text-amber-400 font-semibold">
-        Legal review required before production use.
+      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+        Effective: September 6, 2026 · Last updated: September 6, 2026
       </p>
 
       <div className="mt-8 space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
@@ -36,7 +47,30 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            2. Nature of the Platform
+            2. Operator
+          </h2>
+          <p>
+            MedCalcHub is an independent medical calculator and clinical
+            decision-support website operated by Yalew Abera in Hawassa, Sidama
+            Region, Ethiopia. It is provided on an individual, non-commercial
+            basis by an independent operator, not by a healthcare institution or
+            organization.
+          </p>
+          <p className="mt-2">
+            For questions about these Terms, contact{" "}
+            <a
+              href="mailto:medcalculatorhub@gmail.com"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              medcalculatorhub@gmail.com
+            </a>
+            .
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+            3. Nature of the Platform
           </h2>
           <p>
             MedCalcHub is a clinical decision-support tool that provides
@@ -48,7 +82,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            3. No Medical Diagnosis or Treatment
+            4. No Medical Diagnosis or Treatment
           </h2>
           <p>
             <strong>
@@ -70,7 +104,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            4. Intended Users
+            5. Intended Users
           </h2>
           <p>
             MedCalcHub is intended for use by qualified healthcare
@@ -82,7 +116,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            5. Calculator Limitations
+            6. Calculator Limitations
           </h2>
           <p>
             Calculators on the Platform have inherent limitations, including but
@@ -113,7 +147,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            6. User Responsibilities
+            7. User Responsibilities
           </h2>
           <p>Users agree to:</p>
           <ul className="mt-2 list-inside list-disc space-y-1">
@@ -139,7 +173,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            7. Acceptable Use
+            8. Acceptable Use
           </h2>
           <p>
             Users must not attempt to disrupt, reverse-engineer, or compromise
@@ -151,19 +185,28 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            8. Intellectual Property
+            9. Intellectual Property
           </h2>
           <p>
             The Platform, including its calculators, clinical content, design,
             and code, is protected by applicable intellectual property laws.
             The open-source components of the Platform are licensed under the
-            terms specified in the project&apos;s public repository.
+            terms specified in the project&apos;s public{" "}
+            <a
+              href="https://github.com/yalewgezahegn89-web/MedCalcHub"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              GitHub repository
+            </a>
+            .
           </p>
         </section>
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            9. Disclaimers
+            10. Disclaimers
           </h2>
           <p>
             <strong>
@@ -184,10 +227,10 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            10. Limitation of Liability
+            11. Limitation of Liability
           </h2>
           <p>
-            To the maximum extent permitted by applicable law, the operators of
+            To the maximum extent permitted by applicable law, the operator of
             MedCalcHub shall not be liable for any indirect, incidental, special,
             consequential, or punitive damages, or any loss of profits or
             revenues, whether incurred directly or indirectly, or any loss of
@@ -206,7 +249,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            11. Privacy and Cookies
+            12. Privacy and Cookies
           </h2>
           <p>
             Your use of the Platform is also governed by our{" "}
@@ -229,7 +272,20 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            12. Changes to These Terms
+            13. Governing Law
+          </h2>
+          <p>
+            These Terms are governed by the laws of the Federal Democratic
+            Republic of Ethiopia, without regard to conflict-of-law principles.
+            Any dispute arising from or relating to these Terms or the use of
+            MedCalcHub shall be subject to the jurisdiction of the competent
+            courts of Ethiopia.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+            14. Changes to These Terms
           </h2>
           <p>
             We reserve the right to modify these Terms of Service at any time.
@@ -241,17 +297,26 @@ export default function TermsPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            13. Contact
+            15. Contact
           </h2>
           <p>
-            If you have questions about these Terms of Service, please see the{" "}
+            MedCalcHub is operated by Yalew Abera in Hawassa, Sidama Region,
+            Ethiopia. If you have questions about these Terms of Service, please
+            see the{" "}
             <a
               href="/contact"
               className="underline hover:text-blue-600 dark:hover:text-blue-400"
             >
               Contact page
             </a>{" "}
-            for how to reach us.
+            for how to reach us, or email{" "}
+            <a
+              href="mailto:medcalculatorhub@gmail.com"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              medcalculatorhub@gmail.com
+            </a>
+            .
           </p>
         </section>
       </div>

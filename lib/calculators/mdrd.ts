@@ -242,8 +242,7 @@ const creatinine = Number(values.creatinine);
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |

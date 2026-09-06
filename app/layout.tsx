@@ -91,7 +91,8 @@ export default function RootLayout({
                   decision-support tools for healthcare professionals.
                 </p>
                 <p className="mt-1">
-                  Data stored locally in your browser. Not synced to any server.
+                  Data stored locally in your browser. Not synced to MedCalcHub
+                  servers.
                 </p>
               </div>
 
@@ -151,8 +152,9 @@ export default function RootLayout({
             </div>
 
             <p className="mt-6 text-center text-xs text-slate-400 dark:text-slate-500">
-              &copy; {new Date().getFullYear()} MedCalcHub. Free for clinical use.
-              Not a substitute for professional medical judgment.
+              &copy; {new Date().getFullYear()} MedCalcHub · Operated by Yalew
+              Abera in Hawassa, Ethiopia. Free for clinical use. Not a
+              substitute for professional medical judgment.
             </p>
           </div>
         </footer>

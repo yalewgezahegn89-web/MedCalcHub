@@ -224,7 +224,7 @@ export const westleyCroupScoreCalculator: CalculatorDefinition = {
     } else if (score <= 7) {
       interpretation =
         `Westley croup score ${score}/17 — MODERATE croup. ` +
-        "Give dexamethasone; add nebulized epinephrine for stridor at rest and observe for rebound. Admission may be warranted for persistent symptoms.";
+        "Consider dexamethasone and nebulized epinephrine for stridor at rest, with observation for rebound, per applicable guideline management; admission may be warranted for persistent symptoms.";
       status = "high";
       referenceRange = "3–7";
     } else {

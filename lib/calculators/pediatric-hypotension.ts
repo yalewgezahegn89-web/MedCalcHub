@@ -209,7 +209,7 @@ export const pediatricHypotensionCalculator: CalculatorDefinition = {
     if (hypotensive) {
       interpretation =
         `HYPOTENSIVE — measured SBP ${sbp.n} mmHg is below the PALS 5th-percentile threshold for this age (${thresholdText}). ` +
-        "Begin the PALS shock algorithm immediately: high-flow oxygen, vascular access, and 20 mL/kg isotonic fluid boluses with frequent reassessment.";
+        "Evaluate promptly for immediate intervention per the PALS shock algorithm (e.g., high-flow oxygen, vascular access, and consideration of 20 mL/kg isotonic fluid boluses with frequent reassessment), guided by applicable institutional protocols.";
       status = "critical";
     } else {
       interpretation =

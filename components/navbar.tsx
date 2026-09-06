@@ -154,6 +154,7 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
+                aria-label={href === "/" ? "Go to the home page" : undefined}
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "inline-flex items-center gap-2 text-sm font-medium transition",
@@ -225,6 +226,7 @@ export default function Navbar() {
                   key={href}
                   href={href}
                   onClick={closeMenu}
+                  aria-label={href === "/" ? "Go to the home page" : undefined}
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition",

@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/cookie`,
   },
+  openGraph: {
+    title: "Cookie Policy | MedCalcHub",
+    description:
+      "Cookie Policy for MedCalcHub — how we use cookies and local storage.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cookie Policy | MedCalcHub",
+    description:
+      "Cookie Policy for MedCalcHub — how we use cookies and local storage.",
+  },
 };
 
 export default function CookiePage() {
@@ -18,8 +29,8 @@ export default function CookiePage() {
     <div className="mx-auto max-w-3xl px-6 py-10">
       <h1 className="text-3xl font-bold">Cookie Policy</h1>
 
-      <p className="mt-2 text-sm text-amber-700 dark:text-amber-400 font-semibold">
-        Legal review required before production use.
+      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+        Effective: September 6, 2026 · Last updated: September 6, 2026
       </p>
 
       <div className="mt-8 space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
@@ -54,8 +65,10 @@ export default function CookiePage() {
             </li>
           </ul>
           <p className="mt-2">
-            All of this data remains entirely on your device. It is never sent
-            to MedCalcHub servers.
+            All of this data remains on your device. Calculator saved data is
+            stored locally in your browser and is not synced to MedCalcHub
+            servers. Your consent preference is stored locally as implemented on
+            this site.
           </p>
         </section>
 
@@ -64,21 +77,22 @@ export default function CookiePage() {
             Third-Party Advertising Cookies
           </h2>
           <p>
-            When advertising is activated by the site operator and you have
-            consented to advertising, third-party services such as Google
-            AdSense may set cookies or use similar tracking technologies.
+            <strong>Current status:</strong> advertising is currently disabled
+            on MedCalcHub. While advertising is disabled, no third-party
+            advertising scripts or cookies are loaded, and no advertising
+            cookies or tracking technologies are active.
           </p>
           <p className="mt-2">
-            These third-party cookies are controlled by the respective
-            advertising providers, not by MedCalcHub. The specific cookies
-            used will depend on the advertising provider and their
-            configuration.
+            If advertising is enabled in the future, third-party services such
+            as Google AdSense may set cookies or use similar tracking
+            technologies to serve and measure ads. The specific cookies and
+            technologies used would depend on the advertising provider and
+            their configuration.
           </p>
           <p className="mt-2">
-            <strong>
-              The production cookie inventory must be confirmed after the
-              chosen advertising provider and account are configured.
-            </strong>
+            Applicable third-party advertising technologies will be described
+            on this page and handled according to the then-current consent
+            configuration before advertising is activated.
           </p>
         </section>
 

@@ -336,7 +336,7 @@ switch (result) {
     break;
   default:
     interpretation =
-      "CURB-65 ≥ 3 – Severe pneumonia. Consider urgent hospital/ICU admission.";
+      "CURB-65 ≥ 3 – Severe pneumonia. Evaluate for urgent hospital/ICU admission.";
     status = "high";
     break;
 }

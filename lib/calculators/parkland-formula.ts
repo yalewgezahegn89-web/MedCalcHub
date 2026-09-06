@@ -46,7 +46,7 @@ export const parklandFormulaCalculator: CalculatorDefinition = {
   keywords: ["Parkland", "Baxter", "Burn", "Burns", "TBSA", "Rule of Nines", "Resuscitation", "Fluids", "Emergency"],
 
   formula:
-    "Total volume = 4 mL × weight (kg) × total BSA burned (%). Give half in the first 8 hours, the remaining half over the next 16 hours, both using Ringer's lactate",
+    "Total volume = 4 mL × weight (kg) × total BSA burned (%). Half is infused in the first 8 hours, the remaining half over the next 16 hours, both using Ringer's lactate",
 
   normalRange: "Standard starting rate, titrate to urine output (0.5 mL/kg/h)",
 
@@ -240,7 +240,7 @@ export const parklandFormulaCalculator: CalculatorDefinition = {
     if (tbsa < 20) {
       interpretation =
         `${tbsa}% TBSA — moderate burn. Total 24-hour volume ${roundedTotal} mL. ` +
-        `Give ${roundedFirst8h} mL over the first 8 hours (${roundedFirst8hRate} mL/h), ` +
+        `The calculated starting fluid estimate is ${roundedFirst8h} mL over the first 8 hours (${roundedFirst8hRate} mL/h), ` +
         `then ${roundedNext16h} mL over 16 hours (${roundedNext16hRate} mL/h) of Ringer's lactate.`;
       status = "high";
       return {
@@ -263,7 +263,7 @@ export const parklandFormulaCalculator: CalculatorDefinition = {
 
     interpretation =
       `${tbsa}% TBSA — major burn. Total 24-hour volume ${roundedTotal} mL. ` +
-      `Give ${roundedFirst8h} mL over the first 8 hours (${roundedFirst8hRate} mL/h), ` +
+      `The calculated starting fluid estimate is ${roundedFirst8h} mL over the first 8 hours (${roundedFirst8hRate} mL/h), ` +
       `then ${roundedNext16h} mL over 16 hours (${roundedNext16hRate} mL/h) of Ringer's lactate. ` +
       "Titrate to urine output 0.5–1.0 mL/kg/h.";
     status = "critical";

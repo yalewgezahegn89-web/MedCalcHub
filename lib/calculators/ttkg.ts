@@ -274,8 +274,7 @@ const plasmaOsmolality = Number(values.plasmaOsmolality);
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |
@@ -316,7 +315,7 @@ else if (result >= 8 && result <= 12) {
 }
 
 
-else if (result >= 12) {
+else {
 
   interpretation =
     "Enhanced K⁺ secretion";

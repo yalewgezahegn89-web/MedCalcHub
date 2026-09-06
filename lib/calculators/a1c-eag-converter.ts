@@ -55,7 +55,7 @@ export const a1cEagConverterCalculator: CalculatorDefinition = {
   comparison: {"title":"Glycemic Assessment Tools","calculators":[{"name":"A1c ↔ eAG","href":"/calculators/a1c-eag-converter","bestFor":"Bidirectional A1c ↔ eAG conversion.","limitation":"Same underlying ADAG formula."},{"name":"Estimated Average Glucose","href":"/calculators/estimated-average-glucose","bestFor":"A1c to eAG only.","limitation":"Unidirectional."},{"name":"HOMA-IR","href":"/calculators/homa-ir","bestFor":"Insulin resistance assessment.","limitation":"Different glycemic measure."}]},
 
   references: [
-    "MedCalcHub Clinical References",
+    "Nathan DM, et al. Translating the A1C assay into estimated average glucose values. Diabetes Care. 2008;31(8):1473-1478.",
   ],
 
   relatedCalculators: ["estimated-average-glucose","homa-ir","homa-b"],
@@ -126,8 +126,7 @@ const a1c = Number(values.a1c);
 
 
   
-let interpretation =
-  "Clinical interpretation pending.";
+let interpretation: string;
 
 let status:
   "normal" |

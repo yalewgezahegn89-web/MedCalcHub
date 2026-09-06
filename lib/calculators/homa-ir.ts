@@ -175,8 +175,7 @@ const insulin = Number(values.insulin);
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |
@@ -217,7 +216,7 @@ else if (result >= 2.5 && result <= 5) {
 }
 
 
-else if (result >= 5) {
+else {
 
   interpretation =
     "Severe insulin resistance";

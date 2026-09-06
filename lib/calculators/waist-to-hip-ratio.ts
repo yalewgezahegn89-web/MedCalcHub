@@ -211,8 +211,7 @@ if (hip === 0) {
   
 const isFemale = values.sex === "2" || values.sex?.toLowerCase() === "female";
 
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |

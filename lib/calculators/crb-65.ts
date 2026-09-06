@@ -224,7 +224,7 @@ export const crb65Calculator: CalculatorDefinition = {
       unit: "/4",
       score,
       interpretation:
-        `CRB-65 score ${score} — HIGH risk (mortality ~30%). Urgent hospital admission; assess for ICU level of care. ` +
+        `CRB-65 score ${score} — HIGH risk (mortality ~30%). Evaluate for urgent hospital admission and ICU-level care. ` +
         (met.length > 0 ? `Findings: ${met.join("; ")}.` : ""),
       status: "critical",
       warnings: crbWarnings,

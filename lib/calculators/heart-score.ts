@@ -166,7 +166,7 @@ export const heartScoreCalculator: CalculatorDefinition = {
         unit: "/10",
         interpretation:
           `HEART score ${score} — MODERATE risk. 6-week MACE risk approximately 12–17%. ` +
-          "Admit for observation and serial troponin measurement.",
+          "Evaluate for admission with observation and serial troponin measurement.",
         status: "low",
         warnings: [
           "The HEART score is a risk-stratification tool for undifferentiated chest pain, not an independent diagnosis of ACS.",

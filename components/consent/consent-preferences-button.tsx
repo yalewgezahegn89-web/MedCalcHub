@@ -15,7 +15,7 @@ export function ConsentPreferencesButton() {
       onClick={handleClick}
       className="underline hover:text-slate-700 dark:hover:text-slate-200"
     >
-      Manage cookie preferences
+      Reset cookie preferences
     </button>
   );
 }

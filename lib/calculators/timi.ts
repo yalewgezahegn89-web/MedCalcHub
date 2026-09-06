@@ -178,7 +178,7 @@ export const timiCalculator: CalculatorDefinition = {
         unit: "/7",
         interpretation:
           `TIMI risk score ${score} — INTERMEDIATE risk. 14-day risk of death, MI, or urgent revascularization approximately 8.3–19.9%. ` +
-          "Admit and initiate guideline-directed medical therapy; consider early invasive strategy.",
+          "Consider hospital admission with guideline-directed medical therapy; discuss early invasive strategy in appropriate patients.",
         status: "high",
         warnings: [
           "The TIMI score estimates composite event probability; it does not determine which specific therapy is required.",

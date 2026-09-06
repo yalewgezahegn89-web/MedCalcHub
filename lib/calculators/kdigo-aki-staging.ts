@@ -317,11 +317,11 @@ export const kdigoAkiStagingCalculator: CalculatorDefinition = {
         status = "low";
         break;
       case 2:
-        interpretation = `KDIGO Stage 2 AKI. ${stageDetails.join(". ")}. Consider urgent nephrology consultation. Perform renal ultrasound to exclude obstruction. Adjust renally cleared medications.`;
+        interpretation = `KDIGO Stage 2 AKI. ${stageDetails.join(". ")}. Consider nephrology consultation and renal ultrasound to evaluate for obstruction; review renally cleared medications per applicable guidance.`;
         status = "high";
         break;
       default:
-        interpretation = `KDIGO Stage 3 AKI. ${stageDetails.join(". ")}. Consider nephrology consultation and possible renal replacement therapy. Manage hyperkalemia, metabolic acidosis, and fluid overload.`;
+        interpretation = `KDIGO Stage 3 AKI. ${stageDetails.join(". ")}. Consider nephrology consultation and evaluation for possible renal replacement therapy. Manage hyperkalemia, metabolic acidosis, and fluid overload per applicable protocols.`;
         status = "critical";
         break;
     }

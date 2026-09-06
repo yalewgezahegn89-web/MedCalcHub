@@ -24,11 +24,16 @@ export const ibwCalculator: CalculatorDefinition = {
 
   keywords: ["IBW", "Ideal Body Weight", "Devine", "Height", "Weight"],
 
+  formula:
+    "Male: IBW = 50 + 2.3 × (height in inches − 60); Female: IBW = 45.5 + 2.3 × (height in inches − 60)",
+
+  clinicalNotes:
+    "Ideal body weight is a reference weight estimate most often used to guide medication dosing and nutritional assessment. The Devine formula was derived for aminoglycoside dosing in adults and does not account for body composition or frame size; actual body weight may be more appropriate for certain drugs and clinical situations.",
+
   references: [
-    "Devine BJ. Gentamicin therapy. Drug Intell Clin Pharm. 1974;8(11):650-655.",
+    "Devine BJ. Gentamicin therapy. Drug Intell Clin Pharm. 1974;8(11):650–655.",
+    "Pai MP, Paloucek FP. The origin of the \"ideal\" body weight equations. Ann Pharmacother. 2000;34(9):1066–1069.",
   ],
-
-
 
   inputs: [
     {

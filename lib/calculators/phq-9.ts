@@ -283,19 +283,19 @@ export const phq9Calculator: CalculatorDefinition = {
     } else if (total <= 14) {
       interpretation =
         `PHQ-9 ${total}/27 — MODERATE depressive symptoms (10–14). ` +
-        "A PHQ-9 ≥ 10 has ~88% sensitivity and ~88% specificity for major depression; initiate or adjust treatment and schedule follow-up to assess response.";
+        "A PHQ-9 ≥ 10 has ~88% sensitivity and ~88% specificity for major depression; evaluate for treatment options and schedule follow-up to assess response, per applicable guidelines.";
       status = "high";
       referenceRange = "10–14";
     } else if (total <= 19) {
       interpretation =
         `PHQ-9 ${total}/27 — MODERATELY SEVERE depressive symptoms (15–19). ` +
-        "Active treatment is warranted; consider combination therapy and involvement of specialty mental health services.";
+        "Active treatment is generally warranted; consider combination therapy and involvement of specialty mental health services per applicable guidance.";
       status = "critical";
       referenceRange = "15–19";
     } else {
       interpretation =
         `PHQ-9 ${total}/27 — SEVERE depressive symptoms (20–27). ` +
-        "Intensive treatment is indicated; arrange urgent follow-up and consider specialty mental health referral.";
+        "Consider intensive treatment; arrange urgent follow-up and evaluation for specialty mental health referral per applicable protocol.";
       status = "critical";
       referenceRange = "20–27";
     }

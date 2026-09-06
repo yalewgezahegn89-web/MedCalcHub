@@ -125,8 +125,7 @@ const homaIr = Number(values.homaIr);
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |
@@ -167,7 +166,7 @@ else if (result >= 0.2 && result <= 0.4) {
 }
 
 
-else if (result >= 0.4) {
+else {
 
   interpretation =
     "Normal insulin sensitivity";

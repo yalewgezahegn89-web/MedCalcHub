@@ -39,11 +39,10 @@ export const adjbwCalculator: CalculatorDefinition = {
   formula: "AdjBW = IBW + 0.4 × (Actual Weight − IBW)",
 
   clinicalNotes:
-    "Adjusted Body Weight is commonly used when dosing medications in overweight and obese patients because actual body weight may overestimate dosing while ideal body weight may underestimate it.",
+    "Adjusted body weight is used when dosing medications in overweight and obese patients because actual body weight may overestimate and ideal body weight may underestimate dosing requirements. The standard correction factor is 0.4 (40%), though the optimal factor varies by drug class and has not been validated across all dosing nomograms. Results should be interpreted in the context of the specific medication, its distribution characteristics, and applicable institutional policy.",
 
   references: [
-    "ClinCalc Drug Dosing Reference",
-    "ASHP Clinical Guidelines",
+    "Pai MP, Paloucek FP. The origin of the \"ideal\" body weight equations. Ann Pharmacother. 2000;34(9):1066–1069.",
   ],
 
   inputs: [

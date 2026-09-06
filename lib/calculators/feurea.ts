@@ -274,8 +274,7 @@ const plasmaCr = Number(values.plasmaCr);
 
 
   
-let interpretation =
-  "Result calculated. Interpret in clinical context.";
+let interpretation: string;
 
 let status:
   "normal" |
@@ -316,7 +315,7 @@ else if (result >= 35 && result <= 50) {
 }
 
 
-else if (result >= 50) {
+else {
 
   interpretation =
     "Intrinsic renal injury (ATN)";

@@ -955,7 +955,7 @@ describe("CURB-65 calculate() boundary audit", () => {
     expect(r.value).toBe(3);
     expect(r.status).toBe("high");
     expect(r.interpretation).toBe(
-      "CURB-65 ≥ 3 – Severe pneumonia. Consider urgent hospital/ICU admission.",
+      "CURB-65 ≥ 3 – Severe pneumonia. Evaluate for urgent hospital/ICU admission.",
     );
   });
 
@@ -1288,7 +1288,7 @@ describe("qSOFA calculate() boundary audit", () => {
     expect(r.value).toBe(2);
     expect(r.status).toBe("high");
     expect(r.interpretation).toBe(
-      "qSOFA ≥ 2 – High risk of sepsis-related organ dysfunction and mortality. Escalate care urgently.",
+      "qSOFA ≥ 2 – High risk of sepsis-related organ dysfunction and mortality. Evaluate promptly for escalation of care.",
     );
   });
 
