@@ -81,7 +81,7 @@ export default function PrivacyPage() {
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
             What This Policy Covers
           </h2>
-          <p>This policy distinguishes four types of data handling:</p>
+          <p>This policy distinguishes five types of data handling:</p>
           <ul className="mt-2 list-inside list-disc space-y-1">
             <li>
               <strong>Calculator and saved data</strong> — stored locally in
@@ -90,6 +90,13 @@ export default function PrivacyPage() {
             <li>
               <strong>Consent preference storage</strong> — your advertising
               consent choice is stored locally on your device.
+            </li>
+            <li>
+              <strong>Contact form submissions</strong> — when you submit an
+              inquiry, your name, email address, inquiry type, and message are
+              transmitted to MedCalcHub for the purpose of responding to your
+              request. Contact messages may be processed by the email delivery
+              provider used to deliver the message.
             </li>
             <li>
               <strong>Website infrastructure</strong> — the website is served

@@ -4,9 +4,9 @@ import { useCallback, useRef, useState } from "react";
 
 import {
   CONTACT_EMAIL,
-  CONTACT_SUBMISSION_NOTICE,
+  CONTACT_SUCCESS_MESSAGE,
+  CONTACT_FAILURE_MESSAGE,
   INQUIRY_TYPES,
-  buildContactMailto,
 } from "@/lib/contact/inquiry";
 import type { InquiryType } from "@/lib/contact/inquiry";
 import { Button } from "@/components/ui/button";
@@ -62,21 +62,22 @@ export function ContactForm() {
     message: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const statusRef = useRef<HTMLParagraphElement>(null);
+  const submittedRef = useRef(false);
 
   const handleChange = useCallback(
     (field: keyof FormState, value: string) => {
       setValues((prev) => ({ ...prev, [field]: value }));
-      if (submitted) {
+      if (status === "error") {
         setErrors((prev) => ({ ...prev, [field]: undefined }));
       }
     },
-    [submitted],
+    [status],
   );
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       const nextErrors = validate(values);
@@ -86,18 +87,41 @@ export function ContactForm() {
         return;
       }
 
-      const mailto = buildContactMailto({
-        name: values.name.trim(),
-        email: values.email.trim(),
-        inquiryType: values.inquiryType as InquiryType,
-        message: values.message.trim(),
-      });
+      if (status === "submitting" || submittedRef.current) {
+        return;
+      }
 
-      window.location.href = mailto;
-      setSubmitted(true);
-      requestAnimationFrame(() => statusRef.current?.focus());
+      setStatus("submitting");
+      submittedRef.current = true;
+
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: values.name.trim(),
+            email: values.email.trim(),
+            inquiryType: values.inquiryType,
+            message: values.message.trim(),
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to send");
+        }
+
+        setStatus("success");
+        setValues({ name: "", email: "", inquiryType: "", message: "" });
+        setErrors({});
+        requestAnimationFrame(() => statusRef.current?.focus());
+      } catch {
+        setStatus("error");
+        requestAnimationFrame(() => statusRef.current?.focus());
+      } finally {
+        submittedRef.current = false;
+      }
     },
-    [values],
+    [values, status],
   );
 
   const nameErrorId = errors.name ? "contact-name-error" : undefined;
@@ -233,14 +257,13 @@ export function ContactForm() {
           )}
         </div>
 
-        <p className="text-sm text-slate-600 dark:text-slate-400">
-          Submitting opens your email app with the inquiry prepared. MedCalcHub
-          does not collect or store this message on the website.
-        </p>
-
         <div className="flex flex-wrap items-center gap-4">
-          <Button type="submit" size="lg">
-            Prepare email
+          <Button
+            type="submit"
+            size="lg"
+            disabled={status === "submitting"}
+          >
+            {status === "submitting" ? "Sending..." : "Submit inquiry"}
           </Button>
           <span className="text-sm text-slate-600 dark:text-slate-400">
             Prefer email?{" "}
@@ -253,7 +276,7 @@ export function ContactForm() {
           </span>
         </div>
 
-        {submitted && (
+        {status === "success" && (
           <p
             ref={statusRef}
             tabIndex={-1}
@@ -261,7 +284,19 @@ export function ContactForm() {
             data-testid="contact-form-status"
             className="rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm text-success dark:text-success"
           >
-            {CONTACT_SUBMISSION_NOTICE}
+            {CONTACT_SUCCESS_MESSAGE}
+          </p>
+        )}
+
+        {status === "error" && (
+          <p
+            ref={statusRef}
+            tabIndex={-1}
+            role="alert"
+            data-testid="contact-form-status"
+            className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive dark:text-destructive"
+          >
+            {CONTACT_FAILURE_MESSAGE}
           </p>
         )}
       </form>

@@ -42,9 +42,10 @@ export default function ContactPage() {
             Send an Inquiry
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-            Fill in the form below to prepare an inquiry. Submitting opens your
-            email app with the message ready to send — MedCalcHub does not
-            receive or store the message through this website.
+            Fill in the form below to send an inquiry. When you submit an
+            inquiry, the information you provide (such as your name, email
+            address, inquiry type, and message) is transmitted to MedCalcHub
+            for the purpose of responding to your request.
           </p>
         </div>
 
