@@ -190,7 +190,6 @@ describe("ads security boundary", () => {
       "../../app/categories/[category]/page.tsx",
       "../../app/specialties/[slug]/page.tsx",
       "../../app/page.tsx",
-      "../../app/layout.tsx",
     ];
 
     for (const page of pages) {
@@ -200,5 +199,11 @@ describe("ads security boundary", () => {
       );
       expect(src).not.toMatch(/ca-pub-\d{10,}/);
     }
+
+    const layoutSrc = fs.readFileSync(
+      path.resolve(__dirname, "../../app/layout.tsx"),
+      "utf8",
+    );
+    expect(layoutSrc).toContain("google-adsense-account");
   });
 });
