@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  calculatorRegistry,
   getSpecialties,
   getCalculatorsBySpecialty,
 } from "@/lib/calculators/registry";
+import { specialtySummaries } from "@/lib/seo/taxonomy-content";
 import { SITE_URL } from "@/lib/site-url";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
@@ -105,9 +107,44 @@ export default function SpecialtiesPage() {
           Medical Specialties
         </h1>
 
-        <p className="mt-3 text-gray-600 dark:text-slate-300">
-          Browse calculators by medical specialty.
-        </p>
+        <div className="mt-3 max-w-3xl space-y-3 text-gray-600 dark:text-slate-300">
+          <p>
+            Specialties answer a different question from{" "}
+            <Link
+              href="/categories"
+              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              categories
+            </Link>
+            : not what is being calculated, but where and why
+            it is used. Each page gathers the tools a
+            clinical area reaches for, describes the
+            decisions they feed into, and keeps the subject
+            grouping a click away.
+          </p>
+
+          <p>
+            The same {calculatorRegistry.length} calculators
+            appear under both groupings — every one has a
+            category and a specialty — so either route leads
+            to the complete set. The{" "}
+            <Link
+              href="/calculators"
+              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              full alphabetical list
+            </Link>{" "}
+            and the{" "}
+            <Link
+              href="/comparison"
+              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              comparison tool
+            </Link>{" "}
+            cover the library when you want everything or a
+            closer look at two tools side by side.
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -127,6 +164,10 @@ export default function SpecialtiesPage() {
               <h2 className="text-xl font-semibold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
                 {specialty}
               </h2>
+
+              <p className="mt-2 text-sm text-gray-600 dark:text-slate-400">
+                {specialtySummaries[specialty]}
+              </p>
 
               <p className="mt-2 text-sm text-gray-600 dark:text-slate-400">
                 {calculators.length} calculator

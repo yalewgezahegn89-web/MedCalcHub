@@ -62,7 +62,7 @@ const nextConfig: NextConfig = {
   redirects: async () => [
     {
       source: "/renal",
-      destination: "/categories/renal",
+      destination: "/categories/nephrology",
       permanent: true,
     },
   ],

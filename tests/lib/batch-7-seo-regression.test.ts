@@ -464,13 +464,17 @@ describe("E — FAQ JSON-LD / rendering parity", () => {
   });
 
   it("calculator with no FAQ anywhere omits FAQPage from JSON-LD", () => {
-    const noFaqSlug = calculatorRegistry.find(
-      (c) => !getClinicalContent(c.slug)?.faq?.length,
-    )!.slug;
-    const calc = calculatorRegistry.find((c) => c.slug === noFaqSlug);
-    expect(calc).toBeDefined();
+    // Every calculator now has clinical-content FAQ coverage (143/143), so the
+    // empty-FAQ branch is exercised with a calculator that has no content entry.
+    const base = calculatorRegistry.find((c) => c.slug === "bmi")!;
+    const calcWithoutFaq = {
+      ...base,
+      slug: "calculator-without-clinical-content",
+      name: "Calculator Without Clinical Content",
+    };
+    expect(getClinicalContent(calcWithoutFaq.slug)).toBeUndefined();
 
-    const jsonLd = buildCalculatorJsonLd(calc!);
+    const jsonLd = buildCalculatorJsonLd(calcWithoutFaq);
     const graph = jsonLd["@graph"] as Array<{ "@type": string }>;
     const faqPage = graph.find((item) => item["@type"] === "FAQPage");
     expect(faqPage).toBeUndefined();

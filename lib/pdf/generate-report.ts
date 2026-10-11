@@ -296,7 +296,7 @@ export function generateCalculatorReport(
     doc.text(
       `Reviewed By: ${
         report.reviewedBy ??
-        "MedCalcHub Clinical Team"
+        "Not yet reviewed"
       }`,
       20,
       fy,

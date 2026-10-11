@@ -258,12 +258,13 @@ describe("Batch 4 — /renal consolidation", () => {
     );
   });
 
-  it("next.config.ts has redirect from /renal to /categories/renal", () => {
+  it("next.config.ts redirects /renal to the existing /categories/nephrology page", () => {
     const config = readFile("next.config.ts");
     expect(config).toContain('source: "/renal"');
     expect(config).toContain(
-      'destination: "/categories/renal"',
+      'destination: "/categories/nephrology"',
     );
+    expect(config).not.toContain("/categories/renal");
     expect(config).toContain("permanent: true");
   });
 

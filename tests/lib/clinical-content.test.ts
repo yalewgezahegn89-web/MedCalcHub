@@ -3095,12 +3095,10 @@ describe("Clinical Content — Evidence Batch E1 (Structured Evidence Metadata)"
     }
   });
 
-  it("every E1 evidence has reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("every E1 evidence does not claim an unverified reviewer", () => {
     for (const slug of E1_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBe(
-        "MedCalcHub Clinical Team",
-      );
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -3259,12 +3257,10 @@ describe("Clinical Content — Evidence Batch E2 (Structured Evidence Metadata)"
     }
   });
 
-  it("every E2 evidence has reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("every E2 evidence does not claim an unverified reviewer", () => {
     for (const slug of E2_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBe(
-        "MedCalcHub Clinical Team",
-      );
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -3391,59 +3387,51 @@ const E3A_EVIDENCE_SLUGS = [
 
 const E3A_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   nihss: {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
       "Lyden PD, et al. Stroke. 1994;25:2446-2451.",
     ],
   },
   "abcd2-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
       "Johnston SC, et al. Lancet. 2007;369:208-213.",
     ],
   },
   "hunt-hess-scale": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
       "Hunt WE, Kosnik EJ. J Neurosurg. 1974;41:149-154.",
     ],
   },
   "modified-rankin-scale": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
       "van Swieten JC, et al. Neurology. 1988;38:1021-1024.",
     ],
   },
   "ottawa-sah-rule": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
       "Perry JJ, et al. JAMA. 2013;310:1828-1836.",
     ],
   },
   "fout-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
       "Wijdicks EFM, et al. Pract Neurol. 2010;10:86-88.",
     ],
   },
   "race-scale": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
       "Carrera D, et al. Stroke. 2019;50:1819-1824.",
     ],
   },
   esrs: {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
       "Weimar C, et al. Stroke. 2009;40:2532-2536.",
@@ -3488,13 +3476,10 @@ describe("Clinical Content — Evidence Batch E3a (PARTIAL to FULL Upgrade)", ()
     }
   });
 
-  it("all 8 E3a targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 8 E3a targets do not claim an unverified reviewer", () => {
     for (const slug of E3A_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -3621,147 +3606,123 @@ const E3B_EVIDENCE_SLUGS = [
 
 const E3B_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   "anion-gap": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Kraut JA, Madias NE. Clin J Am Soc Nephrol. 2007;2:162-174.",
       "Adrogue HJ, et al. Acid-base disorders. In: Brenner & Rector's The Kidney.",
     ],
   },
   "corrected-sodium": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Hillier TA, Abbott RD, Barrett EJ. Am J Med. 1999;106:399-403.",
     ],
   },
   "osmolar-gap": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: ["Brent J, et al. N Engl J Med. 2001;344:424-429."],
   },
   "cockcroft-gault": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: ["Cockcroft DW, Gault MH. Nephron. 1976;16:31-41."],
   },
   "shock-index": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: ["Rady MY, et al. Ann Emerg Med. 1994;24(4):685-690."],
   },
   "homa-ir": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: ["Matthews DR, et al. Diabetologia. 1985;28:412-419."],
   },
   "homa-b": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: ["Matthews DR, et al. Diabetologia. 1985;28(7):412-419."],
   },
   "corrected-calcium": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: ["Payne RB, et al. Br Med J. 1973;4(5893):643-646."],
   },
   mdrd: {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Levey AS, et al. Ann Intern Med. 1999;130(6):461-470.",
       "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
     ],
   },
   fena: {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Carvounis CP, et al. Kidney Int. 2002;62(3):1184-1191.",
     ],
   },
   feurea: {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Pépin MN, et al. Clin Invest Med. 2007;30(5):E163-167.",
     ],
   },
   "albumin-creatinine-ratio": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
     ],
   },
   "insulin-sensitivity": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Wallace TM, Levy JC, Matthews DR. Diabetes Care. 2004;27(6):1487-1495.",
     ],
   },
   "free-thyroxine-index": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Surks MI, et al. JAMA. 1990;263(11):1529-1532.",
       "Mayo Clinic Laboratories. Free Thyroxine Index (FTI), Serum.",
     ],
   },
   "metabolic-syndrome-atp3": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Grundy SM, et al. Circulation. 2005;112(17):2735-2752.",
       "Alberti KG, et al. Circulation. 2009;120(16):1640-1645.",
     ],
   },
   "bishop-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Bishop EH. Obstet Gynecol. 1964;24:266-268.",
       "ACOG Practice Bulletin No. 107: Induction of labor. Obstet Gynecol. 2009;114(2 Pt 1):386-397.",
     ],
   },
   "biophysical-profile": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Manning FA, et al. Am J Obstet Gynecol. 1981;140(3):289-294.",
       "ACOG Practice Bulletin No. 145: Antepartum fetal surveillance. Obstet Gynecol. 2014;124(1):182-201.",
     ],
   },
   "hellp-syndrome": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Sibai BM, et al. Am J Obstet Gynecol. 1993;169(4):1000-1006.",
       "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
     ],
   },
   "hadlock-efw": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Hadlock FP, et al. Am J Obstet Gynecol. 1985;151(3):333-337.",
       "ACOG Practice Bulletin No. 227: Fetal growth restriction. Obstet Gynecol. 2021;137(2):e16-e28.",
     ],
   },
   "preeclampsia-criteria": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
     ],
   },
   "gestational-weight-gain": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "IOM/NRC. Weight Gain During Pregnancy. National Academies Press; 2009.",
       "ACOG Committee Opinion No. 548: Weight gain during pregnancy. Obstet Gynecol. 2013;121(1):210-212.",
     ],
   },
   "apgar-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Apgar V. Curr Res Anesth Analg. 1953;32(4):260-267.",
       "AAP/ACOG Committee. The Apgar score. Pediatrics. 2015;136(4):819-822.",
     ],
   },
   "free-water-deficit": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Adrogue HJ, Madias NE. N Engl J Med. 2000;342(21):1493-1499.",
       "Sterns RH. Disorders of plasma sodium. N Engl J Med. 2015;372(1):55-65.",
     ],
   },
   "basal-metabolic-rate": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Mifflin MD, et al. Am J Clin Nutr. 1990;51(2):241-247.",
     ],
@@ -3783,73 +3744,63 @@ const E4A_EVIDENCE_SLUGS = [
 
 const E4A_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   "bun-creatinine-ratio": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "KDIGO Clinical Practice Guideline.",
       "National Kidney Foundation.",
     ],
   },
   "fractional-excretion-uric-acid": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Steinhäuslin F, et al. J Am Soc Nephrol. 1994;4(7):1429-1437.",
       "Fenske W, et al. FE-urate and FE-urea in the differential diagnosis of SIADH. Eur J Clin Invest. 2010;40(6):506-513.",
     ],
   },
   "fractional-excretion-phosphate": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Broadus AE, et al. J Clin Invest. 1983;72(1):119-126.",
       "Farrow EG, et al. Tumor-induced osteomalacia: the tumor takes the calcium, phosphate, and other nutrients. J Am Soc Nephrol. 2010;21(3):395-398.",
     ],
   },
   "fractional-excretion-calcium": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Christiansen C, et al. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
       "National Institute for Health and Care Excellence (NICE). Hyperparathyroidism (primary): diagnosis, assessment and initial management. NG132. 2019.",
     ],
   },
   "renal-failure-index": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Miller TR, et al. Ann Intern Med. 1978;89(1):47-50.",
       "Espinel CH. The FENa test: use in the differential diagnosis of acute renal failure. JAMA. 1976;236(6):579-581.",
     ],
   },
   "urine-osmolal-gap": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Kraut JA, Kurtz I. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
       "Hoffman RS, et al. Osmol and gap: a critical appraisal. Am J Emerg Med. 1993;11(5):543-547.",
     ],
   },
   "free-water-clearance": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
       "Goldberg M. Hyponatremia. Med Clin North Am. 1981;65(2):251-269.",
     ],
   },
   "electrolyte-free-water-clearance": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
       "Nguyen MK, Kurtz I. Derivation of a new formula for calculating urinary electrolyte-free water clearance based on the Edelman equation. Am J Physiol Renal Physiol. 2005;288(1):F1-7.",
     ],
   },
   "urine-protein-creatinine-ratio": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "KDIGO 2012 CKD Guideline. Kidney Int Suppl. 2013;3(1):1-150.",
       "Ginsberg JM, et al. Use of single voided urine samples to estimate quantitative proteinuria. N Engl J Med. 1983;309(25):1543-1546.",
     ],
   },
   "creatinine-clearance-24h": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Levey AS, et al. Clin Chem. 2007;53(4):766-772.",
       "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16(1):31-41.",
@@ -3894,13 +3845,10 @@ describe("Clinical Content — Evidence Batch E3b (NONE to FULL Upgrade)", () =>
     }
   });
 
-  it("all 24 E3b targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 24 E3b targets do not claim an unverified reviewer", () => {
     for (const slug of E3B_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -4050,13 +3998,10 @@ describe("Clinical Content — Evidence Batch E4a (Nephrology NONE to FULL Upgra
     }
   });
 
-  it("all 10 E4a targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 10 E4a targets do not claim an unverified reviewer", () => {
     for (const slug of E4A_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -4167,38 +4112,33 @@ const E4B_EVIDENCE_SLUGS = [
 
 const E4B_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   "total-cholesterol-hdl-ratio": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Stampfer MJ, et al. N Engl J Med. 1991;325(6):373-381.",
       "Assmann G, et al. The role of HDL cholesterol in the metabolic syndrome. Atheroscler Suppl. 2002;3(4):35-41.",
     ],
   },
   "atherogenic-index-of-plasma": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Dobiásová M, Frohlich J. Clin Biochem. 2001;34(7):583-588.",
       "Dobiásová M. Atherogenic index of plasma [log(triglycerides/HDL-cholesterol)]: theoretical and practical implications. Clin Chem. 2004;50(7):1113-1115.",
     ],
   },
   "apob-apoa1-ratio": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Walldius G, Jungner I. J Intern Med. 2006;259(5):493-519.",
       "Yusuf S, et al. Effect of potentially modifiable risk factors associated with myocardial infarction in 52 countries (INTERHEART). Lancet. 2004;364(9438):937-952.",
     ],
   },
   "respiratory-compensation": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Merck Manual Professional Version. Respiratory Acidosis and Alkalosis.",
       "Brewer ED. Disorders of acid-base balance. Pediatr Clin North Am. 1990;37(2):429-447.",
     ],
   },
   "metabolic-alkalosis-compensation": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
       "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
@@ -4243,13 +4183,10 @@ describe("Clinical Content — Evidence Batch E4b (Lipids and Acid-Base NONE to 
     }
   });
 
-  it("all 5 E4b targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 5 E4b targets do not claim an unverified reviewer", () => {
     for (const slug of E4B_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -4358,22 +4295,19 @@ const E4C_EVIDENCE_SLUGS = [
 
 const E4C_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   "fib-4-index": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Sterling RK, et al. Hepatology. 2006;43:1317-1325.",
     ],
   },
   "apri-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Wai CT, et al. Hepatology. 2003;38:518-526.",
     ],
   },
   "nafld-fibrosis-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Angulo P, et al. Hepatology. 2007;45:846-854.",
     ],
@@ -4417,13 +4351,10 @@ describe("Clinical Content — Evidence Batch E4c (Hepatology and Endocrine NONE
     }
   });
 
-  it("all 3 verified E4c targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 3 verified E4c targets do not claim an unverified reviewer", () => {
     for (const slug of E4C_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -4549,24 +4480,21 @@ const E4D_EVIDENCE_SLUGS = [
 
 const E4D_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   "ebl-obstetric": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "ACOG Committee Opinion No. 794. Obstet Gynecol. 2019;134(6):e150-e156.",
       "ACOG Practice Bulletin No. 183. Obstet Gynecol. 2017;130(4):e168-e186.",
     ],
   },
   "epds": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Cox JL, Holden JM, Sagovsky R. Br J Psychiatry. 1987;150:782-786.",
       "ACOG Committee Opinion No. 757. Obstet Gynecol. 2018;132(5):e208-e212.",
     ],
   },
   "magnesium-sulfate-preeclampsia": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "ACOG Practice Bulletin No. 222. Obstet Gynecol. 2020;135(6):e237-e260.",
       "Pritchard JA. Surg Gynecol Obstet. 1955;100(2):131-140.",
@@ -4574,19 +4502,16 @@ const E4D_EXPECTED_EVIDENCE: Record<
     ],
   },
   "gestational-age": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "ACOG Committee Opinion No. 700. Obstet Gynecol. 2017;129(5):e150-e154.",
     ],
   },
   "edd": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "ACOG Committee Opinion No. 700. Obstet Gynecol. 2017;129(5):e150-e154.",
     ],
   },
   "barthel": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Mahoney FI, Barthel DW. Md State Med J. 1965;14:61-65.",
       "Shah S, Vanclay F, Cooper B. J Clin Epidemiol. 1989;42(8):703-709.",
@@ -4594,7 +4519,6 @@ const E4D_EXPECTED_EVIDENCE: Record<
     ],
   },
   "ecog": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Oken MM, Creech RH, et al. Am J Clin Oncol. 1982;5(6):649-655.",
       "Zubrod CG, Schneiderman M, et al. J Chronic Dis. 1960;11(1):7-33.",
@@ -4639,13 +4563,10 @@ describe("Clinical Content — Evidence Batch E4d (OB/GYN, Functional, Geriatric
     }
   });
 
-  it("all 7 E4d targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 7 E4d targets do not claim an unverified reviewer", () => {
     for (const slug of E4D_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -4759,52 +4680,45 @@ const E4E_EVIDENCE_SLUGS = [
 
 const E4E_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   "pediatric-gcs": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "James HE, Trauner D. Brain Insults in Infants and Children. Grune & Stratton; 1985:179-182.",
       "American College of Surgeons. ATLS Student Course Manual. 10th ed. ACS; 2018.",
     ],
   },
   "pecarn-head-trauma": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Kuppermann N, et al. Lancet. 2009;374(9696):1160-1170.",
       "Schonfeld D, et al. Ann Emerg Med. 2013;62(6):597-603.",
     ],
   },
   "pediatric-hypotension": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "American Heart Association. PALS Provider Manual. AHA; 2020.",
       "Kleinman ME, et al. Pediatrics. 2010;126(5):e1361-e1399.",
     ],
   },
   "peds-pews": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Monaghan A. Paediatr Nurs. 2005;17(1):32-35.",
       "Lambert V, et al. BMJ Open. 2017;7(3):e014497.",
     ],
   },
   "pediatric-trauma-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Tepas JJ 3rd, et al. J Pediatr Surg. 1987;22(1):14-18.",
       "American College of Surgeons. Resources for Optimal Care of the Injured Patient. ACS; 2022.",
     ],
   },
   "westley-croup-score": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Westley CR, et al. Am J Dis Child. 1978;132(5):484-487.",
       "Bjornson CL, Johnson DW. Lancet. 2008;371(9609):329-339.",
     ],
   },
   "rochester-criteria": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Jaskiewicz JA, et al. Pediatrics. 1994;94(3):390-396.",
       "Dagan R, et al. J Pediatr. 1985;107(6):855-860.",
@@ -4812,7 +4726,6 @@ const E4E_EXPECTED_EVIDENCE: Record<
     ],
   },
   "gorelick-dehydration": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Gorelick MH, et al. Pediatrics. 1997;99(5):E6.",
       "World Health Organization. The Treatment of Diarrhoea. 4th rev. WHO; 2005.",
@@ -4861,13 +4774,10 @@ describe("Clinical Content — Evidence Batch E4e (Pediatrics NONE to FULL Upgra
     }
   });
 
-  it("all 8 E4e targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 8 E4e targets do not claim an unverified reviewer", () => {
     for (const slug of E4E_EVIDENCE_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -4995,22 +4905,19 @@ const E4F_BLOCKED_SLUGS = [
 
 const E4F_EXPECTED_EVIDENCE: Record<
   string,
-  { reviewedBy: string; references: string[] }
+  { references: string[] }
 > = {
   "rox-index": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Roca O, et al. J Crit Care. 2016;35:200-205.",
     ],
   },
   "pf-ratio": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "ARDS Definition Task Force; Ranieri VM, et al. JAMA. 2012;307(23):2526-2533.",
     ],
   },
   "a-a-gradient": {
-    reviewedBy: "MedCalcHub Clinical Team",
     references: [
       "Fenn WO, Rahn H, Otis AB. Am J Physiol. 1946;146(5):637-653.",
       "West JB. Respiratory Physiology: The Essentials. 11th ed. Wolters Kluwer; 2022.",
@@ -5055,13 +4962,10 @@ describe("Clinical Content — Evidence Batch E4f (Final Stage 3 Evidence Comple
     }
   });
 
-  it("all 3 implemented E4f targets have reviewedBy set to MedCalcHub Clinical Team", () => {
+  it("all 3 implemented E4f targets do not claim an unverified reviewer", () => {
     for (const slug of E4F_IMPLEMENTED_SLUGS) {
       const evidence = clinicalContentRegistry[slug]!.evidence!;
-      expect(
-        evidence.reviewedBy,
-        `${slug}.evidence.reviewedBy`,
-      ).toBe("MedCalcHub Clinical Team");
+      expect(evidence.reviewedBy, `${slug}.evidence.reviewedBy`).toBeUndefined();
     }
   });
 
@@ -5200,9 +5104,9 @@ describe("Clinical Content — Final Stage 3 Evidence Closure (oxygen-index)", (
     expect(evidence.reference!.length, "oxygen-index.evidence.reference length").toBeGreaterThan(0);
   });
 
-  it("oxygen-index evidence reviewedBy is MedCalcHub Clinical Team", () => {
+  it("oxygen-index evidence does not claim an unverified reviewer", () => {
     const evidence = clinicalContentRegistry["oxygen-index"]!.evidence!;
-    expect(evidence.reviewedBy, "oxygen-index.evidence.reviewedBy").toBe("MedCalcHub Clinical Team");
+    expect(evidence.reviewedBy, "oxygen-index.evidence.reviewedBy").toBeUndefined();
   });
 
   it("oxygen-index evidence references[] is non-empty", () => {

@@ -28,6 +28,7 @@ import {
   getCategories,
   getCalculatorsByCategory,
 } from "@/lib/calculators/registry";
+import { categorySummaries } from "@/lib/seo/taxonomy-content";
 
 const categoryVisuals: Record<string, { icon: React.ReactNode; color: string }> = {
   General: {
@@ -145,7 +146,10 @@ export function BrowseCategories() {
             <SpecialtyCard
               key={name}
               title={name}
-              description={`Browse all ${name} calculators.`}
+              description={
+                categorySummaries[name] ??
+                `Browse all ${name} calculators.`
+              }
               href={`/categories/${categoryToSlug(name)}`}
               icon={icon}
               color={color}

@@ -13,7 +13,10 @@ import {
   taxonomyToSlug,
 } from "@/lib/seo/taxonomy-content";
 import { buildCollectionJsonLd } from "@/lib/seo/jsonld";
+import { getGuidesForSpecialty } from "@/lib/guides";
 import { AdSlot } from "@/components/ads";
+import { RelatedGuides } from "@/components/guides/related-guides";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
 
@@ -115,6 +118,8 @@ export default async function SpecialtyPage({
   const relatedCategories =
     getCategoriesForSpecialty(specialty);
 
+  const guidesForSpecialty = getGuidesForSpecialty(specialty);
+
   const specialtyUrl =
     `${SITE_URL}/specialties/${slug}`;
 
@@ -148,11 +153,19 @@ export default async function SpecialtyPage({
 
       <div className="mx-auto max-w-6xl px-6 py-10">
 
-        <div className="mb-10">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Specialties", href: "/specialties" },
+            { label: specialty },
+          ]}
+        />
+
+        <div className="mb-8">
 
           <Link
             href="/specialties"
-            className="text-blue-600 hover:underline"
+            className="mt-2 inline-block text-blue-600 hover:underline"
           >
             ← Back to Specialties
           </Link>
@@ -171,6 +184,35 @@ export default async function SpecialtyPage({
               {description}
             </p>
           )}
+
+          <p className="mt-4 max-w-3xl text-gray-600 leading-relaxed">
+            This page groups by clinical area, so the tools
+            below are the ones this setting reaches for —
+            the subject-focused view of the same calculators
+            lives on the{" "}
+            <Link
+              href="/categories"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              categories pages
+            </Link>
+            , the{" "}
+            <Link
+              href="/calculators"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              full alphabetical list
+            </Link>{" "}
+            collects everything in one place, and the{" "}
+            <Link
+              href="/comparison"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              comparison tool
+            </Link>{" "}
+            lines up three tools side by side when two of
+            them look interchangeable.
+          </p>
         </div>
 
         {relatedCategories.length > 0 && (
@@ -267,6 +309,12 @@ export default async function SpecialtyPage({
           ))}
 
         </div>
+
+        {guidesForSpecialty.length > 0 && (
+          <div className="mt-10">
+            <RelatedGuides guides={guidesForSpecialty} />
+          </div>
+        )}
 
       </div>
     </>

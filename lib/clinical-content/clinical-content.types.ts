@@ -43,6 +43,19 @@ export type ClinicalReference = {
   level?: string;
 };
 
+export type ContentVariable = {
+  inputId: string;
+  label?: string;
+  explanation: string;
+  commonError?: string;
+};
+
+export type ContentReview = {
+  reviewedDate: string;
+  reviewer: string;
+  sourcesVerified: boolean;
+};
+
 /** Extended clinical content for a calculator */
 export type ClinicalContent = {
   /** What the calculator measures clinically */
@@ -50,6 +63,24 @@ export type ClinicalContent = {
 
   /** Step-by-step usage guidance */
   howToUse?: string[];
+
+  /** Explanation of how the calculation works */
+  formulaExplanation?: string;
+
+  /** Explanation of individual variables/inputs */
+  variables?: ContentVariable[];
+
+  /** Common mistakes to avoid */
+  commonMistakes?: string[];
+
+  /** Clinical pearl or practical tip */
+  clinicalPearl?: string;
+
+  /** Related guide IDs (for future guide integration) */
+  relatedGuideIds?: string[];
+
+  /** Review metadata (optional) */
+  review?: ContentReview;
 
   /** Interpretation guide metadata */
   interpretation?: InterpretationGuide;

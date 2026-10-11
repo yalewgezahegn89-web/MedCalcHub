@@ -114,6 +114,9 @@ export default function RootLayout({
                     <Link href="/specialties" className="underline hover:text-slate-700 dark:hover:text-slate-200">Specialties</Link>
                   </li>
                   <li>
+                    <Link href="/guides" className="underline hover:text-slate-700 dark:hover:text-slate-200">Guides</Link>
+                  </li>
+                  <li>
                     <Link href="/search" className="underline hover:text-slate-700 dark:hover:text-slate-200">Search</Link>
                   </li>
                 </ul>
@@ -133,6 +136,9 @@ export default function RootLayout({
                   <li>
                     <Link href="/terms" className="underline hover:text-slate-700 dark:hover:text-slate-200">Terms of Service</Link>
                   </li>
+                  <li>
+                    <Link href="/content-sources" className="underline hover:text-slate-700 dark:hover:text-slate-200">Content Sources</Link>
+                  </li>
                 </ul>
               </div>
 
@@ -146,6 +152,9 @@ export default function RootLayout({
                   </li>
                   <li>
                     <Link href="/cookie" className="underline hover:text-slate-700 dark:hover:text-slate-200">Cookie Policy</Link>
+                  </li>
+                  <li>
+                    <Link href="/disclaimer" className="underline hover:text-slate-700 dark:hover:text-slate-200">Medical Disclaimer</Link>
                   </li>
                   <li>
                     <ConsentPreferencesButton />

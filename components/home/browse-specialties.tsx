@@ -23,6 +23,7 @@ import {
   getSpecialties,
   getCalculatorsBySpecialty,
 } from "@/lib/calculators/registry";
+import { specialtySummaries } from "@/lib/seo/taxonomy-content";
 
 const specialtyVisuals: Record<string, { icon: ReactNode; color: string }> = {
   Cardiology: {
@@ -116,7 +117,10 @@ export function BrowseSpecialties() {
             <SpecialtyCard
               key={name}
               title={name}
-              description={`Browse all ${name} calculators.`}
+              description={
+                specialtySummaries[name] ??
+                `Browse all ${name} calculators.`
+              }
               href={`/specialties/${specialtyToSlug(name)}`}
               icon={icon}
               color={color}

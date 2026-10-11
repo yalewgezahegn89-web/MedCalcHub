@@ -6,6 +6,7 @@ import {
   getCalculatorsByCategory,
 } from "@/lib/calculators/registry";
 import { SITE_URL } from "@/lib/site-url";
+import { categorySummaries } from "@/lib/seo/taxonomy-content";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
 
@@ -106,9 +107,43 @@ export default function CategoriesPage() {
           Calculator Categories
         </h1>
 
-        <p className="mt-3 text-gray-600 dark:text-slate-300">
-          Browse calculators by clinical category.
-        </p>
+        <div className="mt-3 max-w-3xl space-y-3 text-gray-600 dark:text-slate-300">
+          <p>
+            Categories answer one question: what is being
+            calculated? Each page gathers every tool on a
+            subject — kidney function, cardiac risk, fluid
+            balance, and the rest — explains the domain in
+            its own words, and links to the calculators it
+            contains.
+          </p>
+
+          <p>
+            Prefer to start from the ward or clinic you work
+            in? The{" "}
+            <Link
+              href="/specialties"
+              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              specialties
+            </Link>{" "}
+            pages group the same tools by clinical area, and
+            the{" "}
+            <Link
+              href="/calculators"
+              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              full alphabetical list
+            </Link>{" "}
+            puts everything in one place. The{" "}
+            <Link
+              href="/about"
+              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              About page
+            </Link>{" "}
+            describes how entries are written and sourced.
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -131,6 +166,10 @@ export default function CategoriesPage() {
                   <h2 className="text-lg font-semibold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
                     {category}
                   </h2>
+
+                  <p className="mt-2 text-sm text-gray-600 dark:text-slate-400">
+                    {categorySummaries[category]}
+                  </p>
 
                   <p className="mt-2 text-sm text-gray-600 dark:text-slate-400">
                     {count} calculator

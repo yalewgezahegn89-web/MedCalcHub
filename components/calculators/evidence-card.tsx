@@ -8,13 +8,13 @@ source?: string;
   version?: string;
   updatedAt?: string;
 };
-
 export function EvidenceCard({
   title = "Evidence & References",
   source,
   reference,
   link,
-  reviewedBy = "Editorial Team",
+
+  reviewedBy,
   version = "1.0",
   updatedAt,
 }: Props) {
@@ -51,13 +51,15 @@ export function EvidenceCard({
 
         <div className="grid gap-4 md:grid-cols-3">
 
-          <div>
-            <p className="text-sm font-medium text-slate-500">
-              Reviewed By
-            </p>
+          {reviewedBy && (
+            <div>
+              <p className="text-sm font-medium text-slate-500">
+                Reviewed By
+              </p>
 
-            <p>{reviewedBy}</p>
-          </div>
+              <p>{reviewedBy}</p>
+            </div>
+          )}
 
           <div>
             <p className="text-sm font-medium text-slate-500">

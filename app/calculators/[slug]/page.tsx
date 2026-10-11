@@ -5,15 +5,17 @@ import { CalculatorLayout } from "@/components/calculators/layout/calculator-lay
 import { CalculatorClient } from "@/components/calculators/calculator-client";
 import { CalculatorMetadataCard } from "@/components/calculators/calculator-metadata-card";
 import { AdSlot } from "@/components/ads";
-import { ClinicalGuidancePanel } from "@/components/calculators/clinical-guidance-panel";
-import { EvidenceCard } from "@/components/calculators/evidence-card";
 import { CalculatorComparison } from "@/components/calculators/calculator-comparison";
 import { ReferenceRanges } from "@/components/calculators/reference-ranges";
 import { RelatedCalculators } from "@/components/calculators/related-calculators";
 import { ClinicalContentPanel } from "@/components/calculators/clinical-content-panel";
+import { RelatedGuides } from "@/components/guides/related-guides";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Container } from "@/components/layout/container";
 
 import { calculatorRegistry } from "@/lib/calculators/registry";
 import { getClinicalContent } from "@/lib/clinical-content";
+import { getGuidesForCalculator } from "@/lib/guides";
 import { buildCalculatorSEO } from "@/lib/seo/calculator-seo";
 import { buildCalculatorJsonLd } from "@/lib/seo/jsonld";
 
@@ -66,6 +68,16 @@ export default async function CalculatorPage({
         }}
       />
 
+      <Container size="lg" className="pt-8 sm:pt-10">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Calculators", href: "/calculators" },
+            { label: calculator.name },
+          ]}
+        />
+      </Container>
+
       <CalculatorLayout
         title={calculator.name}
         description={calculator.description}
@@ -93,24 +105,6 @@ export default async function CalculatorPage({
           <ClinicalContentPanel content={clinicalContent} />
         )}
 
-        <ClinicalGuidancePanel
-          pearl={calculator.clinical?.pearl}
-          mistakes={calculator.clinical?.commonMistakes}
-        />
-
-        {!clinicalContent?.evidence && (
-          <EvidenceCard
-            source={
-              calculator.references?.[0] ??
-              "Medical Literature"
-            }
-            reference={calculator.references?.join(", ")}
-            reviewedBy="MedCalcHub Clinical Team"
-            version={calculator.version}
-            updatedAt={calculator.updatedAt}
-          />
-        )}
-
         {!clinicalContent?.comparison && (
           <CalculatorComparison
             slug={calculator.slug}
@@ -122,6 +116,8 @@ export default async function CalculatorPage({
           related={calculator.relatedCalculators}
           calculator={calculator}
         />
+
+        <RelatedGuides guides={getGuidesForCalculator(calculator.slug)} />
       </CalculatorLayout>
     </>
   );

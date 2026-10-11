@@ -17,6 +17,30 @@ export const clinicalContentRegistry: Record<
   ClinicalContent
 > = {
   "anion-gap": {
+    commonMistakes: [
+      "Failing to correct for low albumin, which can hide a high anion gap metabolic acidosis behind a deceptively normal value.",
+      "Using a normal anion gap to rule out metabolic acidosis, since a normal result does not exclude the disorder.",
+      "Mistaking lithium, bromide, or iodide interference for a genuine rise in unmeasured anions when reviewing an elevated gap."
+    ],
+    formulaExplanation:
+      "The anion gap is calculated as sodium minus the sum of chloride and bicarbonate (AG = Na - (Cl + HCO3)), all in mmol/L.",
+    variables: [
+      {
+        inputId: "sodium",
+        label: "Sodium",
+        explanation: "Serum sodium in mmol/L, used as the minuend.",
+      },
+      {
+        inputId: "chloride",
+        label: "Chloride",
+        explanation: "Serum chloride in mmol/L, added to bicarbonate in the subtrahend.",
+      },
+      {
+        inputId: "bicarbonate",
+        label: "Bicarbonate (HCO3)",
+        explanation: "Serum bicarbonate in mmol/L, added to chloride in the subtrahend.",
+      },
+    ],
     faq: [
           {
         "question": "What does an elevated anion gap mean?",
@@ -96,7 +120,6 @@ export const clinicalContentRegistry: Record<
       source: "Nephrology / Acid-Base",
       reference:
         "Kraut JA, Madias NE. Serum anion gap: its uses and limitations in clinical medicine. Clin J Am Soc Nephrol. 2007;2:162-174.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -110,6 +133,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "ckd-epi-2021": {
+    commonMistakes: [
+      "Using the CKD-EPI result to adjust medication doses when the drug label requires Cockcroft-Gault creatinine clearance instead.",
+      "Applying the equation during acute kidney injury, when a rapidly changing creatinine breaks the steady-state assumption.",
+      "Diagnosing chronic kidney disease from a single low eGFR without repeating testing after at least 3 months to confirm chronicity."
+    ],
+    formulaExplanation:
+      "The 2021 CKD-EPI creatinine equation estimates eGFR = 142 x min(Scr/k, 1)^alpha x max(Scr/k, 1)^-1.200 x 0.9938^age x 1.012 (female). Scr is serum creatinine in mg/dL; k is 0.7 (female) or 0.9 (male); alpha is -0.241 (female) or -0.302 (male). The race coefficient used in earlier equations was removed.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, entered into the 0.9938^age term so that eGFR declines with older age.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which sets the k and alpha constants and applies the 1.012 multiplier for females.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL, the filtration marker that is divided by k (0.7 female, 0.9 male) before exponentiation.",
+      },
+    ],
     faq: [
           {
         "question": "What does eGFR measure?",
@@ -186,7 +233,6 @@ export const clinicalContentRegistry: Record<
       source: "NKF / KDIGO",
       reference:
         "Inker LA, et al. NEJM. 2021;385:1737-1749.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2021",
       references: [
         "Inker LA, et al. NEJM. 2021.",
@@ -198,6 +244,44 @@ export const clinicalContentRegistry: Record<
   },
 
   "corrected-qt": {
+    commonMistakes: [
+      "Entering the QT interval in seconds instead of milliseconds produces a QTc far below the 450 ms and 460 ms sex-specific limits.",
+      "Applying the 450 ms male limit to a woman, or the 460 ms female limit to a man, classifies the result against the wrong sex-specific threshold.",
+      "Reading Bazett over-correction at a fast heart rate as true prolongation ignores a limitation that Fridericia or Framingham correction may address."
+    ],
+    faq: [
+      {
+        question: "How does the calculator get the RR interval used in the Bazett formula?",
+        answer: "You never measure the RR interval yourself. The calculator converts the heart rate you enter into an RR interval in seconds by dividing 60 by the heart rate, then applies QTc = QT / sqrt(RR). Enter the QT interval measured on the ECG in milliseconds, the heart rate in beats per minute, and the patient's sex, because the upper limit of normal is 450 ms in men and 460 ms in women."
+      },
+      {
+        question: "Why can Bazett correction mislead at fast or slow heart rates?",
+        answer: "Bazett's correction does not track heart rate evenly: at fast rates it inflates the QTc, and at slow rates it deflates it, so the number can look more abnormal or more normal than true repolarization warrants. That is a property of the equation rather than a data-entry error. The calculator notes that Fridericia and Framingham corrections may suit some clinical settings better, and that QTc never replaces clinical assessment of arrhythmia risk."
+      },
+      {
+        question: "What does a QTc of 500 ms or higher indicate?",
+        answer: "A QTc at or above 500 ms is classified as marked prolongation and is associated with increased risk of Torsades de Pointes, a potentially fatal ventricular arrhythmia. Values between 450 and 499 ms in men or 460 and 499 ms in women are reported as prolonged. Because QT measurement varies between observers and the tracing must be readable, the result should be weighed with the patient's medications, electrolyte status, and clinical picture rather than used as a stand-alone diagnosis."
+      }
+    ],
+    formulaExplanation:
+      "The Bazett formula corrects the QT interval for heart rate: QTc = QT / sqrt(RR), where RR (in seconds) = 60 / heart rate.",
+    variables: [
+      {
+        inputId: "qt",
+        label: "QT Interval",
+        explanation: "Measured QT interval in milliseconds, divided by the square root of RR.",
+      },
+      {
+        inputId: "heartRate",
+        label: "Heart Rate",
+        explanation: "Heart rate in beats per minute, converted to the RR interval in seconds (60 / heart rate).",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, used to apply sex-specific upper limits of normal for QTc.",
+      },
+    ],
     clinicalPurpose:
       "Corrects the QT interval for heart rate using the Bazett formula to assess QT prolongation risk.",
     howToUse: [
@@ -247,7 +331,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Bazett Description / AHA ECG Guidelines",
       reference:
         "Bazett HC. An analysis of the time-relations of electrocardiograms. Heart. 1920;7:353-370.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -272,6 +355,11 @@ export const clinicalContentRegistry: Record<
   },
 
   "bmi": {
+    commonMistakes: [
+      "Entering height in meters instead of centimeters, which the calculator converts before squaring.",
+      "Classifying a child with adult BMI cutoffs instead of age- and sex-specific percentiles.",
+      "Attributing a high BMI in an older adult to excess weight when vertebral compression has reduced their measured height."
+    ],
     faq: [
           {
         "question": "What is BMI?",
@@ -285,6 +373,21 @@ export const clinicalContentRegistry: Record<
   ],
     clinicalPurpose:
       "Calculates Body Mass Index (BMI) to screen for underweight, normal weight, overweight, and obesity categories.",
+    formulaExplanation:
+      "BMI is calculated as weight in kilograms divided by the square of height in meters (BMI = weight (kg) / height (m)²). Since height is provided in centimeters, the calculator converts height to meters before squaring.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms used as the numerator in the BMI calculation.",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters, converted to meters and squared in the denominator.",
+        commonError: "Forgetting to convert cm to m will give incorrect values.",
+      },
+    ],
     howToUse: [
       "Enter the patient's weight in kilograms.",
       "Enter the patient's height in centimeters.",
@@ -339,7 +442,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Anthropometry / WHO",
       reference: "WHO. Body Mass Index — BMI. World Health Organization.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2000",
       updatedAt: "2026-08",
       references: [
@@ -349,6 +451,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "bun-creatinine-ratio": {
+    commonMistakes: [
+      "Entering blood urea nitrogen or creatinine in a unit other than mg/dL, which both inputs require.",
+      "Treating a ratio above 20:1 as proof of a prerenal cause instead of one supportive finding.",
+      "Interpreting the ratio in a patient on dialysis, where the usual patterns do not apply."
+    ],
+    formulaExplanation:
+      "The BUN-to-creatinine ratio is blood urea nitrogen divided by serum creatinine (BUN / Cr), both in mg/dL. A ratio above about 20:1 suggests a prerenal cause of azotemia.",
+    variables: [
+      {
+        inputId: "bun",
+        label: "Blood Urea Nitrogen",
+        explanation: "Blood urea nitrogen in mg/dL, used as the numerator.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL, used as the denominator.",
+      },
+    ],
     faq: [
           {
         "question": "What does a high BUN/Creatinine ratio mean?",
@@ -413,7 +534,6 @@ export const clinicalContentRegistry: Record<
       source: "NKF / KDIGO",
       reference:
         "KDIGO Clinical Practice Guideline for the Evaluation and Management of CKD.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2024",
       updatedAt: "2026-08",
       references: [
@@ -427,6 +547,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "corrected-sodium": {
+    commonMistakes: [
+      "Applying the correction when glucose is normal or only mildly elevated, where it adds little beyond noise to the interpretation.",
+      "Expecting the formula to capture hypertonicity from osmotic agents such as mannitol or glycine, which it does not include.",
+      "Trusting the 1.6 mmol/L per 100 mg/dL factor at glucose levels above 600 mg/dL, where it becomes less reliable."
+    ],
+    formulaExplanation:
+      "Corrected sodium = measured sodium + 1.6 x ((glucose - 100) / 100) when glucose exceeds 100 mg/dL, adjusting for hyperglycemia-induced dilutional hyponatremia.",
+    variables: [
+      {
+        inputId: "sodium",
+        label: "Measured Sodium",
+        explanation: "Measured serum sodium in mmol/L, to which the glucose correction is added.",
+      },
+      {
+        inputId: "glucose",
+        label: "Glucose",
+        explanation: "Serum glucose in mg/dL; the amount above 100 mg/dL drives the correction.",
+      },
+    ],
     faq: [
           {
         "question": "Why does hyperglycemia lower sodium?",
@@ -494,7 +633,6 @@ export const clinicalContentRegistry: Record<
       source: "Endocrinology / Nephrology",
       reference:
         "Hillier TA, Abbott RD, Barrett EJ. Hyponatremia: evaluating the correction factor for hyperglycemia. Am J Med. 1999;106:399-403.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -507,6 +645,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "osmolar-gap": {
+    commonMistakes: [
+      "Computing the gap without a laboratory-measured osmolality, since the calculation needs the measured value as its starting point.",
+      "Concluding that a normal gap excludes toxic alcohol, when metabolism during a delayed presentation can normalize it before the patient arrives.",
+      "Blaming a toxic alcohol for an elevated gap when uremia or ketoacidosis may be the actual source of the unmeasured osmoles."
+    ],
+    formulaExplanation:
+      "The osmolar gap is measured osmolality minus calculated osmolality, where calculated = 2 x sodium + glucose / 18 + BUN / 2.8. A positive gap suggests unmeasured osmotically active substances.",
+    variables: [
+      {
+        inputId: "measured",
+        label: "Measured Osmolality",
+        explanation: "Laboratory-measured serum osmolality in mOsm/kg, the minuend.",
+      },
+      {
+        inputId: "sodium",
+        label: "Sodium",
+        explanation: "Serum sodium in mmol/L, multiplied by 2 in the calculated osmolality.",
+      },
+      {
+        inputId: "glucose",
+        label: "Glucose",
+        explanation: "Serum glucose in mg/dL, divided by 18 in the calculated osmolality.",
+      },
+      {
+        inputId: "bun",
+        label: "BUN",
+        explanation: "Blood urea nitrogen in mg/dL, divided by 2.8 in the calculated osmolality.",
+      },
+    ],
     faq: [
           {
         "question": "What does an elevated osmolar gap mean?",
@@ -577,7 +744,6 @@ export const clinicalContentRegistry: Record<
       source: "Emergency Medicine / Toxicology",
       reference:
         "Brent J, et al. Fomepizole for the treatment of methanol poisoning. N Engl J Med. 2001;344:424-429.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -590,6 +756,45 @@ export const clinicalContentRegistry: Record<
   },
 
   "news2": {
+    commonMistakes: [
+      "Selecting Scale 2 routinely instead of reserving it for patients designated for the 88 to 92% oxygen target in chronic hypercapnic respiratory failure.",
+      "Entering temperature in Fahrenheit when the calculator scores it in Celsius, which distorts the temperature sub-score.",
+      "Using NEWS2 for a pediatric patient when PEWS is the appropriate deterioration score for that population."
+    ],
+    formulaExplanation:
+      "NEWS2 assigns 0-3 points to each recorded observation using standardized ranges: respiratory rate, oxygen saturation (SpO2 Scale 1 or Scale 2), temperature, systolic blood pressure, and pulse. The total is the sum of the sub-scores, ranging from 0 to 15, with higher totals indicating greater risk of deterioration.",
+    variables: [
+      {
+        inputId: "spo2-scale",
+        label: "SpO2 Scale",
+        explanation: "Selects the oxygen saturation scoring scale: Scale 1 for the standard target of 94-98%, or Scale 2 for patients with chronic hypercapnic respiratory failure targeting 88-92%.",
+      },
+      {
+        inputId: "respiratory-rate",
+        label: "Respiratory Rate",
+        explanation: "Respiratory rate per minute, scored 0-3 (12-20 scores 0; 8 or fewer scores 3).",
+      },
+      {
+        inputId: "spo2",
+        label: "SpO2",
+        explanation: "Oxygen saturation in percent, scored 0-3 according to the selected scale.",
+      },
+      {
+        inputId: "temperature",
+        label: "Temperature",
+        explanation: "Body temperature in degrees Celsius, scored 0-3 (36.1-38.0 scores 0; 35.0 or lower scores 3).",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure in mmHg, scored 0-3 (111-219 scores 0; 90 or lower scores 3).",
+      },
+      {
+        inputId: "pulse",
+        label: "Pulse",
+        explanation: "Pulse rate in beats per minute, scored 0-3 (51-90 scores 0; 40 or lower scores 3).",
+      },
+    ],
     clinicalPurpose:
       "Calculates the National Early Warning Score 2 (NEWS2) to standardize the assessment of acute illness severity and trigger appropriate clinical responses.",
     howToUse: [
@@ -640,7 +845,6 @@ export const clinicalContentRegistry: Record<
       source: "Royal College of Physicians",
       reference:
         "Royal College of Physicians. National Early Warning Score (NEWS) 2: Standardising the assessment of acute-illness severity in the NHS. RCP, 2017.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -679,6 +883,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "cockcroft-gault": {
+    commonMistakes: [
+      "Entering creatinine in micromoles per liter without dividing by 88.4, since the equation expects mg/dL.",
+      "Comparing the mL/min result directly with a body-surface-area-normalized eGFR as if they were the same scale.",
+      "Calculating a dose estimate while renal function is rapidly changing, where the steady-state assumption fails."
+    ],
+    formulaExplanation:
+      "Creatinine clearance is estimated as CrCl = ((140 - age) x weight) / (72 x serum creatinine), multiplied by 0.85 for females. Weight is in kg and creatinine in mg/dL.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, subtracted from 140 in the numerator.",
+      },
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms used in the numerator.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex; females receive a 0.85 correction factor.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL, used in the denominator.",
+      },
+    ],
     faq: [
           {
         "question": "When should I use Cockcroft-Gault instead of CKD-EPI?",
@@ -744,7 +977,6 @@ export const clinicalContentRegistry: Record<
       source: "Nephrology / Pharmacy",
       reference:
         "Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine. Nephron. 1976;16:31-41.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -757,6 +989,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "homa-ir": {
+    commonMistakes: [
+      "Multiplying glucose in mmol/L by insulin and dividing by 405, since that constant assumes the glucose is entered in mg/dL.",
+      "Reading a result just above 2.5 as a diagnosis of insulin resistance when no universally accepted cutoff exists and assays differ between laboratories.",
+      "Calculating HOMA-IR in a patient with type 1 diabetes or on exogenous insulin, where the index is not validated and the value cannot be trusted."
+    ],
+    formulaExplanation:
+      "HOMA-IR = (fasting glucose (mg/dL) x fasting insulin (microU/mL)) / 405. Higher values indicate greater insulin resistance.",
+    variables: [
+      {
+        inputId: "glucose",
+        label: "Fasting Glucose",
+        explanation: "Fasting plasma glucose in mg/dL, multiplied by fasting insulin.",
+      },
+      {
+        inputId: "insulin",
+        label: "Fasting Insulin",
+        explanation: "Fasting serum insulin in microU/mL, multiplied by fasting glucose.",
+      },
+    ],
     faq: [
           {
         "question": "What does a high HOMA-IR mean?",
@@ -829,7 +1080,6 @@ export const clinicalContentRegistry: Record<
       source: "Endocrinology / Diabetes",
       reference:
         "Matthews DR, Hosker JP, Rudenski AS, et al. Homeostasis model assessment: insulin resistance and beta-cell function from fasting plasma glucose and insulin concentrations in man. Diabetologia. 1985;28:412-419.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -842,6 +1092,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "curb-65": {
+    commonMistakes: [
+      "Entering urea in mg/dL when the > 7 mmol/L criterion requires the value in mmol/L.",
+      "Using CURB-65 to triage a child or a patient with hospital-acquired or ventilator-associated pneumonia, where it is not validated.",
+      "Sending a patient home because the score is low when the patient is hypoxemic, since oxygenation is not part of the score."
+    ],
+    formulaExplanation:
+      "The CURB-65 score sums five one-point criteria: new-onset Confusion, Urea > 7 mmol/L, Respiratory rate >= 30/min, Systolic blood pressure < 90 mmHg (or diastolic <= 60 mmHg), and Age >= 65 years. The total ranges from 0 to 5.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years; one point is added when age is 65 or older.",
+      },
+      {
+        inputId: "confusion",
+        label: "New-Onset Confusion",
+        explanation: "New disorientation to person, place, or time; Yes adds one point.",
+      },
+      {
+        inputId: "urea",
+        label: "Urea",
+        explanation: "Blood urea in mmol/L; a value greater than 7 mmol/L adds one point.",
+      },
+      {
+        inputId: "respiratory-rate",
+        label: "Respiratory Rate",
+        explanation: "Respiratory rate per minute; 30 or more breaths per minute adds one point.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure in mmHg; below 90 mmHg adds one point.",
+      },
+    ],
     clinicalPurpose:
       "Stratifies severity and 30-day mortality risk in adults with community-acquired pneumonia (CAP) to help guide site-of-care decisions.",
     howToUse: [
@@ -893,7 +1177,6 @@ export const clinicalContentRegistry: Record<
       source: "CURB-65 Derivation/Validation",
       reference:
         "Lim WS, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003;58(5):377-382.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -932,6 +1215,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "qsofa": {
+    commonMistakes: [
+      "Treating a qSOFA of 2 or higher as a diagnosis of sepsis rather than a prompt to escalate care.",
+      "Assuming a qSOFA of 0 rules out sepsis, since the score has lower sensitivity than the full SOFA assessment.",
+      "Using qSOFA thresholds in pregnancy, where normal blood pressure and respiratory rate shift with physiological changes."
+    ],
+    formulaExplanation:
+      "The quick SOFA (qSOFA) score adds one point for each of: systolic blood pressure <= 100 mmHg, respiratory rate >= 22/min, and altered mental status (GCS < 15). The total ranges from 0 to 3.",
+    variables: [
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure in mmHg; a value of 100 or lower adds one point.",
+      },
+      {
+        inputId: "respiratory-rate",
+        label: "Respiratory Rate",
+        explanation: "Respiratory rate per minute; a value of 22 or higher adds one point.",
+      },
+      {
+        inputId: "mental-status",
+        label: "Altered Mental Status",
+        explanation: "Altered mental status (GCS < 15); Yes adds one point.",
+      },
+    ],
     clinicalPurpose:
       "Identifies adults with suspected infection who are at high risk of sepsis-related organ dysfunction and death, prompting escalation of care.",
     howToUse: [
@@ -981,7 +1288,6 @@ export const clinicalContentRegistry: Record<
       source: "Sepsis-3 / qSOFA Derivation",
       reference:
         "Seymour CW, et al. Assessment of Clinical Criteria for Sepsis: For the Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):762-774.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1020,6 +1326,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "gcs": {
+    commonMistakes: [
+      "Recording the worst response observed in a component instead of the best response the patient demonstrated.",
+      "Scoring verbal as 1 for an intubated patient instead of documenting that component as not testable.",
+      "Relying on the GCS total alone for prognosis without assessing pupils, brainstem function, or focal deficits."
+    ],
+    formulaExplanation:
+      "The Glasgow Coma Scale is the sum of the best Eye (1-4), Verbal (1-5), and Motor (1-6) responses, giving a total from 3 (deep coma) to 15 (fully awake).",
+    variables: [
+      {
+        inputId: "eye",
+        label: "Eye Opening",
+        explanation: "Best eye-opening response, scored 1 to 4 (1 = none, 4 = spontaneous).",
+      },
+      {
+        inputId: "verbal",
+        label: "Verbal Response",
+        explanation: "Best verbal response, scored 1 to 5 (1 = none, 5 = oriented).",
+      },
+      {
+        inputId: "motor",
+        label: "Motor Response",
+        explanation: "Best motor response, scored 1 to 6 (1 = none, 6 = obeys commands).",
+      },
+    ],
     clinicalPurpose:
       "Provides a standardized measure of the level of consciousness based on eye, verbal, and motor responses, widely used in trauma, neurology, and critical care.",
     howToUse: [
@@ -1070,7 +1400,6 @@ export const clinicalContentRegistry: Record<
       source: "Original GCS Description",
       reference:
         "Teasdale G, Jennett B. Assessment of coma and impaired consciousness: a practical scale. Lancet. 1974;304(7872):81-84.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1111,6 +1440,39 @@ export const clinicalContentRegistry: Record<
   },
 
   "shock-index": {
+    commonMistakes: [
+      "Treating a shock index above 0.7 as a diagnosis of shock instead of a trigger for clinical reassessment.",
+      "Applying the adult normal range of 0.5 to 0.7 to a child, since normal values differ by age in children.",
+      "Interpreting the ratio in a patient with a pacemaker or beta-blockade, where heart rate no longer reflects perfusion."
+    ],
+    faq: [
+      {
+        question: "What should I do when the shock index is elevated?",
+        answer: "A shock index above 0.7 is commonly regarded as elevated and warrants investigation, while 0.5 to 0.7 is generally normal. An abnormal value does not diagnose shock or hypoperfusion; it calls for clinical reassessment with serial measurements, blood pressure trends, lactate, urine output, and perfusion findings. Progressively higher values suggest worsening hemodynamic reserve, particularly in trauma, hemorrhage, and sepsis, but the result must always be read within the full clinical picture."
+      },
+      {
+        question: "Can the shock index be used in pediatric patients?",
+        answer: "The calculator is intended as an adult bedside screen. Normal reference values differ in children and vary by age, so the adult range of 0.5 to 0.7 does not apply there. In children, use age-appropriate assessment and interpret vital signs alongside the clinical picture rather than relying on this ratio, which has not been validated as a fixed diagnostic threshold in that population."
+      },
+      {
+        question: "Does a normal shock index rule out compensated shock?",
+        answer: "No. A single value within 0.5 to 0.7 does not exclude compensated shock, because the ratio does not measure cardiac output, lactate, or tissue perfusion directly. Heart rate can also be modified by rate-control medications, pacemakers, arrhythmias, pain, and autonomic dysfunction, which can mask an abnormality. The index works best as a trend and as one component of a broader hemodynamic assessment."
+      }
+    ],
+    formulaExplanation:
+      "The shock index is the heart rate divided by the systolic blood pressure (SI = HR / SBP). Normal values are approximately 0.5-0.7; values of 0.9 or higher suggest hemodynamic compromise.",
+    variables: [
+      {
+        inputId: "heart-rate",
+        label: "Heart Rate",
+        explanation: "Heart rate in beats per minute, used as the numerator.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure in mmHg, used as the denominator.",
+      },
+    ],
     clinicalPurpose:
       "Relates heart rate to systolic blood pressure to flag patients whose heart rate is inappropriately high relative to blood pressure, indicating impaired hemodynamic reserve.",
     howToUse: [
@@ -1166,7 +1528,6 @@ export const clinicalContentRegistry: Record<
       source: "Emergency Medicine / Critical Care",
       reference:
         "Rady MY, Smithline HA, Blake H, et al. A comparison of the shock index and conventional vital signs to identify acute, critical illness in the emergency department. Ann Emerg Med. 1994;24(4):685-690.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1179,6 +1540,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "map": {
+    commonMistakes: [
+      "Averaging systolic and diastolic pressure equally instead of weighting diastolic twice, as the MAP formula requires.",
+      "Concluding that perfusion is adequate from a single MAP value without checking cardiac output, lactate, or urine output.",
+      "Relying on the calculated MAP in marked tachycardia, atrial fibrillation, or a very wide pulse pressure, where it is less reliable."
+    ],
+    formulaExplanation:
+      "Mean arterial pressure is estimated as MAP = (SBP + 2 x DBP) / 3, weighting diastolic pressure twice because the cardiac cycle spends roughly twice as long in diastole as in systole.",
+    variables: [
+      {
+        inputId: "sbp",
+        label: "SBP",
+        explanation: "Systolic blood pressure in mmHg, counted once in the numerator.",
+      },
+      {
+        inputId: "dbp",
+        label: "DBP",
+        explanation: "Diastolic blood pressure in mmHg, counted twice in the numerator.",
+      },
+    ],
     clinicalPurpose:
       "Calculates mean arterial pressure (MAP), the average pressure driving perfusion of vital organs, from systolic and diastolic blood pressure.",
     howToUse: [
@@ -1224,7 +1604,6 @@ export const clinicalContentRegistry: Record<
       source: "Original MAP Formula / SSC Guidelines",
       reference:
         "Meaney E, Alva F, Moguel R, et al. Formula and nomogram for the sphygmomanometric calculation of the mean arterial pressure. Heart. 2000;84(1):64.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1269,6 +1648,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "mdrd": {
+    commonMistakes: [
+      "Using MDRD for a new clinical decision when CKD-EPI is available.",
+      "Comparing MDRD results with CKD-EPI values when tracking a trend, since the equations give different numbers.",
+      "Applying MDRD in children or pregnancy, where the equation has not been validated."
+    ],
+    formulaExplanation:
+      "The MDRD equation estimates eGFR = 175 x (serum creatinine)^-1.154 x (age)^-0.203 x 0.742 (if female), with creatinine in mg/dL and age in years.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, raised to the -0.203 power.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex; females receive a 0.742 multiplier.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL, raised to the -1.154 power.",
+      },
+    ],
     faq: [
           {
         "question": "Is MDRD still used clinically?",
@@ -1339,7 +1742,6 @@ export const clinicalContentRegistry: Record<
       source: "Nephrology",
       reference:
         "Levey AS, Bosch JP, Lewis JB, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine: a new prediction equation. Ann Intern Med. 1999;130(6):461-470.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1353,6 +1755,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "fena": {
+    commonMistakes: [
+      "Ordering FENa in a patient on loop or thiazide diuretics, which blunts the low urinary sodium pattern the test depends on.",
+      "Calling prerenal azotemia from a value below 1% in an older patient or one with chronic kidney disease, where thresholds lose reliability.",
+      "Interpreting FENa in the first hours of acute kidney injury, before urine sodium reflects the underlying process."
+    ],
+    formulaExplanation:
+      "Fractional excretion of sodium = (urine sodium x plasma creatinine) / (plasma sodium x urine creatinine) x 100, expressed as a percentage.",
+    variables: [
+      {
+        inputId: "urineNa",
+        label: "Urine Sodium",
+        explanation: "Urine sodium in mmol/L, used in the numerator.",
+      },
+      {
+        inputId: "plasmaNa",
+        label: "Plasma Sodium",
+        explanation: "Plasma sodium in mmol/L, used in the denominator.",
+      },
+      {
+        inputId: "urineCr",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine in mg/dL, used in the denominator.",
+      },
+      {
+        inputId: "plasmaCr",
+        label: "Plasma Creatinine",
+        explanation: "Plasma creatinine in mg/dL, used in the numerator.",
+      },
+    ],
     faq: [
           {
         "question": "What does FENa < 1% mean?",
@@ -1421,7 +1852,6 @@ export const clinicalContentRegistry: Record<
       source: "Nephrology",
       reference:
         "Carvounis CP, et al. Significance of the fractional excretion of sodium in the diagnosis of acute renal failure. Kidney Int. 2002;62(3):1184-1191.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1434,6 +1864,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "feurea": {
+    commonMistakes: [
+      "Using FEUrea in place of FENa when no diuretics have been given, even though FENa is better validated in that setting.",
+      "Interpreting the result in severe liver disease, where reduced urea production distorts both plasma and urine urea.",
+      "Overlooking corticosteroid use, a catabolic state, or protein intake, all of which alter urea handling and shift the value."
+    ],
+    formulaExplanation:
+      "Fractional excretion of urea = (urine urea x plasma creatinine) / (plasma urea x urine creatinine) x 100, expressed as a percentage.",
+    variables: [
+      {
+        inputId: "urineUrea",
+        label: "Urine Urea",
+        explanation: "Urine urea in mg/dL, used in the numerator.",
+      },
+      {
+        inputId: "plasmaUrea",
+        label: "Plasma Urea",
+        explanation: "Plasma urea in mg/dL, used in the denominator.",
+      },
+      {
+        inputId: "urineCr",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine in mg/dL, used in the denominator.",
+      },
+      {
+        inputId: "plasmaCr",
+        label: "Plasma Creatinine",
+        explanation: "Plasma creatinine in mg/dL, used in the numerator.",
+      },
+    ],
     faq: [
           {
         "question": "When should I use FEUrea instead of FENa?",
@@ -1500,7 +1959,6 @@ export const clinicalContentRegistry: Record<
       source: "Nephrology",
       reference:
         "Pépin MN, et al. Reassessment of the fractional excretion of urea for the differential diagnosis of acute renal failure. Clin Invest Med. 2007;30(5):E163-167.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1513,6 +1971,26 @@ export const clinicalContentRegistry: Record<
   },
 
   "albumin-creatinine-ratio": {
+    commonMistakes: [
+      "Diagnosing CKD from a single abnormal ACR result.",
+      "Ignoring transient albuminuria caused by fever, exercise, or urinary tract infection.",
+      "Using ACR alone without assessing kidney function (eGFR)."
+    ],
+    clinicalPearl: "Persistent albuminuria is one of the earliest indicators of chronic kidney disease and should always be interpreted together with eGFR.",
+    formulaExplanation:
+      "The urine albumin-to-creatinine ratio is urine albumin divided by urine creatinine (ACR = albumin / creatinine). With albumin in mg/L and creatinine in g/L, the result is expressed in mg/g.",
+    variables: [
+      {
+        inputId: "albumin",
+        label: "Urine Albumin",
+        explanation: "Urine albumin concentration in mg/L, used as the numerator.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine concentration in g/L, used as the denominator.",
+      },
+    ],
     faq: [
           {
         "question": "What is the Albumin-to-Creatinine Ratio (ACR)?",
@@ -1590,7 +2068,6 @@ export const clinicalContentRegistry: Record<
       source: "Nephrology / KDIGO",
       reference:
         "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1603,6 +2080,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "corrected-calcium": {
+    commonMistakes: [
+      "Entering albumin in g/L rather than g/dL produces an exaggerated correction because the formula expects a value around 4.0 g/dL.",
+      "Using the corrected value to screen for hypercalcemia, a setting in which this albumin correction has not been validated.",
+      "Trusting the result when albumin is below 2.0 g/dL, where the fixed calcium-albumin binding assumption behind the correction breaks down."
+    ],
+    formulaExplanation:
+      "Corrected calcium = measured calcium + 0.8 x (4.0 - serum albumin), with calcium in mg/dL and albumin in g/dL. It estimates the calcium level expected if albumin were normal.",
+    variables: [
+      {
+        inputId: "calcium",
+        label: "Measured Calcium",
+        explanation: "Measured total serum calcium in mg/dL.",
+      },
+      {
+        inputId: "albumin",
+        label: "Albumin",
+        explanation: "Serum albumin in g/dL; each 1 g/dL below 4.0 adds 0.8 mg/dL to the corrected calcium.",
+      },
+    ],
     faq: [
           {
         "question": "Why correct calcium for albumin?",
@@ -1678,7 +2174,6 @@ export const clinicalContentRegistry: Record<
       source: "Clinical Biochemistry",
       reference:
         "Payne RB, et al. Interpretation of serum calcium in patients with abnormal serum proteins. Br Med J. 1973;4(5893):643-646.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1691,6 +2186,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "homa-b": {
+    commonMistakes: [
+      "Entering fasting glucose in mg/dL for an equation that expects mmol/L and subtracts 3.5, which wrecks the result before it is even interpreted.",
+      "Interpreting a HOMA-B of 200% or higher as strong beta-cell reserve in a newly diagnosed patient when glucotoxicity can transiently inflate the value.",
+      "Substituting HOMA-B for C-peptide when a precise answer on beta-cell reserve is needed, since the index is only a fasting estimate of secretion."
+    ],
+    formulaExplanation:
+      "HOMA-B = (20 x fasting insulin) / (fasting glucose (mmol/L) - 3.5), an estimate of pancreatic beta-cell function.",
+    variables: [
+      {
+        inputId: "glucose",
+        label: "Fasting Glucose",
+        explanation: "Fasting plasma glucose in mmol/L, reduced by 3.5 in the denominator.",
+      },
+      {
+        inputId: "insulin",
+        label: "Fasting Insulin",
+        explanation: "Fasting serum insulin in microU/mL, multiplied by 20 in the numerator.",
+      },
+    ],
     faq: [
           {
         "question": "What does a low HOMA-B mean?",
@@ -1761,7 +2275,6 @@ export const clinicalContentRegistry: Record<
       source: "Endocrinology / Diabetes",
       reference:
         "Matthews DR, Hosker JP, Rudenski AS, et al. Homeostasis model assessment: insulin resistance and beta-cell function from fasting plasma glucose and insulin concentrations in man. Diabetologia. 1985;28(7):412-419.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1774,6 +2287,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "insulin-sensitivity": {
+    commonMistakes: [
+      "Quoting a score of 0.4 or higher to reassure a patient that insulin resistance is excluded, even though the cutoffs shown for this index are illustrative rather than validated.",
+      "Reporting the score in a patient with type 1 diabetes or on exogenous insulin, where the HOMA-IR it is derived from breaks down.",
+      "Comparing scores across laboratories that use different insulin assays, since assay variability in the input HOMA-IR carries straight into this reciprocal."
+    ],
+    formulaExplanation:
+      "Insulin sensitivity is estimated as the reciprocal of HOMA-IR (IS = 1 / HOMA-IR). Higher values indicate greater insulin sensitivity.",
+    variables: [
+      {
+        inputId: "homaIr",
+        label: "HOMA-IR",
+        explanation: "HOMA-IR value from which the reciprocal is taken to estimate insulin sensitivity.",
+      },
+    ],
     faq: [
           {
         "question": "What is insulin sensitivity?",
@@ -1841,7 +2368,6 @@ export const clinicalContentRegistry: Record<
       source: "Endocrinology / Diabetes",
       reference:
         "Wallace TM, Levy JC, Matthews DR. Use and abuse of HOMA modeling. Diabetes Care. 2004;27(6):1487-1495.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -1854,6 +2380,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "bsa": {
+    commonMistakes: [
+      "Entering height in meters instead of centimeters, which breaks the 3600 constant in the Mosteller formula.",
+      "Using BSA to dose a medication whose label specifies weight-based dosing instead.",
+      "Using the calculated BSA in place of measuring burn surface area in a burn patient."
+    ],
+    formulaExplanation:
+      "Body surface area is calculated with the Mosteller formula: BSA (m^2) = sqrt((height (cm) x weight (kg)) / 3600).",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms, multiplied by height in the numerator.",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters, multiplied by weight before dividing by 3600.",
+      },
+    ],
     clinicalPurpose:
       "Estimates body surface area using the Mosteller formula, used to normalize physiological parameters and to dose selected medications.",
     howToUse: [
@@ -1927,7 +2472,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Anthropometry / Oncology",
       reference: "Mosteller RD. N Engl J Med. 1987;317(17):1098.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1987",
       updatedAt: "2026-08",
       references: [
@@ -1937,6 +2481,39 @@ export const clinicalContentRegistry: Record<
   },
 
   "ideal-body-weight": {
+    commonMistakes: [
+      "Applying the Devine formula by hand with height in centimeters where the formula expects inches.",
+      "Using ideal body weight to diagnose underweight or obesity when BMI is the appropriate screening measure.",
+      "Using the Devine result in a child, since the equation was derived in and validated only for adults."
+    ],
+    faq: [
+      {
+        question: "What is ideal body weight used for?",
+        answer: "Ideal body weight is a height- and sex-based reference weight used to guide medication dosing and to derive adjusted body weight in patients above their ideal weight. The Devine equation behind this calculator was originally developed for aminoglycoside dosing in adults. It does not account for body composition or frame size, and for some drugs actual body weight may be the more appropriate dosing weight, so drug-specific guidance should always be checked."
+      },
+      {
+        question: "Why does the selected sex change the result?",
+        answer: "The Devine formula starts from a different constant for each sex: males begin at 50 kg and females at 45.5 kg, and the same 2.3 kg is then added or subtracted per inch away from 60 inches of height. Choosing the wrong sex option therefore shifts the whole result, which matters because this value feeds into weight-based dosing calculations."
+      },
+      {
+        question: "Can ideal body weight be used for children?",
+        answer: "No. The Devine equation was derived for adults and has not been validated in children, who need age- and height-based references instead. Ideal body weight is also only a mathematical reference rather than a measure of health, and competing equations such as Robinson, Miller, and Hamwi give different values for the same patient, so the same formula should be used consistently when results are compared."
+      }
+    ],
+    formulaExplanation:
+      "Ideal body weight uses the Devine formula: for males IBW (kg) = 50 + 2.3 x (height in inches - 60); for females IBW (kg) = 45.5 + 2.3 x (height in inches - 60), where inches = height (cm) / 2.54.",
+    variables: [
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which sets the base weight (50 kg for males, 45.5 kg for females).",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters, converted to inches (cm / 2.54) for the Devine formula.",
+      },
+    ],
     clinicalPurpose:
       "Estimates ideal body weight using the Devine formula, providing a size-adjusted reference weight used in drug dosing and physiological comparisons.",
     howToUse: [
@@ -1991,7 +2568,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Internal Medicine / Pharmacy",
       reference: "Devine BJ. Drug Intell Clin Pharm. 1974;8(11):650-655.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1974",
       updatedAt: "2026-08",
       references: [
@@ -2001,6 +2577,44 @@ export const clinicalContentRegistry: Record<
   },
 
   "adjusted-body-weight": {
+    commonMistakes: [
+      "Applying the 0.4 correction factor to every medication as though it were validated across all drug classes.",
+      "Calculating an adjusted weight for a normal-weight patient, where the adjustment adds nothing over ideal weight.",
+      "Using adjusted body weight for a child when pediatric weight references should apply instead."
+    ],
+    faq: [
+      {
+        question: "When should adjusted body weight be used?",
+        answer: "Use it for overweight and obese adults when the drug label or guidance specifically calls for an adjusted weight, because actual weight can over-dose while ideal weight can under-dose such patients. The result always falls between ideal and actual body weight. Whether actual, ideal, or adjusted weight is correct depends on the medication, so confirm the drug-specific recommendation before letting this value drive a dose calculation."
+      },
+      {
+        question: "Why does the formula add only 40% of the excess weight?",
+        answer: "The 0.4 factor is the conventional correction used to blend ideal body weight with the excess above it, but it is empirical rather than derived from pharmacokinetic data. The optimal correction varies by drug class, has not been validated across all dosing nomograms, and different sources report different factors. Always read the result alongside the specific medication's distribution characteristics and institutional policy."
+      },
+      {
+        question: "Is adjusted body weight a measure of lean mass?",
+        answer: "No. Adjusted body weight is a dosing weight, not a measure of body composition or lean tissue. It simply blends ideal body weight with a fraction of the difference between actual and ideal weight, and it applies to adults only. When a drug label specifies actual or ideal weight, this adjustment should not be used, and pediatric dosing requires other references."
+      }
+    ],
+    formulaExplanation:
+      "Adjusted body weight = IBW + 0.4 x (actual weight - IBW), where IBW is the Devine ideal body weight derived from sex and height. It is used for drug dosing in patients substantially above ideal weight.",
+    variables: [
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex used to compute the Devine ideal body weight.",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters used to compute the Devine ideal body weight.",
+      },
+      {
+        inputId: "weight",
+        label: "Actual Weight",
+        explanation: "Actual body weight in kilograms; 40% of the difference between actual and ideal weight is added to the IBW.",
+      },
+    ],
     clinicalPurpose:
       "Provides a dosing weight for overweight and obese adults by combining ideal body weight with a fraction of the excess weight, used when medications require a body-weight-adjusted dose.",
     howToUse: [
@@ -2061,7 +2675,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Internal Medicine / Pharmacy",
       reference: "ClinCalc Drug Dosing Reference. Adjusted Body Weight.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -2072,6 +2685,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "child-pugh": {
+    commonMistakes: [
+      "Applying Child-Pugh in acute liver failure, where the score has not been validated.",
+      "Scoring a total bilirubin of exactly 3 mg/dL as 3 points when the 2 to 3 mg/dL band carries only 2 points.",
+      "Grading ascites or encephalopathy inconsistently between assessors without a standardized examination, which shifts the total."
+    ],
+    formulaExplanation:
+      "The Child-Pugh score sums five components each scored 1-3: total bilirubin, serum albumin, INR (prothrombin time), ascites, and hepatic encephalopathy. Totals of 5-6 are Class A, 7-9 are Class B, and 10-15 are Class C.",
+    variables: [
+      {
+        inputId: "bilirubin",
+        label: "Total Bilirubin",
+        explanation: "Total bilirubin, scored 1-3 based on the serum level.",
+      },
+      {
+        inputId: "albumin",
+        label: "Serum Albumin",
+        explanation: "Serum albumin, scored 1-3 (lower albumin scores higher).",
+      },
+      {
+        inputId: "inr",
+        label: "INR",
+        explanation: "International normalized ratio, scored 1-3 based on prolongation.",
+      },
+      {
+        inputId: "ascites",
+        label: "Ascites",
+        explanation: "Clinical degree of ascites, scored 1-3 (none to severe).",
+      },
+      {
+        inputId: "encephalopathy",
+        label: "Hepatic Encephalopathy",
+        explanation: "Grade of hepatic encephalopathy, scored 1-3 (none to severe).",
+      },
+    ],
     clinicalPurpose:
       "Scores the severity and prognosis of chronic liver disease and cirrhosis using bilirubin, albumin, INR, ascites, and hepatic encephalopathy.",
     howToUse: [
@@ -2132,7 +2779,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Hepatology Literature",
       reference: "Pugh RNH, et al. Br J Surg. 1973;60(8):646-649.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1973",
       references: [
         "Pugh RNH, et al. Br J Surg. 1973;60(8):646-649.",
@@ -2165,6 +2811,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "corrected-anion-gap": {
+    commonMistakes: [
+      "Running the albumin correction in a patient whose albumin is normal, where the standard anion gap calculation is already sufficient.",
+      "Assuming the 2.5 mmol/L per g/dL factor is exact, since other sources use 2.4 or 2.8 and the relationship also varies with pH.",
+      "Expecting the corrected number to name the cause of the acidosis, when it only signals that unmeasured anions are present."
+    ],
+    formulaExplanation:
+      "The albumin-corrected anion gap = (Na - (Cl + HCO3)) + 2.5 x (4.0 - serum albumin). The correction reveals a high anion gap that would otherwise be masked by hypoalbuminemia.",
+    variables: [
+      {
+        inputId: "sodium",
+        label: "Sodium",
+        explanation: "Serum sodium in mmol/L, used in the uncorrected anion gap.",
+      },
+      {
+        inputId: "chloride",
+        label: "Chloride",
+        explanation: "Serum chloride in mmol/L, added to bicarbonate in the anion gap.",
+      },
+      {
+        inputId: "bicarbonate",
+        label: "Bicarbonate (HCO3)",
+        explanation: "Serum bicarbonate in mmol/L, added to chloride in the anion gap.",
+      },
+      {
+        inputId: "albumin",
+        label: "Albumin",
+        explanation: "Serum albumin in g/dL; each 1 g/dL below 4.0 adds 2.5 mmol/L to the corrected gap.",
+      },
+    ],
     clinicalPurpose:
       "Adjusts the serum anion gap for hypoalbuminemia to unmask a hidden high anion gap metabolic acidosis (HAGMA) that a low albumin would otherwise conceal.",
     howToUse: [
@@ -2222,7 +2897,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Critical Care Medicine",
       reference: "Figge J, et al. Crit Care Med. 1998;26(11):1807-1810.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       references: [
         "Figge J, et al. Crit Care Med. 1998;26(11):1807-1810.",
@@ -2259,6 +2933,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "serum-osmolality": {
+    commonMistakes: [
+      "Entering glucose in mmol/L instead of mg/dL, which quietly corrupts the estimate because the formula divides glucose by 18.",
+      "Deriving an osmolar gap from this calculated value without a simultaneous laboratory-measured osmolality.",
+      "Assuming the formula accounts for ethanol, even though alcohol is not one of the three solutes it includes."
+    ],
+    formulaExplanation:
+      "Calculated serum osmolality = 2 x sodium + glucose / 18 + BUN / 2.8, with sodium in mmol/L and glucose and BUN in mg/dL.",
+    variables: [
+      {
+        inputId: "sodium",
+        label: "Sodium",
+        explanation: "Serum sodium in mmol/L, multiplied by 2 as the dominant osmotic contributor.",
+      },
+      {
+        inputId: "glucose",
+        label: "Glucose",
+        explanation: "Serum glucose in mg/dL, divided by 18 before being added.",
+      },
+      {
+        inputId: "bun",
+        label: "BUN",
+        explanation: "Blood urea nitrogen in mg/dL, divided by 2.8 before being added.",
+      },
+    ],
     clinicalPurpose:
       "Estimates serum osmolality from sodium, glucose, and blood urea nitrogen, supporting evaluation of electrolyte disorders, hydration status, and toxic ingestions.",
     howToUse: [
@@ -2316,7 +3014,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Emergency Medicine / Nephrology",
       reference: "Dorwart WV, Chalmers T. Clin Chem. 1975;21(2):190-194.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       references: [
         "Dorwart WV, Chalmers T. Clin Chem. 1975;21(2):190-194.",
@@ -2353,6 +3050,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "ttkg": {
+    commonMistakes: [
+      "Calculating TTKG when urine osmolality is lower than plasma osmolality, contrary to the assumption the formula requires.",
+      "Combining potassium and osmolality values that were not measured at the same time, which makes the gradient uninterpretable.",
+      "Reading a TTKG in a patient taking loop or thiazide diuretics without caution, since altered urine electrolytes can invalidate it."
+    ],
+    formulaExplanation:
+      "Transtubular potassium gradient = (urine potassium x plasma osmolality) / (plasma potassium x urine osmolality). It estimates renal potassium handling in the distal nephron.",
+    variables: [
+      {
+        inputId: "urineK",
+        label: "Urine Potassium",
+        explanation: "Urine potassium in mmol/L, used in the numerator.",
+      },
+      {
+        inputId: "plasmaK",
+        label: "Plasma Potassium",
+        explanation: "Plasma potassium in mmol/L, used in the denominator.",
+      },
+      {
+        inputId: "urineOsmolality",
+        label: "Urine Osmolality",
+        explanation: "Urine osmolality in mOsm/kg, used in the denominator.",
+      },
+      {
+        inputId: "plasmaOsmolality",
+        label: "Plasma Osmolality",
+        explanation: "Plasma osmolality in mOsm/kg, used in the numerator.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the transtubular potassium gradient (TTKG) to assess renal potassium handling, primarily in the evaluation of hyperkalemia.",
     howToUse: [
@@ -2405,7 +3131,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Nephrology Literature",
       reference: "Kamel KS, Halperin ML. J Am Soc Nephrol. 2001;12(8):1839-1844.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2001",
       references: [
         "Kamel KS, Halperin ML. J Am Soc Nephrol. 2001;12(8):1839-1844.",
@@ -2441,6 +3166,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "calcium-phosphate-product": {
+    commonMistakes: [
+      "Multiplying calcium and phosphate reported in different units, since the product is meaningful only when both values are in mg/dL.",
+      "Treating the product as a direct measurement of vascular calcification rather than a risk estimate that imaging must confirm.",
+      "Adjusting management solely to lower the product while ignoring PTH, vitamin D, and the rest of the mineral metabolism picture."
+    ],
+    formulaExplanation:
+      "The calcium-phosphate product = serum calcium (mg/dL) x serum phosphate (mg/dL), used to assess the risk of vascular and soft-tissue calcification in chronic kidney disease.",
+    variables: [
+      {
+        inputId: "calcium",
+        label: "Calcium",
+        explanation: "Serum calcium in mg/dL, used as a factor in the product.",
+      },
+      {
+        inputId: "phosphate",
+        label: "Phosphate",
+        explanation: "Serum phosphate in mg/dL, used as a factor in the product.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the calcium–phosphate product to assess the risk of metastatic and vascular calcification, particularly in chronic kidney disease and dialysis patients.",
     howToUse: [
@@ -2490,7 +3234,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "KDIGO",
       reference: "KDIGO CKD-MBD Guideline. Kidney Int Suppl. 2017;7(1):1-59.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2017",
       references: [
         "KDIGO CKD-MBD Guideline. Kidney Int Suppl. 2017;7(1):1-59.",
@@ -2526,6 +3269,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "estimated-average-glucose": {
+    commonMistakes: [
+      "Trusting eAG in a patient with sickle cell trait or recent transfusion, conditions that alter red cell lifespan and distort the A1c feeding the equation.",
+      "Using eAG to judge hypoglycemia risk or day-to-day variability, questions that call for self-monitored or continuous glucose data instead.",
+      "Expecting eAG to reproduce a personal meter average exactly, since it was derived from continuous glucose monitoring studies as a population estimate."
+    ],
+    formulaExplanation:
+      "Estimated average glucose (mg/dL) = 28.7 x HbA1c (%) - 46.7, the ADAG equation relating HbA1c to mean plasma glucose.",
+    variables: [
+      {
+        inputId: "a1c",
+        label: "HbA1c",
+        explanation: "Glycated hemoglobin in percent, multiplied by 28.7 and reduced by 46.7 to estimate average glucose.",
+      },
+    ],
     clinicalPurpose:
       "Estimates mean plasma glucose from HbA1c using the ADAG equation, translating A1c into a mg/dL value patients can compare with home glucose readings.",
     howToUse: [
@@ -2574,7 +3331,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "ADA / ADAG Study",
       reference: "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2008",
       references: [
         "Nathan DM, et al. Diabetes Care. 2008;31(8):1473-1478.",
@@ -2599,8 +3355,37 @@ export const clinicalContentRegistry: Record<
   },
 
   "bmi-for-pediatrics": {
+    commonMistakes: [
+      "Applying adult BMI weight-status cutoffs to an adolescent ignores that pediatric results are classified only by BMI-for-age percentile.",
+      "Calculating BMI-for-age for a child under 2 years uses the wrong reference, since weight-for-length WHO charts apply below that age.",
+      "Entering weight in pounds rather than kilograms produces an incorrect BMI and a misclassified percentile for the child."
+    ],
     clinicalPurpose:
       "Calculates BMI for children and adolescents (ages 2–20) and classifies weight status using CDC 2000 BMI-for-age percentile references.",
+    formulaExplanation:
+      "Pediatric BMI is calculated as weight in kilograms divided by the square of height in meters (BMI = weight (kg) / height (m)²). Since height is provided in centimeters, the calculator converts height to meters before squaring; the resulting BMI value is interpreted using age- and sex-specific percentile references.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years used to select the appropriate age- and sex-specific BMI percentile reference.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Sex determines the age-specific percentile reference used to interpret BMI in children and adolescents.",
+      },
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms used in the BMI calculation.",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters, converted to meters and squared in the denominator for the BMI calculation.",
+      },
+    ],
     howToUse: [
       "Enter the child's age (2–20 years), sex, weight (kg), and height (cm).",
       "Review the BMI and the BMI-for-age percentile.",
@@ -2652,7 +3437,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "CDC Growth Charts",
       reference: "Kuczmarski RJ, et al. Vital Health Stat 11. 2002;(246):1-190.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2000",
       references: [
         "Kuczmarski RJ, et al. Vital Health Stat 11. 2002;(246):1-190.",
@@ -2688,6 +3472,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "lean-body-weight": {
+    commonMistakes: [
+      "Entering height in meters instead of centimeters, which the Boer formula requires.",
+      "Dosing a drug with lean body weight when its label specifies actual or ideal body weight.",
+      "Reading the result as a direct measurement of body fat or muscle mass."
+    ],
+    formulaExplanation:
+      "Lean body weight uses the Boer formula: males LBM (kg) = 0.407 x weight + 0.267 x height - 19.2; females LBM (kg) = 0.252 x weight + 0.473 x height - 48.3, with weight in kg and height in cm.",
+    variables: [
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which selects the male or female Boer coefficients.",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters, multiplied by the sex-specific height coefficient.",
+      },
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Weight in kilograms, multiplied by the sex-specific weight coefficient.",
+      },
+    ],
     clinicalPurpose:
       "Estimates lean body weight using the Boer formula, useful for drug dosing, anesthesia, and nutritional assessment.",
     howToUse: [
@@ -2740,7 +3548,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Body Composition Literature",
       reference: "Boer P. Am J Physiol. 1984;247(4):F632-F635.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1984",
       references: [
         "Boer P. Am J Physiol. 1984;247(4):F632-F635.",
@@ -2782,6 +3589,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "harris-benedict": {
+    commonMistakes: [
+      "Applying Harris-Benedict to overweight or obese patients without caution, since the equation may overestimate their energy needs.",
+      "Assuming the historical 1918-1919 coefficients are interchangeable with the revised equation implemented in this calculator.",
+      "Using this prediction in place of measured energy expenditure when caring for a critically ill patient."
+    ],
+    formulaExplanation:
+      "The revised Harris-Benedict equation estimates BMR: males 88.362 + 13.397 x weight + 4.799 x height - 5.677 x age; females 447.593 + 9.247 x weight + 3.098 x height - 4.33 x age, with weight in kg, height in cm, and age in years.",
+    variables: [
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which selects the male or female equation constants.",
+      },
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, subtracted using the sex-specific age coefficient.",
+      },
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Weight in kilograms, multiplied by the sex-specific weight coefficient.",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters, multiplied by the sex-specific height coefficient.",
+      },
+    ],
     clinicalPurpose:
       "Estimates basal metabolic rate (BMR) using the Harris-Benedict equation for nutritional assessment and calorie planning.",
     howToUse: [
@@ -2839,7 +3675,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Nutrition Literature",
       reference: "Roza AM, Shizgal HM. Am J Clin Nutr. 1984;40(1):168-182.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1919",
       references: [
         "Harris JA, Benedict FG. Carnegie Institution of Washington. 1919.",
@@ -2865,6 +3700,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "sodium-deficit": {
+    commonMistakes: [
+      "Relying on this calculated deficit as the sole guide in acute severe symptomatic hyponatremia instead of hypertonic saline and institutional protocols.",
+      "Entering a desired sodium that implies correction beyond safe limits, a constraint the formula itself does not enforce.",
+      "Ignoring ongoing free water intake and losses when turning the estimated deficit into a replacement plan."
+    ],
+    formulaExplanation:
+      "Sodium deficit = total body water x (desired sodium - current sodium), where total body water is estimated as 0.6 x weight (kg). Negative values are reported as zero.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms; total body water is estimated as 0.6 x weight.",
+      },
+      {
+        inputId: "currentNa",
+        label: "Current Sodium",
+        explanation: "Measured serum sodium in mmol/L, subtracted from the desired sodium.",
+      },
+      {
+        inputId: "desiredNa",
+        label: "Desired Sodium",
+        explanation: "Target serum sodium in mmol/L, the minuend in the sodium difference.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the total sodium deficit to guide hyponatremia correction, helping clinicians plan replacement while avoiding over-correction.",
     howToUse: [
@@ -2921,7 +3780,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Nephrology Literature",
       reference: "Adrogue HJ, Madias NE. N Engl J Med. 2000;342(21):1581-1589.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2000",
       references: [
         "Adrogue HJ, Madias NE. N Engl J Med. 2000;342(21):1581-1589.",
@@ -2964,6 +3822,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "heart-rate": {
+    commonMistakes: [
+      "Entering the count interval in seconds when the formula divides beats by minutes.",
+      "Diagnosing a rhythm abnormality from the calculated rate alone, since the number does not identify the underlying rhythm.",
+      "Interpreting a resting rate below 60 as pathology in a well-trained athlete without considering fitness and medications."
+    ],
+    formulaExplanation:
+      "Heart rate is the number of beats divided by the elapsed time in minutes (HR = beats / minutes).",
+    variables: [
+      {
+        inputId: "beats",
+        label: "Number of Beats",
+        explanation: "Number of heart beats counted during the measurement interval.",
+      },
+      {
+        inputId: "time",
+        label: "Time",
+        explanation: "Duration of the measurement in minutes, used as the divisor.",
+      },
+    ],
     clinicalPurpose:
       "Calculates heart rate from the number of beats counted over a measured time interval.",
     howToUse: [
@@ -3013,7 +3890,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Cardiology Literature",
       reference: "AHA/ACC Guidelines on heart rhythm and rate assessment.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       references: [
         "AHA/ACC/HRS Guideline. Circulation. 2018.",
@@ -3049,6 +3925,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "waist-to-hip-ratio": {
+    commonMistakes: [
+      "Dividing hip circumference by waist circumference inverts the ratio and can turn a high-risk result into the low-risk range.",
+      "Applying the 0.85 female threshold to a man or the 0.90 male threshold to a woman misclassifies risk because the cutoffs are sex-specific.",
+      "Measuring the waist at the navel instead of at the rib-to-crest midpoint shifts the ratio so it cannot be compared with the 0.90 and 0.85 cutoffs."
+    ],
+    formulaExplanation:
+      "Waist-to-hip ratio = waist circumference / hip circumference. Risk thresholds are sex-specific.",
+    variables: [
+      {
+        inputId: "waist",
+        label: "Waist Circumference",
+        explanation: "Waist circumference in cm, used as the numerator.",
+      },
+      {
+        inputId: "hip",
+        label: "Hip Circumference",
+        explanation: "Hip circumference in cm, used as the denominator.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, used to apply sex-specific risk thresholds for central adiposity.",
+      },
+    ],
     clinicalPurpose:
       "Calculates waist-to-hip ratio (WHR) to assess central adiposity and cardiovascular risk.",
     howToUse: [
@@ -3104,7 +4004,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "WHO",
       reference: "WHO. Waist circumference and waist-hip ratio. Geneva: WHO; 2008.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2008",
       references: [
         "WHO. Waist circumference and waist-hip ratio. 2008.",
@@ -3141,6 +4040,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "calorie-requirement": {
+    commonMistakes: [
+      "Choosing an activity factor outside the supported 1 to 2.5 range, which the calculator does not validate.",
+      "Ignoring fever or ongoing illness when applying the result, since neither is reflected in the BMR-times-factor calculation.",
+      "Entering a BMR that was not derived from a validated estimate or measurement, because the output inherits that error directly."
+    ],
+    formulaExplanation:
+      "Estimated daily calorie requirement = BMR x activity factor, where the activity factor scales basal energy expenditure for the patient's physical activity level.",
+    variables: [
+      {
+        inputId: "bmr",
+        label: "Basal Metabolic Rate",
+        explanation: "Basal metabolic rate in kcal/day, multiplied by the activity factor.",
+      },
+      {
+        inputId: "activity",
+        label: "Activity Factor",
+        explanation: "Multiplier reflecting physical activity level applied to the BMR.",
+      },
+    ],
     clinicalPurpose:
       "Estimates total daily calorie requirement by multiplying an individual's basal metabolic rate (BMR) by an activity factor.",
     howToUse: [
@@ -3197,7 +4115,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "FAO/WHO/UNU & IOM",
       reference: "FAO/WHO/UNU Human Energy Requirements. 2004.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2004",
       references: [
         "FAO/WHO/UNU. Human Energy Requirements. 2004.",
@@ -3221,6 +4138,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "fluid-requirement": {
+    commonMistakes: [
+      "Ordering the estimated volume unchanged for a patient with fever, vomiting, or diarrhea, who has ongoing losses the rule ignores.",
+      "Reading the result as a complete prescription, since it specifies neither electrolyte content nor administration route.",
+      "Applying the fixed per-kilogram estimate in heart failure or renal impairment, where fluid restriction may be required."
+    ],
+    formulaExplanation:
+      "Estimated daily fluid requirement = weight (kg) x 35 mL/kg/day.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms, multiplied by 35 mL/kg/day.",
+      },
+    ],
     clinicalPurpose:
       "Estimates a simple daily maintenance fluid requirement using a fixed 35 mL/kg/day rule based on body weight.",
     howToUse: [
@@ -3275,7 +4206,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "NICE CG174",
       reference: "NICE. Intravenous fluid therapy in adults in hospital. CG174; 2013.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2017",
       references: [
         "NICE CG174. Intravenous fluid therapy in adults in hospital. 2013.",
@@ -3304,6 +4234,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "maintenance-fluids": {
+    commonMistakes: [
+      "Applying 100 mL/kg to the entire body weight instead of stepping down to 50 mL/kg after the first 10 kg and 20 mL/kg above 20 kg.",
+      "Infusing the calculated daily volume as an hourly rate, which would deliver many times the intended maintenance amount.",
+      "Using the Holliday-Segar total to replace an existing fluid deficit, because the rule covers maintenance needs only."
+    ],
+    formulaExplanation:
+      "The Holliday-Segar method estimates daily maintenance fluids: 100 mL/kg for the first 10 kg, 50 mL/kg for the next 10 kg, and 20 mL/kg for each kilogram above 20 kg.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms, used to select the Holliday-Segar rate tier.",
+      },
+    ],
     clinicalPurpose:
       "Estimates daily maintenance fluid volume using the weight-based 100/50/20 rule: 100 mL/kg for the first 10 kg, 50 mL/kg for the next 10 kg, and 20 mL/kg thereafter.",
     howToUse: [
@@ -3359,7 +4303,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Holliday & Segar",
       reference: "Holliday MA, Segar WE. Pediatrics. 1957;19(5):823-832.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1957",
       references: [
         "Holliday MA, Segar WE. Pediatrics. 1957;19(5):823-832.",
@@ -3394,6 +4337,55 @@ export const clinicalContentRegistry: Record<
   },
 
   "perc-rule": {
+    commonMistakes: [
+      "Applying the PERC rule to a patient with intermediate or high pre-test probability, in whom a negative result is not valid.",
+      "Counting seven of the eight criteria as enough to rule out pulmonary embolism, when all eight must be met.",
+      "Interpreting a PERC-positive result as confirming pulmonary embolism, when it only means further testing is needed."
+    ],
+    formulaExplanation:
+      "The PERC rule counts how many of eight criteria are met (age under 50, heart rate under 100, oxygen saturation 95% or higher, no hemoptysis, no estrogen use, no prior DVT/PE, no unilateral leg swelling, no recent surgery/trauma). When all 8 criteria are met (PERC negative) PE can be considered ruled out in a patient with low pre-test probability.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age less than 50 years",
+        explanation: "Select Yes when age is under 50; Yes counts as one criterion met.",
+      },
+      {
+        inputId: "heart-rate",
+        label: "Heart rate less than 100 bpm",
+        explanation: "Select Yes when heart rate is under 100 bpm; Yes counts as one criterion met.",
+      },
+      {
+        inputId: "oxygen-saturation",
+        label: "Oxygen saturation >= 95% on room air",
+        explanation: "Select Yes when SpO2 is 95% or higher on room air; Yes counts as one criterion met.",
+      },
+      {
+        inputId: "hemoptysis",
+        label: "No hemoptysis",
+        explanation: "Select Yes when there is no hemoptysis; Yes counts as one criterion met.",
+      },
+      {
+        inputId: "estrogen",
+        label: "No estrogen use",
+        explanation: "Select Yes when there is no estrogen use; Yes counts as one criterion met.",
+      },
+      {
+        inputId: "prior-dvt-pe",
+        label: "No prior DVT or PE",
+        explanation: "Select Yes when there is no prior DVT or PE; Yes counts as one criterion met.",
+      },
+      {
+        inputId: "leg-swelling",
+        label: "No unilateral leg swelling",
+        explanation: "Select Yes when there is no unilateral leg swelling; Yes counts as one criterion met.",
+      },
+      {
+        inputId: "surgery-trauma",
+        label: "No surgery/trauma requiring hospitalization in past 4 weeks",
+        explanation: "Select Yes when there has been no recent surgery or trauma; Yes counts as one criterion met.",
+      },
+    ],
     clinicalPurpose:
       "Determines whether pulmonary embolism can be safely ruled out in a patient with low pre-test probability, without D-dimer or imaging.",
     howToUse: [
@@ -3446,7 +4438,6 @@ export const clinicalContentRegistry: Record<
       source: "PERC Rule Derivation / Validation",
       reference:
         "Kline JA, et al. Clinical criteria to prevent unnecessary diagnostic testing in emergency department patients with suspected pulmonary embolism. J Thromb Haemost. 2004;2(8):1247-1255.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -3491,6 +4482,50 @@ export const clinicalContentRegistry: Record<
   },
 
   "wells-pe": {
+    commonMistakes: [
+      "Awarding 1 point for clinical signs of DVT when the Wells PE item is worth 3 points, which underestimates the total.",
+      "Using the two-tier cutoff of 4 points for the three-tier interpretation, which uses 0 to 1, 2 to 6, and over 6.",
+      "Treating a score of 4 or less as excluding pulmonary embolism without a high-sensitivity D-dimer, when it only identifies candidacy for testing."
+    ],
+    formulaExplanation:
+      "The Wells PE score assigns 3 points each for clinical signs of DVT and for PE being the most likely diagnosis, 1.5 points each for heart rate over 100 bpm, immobilization/surgery, and prior DVT/PE, and 1 point each for hemoptysis and active malignancy. A two-tier interpretation treats a score above 4 as PE likely.",
+    variables: [
+      {
+        inputId: "dvt-signs",
+        label: "Clinical signs/symptoms of DVT",
+        explanation: "Leg swelling or pain on palpation suggesting DVT; Yes adds 3 points.",
+      },
+      {
+        inputId: "pe-most-likely",
+        label: "PE judged to be the most likely diagnosis",
+        explanation: "Clinical gestalt that PE is the most likely diagnosis; Yes adds 3 points.",
+      },
+      {
+        inputId: "tachycardia",
+        label: "Heart rate > 100 bpm",
+        explanation: "Heart rate greater than 100 bpm; Yes adds 1.5 points.",
+      },
+      {
+        inputId: "immobilization",
+        label: "Immobilization >= 3 days or surgery within previous 4 weeks",
+        explanation: "Immobilization or recent surgery; Yes adds 1.5 points.",
+      },
+      {
+        inputId: "prior-dvt-pe",
+        label: "Previous objectively diagnosed DVT or PE",
+        explanation: "Prior documented DVT or PE; Yes adds 1.5 points.",
+      },
+      {
+        inputId: "hemoptysis",
+        label: "Hemoptysis",
+        explanation: "Hemoptysis; Yes adds 1 point.",
+      },
+      {
+        inputId: "malignancy",
+        label: "Active malignancy",
+        explanation: "Active malignancy treated within 6 months or palliative; Yes adds 1 point.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the pre-test probability of pulmonary embolism to guide D-dimer testing and imaging decisions.",
     howToUse: [
@@ -3542,7 +4577,6 @@ export const clinicalContentRegistry: Record<
       source: "Wells PE Criteria",
       reference:
         "Wells PS, et al. Excluding pulmonary embolism at the bedside without diagnostic imaging: management of patients with suspected pulmonary embolism presenting to the emergency department by using a simple clinical model and D-dimer. Ann Intern Med. 2001;135(2):98-107.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -3583,10 +4617,83 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support purposes only. Wells scoring guides, but does not replace, diagnostic testing and clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. The Wells PE score guides, but does not replace, D-dimer or CT pulmonary angiography and clinical judgment.",
   },
 
   "wells-dvt": {
+    commonMistakes: [
+      "Adding 2 points when an alternative diagnosis is at least as likely, when the item should subtract 2 points from the total.",
+      "Using the two-tier cutoff of 2 points for the three-tier reading, which classifies 1 to 2 as moderate rather than DVT likely.",
+      "Resetting a negative total to 0 instead of allowing scores from -2 to 9, which can misclassify the pre-test probability."
+    ],
+    faq: [
+      {
+        question: "What is the difference between the two-tier and the three-tier Wells DVT interpretation?",
+        answer: "The two-tier version, which is most commonly used, treats a score of 1 or less as DVT unlikely and 2 or more as DVT likely. The three-tier version instead classifies 0 or less as low, 1 to 2 as moderate, and 3 or more as high probability. Both use the same nine items plus a subtraction of 2 points when an alternative diagnosis is at least as likely. Choose one system and apply it consistently, because a negative D-dimer safely excludes DVT only in the DVT-unlikely group."
+      },
+      {
+        question: "How does the alternative diagnosis item change the Wells DVT score?",
+        answer: "It is the only negative item. When an alternative diagnosis is judged at least as likely as DVT, the score subtracts 2 points from the total of the nine positive items. Because this judgment is subjective, it can move a patient across the two-tier cutoff, so it should be applied deliberately. Without this subtraction the score can be overestimated and a patient who could safely have D-dimer testing may instead be sent for compression ultrasound."
+      },
+      {
+        question: "Does a Wells DVT score of 1 or less rule out DVT by itself?",
+        answer: "No. A score of 1 or less means DVT is unlikely, which makes the patient suitable for a high-sensitivity D-dimer. Only a negative D-dimer in that group safely excludes DVT. When clinical suspicion remains high, a low score does not exclude DVT and imaging should still be considered. The score estimates pre-test probability; it is not a stand-alone diagnostic test."
+      }
+    ],
+    formulaExplanation:
+      "The Wells DVT score adds 1 point for each of nine clinical features (active cancer, paralysis/paresis, bedridden or recent surgery, deep-vein tenderness, entire-leg swelling, calf swelling over 3 cm, pitting edema, collateral superficial veins, and previous DVT) and subtracts 2 points if an alternative diagnosis is at least as likely. A score of 2 or more is DVT likely (two-tier).",
+    variables: [
+      {
+        inputId: "active-cancer",
+        label: "Active cancer",
+        explanation: "Active cancer treated within 6 months or palliative; Yes adds 1 point.",
+      },
+      {
+        inputId: "paralysis",
+        label: "Paralysis, paresis, or recent plaster immobilization of the lower extremities",
+        explanation: "Recent paralysis, paresis, or leg immobilization; Yes adds 1 point.",
+      },
+      {
+        inputId: "bedridden",
+        label: "Recently bedridden > 3 days or major surgery within previous 12 weeks",
+        explanation: "Recent bed rest or major surgery; Yes adds 1 point.",
+      },
+      {
+        inputId: "localized-tenderness",
+        label: "Localized tenderness along the deep venous system",
+        explanation: "Tenderness along the deep venous system; Yes adds 1 point.",
+      },
+      {
+        inputId: "entire-leg-swollen",
+        label: "Entire leg swollen",
+        explanation: "Swelling of the entire leg; Yes adds 1 point.",
+      },
+      {
+        inputId: "calf-swelling",
+        label: "Calf swelling > 3 cm compared with the asymptomatic leg",
+        explanation: "Calf swelling exceeding the other leg by more than 3 cm; Yes adds 1 point.",
+      },
+      {
+        inputId: "pitting-edema",
+        label: "Pitting edema confined to the symptomatic leg",
+        explanation: "Pitting edema in the symptomatic leg; Yes adds 1 point.",
+      },
+      {
+        inputId: "collateral-veins",
+        label: "Collateral superficial veins (non-varicose)",
+        explanation: "Non-varicose collateral superficial veins; Yes adds 1 point.",
+      },
+      {
+        inputId: "previous-dvt",
+        label: "Previously documented DVT",
+        explanation: "Prior documented DVT; Yes adds 1 point.",
+      },
+      {
+        inputId: "alternative-diagnosis",
+        label: "Alternative diagnosis at least as likely as DVT",
+        explanation: "An alternative diagnosis at least as likely as DVT; Yes subtracts 2 points.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the pre-test probability of deep vein thrombosis to guide D-dimer testing and compression ultrasound.",
     howToUse: [
@@ -3640,7 +4747,6 @@ export const clinicalContentRegistry: Record<
       source: "Wells DVT Criteria",
       reference:
         "Wells PS, et al. Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. N Engl J Med. 2003;349(13):1227-1235.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -3661,10 +4767,44 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support purposes only. Wells scoring guides, but does not replace, diagnostic testing and clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. The Wells DVT score guides, but does not replace, compression ultrasound and clinical judgment.",
   },
 
   "heart-score": {
+    commonMistakes: [
+      "Scoring the history item only by whether chest pain is present, when it reflects how suspicious the presentation is for acute coronary syndrome.",
+      "Applying the HEART score to a patient with ST-elevation myocardial infarction, who needs immediate reperfusion and is outside its intended use.",
+      "Treating a low HEART score as ruling out acute coronary syndrome without serial troponins and clinical assessment."
+    ],
+    formulaExplanation:
+      "The HEART score sums five components each scored 0-2: history, ECG, age, risk factors, and troponin, for a total of 0-10. Scores of 0-3 are low, 4-6 moderate, and 7-10 high risk for 6-week major adverse cardiac events.",
+    variables: [
+      {
+        inputId: "history",
+        label: "History (suspicion of ACS)",
+        explanation: "Clinical suspicion of ACS, scored 0 (slightly/non-suspicious), 1 (moderately suspicious), or 2 (highly suspicious).",
+      },
+      {
+        inputId: "ecg",
+        label: "ECG findings",
+        explanation: "ECG, scored 0 (normal), 1 (non-specific repolarization changes), or 2 (significant ST-segment deviation).",
+      },
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age, scored 0 (under 45), 1 (45-64), or 2 (65 or older).",
+      },
+      {
+        inputId: "risk-factors",
+        label: "Risk factors",
+        explanation: "Cardiac risk factors, scored 0 (none), 1 (1-2 factors), or 2 (3 or more factors or known atherosclerotic disease).",
+      },
+      {
+        inputId: "troponin",
+        label: "Troponin",
+        explanation: "Troponin relative to the assay upper reference limit, scored 0 (normal), 1 (1-3x), or 2 (over 3x).",
+      },
+    ],
     clinicalPurpose:
       "Risk-stratifies undifferentiated chest pain in the emergency department for 6-week risk of major adverse cardiac events (MACE).",
     howToUse: [
@@ -3714,7 +4854,6 @@ export const clinicalContentRegistry: Record<
       source: "HEART Score Validation",
       reference:
         "Backus BE, et al. A prospective validation of the HEART score for chest pain patients at the emergency department. Int J Cardiol. 2013;168(3):2153-2158.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -3759,6 +4898,45 @@ export const clinicalContentRegistry: Record<
   },
 
   "sofa-score": {
+    commonMistakes: [
+      "Using SOFA as an emergency department screening test rather than qSOFA for initial sepsis screening.",
+      "Calling any SOFA elevation sepsis, when sepsis requires an acute rise of at least 2 points from baseline with suspected infection.",
+      "Entering the platelet count in cells per microliter instead of the x10^9/L units the coagulation subscore expects, which distorts the score."
+    ],
+    formulaExplanation:
+      "The SOFA score sums six organ-system subscores each ranging 0-4: respiration (PaO2/FiO2 selection), coagulation (platelet count), liver (bilirubin), cardiovascular (MAP/vasopressor selection), central nervous system (GCS), and renal (creatinine), for a total of 0-24. Higher totals indicate more severe organ dysfunction.",
+    variables: [
+      {
+        inputId: "pao2-fio2",
+        label: "PaO2/FiO2 ratio",
+        explanation: "Respiratory oxygenation, scored 0 (>= 400 mmHg) up to 4 (< 100 mmHg with ventilation).",
+      },
+      {
+        inputId: "platelets",
+        label: "Platelet count",
+        explanation: "Platelet count in x10^9/L, scored 0 (>= 150) to 4 (< 20).",
+      },
+      {
+        inputId: "bilirubin",
+        label: "Bilirubin",
+        explanation: "Serum bilirubin in mg/dL, scored 0 (< 1.2) to 4 (>= 12).",
+      },
+      {
+        inputId: "cardiovascular",
+        label: "Cardiovascular status",
+        explanation: "Blood pressure/vasopressor requirement, scored 0 (MAP >= 70) to 4 (high-dose vasopressors).",
+      },
+      {
+        inputId: "gcs",
+        label: "Glasgow Coma Scale",
+        explanation: "GCS in points (3-15), scored 0 (GCS 15) to 4 (GCS < 6).",
+      },
+      {
+        inputId: "creatinine",
+        label: "Creatinine",
+        explanation: "Serum creatinine in mg/dL, scored 0 (< 1.2) to 4 (>= 5.0).",
+      },
+    ],
     clinicalPurpose:
       "Quantifies organ dysfunction across six organ systems in critically ill patients and supports the Sepsis-3 definition of sepsis.",
     howToUse: [
@@ -3809,7 +4987,6 @@ export const clinicalContentRegistry: Record<
       source: "Sepsis-3 / Original SOFA Description",
       reference:
         "Vincent JL, et al. The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure. Intensive Care Med. 1996;22(7):707-710.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -3856,6 +5033,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "sirs-criteria": {
+    commonMistakes: [
+      "Using SIRS criteria alone to diagnose sepsis without confirming a suspected infection and organ dysfunction.",
+      "Counting a temperature of exactly 38 C as meeting the fever criterion, which requires a value above 38 C or below 36 C.",
+      "Ignoring band forms above 10 percent when the white cell count is otherwise normal, although the band criterion alone can satisfy that item."
+    ],
+    formulaExplanation:
+      "SIRS counts how many of four criteria are met: temperature above 38 C or below 36 C, heart rate above 90 bpm, respiratory rate above 20 breaths/min, and white blood cell count above 12 or below 4 x10^9/L. Two or more criteria indicate SIRS.",
+    variables: [
+      {
+        inputId: "temperature",
+        label: "Temperature",
+        explanation: "Temperature in C; above 38 C or below 36 C counts as one criterion.",
+      },
+      {
+        inputId: "heart-rate",
+        label: "Heart rate",
+        explanation: "Heart rate in bpm; above 90 counts as one criterion.",
+      },
+      {
+        inputId: "respiratory-rate",
+        label: "Respiratory rate",
+        explanation: "Respiratory rate in breaths/min; above 20 counts as one criterion.",
+      },
+      {
+        inputId: "wbc",
+        label: "White blood cell count",
+        explanation: "WBC in x10^9/L; above 12 or below 4 counts as one criterion.",
+      },
+    ],
     clinicalPurpose:
       "Identifies the systemic inflammatory response syndrome by counting how many of four physiologic criteria are met.",
     howToUse: [
@@ -3902,7 +5108,6 @@ export const clinicalContentRegistry: Record<
       source: "SCCM/ESICM Consensus Definitions",
       reference:
         "Bone RC, et al. Definitions for sepsis and organ failure and guidelines for the use of innovative therapies in sepsis. Chest. 1992;101(6):1644-1655.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -3947,6 +5152,54 @@ export const clinicalContentRegistry: Record<
   },
 
   "crb-65": {
+    commonMistakes: [
+      "Counting a systolic pressure below 90 mmHg and a diastolic pressure of 60 mmHg or lower as two separate points, when they share one criterion.",
+      "Failing to award the age point to a patient who is exactly 65 years old, when age 65 or older scores a point.",
+      "Treating a CRB-65 score of 0 as ruling out severe pneumonia without assessing oxygenation, which the score does not capture."
+    ],
+    faq: [
+      {
+        question: "How does CRB-65 differ from CURB-65?",
+        answer: "CRB-65 is the laboratory-free version of CURB-65. Both score confusion, respiratory rate, blood pressure, and age 65 or older, but CURB-65 adds a urea component. Dropping urea means CRB-65 can be completed in primary care or out of hospital without blood tests, at the cost of slightly reduced discrimination. The four items and the 0 to 4 total are otherwise the same, so the two scores should not be mixed."
+      },
+      {
+        question: "What does each CRB-65 score mean for where the patient is treated?",
+        answer: "A score of 0 indicates low mortality risk, about 1 percent, and outpatient care can be considered. A score of 1 to 2 indicates intermediate risk, about 8 percent, and hospital admission should be considered. A score of 3 to 4 indicates high risk, about 30 percent, and warrants urgent admission with consideration of ICU care. These estimates support but do not replace clinical judgment about the individual patient."
+      },
+      {
+        question: "Why does CRB-65 give a point to every patient aged 65 or older?",
+        answer: "Age 65 or older is one of the four criteria in the score, so it adds a point by design. This means an otherwise stable older patient can score 1 without having any abnormal physiology, which is a recognized limitation of the tool. The age point should be interpreted alongside the clinical picture, and because CRB-65 does not measure oxygenation, oxygen requirements should always be assessed separately."
+      }
+    ],
+    formulaExplanation:
+      "CRB-65 adds one point each for new confusion, respiratory rate 30/min or higher, systolic blood pressure below 90 mmHg or diastolic 60 mmHg or lower, and age 65 years or older, for a total of 0-4. Higher scores indicate greater pneumonia mortality risk.",
+    variables: [
+      {
+        inputId: "confusion",
+        label: "New mental confusion",
+        explanation: "New-onset confusion; Yes adds one point.",
+      },
+      {
+        inputId: "respiratory-rate",
+        label: "Respiratory rate",
+        explanation: "Respiratory rate in breaths/min; 30 or higher adds one point.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic blood pressure",
+        explanation: "Systolic blood pressure in mmHg; below 90 adds one point.",
+      },
+      {
+        inputId: "dbp",
+        label: "Diastolic blood pressure",
+        explanation: "Diastolic blood pressure in mmHg; 60 or lower adds one point.",
+      },
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years; 65 or older adds one point.",
+      },
+    ],
     clinicalPurpose:
       "Stratifies severity and mortality risk in community-acquired pneumonia without requiring laboratory testing.",
     howToUse: [
@@ -4004,11 +5257,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support purposes only. Site-of-care decisions must integrate comorbidities, social factors, and clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. CRB-65 guides site-of-care triage but does not replace assessment of oxygenation and hemodynamic stability.",
     evidence: {
       source: "Emergency Medicine / Pulmonology",
       reference: "Lim WS, et al. Thorax. 2003;58(5):377-382.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2003",
       updatedAt: "2026-08",
       references: [
@@ -4019,6 +5271,115 @@ export const clinicalContentRegistry: Record<
   },
 
   "psi-port": {
+    commonMistakes: [
+      "Forgetting to subtract 10 points for female sex, which inflates the total and can push the patient into a higher risk class.",
+      "Assigning class I to a patient with any comorbidity, when class I requires age under 50, no comorbidities, and no risk findings.",
+      "Entering the BUN in mmol/L instead of the mg/dL units the score expects, which miscalculates the laboratory points."
+    ],
+    formulaExplanation:
+      "The Pneumonia Severity Index starts with points equal to age (minus 10 for women), then adds weighted points for comorbidity/risk items (nursing-home 10, neoplastic disease 30, liver disease 20, CHF 10, cerebrovascular 10, renal disease 10, altered mental status 20, pleural effusion 10), vital-sign abnormalities (respiratory rate >= 30: 20, systolic BP < 90: 20, temperature < 35 or >= 40 C: 15, heart rate >= 125: 10), and laboratory abnormalities (pH < 7.35: 30, BUN >= 30: 20, sodium < 130: 20, glucose >= 250: 10, hematocrit < 30: 10, PaO2 < 60: 10). The total assigns a PORT risk class I-V.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, added directly to the total score.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Female sex subtracts 10 points; male sex adds none.",
+      },
+      {
+        inputId: "nursing-home",
+        label: "Nursing home resident",
+        explanation: "Nursing home residency; Yes adds 10 points.",
+      },
+      {
+        inputId: "neoplastic-disease",
+        label: "Neoplastic disease",
+        explanation: "Neoplastic disease; Yes adds 30 points.",
+      },
+      {
+        inputId: "liver-disease",
+        label: "Liver disease",
+        explanation: "Liver disease; Yes adds 20 points.",
+      },
+      {
+        inputId: "chf",
+        label: "Congestive heart failure",
+        explanation: "Congestive heart failure; Yes adds 10 points.",
+      },
+      {
+        inputId: "cerebrovascular",
+        label: "Cerebrovascular disease",
+        explanation: "Cerebrovascular disease; Yes adds 10 points.",
+      },
+      {
+        inputId: "renal-disease",
+        label: "Renal disease",
+        explanation: "Renal disease; Yes adds 10 points.",
+      },
+      {
+        inputId: "ams",
+        label: "Altered mental status",
+        explanation: "Altered mental status; Yes adds 20 points.",
+      },
+      {
+        inputId: "respiratory-rate",
+        label: "Respiratory rate",
+        explanation: "Respiratory rate in breaths/min; 30 or higher adds 20 points.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic blood pressure",
+        explanation: "Systolic blood pressure in mmHg; below 90 adds 20 points.",
+      },
+      {
+        inputId: "temperature",
+        label: "Temperature",
+        explanation: "Temperature in C; below 35 or 40 or higher adds 15 points.",
+      },
+      {
+        inputId: "heart-rate",
+        label: "Heart rate",
+        explanation: "Heart rate in bpm; 125 or higher adds 10 points.",
+      },
+      {
+        inputId: "ph",
+        label: "Arterial pH",
+        explanation: "Arterial pH; below 7.35 adds 30 points.",
+      },
+      {
+        inputId: "bun",
+        label: "BUN",
+        explanation: "Blood urea nitrogen in mg/dL; 30 or higher adds 20 points.",
+      },
+      {
+        inputId: "sodium",
+        label: "Sodium",
+        explanation: "Serum sodium in mmol/L; below 130 adds 20 points.",
+      },
+      {
+        inputId: "glucose",
+        label: "Glucose",
+        explanation: "Serum glucose in mg/dL; 250 or higher adds 10 points.",
+      },
+      {
+        inputId: "hematocrit",
+        label: "Hematocrit",
+        explanation: "Hematocrit in percent; below 30 adds 10 points.",
+      },
+      {
+        inputId: "pao2",
+        label: "Arterial PaO2",
+        explanation: "Arterial PaO2 in mmHg; below 60 adds 10 points.",
+      },
+      {
+        inputId: "pleural-effusion",
+        label: "Pleural effusion on imaging",
+        explanation: "Pleural effusion; Yes adds 10 points.",
+      },
+    ],
     clinicalPurpose:
       "Predicts 30-day mortality in community-acquired pneumonia to guide site-of-care decisions, from outpatient to ICU admission.",
     howToUse: [
@@ -4112,11 +5473,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support purposes only. Site-of-care decisions must integrate comorbidities, social factors, and clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. PSI/PORT guides site-of-care triage but does not replace clinical judgment about comorbidities, social factors, and goals of care.",
     evidence: {
       source: "Emergency Medicine / Pulmonology",
       reference: "Fine MJ, et al. N Engl J Med. 1997;336(4):243-250.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1997",
       updatedAt: "2026-08",
       references: [
@@ -4127,6 +5487,44 @@ export const clinicalContentRegistry: Record<
   },
 
   "rts": {
+    commonMistakes: [
+      "Entering the raw Glasgow Coma Scale, systolic pressure, and respiratory rate into the weighted equation instead of converting each to its 0-4 code, which produces a value outside the 0-7.8408 range.",
+      "Treating an RTS at or above 4 as ruling out serious injury, even though normal vital signs at a single time point can mask severe internal injury.",
+      "Using the RTS in non-trauma medical emergencies or as the sole triage determinant while ignoring anatomical injury and injury mechanism."
+    ],
+    faq: [
+      {
+        question: "What does the Revised Trauma Score measure?",
+        answer: "It combines coded Glasgow Coma Scale, systolic blood pressure, and respiratory rate into a weighted physiologic score. Each variable is first converted to a 0-4 code, then weighted, giving a total between 0 and 7.8408. Lower totals indicate greater physiologic derangement and worse predicted survival. It is designed for trauma triage and outcome prediction, not for medical emergencies outside trauma."
+      },
+      {
+        question: "How do I convert the vital signs into RTS codes?",
+        answer: "The Glasgow Coma Scale is coded 4 for 13-15, 3 for 9-12, 2 for 6-8, 1 for 4-5, and 0 for 3. Systolic pressure is coded 4 above 89, 3 for 76-89, 2 for 50-75, 1 for 1-49, and 0 for 0. Respiratory rate is coded 4 for 10-29, 3 above 29, 2 for 6-9, 1 for 1-5, and 0 for 0."
+      },
+      {
+        question: "What does an RTS below 4 mean?",
+        answer: "An RTS below 4 is associated with a predicted survival probability below 70% and supports consideration of transfer to a trauma center. Values near the top of the range indicate only minor physiologic derangement. Because the score reflects a single time point, it must be repeated as the patient evolves, and resuscitation should never be delayed to calculate it."
+      }
+    ],
+    formulaExplanation:
+      "The Revised Trauma Score weights coded values of three physiologic variables: RTS = 0.9368 x GCS code + 0.7326 x systolic BP code + 0.2908 x respiratory rate code. Each variable is converted to a 0-4 code before weighting; lower totals predict worse outcome.",
+    variables: [
+      {
+        inputId: "gcs",
+        label: "Glasgow Coma Scale",
+        explanation: "GCS in points (3-15), coded 0-4 (>= 13 codes to 4, <= 3 codes to 0) with weight 0.9368.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic blood pressure",
+        explanation: "Systolic blood pressure in mmHg, coded 0-4 (>= 90 codes to 4) with weight 0.7326.",
+      },
+      {
+        inputId: "rr",
+        label: "Respiratory rate",
+        explanation: "Respiratory rate in breaths/min, coded 0-4 (10-29 codes to 4) with weight 0.2908.",
+      },
+    ],
     clinicalPurpose:
       "Provides an objective, coded measure of physiologic derangement in trauma patients for triage and outcome prediction.",
     howToUse: [
@@ -4181,7 +5579,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Trauma / Emergency Medicine",
       reference: "Champion HR, et al. J Trauma. 1989;29(5):623-629.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1989",
       updatedAt: "2026-08",
       references: [
@@ -4191,6 +5588,60 @@ export const clinicalContentRegistry: Record<
   },
 
   "parkland-formula": {
+    commonMistakes: [
+      "Including first-degree (superficial) burns when summing the burn-region percentages, which inflates total TBSA and overestimates the 24-hour fluid volume.",
+      "Applying the Parkland estimate to a child under 30 kg instead of using a pediatric burn formula with different maintenance needs.",
+      "Giving the calculated 24-hour volume as a fixed prescription rather than titrating to urine output of 0.5-1.0 mL/kg/h."
+    ],
+    formulaExplanation:
+      "The Parkland formula estimates 24-hour crystalloid resuscitation as 4 mL x body weight (kg) x total body surface area burned (%). Half of the total is given in the first 8 hours and half over the following 16 hours. Total TBSA is the sum of the entered burn-region percentages, capped at 100%.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kg, multiplied by 4 mL and by total TBSA.",
+      },
+      {
+        inputId: "head",
+        label: "Head",
+        explanation: "Percentage of total body surface area burned on the head, added into total TBSA.",
+      },
+      {
+        inputId: "anterior-trunk",
+        label: "Anterior trunk",
+        explanation: "Percentage of TBSA burned on the anterior trunk.",
+      },
+      {
+        inputId: "posterior-trunk",
+        label: "Posterior trunk",
+        explanation: "Percentage of TBSA burned on the posterior trunk.",
+      },
+      {
+        inputId: "right-upper-limb",
+        label: "Right upper limb",
+        explanation: "Percentage of TBSA burned on the right upper limb.",
+      },
+      {
+        inputId: "left-upper-limb",
+        label: "Left upper limb",
+        explanation: "Percentage of TBSA burned on the left upper limb.",
+      },
+      {
+        inputId: "right-lower-limb",
+        label: "Right lower limb",
+        explanation: "Percentage of TBSA burned on the right lower limb.",
+      },
+      {
+        inputId: "left-lower-limb",
+        label: "Left lower limb",
+        explanation: "Percentage of TBSA burned on the left lower limb.",
+      },
+      {
+        inputId: "perineum",
+        label: "Perineum",
+        explanation: "Percentage of TBSA burned on the perineum.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the initial crystalloid resuscitation volume for adult thermal burns using weight and total body surface area burned.",
     howToUse: [
@@ -4277,7 +5728,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Emergency Medicine / Burns",
       reference: "Baxter CR. Clin Plast Surg. 1974;1(4):693-709.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1974",
       updatedAt: "2026-08",
       references: [
@@ -4288,6 +5738,50 @@ export const clinicalContentRegistry: Record<
   },
 
   "timi": {
+    commonMistakes: [
+      "Applying this unstable angina / NSTEMI score to a patient with ST-elevation MI, who needs a STEMI-specific risk tool instead.",
+      "Interpreting a low score as excluding myocardial infarction rather than as a lower 14-day composite risk estimate.",
+      "Omitting the aspirin-use-in-the-past-7-days item or the elevated troponin item when tallying the seven criteria."
+    ],
+    formulaExplanation:
+      "The TIMI risk score adds one point for each of seven criteria: age 65 or older, three or more CAD risk factors, known coronary disease with stenosis of 50% or more, aspirin use within 7 days, two or more anginal events in 24 hours, ST-segment deviation, and elevated cardiac biomarkers, for a total of 0-7.",
+    variables: [
+      {
+        inputId: "age-65",
+        label: "Age >= 65 years",
+        explanation: "Age 65 or older; Yes adds one point.",
+      },
+      {
+        inputId: "risk-factors",
+        label: "3 or more risk factors for CAD",
+        explanation: "Three or more CAD risk factors; Yes adds one point.",
+      },
+      {
+        inputId: "known-cad",
+        label: "Known coronary disease",
+        explanation: "Known coronary stenosis of 50% or more; Yes adds one point.",
+      },
+      {
+        inputId: "aspirin",
+        label: "Aspirin use in the past 7 days",
+        explanation: "Aspirin use within the past 7 days; Yes adds one point.",
+      },
+      {
+        inputId: "anginal-events",
+        label: "2 or more anginal events in the past 24 hours",
+        explanation: "Two or more anginal events in 24 hours; Yes adds one point.",
+      },
+      {
+        inputId: "ecg-changes",
+        label: "ST-segment deviation on admission ECG",
+        explanation: "ST-segment deviation; Yes adds one point.",
+      },
+      {
+        inputId: "troponin",
+        label: "Elevated cardiac biomarkers",
+        explanation: "Elevated troponin; Yes adds one point.",
+      },
+    ],
     clinicalPurpose:
       "Estimates 14-day risk of all-cause mortality, new or recurrent myocardial infarction, or severe recurrent ischemia requiring urgent revascularization in unstable angina / non-ST-elevation MI.",
     howToUse: [
@@ -4337,7 +5831,6 @@ export const clinicalContentRegistry: Record<
       source: "TIMI Study Group",
       reference:
         "Antman EM, et al. The TIMI risk score for unstable angina/non-ST elevation MI: A method for prognostication and therapeutic decision making. JAMA. 2000;284(7):835-842.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -4376,6 +5869,55 @@ export const clinicalContentRegistry: Record<
   },
 
   "grace": {
+    commonMistakes: [
+      "Using the in-hospital GRACE nomogram to estimate 6-month or discharge mortality, for which separate GRACE models exist.",
+      "Entering actual age, heart rate, systolic pressure, or creatinine values rather than the pre-scored nomogram points for each band.",
+      "Applying the GRACE score to non-ACS chest pain syndromes instead of confirmed STEMI, NSTEMI, or unstable angina presentations."
+    ],
+    formulaExplanation:
+      "The GRACE in-hospital score sums pre-scored points from eight admission variables: age, heart rate, systolic blood pressure, serum creatinine, Killip class, cardiac arrest at admission, ST-segment deviation, and elevated cardiac enzymes. Higher totals indicate greater in-hospital mortality risk (low <= 108, intermediate 109-140, high > 140).",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age band, scored 0 (under 30 years) up to 100 (90 years or older).",
+      },
+      {
+        inputId: "heart-rate",
+        label: "Heart rate on admission",
+        explanation: "Heart rate band, scored 0 (under 50 bpm) up to 46 (200 bpm or higher).",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic blood pressure on admission",
+        explanation: "Systolic blood pressure band, scored 58 (under 80 mmHg) down to 0 (200 mmHg or higher).",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum creatinine on admission",
+        explanation: "Creatinine band, scored 1 (0-0.39 mg/dL) up to 28 (4.0 mg/dL or higher).",
+      },
+      {
+        inputId: "killip",
+        label: "Killip class",
+        explanation: "Killip class, scored 0 (class I) up to 59 (class IV cardiogenic shock).",
+      },
+      {
+        inputId: "cardiac-arrest",
+        label: "Cardiac arrest at admission",
+        explanation: "Cardiac arrest at admission; Yes contributes 39 points.",
+      },
+      {
+        inputId: "st-deviation",
+        label: "ST-segment deviation on admission ECG",
+        explanation: "ST-segment deviation; Yes contributes 28 points.",
+      },
+      {
+        inputId: "elevated-enzymes",
+        label: "Elevated cardiac enzymes on admission",
+        explanation: "Elevated cardiac enzymes; Yes contributes 14 points.",
+      },
+    ],
     clinicalPurpose:
       "Estimates in-hospital mortality risk for patients with acute coronary syndromes (STEMI, NSTEMI, or unstable angina) using the validated GRACE model.",
     howToUse: [
@@ -4426,7 +5968,6 @@ export const clinicalContentRegistry: Record<
       source: "GRACE Registry",
       reference:
         "Granger CB, et al. Predictors of hospital mortality in the global registry of acute coronary events. Arch Intern Med. 2003;163(19):2345-2353.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -4465,6 +6006,50 @@ export const clinicalContentRegistry: Record<
   },
 
   "cha2ds2-vasc": {
+    commonMistakes: [
+      "Awarding 1 point for age 75 or older instead of the 2 points specified for that age band.",
+      "Treating the score as a bleeding risk tool rather than a stroke risk estimate that must be paired with a separate bleeding assessment.",
+      "Applying the score to valvular, especially rheumatic mitral, atrial fibrillation, where anticoagulation is indicated regardless of the score."
+    ],
+    formulaExplanation:
+      "CHA2DS2-VASc adds 1 point each for congestive heart failure/LV dysfunction, hypertension, diabetes, vascular disease, and female sex, 2 points for age 75 or older, 2 points for prior stroke/TIA/systemic thromboembolism, and 1 point for age 65-74, for a total of 0-9. Annual stroke risk rises with the score.",
+    variables: [
+      {
+        inputId: "chf",
+        label: "Congestive heart failure / LV dysfunction",
+        explanation: "Congestive heart failure or LV dysfunction; Yes adds 1 point.",
+      },
+      {
+        inputId: "hypertension",
+        label: "Hypertension",
+        explanation: "Treated or untreated hypertension; Yes adds 1 point.",
+      },
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age band, scored 0 (under 65), 1 (65-74), or 2 (75 or older).",
+      },
+      {
+        inputId: "diabetes",
+        label: "Diabetes mellitus",
+        explanation: "Diabetes; Yes adds 1 point.",
+      },
+      {
+        inputId: "stroke",
+        label: "Stroke, TIA, or systemic thromboembolism",
+        explanation: "Prior stroke, TIA, or systemic thromboembolism; Yes adds 2 points.",
+      },
+      {
+        inputId: "vascular-disease",
+        label: "Vascular disease",
+        explanation: "Prior MI, peripheral artery disease, or aortic plaque; Yes adds 1 point.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex category",
+        explanation: "Female sex adds 1 point; male sex adds none.",
+      },
+    ],
     clinicalPurpose:
       "Estimates annual ischemic stroke risk in patients with non-valvular atrial fibrillation to guide oral anticoagulation decisions.",
     howToUse: [
@@ -4514,7 +6099,6 @@ export const clinicalContentRegistry: Record<
       source: "Euro Heart Survey / AHA/ACC/HRS Guideline",
       reference:
         "Lip GYH, et al. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation using a novel risk factor-based approach: the Euro Heart Survey on atrial fibrillation. Chest. 2010;137(2):263-272.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -4559,6 +6143,60 @@ export const clinicalContentRegistry: Record<
   },
 
   "has-bled": {
+    commonMistakes: [
+      "Awarding the hypertension point for any elevated reading instead of the specified systolic pressure above 160 mmHg.",
+      "Withholding anticoagulation because of a high score rather than correcting modifiable bleeding risk factors and comparing against stroke risk.",
+      "Using HAS-BLED to estimate stroke risk rather than the 1-year risk of major bleeding on anticoagulation."
+    ],
+    formulaExplanation:
+      "HAS-BLED adds one point each for uncontrolled hypertension, abnormal renal function, abnormal liver function, prior stroke, prior major bleeding or bleeding predisposition, labile INR, age over 65, concomitant antiplatelet/NSAID drugs, and alcohol excess, for a total of 0-9. Higher scores indicate greater 1-year major bleeding risk.",
+    variables: [
+      {
+        inputId: "hypertension",
+        label: "Uncontrolled hypertension",
+        explanation: "Systolic BP over 160 mmHg; Yes adds 1 point.",
+      },
+      {
+        inputId: "renal",
+        label: "Abnormal renal function",
+        explanation: "Dialysis, transplant, or creatinine over 2.26 mg/dL; Yes adds 1 point.",
+      },
+      {
+        inputId: "liver",
+        label: "Abnormal liver function",
+        explanation: "Cirrhosis or bilirubin over 2x ULN with ALT/AST over 3x ULN; Yes adds 1 point.",
+      },
+      {
+        inputId: "stroke",
+        label: "Prior stroke",
+        explanation: "Prior stroke, especially lacunar; Yes adds 1 point.",
+      },
+      {
+        inputId: "bleeding",
+        label: "Prior major bleeding or predisposition to bleeding",
+        explanation: "Prior major bleed or bleeding predisposition; Yes adds 1 point.",
+      },
+      {
+        inputId: "labile-inr",
+        label: "Labile INR",
+        explanation: "Time in therapeutic range under 60%; Yes adds 1 point.",
+      },
+      {
+        inputId: "elderly",
+        label: "Age > 65 years",
+        explanation: "Age over 65 years; Yes adds 1 point.",
+      },
+      {
+        inputId: "drugs",
+        label: "Concomitant drugs (antiplatelets, NSAIDs)",
+        explanation: "Concomitant antiplatelet or NSAID use; Yes adds 1 point.",
+      },
+      {
+        inputId: "alcohol",
+        label: "Alcohol excess",
+        explanation: "Eight or more alcoholic drinks per week; Yes adds 1 point.",
+      },
+    ],
     clinicalPurpose:
       "Estimates 1-year risk of major bleeding in patients receiving anticoagulation, most commonly for atrial fibrillation, to identify modifiable bleeding risk factors.",
     howToUse: [
@@ -4610,7 +6248,6 @@ export const clinicalContentRegistry: Record<
       source: "Euro Heart Survey",
       reference:
         "Pisters R, et al. A novel user-friendly score (HAS-BLED) to assess 1-year risk of major bleeding in patients with atrial fibrillation: the Euro Heart Survey. Chest. 2010;138(5):1093-1100.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -4649,6 +6286,59 @@ export const clinicalContentRegistry: Record<
   },
 
   "rcri": {
+    commonMistakes: [
+      "Awarding the diabetes point to a patient on oral agents rather than requiring insulin-treated diabetes mellitus.",
+      "Applying the index to cardiac surgery, where procedure-specific risk tools rather than the RCRI should be used.",
+      "Confusing high-risk surgery with any major operation instead of the specified intraperitoneal, intrathoracic, or supraringuinal vascular procedures."
+    ],
+    faq: [
+      {
+        question: "What perioperative outcomes does the RCRI predict?",
+        answer: "It estimates the 30-day risk of major cardiac complications after non-cardiac surgery: myocardial infarction, pulmonary edema, ventricular fibrillation or primary cardiac arrest, and complete heart block. It does not predict non-cardiac complications such as infection or renal failure, and it should be combined with functional capacity and procedure-specific risk. Higher scores warrant closer perioperative cardiac monitoring."
+      },
+      {
+        question: "Which patients should not be assessed with the RCRI?",
+        answer: "It is intended for non-cardiac surgery, so patients undergoing cardiac surgery should use procedure-specific risk tools. It also does not replace clinical assessment of functional capacity or acute cardiac conditions. Because it was derived from a predominantly male single-center cohort, predicted risk may differ in women and contemporary populations. Modifiable risk factors should still be optimized."
+      },
+      {
+        question: "What do the RCRI point scores mean?",
+        answer: "A score of 0 corresponds to roughly 0.4% risk, 1 to about 0.9%, 2 to approximately 7%, and 3 or more to about 11% risk of major cardiac events within 30 days. Higher scores warrant closer perioperative cardiac monitoring and optimization of modifiable risk factors before surgery. These estimates frame risk; they do not by themselves postpone or cancel an operation."
+      }
+    ],
+    formulaExplanation:
+      "The Revised Cardiac Risk Index adds one point for each of six predictors: high-risk surgery, ischemic heart disease, congestive heart failure, cerebrovascular disease, insulin-treated diabetes, and preoperative creatinine over 2 mg/dL, for a total of 0-6. Higher totals predict greater risk of major perioperative cardiac events.",
+    variables: [
+      {
+        inputId: "high-risk-surgery",
+        label: "High-risk surgery",
+        explanation: "Intraperitoneal, intrathoracic, or suprainguinal vascular surgery; Yes adds 1 point.",
+      },
+      {
+        inputId: "ischemic-heart-disease",
+        label: "Ischemic heart disease",
+        explanation: "Prior MI, positive stress test, current angina, nitrate use, or prior CABG/PCI; Yes adds 1 point.",
+      },
+      {
+        inputId: "chf",
+        label: "Congestive heart failure",
+        explanation: "History of heart failure with supporting findings; Yes adds 1 point.",
+      },
+      {
+        inputId: "cerebrovascular",
+        label: "Cerebrovascular disease",
+        explanation: "Prior TIA or stroke; Yes adds 1 point.",
+      },
+      {
+        inputId: "insulin-diabetes",
+        label: "Insulin-treated diabetes mellitus",
+        explanation: "Diabetes requiring insulin; Yes adds 1 point.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Preoperative creatinine > 2 mg/dL",
+        explanation: "Preoperative creatinine over 2 mg/dL; Yes adds 1 point.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the 30-day risk of major cardiac complications (MI, pulmonary edema, ventricular fibrillation or primary cardiac arrest, complete heart block) in patients undergoing non-cardiac surgery.",
     howToUse: [
@@ -4697,7 +6387,6 @@ export const clinicalContentRegistry: Record<
       source: "Original RCRI Description",
       reference:
         "Lee TH, et al. Derivation and prospective validation of a simple index for prediction of cardiac risk of major noncardiac surgery. Circulation. 1999;100(10):1043-1049.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -4716,6 +6405,74 @@ export const clinicalContentRegistry: Record<
   },
 
   "ascvd": {
+    commonMistakes: [
+      "Entering the treated or untreated systolic pressure status incorrectly, which changes the calculated risk for the same blood pressure value.",
+      "Applying the white/other equation to every patient rather than selecting the African American equation for Black patients.",
+      "Using the estimate in a patient outside the validated age range of 40-79 years or with lipids outside the specified ranges."
+    ],
+    faq: [
+      {
+        question: "Who is the ASCVD Pooled Cohort Equation intended for?",
+        answer: "It estimates 10-year risk of a first atherosclerotic cardiovascular disease event in adults aged 40-79 years without established clinical ASCVD, combining age, total and HDL cholesterol, systolic blood pressure with treatment status, smoking, and diabetes. Patients with existing ASCVD should be managed through secondary prevention pathways instead. The equations are validated for total cholesterol 130-320 mg/dL, HDL 20-100 mg/dL, and systolic pressure 90-200 mmHg."
+      },
+      {
+        question: "What risk categories does the score define?",
+        answer: "The 2018 ACC/AHA categories are less than 5% (low), 5-7.4% (borderline), 7.5-19.9% (intermediate), and 20% or higher (high). In adults 40-75 years, borderline or intermediate risk prompts a clinician-patient risk discussion, often supported by risk-enhancing factors or coronary artery calcium scoring. The categories guide preventive treatment discussions rather than dictating a specific therapy."
+      },
+      {
+        question: "Why can the estimate be inaccurate for some patients?",
+        answer: "The equations were derived from US cohorts in the 1990s-2000s, so contemporary populations may have lower event rates. Risk can be overestimated or underestimated in groups such as Hispanic/Latino, South Asian, and older adults. The estimate addresses only 10-year risk, so lifetime risk is a separate consideration, particularly for younger adults. Clinical judgment remains essential for unusual phenotypes."
+      }
+    ],
+    formulaExplanation:
+      "The 2013 ACC/AHA Pooled Cohort Equations combine age, total cholesterol, HDL cholesterol, systolic blood pressure (with treatment status), smoking, and diabetes in sex- and race-specific Cox models. A linear predictor is computed from the log-transformed risk factors and converted to a 10-year ASCVD risk percentage for patients aged 40-79 years.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years (40-79), entered as a natural logarithm in the equations.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which selects the male- or female-specific equation.",
+      },
+      {
+        inputId: "race",
+        label: "Race",
+        explanation: "African American or White/other, which selects the race-specific equation coefficients.",
+      },
+      {
+        inputId: "total-cholesterol",
+        label: "Total cholesterol",
+        explanation: "Total cholesterol in mg/dL, entered as a natural logarithm.",
+      },
+      {
+        inputId: "hdl",
+        label: "HDL cholesterol",
+        explanation: "HDL cholesterol in mg/dL, entered as a natural logarithm.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic blood pressure",
+        explanation: "Systolic blood pressure in mmHg, entered as a natural logarithm with treatment-specific coefficients.",
+      },
+      {
+        inputId: "hypertension-treated",
+        label: "Hypertension treatment",
+        explanation: "Whether hypertension is untreated or treated, which selects the corresponding blood-pressure coefficients.",
+      },
+      {
+        inputId: "smoker",
+        label: "Current smoker",
+        explanation: "Current smoking; Yes contributes with age-interaction terms.",
+      },
+      {
+        inputId: "diabetes",
+        label: "Diabetes mellitus",
+        explanation: "Diabetes; Yes contributes a coefficient to the linear predictor.",
+      },
+    ],
     clinicalPurpose:
       "Estimates 10-year risk of first atherosclerotic cardiovascular disease event (nonfatal MI, coronary heart disease death, or fatal/nonfatal stroke) using the ACC/AHA Pooled Cohort Equations.",
     howToUse: [
@@ -4781,7 +6538,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "AHA / ACC",
       reference: "Goff DC Jr, et al. J Am Coll Cardiol. 2014;63(25 Pt B):2935-2959.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2018",
       updatedAt: "2026-08",
       references: [
@@ -4792,6 +6548,74 @@ export const clinicalContentRegistry: Record<
   },
 
   "dapt": {
+    commonMistakes: [
+      "Treating the age component as positive points when advancing age actually subtracts 1 or 2 points from the total.",
+      "Forgetting that heart failure or LVEF under 30% and saphenous vein graft PCI each contribute 2 points rather than 1.",
+      "Using the DAPT score in a patient already mandated to extended therapy because of a high-risk ischemic indication."
+    ],
+    faq: [
+      {
+        question: "What does the DAPT score help decide?",
+        answer: "It estimates whether continuing dual antiplatelet therapy beyond 12 months after coronary stenting provides net benefit. A score of 2 or more favors extended DAPT up to 30 months because ischemic reduction is expected to outweigh bleeding risk, while a score below 2 favors standard 12-month therapy. It balances stent-related ischemic events against moderate or severe bleeding."
+      },
+      {
+        question: "Why does older age lower the DAPT score?",
+        answer: "Age contributes negative points: 0 for under 65, -1 for 65 to under 75, and -2 for 75 or older, so the total ranges from -2 to +10. Advanced age carries a higher bleeding risk on prolonged dual antiplatelet therapy, so it reduces the net-benefit estimate and makes the 2-point threshold harder to reach. This reflects the trade-off the score was designed to capture."
+      },
+      {
+        question: "What should clinicians remember when applying the DAPT score?",
+        answer: "The tool was developed in the DAPT Study, so its applicability to newer stents and P2Y12 inhibitors may differ. It omits some bleeding risk factors, including renal function and baseline anemia, and the 2-point cutoff was derived rather than compared head-to-head across all populations. Clinical judgment and individual bleeding risk still guide the final decision."
+      }
+    ],
+    formulaExplanation:
+      "The DAPT score starts with an age score (0 under 65, -1 for 65 to under 75, -2 for 75 or older), adds 1 point each for smoking, diabetes, MI at presentation, prior MI/PCI, stent diameter under 3 mm, and paclitaxel-eluting stent, and adds 2 points each for CHF or LVEF under 30% and saphenous vein graft PCI. A score of 2 or more favors extended dual antiplatelet therapy.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age band, scored 0 (under 65), -1 (65 to under 75), or -2 (75 or older).",
+      },
+      {
+        inputId: "smoking",
+        label: "Current cigarette smoking",
+        explanation: "Current smoking; Yes adds 1 point.",
+      },
+      {
+        inputId: "diabetes",
+        label: "Diabetes mellitus",
+        explanation: "Diabetes; Yes adds 1 point.",
+      },
+      {
+        inputId: "mi-at-presentation",
+        label: "Myocardial infarction at presentation",
+        explanation: "MI at presentation; Yes adds 1 point.",
+      },
+      {
+        inputId: "prior-mi-pci",
+        label: "Prior MI or prior PCI",
+        explanation: "Prior MI or PCI; Yes adds 1 point.",
+      },
+      {
+        inputId: "stent-diameter",
+        label: "Stent diameter < 3 mm",
+        explanation: "Stent diameter under 3 mm; Yes adds 1 point.",
+      },
+      {
+        inputId: "paclitaxel",
+        label: "Paclitaxel-eluting stent",
+        explanation: "Paclitaxel-eluting stent; Yes adds 1 point.",
+      },
+      {
+        inputId: "chf-lvef",
+        label: "Congestive heart failure or LVEF < 30%",
+        explanation: "CHF or LVEF under 30%; Yes adds 2 points.",
+      },
+      {
+        inputId: "svg-pci",
+        label: "Saphenous vein graft PCI",
+        explanation: "PCI of a saphenous vein graft; Yes adds 2 points.",
+      },
+    ],
     clinicalPurpose:
       "Determines whether the net benefit of continuing dual antiplatelet therapy (DAPT) beyond 12 months after coronary stenting outweighs the bleeding risk, guiding DAPT duration decisions.",
     howToUse: [
@@ -4851,7 +6675,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Cardiology Literature",
       reference: "Yeh RW, et al. JAMA. 2016;315(16):1735-1749.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2016",
       updatedAt: "2026-08",
       references: [
@@ -4861,6 +6684,59 @@ export const clinicalContentRegistry: Record<
   },
 
   "h2fpef": {
+    commonMistakes: [
+      "Awarding only 1 point for atrial fibrillation, which actually contributes 3 points as the strongest predictor in the score.",
+      "Applying the score to a patient with reduced or mid-range ejection fraction instead of classifying them as HFrEF or HFmrEF.",
+      "Treating an intermediate score as diagnostic rather than prompting further testing such as exercise echocardiography or invasive hemodynamics."
+    ],
+    faq: [
+      {
+        question: "What does the H2FPEF score estimate?",
+        answer: "It estimates the probability of heart failure with preserved ejection fraction in patients with unexplained exertional dyspnea. Scores of 0-1 indicate low probability (about 6%), 2-5 intermediate probability (about 10-46%), and 6-9 high probability (about 67-95%). It is not a substitute for exercise testing or invasive hemodynamics when results are ambiguous, and it applies only when ejection fraction is preserved."
+      },
+      {
+        question: "Which H2FPEF components contribute the most points?",
+        answer: "Atrial fibrillation contributes the most at 3 points, followed by a body mass index over 30 kg/m2 at 2 points. One point each is added for age over 60 years, two or more antihypertensive medications, an E/e' ratio over 9, and a pulmonary artery systolic pressure over 35 mmHg, for a total of 0-9. Higher totals indicate greater probability."
+      },
+      {
+        question: "When is the H2FPEF score less reliable?",
+        answer: "It was developed in patients referred specifically for unexplained exertional dyspnea, so its accuracy in general primary care populations is less clear. The score needs echocardiographic measures, including E/e' and pulmonary artery systolic pressure, that are often unavailable at first assessment. For intermediate scores it does not include the resting or exercise filling pressures that may be needed to confirm the diagnosis."
+      }
+    ],
+    formulaExplanation:
+      "The H2FPEF score adds 3 points for atrial fibrillation, 2 points if BMI is over 30 kg/m2, 1 point if age is over 60 years, 1 point for two or more antihypertensive medications, 1 point for E/e' over 9, and 1 point for pulmonary artery systolic pressure over 35 mmHg, for a total of 0-9. Higher scores indicate greater HFpEF probability.",
+    variables: [
+      {
+        inputId: "afib",
+        label: "Atrial fibrillation",
+        explanation: "Paroxysmal or persistent atrial fibrillation; Yes contributes 3 points.",
+      },
+      {
+        inputId: "bmi",
+        label: "Body mass index (BMI)",
+        explanation: "BMI in kg/m2; over 30 contributes 2 points.",
+      },
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years; over 60 contributes 1 point.",
+      },
+      {
+        inputId: "antihypertensives",
+        label: "Number of antihypertensive medications",
+        explanation: "Two or more antihypertensive medications contributes 1 point.",
+      },
+      {
+        inputId: "e-e-ratio",
+        label: "E/e' ratio",
+        explanation: "Septal e' averaged with lateral e'; over 9 contributes 1 point.",
+      },
+      {
+        inputId: "pasp",
+        label: "Pulmonary artery systolic pressure (PASP)",
+        explanation: "PASP over 35 mmHg contributes 1 point.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the probability of heart failure with preserved ejection fraction (HFpEF) in patients with unexplained dyspnea, using clinical and echocardiographic features.",
     howToUse: [
@@ -4917,7 +6793,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Cardiology Literature",
       reference: "Reddy YNV, et al. Circulation. 2018;138(9):861-870.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2018",
       updatedAt: "2026-08",
       references: [
@@ -4927,6 +6802,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "ldl-cholesterol": {
+    commonMistakes: [
+      "Treating a calculated LDL below 100 mg/dL as proof the patient is at goal when treatment targets depend on the ASCVD risk category.",
+      "Dividing triglycerides by 5 once they reach 400 mg/dL or higher, where the VLDL assumption breaks down and the estimate becomes unreliable.",
+      "Confusing calculated LDL with non-HDL cholesterol, which answers a different question by capturing all apolipoprotein B-containing lipoproteins."
+    ],
+    formulaExplanation:
+      "The Friedewald equation estimates LDL-C = total cholesterol - HDL cholesterol - (triglycerides / 5), with all lipids in mg/dL. It is not valid when triglycerides are 400 mg/dL or higher.",
+    variables: [
+      {
+        inputId: "totalCholesterol",
+        label: "Total Cholesterol",
+        explanation: "Total serum cholesterol in mg/dL, the starting value of the subtraction.",
+      },
+      {
+        inputId: "hdl",
+        label: "HDL Cholesterol",
+        explanation: "HDL cholesterol in mg/dL, subtracted from total cholesterol.",
+      },
+      {
+        inputId: "triglycerides",
+        label: "Triglycerides",
+        explanation: "Triglycerides in mg/dL, divided by 5 and subtracted to estimate VLDL cholesterol.",
+      },
+    ],
     clinicalPurpose:
       "Estimates LDL cholesterol (LDL-C) from a fasting lipid panel using the Friedewald equation, supporting cardiovascular risk assessment and lipid-lowering treatment targets.",
     howToUse: [
@@ -5017,7 +6916,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Friedewald WT, et al. Clin Chem. 1972;18(6):499-502.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5026,6 +6924,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "non-hdl-cholesterol": {
+    commonMistakes: [
+      "Entering an HDL value larger than total cholesterol produces a negative non-HDL result that signals the lipid panel inputs were swapped or mistyped.",
+      "Subtracting LDL as well as HDL from total cholesterol computes remnant cholesterol instead of the non-HDL value this calculator defines.",
+      "Labeling a result above 160 mg/dL as grounds for starting therapy treats a population lipid category as an individual prescribing threshold."
+    ],
+    formulaExplanation:
+      "Non-HDL cholesterol = total cholesterol - HDL cholesterol, capturing all atherogenic ApoB-containing lipoproteins (LDL, VLDL, IDL, and remnants).",
+    variables: [
+      {
+        inputId: "totalCholesterol",
+        label: "Total Cholesterol",
+        explanation: "Total serum cholesterol in mg/dL.",
+      },
+      {
+        inputId: "hdl",
+        label: "HDL Cholesterol",
+        explanation: "HDL cholesterol in mg/dL, subtracted from total cholesterol.",
+      },
+    ],
     clinicalPurpose:
       "Calculates non-HDL cholesterol (total cholesterol minus HDL), a measure of total atherogenic (apolipoprotein B-containing) particle burden used as a secondary lipid target.",
     howToUse: [
@@ -5112,7 +7029,6 @@ export const clinicalContentRegistry: Record<
       source: "National Cholesterol Education Program ATP III",
       reference:
         "NCEP ATP III Executive Summary. JAMA. 2001;285:2486-2497.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5121,6 +7037,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "albumin-globulin-ratio": {
+    commonMistakes: [
+      "Dividing total protein by albumin instead of first subtracting albumin to derive globulin yields a number that is not the A/G ratio.",
+      "Comparing albumin in g/dL with total protein reported in g/L produces a corrupted globulin value and a meaningless ratio.",
+      "Accepting a ratio inside 1.0-2.0 as reassuring when albumin and globulin are both low overlooks the masked abnormality this ratio can conceal."
+    ],
+    formulaExplanation:
+      "Globulin = total protein - albumin; the albumin-to-globulin ratio = albumin / globulin.",
+    variables: [
+      {
+        inputId: "albumin",
+        label: "Serum Albumin",
+        explanation: "Serum albumin in g/dL, used as the numerator and subtracted from total protein to derive globulin.",
+      },
+      {
+        inputId: "totalProtein",
+        label: "Total Protein",
+        explanation: "Total serum protein in g/dL, from which albumin is subtracted to compute globulin.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the albumin to globulin (A/G) ratio from serum albumin and total protein to aid in evaluating liver disease, nephrotic syndrome, and paraproteinemias.",
     howToUse: [
@@ -5202,7 +7137,6 @@ export const clinicalContentRegistry: Record<
       source: "Standard clinical chemistry reference",
       reference:
         "Busher JT. Serum albumin and globulin. Clinical Methods. 3rd ed. 1990.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5211,6 +7145,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "tyg-index": {
+    commonMistakes: [
+      "Entering triglycerides or glucose in mmol/L rather than mg/dL changes the numeric result because the formula is defined only for mg/dL inputs.",
+      "Calculating the index from a non-fasting sample ignores that both triglycerides and glucose must be fasting values for this formula.",
+      "Treating a high TyG value as a diagnosis of insulin resistance ignores that no universal threshold exists and population thresholds vary widely."
+    ],
+    formulaExplanation:
+      "Triglyceride-glucose index = ln(fasting triglycerides (mg/dL) x fasting plasma glucose (mg/dL) / 2).",
+    variables: [
+      {
+        inputId: "triglycerides",
+        label: "Fasting Triglycerides",
+        explanation: "Fasting triglycerides in mg/dL, multiplied by fasting plasma glucose.",
+      },
+      {
+        inputId: "glucose",
+        label: "Fasting Plasma Glucose",
+        explanation: "Fasting plasma glucose in mg/dL, multiplied by triglycerides before dividing by 2 and taking the natural log.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the triglyceride-glucose (TyG) index, a surrogate marker of insulin resistance derived from fasting triglycerides and fasting plasma glucose.",
     howToUse: [
@@ -5304,7 +7257,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Simental-Mendía LE, et al. Metab Syndr Relat Disord. 2008;6(4):299-304.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5313,6 +7265,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "triglyceride-hdl-ratio": {
+    commonMistakes: [
+      "Using triglyceride and HDL values in mmol/L without converting them first produces a ratio that cannot be compared with the 3.0 threshold.",
+      "Applying the 3.0 cut-point to an African American patient assumes a relationship that was not reproduced in that population.",
+      "Diagnosing insulin resistance from a ratio of 3.0 or higher in a diabetic patient extends the marker beyond its derivation in overweight non-diabetic adults."
+    ],
+    formulaExplanation:
+      "Triglyceride-to-HDL ratio = fasting triglycerides (mg/dL) / HDL cholesterol (mg/dL).",
+    variables: [
+      {
+        inputId: "triglycerides",
+        label: "Triglycerides",
+        explanation: "Fasting triglycerides in mg/dL, used as the numerator.",
+      },
+      {
+        inputId: "hdl",
+        label: "HDL Cholesterol",
+        explanation: "HDL cholesterol in mg/dL, used as the denominator.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the triglyceride to HDL ratio (TG/HDL), a lipid-based marker of insulin resistance associated with cardiometabolic risk in overweight non-diabetic adults.",
     howToUse: [
@@ -5406,7 +7377,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "McLaughlin T, et al. Ann Intern Med. 2003;139(10):802-809.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5415,6 +7385,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "quicki": {
+    commonMistakes: [
+      "Reporting fasting glucose in mmol/L instead of mg/dL yields a QUICKI that cannot be compared with the published 0.38 and 0.30 means.",
+      "Applying natural logarithms instead of base-10 logarithms produces a QUICKI value different from the one the formula defines.",
+      "Treating a QUICKI below 0.30 as a diagnostic threshold for diabetes ignores that no validated clinical cut-point exists for this index."
+    ],
+    formulaExplanation:
+      "QUICKI = 1 / (log10(fasting insulin (microU/mL)) + log10(fasting glucose (mg/dL))). Lower values indicate greater insulin resistance.",
+    variables: [
+      {
+        inputId: "fastingInsulin",
+        label: "Fasting Insulin",
+        explanation: "Fasting serum insulin in microU/mL, converted with base-10 logarithm in the denominator.",
+      },
+      {
+        inputId: "fastingGlucose",
+        label: "Fasting Glucose",
+        explanation: "Fasting plasma glucose in mg/dL, converted with base-10 logarithm in the denominator.",
+      },
+    ],
     clinicalPurpose:
       "Calculates QUICKI, an insulin sensitivity index from fasting insulin and glucose: QUICKI = 1 / (log10 fasting insulin [µU/mL] + log10 fasting glucose [mg/dL]).",
     howToUse: [
@@ -5508,7 +7497,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Katz A, et al. J Clin Endocrinol Metab. 2000;85(7):2402-2410.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5517,6 +7505,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "winters-formula": {
+    commonMistakes: [
+      "Using Winter's formula when the bicarbonate is normal or the primary disorder is alkalosis generates an expected PaCO2 with no clinical meaning.",
+      "Treating the calculated expected PaCO2 as a ventilation target to aim for confuses a compensation equation with a therapeutic goal.",
+      "Judging compensation from a blood gas drawn soon after an acute bicarbonate fall may falsely suggest that the respiratory response is inadequate."
+    ],
+    formulaExplanation:
+      "Expected PaCO2 = 1.5 x bicarbonate + 8 (+/- 2) mmHg, the expected respiratory compensation for a primary metabolic acidosis.",
+    variables: [
+      {
+        inputId: "bicarbonate",
+        label: "Bicarbonate (HCO3)",
+        explanation: "Serum bicarbonate in mEq/L, multiplied by 1.5 and added to 8 to compute the expected PaCO2.",
+      },
+      {
+        inputId: "pco2",
+        label: "Measured PaCO2",
+        explanation: "Measured arterial PaCO2 in mmHg, compared with the expected range to assess the respiratory response.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the expected compensatory PaCO2 in primary metabolic acidosis using Winter's formula (expected PaCO2 = 1.5 × HCO3 + 8 ± 2 mmHg), helping identify appropriate, inadequate, or excessive respiratory compensation.",
     howToUse: [
@@ -5602,7 +7609,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Albert MS, Dell RB, Winters RW. Ann Intern Med. 1967;66(2):312-322.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5611,6 +7617,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "anion-gap-delta-ratio": {
+    commonMistakes: [
+      "Entering a bicarbonate close to 24 mEq/L leaves a near-zero denominator and produces an unstable delta ratio.",
+      "Calculating the delta ratio in a normal anion gap acidosis applies a formula intended only for a high anion gap metabolic acidosis.",
+      "Treating a result of 0.9 as proof of a coexisting non-anion gap acidosis ignores that boundary values around 0.9 and 2.1 need clinical correlation."
+    ],
+    formulaExplanation:
+      "Delta ratio = (measured anion gap - 12) / (24 - measured bicarbonate). It compares the rise in anion gap with the fall in bicarbonate to identify mixed acid-base disorders.",
+    variables: [
+      {
+        inputId: "anionGap",
+        label: "Anion Gap",
+        explanation: "Measured anion gap in mEq/L, reduced by the normal value of 12 in the numerator.",
+      },
+      {
+        inputId: "bicarbonate",
+        label: "Bicarbonate (HCO3)",
+        explanation: "Measured bicarbonate in mEq/L, subtracted from 24 in the denominator.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the anion gap delta ratio (ΔAG/ΔHCO3) to evaluate mixed acid-base disorders in high anion gap metabolic acidosis: ΔAG/ΔHCO3 = (AG − 12) / (24 − HCO3).",
     howToUse: [
@@ -5702,7 +7727,6 @@ export const clinicalContentRegistry: Record<
       source: "Expert review and textbook standard",
       reference:
         "Rastegar A. J Am Soc Nephrol. 2007;18(10):2631-2636.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5711,6 +7735,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "urine-anion-gap": {
+    commonMistakes: [
+      "Using the urine anion gap to interpret a high anion gap metabolic acidosis applies it outside the hyperchloremic setting it is meant for.",
+      "Interpreting the result in a patient with acute or chronic kidney disease is misleading because tubular acidification is already abnormal.",
+      "A urine collection covering an incomplete or changing clinical period can distort the gap and falsely point toward renal acidification failure."
+    ],
+    formulaExplanation:
+      "Urine anion gap = (urine sodium + urine potassium) - urine chloride, all in mEq/L.",
+    variables: [
+      {
+        inputId: "urineNa",
+        label: "Urine Sodium",
+        explanation: "Urine sodium in mEq/L, added to urine potassium.",
+      },
+      {
+        inputId: "urineK",
+        label: "Urine Potassium",
+        explanation: "Urine potassium in mEq/L, added to urine sodium.",
+      },
+      {
+        inputId: "urineCl",
+        label: "Urine Chloride",
+        explanation: "Urine chloride in mEq/L, subtracted from the sum of sodium and potassium.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the urine anion gap (UAG = [urine sodium + urine potassium] − urine chloride) to distinguish renal from extrarenal causes of a normal anion gap (hyperchloremic) metabolic acidosis.",
     howToUse: [
@@ -5804,7 +7852,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Battle DC, et al. N Engl J Med. 1988;318(10):594-599.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5813,6 +7860,41 @@ export const clinicalContentRegistry: Record<
   },
 
   "kt-v": {
+    commonMistakes: [
+      "Entering ultrafiltration volume in milliliters instead of liters inflates the ultrafiltrate over weight correction term and distorts the delivered dose.",
+      "Reversing the pre-dialysis and post-dialysis BUN values inverts the R ratio and produces a Kt/V unrelated to the actual treatment.",
+      "Applying the 1.2 minimum to peritoneal dialysis or a twice-weekly schedule uses an adequacy standard that does not apply to that regimen.",
+      "Reporting single-pool Kt/V as though it accounts for urea rebound overlooks that equilibrated Kt/V is the measure that corrects for rebound."
+    ],
+    formulaExplanation:
+      "Single-pool Kt/V uses the Daugirdas second-generation equation: spKt/V = -ln(R - 0.008 x t) + (4 - 3.5 x R) x (UF / W), where R is the post/pre-dialysis BUN ratio, t is treatment time in hours, UF is ultrafiltrate volume in L, and W is post-dialysis weight in kg.",
+    variables: [
+      {
+        inputId: "preBun",
+        label: "Pre-Dialysis BUN",
+        explanation: "Blood urea nitrogen before dialysis in mg/dL, used to compute the post/pre BUN ratio R.",
+      },
+      {
+        inputId: "postBun",
+        label: "Post-Dialysis BUN",
+        explanation: "Blood urea nitrogen after dialysis in mg/dL, divided by pre-dialysis BUN to form R.",
+      },
+      {
+        inputId: "ultrafiltrate",
+        label: "Ultrafiltration Volume",
+        explanation: "Fluid removed during dialysis in L, divided by post-dialysis weight.",
+      },
+      {
+        inputId: "treatmentTime",
+        label: "Treatment Time",
+        explanation: "Duration of the dialysis session in hours, used in the 0.008 x t term.",
+      },
+      {
+        inputId: "postWeight",
+        label: "Post-Dialysis Weight",
+        explanation: "Post-dialysis body weight in kg, used to normalize the ultrafiltration volume.",
+      },
+    ],
     clinicalPurpose:
       "Calculates single-pool Kt/V (spKt/V) for hemodialysis adequacy using the Daugirdas second-generation formula, supporting KDOQI dialysis dosing standards.",
     howToUse: [
@@ -5908,7 +7990,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Daugirdas JT. J Am Soc Nephrol. 1993;4(5):1205-1213.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
     },
@@ -5917,6 +7998,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "fractional-excretion-uric-acid": {
+    commonMistakes: [
+      "Using FEUA in a patient on uricosuric drugs such as losartan or probenecid without factoring in their effect on urate excretion.",
+      "Treating the 12% and 20% cutoffs as definitive separators, since they come from observational data with substantial overlap.",
+      "Pairing urine and serum samples that were not obtained simultaneously, which distorts the fractional excretion calculation."
+    ],
+    formulaExplanation:
+      "Fractional excretion of uric acid = (urine uric acid x plasma creatinine) / (serum uric acid x urine creatinine) x 100, the percentage of filtered uric acid that is excreted in the urine.",
+    variables: [
+      {
+        inputId: "urineUricAcid",
+        label: "Urine Uric Acid",
+        explanation: "Urine uric acid concentration in mg/dL, used in the numerator.",
+      },
+      {
+        inputId: "serumUricAcid",
+        label: "Serum Uric Acid",
+        explanation: "Serum (plasma) uric acid in mg/dL, used in the denominator.",
+      },
+      {
+        inputId: "urineCr",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine in mg/dL, used in the denominator to normalize for the filtered load.",
+      },
+      {
+        inputId: "plasmaCr",
+        label: "Plasma Creatinine",
+        explanation: "Plasma creatinine in mg/dL, used in the numerator to estimate the filtered load.",
+      },
+    ],
     faq: [
           {
         "question": "Why use FEUA instead of FENa?",
@@ -5989,7 +8099,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation + observational validation (peer-reviewed)",
       reference:
         "Steinhäuslin F, et al. Fractional excretion of trace lithium and uric acid in acute renal failure. J Am Soc Nephrol. 1994;4(7):1429-1437.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6003,6 +8112,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "fractional-excretion-phosphate": {
+    commonMistakes: [
+      "Combining a urine phosphate from a morning void with a creatinine drawn that afternoon, since the ratio is only meaningful when blood and urine are collected together.",
+      "Applying the 5% cutoff to a patient whose serum phosphate is normal or high, a setting where FEP is not intended to be interpreted.",
+      "Reading an FEP above 5% as proof of FGF23 excess when high dietary phosphate, vitamin D therapy, or PTH status can independently raise phosphate excretion."
+    ],
+    formulaExplanation:
+      "Fractional excretion of phosphate = (urine phosphate x plasma creatinine) / (serum phosphate x urine creatinine) x 100, the percentage of filtered phosphate that is excreted in the urine.",
+    variables: [
+      {
+        inputId: "urinePhosphate",
+        label: "Urine Phosphate",
+        explanation: "Urine phosphate concentration in mg/dL, used in the numerator.",
+      },
+      {
+        inputId: "serumPhosphate",
+        label: "Serum Phosphate",
+        explanation: "Serum phosphate in mg/dL, used in the denominator.",
+      },
+      {
+        inputId: "urineCr",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine in mg/dL, used in the denominator to normalize for the filtered load.",
+      },
+      {
+        inputId: "plasmaCr",
+        label: "Plasma Creatinine",
+        explanation: "Plasma creatinine in mg/dL, used in the numerator to estimate the filtered load.",
+      },
+    ],
     faq: [
           {
         "question": "When is FEP most useful?",
@@ -6072,7 +8210,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Broadus AE, et al. Phosphate homeostasis and evaluation of hypophosphatemia. J Clin Invest. 1983;72(1):119-126.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6086,6 +8223,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "fractional-excretion-calcium": {
+    commonMistakes: [
+      "Ordering the ratio in hypercalcemia with suppressed PTH, where FHH is off the table and the result does not apply to malignancy or sarcoidosis.",
+      "Proceeding to parathyroid surgery on the strength of a ratio above 2% without considering that CASR gene analysis remains the reference standard.",
+      "Interpreting a CCCR below 0.01 as FHH when lithium, thiazides, or low calcium intake are lowering urine calcium and mimicking hypocalciuria."
+    ],
+    formulaExplanation:
+      "Fractional excretion of calcium (calcium-creatinine clearance ratio) = (urine calcium x plasma creatinine) / (serum calcium x urine creatinine) x 100, the percentage of filtered calcium that is excreted in the urine.",
+    variables: [
+      {
+        inputId: "urineCalcium",
+        label: "Urine Calcium",
+        explanation: "Urine calcium concentration in mg/dL, used in the numerator.",
+      },
+      {
+        inputId: "serumCalcium",
+        label: "Serum Calcium",
+        explanation: "Serum calcium in mg/dL, used in the denominator.",
+      },
+      {
+        inputId: "urineCr",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine in mg/dL, used in the denominator to normalize for the filtered load.",
+      },
+      {
+        inputId: "plasmaCr",
+        label: "Plasma Creatinine",
+        explanation: "Plasma creatinine in mg/dL, used in the numerator to estimate the filtered load.",
+      },
+    ],
     faq: [
           {
         "question": "Why is FECa used to diagnose FHH?",
@@ -6156,7 +8322,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation + validation (peer-reviewed)",
       reference:
         "Christiansen C, et al. Discriminative power of three indices of renal calcium excretion for the distinction between familial hypocalciuric hypercalcaemia and primary hyperparathyroidism. Clin Endocrinol (Oxf). 2008;69(4):572-578.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6170,6 +8335,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "renal-failure-index": {
+    commonMistakes: [
+      "Reading an RFI above 1 as proof of acute tubular necrosis when values between 1 and 2 are indeterminate and the threshold alone is not validated.",
+      "Expecting RFI to account for plasma sodium the way FENa does, even though this index drops that term and hinges on urine sodium and the creatinine ratio.",
+      "Calculating RFI during active diuresis without accounting for it, since diuretics and saline resuscitation push urine sodium up and mimic intrinsic injury."
+    ],
+    formulaExplanation:
+      "Renal failure index = (urine sodium x plasma creatinine) / urine creatinine, with urine sodium in mEq/L and both creatinines in mg/dL.",
+    variables: [
+      {
+        inputId: "urineSodium",
+        label: "Urine Sodium",
+        explanation: "Urine sodium in mEq/L, used in the numerator.",
+      },
+      {
+        inputId: "plasmaCr",
+        label: "Plasma Creatinine",
+        explanation: "Plasma creatinine in mg/dL, used in the numerator.",
+      },
+      {
+        inputId: "urineCr",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine in mg/dL, used as the denominator.",
+      },
+    ],
     faq: [
           {
         "question": "How does RFI differ from FENa?",
@@ -6239,7 +8428,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Miller TR, et al. Urinary diagnostic indices in acute renal failure: a prospective study. Ann Intern Med. 1978;89(1):47-50.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6253,6 +8441,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "urine-osmolal-gap": {
+    commonMistakes: [
+      "Entering urine urea and glucose in mmol/L rather than mg/dL, since the estimate divides urea by 2.8 and glucose by 18 using mg/dL values.",
+      "Waiting until well after presentation to collect the urine, because continued alcohol metabolism lowers the gap and can hide unmeasured osmoles.",
+      "Reporting a gap above 10 mOsm/kg as confirmation of ethylene glycol poisoning without sending the specific toxic alcohol assay."
+    ],
+    formulaExplanation:
+      "Estimated urine osmolality = 2 x (urine sodium + urine potassium) + (urine urea / 2.8) + (urine glucose / 18). The urine osmolal gap is the measured urine osmolality minus this estimated value.",
+    variables: [
+      {
+        inputId: "urineOsmolality",
+        label: "Measured Urine Osmolality",
+        explanation: "Laboratory-measured urine osmolality in mOsm/kg, the minuend of the gap.",
+      },
+      {
+        inputId: "urineSodium",
+        label: "Urine Sodium",
+        explanation: "Urine sodium in mmol/L, added to urine potassium and doubled in the estimate.",
+      },
+      {
+        inputId: "urinePotassium",
+        label: "Urine Potassium",
+        explanation: "Urine potassium in mmol/L, added to urine sodium and doubled in the estimate.",
+      },
+      {
+        inputId: "urineUrea",
+        label: "Urine Urea",
+        explanation: "Urine urea in mg/dL, divided by 2.8 in the estimate.",
+      },
+      {
+        inputId: "urineGlucose",
+        label: "Urine Glucose",
+        explanation: "Urine glucose in mg/dL, divided by 18 in the estimate.",
+      },
+    ],
     faq: [
           {
         "question": "What does the urine osmolal gap measure?",
@@ -6322,7 +8544,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Kraut JA, Kurtz I. Toxic alcohol ingestions: clinical features, diagnosis, and management. Clin J Am Soc Nephrol. 2008;3(1):208-225.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6336,6 +8557,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "free-water-clearance": {
+    commonMistakes: [
+      "Relying on CH2O during a high-urea osmotic diuresis, where urea adds to urine osmolality without contributing tonicity and electrolyte-free water clearance is preferred.",
+      "Entering a total collected urine volume where the formula expects a flow rate in mL/min, which inflates the magnitude and misstates water handling.",
+      "Taking a positive CH2O as diagnostic of diabetes insipidus without weighing water intake and non-renal losses, which this single point estimate cannot capture."
+    ],
+    formulaExplanation:
+      "Free water clearance C(H2O) = V x (1 - urine osmolality / plasma osmolality), where V is the urine flow rate. Positive values indicate free water excretion and negative values indicate free water retention.",
+    variables: [
+      {
+        inputId: "urineVolume",
+        label: "Urine Flow Rate",
+        explanation: "Urine flow rate in mL/min, the multiplier V in the formula.",
+      },
+      {
+        inputId: "urineOsmolality",
+        label: "Urine Osmolality",
+        explanation: "Urine osmolality in mOsm/kg, used as the numerator of the ratio.",
+      },
+      {
+        inputId: "plasmaOsmolality",
+        label: "Plasma Osmolality",
+        explanation: "Plasma osmolality in mOsm/kg, used as the denominator of the ratio.",
+      },
+    ],
     faq: [
           {
         "question": "What does a positive CH₂O mean?",
@@ -6404,7 +8649,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (classic renal physiology)",
       reference:
         "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6418,6 +8662,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "electrolyte-free-water-clearance": {
+    commonMistakes: [
+      "Adding urine urea into the calculation out of habit, when EFWC deliberately uses only the flow rate with urine and plasma sodium and potassium.",
+      "Pairing a flow rate from one collection with urine electrolytes measured on a different sample, since every input must come from the same timed collection.",
+      "Blaming renal water loss for a rising serum sodium when EFWC is near zero, a pattern that instead points to gastrointestinal or insensible losses."
+    ],
+    formulaExplanation:
+      "Electrolyte-free water clearance = V x (1 - (urine sodium + urine potassium) / plasma sodium), where V is the urine flow rate.",
+    variables: [
+      {
+        inputId: "urineVolume",
+        label: "Urine Flow Rate",
+        explanation: "Urine flow rate in mL/min, the multiplier V in the formula.",
+      },
+      {
+        inputId: "urineSodium",
+        label: "Urine Sodium",
+        explanation: "Urine sodium in mmol/L, added to urine potassium in the numerator of the ratio.",
+      },
+      {
+        inputId: "urinePotassium",
+        label: "Urine Potassium",
+        explanation: "Urine potassium in mmol/L, added to urine sodium in the numerator of the ratio.",
+      },
+      {
+        inputId: "plasmaSodium",
+        label: "Plasma Sodium",
+        explanation: "Plasma sodium in mmol/L, used as the denominator of the ratio.",
+      },
+    ],
     faq: [
           {
         "question": "How is EFWC different from CH₂O?",
@@ -6486,7 +8759,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (classic renal physiology)",
       reference:
         "Rose BD. Clinical Physiology of Acid-Base and Electrolyte Disorders. 5th ed. McGraw-Hill; 2001.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6500,6 +8772,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "urine-protein-creatinine-ratio": {
+    commonMistakes: [
+      "Applying the adult nephrotic threshold of 3.5 mg/mg to a child, where a ratio of at least 2.0 defines nephrotic-range proteinuria instead.",
+      "Using UPCR instead of the albumin-to-creatinine ratio to screen for early diabetic kidney disease, where albumin-specific testing is preferred.",
+      "Trusting the ratio during gross hematuria or marked urine dilution, where non-albumin protein and abnormal concentration make the estimate unreliable."
+    ],
+    formulaExplanation:
+      "Urine protein-to-creatinine ratio = urine protein / urine creatinine, both in mg/dL, giving a dimensionless ratio (mg/mg) that estimates 24-hour protein excretion.",
+    variables: [
+      {
+        inputId: "urineProtein",
+        label: "Urine Protein",
+        explanation: "Urine protein concentration in mg/dL, used as the numerator.",
+      },
+      {
+        inputId: "urineCreatinine",
+        label: "Urine Creatinine",
+        explanation: "Urine creatinine concentration in mg/dL, used as the denominator to normalize for urine concentration.",
+      },
+    ],
     faq: [
           {
         "question": "How does UPCR relate to 24-hour urine protein?",
@@ -6567,7 +8858,6 @@ export const clinicalContentRegistry: Record<
       source: "Guideline + validation studies",
       reference:
         "National Kidney Foundation. KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int Suppl. 2013;3(1):1-150.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6581,6 +8871,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "creatinine-clearance-24h": {
+    commonMistakes: [
+      "Forgetting to divide by 1440, or dividing by it twice, when converting the 24-hour volume into the per-minute rate the formula requires.",
+      "Using the result for drug dosing in acute kidney injury, where serum creatinine is changing during the collection and the clearance is unreliable.",
+      "Assuming a low measured clearance reflects kidney disease when missed voids during the collection are the more common cause of an underestimated result."
+    ],
+    formulaExplanation:
+      "Creatinine clearance = (urine creatinine x 24-hour urine volume) / (serum creatinine x 1440), where 1440 is the number of minutes in 24 hours, yielding mL/min.",
+    variables: [
+      {
+        inputId: "urineCreatinine",
+        label: "Urine Creatinine (24h)",
+        explanation: "Urine creatinine concentration in mg/dL measured from the 24-hour collection.",
+      },
+      {
+        inputId: "urineVolume",
+        label: "24-Hour Urine Volume",
+        explanation: "Total urine volume collected over 24 hours in mL.",
+      },
+      {
+        inputId: "serumCreatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL, used with 1440 minutes in the denominator.",
+      },
+    ],
     faq: [
           {
         "question": "Why does CrCl overestimate true GFR?",
@@ -6649,7 +8963,6 @@ export const clinicalContentRegistry: Record<
       source: "Classic renal physiology definition",
       reference:
         "Levey AS, et al. Expressing the Modification of Diet in Renal Disease Study equation for estimating glomerular filtration rate with standardized serum creatinine values. Clin Chem. 2007;53(4):766-772.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6663,6 +8976,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "total-cholesterol-hdl-ratio": {
+    commonMistakes: [
+      "Running the ratio on a non-fasting sample drawn during acute illness, since swings in triglycerides alter total cholesterol and shift the calculated ratio.",
+      "Declining statin therapy because the ratio is below 4, when statin decisions rest on validated cardiovascular risk scores rather than this single marker.",
+      "Flagging a female patient as high risk at a value a clinician would call unremarkable in a male peer, since the reference pattern differs by sex."
+    ],
+    formulaExplanation:
+      "Total cholesterol to HDL ratio = total cholesterol / HDL cholesterol, with both lipids in mg/dL.",
+    variables: [
+      {
+        inputId: "totalCholesterol",
+        label: "Total Cholesterol",
+        explanation: "Total serum cholesterol in mg/dL, used as the numerator.",
+      },
+      {
+        inputId: "hdlCholesterol",
+        label: "HDL Cholesterol",
+        explanation: "HDL cholesterol in mg/dL, used as the denominator.",
+      },
+    ],
     faq: [
           {
         "question": "What is a good TC/HDL ratio?",
@@ -6731,7 +9063,6 @@ export const clinicalContentRegistry: Record<
       source: "Epidemiological association (peer-reviewed)",
       reference:
         "Stampfer MJ, et al. A prospective study of cholesterol, apolipoproteins, and the risk of myocardial infarction. N Engl J Med. 1991;325(6):373-381.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6745,6 +9076,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "atherogenic-index-of-plasma": {
+    commonMistakes: [
+      "Calculating AIP from a non-fasting lipid draw, because a recent high-fat meal inflates triglycerides and shifts the index upward.",
+      "Setting a treatment goal of driving AIP below 0.21, since the index is an adjunct marker rather than a target and its cutoffs are not standardized.",
+      "Describing AIP as a direct measurement of LDL particle size, when it only correlates with smaller, denser particles."
+    ],
+    formulaExplanation:
+      "Atherogenic index of plasma = log10(triglycerides / HDL cholesterol), with both lipids in mg/dL.",
+    variables: [
+      {
+        inputId: "triglycerides",
+        label: "Triglycerides",
+        explanation: "Fasting triglycerides in mg/dL, used as the numerator of the ratio.",
+      },
+      {
+        inputId: "hdlCholesterol",
+        label: "HDL Cholesterol",
+        explanation: "HDL cholesterol in mg/dL, used as the denominator before the base-10 logarithm.",
+      },
+    ],
     faq: [
           {
         "question": "What does the AIP actually measure?",
@@ -6812,7 +9162,6 @@ export const clinicalContentRegistry: Record<
       source: "Original derivation (peer-reviewed)",
       reference:
         "Dobiásová M, Frohlich J. The plasma parameter log (TG/HDL-C) as an atherogenic index: correlation with lipoprotein particle size and esterification rate in apoB-lipoprotein-depleted plasma (FERHDL). Clin Biochem. 2001;34(7):583-588.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6826,6 +9175,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "apob-apoa1-ratio": {
+    commonMistakes: [
+      "Applying the male upper reference of 1.0 to a female patient, whose reference range tops out at 0.8 and whose elevated threshold differs.",
+      "Dividing ApoB reported in mg/dL by ApoA1 reported in g/L, since the ratio only holds when both apolipoproteins are expressed in the same units.",
+      "Adopting a ratio above 1.0 as a treatment target even when the performing laboratory's own reference interval says something different."
+    ],
+    formulaExplanation:
+      "ApoB to ApoA1 ratio = ApoB (g/L) / ApoA1 (g/L). A higher ratio reflects a greater burden of atherogenic relative to protective lipoproteins.",
+    variables: [
+      {
+        inputId: "apoB",
+        label: "ApoB",
+        explanation: "Apolipoprotein B in g/L, used as the numerator.",
+      },
+      {
+        inputId: "apoA1",
+        label: "ApoA1",
+        explanation: "Apolipoprotein A1 in g/L, used as the denominator.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, used to apply sex-specific interpretation thresholds for the ratio.",
+      },
+    ],
     faq: [
           {
         "question": "Why is the ApoB:ApoA1 ratio used?",
@@ -6894,7 +9267,6 @@ export const clinicalContentRegistry: Record<
       source: "Epidemiological association (peer-reviewed)",
       reference:
         "Walldius G, Jungner I. The apoB/apoA-I ratio: a strong, new risk factor for cardiovascular disease and a target for lipid-lowering therapy — a review of the evidence. J Intern Med. 2006;259(5):493-519.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6908,6 +9280,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "respiratory-compensation": {
+    commonMistakes: [
+      "Selecting the chronic factor of 4 for a disturbance that began only hours earlier, producing an expected bicarbonate that overshoots the real response.",
+      "Calling a disturbance chronic from the blood gas pattern alone, when chronic respiratory acidosis also requires a duration of more than 3-5 days.",
+      "Stopping the acid-base workup once the measured bicarbonate matches the expectation, without checking anion gap and delta ratio for a hidden mixed disorder."
+    ],
+    formulaExplanation:
+      "Expected bicarbonate = 24 + k x ((PaCO2 - 40) / 10), where k = 1 for acute respiratory acidosis, 4 for chronic respiratory acidosis, -2 for acute respiratory alkalosis, and -5 for chronic respiratory alkalosis. The expected value is compared with the measured bicarbonate to identify mixed disorders.",
+    variables: [
+      {
+        inputId: "disorderType",
+        label: "Disorder Type",
+        explanation: "Selects the acute or chronic respiratory disorder, which determines the compensation coefficient k.",
+      },
+      {
+        inputId: "paCO2",
+        label: "Arterial PaCO2",
+        explanation: "Arterial partial pressure of carbon dioxide in mmHg, entered into the (PaCO2 - 40) / 10 term.",
+      },
+      {
+        inputId: "measuredBicarbonate",
+        label: "Measured Bicarbonate (HCO3)",
+        explanation: "Measured serum bicarbonate in mEq/L, compared with the expected value to assess compensation.",
+      },
+    ],
     faq: [
           {
         "question": "What does 'within ±2' mean for the expected HCO₃?",
@@ -6977,7 +9373,6 @@ export const clinicalContentRegistry: Record<
       source: "Classic acid–base physiology / expert-derived rules",
       reference:
         "Merck Manual Professional Version. Respiratory Acidosis and Respiratory Alkalosis. www.merckmanuals.com.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -6991,6 +9386,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "metabolic-alkalosis-compensation": {
+    commonMistakes: [
+      "Feeding a bicarbonate of 24 mEq/L or lower into a rule built for metabolic alkalosis, which only applies when the bicarbonate is above 24.",
+      "Expecting the predicted PaCO2 to rise without limit at extreme bicarbonate values, even though the ventilatory response flattens near 55 mmHg.",
+      "Applying the rule to a patient on fixed-rate mechanical ventilation, where the ventilator settings rather than the metabolic disturbance set the PaCO2."
+    ],
+    formulaExplanation:
+      "Expected PaCO2 in metabolic alkalosis = 40 + 0.6 x (bicarbonate - 24), capped near 55 mmHg. A measured PaCO2 within about +/-5 mmHg of the expected value indicates appropriate respiratory compensation.",
+    variables: [
+      {
+        inputId: "bicarbonate",
+        label: "Serum Bicarbonate (HCO3)",
+        explanation: "Serum bicarbonate in mEq/L, used in the (HCO3 - 24) term to compute the expected PaCO2.",
+      },
+      {
+        inputId: "measuredPaCO2",
+        label: "Measured Arterial PaCO2",
+        explanation: "Measured arterial PaCO2 in mmHg, compared with the expected value to assess compensation.",
+      },
+    ],
     faq: [
           {
         "question": "Why is the expected PaCO₂ capped?",
@@ -7058,7 +9472,6 @@ export const clinicalContentRegistry: Record<
       source: "Classic acid–base physiology / expert-derived rule",
       reference:
         "Kraut JA, Madias NE. Metabolic alkalosis: pathogenesis, diagnosis, and treatment. In: Brenner and Rector's The Kidney. 2020.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7072,6 +9485,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "free-thyroxine-index": {
+    commonMistakes: [
+      "Entering the T3 resin uptake as a decimal fraction instead of a percentage makes the division by 100 produce an incorrect index.",
+      "Comparing a result to the 1.0-4.5 reference when the performing laboratory uses a different assay ignores that the interval is assay-specific.",
+      "Ordering FTI when a direct free T4 assay is available substitutes a largely superseded indirect estimate for the direct measurement."
+    ],
+    formulaExplanation:
+      "Free thyroxine index = total T4 (microg/dL) x T3 resin uptake (%) / 100, an indirect estimate of free T4.",
+    variables: [
+      {
+        inputId: "totalT4",
+        label: "Total T4",
+        explanation: "Total serum thyroxine in microg/dL, multiplied by the T3 resin uptake.",
+      },
+      {
+        inputId: "t3Uptake",
+        label: "T3 Resin Uptake",
+        explanation: "T3 resin uptake in percent, divided by 100 before multiplying total T4.",
+      },
+    ],
     faq: [
           {
         "question": "How is FTI different from free T4?",
@@ -7139,7 +9571,6 @@ export const clinicalContentRegistry: Record<
       source: "Endocrinology / Thyroid",
       reference:
         "Surks MI, et al. American Thyroid Association guidelines for use of laboratory tests in thyroid disorders. JAMA. 1990;263(11):1529-1532.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7153,6 +9584,65 @@ export const clinicalContentRegistry: Record<
   },
 
   "metabolic-syndrome-atp3": {
+    commonMistakes: [
+      "Applying Asian-specific waist cutoffs of 90/80 cm when this calculator uses the classic ATP III values of 102/88 cm misclassifies the waist criterion.",
+      "Marking a treated hypertensive or treated dyslipidemia patient as failing a criterion ignores the treatment exemption built into the ATP III definition.",
+      "Interpreting a positive result as a diagnosis of diabetes or hypertension confuses clustered risk factors with individual disease diagnoses."
+    ],
+    formulaExplanation:
+      "Metabolic syndrome is present when at least 3 of 5 NCEP ATP III criteria are met: elevated waist circumference (sex-specific), triglycerides >= 150 mg/dL (or treatment), HDL < 40 mg/dL in men or < 50 mg/dL in women (or treatment), blood pressure >= 130/85 mmHg (or treatment), and fasting glucose >= 100 mg/dL (or treatment).",
+    variables: [
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which sets the sex-specific waist circumference and HDL thresholds.",
+      },
+      {
+        inputId: "waist",
+        label: "Waist Circumference",
+        explanation: "Waist circumference in cm, compared with the sex-specific ATP III cutoff.",
+      },
+      {
+        inputId: "triglycerides",
+        label: "Triglycerides",
+        explanation: "Fasting triglycerides in mg/dL; 150 or higher counts as a criterion.",
+      },
+      {
+        inputId: "hdl",
+        label: "HDL Cholesterol",
+        explanation: "HDL cholesterol in mg/dL; below 40 (men) or 50 (women) counts as a criterion.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure in mmHg, part of the 130/85 mmHg blood pressure criterion.",
+      },
+      {
+        inputId: "dbp",
+        label: "Diastolic Blood Pressure",
+        explanation: "Diastolic blood pressure in mmHg, part of the 130/85 mmHg blood pressure criterion.",
+      },
+      {
+        inputId: "fastingGlucose",
+        label: "Fasting Glucose",
+        explanation: "Fasting glucose in mg/dL; 100 or higher counts as a criterion.",
+      },
+      {
+        inputId: "lipidRx",
+        label: "On drug treatment for dyslipidemia (triglycerides/HDL)",
+        explanation: "Whether the patient takes lipid-lowering therapy; Yes satisfies the triglyceride and HDL criteria regardless of the measured values.",
+      },
+      {
+        inputId: "bpRx",
+        label: "On drug treatment for hypertension",
+        explanation: "Whether the patient takes antihypertensive therapy; Yes satisfies the blood pressure criterion regardless of the measured values.",
+      },
+      {
+        inputId: "glucoseRx",
+        label: "On drug treatment for elevated glucose",
+        explanation: "Whether the patient takes glucose-lowering therapy; Yes satisfies the fasting glucose criterion regardless of the measured value.",
+      },
+    ],
     faq: [
           {
         "question": "How is metabolic syndrome diagnosed?",
@@ -7228,7 +9718,6 @@ export const clinicalContentRegistry: Record<
       source: "Cardiology / Endocrinology",
       reference:
         "Grundy SM, et al. Diagnosis and management of the metabolic syndrome: an American Heart Association/National Heart, Lung, and Blood Institute scientific statement. Circulation. 2005;112(17):2735-2752.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7242,6 +9731,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "bishop-score": {
+    commonMistakes: [
+      "Using the Bishop score to counsel about the course of spontaneous labor in women not facing induction, a purpose the score was never designed to serve.",
+      "Applying the traditional favorable cutoff of 8 when the local protocol uses a modified Bishop score of 6 or higher, or the reverse, which mislabels cervical favorability.",
+      "Assuming the score alone predicts induction success, when parity, gestational age, and prior vaginal delivery also influence the outcome and examiner variability affects each assessment."
+    ],
+    formulaExplanation:
+      "The Bishop score sums five cervical findings: dilatation (0-3), effacement (0-3), station (0-3), consistency (0-2), and position (0-2), for a total of 0-13. Higher scores predict a higher likelihood of successful induction and vaginal delivery.",
+    variables: [
+      {
+        inputId: "dilation",
+        label: "Cervical Dilatation",
+        explanation: "Cervical dilatation, scored 0 (0 cm) to 3 (3 cm or more).",
+      },
+      {
+        inputId: "effacement",
+        label: "Cervical Effacement",
+        explanation: "Cervical effacement, scored 0 (0-30%) to 3 (80% or more).",
+      },
+      {
+        inputId: "station",
+        label: "Fetal Station",
+        explanation: "Fetal station, scored 0 (minus 3) to 3 (plus 1 or plus 2).",
+      },
+      {
+        inputId: "consistency",
+        label: "Cervical Consistency",
+        explanation: "Cervical consistency, scored 0 (firm), 1 (medium), or 2 (soft).",
+      },
+      {
+        inputId: "position",
+        label: "Cervical Position",
+        explanation: "Cervical position, scored 0 (posterior), 1 (mid), or 2 (anterior).",
+      },
+    ],
     faq: [
           {
         "question": "What is a good Bishop score for induction?",
@@ -7312,7 +9835,6 @@ export const clinicalContentRegistry: Record<
       source: "Obstetrics",
       reference:
         "Bishop EH. Pelvic scoring for elective induction. Obstet Gynecol. 1964;24:266-268.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7326,6 +9848,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "biophysical-profile": {
+    commonMistakes: [
+      "Using the biophysical profile as the sole test when acute fetal distress is suspected, where continuous fetal monitoring is the indicated assessment instead.",
+      "Giving partial credit such as 1 point to a component, since each of the five components scores only 0 or 2 and the total runs from 0 to 10.",
+      "Recording absent fetal breathing or movement before the full 30-minute observation window has elapsed, which can misclassify a reassuring fetus as abnormal."
+    ],
+    formulaExplanation:
+      "The biophysical profile sums five components each scored 0 or 2: fetal breathing, gross body movement, fetal tone, amniotic fluid volume, and non-stress test, for a total of 0-10. Higher scores indicate reassuring fetal status.",
+    variables: [
+      {
+        inputId: "breathing",
+        label: "Fetal Breathing",
+        explanation: "Fetal breathing movements, scored 0 if absent or 2 if at least one episode of 30 seconds or more within 30 minutes.",
+      },
+      {
+        inputId: "movement",
+        label: "Gross Body Movement",
+        explanation: "Gross body movements, scored 0 if absent or 2 if at least three movements in 30 minutes.",
+      },
+      {
+        inputId: "tone",
+        label: "Fetal Tone",
+        explanation: "Fetal tone, scored 0 if absent or poor or 2 if at least one episode of flexion and extension.",
+      },
+      {
+        inputId: "amnioticFluid",
+        label: "Amniotic Fluid Volume",
+        explanation: "Amniotic fluid volume, scored 0 if the single deepest pocket is under 2 cm or 2 if 2 cm or more.",
+      },
+      {
+        inputId: "nst",
+        label: "Non-Stress Test (NST)",
+        explanation: "Non-stress test result, scored 0 if nonreactive or 2 if reactive.",
+      },
+    ],
     faq: [
           {
         "question": "What does a BPP of 6 mean?",
@@ -7395,7 +9951,6 @@ export const clinicalContentRegistry: Record<
       source: "Obstetrics / Perinatology",
       reference:
         "Manning FA, et al. Fetal biophysical profile scoring: a prospective study in 1,184 high-risk patients. Am J Obstet Gynecol. 1981;140(3):289-294.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7409,6 +9964,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "hellp-syndrome": {
+    commonMistakes: [
+      "Mixing the Tennessee calculator output with the Mississippi classification system, which grades severity differently, and then quoting a severity grade the Tennessee criteria do not produce.",
+      "Entering platelets in units that ignore the per-microliter scale, since low platelets means strictly below 100,000 per microliter, or 100 in thousands, and borderline values hinge on that distinction.",
+      "Stopping the evaluation once the three criteria are met, without excluding look-alikes such as thrombotic microangiopathy, viral hepatitis, or fatty liver of pregnancy."
+    ],
+    formulaExplanation:
+      "The Tennessee (Sibai) criteria for HELLP require three findings: hemolysis (LDH of 600 U/L or higher, schistocytes on smear, or low haptoglobin), elevated liver enzymes (AST of 70 U/L or higher), and low platelets (below 100 x10^3/microL). The calculator reports which criteria are present.",
+    variables: [
+      {
+        inputId: "platelets",
+        label: "Platelets",
+        explanation: "Platelet count in x10^3/microL; below 100 is a positive criterion.",
+      },
+      {
+        inputId: "ast",
+        label: "AST",
+        explanation: "Aspartate aminotransferase in U/L; 70 or higher is a positive liver-enzyme criterion.",
+      },
+      {
+        inputId: "ldh",
+        label: "LDH",
+        explanation: "Lactate dehydrogenase in U/L; 600 or higher supports the hemolysis criterion.",
+      },
+      {
+        inputId: "hemolysis",
+        label: "Hemolysis evidence on smear (schistocytes) or low haptoglobin",
+        explanation: "Presence of hemolysis on the peripheral smear or low haptoglobin; Yes satisfies the hemolysis criterion.",
+      },
+    ],
     faq: [
           {
         "question": "What is the difference between complete and partial HELLP?",
@@ -7477,7 +10061,6 @@ export const clinicalContentRegistry: Record<
       source: "Obstetrics / Maternal-Fetal Medicine",
       reference:
         "Sibai BM, et al. Maternal morbidity and mortality in 442 pregnancies with hemolysis, elevated liver enzymes, and low platelets (HELLP syndrome). Am J Obstet Gynecol. 1993;169(4):1000-1006.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7491,6 +10074,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "hadlock-efw": {
+    commonMistakes: [
+      "Entering any biometric measurement in millimeters instead of centimeters, which distorts the logarithmic formula and produces an estimated weight that is wildly implausible.",
+      "Quoting the estimate to patients as a predicted birth weight, when the reported error is about 7.5% at 1 standard deviation and accuracy declines at the extremes of size.",
+      "Diagnosing growth restriction or macrosomia from a single estimated weight without gestational-age growth charts and serial measurements, which are much more reliable than one value."
+    ],
+    formulaExplanation:
+      "The Hadlock four-parameter formula estimates fetal weight: log10(EFW) = 1.3596 - 0.00386(AC x FL) + 0.0064(HC) + 0.00061(BPD x AC) + 0.0424(AC) + 0.174(FL), with all measurements in cm and the estimated fetal weight in grams.",
+    variables: [
+      {
+        inputId: "bpd",
+        label: "Biparietal Diameter (BPD)",
+        explanation: "Biparietal diameter in cm, contributing through the BPD x AC term.",
+      },
+      {
+        inputId: "hc",
+        label: "Head Circumference (HC)",
+        explanation: "Head circumference in cm, contributing through its linear term.",
+      },
+      {
+        inputId: "ac",
+        label: "Abdominal Circumference (AC)",
+        explanation: "Abdominal circumference in cm, the dominant measurement appearing in several terms.",
+      },
+      {
+        inputId: "fl",
+        label: "Femur Length (FL)",
+        explanation: "Femur length in cm, contributing through the AC x FL and linear terms.",
+      },
+    ],
     faq: [
           {
         "question": "How accurate is the Hadlock formula?",
@@ -7559,7 +10171,6 @@ export const clinicalContentRegistry: Record<
       source: "Obstetrics / Ultrasound",
       reference:
         "Hadlock FP, et al. Estimation of fetal weight with the use of head, body, and femur measurements — a prospective study. Am J Obstet Gynecol. 1985;151(3):333-337.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7573,6 +10184,65 @@ export const clinicalContentRegistry: Record<
   },
 
   "preeclampsia-criteria": {
+    commonMistakes: [
+      "Recording a blood pressure of 140/90 as a severe feature, when severe-range pressure is 160 systolic or 110 diastolic and 140/90 merely meets the diagnostic threshold.",
+      "Accepting a dipstick of 1+ as proteinuria, since the definition requires at least 300 mg per 24 hours, a protein-to-creatinine ratio of 0.3, or dipstick 2+ or higher.",
+      "Running the criteria on hypertension detected before 20 weeks or in a patient with known chronic hypertension, clinical contexts the ACOG definition does not address."
+    ],
+    formulaExplanation:
+      "Preeclampsia is present when hypertension (systolic 140 mmHg or higher or diastolic 90 mmHg or higher after 20 weeks) is accompanied by proteinuria or end-organ dysfunction. Severe features are counted individually: blood pressure of 160/110 mmHg or higher, platelets below 100 x10^3/microL, creatinine above 1.1 mg/dL, impaired liver function, pulmonary edema, and cerebral or visual symptoms.",
+    variables: [
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure in mmHg; 140 or higher meets the hypertension threshold and 160 or higher is a severe feature.",
+      },
+      {
+        inputId: "dbp",
+        label: "Diastolic Blood Pressure",
+        explanation: "Diastolic blood pressure in mmHg; 90 or higher meets the hypertension threshold and 110 or higher is a severe feature.",
+      },
+      {
+        inputId: "proteinuria",
+        label: "Proteinuria (>= 300 mg/24 h, PCR >= 0.3, or dipstick >= 2+)",
+        explanation: "Presence of significant proteinuria; Yes satisfies the proteinuria criterion.",
+      },
+      {
+        inputId: "platelets",
+        label: "Platelets",
+        explanation: "Platelet count in x10^3/microL; below 100 is a severe feature (thrombocytopenia).",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL; above 1.1 indicates renal involvement.",
+      },
+      {
+        inputId: "transaminases",
+        label: "AST/ALT >= 2x ULN (impaired liver function)",
+        explanation: "Transaminases at least twice the upper limit of normal; Yes indicates liver involvement.",
+      },
+      {
+        inputId: "ruqPain",
+        label: "Severe persistent RUQ/epigastric pain",
+        explanation: "Severe persistent right upper quadrant or epigastric pain; Yes is a severe feature.",
+      },
+      {
+        inputId: "pulmonaryEdema",
+        label: "Pulmonary edema",
+        explanation: "Pulmonary edema; Yes is a severe feature.",
+      },
+      {
+        inputId: "headache",
+        label: "New-onset headache unresponsive to medication",
+        explanation: "New-onset headache unresponsive to medication; Yes is a cerebral severe feature.",
+      },
+      {
+        inputId: "visual",
+        label: "Visual symptoms (scotomata, blurred vision)",
+        explanation: "Visual symptoms such as scotomata or blurred vision; Yes is a cerebral severe feature.",
+      },
+    ],
     faq: [
           {
         "question": "Can preeclampsia be diagnosed without proteinuria?",
@@ -7642,7 +10312,6 @@ export const clinicalContentRegistry: Record<
       source: "Obstetrics / ACOG",
       reference:
         "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7655,6 +10324,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "gestational-weight-gain": {
+    commonMistakes: [
+      "Entering a BMI calculated from a weight taken during pregnancy rather than the pre-pregnancy weight, which shifts the patient into a higher category with a lower recommended gain.",
+      "Comparing the calculator's pound-based totals, such as 25 to 35 lb for a normal pre-pregnancy BMI, against kilogram targets from another source without converting.",
+      "Presenting the returned midpoint as the patient's personal weight-gain target, when it is only the middle of a recommended range that varies by category."
+    ],
+    formulaExplanation:
+      "The calculator applies the Institute of Medicine (2009) recommended total gestational weight gain range based on the pre-pregnancy BMI category: underweight (below 18.5) 28-40 lb, normal (18.5-24.9) 25-35 lb, overweight (25-29.9) 15-25 lb, and obese (30 or higher) 11-20 lb, along with each category's second- and third-trimester weekly rate.",
+    variables: [
+      {
+        inputId: "bmi",
+        label: "Pre-Pregnancy BMI",
+        explanation: "Pre-pregnancy body mass index in kg/m2, used to select the IOM total weight-gain range and weekly rate.",
+      },
+    ],
     faq: [
           {
         "question": "What BMI do I use?",
@@ -7720,7 +10403,6 @@ export const clinicalContentRegistry: Record<
       source: "Obstetrics / Nutrition",
       reference:
         "Institute of Medicine and National Research Council. Weight Gain During Pregnancy: Reexamining the Guidelines. The National Academies Press; 2009.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -7734,6 +10416,25 @@ export const clinicalContentRegistry: Record<
   },
 
   "magnesium-sulfate-preeclampsia": {
+    commonMistakes: [
+      "Treating the calculated 24-hour total as one large bolus instead of a loading dose followed by a continuous maintenance infusion.",
+      "Keeping the 2 g/h maintenance rate in significant renal impairment without recognizing that the regimen requires adjustment and monitoring.",
+      "Using the therapeutic serum range of 4.8-8.4 mg/dL as a dosing target and titrating the infusion to reach it rather than watching for toxicity."
+    ],
+    formulaExplanation:
+      "Selected total 24-hour dose (g) = loading dose (g, given IV over 20-30 minutes) + maintenance rate (g/h) x 24 hours.",
+    variables: [
+      {
+        inputId: "loadingDose",
+        label: "IV Loading Dose",
+        explanation: "Selected IV loading dose in grams (4, 5, or 6 g), added to the 24-hour maintenance total.",
+      },
+      {
+        inputId: "maintenance",
+        label: "Maintenance Infusion Rate",
+        explanation: "Selected maintenance infusion rate in g/h (1 or 2 g/h), multiplied by 24 hours.",
+      },
+    ],
     faq: [
           {
         "question": "What serum level is therapeutic?",
@@ -7806,7 +10507,6 @@ export const clinicalContentRegistry: Record<
       source: "ACOG Practice Bulletin and Original Descriptions",
       reference:
         "ACOG Practice Bulletin No. 222: Gestational hypertension and preeclampsia. Obstet Gynecol. 2020;135(6):e237-e260. Pritchard JA. Surg Gynecol Obstet. 1955;100(2):131-140. Zuspan FP. Clin Obstet Gynecol. 1966;9(4):954-972.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2020",
       updatedAt: "2026-08",
       references: [
@@ -7821,6 +10521,45 @@ export const clinicalContentRegistry: Record<
   },
 
   "ebl-obstetric": {
+    commonMistakes: [
+      "Entering the wet and dry sponge weights in kilograms instead of grams, which makes the gravimetric blood loss far too small.",
+      "Relying on the hematocrit method immediately after delivery, before the pre-delivery and post-delivery values have had time to diverge.",
+      "Ruling out postpartum hemorrhage because the estimate is under 1000 mL when the patient already shows signs of hypovolemia."
+    ],
+    formulaExplanation:
+      "Blood loss is estimated by one of two methods. Gravimetric: EBL (mL) = (wet weight - dry weight) in grams x 1 mL/g. Hematocrit-based: EBL = estimated blood volume x (pre-Hct - post-Hct) / pre-Hct, where blood volume is approximately 85 mL/kg.",
+    variables: [
+      {
+        inputId: "method",
+        label: "Estimation Method",
+        explanation: "Selects the gravimetric (weighed materials) or hematocrit-based method; only the corresponding inputs are used.",
+      },
+      {
+        inputId: "wetWeight",
+        label: "Wet Weight (blood-soaked materials)",
+        explanation: "Weight of blood-soaked sponges and drapes in grams, used in the gravimetric method.",
+      },
+      {
+        inputId: "dryWeight",
+        label: "Dry Weight (baseline materials)",
+        explanation: "Baseline weight of dry materials in grams, subtracted from wet weight in the gravimetric method.",
+      },
+      {
+        inputId: "weightKg",
+        label: "Maternal Weight",
+        explanation: "Maternal weight in kg, multiplied by approximately 85 mL/kg to estimate blood volume in the hematocrit method.",
+      },
+      {
+        inputId: "preHct",
+        label: "Pre-Delivery Hematocrit",
+        explanation: "Pre-delivery hematocrit in percent, the denominator of the hematocrit method.",
+      },
+      {
+        inputId: "postHct",
+        label: "Post-Delivery Hematocrit",
+        explanation: "Post-delivery hematocrit in percent, subtracted from the pre-delivery hematocrit.",
+      },
+    ],
     faq: [
           {
         "question": "Why use 85 mL/kg for blood volume?",
@@ -7890,7 +10629,6 @@ export const clinicalContentRegistry: Record<
       source: "ACOG Practice Bulletins",
       reference:
         "ACOG Committee Opinion No. 794: Quantitative blood loss in obstetric hemorrhage. Obstet Gynecol. 2019;134(6):e150-e156. ACOG Practice Bulletin No. 183: Postpartum hemorrhage. Obstet Gynecol. 2017;130(4):e168-e186.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2019",
       updatedAt: "2026-08",
       references: [
@@ -7904,6 +10642,65 @@ export const clinicalContentRegistry: Record<
   },
 
   "epds": {
+    commonMistakes: [
+      "Treating a total of 10 or higher as a diagnosis of depression rather than a positive screen that still needs clinical assessment.",
+      "Dismissing a positive answer on item 10 about self-harm because the overall total stays below the screen-positive cutoff.",
+      "Applying the cutoff of 13 in every setting and failing to flag results that would be screen-positive at the widely used cutoff of 10."
+    ],
+    formulaExplanation:
+      "The Edinburgh Postnatal Depression Scale sums ten scored items (item1 through item10), each scored 0-3. The total ranges 0-30, with higher scores indicating more depressive symptoms.",
+    variables: [
+      {
+        inputId: "item1",
+        label: "I have been able to laugh and see the funny side of things",
+        explanation: "Question 1, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item2",
+        label: "I have looked forward with enjoyment to things",
+        explanation: "Question 2, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item3",
+        label: "I have blamed myself unnecessarily when things went wrong",
+        explanation: "Question 3, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item4",
+        label: "I have been anxious or worried for no good reason",
+        explanation: "Question 4, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item5",
+        label: "I have felt scared or panicky for no very good reason",
+        explanation: "Question 5, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item6",
+        label: "Things have been getting on top of me",
+        explanation: "Question 6, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item7",
+        label: "I have been so unhappy that I have had difficulty sleeping",
+        explanation: "Question 7, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item8",
+        label: "I have felt sad or miserable",
+        explanation: "Question 8, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item9",
+        label: "I have been so unhappy that I have been crying",
+        explanation: "Question 9, scored 0-3 based on the selected response.",
+      },
+      {
+        inputId: "item10",
+        label: "The thought of harming myself has occurred to me",
+        explanation: "Question 10, scored 0-3 based on the selected response.",
+      },
+    ],
     faq: [
           {
         "question": "What score indicates possible depression?",
@@ -7978,7 +10775,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Validation and ACOG Committee Opinion",
       reference:
         "Cox JL, Holden JM, Sagovsky R. Detection of postnatal depression: development of the 10-item Edinburgh Postnatal Depression Scale. Br J Psychiatry. 1987;150:782-786. ACOG Committee Opinion No. 757: Screening for perinatal depression. Obstet Gynecol. 2018;132(5):e208-e212.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1987",
       updatedAt: "2026-08",
       references: [
@@ -7992,6 +10788,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "apgar-score": {
+    commonMistakes: [
+      "Waiting for the 1-minute score before starting resuscitation instead of responding to the newborn's breathing, pulse, and color.",
+      "Stopping after the delivery-room score and omitting the 5-minute assessment even though the first score was below 7.",
+      "Treating a low score in a preterm or sedated infant as proof of birth asphyxia when the score is only a snapshot of condition."
+    ],
+    formulaExplanation:
+      "The Apgar score sums five components each scored 0-2: appearance (color), pulse (heart rate), grimace (reflex irritability), activity (muscle tone), and respiration (respiratory effort), for a total of 0-10.",
+    variables: [
+      {
+        inputId: "appearance",
+        label: "Appearance (Skin Color)",
+        explanation: "Skin color, scored 0 (pale/blue), 1 (acrocyanotic), or 2 (completely pink).",
+      },
+      {
+        inputId: "pulse",
+        label: "Pulse (Heart Rate)",
+        explanation: "Heart rate, scored 0 (absent), 1 (below 100 bpm), or 2 (100 bpm or above).",
+      },
+      {
+        inputId: "grimace",
+        label: "Grimace (Reflex Irritability)",
+        explanation: "Reflex response to stimulation, scored 0 (no response), 1 (grimace), or 2 (cry or active withdrawal).",
+      },
+      {
+        inputId: "activity",
+        label: "Activity (Muscle Tone)",
+        explanation: "Muscle tone, scored 0 (limp), 1 (some flexion), or 2 (active motion).",
+      },
+      {
+        inputId: "respiration",
+        label: "Respiration (Respiratory Effort)",
+        explanation: "Respiratory effort, scored 0 (apneic), 1 (slow or irregular), or 2 (good, crying).",
+      },
+    ],
     clinicalPurpose:
       "Scores newborn condition immediately after birth using the five Apgar signs — Appearance (color), Pulse (heart rate), Grimace (reflex irritability), Activity (muscle tone), and Respiration — each scored 0–2 for a total of 0–10 (Apgar 1953).",
     howToUse: [
@@ -8070,7 +10900,6 @@ export const clinicalContentRegistry: Record<
       source: "Obstetrics / Neonatology",
       reference:
         "Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg. 1953;32(4):260-267.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -8084,6 +10913,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "pediatric-gcs": {
+    commonMistakes: [
+      "Applying the age-appropriate verbal scale to an older child who can answer orientation questions, where the adult verbal scale applies.",
+      "Expecting the scale to reach a total below 3, when each component scores at least 1 and 3 is the lowest possible score.",
+      "Managing airway or referral decisions from the total alone without examining the pupils and brainstem, which the scale does not cover."
+    ],
+    formulaExplanation:
+      "The pediatric Glasgow Coma Scale sums three components: eye opening (1-4), verbal response (1-5), and motor response (1-6), for a total of 3-15. Lower totals indicate greater impairment of consciousness.",
+    variables: [
+      {
+        inputId: "eye",
+        label: "Eye Opening",
+        explanation: "Eye opening scored 1-4, with age-appropriate response options.",
+      },
+      {
+        inputId: "verbal",
+        label: "Verbal Response",
+        explanation: "Verbal response scored 1-5, using age-specific descriptors.",
+      },
+      {
+        inputId: "motor",
+        label: "Motor Response",
+        explanation: "Best motor response scored 1-6.",
+      },
+    ],
     clinicalPurpose:
       "Quantifies the level of consciousness in infants and children using the Pediatric Glasgow Coma Scale, which modifies the verbal component for age while keeping the eye (1–4) and motor (1–6) components identical to the adult scale; total range 3–15.",
     howToUse: [
@@ -8141,7 +10994,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Description and ACS ATLS",
       reference:
         "James HE, Trauner D. The Glasgow Coma Scale. In: Brain Insults in Infants and Children. Grune & Stratton; 1985:179-182. American College of Surgeons. ATLS Student Course Manual. 10th ed. ACS; 2018.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1985",
       updatedAt: "2026-08",
       references: [
@@ -8174,6 +11026,45 @@ export const clinicalContentRegistry: Record<
   },
 
   "pediatric-trauma-score": {
+    commonMistakes: [
+      "Treating an unremarkable weight, airway, or blood pressure finding as worth no points, when a normal component contributes +2.",
+      "Assuming a higher total means worse injury, when mortality risk rises as the score falls below 8 and toward -6.",
+      "Using the score to triage an adult patient, since the weight and blood pressure bands were designed for children."
+    ],
+    formulaExplanation:
+      "The pediatric trauma score sums six components: weight, airway, systolic blood pressure, central nervous system status, open wound, and skeletal injury, each scored from -1 to +2, for a total of -6 to +12. Lower scores indicate more severe injury.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight, scored +2 (over 20 kg), +1 (10-20 kg), or -1 (under 10 kg).",
+      },
+      {
+        inputId: "airway",
+        label: "Airway",
+        explanation: "Airway patency, scored +2 (normal), +1 (maintainable), or -1 (unmaintainable).",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure, scored +2 (over 90 mmHg), +1 (50-90 mmHg), or -1 (under 50 mmHg).",
+      },
+      {
+        inputId: "cns",
+        label: "Central Nervous System",
+        explanation: "Level of consciousness, scored +2 (awake), +1 (obtunded), or -1 (comatose).",
+      },
+      {
+        inputId: "openWound",
+        label: "Open Wound",
+        explanation: "Open wound, scored +2 (none), +1 (minor), or -1 (major or penetrating).",
+      },
+      {
+        inputId: "skeletal",
+        label: "Skeletal Injury",
+        explanation: "Skeletal injury, scored +2 (none), +1 (closed fracture), or -1 (open or multiple fractures).",
+      },
+    ],
     faq: [
           {
         "question": "What PTS threshold indicates the need for a trauma center?",
@@ -8245,7 +11136,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Description and ACS Guideline",
       reference:
         "Tepas JJ 3rd, et al. The Pediatric Trauma Score as a predictor of injury severity in the injured child. J Pediatr Surg. 1987;22(1):14-18. American College of Surgeons. Resources for Optimal Care of the Injured Patient. ACS; 2022.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1987",
       updatedAt: "2026-08",
       references: [
@@ -8258,6 +11148,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "westley-croup-score": {
+    commonMistakes: [
+      "Scoring stridor as present at rest when it only appeared while the child was agitated, which inflates the total.",
+      "Calling a total of 7 severe croup when severe disease begins at 8, with 3 to 7 representing moderate disease.",
+      "Using the scale in suspected epiglottitis or foreign body, where the clinical course and required management are different."
+    ],
+    formulaExplanation:
+      "The Westley croup score sums five components: level of consciousness (0-5), cyanosis (0-5), stridor (0-2), air entry (0-2), and retractions (0-2), for a total of 0-17. Higher scores indicate more severe croup.",
+    variables: [
+      {
+        inputId: "consciousness",
+        label: "Level of Consciousness",
+        explanation: "Consciousness, scored 0 (normal), up to 5 (reduced level).",
+      },
+      {
+        inputId: "cyanosis",
+        label: "Cyanosis",
+        explanation: "Cyanosis, scored 0 (none), 4 (with agitation), or 5 (at rest).",
+      },
+      {
+        inputId: "stridor",
+        label: "Stridor",
+        explanation: "Stridor, scored 0 (none), 1 (with agitation), or 2 (at rest).",
+      },
+      {
+        inputId: "airEntry",
+        label: "Air Entry",
+        explanation: "Air entry, scored 0 (normal), 1 (decreased), or 2 (markedly decreased).",
+      },
+      {
+        inputId: "retractions",
+        label: "Retractions",
+        explanation: "Chest wall retractions, scored 0 (none), 1 (mild), or 2 (moderate to severe).",
+      },
+    ],
     faq: [
           {
         "question": "When is nebulized epinephrine indicated?",
@@ -8328,7 +11252,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Description and Lancet Review",
       reference:
         "Westley CR, Cotton EK, Brooks JG. Nebulized racemic epinephrine by IPPB for the treatment of croup: a double-blind study. Am J Dis Child. 1978;132(5):484-487. Bjornson CL, Johnson DW. Croup. Lancet. 2008;371(9609):329-339.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1978",
       updatedAt: "2026-08",
       references: [
@@ -8341,6 +11264,75 @@ export const clinicalContentRegistry: Record<
   },
 
   "pecarn-head-trauma": {
+    commonMistakes: [
+      "Combining predictors from both age groups, such as counting vomiting in a child under 2 years instead of using only that age set.",
+      "Applying the rule to an infant under 3 months with a scalp hematoma, who generally needs CT regardless of which predictors are present.",
+      "Sending a child home with no observation or return precautions because the calculated risk of injury is very low."
+    ],
+    formulaExplanation:
+      "The PECARN algorithm stratifies children under 2 years and 2 years and older using age-specific predictors. A computed tomography scan is recommended if any high-risk predictor is present, or if one or more intermediate-risk predictors are present together with significant mechanism or clinician judgment. Only the age-appropriate predictors are used.",
+    variables: [
+      {
+        inputId: "ageGroup",
+        label: "Age Group",
+        explanation: "Selects the under-2 or 2-years-and-older predictor set.",
+      },
+      {
+        inputId: "u2AlteredMentation",
+        label: "Altered Mental Status (under 2)",
+        explanation: "High-risk predictor for children under 2.",
+      },
+      {
+        inputId: "u2PalpableSkullFracture",
+        label: "Palpable Skull Fracture (under 2)",
+        explanation: "High-risk predictor for children under 2.",
+      },
+      {
+        inputId: "u2ScalpHematoma",
+        label: "Non-frontal Scalp Hematoma (under 2)",
+        explanation: "Intermediate-risk predictor for children under 2.",
+      },
+      {
+        inputId: "u2Loc5Seconds",
+        label: "Loss of Consciousness >= 5 s (under 2)",
+        explanation: "Intermediate-risk predictor for children under 2.",
+      },
+      {
+        inputId: "u2NotActingNormal",
+        label: "Not Acting Normally per Parent (under 2)",
+        explanation: "Intermediate-risk predictor for children under 2.",
+      },
+      {
+        inputId: "p2AlteredMentation",
+        label: "Altered Mental Status (2 and older)",
+        explanation: "High-risk predictor for children 2 years and older.",
+      },
+      {
+        inputId: "p2BasilarSkullFracture",
+        label: "Basilar Skull Fracture Signs (2 and older)",
+        explanation: "High-risk predictor for children 2 years and older.",
+      },
+      {
+        inputId: "p2Vomiting",
+        label: "Vomiting (2 and older)",
+        explanation: "Intermediate-risk predictor for children 2 years and older.",
+      },
+      {
+        inputId: "p2SevereHeadache",
+        label: "Severe Headache (2 and older)",
+        explanation: "Intermediate-risk predictor for children 2 years and older.",
+      },
+      {
+        inputId: "p2LossOfConsciousness",
+        label: "Loss of Consciousness (2 and older)",
+        explanation: "Intermediate-risk predictor for children 2 years and older.",
+      },
+      {
+        inputId: "dangerousMechanism",
+        label: "Dangerous Mechanism",
+        explanation: "Mechanism of injury judged dangerous, applied with intermediate-risk predictors.",
+      },
+    ],
     faq: [
           {
         "question": "What is 'clinically important' TBI in the PECARN rule?",
@@ -8413,7 +11405,6 @@ export const clinicalContentRegistry: Record<
       source: "PECARN Derivation/Validation and Ann Emerg Med Validation",
       reference:
         "Kuppermann N, et al. Identification of children at very low risk of clinically-important brain injuries after head trauma: a prospective cohort study. Lancet. 2009;374(9696):1160-1170. Schonfeld D, et al. Ann Emerg Med. 2013;62(6):597-603.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2009",
       updatedAt: "2026-08",
       references: [
@@ -8426,6 +11417,60 @@ export const clinicalContentRegistry: Record<
   },
 
   "rochester-criteria": {
+    commonMistakes: [
+      "Counting 6 of 7 criteria as low risk when failure of any single criterion means the infant is not low risk.",
+      "Accepting exactly 10 white cells per high-power field on urinalysis when the criterion requires fewer than 10.",
+      "Applying the criteria to an infant older than 60 days, who falls outside the age range the tool was designed for."
+    ],
+    formulaExplanation:
+      "The Rochester criteria identify febrile infants at low risk of serious bacterial infection. An infant is low risk when all criteria are met: age 60 days or older (or, if younger, term gestation and previously healthy), well-appearing and nontoxic, no focal bacterial infection, and reassuring laboratory values (peripheral WBC below 15 x10^3/microL, urinalysis with fewer than 10 WBC/hpf, and either no diarrhea or stool with fewer than 5 WBC/hpf).",
+    variables: [
+      {
+        inputId: "ageDays",
+        label: "Age (days)",
+        explanation: "Age in days, used with gestation and health status to determine age eligibility.",
+      },
+      {
+        inputId: "termGestation",
+        label: "Term Gestation",
+        explanation: "Whether the infant was born at term, required if younger than 60 days.",
+      },
+      {
+        inputId: "previouslyHealthy",
+        label: "Previously Healthy",
+        explanation: "Whether the infant was previously healthy, required if younger than 60 days.",
+      },
+      {
+        inputId: "nontoxic",
+        label: "Nontoxic / Well-Appearing",
+        explanation: "Well appearance without toxicity; Yes satisfies a core criterion.",
+      },
+      {
+        inputId: "focalInfection",
+        label: "Focal Infection Present",
+        explanation: "Presence of a focal bacterial infection; Yes disqualifies low-risk status.",
+      },
+      {
+        inputId: "wbc",
+        label: "Peripheral WBC",
+        explanation: "Peripheral white blood cell count in x10^3/microL; must be below 15.",
+      },
+      {
+        inputId: "urinalysisWbc",
+        label: "Urinalysis WBC",
+        explanation: "Urine white blood cells per high-power field; must be fewer than 10.",
+      },
+      {
+        inputId: "diarrhea",
+        label: "Diarrhea",
+        explanation: "Presence of diarrhea; if Yes, stool WBC is assessed.",
+      },
+      {
+        inputId: "stoolWbc",
+        label: "Stool WBC",
+        explanation: "Stool white blood cells per high-power field; must be fewer than 5 when diarrhea is present.",
+      },
+    ],
     faq: [
           {
         "question": "What temperature counts as a fever in a young infant?",
@@ -8505,7 +11550,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Description and AAP Guideline",
       reference:
         "Jaskiewicz JA, et al. Febrile infants at low risk for serious bacterial infection — an appraisal of the Rochester criteria and implications for management. Pediatrics. 1994;94(3):390-396. Dagan R, et al. J Pediatr. 1985;107(6):855-860. Pantell RH, et al. Pediatrics. 2021;148(2):e2021052228.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1994",
       updatedAt: "2026-08",
       references: [
@@ -8519,6 +11563,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "gorelick-dehydration": {
+    commonMistakes: [
+      "Counting a capillary refill of exactly 2 seconds as positive when the item requires a refill time greater than 2 seconds.",
+      "Reading a score of 3 or 4 as a precise percentage of fluid loss when the scale only separates below from above 5%.",
+      "Making the oral versus intravenous decision from the score alone, without any weight comparison or reassessment."
+    ],
+    formulaExplanation:
+      "The Gorelick dehydration score counts four clinical signs: capillary refill greater than 2 seconds, dry mucous membranes, absent tears, and ill or toxic appearance. A score of 3 or more suggests dehydration of 5% or greater (roughly 10% for 3-4 signs).",
+    variables: [
+      {
+        inputId: "capillaryRefill",
+        label: "Capillary refill > 2 seconds",
+        explanation: "Prolonged capillary refill; present contributes one point.",
+      },
+      {
+        inputId: "dryMucousMembranes",
+        label: "Dry mucous membranes",
+        explanation: "Dry mucous membranes; present contributes one point.",
+      },
+      {
+        inputId: "absentTears",
+        label: "Absent tears",
+        explanation: "Absence of tears; present contributes one point.",
+      },
+      {
+        inputId: "illAppearance",
+        label: "Ill/toxic appearance",
+        explanation: "Ill or toxic general appearance; present contributes one point.",
+      },
+    ],
     faq: [
           {
         "question": "How many positive signs mean significant dehydration?",
@@ -8588,7 +11661,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Description and WHO Guideline",
       reference:
         "Gorelick MH, Shaw KN, Murphy KO. Validity and reliability of clinical signs in the diagnosis of dehydration in children. Pediatrics. 1997;99(5):E6. World Health Organization. The Treatment of Diarrhoea: A Manual for Physicians and Other Senior Health Workers. 4th rev. WHO; 2005.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1997",
       updatedAt: "2026-08",
       references: [
@@ -8601,6 +11673,30 @@ export const clinicalContentRegistry: Record<
   },
 
   "pediatric-hypotension": {
+    commonMistakes: [
+      "Choosing the 1-12 month bracket for a newborn under 1 month, where hypotension means a systolic below 60 mmHg rather than 70.",
+      "Concluding that shock is absent because the systolic pressure meets the threshold, when compensated shock keeps blood pressure normal.",
+      "Using these resuscitation cutoffs to screen a child for chronic hypertension, a purpose the 5th-percentile thresholds were not meant for."
+    ],
+    formulaExplanation:
+      "Hypotension thresholds follow PALS: for term neonates (0-28 days) systolic BP below 60 mmHg; infants (1-12 months) below 70 mmHg; children 1-10 years below 70 + (2 x age) mmHg; and children over 10 years below 90 mmHg. The calculator compares the entered systolic pressure to the age-appropriate threshold.",
+    variables: [
+      {
+        inputId: "ageGroup",
+        label: "Age Group",
+        explanation: "Selects neonate, infant, child, or adolescent threshold logic.",
+      },
+      {
+        inputId: "ageYears",
+        label: "Age (years)",
+        explanation: "Age in years, used in the 1-10 year threshold of 70 + (2 x age).",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Measured systolic blood pressure in mmHg, compared to the threshold.",
+      },
+    ],
     faq: [
           {
         "question": "What is the hypotension threshold for a 4-year-old?",
@@ -8669,7 +11765,6 @@ export const clinicalContentRegistry: Record<
       source: "AHA PALS Guidelines",
       reference:
         "American Heart Association. Pediatric Advanced Life Support Provider Manual. AHA; 2020. Kleinman ME, et al. Pediatric advanced life support: 2010 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care. Pediatrics. 2010;126(5):e1361-e1399.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2020",
       updatedAt: "2026-08",
       references: [
@@ -8682,6 +11777,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "peds-pews": {
+    commonMistakes: [
+      "Focusing only on a total of 4 and overlooking a score of 3 in a single domain, which itself triggers urgent medical review.",
+      "Awarding 2 points for persistent parent or staff concern, which can add at most 1 point to the total.",
+      "Judging tachycardia or tachypnea against adult reference values instead of age-specific ranges, which distorts the scoring."
+    ],
+    formulaExplanation:
+      "The Pediatric Early Warning Score assigns 0-3 points to each of three clinical domains (behavior, cardiovascular, and respiratory) plus additional points for staff concern, and sums them. Higher totals indicate greater risk of clinical deterioration.",
+    variables: [
+      {
+        inputId: "behavior",
+        label: "Behavior",
+        explanation: "Behavior from sleeping to unresponsive, scored 0-3.",
+      },
+      {
+        inputId: "cardiovascular",
+        label: "Cardiovascular",
+        explanation: "Cardiovascular assessment, scored 0-3.",
+      },
+      {
+        inputId: "respiratory",
+        label: "Respiratory",
+        explanation: "Respiratory assessment, scored 0-3.",
+      },
+      {
+        inputId: "concern",
+        label: "Staff / Family Concern",
+        explanation: "Degree of staff or family concern; present adds points to the total.",
+      },
+    ],
     faq: [
           {
         "question": "When should I escalate with the PEWS?",
@@ -8751,7 +11875,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Description and BMJ Systematic Review",
       reference:
         "Monaghan A. Detecting and managing deterioration in children. Paediatr Nurs. 2005;17(1):32-35. Lambert V, et al. Paediatric early warning systems for detecting and responding to clinical deterioration in children: a systematic review. BMJ Open. 2017;7(3):e014497.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2005",
       updatedAt: "2026-08",
       references: [
@@ -8764,6 +11887,90 @@ export const clinicalContentRegistry: Record<
   },
 
   "nihss": {
+    commonMistakes: [
+      "Scoring only one arm and one leg, so the motor items never reach the 16 points available from all four limbs.",
+      "Reporting the total as a measure of disability when the modified Rankin Scale is the instrument meant for functional outcome.",
+      "Assuming a modest total excludes posterior circulation stroke, which this scale is known to underweight."
+    ],
+    formulaExplanation:
+      "The NIH Stroke Scale sums fifteen items: level of consciousness, two consciousness questions, consciousness commands, gaze, visual fields, facial palsy, left and right arm motor, left and right leg motor, limb ataxia, sensory, language, dysarthria, and extinction/inattention. Item scores are summed for a total of 0-42, with higher scores indicating more severe stroke.",
+    variables: [
+      {
+        inputId: "loc",
+        label: "1a. Level of Consciousness",
+        explanation: "Level of consciousness, scored 0-3.",
+      },
+      {
+        inputId: "locQuestions",
+        label: "1b. LOC Questions",
+        explanation: "Answers to month and age, scored 0-2.",
+      },
+      {
+        inputId: "locCommands",
+        label: "1c. LOC Commands",
+        explanation: "Ability to follow open/close eyes and grip commands, scored 0-2.",
+      },
+      {
+        inputId: "gaze",
+        label: "2. Best Gaze",
+        explanation: "Horizontal eye movement, scored 0-2.",
+      },
+      {
+        inputId: "visual",
+        label: "3. Visual Fields",
+        explanation: "Visual field testing, scored 0-3.",
+      },
+      {
+        inputId: "facial",
+        label: "4. Facial Palsy",
+        explanation: "Facial movement, scored 0-3.",
+      },
+      {
+        inputId: "armLeft",
+        label: "5a. Left Arm Motor",
+        explanation: "Left arm motor drift, scored 0-4.",
+      },
+      {
+        inputId: "armRight",
+        label: "5b. Right Arm Motor",
+        explanation: "Right arm motor drift, scored 0-4.",
+      },
+      {
+        inputId: "legLeft",
+        label: "6a. Left Leg Motor",
+        explanation: "Left leg motor drift, scored 0-4.",
+      },
+      {
+        inputId: "legRight",
+        label: "6b. Right Leg Motor",
+        explanation: "Right leg motor drift, scored 0-4.",
+      },
+      {
+        inputId: "ataxia",
+        label: "7. Limb Ataxia",
+        explanation: "Limb ataxia, scored 0-2.",
+      },
+      {
+        inputId: "sensory",
+        label: "8. Sensory",
+        explanation: "Sensory response to pinprick, scored 0-2.",
+      },
+      {
+        inputId: "language",
+        label: "9. Best Language",
+        explanation: "Language and naming, scored 0-3.",
+      },
+      {
+        inputId: "dysarthria",
+        label: "10. Dysarthria",
+        explanation: "Speech articulation, scored 0-2.",
+      },
+      {
+        inputId: "extinction",
+        label: "11. Extinction / Inattention",
+        explanation: "Neglect or extinction, scored 0-2.",
+      },
+    ],
     clinicalPurpose:
       "Quantifies neurologic impairment in acute ischemic stroke by scoring 15 standardized examination items (level of consciousness, orientation, commands, gaze, visual fields, facial palsy, arm and leg motor function, ataxia, sensory, language, dysarthria, and extinction), producing a total of 0–42.",
     howToUse: [
@@ -8835,7 +12042,6 @@ export const clinicalContentRegistry: Record<
       source: "Clinical scoring system validated in acute stroke",
       reference:
         "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -8877,8 +12083,22 @@ export const clinicalContentRegistry: Record<
   },
 
   "abcd2-score": {
+    commonMistakes: [
+      "Giving 1 point for unilateral weakness, when weakness scores 2 points and speech disturbance without weakness scores 1.",
+      "Using the score to decide whether the symptoms represent a TIA, even though the diagnosis is assumed before scoring.",
+      "Quoting the risk percentages as long-term figures when they describe stroke risk only in the 2 days after the event."
+    ],
     clinicalPurpose:
       "Stratifies the short-term (2-day) risk of stroke after a transient ischemic attack using age, blood pressure, clinical features, duration of symptoms, and diabetes, giving a total of 0–7.",
+    formulaExplanation:
+      "The ABCD² score assigns points for age, blood pressure, clinical features, duration of symptoms, and diabetes to produce a total score (0–7) that estimates 2-day stroke risk after TIA.",
+    variables: [
+      {inputId:"age", label:"Age", explanation:"Age =60 years contributes points to stroke risk after TIA."},
+      {inputId:"bloodPressure", label:"Blood pressure", explanation:"Elevated blood pressure contributes points to the ABCD² score."},
+      {inputId:"clinicalFeatures", label:"Clinical features", explanation:"Specific TIA symptoms contribute points based on their severity/nature."},
+      {inputId:"duration", label:"Duration", explanation:"Duration of TIA symptoms contributes points."},
+      {inputId:"diabetes", label:"Diabetes", explanation:"Presence of diabetes contributes points to the score."}
+    ],
     howToUse: [
       "Score age 60 or older as 1 point.",
       "Score blood pressure ≥ 140/90 mmHg as 1 point.",
@@ -8938,7 +12158,6 @@ export const clinicalContentRegistry: Record<
       source: "Validation study (Lancet 2007)",
       reference:
         "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -8980,6 +12199,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "hunt-hess-scale": {
+    commonMistakes: [
+      "Using the assigned grade to decide whether imaging is needed for suspected hemorrhage, a decision the Ottawa SAH Rule addresses.",
+      "Quoting the 70-77% mortality for grade V as the expected rate under modern endovascular care, when those figures are historical.",
+      "Grading a patient with severe headache, nuchal rigidity, and no deficit as III when that presentation is grade II."
+    ],
+    formulaExplanation:
+      "The Hunt and Hess scale classifies the clinical severity of subarachnoid hemorrhage using the selected grade from 1 to 5, based on headache, meningismus, level of consciousness, and focal neurologic deficit. Higher grades predict greater mortality.",
+    variables: [
+      {
+        inputId: "grade",
+        label: "Hunt and Hess Grade",
+        explanation: "Selected grade: 1 (asymptomatic or mild headache), 2 (moderate to severe headache, nuchal rigidity, no deficit), 3 (drowsiness, confusion, mild focal deficit), 4 (stupor, moderate to severe hemiparesis), or 5 (coma, decerebrate posturing).",
+      },
+    ],
     clinicalPurpose:
       "Classifies the clinical severity of aneurysmal subarachnoid hemorrhage into five grades (I–V) based on headache, nuchal rigidity, level of consciousness, and focal deficits, and is used to estimate prognosis.",
     howToUse: [
@@ -9035,7 +12268,6 @@ export const clinicalContentRegistry: Record<
       source: "Original clinical grading system (J Neurosurg 1968)",
       reference:
         "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -9077,6 +12309,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "modified-rankin-scale": {
+    commonMistakes: [
+      "Averaging mRS grades across a group of patients, since the scale is ordinal and equal spacing between levels cannot be assumed.",
+      "Using the scale to quantify acute neurologic deficit when the NIHSS is the appropriate instrument for that purpose.",
+      "Recording a grade of 2 for a patient who needs some help but walks unassisted, which is how grade 3 is defined."
+    ],
+    formulaExplanation:
+      "The modified Rankin Scale is a single ordinal grade selected from 0 to 6 describing global functional disability after stroke; it is not an arithmetic sum. Grade 0 means no symptoms, grades 1-2 are favorable outcomes, grades 3-5 represent increasing dependency, and grade 6 denotes death.",
+    variables: [
+      {
+        inputId: "score",
+        label: "Functional Disability Level",
+        explanation: "The single mRS grade (0-6) selected from the standard descriptions of independence, disability, and death.",
+      },
+    ],
     clinicalPurpose:
       "Measures the degree of functional disability after stroke or other neurologic events on a six-level scale (0 = no symptoms to 5 = severe disability), with 6 indicating death; it is the standard outcome measure in stroke trials.",
     howToUse: [
@@ -9133,7 +12379,6 @@ export const clinicalContentRegistry: Record<
       source: "Validated functional outcome scale (Stroke 1988)",
       reference:
         "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -9175,6 +12420,45 @@ export const clinicalContentRegistry: Record<
   },
 
   "ottawa-sah-rule": {
+    commonMistakes: [
+      "Applying the rule when symptoms reached maximum intensity over more than 1 hour, beyond the onset window used in validation.",
+      "Believing that more findings mean a higher urgency category, when a single positive criterion already makes CT indicated.",
+      "Using the rule in a patient with a traumatic headache or focal deficit, presentations excluded from its validation."
+    ],
+    formulaExplanation:
+      "The Ottawa SAH Rule counts the presence of six high-risk findings. A result of 0 of 6 is negative (CT not required to rule out subarachnoid hemorrhage); any single criterion present makes the rule positive and CT is indicated.",
+    variables: [
+      {
+        inputId: "age40",
+        label: "Age >= 40 years",
+        explanation: "Age 40 years or older; Yes counts as one high-risk criterion.",
+      },
+      {
+        inputId: "neckPainStiffness",
+        label: "Neck Pain or Stiffness",
+        explanation: "Neck pain or stiffness; Yes counts as one criterion.",
+      },
+      {
+        inputId: "witnessedLoc",
+        label: "Witnessed Loss of Consciousness",
+        explanation: "Loss of consciousness witnessed by another person; Yes counts as one criterion.",
+      },
+      {
+        inputId: "exertionOnset",
+        label: "Headache Onset During Exertion",
+        explanation: "Headache that began during exertion; Yes counts as one criterion.",
+      },
+      {
+        inputId: "thunderclap",
+        label: "Thunderclap Headache (instantly peaking pain)",
+        explanation: "Abrupt, instantly peaking headache; Yes counts as one criterion.",
+      },
+      {
+        inputId: "limitedNeckFlexion",
+        label: "Limited Neck Flexion on Examination",
+        explanation: "Restricted neck flexion on examination; Yes counts as one criterion.",
+      },
+    ],
     clinicalPurpose:
       "Determines whether an emergency department patient with an acute nontraumatic headache requires a non-contrast CT to rule out subarachnoid hemorrhage. The rule is positive if any of six high-risk findings is present and has 100% sensitivity for SAH.",
     howToUse: [
@@ -9235,7 +12519,6 @@ export const clinicalContentRegistry: Record<
       source: "Multicenter validation cohort (JAMA 2013)",
       reference:
         "Perry JJ, Stiell IG, Sivilotti MLA, et al. Clinical decision rules to rule out subarachnoid hemorrhage for acute headache. JAMA. 2013;310(12):1248-1255.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -9277,6 +12560,35 @@ export const clinicalContentRegistry: Record<
   },
 
   "fout-score": {
+    commonMistakes: [
+      "Reading a higher total as a worse prognosis when lower scores, not higher ones, signal deeper coma and higher mortality.",
+      "Giving motor credit for obeying any command as in the GCS, when a score of 4 needs a thumbs-up, fist, or peace sign.",
+      "Interpreting a drop in the total as neurologic deterioration without first accounting for sedation or neuromuscular blockade."
+    ],
+    formulaExplanation:
+      "The FOUR score sums four components each scored 0-4: eye response, motor response, brainstem reflexes, and respiration, for a total of 0-16. Lower totals indicate deeper coma and higher in-hospital mortality.",
+    variables: [
+      {
+        inputId: "eye",
+        label: "E - Eye Response",
+        explanation: "Eye response scored 0-4, from eyelids remaining closed with pain (0) to eyelids open and tracking to command (4).",
+      },
+      {
+        inputId: "motor",
+        label: "M - Motor Response",
+        explanation: "Motor response scored 0-4, from no response (0) to following commands with a thumbs-up, fist, or peace sign (4).",
+      },
+      {
+        inputId: "brainstem",
+        label: "B - Brainstem Reflexes",
+        explanation: "Brainstem reflexes scored 0-4, from absent pupil, corneal, and cough reflexes (0) to intact pupil and corneal reflexes (4).",
+      },
+      {
+        inputId: "respiration",
+        label: "R - Respiration",
+        explanation: "Respiratory pattern scored 0-4, from breathing at the ventilator rate or apnea (0) to regular breathing when not intubated (4).",
+      },
+    ],
     clinicalPurpose:
       "Assesses the depth of impaired consciousness using four components — Eye response, Motor response, Brainstem reflexes, and Respiration — each scored 0–4, for a total of 0–16. Lower totals indicate deeper coma and higher in-hospital mortality.",
     howToUse: [
@@ -9339,7 +12651,6 @@ export const clinicalContentRegistry: Record<
         "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
       version: "1.0",
       updatedAt: "2026-08",
-      reviewedBy: "MedCalcHub Clinical Team",
       references: [
         "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
         "Wijdicks EFM, et al. Pract Neurol. 2010;10:86-88.",
@@ -9379,6 +12690,40 @@ export const clinicalContentRegistry: Record<
   },
 
   "race-scale": {
+    commonMistakes: [
+      "Scoring the arm and leg motor items from the unaffected limb rather than the left side specified in the calculator, which lowers the motor subscores.",
+      "Using a RACE total below 5 to reassure against a posterior circulation stroke, which may score low despite a large vessel occlusion.",
+      "Awarding 2 points for aphasia or agnosia when the patient performs one of the two tasks correctly, which overstates the score."
+    ],
+    formulaExplanation:
+      "The RACE scale sums five prehospital items: facial palsy (0-2), arm motor (0-2), leg motor (0-2), gaze deviation (0-1), and aphasia/agnosia (0-2), for a total of 0-9. A score of 5 or more suggests a large vessel occlusion.",
+    variables: [
+      {
+        inputId: "facialPalsy",
+        label: "Facial Palsy",
+        explanation: "Facial weakness, scored 0 (absent), 1 (mild), or 2 (moderate to severe).",
+      },
+      {
+        inputId: "armMotor",
+        label: "Arm Motor (left side)",
+        explanation: "Left arm strength, scored 0 (normal), 1 (mild weakness), or 2 (moderate to severe weakness).",
+      },
+      {
+        inputId: "legMotor",
+        label: "Leg Motor (left side)",
+        explanation: "Left leg strength, scored 0 (normal), 1 (mild weakness), or 2 (moderate to severe weakness).",
+      },
+      {
+        inputId: "gaze",
+        label: "Gaze Deviation",
+        explanation: "Conjugate gaze deviation, scored 0 (normal) or 1 (deviation to the right or left).",
+      },
+      {
+        inputId: "aphasiaAgnosia",
+        label: "Aphasia or Agnosia",
+        explanation: "Ability to name an object and identify the own arm, scored 0 (both tasks), 1 (one task), or 2 (neither task).",
+      },
+    ],
     clinicalPurpose:
       "A prehospital stroke scale that scores facial palsy, arm and leg motor function, gaze deviation, and aphasia/agnosia to identify large vessel occlusion (LVO) in acute ischemic stroke, with a total of 0–9; a score ≥ 5 suggests LVO.",
     howToUse: [
@@ -9440,7 +12785,6 @@ export const clinicalContentRegistry: Record<
         "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
       version: "1.0",
       updatedAt: "2026-08",
-      reviewedBy: "MedCalcHub Clinical Team",
       references: [
         "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital scale to predict stroke severity: the RACE scale. Stroke. 2014;45(9):2678-2684.",
         "Carrera D, et al. Stroke. 2019;50:1819-1824.",
@@ -9480,6 +12824,55 @@ export const clinicalContentRegistry: Record<
   },
 
   "esrs": {
+    commonMistakes: [
+      "Counting a prior myocardial infarction under both the prior MI item and the other cardiovascular disease item, which double-counts one condition.",
+      "Including atrial fibrillation in the other cardiovascular disease item, even though the score explicitly excludes it.",
+      "Giving 2 age points to a patient who is exactly 75 years old, when 2 points require being over 75 years."
+    ],
+    formulaExplanation:
+      "The Essen Stroke Risk Score adds an age score (0 under 65, 1 for 65-75, 2 over 75) to one point each for hypertension, diabetes, prior myocardial infarction, other cardiovascular disease, peripheral arterial disease, current smoking, and prior ischemic stroke or TIA, for a total of 0-9.",
+    variables: [
+      {
+        inputId: "ageGroup",
+        label: "Age",
+        explanation: "Age category scored 0 (under 65 years), 1 (65-75 years), or 2 (over 75 years).",
+      },
+      {
+        inputId: "hypertension",
+        label: "Hypertension",
+        explanation: "History of hypertension; Yes adds one point.",
+      },
+      {
+        inputId: "diabetes",
+        label: "Diabetes Mellitus",
+        explanation: "History of diabetes; Yes adds one point.",
+      },
+      {
+        inputId: "priorMi",
+        label: "Prior Myocardial Infarction",
+        explanation: "Previous myocardial infarction; Yes adds one point.",
+      },
+      {
+        inputId: "otherCvd",
+        label: "Other Cardiovascular Disease",
+        explanation: "Other cardiovascular disease excluding MI and atrial fibrillation; Yes adds one point.",
+      },
+      {
+        inputId: "pad",
+        label: "Peripheral Arterial Disease",
+        explanation: "Peripheral arterial disease; Yes adds one point.",
+      },
+      {
+        inputId: "smoking",
+        label: "Current Smoker",
+        explanation: "Current cigarette smoking; Yes adds one point.",
+      },
+      {
+        inputId: "priorTiaStroke",
+        label: "Prior Ischemic Stroke or TIA",
+        explanation: "Previous ischemic stroke or transient ischemic attack; Yes adds one point.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the long-term risk of recurrent ischemic stroke in patients with prior ischemic stroke or TIA using age, hypertension, diabetes, prior myocardial infarction, other cardiovascular disease, peripheral arterial disease, smoking, and prior ischemic events, producing a total of 0–9.",
     howToUse: [
@@ -9543,7 +12936,6 @@ export const clinicalContentRegistry: Record<
         "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
       version: "1.0",
       updatedAt: "2026-08",
-      reviewedBy: "MedCalcHub Clinical Team",
       references: [
         "Weimar C, Diener HC, Alberts MJ, et al. The Essen stroke risk score predicts recurrent cardiovascular events: a validation within the REduction of Atherothrombosis for Continued Health (REACH) registry. Stroke. 2009;40(2):350-354.",
         "Weimar C, et al. Stroke. 2009;40:2532-2536.",
@@ -9583,6 +12975,60 @@ export const clinicalContentRegistry: Record<
   },
 
   "phq-9": {
+    commonMistakes: [
+      "Scoring each symptom over the past two days rather than the past two weeks specified for the PHQ-9, which invalidates the total.",
+      "Dismissing an endorsed item 9 because the total is below 10, when any endorsement of suicidal ideation requires urgent evaluation.",
+      "Presenting the total as a diagnosis of major depressive disorder rather than a probable-depression screen needing clinical confirmation."
+    ],
+    formulaExplanation:
+      "The PHQ-9 sums nine DSM-based items (phq1 through phq9), each scored 0-3 for the frequency of symptoms over the past two weeks, for a total of 0-27. The total is graded as minimal (0-4), mild (5-9), moderate (10-14), moderately severe (15-19), or severe (20-27); item 9 separately screens for suicidal ideation.",
+    variables: [
+      {
+        inputId: "phq1",
+        label: "Little interest or pleasure in doing things",
+        explanation: "Item 1, scored 0 (not at all) to 3 (nearly every day).",
+      },
+      {
+        inputId: "phq2",
+        label: "Feeling down, depressed, or hopeless",
+        explanation: "Item 2, scored 0-3.",
+      },
+      {
+        inputId: "phq3",
+        label: "Trouble falling or staying asleep, or sleeping too much",
+        explanation: "Item 3, scored 0-3.",
+      },
+      {
+        inputId: "phq4",
+        label: "Feeling tired or having little energy",
+        explanation: "Item 4, scored 0-3.",
+      },
+      {
+        inputId: "phq5",
+        label: "Poor appetite or overeating",
+        explanation: "Item 5, scored 0-3.",
+      },
+      {
+        inputId: "phq6",
+        label: "Feeling bad about yourself, or that you are a failure or have let yourself or your family down",
+        explanation: "Item 6, scored 0-3.",
+      },
+      {
+        inputId: "phq7",
+        label: "Trouble concentrating on things",
+        explanation: "Item 7, scored 0-3.",
+      },
+      {
+        inputId: "phq8",
+        label: "Moving or speaking slowly, or being fidgety or restless",
+        explanation: "Item 8, scored 0-3.",
+      },
+      {
+        inputId: "phq9",
+        label: "Thoughts that you would be better off dead or of hurting yourself",
+        explanation: "Item 9 (self-harm/suicidal ideation screen), scored 0-3; any endorsement warrants urgent evaluation.",
+      },
+    ],
     clinicalPurpose:
       "Screens for and grades the severity of depressive symptoms over the previous two weeks and identifies possible suicidal ideation, guiding treatment initiation and follow-up in primary care.",
     howToUse: [
@@ -9662,7 +13108,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Psychiatry / Primary Care",
       reference: "Kroenke K, Spitzer RL, Williams JB. J Gen Intern Med. 2001;16(9):606-613.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2001",
       updatedAt: "2026-08",
       references: [
@@ -9672,6 +13117,50 @@ export const clinicalContentRegistry: Record<
   },
 
   "gad-7": {
+    commonMistakes: [
+      "Using the GAD-7 to separate panic disorder, social anxiety, or OCD from generalized anxiety, which the scale was not designed to do.",
+      "Treating a GAD-7 total of 10 or more as a confirmed diagnosis rather than a screening result that still needs clinical confirmation.",
+      "Scoring physical symptoms or medication side effects as anxiety items, which can artificially raise the total."
+    ],
+    formulaExplanation:
+      "The GAD-7 sums seven items (gad1 through gad7), each scored 0-3 for symptom frequency over the past two weeks, for a total of 0-21. The total is graded as minimal (0-4), mild (5-9), moderate (10-14), or severe (15-21), with a cut-point of 10 for generalized anxiety disorder.",
+    variables: [
+      {
+        inputId: "gad1",
+        label: "Feeling nervous, anxious, or on edge",
+        explanation: "Item 1, scored 0 (not at all) to 3 (nearly every day).",
+      },
+      {
+        inputId: "gad2",
+        label: "Not being able to stop or control worrying",
+        explanation: "Item 2, scored 0-3.",
+      },
+      {
+        inputId: "gad3",
+        label: "Worrying too much about different things",
+        explanation: "Item 3, scored 0-3.",
+      },
+      {
+        inputId: "gad4",
+        label: "Trouble relaxing",
+        explanation: "Item 4, scored 0-3.",
+      },
+      {
+        inputId: "gad5",
+        label: "Being so restless that it is hard to sit still",
+        explanation: "Item 5, scored 0-3.",
+      },
+      {
+        inputId: "gad6",
+        label: "Becoming easily annoyed or irritable",
+        explanation: "Item 6, scored 0-3.",
+      },
+      {
+        inputId: "gad7",
+        label: "Feeling afraid, as if something awful might happen",
+        explanation: "Item 7, scored 0-3.",
+      },
+    ],
     clinicalPurpose:
       "Screens for and grades the severity of generalized anxiety symptoms over the previous two weeks, guiding identification and treatment decisions in primary care and general medicine.",
     howToUse: [
@@ -9749,7 +13238,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Psychiatry / Primary Care",
       reference: "Spitzer RL, Kroenke K, Williams JB, Löwe B. Arch Intern Med. 2006;166(10):1092-1097.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2006",
       updatedAt: "2026-08",
       references: [
@@ -9759,6 +13247,55 @@ export const clinicalContentRegistry: Record<
   },
 
   "epworth": {
+    commonMistakes: [
+      "Using the Epworth score to grade insomnia severity, when the scale measures daytime sleep propensity rather than insomnia.",
+      "Treating an Epworth score of 11 or more as a diagnosis of obstructive sleep apnea instead of an indication for objective testing.",
+      "Using a normal Epworth score of 0 to 10 to reassure against sleep apnea, since the scale correlates imperfectly with objective findings."
+    ],
+    formulaExplanation:
+      "The Epworth Sleepiness Scale sums eight situation items (ess1 through ess8), each scored 0-3 for the likelihood of dozing, for a total of 0-24. Higher totals indicate greater daytime sleepiness: 0-10 normal, 11-14 mild, 15-17 moderate, and 18-24 severe excessive daytime sleepiness.",
+    variables: [
+      {
+        inputId: "ess1",
+        label: "Sitting and reading",
+        explanation: "Situation 1, scored 0 (would never doze) to 3 (high chance of dozing).",
+      },
+      {
+        inputId: "ess2",
+        label: "Watching TV",
+        explanation: "Situation 2, scored 0-3.",
+      },
+      {
+        inputId: "ess3",
+        label: "Sitting inactive in a public place",
+        explanation: "Situation 3, scored 0-3.",
+      },
+      {
+        inputId: "ess4",
+        label: "As a passenger in a car for an hour without a break",
+        explanation: "Situation 4, scored 0-3.",
+      },
+      {
+        inputId: "ess5",
+        label: "Lying down to rest in the afternoon when circumstances permit",
+        explanation: "Situation 5, scored 0-3.",
+      },
+      {
+        inputId: "ess6",
+        label: "Sitting and talking to someone",
+        explanation: "Situation 6, scored 0-3.",
+      },
+      {
+        inputId: "ess7",
+        label: "Sitting quietly after lunch without alcohol",
+        explanation: "Situation 7, scored 0-3.",
+      },
+      {
+        inputId: "ess8",
+        label: "In a car, while stopped for a few minutes in traffic",
+        explanation: "Situation 8, scored 0-3.",
+      },
+    ],
     clinicalPurpose:
       "Quantifies the general level of daytime sleepiness, supporting the evaluation of sleep disorders such as obstructive sleep apnea and narcolepsy.",
     howToUse: [
@@ -9837,7 +13374,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Sleep Medicine",
       reference: "Johns MW. Sleep. 1991;14(6):540-545.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1991",
       updatedAt: "2026-08",
       references: [
@@ -9847,6 +13383,55 @@ export const clinicalContentRegistry: Record<
   },
 
   "stop-bang": {
+    commonMistakes: [
+      "Treating a STOP-BANG score of 5 or more as diagnostic of obstructive sleep apnea rather than a screening result that needs confirmatory testing.",
+      "Applying the STOP-BANG score to a child, although the tool is not validated in pediatric populations.",
+      "Marking the BMI item positive at exactly 35 kg/m2, when the criterion requires a BMI greater than 35 kg/m2."
+    ],
+    formulaExplanation:
+      "The STOP-BANG score adds one point for each of eight items: snoring, tiredness, observed apnea, high blood pressure, BMI over 35 kg/m2, age over 50 years, neck circumference over 40 cm, and male gender, for a total of 0-8. Scores of 3-4 indicate intermediate and 5-8 high obstructive sleep apnea risk.",
+    variables: [
+      {
+        inputId: "snoring",
+        label: "Snoring (loud, heard through closed doors)",
+        explanation: "Loud snoring; Yes adds one point.",
+      },
+      {
+        inputId: "tired",
+        label: "Tiredness or sleepiness during the day",
+        explanation: "Daytime tiredness or sleepiness; Yes adds one point.",
+      },
+      {
+        inputId: "observedApnea",
+        label: "Observed apnea",
+        explanation: "Witnessed breathing pauses during sleep; Yes adds one point.",
+      },
+      {
+        inputId: "bloodPressure",
+        label: "High blood pressure",
+        explanation: "Treated or diagnosed hypertension; Yes adds one point.",
+      },
+      {
+        inputId: "bmi",
+        label: "BMI greater than 35 kg/m2",
+        explanation: "Body mass index over 35 kg/m2; Yes adds one point.",
+      },
+      {
+        inputId: "age",
+        label: "Age over 50 years",
+        explanation: "Age greater than 50 years; Yes adds one point.",
+      },
+      {
+        inputId: "neck",
+        label: "Neck circumference greater than 40 cm",
+        explanation: "Neck circumference over 40 cm; Yes adds one point.",
+      },
+      {
+        inputId: "gender",
+        label: "Male gender",
+        explanation: "Male sex; Yes adds one point.",
+      },
+    ],
     clinicalPurpose:
       "Rapidly estimates the pretest probability of obstructive sleep apnea (OSA) from history and physical examination findings, guiding the need for objective sleep testing.",
     howToUse: [
@@ -9925,7 +13510,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Sleep Medicine / Anesthesiology",
       reference: "Chung F, et al. Anesthesiology. 2008;108(5):812-821.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2008",
       updatedAt: "2026-08",
       references: [
@@ -9935,6 +13519,41 @@ export const clinicalContentRegistry: Record<
   },
 
   "centor": {
+    commonMistakes: [
+      "Awarding a point for the cough criterion when the patient has a cough, when a point is given only for absence of cough.",
+      "Forgetting to subtract 1 point for a patient aged 45 years or older, which overestimates the group A streptococcal probability.",
+      "Letting the raw total exceed 4 without applying the clamp, when interpretation is defined only across scores of 0 to 4."
+    ],
+    formulaExplanation:
+      "The Modified Centor score adds one point each for fever, absence of cough, tonsillar exudates, and tender anterior cervical adenopathy, plus an age adjustment (+1 for 3-14 years, 0 for 15-44 years, -1 for 45 years or older). The raw total is clamped to the range 0-4 for interpretation.",
+    variables: [
+      {
+        inputId: "fever",
+        label: "Fever (> 38 C / 100.4 F)",
+        explanation: "Documented fever over 38 C; Yes adds one point.",
+      },
+      {
+        inputId: "absenceOfCough",
+        label: "Absence of cough",
+        explanation: "No cough present; Yes (absence of cough) adds one point.",
+        commonError: "Select 'No cough' only when the patient is not coughing; a present cough contributes no point.",
+      },
+      {
+        inputId: "tonsillarExudates",
+        label: "Tonsillar exudates or swelling",
+        explanation: "Tonsillar exudates or swelling; Yes adds one point.",
+      },
+      {
+        inputId: "cervicalAdenopathy",
+        label: "Tender anterior cervical lymphadenopathy",
+        explanation: "Tender anterior cervical nodes; Yes adds one point.",
+      },
+      {
+        inputId: "ageGroup",
+        label: "Age",
+        explanation: "Age adjustment: +1 for 3-14 years, 0 for 15-44 years, and -1 for 45 years or older.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the probability of group A streptococcal (GAS) pharyngitis from clinical criteria and age, guiding decisions about rapid antigen testing and antibiotic use in sore throat.",
     howToUse: [
@@ -10014,7 +13633,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Infectious Disease / Primary Care",
       reference: "Centor RM, et al. Med Decis Making. 1992;12(1):3-11.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1992",
       updatedAt: "2026-08",
       references: [
@@ -10024,6 +13642,115 @@ export const clinicalContentRegistry: Record<
   },
 
   "charlson": {
+    commonMistakes: [
+      "Counting diabetes twice by awarding both the diabetes without end-organ damage point and the diabetes with end-organ damage points.",
+      "Omitting the age adjustment, which adds 1 point for ages 50 to 59 and up to 4 points at age 80 or older.",
+      "Using the estimated ten-year survival percentage to predict an individual patient's outcome instead of group-level prognosis."
+    ],
+    formulaExplanation:
+      "The Charlson Comorbidity Index adds weighted points for 19 comorbidities (weights of 1, 2, 3, or 6) to an age adjustment (one point per decade starting at age 50). A higher total indicates greater comorbidity burden and lower estimated ten-year survival.",
+    variables: [
+      {
+        inputId: "ageGroup",
+        label: "Age",
+        explanation: "Age category contributing 0 (under 50) up to 4 (80 or older) adjustment points.",
+      },
+      {
+        inputId: "myocardialInfarction",
+        label: "Myocardial infarction",
+        explanation: "Prior myocardial infarction; weighted 1 point.",
+      },
+      {
+        inputId: "congestiveHeartFailure",
+        label: "Congestive heart failure",
+        explanation: "Congestive heart failure; weighted 1 point.",
+      },
+      {
+        inputId: "peripheralVascularDisease",
+        label: "Peripheral vascular disease",
+        explanation: "Peripheral vascular disease; weighted 1 point.",
+      },
+      {
+        inputId: "cerebrovascularDisease",
+        label: "Cerebrovascular disease",
+        explanation: "Cerebrovascular disease; weighted 1 point.",
+      },
+      {
+        inputId: "dementia",
+        label: "Dementia",
+        explanation: "Dementia; weighted 1 point.",
+      },
+      {
+        inputId: "chronicPulmonaryDisease",
+        label: "Chronic pulmonary disease",
+        explanation: "Chronic pulmonary disease; weighted 1 point.",
+      },
+      {
+        inputId: "connectiveTissueDisease",
+        label: "Connective tissue disease",
+        explanation: "Connective tissue disease; weighted 1 point.",
+      },
+      {
+        inputId: "pepticUlcer",
+        label: "Peptic ulcer disease",
+        explanation: "Peptic ulcer disease; weighted 1 point.",
+      },
+      {
+        inputId: "mildLiverDisease",
+        label: "Mild liver disease",
+        explanation: "Mild liver disease; weighted 1 point.",
+      },
+      {
+        inputId: "diabetesNoComplications",
+        label: "Diabetes without end-organ damage",
+        explanation: "Diabetes without complications; weighted 1 point.",
+      },
+      {
+        inputId: "hemiplegia",
+        label: "Hemiplegia or paraplegia",
+        explanation: "Hemiplegia or paraplegia; weighted 2 points.",
+      },
+      {
+        inputId: "moderateSevereRenalDisease",
+        label: "Moderate or severe renal disease",
+        explanation: "Moderate or severe renal disease; weighted 2 points.",
+      },
+      {
+        inputId: "diabetesEndOrganDamage",
+        label: "Diabetes with end-organ damage",
+        explanation: "Diabetes with end-organ damage; weighted 2 points.",
+      },
+      {
+        inputId: "anyMalignancy",
+        label: "Any malignancy (without metastasis)",
+        explanation: "Any malignancy without metastasis; weighted 2 points.",
+      },
+      {
+        inputId: "leukemia",
+        label: "Leukemia",
+        explanation: "Leukemia; weighted 2 points.",
+      },
+      {
+        inputId: "lymphoma",
+        label: "Lymphoma",
+        explanation: "Lymphoma; weighted 2 points.",
+      },
+      {
+        inputId: "moderateSevereLiverDisease",
+        label: "Moderate or severe liver disease",
+        explanation: "Moderate or severe liver disease; weighted 3 points.",
+      },
+      {
+        inputId: "metastaticSolidTumor",
+        label: "Metastatic solid tumor",
+        explanation: "Metastatic solid tumor; weighted 6 points.",
+      },
+      {
+        inputId: "aids",
+        label: "AIDS",
+        explanation: "AIDS; weighted 6 points.",
+      },
+    ],
     clinicalPurpose:
       "Quantifies comorbid disease burden from a weighted list of conditions plus age, providing an estimate of ten-year survival that supports prognosis, research adjustment, and treatment planning.",
     howToUse: [
@@ -10114,7 +13841,6 @@ export const clinicalContentRegistry: Record<
     evidence: {
       source: "Internal Medicine / Epidemiology",
       reference: "Charlson ME, et al. J Chronic Dis. 1987;40(5):373-383.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1987",
       updatedAt: "2026-08",
       references: [
@@ -10124,6 +13850,65 @@ export const clinicalContentRegistry: Record<
   },
 
   "barthel": {
+    commonMistakes: [
+      "Using a maximum of 10 points for every domain, when transfers and mobility are scored out of 15 and bathing and grooming out of 5.",
+      "Mixing item anchors from the original and the Shah-modified versions in one assessment, which makes the totals non-interchangeable.",
+      "Reading a score of 100 as meaning no care needs, when the index covers physical ADLs only and not cognition or caregiver burden."
+    ],
+    formulaExplanation:
+      "The Barthel Index sums ten activities-of-daily-living domains with item-specific maximum points: feeding 10, bathing 5, grooming 5, dressing 10, bowels 10, bladder 10, toilet use 10, transfers 15, mobility 15, and stairs 10, for a total of 0-100. Higher totals indicate greater independence.",
+    variables: [
+      {
+        inputId: "feeding",
+        label: "Feeding",
+        explanation: "Feeding independence, scored 0 (unable), 5 (needs some help), or 10 (independent).",
+      },
+      {
+        inputId: "bathing",
+        label: "Bathing",
+        explanation: "Bathing independence, scored 0 (dependent) or 5 (independent).",
+      },
+      {
+        inputId: "grooming",
+        label: "Grooming",
+        explanation: "Grooming (face, hair, teeth, shaving), scored 0 (needs help) or 5 (independent).",
+      },
+      {
+        inputId: "dressing",
+        label: "Dressing",
+        explanation: "Dressing, scored 0 (dependent), 5 (needs help), or 10 (independent).",
+      },
+      {
+        inputId: "bowels",
+        label: "Bowels",
+        explanation: "Bowel control, scored 0 (incontinent), 5 (occasional accident), or 10 (continent).",
+      },
+      {
+        inputId: "bladder",
+        label: "Bladder",
+        explanation: "Bladder control, scored 0 (incontinent), 5 (occasional accident), or 10 (continent).",
+      },
+      {
+        inputId: "toiletUse",
+        label: "Toilet use",
+        explanation: "Toilet use, scored 0 (dependent), 5 (needs some help), or 10 (independent).",
+      },
+      {
+        inputId: "transfers",
+        label: "Transfers (bed to chair and back)",
+        explanation: "Transfers, scored 0 (unable), 5 (major help), 10 (minor help), or 15 (independent).",
+      },
+      {
+        inputId: "mobility",
+        label: "Mobility (walking or wheelchair)",
+        explanation: "Mobility, scored 0 (immobile), 5 (wheelchair independent), 10 (walks with help), or 15 (independent).",
+      },
+      {
+        inputId: "stairs",
+        label: "Stairs",
+        explanation: "Stairs, scored 0 (unable), 5 (needs help), or 10 (independent).",
+      },
+    ],
     clinicalPurpose:
       "Measures functional independence in ten activities of daily living, providing an objective disability score for rehabilitation, geriatric care, and stroke services.",
     howToUse: [
@@ -10196,7 +13981,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Scale and Validation Studies",
       reference:
         "Mahoney FI, Barthel DW. Functional evaluation: the Barthel Index. Md State Med J. 1965;14:61-65. Shah S, Vanclay F, Cooper B. J Clin Epidemiol. 1989;42(8):703-709. Collin C, Wade DT, et al. Int Disabil Stud. 1988;10(2):61-63.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1965",
       updatedAt: "2026-08",
       references: [
@@ -10222,6 +14006,20 @@ export const clinicalContentRegistry: Record<
   },
 
   "ecog": {
+    commonMistakes: [
+      "Summing several functional domains to produce an ECOG number, when the status is a single ordinal grade from 0 to 5.",
+      "Assigning grade 5 to a patient who is severely unwell but alive, when grade 5 denotes death.",
+      "Using the ECOG grade alone to decide chemotherapy eligibility without weighing laboratory, clinical, and patient-preference factors."
+    ],
+    formulaExplanation:
+      "The ECOG performance status is a single ordinal grade from 0 to 5 selected directly; it is not a sum. Grade 0 indicates full activity, grades 1-4 indicate progressive functional limitation, and grade 5 denotes death.",
+    variables: [
+      {
+        inputId: "grade",
+        label: "ECOG performance status grade",
+        explanation: "The single ECOG grade (0 fully active, 1 restricted but ambulatory, 2 ambulatory but unable to work, 3 limited self-care, 4 completely disabled, 5 dead).",
+      },
+    ],
     clinicalPurpose:
       "Grades a patient's functional performance status on a single 0–5 scale, guiding chemotherapy eligibility, treatment intensity, and prognosis in oncology and serious chronic illness.",
     howToUse: [
@@ -10281,7 +14079,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Scale Description",
       reference:
         "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655. Zubrod CG, Schneiderman M, Frei E, et al. J Chronic Dis. 1960;11(1):7-33.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1982",
       updatedAt: "2026-08",
       references: [
@@ -10306,6 +14103,50 @@ export const clinicalContentRegistry: Record<
   },
 
   "meld-score": {
+    commonMistakes: [
+      "Entering serum creatinine in micromoles per liter rather than mg/dL, which inflates the creatinine term and yields a score that cannot be compared with the risk bands.",
+      "Answering 'No' to dialysis for a patient dialyzed at least twice in the last week, because the rules set creatinine to 4.0 in that situation and missing this underestimates risk.",
+      "Using MELD to grade acute liver failure, which has dedicated criteria, or expecting it to capture ascites, encephalopathy, or other factors it does not include."
+    ],
+    faq: [
+      {
+        question: "What happens to bilirubin, INR, and creatinine values below 1.0?",
+        answer: "In the standard MELD calculation, bilirubin, INR, and creatinine are floored at 1.0 before the logarithms are taken, so a very low creatinine cannot lower the score below what a value of 1.0 would produce. Creatinine is also capped at 4.0, and is set to 4.0 when dialysis was required at least twice in the last week."
+      },
+      {
+        question: "How does MELD differ from the current U.S. allocation score?",
+        answer: "The classic MELD formula uses bilirubin, INR, and creatinine with fixed coefficients. Current U.S. liver allocation uses the MELD 3.0 model, adopted in July 2023, which incorporates albumin, sex, and updated coefficients. The classic score remains a valid prognostic estimate of 3-month mortality in chronic liver disease, but it is no longer the allocation score."
+      },
+      {
+        question: "Why can MELD underestimate risk in some patients?",
+        answer: "Creatinine depends on muscle mass, so patients with low muscle mass can have a deceptively low creatinine and therefore a lower MELD than their true severity warrants. The score also omits ascites and hepatic encephalopathy, which carry independent prognostic information, and INR assays vary between laboratories, which affects reproducibility of the score over time."
+      }
+    ],
+    formulaExplanation:
+      "MELD = 3.78 x ln(bilirubin) + 11.2 x ln(INR) + 9.57 x ln(creatinine) + 6.43, with bilirubin and creatinine in mg/dL. Bilirubin, INR, and creatinine are floored at 1.0, creatinine is capped at 4.0 (and set to 4.0 when dialysis was required), and the result is rounded to the nearest integer.",
+    variables: [
+      {
+        inputId: "bilirubin",
+        label: "Serum Bilirubin",
+        explanation: "Serum bilirubin in mg/dL, entered into a natural logarithm and floored at 1.0.",
+        commonError: "Values below 1.0 are raised to 1.0, so very low bilirubin does not further lower the score.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL; floored at 1.0 and capped at 4.0, or set to 4.0 when on dialysis.",
+      },
+      {
+        inputId: "inr",
+        label: "INR",
+        explanation: "International normalized ratio, entered into a natural logarithm and floored at 1.0.",
+      },
+      {
+        inputId: "dialysis",
+        label: "Dialysis at least twice in the last week?",
+        explanation: "Yes forces the creatinine term to 4.0, reflecting transplant allocation practice.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the Model for End-stage Liver Disease (MELD) score to estimate 3-month mortality in adults with chronic liver disease and to guide liver transplant prioritization.",
     howToUse: [
@@ -10357,7 +14198,6 @@ export const clinicalContentRegistry: Record<
       source: "Original MELD Description / UNOS",
       reference:
         "Kamath PS, et al. A model to predict survival in patients with end-stage liver disease. Hepatology. 2001.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -10371,10 +14211,59 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. Classic MELD is a prognostic mortality-risk score; current U.S. liver allocation uses the MELD 3.0 model. Transplant decisions must incorporate the full clinical picture and institutional policies.",
+      "This calculator is intended for educational and clinical decision support purposes only. Classic MELD is a prognostic mortality-risk score; current U.S. liver allocation uses the MELD 3.0 model. Transplant decisions must incorporate the full clinical picture and institutional policies.",
   },
 
   "meld-na-score": {
+    commonMistakes: [
+      "Expecting a sodium above 137 mmol/L to reduce the score, since sodium is bounded to the 125-137 range before calculation and values above 137 change nothing.",
+      "Calculating the score immediately after aggressive diuresis or hypotonic fluid administration, when the measured sodium has not reached a steady state and can bias the result.",
+      "Applying the sodium adjustment to a MELD that was not calculated with the standard floors, creatinine cap, and dialysis rule, which produces a MELD-Na that does not match the published model."
+    ],
+    faq: [
+      {
+        question: "How does hyponatremia change the MELD-Na score?",
+        answer: "Hyponatremia raises the score. The formula adds 1.32 times the difference between 137 mmol/L and the measured sodium, with a small interaction term, so the further sodium falls below 137 the higher the result. Sodium below 125 is bounded at 125 before calculation. This reflects the observation that hyponatremia worsens prognosis in cirrhosis."
+      },
+      {
+        question: "Is MELD-Na still used for U.S. transplant allocation?",
+        answer: "MELD-Na was adopted by UNOS because adding serum sodium improved mortality prediction compared with MELD alone, particularly in patients with hyponatremia. U.S. liver allocation transitioned to the MELD 3.0 model in July 2023, which incorporates albumin, sex, and updated coefficients, so MELD-Na is no longer the allocation score but remains a validated prognostic estimate."
+      },
+      {
+        question: "Why does a high sodium not improve the score?",
+        answer: "Sodium is clamped to a maximum of 137 mmol/L, so the model does not reward supra-normal sodium; a value above 137 is treated the same as exactly 137. The score was built to capture the prognostic penalty of hyponatremia in advanced liver disease, not any potential benefit of higher sodium."
+      }
+    ],
+    formulaExplanation:
+      "MELD-Na = MELD + 1.32 x (137 - sodium) - [0.033 x MELD x (137 - sodium)], where MELD is the standard MELD score and sodium is in mmol/L. Sodium is bounded to 125-137 mmol/L before the calculation, and the result is rounded to the nearest integer.",
+    variables: [
+      {
+        inputId: "bilirubin",
+        label: "Serum Bilirubin",
+        explanation: "Serum bilirubin in mg/dL, entered into the MELD component with a floor of 1.0.",
+      },
+      {
+        inputId: "creatinine",
+        label: "Serum Creatinine",
+        explanation: "Serum creatinine in mg/dL; floored at 1.0 and capped at 4.0, or set to 4.0 when on dialysis.",
+      },
+      {
+        inputId: "inr",
+        label: "INR",
+        explanation: "International normalized ratio, entered into the MELD component with a floor of 1.0.",
+      },
+      {
+        inputId: "sodium",
+        label: "Serum Sodium",
+        explanation: "Serum sodium in mmol/L, bounded to 125-137 for the MELD-Na correction term.",
+        commonError: "Sodium values outside 125-137 mmol/L are clamped to those limits.",
+      },
+      {
+        inputId: "dialysis",
+        label: "Dialysis at least twice in the last week?",
+        explanation: "Yes forces the creatinine term to 4.0 within the MELD component.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the MELD-Na score, which adds serum sodium to the MELD model to improve 3-month mortality prediction in advanced liver disease. MELD-Na is a widely used prognostic model for transplant waitlist mortality; U.S. liver allocation transitioned to the MELD 3.0 model in July 2023.",
     howToUse: [
@@ -10425,7 +14314,6 @@ export const clinicalContentRegistry: Record<
       source: "Original MELD-Na Description / UNOS",
       reference:
         "Kim WR, et al. Hyponatremia and mortality among patients on the liver-transplant waiting list. N Engl J Med. 2008;359:1018-1026.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -10439,10 +14327,53 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. MELD-Na is one component of transplant evaluation; allocation decisions follow current institutional and UNOS/OPTN policy (MELD 3.0 in the United States).",
+      "This calculator is intended for educational and clinical decision support purposes only. MELD-Na is one component of transplant evaluation; allocation decisions follow current institutional and UNOS/OPTN policy (MELD 3.0 in the United States).",
   },
 
   "fib-4-index": {
+    commonMistakes: [
+      "Applying FIB-4 to patients younger than 35 years, where the score underperforms and low or high results should be interpreted with particular caution.",
+      "Omitting the square root on ALT or swapping platelets with ALT in the formula, which yields a number that cannot be compared with the 1.30 and 2.67 cutoffs.",
+      "Entering an AST upper limit of normal out of habit from using APRI, since FIB-4 uses the raw AST and ALT values directly and has no ULN input."
+    ],
+    faq: [
+      {
+        question: "How is FIB-4 different from APRI?",
+        answer: "FIB-4 combines age, AST, ALT, and platelet count, while APRI uses only AST relative to its upper limit of normal and the platelet count. Because FIB-4 includes age and ALT, it draws on more of the routine panel, but age also drives its accuracy and limits performance under 35 years. Both are non-invasive estimates, not fibrosis diagnoses."
+      },
+      {
+        question: "What does an indeterminate FIB-4 of 1.30 to 2.67 mean?",
+        answer: "It means the score cannot resolve advanced fibrosis on its own. Results below 1.30 indicate low probability and results above 2.67 indicate high probability, but the middle range requires further evaluation such as elastography or other confirmatory testing. Patients in this band should not be reassured or labeled as having advanced fibrosis based on the number alone."
+      },
+      {
+        question: "Why does age matter so much in FIB-4?",
+        answer: "Age appears in the numerator, so the score rises with age even when liver tests are unchanged. This helps capture fibrosis risk in older adults but limits accuracy at the extremes of age, which is why performance is reduced under 35 years. When following a patient over time, expect the score to drift upward as the patient ages."
+      }
+    ],
+    formulaExplanation:
+      "FIB-4 = (age x AST) / (platelets x sqrt(ALT)), with age in years, AST and ALT in U/L, and platelets in x10^9/L.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, multiplied by AST in the numerator.",
+      },
+      {
+        inputId: "ast",
+        label: "AST",
+        explanation: "Aspartate aminotransferase in U/L, multiplied by age in the numerator.",
+      },
+      {
+        inputId: "alt",
+        label: "ALT",
+        explanation: "Alanine aminotransferase in U/L, square-rooted in the denominator.",
+      },
+      {
+        inputId: "platelets",
+        label: "Platelet Count",
+        explanation: "Platelet count in x10^9/L, multiplied by the square root of ALT in the denominator.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the FIB-4 index, a non-invasive score using age, AST, ALT, and platelet count to estimate the probability of advanced liver fibrosis in chronic liver disease.",
     howToUse: [
@@ -10498,7 +14429,6 @@ export const clinicalContentRegistry: Record<
       source: "Hepatology Literature",
       reference:
         "Sterling RK, et al. Development of a simple noninvasive index to predict significant fibrosis in patients with HIV/HCV coinfection. Hepatology. 2006;43:1317-1325.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -10507,10 +14437,48 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. FIB-4 is a screening index and does not replace clinical evaluation or confirmatory fibrosis testing.",
+      "This calculator is intended for educational and clinical decision support purposes only. FIB-4 is a screening index and does not replace clinical evaluation or confirmatory fibrosis testing.",
   },
 
   "apri-score": {
+    commonMistakes: [
+      "Entering the platelet count in units other than x10^9/L, such as reporting platelets per microliter, which distorts the denominator and can move the score across the 0.5 and 1.5 thresholds.",
+      "Calculating APRI during an acute hepatitis flare, because a transient AST elevation inflates the ratio and can mimic significant fibrosis or cirrhosis that is not actually present.",
+      "Treating a result in the 0.5 to 1.5 intermediate band as a definitive fibrosis estimate, even though accuracy is lowest in that range and further evaluation is required."
+    ],
+    faq: [
+      {
+        question: "Which AST upper limit of normal should I enter?",
+        answer: "Enter the upper limit of normal from your own laboratory, since APRI divides the patient's AST by that value before scaling by 100 and the platelet count. Different laboratories use different ULNs, and the score shifts accordingly. If the laboratory ULN is uncertain, the result should not be used for fibrosis decision-making."
+      },
+      {
+        question: "Can APRI be used in patients with hepatitis B?",
+        answer: "APRI is best validated in chronic hepatitis C and is endorsed by WHO for fibrosis screening in resource-limited settings, including chronic viral hepatitis more broadly. It should not be used during acute hepatitis with a transient AST flare, in children, or when thrombocytopenia arises from causes unrelated to portal hypertension, since those situations confound the score."
+      },
+      {
+        question: "What should I do when APRI is between 0.5 and 1.5?",
+        answer: "An intermediate result does not resolve the fibrosis question on its own, because accuracy is lowest in the 0.5 to 1.5 range. Patients in this band should proceed to further evaluation, such as elastography where available, or other confirmatory assessment, rather than being labeled as having or not having significant fibrosis based on APRI alone."
+      }
+    ],
+    formulaExplanation:
+      "APRI = [(AST / AST upper limit of normal) x 100] / platelet count (x10^9/L). It compares the AST elevation to the platelet count as a non-invasive marker of hepatic fibrosis.",
+    variables: [
+      {
+        inputId: "ast",
+        label: "AST",
+        explanation: "Aspartate aminotransferase in U/L, divided by the AST upper limit of normal.",
+      },
+      {
+        inputId: "uln",
+        label: "AST Upper Limit of Normal",
+        explanation: "Laboratory-specific AST upper limit of normal in U/L, used as the denominator of the AST ratio.",
+      },
+      {
+        inputId: "platelets",
+        label: "Platelet Count",
+        explanation: "Platelet count in x10^9/L, used as the divisor of the scaled AST ratio.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the AST-to-Platelet Ratio Index (APRI) to estimate the likelihood of significant liver fibrosis and cirrhosis from AST and platelet count, particularly in chronic hepatitis.",
     howToUse: [
@@ -10565,7 +14533,6 @@ export const clinicalContentRegistry: Record<
       source: "Hepatology Literature",
       reference:
         "Wai CT, et al. A simple noninvasive index can predict both significant fibrosis and cirrhosis in patients with chronic hepatitis C. Hepatology. 2003;38:518-526.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -10574,10 +14541,58 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. APRI is a screening index; fibrosis stage should be confirmed with further testing when clinically indicated.",
+      "This calculator is intended for educational and clinical decision support purposes only. APRI is a screening index; fibrosis stage should be confirmed with further testing when clinically indicated.",
   },
 
   "rockall-score": {
+    commonMistakes: [
+      "Assigning endoscopic diagnosis and stigmata points before endoscopy has been performed, which either forces guesswork or produces a deceptively low total that understates true risk.",
+      "Using Rockall for emergency department triage or admission decisions, which is the role of the Glasgow-Blatchford score, since Rockall is applied after endoscopy to estimate mortality and rebleeding.",
+      "Scoring the shock category by diastolic blood pressure, when the options are defined by pulse above 100 bpm or systolic pressure below 100 mmHg."
+    ],
+    faq: [
+      {
+        question: "Why can't the Rockall score be used before endoscopy?",
+        answer: "Two of its five components, namely endoscopic diagnosis and major stigmata of recent hemorrhage, can only be completed once endoscopy has been done. A clinical-only version exists, but the full Rockall score used for mortality and rebleeding prediction requires those endoscopic findings, which is why pre-endoscopy risk stratification relies on the Glasgow-Blatchford score instead."
+      },
+      {
+        question: "What counts as major stigmata of recent hemorrhage?",
+        answer: "Within this calculator the stigmata component scores 0 for no stigmata or a dark spot only, and 2 for blood in the upper gastrointestinal tract, an adherent clot, a visible vessel, or active bleeding. These endoscopic findings carry much of the post-endoscopy risk estimate alongside diagnosis and comorbidity."
+      },
+      {
+        question: "How does Rockall complement Glasgow-Blatchford in the same patient?",
+        answer: "Glasgow-Blatchford is calculated at presentation using clinical and laboratory data to estimate the need for intervention and to guide admission decisions. After endoscopy, the Rockall score adds the endoscopic diagnosis and stigmata to age, shock, and comorbidity to estimate mortality and rebleeding risk. Many units use both, at different points in the same admission."
+      }
+    ],
+    formulaExplanation:
+      "The Rockall score sums weighted points across five components: age, shock, comorbidity, endoscopic diagnosis, and major stigmata of recent hemorrhage. Each component is selected as a pre-scored value (0-3) and summed; higher totals predict greater rebleeding and mortality risk.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age category scored 0 (under 60 years), 1 (60-79 years), or 2 (80 years or older).",
+      },
+      {
+        inputId: "shock",
+        label: "Shock",
+        explanation: "Hemodynamic status scored 0 (no shock), 1 (pulse over 100 bpm), or 2 (systolic BP under 100 mmHg).",
+      },
+      {
+        inputId: "comorbidity",
+        label: "Comorbidity",
+        explanation: "Comorbidity scored 0 (none), 2 (heart failure or ischemic heart disease), or 3 (renal failure, liver failure, or metastatic cancer).",
+      },
+      {
+        inputId: "diagnosis",
+        label: "Endoscopic Diagnosis",
+        explanation: "Endoscopic diagnosis scored 0 (Mallory-Weiss or no lesion), 1 (all other diagnoses), or 2 (upper GI malignancy).",
+      },
+      {
+        inputId: "stigmata",
+        label: "Major Stigmata of Recent Hemorrhage",
+        explanation: "Endoscopic stigmata scored 0 (none or dark spot only) or 2 (blood in the tract, adherent clot, visible vessel, or active bleeding).",
+      },
+    ],
     clinicalPurpose:
       "Calculates the Rockall score to predict mortality and the risk of rebleeding after acute upper gastrointestinal bleeding using clinical and endoscopic findings.",
     howToUse: [
@@ -10629,11 +14644,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. Risk scores inform but do not replace clinical judgment in the management of upper GI bleeding.",
+      "This calculator is intended for educational and clinical decision support purposes only. Risk scores inform but do not replace clinical judgment in the management of upper GI bleeding.",
     evidence: {
       source: "Gastroenterology / Emergency Medicine",
       reference: "Rockall TA, et al. Gut. 1996;38(3):316-321.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1996",
       updatedAt: "2026-08",
       references: [
@@ -10643,6 +14657,74 @@ export const clinicalContentRegistry: Record<
   },
 
   "glasgow-blatchford-score": {
+    commonMistakes: [
+      "Assuming an elevated BUN reflects only the magnitude of gastrointestinal bleeding, when prerenal states such as dehydration raise BUN independently and can push the score into a higher risk category.",
+      "Choosing the wrong sex option during entry, because the hemoglobin component relies on sex-specific thresholds and a mismatched selection adds or removes points from the total.",
+      "Using the Glasgow-Blatchford score after endoscopy to estimate rebleeding or mortality, since it predicts the need for intervention while post-endoscopy risk is the domain of the Rockall score."
+    ],
+    faq: [
+      {
+        question: "What does a Glasgow-Blatchford score of 0 mean for discharge?",
+        answer: "A score of 0 identifies a very low-risk patient in whom outpatient management may be appropriate, and NICE guidance supports avoiding admission in this group. Even so, the decision should reflect overall clinical assessment, including hemodynamic status and the reliability of follow-up. Scores of 1 or higher indicate that hospital assessment is needed."
+      },
+      {
+        question: "Can I calculate the Glasgow-Blatchford score before endoscopy?",
+        answer: "Yes, and that is its main use. All of its inputs, namely BUN, hemoglobin, sex, systolic blood pressure, pulse, melena, syncope, known hepatic disease, and known cardiac failure, are available at presentation, which is why it is suited to emergency department triage and pre-endoscopy risk stratification."
+      },
+      {
+        question: "How is the Glasgow-Blatchford score different from the Rockall score?",
+        answer: "The Glasgow-Blatchford score uses only clinical and laboratory findings available before endoscopy and predicts the need for intervention, transfusion, or death. The Rockall score adds endoscopic diagnosis and stigmata of recent hemorrhage and is used after endoscopy to estimate mortality and rebleeding risk. The two are complementary rather than interchangeable."
+      }
+    ],
+    formulaExplanation:
+      "The Glasgow-Blatchford score sums weighted points for blood urea nitrogen, hemoglobin (with sex-specific thresholds), systolic blood pressure, pulse rate, melena, syncope, hepatic disease, and cardiac failure. Higher totals predict a greater need for clinical intervention.",
+    variables: [
+      {
+        inputId: "bun",
+        label: "Blood Urea Nitrogen",
+        explanation: "Blood urea nitrogen in mg/dL, scored across increasing ranges.",
+      },
+      {
+        inputId: "hemoglobin",
+        label: "Hemoglobin",
+        explanation: "Hemoglobin in g/dL, scored using sex-specific thresholds.",
+      },
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which sets the hemoglobin scoring thresholds.",
+      },
+      {
+        inputId: "sbp",
+        label: "Systolic Blood Pressure",
+        explanation: "Systolic blood pressure in mmHg, scored higher at lower values.",
+      },
+      {
+        inputId: "pulse",
+        label: "Pulse Rate",
+        explanation: "Pulse rate in beats per minute; values of 100 or higher contribute points.",
+      },
+      {
+        inputId: "melena",
+        label: "Melena",
+        explanation: "Passage of melena; Yes contributes one point.",
+      },
+      {
+        inputId: "syncope",
+        label: "Syncope",
+        explanation: "Syncope at presentation; Yes contributes points.",
+      },
+      {
+        inputId: "hepatic",
+        label: "Known Hepatic Disease",
+        explanation: "Known hepatic disease; Yes contributes one point.",
+      },
+      {
+        inputId: "cardiac",
+        label: "Known Cardiac Failure",
+        explanation: "Known cardiac failure; Yes contributes one point.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the Glasgow-Blatchford score to predict the need for endoscopic intervention, transfusion, or death in patients presenting with suspected upper gastrointestinal bleeding.",
     howToUse: [
@@ -10695,7 +14777,6 @@ export const clinicalContentRegistry: Record<
       source: "Original GBS Description / NICE Guideline",
       reference:
         "Blatchford O, et al. A risk score to predict need for treatment for upper-gastrointestinal haemorrhage. Lancet. 2000;356:1318-1321.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -10709,10 +14790,48 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The Glasgow-Blatchford score supports triage decisions but does not replace clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. The Glasgow-Blatchford score supports triage decisions but does not replace clinical judgment.",
   },
 
   "maddrey-discriminant-function": {
+    commonMistakes: [
+      "Entering total bilirubin in micromoles per liter instead of mg/dL, which inflates that term of the equation and can spuriously push the result past the 32-point threshold.",
+      "Substituting the INR or a PT ratio for the prothrombin time difference, when the formula needs the patient PT minus the control PT, both measured in seconds.",
+      "Expecting a follow-up MDF value to show whether corticosteroids are working, since the score grades initial severity and treatment response is assessed separately with tools such as the Lille score."
+    ],
+    faq: [
+      {
+        question: "Why does the formula need a control prothrombin time?",
+        answer: "The Maddrey discriminant function is built on the difference between the patient's prothrombin time and a control value, both in seconds, multiplied by 4.6 and then added to total bilirubin in mg/dL. Prothrombin time reagents and instrumentation vary between laboratories, so using the matched control keeps the difference meaningful rather than depending on an absolute number."
+      },
+      {
+        question: "Does an MDF of 32 or higher automatically mean corticosteroids?",
+        answer: "An MDF of 32 or greater defines severe alcoholic hepatitis and is the classic threshold for considering corticosteroid therapy, but only when there are no contraindications. The underlying diagnosis of alcoholic hepatitis itself rests on clinical and often biopsy-based criteria, and the score does not capture contraindications, so the treatment decision remains clinical."
+      },
+      {
+        question: "Can the MDF be used in other types of liver injury?",
+        answer: "No. The MDF is intended for suspected alcoholic hepatitis and should not be applied to other causes of acute liver injury or cholestatic disease, or used without a secure diagnosis of alcoholic hepatitis. It is also not validated in children, and the score does not replace the broader clinical and sometimes biopsy-based assessment required to establish the diagnosis."
+      }
+    ],
+    formulaExplanation:
+      "Maddrey discriminant function = 4.6 x (patient prothrombin time - control prothrombin time) + total bilirubin, with prothrombin times in seconds and bilirubin in mg/dL. Values of 32 or greater indicate severe alcoholic hepatitis.",
+    variables: [
+      {
+        inputId: "patient_pt",
+        label: "Patient Prothrombin Time",
+        explanation: "Patient prothrombin time in seconds, from which the control PT is subtracted.",
+      },
+      {
+        inputId: "control_pt",
+        label: "Control Prothrombin Time",
+        explanation: "Laboratory control prothrombin time in seconds, subtracted from the patient PT.",
+      },
+      {
+        inputId: "bilirubin",
+        label: "Total Bilirubin",
+        explanation: "Total serum bilirubin in mg/dL, added to the prolonged prothrombin time term.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the Maddrey Discriminant Function to identify severe alcoholic hepatitis, in which corticosteroid therapy may be considered.",
     howToUse: [
@@ -10763,11 +14882,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The diagnosis of alcoholic hepatitis and treatment decisions must be individualized with clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. The diagnosis of alcoholic hepatitis and treatment decisions must be individualized with clinical judgment.",
     evidence: {
       source: "Hepatology / Gastroenterology",
       reference: "Madrey WC, et al. Hepatology. 1998;28(6):1561-1563.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1998",
       updatedAt: "2026-08",
       references: [
@@ -10777,6 +14895,64 @@ export const clinicalContentRegistry: Record<
   },
 
   "nafld-fibrosis-score": {
+    commonMistakes: [
+      "Entering albumin in grams per liter rather than g/dL, which inflates the albumin term of the formula and artificially lowers the resulting score.",
+      "Marking diabetes/IFG as absent when impaired fasting glucose is present, since the input is a single binary term and omission shifts the score by the full 1.13 coefficient.",
+      "Using the NAFLD fibrosis score in patients with liver disease other than NAFLD/MASLD, where the score was not validated and the result does not carry the same meaning."
+    ],
+    faq: [
+      {
+        question: "How is the NAFLD fibrosis score different from FIB-4?",
+        answer: "The NAFLD fibrosis score adds BMI, diabetes or impaired fasting glucose, and albumin to age, the AST/ALT ratio, and platelets, and it was built and validated specifically in NAFLD cohorts. FIB-4 uses age, AST, ALT, and platelets without metabolic variables. Both estimate advanced fibrosis non-invasively, both have an indeterminate middle range, and neither replaces elastography or biopsy when staging is required."
+      },
+      {
+        question: "What should I do with an indeterminate result?",
+        answer: "An indeterminate result between -1.455 and 0.676 does not resolve the question of advanced fibrosis. Guidance directs these patients to further evaluation, typically elastography and occasionally biopsy, rather than relying on the score alone. Only results below -1.455, indicating low probability, or above 0.676, indicating high probability, are used to triage without further testing."
+      },
+      {
+        question: "Why do AST and ALT need to be entered separately?",
+        answer: "The formula uses the ratio of AST to ALT as one of its terms, along with separate coefficients for the other variables, so both raw enzyme values in U/L are required. Entering a pre-calculated ratio or swapping the two values changes that term and moves the score relative to the -1.455 and 0.676 cutoffs."
+      }
+    ],
+    formulaExplanation:
+      "NAFLD fibrosis score = -1.675 + (0.037 x age) + (0.094 x BMI) + (1.13 x diabetes) + (0.99 x AST/ALT) - (0.013 x platelets) - (0.66 x albumin), with age in years, BMI in kg/m2, diabetes coded 0 or 1, platelets in x10^9/L, and albumin in g/dL.",
+    variables: [
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, multiplied by 0.037.",
+      },
+      {
+        inputId: "bmi",
+        label: "BMI",
+        explanation: "Body mass index in kg/m2, multiplied by 0.094.",
+      },
+      {
+        inputId: "diabetes",
+        label: "Diabetes / IFG",
+        explanation: "Presence of diabetes or impaired fasting glucose, coded 1 if present and 0 if absent.",
+      },
+      {
+        inputId: "ast",
+        label: "AST",
+        explanation: "Aspartate aminotransferase in U/L, used as the numerator of the AST/ALT ratio.",
+      },
+      {
+        inputId: "alt",
+        label: "ALT",
+        explanation: "Alanine aminotransferase in U/L, used as the denominator of the AST/ALT ratio.",
+      },
+      {
+        inputId: "platelets",
+        label: "Platelet Count",
+        explanation: "Platelet count in x10^9/L, multiplied by -0.013.",
+      },
+      {
+        inputId: "albumin",
+        label: "Albumin",
+        explanation: "Serum albumin in g/dL, multiplied by -0.66.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the NAFLD Fibrosis Score to estimate the probability of advanced fibrosis non-invasively in patients with NAFLD/MASLD.",
     howToUse: [
@@ -10834,7 +15010,6 @@ export const clinicalContentRegistry: Record<
       source: "Hepatology Literature",
       reference:
         "Angulo P, et al. The NAFLD fibrosis score: a noninvasive system that identifies liver fibrosis in patients with NAFLD. Hepatology. 2007;45:846-854.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -10843,10 +15018,49 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The NAFLD Fibrosis Score is a screening tool and does not replace clinical evaluation or confirmatory fibrosis testing.",
+      "This calculator is intended for educational and clinical decision support purposes only. The NAFLD Fibrosis Score is a screening tool and does not replace clinical evaluation or confirmatory fibrosis testing.",
   },
 
   "rox-index": {
+    commonMistakes: [
+      "Using the ROX index to guide intubation decisions in patients on standard oxygen or noninvasive ventilation, since it was derived and validated in adults receiving high-flow nasal cannula.",
+      "Relying on a single ROX value instead of reassessing it over the initial hours of therapy, because the index is a dynamic measure and one reading cannot confirm HFNC success or failure.",
+      "Entering FiO2 as a percentage rather than a fraction, which shrinks the SpO2/FiO2 component and can drive the index below 3.85 even when the patient is responding well."
+    ],
+    faq: [
+      {
+        question: "When should I recalculate the ROX index during therapy?",
+        answer: "The ROX index is intended for serial monitoring during the initial hours of high-flow nasal cannula therapy rather than a one-time calculation. Reassess it at regular clinical reviews using the current SpO2, FiO2, and respiratory rate. A value that rises toward 4.88 or higher suggests the patient is responding, while a persistently low or falling value supports earlier consideration of escalation."
+      },
+      {
+        question: "Can I use the ROX index in patients with pneumonia only?",
+        answer: "It was derived and validated primarily in adults with pneumonia-related acute hypoxemic respiratory failure, so evidence is strongest in that group. Clinicians apply it more broadly in adult hypoxemic respiratory failure on high-flow nasal cannula, but it has not been validated in children and neonates, and it does not replace clinical assessment of work of breathing, comorbidities, or overall trajectory."
+      },
+      {
+        question: "How does the ROX index differ from the P/F ratio?",
+        answer: "The P/F ratio uses arterial PaO2 divided by FiO2, whereas the ROX index uses peripheral oxygen saturation (SpO2) divided by FiO2 and then by respiratory rate. Adding respiratory rate is what lets the ROX index reflect work of breathing and predict high-flow nasal cannula success, while the P/F ratio is used to grade oxygenation impairment and ARDS severity."
+      }
+    ],
+    formulaExplanation:
+      "ROX index = (SpO2 / FiO2) / respiratory rate. SpO2 is the peripheral oxygen saturation, FiO2 is the inspired oxygen fraction, and respiratory rate is in breaths per minute; higher values predict greater likelihood of high-flow nasal cannula success.",
+    variables: [
+      {
+        inputId: "spo2",
+        label: "SpO2",
+        explanation: "Peripheral oxygen saturation as a percentage.",
+      },
+      {
+        inputId: "fio2",
+        label: "FiO2",
+        explanation: "Fraction of inspired oxygen as a decimal (0.21 to 1.0); SpO2 is divided by this value.",
+        commonError: "Entering FiO2 as a percentage rather than a decimal alters the ratio.",
+      },
+      {
+        inputId: "rr",
+        label: "Respiratory Rate",
+        explanation: "Respiratory rate in breaths per minute, used as the divisor.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the ROX index, which combines oxygenation (SpO₂/FiO₂) with respiratory rate to estimate the likelihood that high-flow nasal cannula (HFNC) therapy will succeed or fail in adults with acute hypoxemic respiratory failure.",
     howToUse: [
@@ -10901,7 +15115,6 @@ export const clinicalContentRegistry: Record<
       source: "Original Index Description",
       reference:
         "Roca O, Messika J, Caralt B, et al. Predicting success of high-flow nasal cannula in pneumonia patients with hypoxemic respiratory failure: The utility of the ROX index. J Crit Care. 2016;35:200-205.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2016",
       updatedAt: "2026-08",
       references: [
@@ -10909,10 +15122,44 @@ export const clinicalContentRegistry: Record<
       ],
     },
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The ROX index is one component of respiratory-failure assessment and must be interpreted with serial measurements and full clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. The ROX index is one component of respiratory-failure assessment and must be interpreted with serial measurements and full clinical judgment.",
   },
 
   "pf-ratio": {
+    commonMistakes: [
+      "Entering FiO2 as a percentage instead of a fraction, such as entering 100 instead of 1 for pure oxygen, which produces a falsely low ratio.",
+      "Combining a PaO2 from one blood gas with an FiO2 recorded at a different time, since the ratio is only meaningful when both values are measured concurrently.",
+      "Applying the Berlin ARDS severity bands to a patient who lacks bilateral infiltrates or a PEEP of at least 5 cmH2O, misclassifying simple hypoxemia as ARDS."
+    ],
+    faq: [
+      {
+        question: "What FiO2 value should I use for a patient on room air?",
+        answer: "Room air corresponds to an FiO2 of 0.21. Enter the fraction, not the percentage, so room air is 0.21 and pure oxygen is 1. The calculator divides PaO2 in mmHg by this fraction. Using the wrong scale will produce a ratio that is off by a factor of 100 and cannot be compared with the published severity bands."
+      },
+      {
+        question: "Does a low P/F ratio confirm ARDS?",
+        answer: "No. The P/F ratio quantifies oxygenation impairment, but the Berlin Definition also requires timing of onset, bilateral infiltrates, and a PEEP of at least 5 cmH2O within the appropriate clinical context. A low ratio in a patient who does not meet those criteria indicates hypoxemia of some cause, and the ratio itself does not identify why oxygenation is impaired."
+      },
+      {
+        question: "Why are P/F values at different FiO2 levels not comparable?",
+        answer: "The P/F ratio varies with the inspired oxygen fraction, so values obtained at different FiO2 levels are not directly comparable. When tracking oxygenation over time, record the FiO2 and PEEP used at each measurement so that any trend reflects a real change in the patient rather than a change in oxygen delivery."
+      }
+    ],
+    formulaExplanation:
+      "P/F ratio = PaO2 / FiO2. PaO2 is the arterial partial pressure of oxygen in mmHg and FiO2 is the inspired oxygen fraction (0.21 on room air). Lower ratios indicate worse oxygenation and are used to grade ARDS severity.",
+    variables: [
+      {
+        inputId: "pao2",
+        label: "PaO2",
+        explanation: "Arterial partial pressure of oxygen in mmHg, used as the numerator.",
+      },
+      {
+        inputId: "fio2",
+        label: "FiO2",
+        explanation: "Fraction of inspired oxygen as a decimal (0.21 to 1.0), used as the denominator.",
+        commonError: "Entering FiO2 as a percentage such as 21 instead of 0.21 makes the ratio 100 times too small.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the PaO₂/FiO₂ (P/F) ratio to quantify the degree of oxygenation impairment and to support classification of ARDS severity according to the Berlin Definition.",
     howToUse: [
@@ -10965,7 +15212,6 @@ export const clinicalContentRegistry: Record<
       source: "Berlin Definition Consensus",
       reference:
         "ARDS Definition Task Force; Ranieri VM, Rubenfeld GD, Thompson BT, et al. Acute respiratory distress syndrome: the Berlin definition. JAMA. 2012;307(23):2526-2533.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2012",
       updatedAt: "2026-08",
       references: [
@@ -10973,12 +15219,39 @@ export const clinicalContentRegistry: Record<
       ],
     },
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The P/F ratio is a component of ARDS assessment and does not by itself establish the diagnosis of ARDS.",
+      "This calculator is intended for educational and clinical decision support purposes only. The P/F ratio is a component of ARDS assessment and does not by itself establish the diagnosis of ARDS.",
   },
 
   "a-a-gradient": {
+    commonMistakes: [
+      "Combining a PaCO2 from one blood gas with an FiO2 recorded at a different moment breaks the requirement that all inputs come from the same sample.",
+      "Applying the calculation at altitude, where barometric pressure differs from 760 mmHg, relies on a sea-level assumption that no longer holds.",
+      "Judging a result against a single fixed normal limit ignores that the expected gradient rises with age, roughly age/4 plus 4 mmHg."
+    ],
+    faq: [
+      {
+        question: "What does an elevated A-a gradient suggest about the cause of hypoxemia?",
+        answer: "A gradient above the age-expected value indicates that hypoxemia is not explained by simple hypoventilation alone; it points to impaired gas transfer within the lung. The calculator compares your result with an age-expected value of roughly age divided by 4 plus 4 mmHg. The gradient cannot quantify how much each underlying mechanism contributes, so the finding must be interpreted with the rest of the blood gas and the clinical context."
+      },
+      {
+        question: "Why do FiO2 and PaCO2 need to come from the same blood gas?",
+        answer: "The alveolar gas equation pairs the inspired oxygen fraction with the measured PaCO2 to estimate alveolar oxygen, so both inputs must describe the patient at the same moment. If the FiO2 comes from a ventilator setting recorded after the arterial sample, or from a different time entirely, the calculated PAO2 will not match the measured PaO2 and the gradient loses meaning. The calculation also assumes sea-level conditions with a barometric pressure of 760 mmHg and a respiratory quotient of 0.8."
+      },
+      {
+        question: "Is a normal A-a gradient enough to rule out lung disease?",
+        answer: "No. A gradient within the age-expected range supports hypoventilation as the explanation for hypoxemia, but the calculator notes that a normal gradient does not exclude pulmonary disease and that the gradient alone cannot separate the contributions of shunt, ventilation/perfusion mismatch, and diffusion impairment. It is one component of arterial blood gas interpretation and should be read alongside the clinical picture, the measured PaO2, and assumptions such as sea-level barometric pressure."
+      }
+    ],
     clinicalPurpose:
       "Calculates the alveolar-arterial oxygen (A–a) gradient from an arterial blood gas to evaluate whether hypoxemia is explained by impaired gas exchange.",
+    formulaExplanation:
+      "A–a gradient = PAO₂ − PaO₂, where PAO₂ = (FiO₂ × (PB − PH₂O)) − (PaCO₂/RQ). Assumes PB=760 mmHg, PH₂O=47 mmHg, RQ=0.8.",
+    variables: [
+      {inputId:"age", label:"Age", explanation:"Used as a reference to interpret age-expected gradient (age/4 + 4 mmHg)."},
+      {inputId:"fio2", label:"FiO2", explanation:"Fraction of inspired oxygen used to calculate alveolar oxygen tension."},
+      {inputId:"pao2", label:"PaO2", explanation:"Arterial oxygen tension (mmHg)."},
+      {inputId:"paco2", label:"PaCO2", explanation:"Arterial carbon dioxide tension (mmHg) used in alveolar gas equation."}
+    ],
     howToUse: [
       "Enter age, FiO₂ as a fraction, PaO₂, and PaCO₂ from the same arterial blood gas.",
       "The calculator assumes sea level (barometric pressure 760 mmHg) and a respiratory quotient of 0.8.",
@@ -11031,7 +15304,6 @@ export const clinicalContentRegistry: Record<
       source: "Classic Respiratory Physiology",
       reference:
         "Fenn WO, Rahn H, Otis AB. A theoretical study of the composition of the alveolar air at altitude. Am J Physiol. 1946;146(5):637-653. West JB. Respiratory Physiology: The Essentials. 11th ed. Wolters Kluwer; 2022.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1946",
       updatedAt: "2026-08",
       references: [
@@ -11040,10 +15312,49 @@ export const clinicalContentRegistry: Record<
       ],
     },
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The A–a gradient is one component of ABG interpretation and must be considered together with the clinical picture.",
+      "This calculator is intended for educational and clinical decision support purposes only. The A–a gradient is one component of ABG interpretation and must be considered together with the clinical picture.",
   },
 
   "oxygen-index": {
+    commonMistakes: [
+      "Typing FiO2 as a percentage instead of the decimal fraction the formula requires makes the Oxygen Index far too high.",
+      "Using an estimated mean airway pressure rather than the value read directly from the ventilator biases the result.",
+      "Reading an Oxygen Index below 5 as proof of normal oxygenation misreads the tool's banding, since that range is described as mild impairment."
+    ],
+    faq: [
+      {
+        question: "Which patients and measurements are appropriate for the Oxygen Index?",
+        answer: "The Oxygen Index is intended for mechanically ventilated patients, because the formula multiplies FiO2 by mean airway pressure, which must be read directly from the ventilator. It should not be used in patients breathing without ventilatory support or when mean airway pressure has to be estimated. The calculation also requires an arterial PaO2 from an arterial blood gas, since oxygen saturation surrogates are not accepted, and results are interpreted with the calculator's severity bands."
+      },
+      {
+        question: "How should a single Oxygen Index value be interpreted over time?",
+        answer: "The value depends on the current ventilator settings and on when the arterial blood gas was drawn, so one reading describes a single moment rather than the overall course, and serial measurements are more informative than an isolated number. The calculator's bands, below 5, 5 to 15, 16 to 25, and above 25, are pragmatic tool conventions because no single universally standardized classification exists for the Oxygen Index."
+      },
+      {
+        question: "Why does the calculator label an Oxygen Index below 5 as normal?",
+        answer: "The tool assigns a normal status to values below 5 as part of its banding scheme, even though its own interpretation text describes that range as mild oxygenation impairment. The discrepancy reflects how the categories are drawn in this calculator and does not mean oxygenation is fully normal. Since the Oxygen Index has no universally standardized classification, the banding is a pragmatic guide that should be read with ventilator settings, the arterial blood gas, and the patient's clinical trajectory."
+      }
+    ],
+    formulaExplanation:
+      "Oxygen index = (FiO2 x mean airway pressure x 100) / PaO2. FiO2 is entered as a fraction of inspired oxygen, mean airway pressure in cmH2O, and PaO2 in mmHg; higher values indicate more severe oxygenation failure.",
+    variables: [
+      {
+        inputId: "fio2",
+        label: "FiO2",
+        explanation: "Fraction of inspired oxygen as a decimal (for example 0.21 for room air and 1.0 for 100% oxygen), multiplied by mean airway pressure and 100.",
+        commonError: "Entering FiO2 as a percentage (for example 60) instead of a fraction (0.6) grossly overstates the index.",
+      },
+      {
+        inputId: "map",
+        label: "Mean Airway Pressure",
+        explanation: "Mean airway pressure in cmH2O, representing the average pressure delivered by the ventilator.",
+      },
+      {
+        inputId: "pao2",
+        label: "PaO2",
+        explanation: "Arterial partial pressure of oxygen in mmHg, used as the denominator.",
+      },
+    ],
     clinicalPurpose:
       "Calculates the Oxygen Index (OI), combining FiO₂, mean airway pressure, and PaO₂ to gauge the severity of oxygenation failure in mechanically ventilated patients.",
     howToUse: [
@@ -11098,7 +15409,6 @@ export const clinicalContentRegistry: Record<
       source: "Pediatric Acute Lung Injury Consensus Conference (PALICC)",
       reference:
         "Pediatric Acute Lung Injury Consensus Conference Group. Pediatric Acute Respiratory Distress Syndrome: Consensus Recommendations From the Pediatric Acute Lung Injury Consensus Conference. Pediatr Crit Care Med. 2015;16(5):428-439.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2015",
       updatedAt: "2026-08",
       references: [
@@ -11107,10 +15417,34 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The Oxygen Index is one component of oxygenation assessment in ventilated patients and must be interpreted with the full clinical context.",
+      "This calculator is intended for educational and clinical decision support purposes only. The Oxygen Index is one component of oxygenation assessment in ventilated patients and must be interpreted with the full clinical context.",
   },
 
   "free-water-deficit": {
+    commonMistakes: [
+      "Applying the 0.6 total body water factor to a woman, when about 0.5 times weight is the commonly used assumption.",
+      "Using the calculator in neonates or children without age-appropriate total body water assumptions.",
+      "Treating the one-time deficit as a fixed infusion order rather than an estimate to be revised by serial sodium measurements."
+    ],
+    formulaExplanation:
+      "Free water deficit = total body water x (current sodium / desired sodium - 1), where total body water is estimated as 0.6 x weight (kg). Negative values are reported as zero.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Body weight in kilograms; total body water is estimated as 0.6 x weight.",
+      },
+      {
+        inputId: "currentNa",
+        label: "Current Sodium",
+        explanation: "Measured serum sodium in mmol/L, used as the numerator of the ratio.",
+      },
+      {
+        inputId: "desiredNa",
+        label: "Desired Sodium",
+        explanation: "Target serum sodium in mmol/L, used as the denominator of the ratio.",
+      },
+    ],
     faq: [
           {
         "question": "How is the free water deficit calculated?",
@@ -11188,7 +15522,6 @@ export const clinicalContentRegistry: Record<
       source: "Nephrology / Fluids & Electrolytes",
       reference:
         "Adrogue HJ, Madias NE. Hypernatremia. N Engl J Med. 2000;342(21):1493-1499.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -11198,10 +15531,53 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The free water deficit is an estimate and is not a prescription; correction of hypernatremia requires assessment of volume status, ongoing losses, and an individualized rate of correction.",
+      "This calculator is intended for educational and clinical decision support purposes only. The free water deficit is an estimate and is not a prescription; correction of hypernatremia requires assessment of volume status, ongoing losses, and an individualized rate of correction.",
   },
 
   "basal-metabolic-rate": {
+    commonMistakes: [
+      "Reporting the BMR result as the patient's total daily energy needs without adding activity and the thermic effect of food.",
+      "Using the Mifflin-St Jeor equation for a child or adolescent, where pediatric-specific equations are more appropriate.",
+      "Entering height in inches or weight in pounds, because the equation is calibrated for centimeters and kilograms."
+    ],
+    faq: [
+      {
+        question: "What units does this calculator expect for its inputs?",
+        answer: "Weight must be entered in kilograms, height in centimeters, and age in years, matching the constants of the Mifflin-St Jeor equation. The sex selection matters because the equation applies a different constant for men than for women. Output is in kilocalories per day, so entering pounds or inches produces an estimate that does not correspond to the patient."
+      },
+      {
+        question: "Why does the calculator report every valid result as normal?",
+        answer: "There is no single normal basal metabolic rate, because the estimate changes with age, sex, body size, and body composition, so every valid entry is reported as normal. For orientation, typical adult values fall roughly around 1,600-2,000 kcal/day in men and 1,400-1,800 kcal/day in women. Those figures are descriptive ranges rather than targets, and the result still requires individual clinical judgment."
+      },
+      {
+        question: "When should indirect calorimetry be used instead of this estimate?",
+        answer: "Indirect calorimetry is preferred in critically ill patients, where a measured energy expenditure is available. The equation does not account for body composition, muscle mass, fever, illness, or other metabolic stress, so its estimate drifts from reality in those settings. The result also covers only rest: activity and the thermic effect of food must be added separately before it can inform a daily energy plan."
+      }
+    ],
+    formulaExplanation:
+      "The Mifflin-St Jeor equation estimates BMR: males 10 x weight + 6.25 x height - 5 x age + 5; females 10 x weight + 6.25 x height - 5 x age - 161, with weight in kg, height in cm, and age in years.",
+    variables: [
+      {
+        inputId: "sex",
+        label: "Sex",
+        explanation: "Biological sex, which selects the male (+5) or female (-161) constant.",
+      },
+      {
+        inputId: "age",
+        label: "Age",
+        explanation: "Age in years, multiplied by -5.",
+      },
+      {
+        inputId: "weight",
+        label: "Weight",
+        explanation: "Weight in kilograms, multiplied by 10.",
+      },
+      {
+        inputId: "height",
+        label: "Height",
+        explanation: "Height in centimeters, multiplied by 6.25.",
+      },
+    ],
     clinicalPurpose:
       "Estimates basal metabolic rate (BMR) — the energy expended at complete rest — using the Mifflin-St Jeor equation with sex, age, weight, and height.",
     howToUse: [
@@ -11260,7 +15636,6 @@ export const clinicalContentRegistry: Record<
       source: "Nutrition / Endocrinology",
       reference:
         "Mifflin MD, St Jeor ST, Hill LA, et al. A new predictive equation for resting energy expenditure in healthy individuals. Am J Clin Nutr. 1990;51(2):241-247.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -11269,10 +15644,38 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. BMR estimates are approximations and do not replace measured energy expenditure in patients whose nutritional support is clinically critical.",
+      "This calculator is intended for educational and clinical decision support purposes only. BMR estimates are approximations and do not replace measured energy expenditure in patients whose nutritional support is clinically critical.",
   },
 
   "edd": {
+    commonMistakes: [
+      "Starting the 280-day count from the last day of the period rather than the first day of the last menstrual period, which moves the due date several days later.",
+      "Applying the 280-day rule to an irregular or poorly recalled menstrual cycle without adjustment, even though the method assumes a regular 28-day cycle.",
+      "Keeping the LMP-based date when first-trimester ultrasound dating differs by more than 5-7 days, since ultrasound is considered the more reliable method in the first trimester."
+    ],
+    faq: [
+      {
+        question: "When should the LMP-based EDD be corrected by ultrasound?",
+        answer: "First-trimester ultrasound dating by crown-rump length is considered more reliable than LMP dating and may supersede the LMP-based estimate when the discrepancy is typically greater than 5 to 7 days. After the first trimester ultrasound becomes less precise for establishing gestational age, so the earliest reliable dating available for the patient should guide care."
+      },
+      {
+        question: "How does an irregular cycle affect the due date?",
+        answer: "The Naegele rule assumes a regular 28-day cycle with ovulation about 14 days before the next menses. Longer or shorter cycles shift the true due date, and the calculator does not incorporate cycle length or regularity, or assisted-reproduction dating. When the cycle is irregular or the LMP is uncertain, the estimate should be confirmed or corrected by early ultrasound."
+      },
+      {
+        question: "Can the EDD tell me if the pregnancy is viable?",
+        answer: "No. The EDD is a dating estimate only; it does not assess viability, fetal well-being, or the timing of obstetric interventions, all of which require clinical assessment. The calculator adds 280 days to the LMP date and returns an anticipated date of birth that should be confirmed or refined with early ultrasound when available."
+      }
+    ],
+    formulaExplanation:
+      "Expected date of delivery = last menstrual period date + 280 days, corresponding to the Naegele rule of a 40-week gestation.",
+    variables: [
+      {
+        inputId: "lmp",
+        label: "Last Menstrual Period",
+        explanation: "First day of the last menstrual period, the starting date to which 280 days are added.",
+      },
+    ],
     clinicalPurpose:
       "Estimates the expected date of delivery (EDD) by adding 280 days to the first day of the last menstrual period (LMP), per the conventional Naegele calculation.",
     howToUse: [
@@ -11324,7 +15727,6 @@ export const clinicalContentRegistry: Record<
       source: "ACOG Committee Opinion",
       reference:
         "ACOG Committee Opinion No. 700: Methods for estimating the due date. Obstet Gynecol. 2017;129(5):e150-e154.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2017",
       updatedAt: "2026-08",
       references: [
@@ -11333,10 +15735,43 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The expected date of delivery is an estimate based on the LMP and a 28-day cycle assumption; ultrasound dating should be used to confirm or correct the date when clinically indicated.",
+      "This calculator is intended for educational and clinical decision support purposes only. The expected date of delivery is an estimate based on the LMP and a 28-day cycle assumption; ultrasound dating should be used to confirm or correct the date when clinically indicated.",
   },
 
   "gestational-age": {
+    commonMistakes: [
+      "Entering 7 or more days in the days field instead of carrying the excess into weeks, even though the accepted range for days is 0 to 6.",
+      "Interpreting the decimal remainder as a day count, when the fractional part represents a portion of a week and the value is simply the entered weeks and days expressed differently.",
+      "Expecting the tool to derive gestational age from the last menstrual period date or ultrasound measurements, since it only converts an already determined weeks-plus-days age into decimal weeks."
+    ],
+    faq: [
+      {
+        question: "How do I convert decimal weeks back to weeks and days?",
+        answer: "Take the whole number as completed weeks, then multiply the decimal remainder by 7 to recover the days. For example, 32 weeks 3 days is expressed as approximately 32.43 weeks, so multiplying that remainder by 7 returns about 3 days. Clinically the age is usually reported as completed weeks plus days, such as 32w3d, rather than as a decimal."
+      },
+      {
+        question: "Does this calculator establish the gestational age for my patient?",
+        answer: "No. It converts an age you have already determined from weeks and days into decimal form; it does not compute gestational age from the LMP date or from ultrasound biometry. The accuracy of the entered age depends entirely on how the pregnancy was dated, and the decimal output is the same age expressed differently, not a new clinical estimate."
+      },
+      {
+        question: "Why are the input limits 0-42 weeks and 0-6 days?",
+        answer: "These limits match the ranges clinicians use when documenting gestational age: days are counted 0 to 6 because a seventh day becomes one additional week, and 42 weeks covers the post-term range. Values outside these ranges usually indicate a data-entry error rather than a true gestational age."
+      }
+    ],
+    formulaExplanation:
+      "Gestational age = weeks + days / 7, expressed in weeks with the days as the fractional remainder.",
+    variables: [
+      {
+        inputId: "weeks",
+        label: "Weeks",
+        explanation: "Completed weeks of gestation.",
+      },
+      {
+        inputId: "days",
+        label: "Days",
+        explanation: "Additional days beyond the completed weeks, divided by 7.",
+      },
+    ],
     clinicalPurpose:
       "Calculates gestational age in decimal weeks from entered weeks and days, and relates this to the weeks + days format clinicians commonly use in pregnancy.",
     howToUse: [
@@ -11390,7 +15825,6 @@ export const clinicalContentRegistry: Record<
       source: "ACOG Committee Opinion",
       reference:
         "ACOG Committee Opinion No. 700: Methods for estimating the due date. Obstet Gynecol. 2017;129(5):e150-e154.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2017",
       updatedAt: "2026-08",
       references: [
@@ -11399,10 +15833,29 @@ export const clinicalContentRegistry: Record<
     },
 
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. Gestational age reflects the entered dating only and does not determine pregnancy viability or obstetric diagnosis.",
+      "This calculator is intended for educational and clinical decision support purposes only. Gestational age reflects the entered dating only and does not determine pregnancy viability or obstetric diagnosis.",
   },
 
   "adrenal-steroid-converter": {
+    commonMistakes: [
+      "Treating the 7.5 mg and 20 mg band edges as guideline-defined categories confuses this calculator's conventions with standardized dose thresholds.",
+      "Assuming an equivalent prednisone dose carries equivalent mineralocorticoid effect ignores that hydrocortisone retains sodium-retaining activity while dexamethasone has essentially none.",
+      "Using the converted equivalent as a tapering plan overlooks that the calculator does not model gradual dose reduction or monitoring intervals."
+    ],
+    formulaExplanation:
+      "The entered dose is converted to its prednisone-equivalent dose by multiplying by the steroid's glucocorticoid equivalence factor, with the mineralocorticoid equivalent also reported.",
+    variables: [
+      {
+        inputId: "dose",
+        label: "Dose",
+        explanation: "Dose of the source steroid in mg, multiplied by the equivalence factor.",
+      },
+      {
+        inputId: "steroid",
+        label: "Source Steroid",
+        explanation: "The steroid being converted, which determines the glucocorticoid and mineralocorticoid equivalence factors.",
+      },
+    ],
     faq: [
           {
         "question": "How do I convert prednisone to dexamethasone?",
@@ -11469,10 +15922,24 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. Glucocorticoid equivalence is approximate and is not a prescribing or tapering plan; formulation, route, indication, duration, and individual patient factors must be considered by the treating clinician.",
+      "This calculator is intended for educational and clinical decision support purposes only. Glucocorticoid equivalence is approximate and is not a prescribing or tapering plan; formulation, route, indication, duration, and individual patient factors must be considered by the treating clinician.",
   },
 
   "levothyroxine-dose": {
+    commonMistakes: [
+      "Entering body weight in pounds instead of kilograms inflates the estimate because the 1.6 mcg/kg/day factor is defined per kilogram.",
+      "Using the full-replacement estimate as the starting dose for an elderly patient with cardiac disease ignores that such patients generally start at 12.5 to 25 mcg.",
+      "Assuming the result accounts for age, cardiac status, or pregnancy misreads the output, since body weight is the calculator's only input."
+    ],
+    formulaExplanation:
+      "Estimated full-replacement levothyroxine dose = 1.6 micrograms/kg/day x body weight (kg). This is an approximation, not a universal starting dose.",
+    variables: [
+      {
+        inputId: "weight",
+        label: "Body Weight",
+        explanation: "Body weight in kilograms, multiplied by approximately 1.6 micrograms/kg/day.",
+      },
+    ],
     faq: [
           {
         "question": "What is the difference between Thyroid Dose and Levothyroxine Dose calculators?",
@@ -11536,11 +16003,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The result is not a prescription: actual starting doses are individualized, current treatment guidance and patient factors must be considered, and this calculator does not apply any automatic adjustment for age, cardiac disease, or pregnancy.",
+      "This calculator is intended for educational and clinical decision support purposes only. The result is not a prescription: actual starting doses are individualized, current treatment guidance and patient factors must be considered, and this calculator does not apply any automatic adjustment for age, cardiac disease, or pregnancy.",
     evidence: {
       source: "Endocrinology",
       reference: "Jonklaas J, et al. Thyroid. 2014;24(12):1670-1751.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "2014",
       updatedAt: "2026-08",
       references: [
@@ -11549,6 +16015,55 @@ export const clinicalContentRegistry: Record<
     },
   },
   "alvarado-score": {
+    commonMistakes: [
+      "Awarding only 1 point for right lower quadrant tenderness or leukocytosis when each of these items is worth 2 points.",
+      "Treating a score below 5 as definitively excluding appendicitis, which a negative score cannot do.",
+      "Relying on the score in pregnant women, elderly patients, or young children, where its sensitivity is lower."
+    ],
+    formulaExplanation:
+      "The Alvarado (MANTRELS) score sums eight items: migration of pain to the RLQ (1), anorexia (1), nausea/vomiting (1), RLQ tenderness (2), rebound pain (1), fever (1), leukocytosis (2), and left shift/neutrophilia (1), for a total of 0-10. Higher totals indicate greater probability of acute appendicitis.",
+    variables: [
+      {
+        inputId: "migration",
+        label: "Migration of Pain to RLQ",
+        explanation: "Pain migrating to the right lower quadrant; Yes adds 1 point.",
+      },
+      {
+        inputId: "anorexia",
+        label: "Anorexia",
+        explanation: "Anorexia; Yes adds 1 point.",
+      },
+      {
+        inputId: "nausea",
+        label: "Nausea / Vomiting",
+        explanation: "Nausea or vomiting; Yes adds 1 point.",
+      },
+      {
+        inputId: "rlq-tenderness",
+        label: "Tenderness in Right Lower Quadrant",
+        explanation: "RLQ tenderness; Yes adds 2 points.",
+      },
+      {
+        inputId: "rebound",
+        label: "Rebound Pain (Rebound Tenderness)",
+        explanation: "Rebound tenderness; Yes adds 1 point.",
+      },
+      {
+        inputId: "fever",
+        label: "Fever",
+        explanation: "Temperature 37.3 C (99.1 F) or higher; Yes adds 1 point.",
+      },
+      {
+        inputId: "leukocytosis",
+        label: "Leukocytosis",
+        explanation: "WBC over 10,000/microL; Yes adds 2 points.",
+      },
+      {
+        inputId: "left-shift",
+        label: "Left Shift",
+        explanation: "Neutrophilia over 75%; Yes adds 1 point.",
+      },
+    ],
     faq: [
           {
         "question": "What is the Alvarado score?",
@@ -11629,11 +16144,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The Alvarado score is a screening tool and should not replace clinical judgment, imaging studies, or specialist consultation.",
+      "This calculator is intended for educational and clinical decision support purposes only. The Alvarado score is a screening tool and should not replace clinical judgment, imaging studies, or specialist consultation.",
     evidence: {
       source: "Emergency Medicine",
       reference: "Alvarado A. Ann Emerg Med. 1986;15(5):557-564.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -11643,6 +16157,26 @@ export const clinicalContentRegistry: Record<
     },
   },
   "corrected-magnesium": {
+    commonMistakes: [
+      "Entering serum albumin in g/dL instead of the specified g/L, which invalidates the correction because the reference value is 40 g/L.",
+      "Applying the correction in neonates or pediatric patients, where magnesium binding dynamics differ and the formula is not validated.",
+      "Using the corrected value in place of ionized magnesium when a reliable ionized measurement is available."
+    ],
+    formulaExplanation:
+      "Corrected magnesium = measured magnesium (mmol/L) + 0.005 x (40 - serum albumin in g/L). The correction raises the reported magnesium when albumin is low, because less magnesium is protein-bound and measured total magnesium underestimates the physiologically active level.",
+    variables: [
+      {
+        inputId: "magnesium",
+        label: "Measured Serum Magnesium",
+        explanation: "Measured total serum magnesium in mmol/L, used as the baseline value.",
+      },
+      {
+        inputId: "albumin",
+        label: "Serum Albumin",
+        explanation: "Serum albumin in g/L; each 1 g/L below 40 adds 0.005 mmol/L to the corrected magnesium.",
+        commonError: "Enter albumin in g/L (not g/dL); using g/dL shifts the correction by a factor of ten.",
+      },
+    ],
     faq: [
           {
         "question": "Why should I correct magnesium for albumin?",
@@ -11716,11 +16250,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. The corrected magnesium is an estimate; direct ionized magnesium measurement is the gold standard when available.",
+      "This calculator is intended for educational and clinical decision support purposes only. The corrected magnesium is an estimate; direct ionized magnesium measurement is the gold standard when available.",
     evidence: {
       source: "Clinical Chemistry",
       reference: "Kroll MH, Elin RJ. Clin Chem. 1985;31(2):326-327.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -11730,6 +16263,45 @@ export const clinicalContentRegistry: Record<
     },
   },
   "kdigo-aki-staging": {
+    commonMistakes: [
+      "Selecting the wrong baseline creatinine, since the same current creatinine can produce a different stage depending on the baseline chosen.",
+      "Failing to assign the highest stage when both creatinine and urine output criteria are met, resulting in under-staging.",
+      "Attributing the low urine output stage to intrinsic kidney injury without accounting for diuretics, catheter patency, or recent volume status."
+    ],
+    formulaExplanation:
+      "KDIGO AKI staging assigns the highest stage met by creatinine or urine-output criteria. Creatinine: stage 1 = rise of 0.3 mg/dL or more or 1.5-1.9x baseline, stage 2 = 2.0-2.9x baseline, stage 3 = 3.0x baseline or more, current creatinine 4.0 mg/dL or more, or renal replacement therapy. Urine output: stage 1 = under 0.5 mL/kg/h for 6-12 h, stage 2 = under 0.5 mL/kg/h for 12 h or more or under 0.3 for 12-24 h, stage 3 = under 0.3 mL/kg/h for 24 h or more. Any renal replacement therapy is automatically stage 3.",
+    variables: [
+      {
+        inputId: "baseline-creatinine",
+        label: "Baseline Serum Creatinine",
+        explanation: "Baseline serum creatinine in mg/dL, used as the denominator for the creatinine ratio.",
+      },
+      {
+        inputId: "current-creatinine",
+        label: "Current Serum Creatinine",
+        explanation: "Current serum creatinine in mg/dL, compared with baseline or to the absolute 4.0 mg/dL threshold.",
+      },
+      {
+        inputId: "weight",
+        label: "Patient Weight",
+        explanation: "Body weight in kg, used with the urine output rate to assess urine-output criteria.",
+      },
+      {
+        inputId: "urine-output-rate",
+        label: "Urine Output Rate",
+        explanation: "Urine output rate in mL/kg/h, compared with the 0.5 and 0.3 thresholds.",
+      },
+      {
+        inputId: "urine-output-duration",
+        label: "Duration of Low Urine Output",
+        explanation: "Duration in hours that the urine output rate has been low, determining the urine-output stage.",
+      },
+      {
+        inputId: "on-rrt",
+        label: "Currently on Renal Replacement Therapy",
+        explanation: "Yes automatically assigns stage 3 regardless of creatinine or urine output.",
+      },
+    ],
     faq: [
           {
         "question": "What is KDIGO AKI staging?",
@@ -11801,11 +16373,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. KDIGO staging should be used in conjunction with clinical assessment and is not a standalone diagnostic tool.",
+      "This calculator is intended for educational and clinical decision support purposes only. KDIGO staging should be used in conjunction with clinical assessment and is not a standalone diagnostic tool.",
     evidence: {
       source: "Nephrology",
       reference: "KDIGO AKI Work Group. Kidney Int Suppl. 2012;2(1):1-138.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -11815,6 +16386,25 @@ export const clinicalContentRegistry: Record<
     },
   },
   "saag": {
+    commonMistakes: [
+      "Reversing the order and subtracting serum albumin from ascitic albumin, which inverts the direction of the gradient.",
+      "Measuring serum and ascitic albumin at different times rather than simultaneously, which reduces accuracy.",
+      "Using the SAAG to identify the specific cause of ascites rather than only classifying it as portal hypertensive or not."
+    ],
+    formulaExplanation:
+      "SAAG = serum albumin minus ascitic fluid albumin, rounded to one decimal place. A gradient of 1.1 g/dL or higher indicates portal hypertension, while a gradient below 1.1 g/dL suggests a non-portal hypertensive cause of ascites.",
+    variables: [
+      {
+        inputId: "serum-albumin",
+        label: "Serum Albumin",
+        explanation: "Serum albumin in g/dL, the minuend of the gradient.",
+      },
+      {
+        inputId: "ascites-albumin",
+        label: "Ascitic Fluid Albumin",
+        explanation: "Ascitic fluid albumin in g/dL, subtracted from the serum albumin.",
+      },
+    ],
     faq: [
           {
         "question": "What is SAAG and how is it calculated?",
@@ -11891,11 +16481,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. SAAG should be interpreted with ascitic fluid analysis and clinical context. It does not replace comprehensive clinical assessment.",
+      "This calculator is intended for educational and clinical decision support purposes only. SAAG should be interpreted with ascitic fluid analysis and clinical context. It does not replace comprehensive clinical assessment.",
     evidence: {
       source: "Gastroenterology",
       reference: "Boyer TD, et al. Arch Intern Med. 1968;122(5):425-428.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -11905,6 +16494,25 @@ export const clinicalContentRegistry: Record<
     },
   },
   "rumack-matthew": {
+    commonMistakes: [
+      "Applying the nomogram to a level drawn before 4 hours after ingestion, when it is not valid.",
+      "Using the nomogram for repeated supratherapeutic or staggered ingestions instead of a single acute ingestion with known timing.",
+      "Withholding N-acetylcysteine from a patient with hepatotoxicity because the level falls below the treatment line."
+    ],
+    formulaExplanation:
+      "The Rumack-Matthew nomogram compares the serum acetaminophen level to a time-dependent treatment threshold, threshold (mcg/mL) = exp(5.33252 - 0.08047 x hours since ingestion). If the level is at or above the threshold between 4 and 24 hours after ingestion, N-acetylcysteine treatment is indicated; the nomogram is not valid before 4 hours or after 24 hours.",
+    variables: [
+      {
+        inputId: "time-since-ingestion",
+        label: "Time Since Ingestion",
+        explanation: "Hours since the acute ingestion, used to compute the treatment threshold. Values under 4 h or over 24 h fall outside the valid nomogram window.",
+      },
+      {
+        inputId: "acetaminophen-level",
+        label: "Serum Acetaminophen Level",
+        explanation: "Serum acetaminophen concentration in mcg/mL, compared with the time-based threshold.",
+      },
+    ],
     faq: [
           {
         "question": "What is the Rumack-Matthew nomogram?",
@@ -11983,11 +16591,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. For acetaminophen overdose, always consult clinical toxicology and follow institutional protocols. This calculator does not replace clinical judgment.",
+      "This calculator is intended for educational and clinical decision support purposes only. For acetaminophen overdose, always consult clinical toxicology and follow institutional protocols. This calculator does not replace clinical judgment.",
     evidence: {
       source: "Emergency Medicine",
       reference: "Rumack BH, Matthew H. Pediatrics. 1975;55(6):871-876.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -11997,6 +16604,35 @@ export const clinicalContentRegistry: Record<
     },
   },
   "bode-index": {
+    commonMistakes: [
+      "Entering the FEV1 in liters instead of FEV1 percent predicted, which the airflow obstruction subscore requires.",
+      "Adding the mMRC grade directly as points, when grades 0-1 both score 0 and grade 4 scores 3 rather than 4.",
+      "Performing the assessment during an acute exacerbation, when dyspnea and walk distance temporarily worsen the result."
+    ],
+    formulaExplanation:
+      "The BODE index sums four weighted subscores each 0-3: BMI (1 point if 21 kg/m2 or lower, else 0; capped at 1), FEV1 % predicted (0 for >= 65, 1 for 50-64, 2 for 36-49, 3 for < 36), mMRC dyspnea grade (0 for <= 1, 1 for 2, 2 for 3, 3 for 4), and 6-minute walk distance (0 for >= 350 m, 1 for 250-349, 2 for 150-249, 3 for < 150), for a total of 0-10. Higher totals predict greater 4-year mortality.",
+    variables: [
+      {
+        inputId: "bmi",
+        label: "Body Mass Index (BMI)",
+        explanation: "BMI in kg/m2; 21 or lower contributes 1 point to the BMI subscore.",
+      },
+      {
+        inputId: "fev1-percent",
+        label: "FEV1 % Predicted",
+        explanation: "FEV1 as a percentage of predicted, contributing 0-3 points across the defined bands.",
+      },
+      {
+        inputId: "mmrc-dyspnea",
+        label: "mMRC Dyspnea Grade",
+        explanation: "mMRC dyspnea grade (0-4), mapped to 0-3 points.",
+      },
+      {
+        inputId: "six-minute-walk",
+        label: "6-Minute Walk Distance",
+        explanation: "Six-minute walk distance in meters, contributing 0-3 points across the defined bands.",
+      },
+    ],
     faq: [
           {
         "question": "What does the BODE Index measure?",
@@ -12048,7 +16684,7 @@ export const clinicalContentRegistry: Record<
     limitations: [
       "Validated in stable COPD patients; may be less reliable during exacerbations.",
       "6-minute walk test requires proper instruction and supervision.",
-      "BMI cutoff may vary in different populations (elderly,不同 ethnic groups).",
+      "BMI cutoff may vary in different populations, including elderly patients and different ethnic groups.",
       "Does not account for comorbidities beyond the four measured components.",
     ],
     example: {
@@ -12076,11 +16712,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. BODE Index should be used as part of comprehensive COPD assessment, not as a standalone tool for treatment decisions.",
+      "This calculator is intended for educational and clinical decision support purposes only. BODE Index should be used as part of comprehensive COPD assessment, not as a standalone tool for treatment decisions.",
     evidence: {
       source: "Pulmonology",
       reference: "Celli BR, et al. N Engl J Med. 2004;350(10):1005-1012.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [
@@ -12090,6 +16725,27 @@ export const clinicalContentRegistry: Record<
     },
   },
   "albi-score": {
+    commonMistakes: [
+      "Entering bilirubin in mg/dL instead of micromol/L, or albumin in g/dL instead of g/L, which invalidates the formula's inputs.",
+      "Misclassifying the grade at the boundary values of -2.60 and -1.39, which separate Grade I, Grade II, and Grade III.",
+      "Using ALBI as the sole determinant for treatment decisions rather than integrating tumor stage and performance status."
+    ],
+    formulaExplanation:
+      "ALBI = (log10(bilirubin in micromol/L) x -0.372) + (albumin in g/L x -0.198) + 4.9, rounded to two decimals. Grade I is -2.60 or lower, Grade II is between -2.60 and -1.39, and Grade III is above -1.39; higher grades indicate worse liver function and prognosis.",
+    variables: [
+      {
+        inputId: "bilirubin",
+        label: "Total Bilirubin",
+        explanation: "Total bilirubin in micromol/L, entered as a base-10 logarithm.",
+        commonError: "Enter bilirubin in micromol/L; a mg/dL value would misstate the logarithmic term.",
+      },
+      {
+        inputId: "albumin",
+        label: "Serum Albumin",
+        explanation: "Serum albumin in g/L, multiplied by -0.198.",
+        commonError: "Enter albumin in g/L (not g/dL) to match the ALBI equation.",
+      },
+    ],
     faq: [
           {
         "question": "What is the ALBI score?",
@@ -12167,11 +16823,10 @@ export const clinicalContentRegistry: Record<
       },
     ],
     disclaimer:
-      "This calculator is intended for educational and clinical decision support. ALBI score should be used as part of comprehensive HCC assessment, not as a standalone tool for treatment decisions.",
+      "This calculator is intended for educational and clinical decision support purposes only. ALBI score should be used as part of comprehensive HCC assessment, not as a standalone tool for treatment decisions.",
     evidence: {
       source: "Gastroenterology",
       reference: "Johnson PJ, et al. J Clin Oncol. 2015;33(6):550-558.",
-      reviewedBy: "MedCalcHub Clinical Team",
       version: "1.0",
       updatedAt: "2026-08",
       references: [

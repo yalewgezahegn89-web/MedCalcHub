@@ -316,21 +316,21 @@ describe("Batch 17: /specialties CollectionPage JSON-LD", () => {
   });
 });
 
-describe("Batch 17: homepage SearchAction target", () => {
-  it("SearchAction target points to /search", () => {
+describe("Batch 17: homepage SearchAction removal", () => {
+  it("homepage no longer emits SearchAction JSON-LD", () => {
     const source = readFile("app/page.tsx");
-    expect(source).toContain("/search?q={search_term_string}");
-  });
-
-  it("SearchAction target does NOT point to /calculators", () => {
-    const source = readFile("app/page.tsx");
-    expect(source).not.toContain("/calculators?q={search_term_string}");
+    expect(source).not.toContain('"@type": "SearchAction"');
+    expect(source).not.toContain("search_term_string");
   });
 
   it("WebSite schema is still present", () => {
     const source = readFile("app/page.tsx");
     expect(source).toContain('"@type": "WebSite"');
-    expect(source).toContain('"@type": "SearchAction"');
+  });
+
+  it("Organization schema is still present", () => {
+    const source = readFile("app/page.tsx");
+    expect(source).toContain('"@type": "Organization"');
   });
 });
 

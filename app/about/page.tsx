@@ -165,6 +165,32 @@ export default function AboutPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+            Content Sources and Disclaimer
+          </h2>
+          <p>
+            To understand where each calculator&apos;s method comes from, how the
+            content is maintained, and the platform&apos;s honest human-review
+            status, see the{" "}
+            <a
+              href="/content-sources"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              Content Sources
+            </a>{" "}
+            page. For the full scope of the site&apos;s educational
+            decision-support role and its limitations, see the{" "}
+            <a
+              href="/disclaimer"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              Medical Disclaimer
+            </a>{" "}
+            page.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
             Data and Privacy
           </h2>
           <p>

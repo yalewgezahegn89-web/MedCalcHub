@@ -58,10 +58,7 @@ export function CalculatorClient({
         initialValues={initialValues}
       />
       <ClinicalNotes
-        formula={calculator.formula}
-        normalRange={calculator.normalRange}
         clinicalNotes={calculator.clinicalNotes}
-        references={calculator.references}
       />
     </div>
   );

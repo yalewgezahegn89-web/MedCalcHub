@@ -53,7 +53,7 @@ describe("Sitemap XML encoding regression", () => {
   it("sitemap has the expected URL count", () => {
     const xml = buildSitemapXml();
     const locCount = (xml.match(/<loc>/g) || []).length;
-    expect(locCount).toBe(182);
+    expect(locCount).toBe(199);
   });
 
   it("no duplicate URLs in sitemap", () => {
@@ -91,5 +91,18 @@ describe("Sitemap XML encoding regression", () => {
     expect(xml).toContain("<loc>https://medcalculatorhub.com/terms</loc>");
     expect(xml).toContain("<loc>https://medcalculatorhub.com/privacy</loc>");
     expect(xml).toContain("<loc>https://medcalculatorhub.com/cookie</loc>");
+    expect(xml).toContain(
+      "<loc>https://medcalculatorhub.com/content-sources</loc>",
+    );
+    expect(xml).toContain(
+      "<loc>https://medcalculatorhub.com/disclaimer</loc>",
+    );
+    expect(xml).toContain("<loc>https://medcalculatorhub.com/guides</loc>");
+    expect(xml).toContain(
+      "<loc>https://medcalculatorhub.com/guides/acid-base-interpretation</loc>",
+    );
+    expect(xml).toContain(
+      "<loc>https://medcalculatorhub.com/guides/body-composition-and-dosing-weights</loc>",
+    );
   });
 });

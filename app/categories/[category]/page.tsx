@@ -13,7 +13,10 @@ import {
   taxonomyToSlug,
 } from "@/lib/seo/taxonomy-content";
 import { buildCollectionJsonLd } from "@/lib/seo/jsonld";
+import { getGuidesForCategory } from "@/lib/guides";
 import { AdSlot } from "@/components/ads";
+import { RelatedGuides } from "@/components/guides/related-guides";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
 
@@ -102,6 +105,8 @@ export default async function CategoryPage({
   const relatedSpecialties =
     getSpecialtiesForCategory(category);
 
+  const guidesForCategory = getGuidesForCategory(category);
+
   const categoryUrl =
     `${SITE_URL}/categories/${slug}`;
 
@@ -135,10 +140,18 @@ export default async function CategoryPage({
 
       <div className="mx-auto max-w-5xl px-6 py-10">
 
-        <div className="mb-10">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Categories", href: "/categories" },
+            { label: category },
+          ]}
+        />
+
+        <div className="mb-8">
           <Link
             href="/categories"
-            className="text-blue-600 hover:underline"
+            className="mt-2 inline-block text-blue-600 hover:underline"
           >
             ← Back to Categories
           </Link>
@@ -157,6 +170,35 @@ export default async function CategoryPage({
               {description}
             </p>
           )}
+
+          <p className="mt-4 max-w-3xl text-gray-600 leading-relaxed">
+            Every tool in this domain is linked below, each
+            with its own formula, inputs, and interpretation
+            notes. Starting from the clinical area instead
+            of the subject? The same calculators are grouped
+            on the{" "}
+            <Link
+              href="/specialties"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              specialties pages
+            </Link>
+            , the{" "}
+            <Link
+              href="/calculators"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              full alphabetical list
+            </Link>{" "}
+            collects everything in one place, and the{" "}
+            <Link
+              href="/comparison"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              comparison tool
+            </Link>{" "}
+            lines up three tools side by side.
+          </p>
         </div>
 
         {relatedSpecialties.length > 0 && (
@@ -237,6 +279,12 @@ export default async function CategoryPage({
           ))}
 
         </div>
+
+        {guidesForCategory.length > 0 && (
+          <div className="mt-10">
+            <RelatedGuides guides={guidesForCategory} />
+          </div>
+        )}
 
       </div>
     </>
