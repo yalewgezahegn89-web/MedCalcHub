@@ -783,7 +783,7 @@ describe("G — Nested Link protection", () => {
 describe("H — Robots coverage", () => {
   const robots = readFile("app/robots.ts");
 
-  const disallowedRoutes = [
+  const utilityRoutes = [
     "/favorites",
     "/history",
     "/recent",
@@ -791,9 +791,10 @@ describe("H — Robots coverage", () => {
     "/saved-calculations",
   ];
 
-  for (const route of disallowedRoutes) {
-    it(`robots.ts disallows ${route}`, () => {
-      expect(robots).toContain(`"${route}"`);
+  for (const route of utilityRoutes) {
+    it(`robots.ts permits crawling of ${route}`, () => {
+      expect(robots).not.toContain(`"${route}"`);
+      expect(robots).not.toContain("disallow");
     });
   }
 

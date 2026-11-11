@@ -88,10 +88,13 @@ describe("Phase 0: utility pages are noindexed with self-canonicals", () => {
     });
   }
 
-  it("robots.ts still disallows each utility route", () => {
+  it("robots.txt permits crawling of each utility route", () => {
     const robots = readFile("app/robots.ts");
+    expect(robots).toContain('allow: "/"');
+    expect(robots).toContain("sitemap");
+    expect(robots).not.toContain("disallow");
     for (const page of UTILITY_PAGES) {
-      expect(robots).toContain(page.path);
+      expect(robots).not.toContain(page.path);
     }
   });
 });

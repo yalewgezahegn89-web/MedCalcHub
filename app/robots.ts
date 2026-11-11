@@ -8,13 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: [
-          "/favorites",
-          "/history",
-          "/recent",
-          "/workspace",
-          "/saved-calculations",
-        ],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
